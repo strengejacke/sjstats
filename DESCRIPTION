@@ -6,9 +6,11 @@ Version: 0.1.0
 Date: 2016-05-20
 Author: Daniel Lüdecke <d.luedecke@uke.de>
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
-Description: This package is a collection of functions that help computing
-             various statistics (mostly) for simple regression or mixed models.
-             Some functions are also for simple descriptive statistics.
+Description: This package is a collection of functions that help
+             computing various statistics for simple regression or mixed models.
+             Some functions are also for descriptive statistics. The package
+             aims at providing convenient functions for common statistical
+             computations, which are not provided by R's base or stats packages.
 License: GPL-3
 Depends:
     R (>= 3.2),
