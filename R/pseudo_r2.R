@@ -61,7 +61,7 @@ cod <- function(x) {
   cod = abs(m2 - m1)
   names(cod) <- "D"
 
-  return(structure(class = "sjmisc_r2", list(cod = cod)))
+  return(structure(class = "sjstats_r2", list(cod = cod)))
 }
 
 
@@ -159,7 +159,7 @@ r2 <- function(x, n = NULL) {
     names(rsq) <- "R2"
     names(adjr2) <- "adj.R2"
     # return results
-    return(structure(class = "sjmisc_r2", list(r2 = rsq, adjr2 = adjr2)))
+    return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
     # else do we have a mixed model?
   } else if (sjmisc::str_contains(class(x), pattern = c("lmerMod", "lme"),
                           ignore.case = T, logic = "OR")) {
@@ -180,7 +180,7 @@ r2 <- function(x, n = NULL) {
       names(rsq0) <- "R2(tau-00)"
       names(rsq1) <- "R2(tau-11)"
       # return results
-      return(structure(class = "sjmisc_r2", list(r2_tau00 = rsq0, r2_tau11 = rsq1)))
+      return(structure(class = "sjstats_r2", list(r2_tau00 = rsq0, r2_tau11 = rsq1)))
     } else {
       # compute "correlation"
       lmfit <-  lm(stats::model.response(stats::model.frame(x)) ~ stats::fitted(x))
@@ -192,7 +192,7 @@ r2 <- function(x, n = NULL) {
       names(rsq) <- "R2"
       names(osq) <- "O2"
       # return results
-      return(structure(class = "sjmisc_r2", list(r2 = rsq, o2 = osq)))
+      return(structure(class = "sjstats_r2", list(r2 = rsq, o2 = osq)))
     }
   } else {
     stop("`r2` only works on linear (mixed) models of class \"lm\", \"lme\" or \"lmerMod\".", call. = F)
@@ -206,5 +206,5 @@ pseudo_ralt <- function(x) {
   Nagelkerke <- CoxSnell / (1 - exp(-x$null / n))
   names(CoxSnell) <- "CoxSnell"
   names(Nagelkerke) <- "Nagelkerke"
-  return(structure(class = "sjmisc_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke)))
+  return(structure(class = "sjstats_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke)))
 }
