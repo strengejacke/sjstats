@@ -1,0 +1,29 @@
+Package: sjstats
+Type: Package
+Encoding: UTF-8
+Title: Statistical Functions for Regression Models
+Version: 0.1.0
+Date: 2016-05-20
+Author: Daniel Lüdecke <d.luedecke@uke.de>
+Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
+Description: This package is a collection of functions that help computing
+             various statistics (mostly) for simple regression or mixed models.
+             Some functions are also for simple descriptive statistics.
+License: GPL-3
+Depends:
+    R (>= 3.2),
+    stats,
+    utils
+Imports:
+    coin,
+    lme4,
+    MASS,
+    Matrix,
+    nlme,
+    sjmisc
+Suggests:
+    AER,
+    arm,
+    pwr
+URL: https://github.com/sjPlot/sjstats
+RoxygenNote: 5.0.1
