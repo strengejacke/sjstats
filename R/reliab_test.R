@@ -39,22 +39,21 @@
 #'
 #' \dontrun{
 #' library(sjPlot)
-#' sjt.df(reliab_test(x), describe = FALSE, showCommentRow = TRUE,
-#'        commentString = sprintf("Cronbach's &alpha;=%.2f", cronb(x)))}
+#' sjt.df(reliab_test(x), describe = FALSE, show.cmmn.row = TRUE,
+#'        string.cmmn = sprintf("Cronbach's &alpha;=%.2f", cronb(x)))
 #'
 #' # Compute PCA on Cope-Index, and perform a
 #' # reliability check on each extracted factor.
-#' \dontrun{
 #' factors <- sjt.pca(x)$factor.index
 #' findex <- sort(unique(factors))
 #' library(sjPlot)
 #' for (i in 1:length(findex)) {
 #'  rel.df <- subset(x, select = which(factors == findex[i]))
 #'  if (ncol(rel.df) >= 3) {
-#'    sjt.df(reliab_test(rel.df), describe = FALSE, showCommentRow = TRUE,
-#'           useViewer = FALSE, title = "Item-Total-Statistic",
-#'           commentString = sprintf("Scale's overall Cronbach's &alpha;=%.2f",
-#'                                   cronb(rel.df)))
+#'    sjt.df(reliab_test(rel.df), describe = FALSE, show.cmmn.row = TRUE,
+#'           use.viewer = FALSE, title = "Item-Total-Statistic",
+#'           string.cmmn = sprintf("Scale's overall Cronbach's &alpha;=%.2f",
+#'                                 cronb(rel.df)))
 #'    }
 #'  }}
 #'

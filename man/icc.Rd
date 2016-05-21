@@ -70,7 +70,6 @@ Some notes on why the ICC is useful, based on Grace-Martin K: \emph{The Intracla
       \code{get_re_var(fit)[2] / sum(get_re_var(fit))}
 }
 \examples{
-\dontrun{
 library(lme4)
 fit1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 icc(fit1)
@@ -86,7 +85,7 @@ icc1 <- icc(fit1)
 icc2 <- icc(fit2)
 
 print(icc1, comp = "var")
-print(icc2, comp = "var")}
+print(icc2, comp = "var")
 
 
 }

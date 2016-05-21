@@ -73,7 +73,6 @@
 #'            to get the values from a particular variance component.
 #'
 #' @examples
-#' \dontrun{
 #' library(lme4)
 #' fit1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' icc(fit1)
@@ -89,7 +88,7 @@
 #' icc2 <- icc(fit2)
 #'
 #' print(icc1, comp = "var")
-#' print(icc2, comp = "var")}
+#' print(icc2, comp = "var")
 #'
 #'
 #' @importFrom stats family
