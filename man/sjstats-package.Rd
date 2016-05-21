@@ -5,17 +5,15 @@
 \docType{package}
 \title{Statistical Functions for Regression Models}
 \description{
-This package is a collection of functions that help computing various statistics
-for simple regression or mixed models. These include for example:
+'sjstats' aims at providing convenient functions for common statistical computations, which are not provided by R's base or stats packages. This package comprises tools that help computing various statistics for simple regression or mixed models. These include:
 \itemize{
-  \item for regression models in general: Coefficient of Variation, Root Mean Squared Error, Residual Standard Error, Coefficient of Discrimination, R-squared and pseudo-R-squared values, standardized beta values
-  \item especially for mixed models: Design effect, ICC, sample size calculation, convergence and overdispersion tests
+  \item For regression and mixed models: Coefficient of Variation, Root Mean Squared Error, Residual Standard Error, Coefficient of Discrimination, R-squared and pseudo-R-squared values, standardized beta values
+  \item Especially for mixed models: Design effect, ICC, sample size calculation, convergence and overdispersion tests
 }
 Some functions are also for simple statistics, like:
 \itemize{
   \item Cramer's V, Cronbach's Alpha, Mean Inter-Item-Correlation, Mann-Whitney-U-Test, Item-scale reliability tests
 }
-The package aims at providing convenient functions for common statistical computations, which are not provided by R's base or stats packages.
 }
 \details{
 \tabular{rl}{
