@@ -36,14 +36,14 @@
 cod <- function(x) {
   # check for valid object class
   if (!any(class(x) == "glmerMod") && !any(class(x) == "glm")) {
-    stop("'x' must be an object of class 'glm' or 'glmerMod'.", call. = F)
+    stop("`x` must be an object of class `glm` or `glmerMod`.", call. = F)
   }
 
   # mixed models (lme4)
   if (any(class(x) == "glmerMod")) {
     # check for package availability
     if (!requireNamespace("lme4", quietly = TRUE)) {
-      stop("Package 'lme4' needed for this function to work. Please install it.", call. = FALSE)
+      stop("Package `lme4` needed for this function to work. Please install it.", call. = FALSE)
     }
     y <- lme4::getME(x, "y")
     pred <- stats::predict(x, type = "response", re.form = NULL)
@@ -162,7 +162,7 @@ r2 <- function(x, n = NULL) {
     return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
     # else do we have a mixed model?
   } else if (sjmisc::str_contains(class(x), pattern = c("lmerMod", "lme"),
-                          ignore.case = T, logic = "OR")) {
+                                  ignore.case = T, logic = "OR")) {
     # do we have null model?
     if (!is.null(n)) {
       # compute tau for both models
