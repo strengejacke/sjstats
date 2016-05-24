@@ -86,7 +86,7 @@ chisq_gof <- function(x, prob = NULL, weights = NULL) {
       return(invisible(NULL))
     }
     # performs a Chi-square goodnes-of-fit-test
-    if (!is.null(weights)) x <- sjmisc::weight(x, weights)
+    if (!is.null(weights)) x <- weight(x, weights)
     dummy <- as.vector(table(x))
     # goodness of fit-test. x is one-dimensional and
     # y not given
