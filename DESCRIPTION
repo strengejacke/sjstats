@@ -36,6 +36,7 @@ Imports:
 Suggests:
     AER,
     arm,
+    Hmisc,
     pwr
 URL: https://github.com/sjPlot/sjstats
 RoxygenNote: 5.0.1
