@@ -67,13 +67,13 @@ print.icc.lme4 <- function(x, comp, ...) {
     # print within-group-variance sigma^2
     tmp <- sprintf("%.3f", attr(x, "sigma_2", exact = TRUE))
     cat(sprintf("      Within-group-variance: %8s\n", tmp))
-    # print between-group-variance tau0
+    # print between-group-variance tau00
     for (i in 1:(length(tau.00))) {
       tmp <- sprintf("%.3f", tau.00[i])
       cat(sprintf("     Between-group-variance: %8s (%s)\n",
                   tmp, names(tau.00)[i]))
     }
-    # print random-slop-variance tau1
+    # print random-slope-variance tau11
     for (i in 1:length(tau.11)) {
       tau.rs <- tau.11[i]
       # any random slope?

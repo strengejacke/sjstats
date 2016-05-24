@@ -105,6 +105,8 @@ icc <- function(x, ...) {
       icc_[[length(icc_) + 1]] <- icc.lme4(p_)
     }
     names(icc_) <- NULL
+    # add class attribute
+    # class(icc_) <- c(class(icc_), "icc.lme4.list")
   }
   return(icc_)
 }
