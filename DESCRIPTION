@@ -37,6 +37,8 @@ Suggests:
     AER,
     arm,
     Hmisc,
+    lmerTest,
+    pbkrtest (>= 0.4-6),
     pwr
 URL: https://github.com/sjPlot/sjstats
 RoxygenNote: 5.0.1
