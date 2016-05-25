@@ -10,10 +10,10 @@
 #'         conditional F-tests with Kenward-Roger approximation for the df (see
 #'         'Details').
 #'
-#' @return The p-values for the model coefficients.
+#' @return A named vector with p-values for the model coefficients.
 #'
-#' @details For linear mixed models (\code{lmerMod}-objects, the computation of
-#'         p-values (if \code{p.kr = TRUE}) are based on conditional F-tests
+#' @details For linear mixed models (\code{lmerMod}-objects), the computation of
+#'         p-values (if \code{p.kr = TRUE}) is based on conditional F-tests
 #'         with Kenward-Roger approximation for the df, using the
 #'         \pkg{pbkrtest}-package. If \pkg{pbkrtest} is not available or
 #'         \code{p.kr = FALSE}, or if \code{x} is a \code{glmerMod}-object,
