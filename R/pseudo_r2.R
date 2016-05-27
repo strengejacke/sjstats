@@ -200,10 +200,12 @@ r2 <- function(x, n = NULL) {
   }
 }
 
+#' @importFrom stats nobs deviance
 pseudo_ralt <- function(x) {
-  n <- nrow(x$model)
-  CoxSnell <- 1 - exp((x$deviance - x$null) / n)
-  Nagelkerke <- CoxSnell / (1 - exp(-x$null / n))
+  # get nr of observations
+  n <- stats::nobs(x)
+  CoxSnell <- 1 - exp((stats::deviance(x) - x$null.deviance) / n)
+  Nagelkerke <- CoxSnell / (1 - exp(-x$null.deviance / n))
   names(CoxSnell) <- "CoxSnell"
   names(Nagelkerke) <- "Nagelkerke"
   return(structure(class = "sjstats_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke)))
