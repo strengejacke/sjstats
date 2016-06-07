@@ -50,6 +50,11 @@
 #'
 #' @export
 odds_to_rr <- function(fit) {
+  # check model family
+  fitinfo <- get_glm_family(fit)
+  # no binomial model with logit-link?
+  if (!fitinfo$is_bin && !fitinfo$is_logit)
+    stop("`fit` must be a binomial model with logit-link (logistic regression).", call. = F)
   # get model estimates
   est <- exp(stats::coef(summary(fit))[, 1])
   # get confidence intervals
