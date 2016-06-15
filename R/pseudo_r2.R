@@ -26,7 +26,7 @@
 #' data(efc)
 #'
 #' # Tjur's R-squared value
-#' efc$services <- dicho(efc$tot_sc_e, "v", 0, as.num = TRUE)
+#' efc$services <- ifelse(efc$tot_sc_e > 0, 1, 0)
 #' fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
 #'            data = efc, family = binomial(link = "logit"))
 #' cod(fit)
@@ -128,7 +128,7 @@ cod <- function(x) {
 #' r2(fit)
 #'
 #' # Pseudo-R-squared values
-#' efc$services <- dicho(efc$tot_sc_e, "v", 0, as.num = TRUE)
+#' efc$services <- ifelse(efc$tot_sc_e > 0, 1, 0)
 #' fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
 #'            data = efc, family = binomial(link = "logit"))
 #' r2(fit)
@@ -161,6 +161,14 @@ r2 <- function(x, n = NULL) {
     # return results
     return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
     # else do we have a mixed model?
+  } else if (any(class(x) == "plm")) {
+    rsq <- summary(x)$r.squared[1]
+    adjr2 <- summary(x)$r.squared[2]
+    # name vectors
+    names(rsq) <- "R2"
+    names(adjr2) <- "adj.R2"
+    # return results
+    return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
   } else if (sjmisc::str_contains(class(x), pattern = c("lmerMod", "lme"),
                                   ignore.case = T, logic = "OR")) {
     # do we have null model?
@@ -195,7 +203,7 @@ r2 <- function(x, n = NULL) {
       return(structure(class = "sjstats_r2", list(r2 = rsq, o2 = osq)))
     }
   } else {
-    stop("`r2` only works on linear (mixed) models of class \"lm\", \"lme\" or \"lmerMod\".", call. = F)
+    warning("`r2` only works on linear (mixed) models of class \"lm\", \"lme\" or \"lmerMod\".", call. = F)
     return(NULL)
   }
 }

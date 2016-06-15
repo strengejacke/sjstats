@@ -63,7 +63,7 @@ fit <- lm(barthtot ~ c160age + c12hour, data = efc)
 r2(fit)
 
 # Pseudo-R-squared values
-efc$services <- dicho(efc$tot_sc_e, "v", 0, as.num = TRUE)
+efc$services <- ifelse(efc$tot_sc_e > 0, 1, 0)
 fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
            data = efc, family = binomial(link = "logit"))
 r2(fit)

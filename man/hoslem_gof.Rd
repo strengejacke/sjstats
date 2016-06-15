@@ -30,13 +30,10 @@ A well-fitting model shows no significant difference between
         greater than 0.05.
 }
 \examples{
-library(sjmisc)
 data(efc)
-
 # goodness-of-fit test for logistic regression
-efc$services <- dicho(efc$tot_sc_e, "v", 0, as.num = TRUE)
-fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
-           data = efc,
+efc$services <- ifelse(efc$tot_sc_e > 0, 1, 0)
+fit <- glm(services ~ neg_c_7 + c161sex + e42dep, data = efc,
            family = binomial(link = "logit"))
 hoslem_gof(fit)
 

@@ -44,7 +44,6 @@ For vectors, this function is a convenient function for the \code{\link{chisq.te
         greater than 0.05.
 }
 \examples{
-library(sjmisc)
 data(efc)
 # differing from population
 chisq_gof(efc$e42dep, c(0.3,0.2,0.22,0.28))
@@ -52,9 +51,8 @@ chisq_gof(efc$e42dep, c(0.3,0.2,0.22,0.28))
 chisq_gof(efc$e42dep, prop.table(table(efc$e42dep)))
 
 # goodness-of-fit test for logistic regression
-efc$services <- dicho(efc$tot_sc_e, "v", 0, as.num = TRUE)
-fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
-           data = efc,
+efc$services <- ifelse(efc$tot_sc_e > 0, 1, 0)
+fit <- glm(services ~ neg_c_7 + c161sex + e42dep, data = efc,
            family = binomial(link = "logit"))
 chisq_gof(fit)
 
