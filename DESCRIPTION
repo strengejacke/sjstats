@@ -41,4 +41,5 @@ Suggests:
     pbkrtest (>= 0.4-6),
     pwr
 URL: https://github.com/sjPlot/sjstats
+BugReports: https://github.com/sjPlot/sjstats/issues
 RoxygenNote: 5.0.1
