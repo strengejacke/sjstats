@@ -194,7 +194,7 @@ icc.lme4 <- function(fit) {
     attr(ri.icc, "family") <- stats::family(fit)$family
     attr(ri.icc, "link") <- stats::family(fit)$link
     attr(ri.icc, "formula") <- stats::formula(fit)
-    attr(ri.icc, "model") <- ifelse(any(class(fit) == "glmerMod"), "Generalized inear mixed model", "Linear mixed model")
+    attr(ri.icc, "model") <- ifelse(any(class(fit) == "glmerMod"), "Generalized linear mixed model", "Linear mixed model")
     attr(ri.icc, "tau.00") <- tau.00
     attr(ri.icc, "tau.01") <- tau.01
     attr(ri.icc, "rho.01") <- rho.01
