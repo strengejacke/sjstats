@@ -9,3 +9,7 @@
 ## Changes to functions
 
 * `r2` now supports `plm` objects.
+
+## Bug fixes
+
+* Fixed typo in print-method for `icc`.
