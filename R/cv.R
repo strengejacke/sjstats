@@ -70,17 +70,9 @@ cv_helper <- function(x) {
       # dependent variable in lm
       dv <- x$model[[1]]
     } else if (any(class(x) == "lmerMod") || any(class(x) == "merModLmerTest")) {
-      # check for package availability
-      if (!requireNamespace("lme4", quietly = TRUE)) {
-        stop("Package `lme4` needed for this function to work. Please install it.", call. = FALSE)
-      }
       # dependent variable in lmerMod
       dv <- lme4::getME(x, "y")
     } else if (any(class(x) == "lme")) {
-      # check for package availability
-      if (!requireNamespace("nlme", quietly = TRUE)) {
-        stop("Package `nlme` needed for this function to work. Please install it.", call. = FALSE)
-      }
       # dependent variable in lme
       dv <- unname(nlme::getResponse(x))
     }

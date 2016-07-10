@@ -42,9 +42,6 @@ cod <- function(x) {
   # mixed models (lme4)
   if (any(class(x) == "glmerMod")) {
     # check for package availability
-    if (!requireNamespace("lme4", quietly = TRUE)) {
-      stop("Package `lme4` needed for this function to work. Please install it.", call. = FALSE)
-    }
     y <- lme4::getME(x, "y")
     pred <- stats::predict(x, type = "response", re.form = NULL)
   } else {

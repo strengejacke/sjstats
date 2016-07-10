@@ -147,11 +147,6 @@ std_beta <- function(fit,
 sjs.stdmm <- function(fit) {
   # code from Ben Bolker, see
   # http://stackoverflow.com/a/26206119/2094622
-
-  # check if suggested package is available
-  if (!requireNamespace("lme4", quietly = TRUE)) {
-    stop("Package 'lme4' needed for this function to work. Please install it.", call. = FALSE)
-  }
   sdy <- stats::sd(lme4::getME(fit, "y"))
   sdx <- apply(lme4::getME(fit, "X"), 2, sd)
   sc <- lme4::fixef(fit) * sdx / sdy

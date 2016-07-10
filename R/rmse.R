@@ -55,15 +55,9 @@ rmse <- function(fit, normalized = FALSE) {
   if (normalized) {
     if (any(class(fit) == "lmerMod") || any(class(fit) == "merModLmerTest")) {
       # check for package availability
-      if (!requireNamespace("lme4", quietly = TRUE)) {
-        stop("Package 'lme4' needed for this function to work. Please install it.", call. = FALSE)
-      }
       resp <- lme4::getME(fit, "y")
     } else if (any(class(fit) == "lme")) {
       # check for package availability
-      if (!requireNamespace("nlme", quietly = TRUE)) {
-        stop("Package 'nlme' needed for this function to work. Please install it.", call. = FALSE)
-      }
       resp <- unname(nlme::getResponse(fit))
     } else {
       resp <- fit$model[[1]]
