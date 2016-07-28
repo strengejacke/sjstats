@@ -2,8 +2,8 @@ Package: sjstats
 Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
-Version: 0.2.0
-Date: 2016-06-20
+Version: 0.3.0
+Date: 2016-07-28
 Author: Daniel Lüdecke <d.luedecke@uke.de>
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -32,7 +32,8 @@ Imports:
     MASS,
     Matrix,
     nlme,
-    sjmisc (>= 1.8)
+    sjmisc (>= 1.8),
+    tibble (>= 1.1.0)
 Suggests:
     AER,
     arm,

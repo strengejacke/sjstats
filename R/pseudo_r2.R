@@ -188,11 +188,11 @@ r2 <- function(x, n = NULL) {
       return(structure(class = "sjstats_r2", list(r2_tau00 = rsq0, r2_tau11 = rsq1)))
     } else {
       # compute "correlation"
-      lmfit <-  lm(stats::model.response(stats::model.frame(x)) ~ stats::fitted(x))
+      lmfit <-  lm(resp_val(x) ~ stats::fitted(x))
       # get r-squared
       rsq <- summary(lmfit)$r.squared
       # get omega squared
-      osq <- 1 - stats::var(stats::residuals(x)) / stats::var(stats::model.response(stats::model.frame(x)))
+      osq <- 1 - stats::var(stats::residuals(x)) / stats::var(resp_val(x))
       # name vectors
       names(rsq) <- "R2"
       names(osq) <- "O2"
