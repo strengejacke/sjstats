@@ -5,12 +5,16 @@
 \alias{boot_se}
 \title{Standard Error and Confidence Intervals for bootstrapped estimates}
 \usage{
-boot_ci(x)
+boot_ci(data, x)
 
-boot_se(x)
+boot_se(data, x)
 }
 \arguments{
-\item{x}{A vector.}
+\item{data}{A data frame that containts the vector with bootstrapped
+estimates, or directly the vector (see 'Examples').}
+
+\item{x}{Name of the variable with bootstrapped estimates. Required, if
+\code{data} is a data frame and no vector.}
 }
 \value{
 The bootstrap standard error or the lower and upper confidence
@@ -48,6 +52,16 @@ confint(fit)[2, ]
 # compare coefficients
 mean(bs$dependency)
 coef(fit)[2]
+
+# bootstrap() and boot_ci() work fine within pipe-chains
+library(dplyr)
+efc \%>\%
+  bootstrap(100) \%>\%
+  mutate(models = lapply(.$strap, function(x) {
+    lm(neg_c_7 ~ e42dep + c161sex, data = x)
+  })) \%>\%
+  mutate(dependency = unlist(lapply(.$models, function(x) coef(x)[2]))) \%>\%
+  boot_ci(dependency)
 
 }
 

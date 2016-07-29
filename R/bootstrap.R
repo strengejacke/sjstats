@@ -58,7 +58,10 @@ bootstrap <- function(data, n, size) {
 #' @description Compute bootstrap standard error and confidence intervals
 #'              for a vector of bootstrap replicate estimates.
 #'
-#' @param x A vector.
+#' @param data A data frame that containts the vector with bootstrapped
+#'          estimates, or directly the vector (see 'Examples').
+#' @param x Name of the variable with bootstrapped estimates. Required, if
+#'          \code{data} is a data frame and no vector.
 #'
 #' @return The bootstrap standard error or the lower and upper confidence
 #'         intervals of \code{x}.
@@ -91,11 +94,30 @@ bootstrap <- function(data, n, size) {
 #' mean(bs$dependency)
 #' coef(fit)[2]
 #'
+#' # bootstrap() and boot_ci() work fine within pipe-chains
+#' library(dplyr)
+#' efc %>%
+#'   bootstrap(100) %>%
+#'   mutate(models = lapply(.$strap, function(x) {
+#'     lm(neg_c_7 ~ e42dep + c161sex, data = x)
+#'   })) %>%
+#'   mutate(dependency = unlist(lapply(.$models, function(x) coef(x)[2]))) %>%
+#'   boot_ci(dependency)
+#'
 #' @importFrom stats qt
 #' @export
-boot_ci <- function(x) {
+boot_ci <- function(data, x) {
+  # check if data is a data frame
+  if (is.data.frame(data)) {
+    # evaluate argument
+    x <- deparse(substitute(x))
+    # get vector
+    x <- data[[x]]
+  } else {
+    x <- data
+  }
   # get bootstrap standard error
-  bootse <- stats::qt(.975, df = length(x) - 1) * boot_se(x)
+  bootse <- stats::qt(.975, df = length(x) - 1) * boot_se(data = x)
   # lower and upper confidence interval
   ci <- mean(x, na.rm = T) + c(-bootse, bootse)
   names(ci) <- c("conf.low", "conf.high")
@@ -105,7 +127,16 @@ boot_ci <- function(x) {
 #' @rdname boot_ci
 #' @importFrom stats sd
 #' @export
-boot_se <- function(x) {
+boot_se <- function(data, x) {
+  # check if data is a data frame
+  if (is.data.frame(data)) {
+    # evaluate argument
+    x <- deparse(substitute(x))
+    # get vector
+    x <- data[[x]]
+  } else {
+    x <- data
+  }
   # compute 1.96 * se for bootstrap replicates
   # see https://www.zoology.ubc.ca/~schluter/R/resample/
   stats::sd(x, na.rm = T)
