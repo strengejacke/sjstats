@@ -2,18 +2,31 @@
 % Please edit documentation in R/bootstrap.R
 \name{boot_ci}
 \alias{boot_ci}
-\title{Confidence Intervals for bootstrapped vectors}
+\alias{boot_se}
+\title{Standard Error and Confidence Intervals for bootstrapped estimates}
 \usage{
 boot_ci(x)
+
+boot_se(x)
 }
 \arguments{
 \item{x}{A vector.}
 }
 \value{
-The lower and upper confidence intervals of \code{x}.
+The bootstrap standard error or the lower and upper confidence
+        intervals of \code{x}.
 }
 \description{
-Compute confidence intervals for a vector of bootstrapped values.
+Compute bootstrap standard error and confidence intervals
+             for a vector of bootstrap replicate estimates.
+}
+\details{
+This method requires a vector of bootstrap replicate estimates
+         as input. The function then computes the bootstrap standard error
+         by calculating the standard deviation of the input vector. The mean
+         value of the input vector is used to calculate the lower and upper
+         confidence interval, assuming a t-distribution of bootstrap estimate
+         replicates.
 }
 \examples{
 data(efc)

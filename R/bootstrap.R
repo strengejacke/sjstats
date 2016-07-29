@@ -53,22 +53,23 @@ bootstrap <- function(data, n, size) {
 }
 
 
-#' @title Confidence Intervals for bootstrapped model coefficients
+#' @title Standard Error and Confidence Intervals for bootstrapped estimates
 #' @name boot_ci
 #'
-#' @description Compute confidence intervals for a vector of bootstrapped model
-#'              coefficients.
+#' @description Compute bootstrap standard error and confidence intervals
+#'              for a vector of bootstrap replicate estimates.
 #'
 #' @param x A vector.
 #'
-#' @return The lower and upper confidence intervals of \code{x}.
+#' @return The bootstrap standard error or the lower and upper confidence
+#'         intervals of \code{x}.
 #'
-#' @details This method requires a vector of estimates regression coefficients
-#'          from bootstrap samples as input. The function then computes the
-#'          bootstrap standard error by calculating the standard deviation of
-#'          the input vector. The mean value of the input vector is assumed to
-#'          be the bootstrap estimate that is used to calculate the lower and
-#'          upper confidence interval.
+#' @details This method requires a vector of bootstrap replicate estimates
+#'          as input. The function then computes the bootstrap standard error
+#'          by calculating the standard deviation of the input vector. The mean
+#'          value of the input vector is used to calculate the lower and upper
+#'          confidence interval, assuming a t-distribution of bootstrap estimate
+#'          replicates.
 #'
 #' @examples
 #' data(efc)
@@ -91,14 +92,22 @@ bootstrap <- function(data, n, size) {
 #' mean(bs$dependency)
 #' coef(fit)[2]
 #'
-#' @importFrom stats qt sd
+#' @importFrom stats qt
 #' @export
 boot_ci <- function(x) {
-  # compute 1.96 * se for bootstrap replicates
-  # see https://www.zoology.ubc.ca/~schluter/R/resample/
-  boot_se <- stats::qt(.975, df = length(x) - 1) * stats::sd(x, na.rm = T)
+  # get bootstrap standard error
+  bootse <- stats::qt(.975, df = length(x) - 1) * boot_se(x)
   # lower and upper confidence interval
-  ci <- mean(x) + c(-boot_se, boot_se)
+  ci <- mean(x, na.rm = T) + c(-bootse, bootse)
   names(ci) <- c("conf.low", "conf.high")
   ci
+}
+
+#' @rdname boot_ci
+#' @importFrom stats sd
+#' @export
+boot_se <- function(x) {
+  # compute 1.96 * se for bootstrap replicates
+  # see https://www.zoology.ubc.ca/~schluter/R/resample/
+  stats::sd(x, na.rm = T)
 }
