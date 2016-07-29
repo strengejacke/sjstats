@@ -3,7 +3,7 @@ Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
 Version: 0.3.0
-Date: 2016-07-28
+Date: 2016-07-29
 Author: Daniel Lüdecke <d.luedecke@uke.de>
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -37,6 +37,7 @@ Imports:
 Suggests:
     AER,
     arm,
+    dplyr,
     Hmisc,
     lmerTest,
     pbkrtest (>= 0.4-6),

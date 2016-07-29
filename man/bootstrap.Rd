@@ -45,4 +45,8 @@ bs <- bootstrap(efc, 5, .7)
 
 
 }
+\seealso{
+\code{\link{boot_ci}} to calculate confidence intervals from
+           bootstrap samples.
+}
 

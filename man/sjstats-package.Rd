@@ -21,7 +21,7 @@ Other statistics:
 Package: \tab sjstats\cr
 Type: \tab Package\cr
 Version: \tab 0.3.0\cr
-Date: \tab 2016-07-28\cr
+Date: \tab 2016-07-29\cr
 License: \tab GPL-3\cr
 }
 }
