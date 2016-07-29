@@ -53,15 +53,22 @@ bootstrap <- function(data, n, size) {
 }
 
 
-#' @title Confidence Intervals for bootstrapped vectors
+#' @title Confidence Intervals for bootstrapped model coefficients
 #' @name boot_ci
 #'
-#' @description Compute confidence intervals for a vector of bootstrapped values.
+#' @description Compute confidence intervals for a vector of bootstrapped model
+#'              coefficients.
 #'
 #' @param x A vector.
 #'
 #' @return The lower and upper confidence intervals of \code{x}.
 #'
+#' @details This method requires a vector of estimates regression coefficients
+#'          from bootstrap samples as input. The function then computes the
+#'          bootstrap standard error by calculating the standard deviation of
+#'          the input vector. The mean value of the input vector is assumed to
+#'          be the bootstrap estimate that is used to calculate the lower and
+#'          upper confidence interval.
 #'
 #' @examples
 #' data(efc)
@@ -87,7 +94,10 @@ bootstrap <- function(data, n, size) {
 #' @importFrom stats qt sd
 #' @export
 boot_ci <- function(x) {
+  # compute 1.96 * se for bootstrap replicates
+  # see https://www.zoology.ubc.ca/~schluter/R/resample/
   boot_se <- stats::qt(.975, df = length(x) - 1) * stats::sd(x, na.rm = T)
+  # lower and upper confidence interval
   ci <- mean(x) + c(-boot_se, boot_se)
   names(ci) <- c("conf.low", "conf.high")
   ci
