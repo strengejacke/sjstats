@@ -51,3 +51,44 @@ bootstrap <- function(data, n, size) {
   }
   tibble::data_frame(strap = res)
 }
+
+
+#' @title Confidence Intervals for bootstrapped vectors
+#' @name boot_ci
+#'
+#' @description Compute confidence intervals for a vector of bootstrapped values.
+#'
+#' @param x A vector.
+#'
+#' @return The lower and upper confidence intervals of \code{x}.
+#'
+#'
+#' @examples
+#' data(efc)
+#' bs <- bootstrap(efc, 100)
+#'
+#' # now run models for each bootstrapped sample
+#' bs$models <- lapply(bs$strap, function(x) lm(neg_c_7 ~ e42dep + c161sex, data = x))
+#'
+#' # extract coefficient "dependency" from each model
+#' bs$dependency <- unlist(lapply(bs$models, function(x) coef(x)[2]))
+#'
+#' # get bootstrapped confidence intervals
+#' boot_ci(bs$dependency)
+#'
+#' # compare with model fit
+#' fit <- lm(neg_c_7 ~ e42dep + c161sex, data = efc)
+#' confint(fit)[2, ]
+#'
+#' # compare coefficients
+#' mean(bs$dependency)
+#' coef(fit)[2]
+#'
+#' @importFrom stats qt sd
+#' @export
+boot_ci <- function(x) {
+  boot_se <- stats::qt(.975, df = length(x) - 1) * stats::sd(x, na.rm = T)
+  ci <- mean(x) + c(-boot_se, boot_se)
+  names(ci) <- c("conf.low", "conf.high")
+  ci
+}
