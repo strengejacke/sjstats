@@ -14,10 +14,9 @@
 #'           \code{strap}, which contains the bootstrapped samples from \code{data}.
 #'
 #' @details By default, each bootstrap sample has the same number of observations
-#'            as \code{data}, however, observations may be re-sampled multiple
-#'            times (and thus, eliminating other observations from the sample).
-#'            To generate bootstrap samples without resampling same observations,
-#'            use \code{size} to get bootstrapped data with a specific number
+#'            as \code{data}. To generate bootstrap samples without resampling
+#'            same observations (i.e. sampling without replacement), use
+#'            \code{size} to get bootstrapped data with a specific number
 #'            of observations.
 #'
 #'
