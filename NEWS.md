@@ -3,7 +3,7 @@
 
 ## Changes to functions
 
-* `bootstrap` is now much more memory efficient due to use of pointers (thanks to (Hadley Wickham)[https://twitter.com/hadleywickham] for the hint).
+* `bootstrap` is now much more memory efficient due to use of pointers (thanks to [Hadley Wickham](https://twitter.com/hadleywickham) for the hint).
 
 # sjstats 0.3.0
 
