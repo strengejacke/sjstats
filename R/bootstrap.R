@@ -45,10 +45,21 @@ bootstrap <- function(data, n, size) {
       stop("`size` must be greater than 0, but not greater than number of rows of `data`.", call. = F)
     # check if we want proportions
     if (size < 1) size <- as.integer(nrow(data) * size)
-    # generate bootstraps
-    res <- replicate(n, data[sample(nrow(data), size = size, replace = F), , drop = F], simplify = F)
+    # generate bootstraps w/o replacement
+    repl <- F
   } else {
-    res <- replicate(n, data[sample(nrow(data), replace = T), , drop = F], simplify = F)
+    # size = observations
+    size <- nrow(data)
+    # generate bootstraps with replacement
+    repl <- T
   }
-  tibble::data_frame(strap = res)
+  tibble::data_frame(
+    strap = replicate(n, resample(data, size, repl), simplify = F)
+  )
+}
+
+
+resample <- function(data, size, replace) {
+  structure(class = c("sjstats.boot", "resample"),
+            list(data = data, id = sample(nrow(data), size = size, replace = replace)))
 }

@@ -119,3 +119,14 @@ print.icc.lme4 <- function(x, comp, ...) {
     }
   }
 }
+
+
+#' @export
+as.integer.sjstats.boot <- function(x, ...) {
+  x$id
+}
+
+#' @export
+as.data.frame.sjstats.boot <- function(x, ...) {
+  x$data[x$id, , drop = FALSE]
+}
