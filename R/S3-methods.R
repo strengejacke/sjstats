@@ -7,6 +7,7 @@ model.matrix.gls <- function(object, ...) {
 }
 
 #' @importFrom nlme getResponse getData getCovariateFormula
+#' @importFrom sjmisc get_label
 #' @export
 model.frame.gls <- function(formula, ...) {
   if (all(class(formula) != "gls")) {

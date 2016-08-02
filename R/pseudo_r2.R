@@ -137,6 +137,7 @@ cod <- function(x) {
 #'
 #'
 #' @importFrom stats model.response model.frame fitted var residuals
+#' @importFrom sjmisc is_empty
 #' @export
 r2 <- function(x, n = NULL) {
   rsq <- NULL

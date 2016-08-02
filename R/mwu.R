@@ -36,6 +36,7 @@
 #'
 #' @importFrom stats na.omit wilcox.test kruskal.test
 #' @importFrom coin wilcox_test pvalue statistic
+#' @importFrom sjmisc to_value get_labels
 #' @export
 mwu <- function(x, grp, distribution = "asymptotic", weights = NULL) {
   # coerce factor and character to numeric

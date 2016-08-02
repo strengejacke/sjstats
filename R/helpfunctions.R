@@ -5,6 +5,7 @@ is_merMod <- function(fit) {
   return(any(class(fit) %in% c("lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
 }
 
+#' @importFrom sjmisc str_contains
 get_glm_family <- function(fit) {
   c.f <- class(fit)
   # ------------------------
