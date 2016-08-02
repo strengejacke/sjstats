@@ -122,11 +122,24 @@ print.icc.lme4 <- function(x, comp, ...) {
 
 
 #' @export
-as.integer.sjstats.boot <- function(x, ...) {
+as.integer.sj_resample <- function(x, ...) {
   x$id
 }
 
 #' @export
-as.data.frame.sjstats.boot <- function(x, ...) {
+as.data.frame.sj_resample <- function(x, ...) {
   x$data[x$id, , drop = FALSE]
+}
+
+#' @export
+print.sj_resample <- function(x, ...) {
+  n <- length(x$id)
+  if (n > 12)
+    id10 <- c(x$id[1:12], "...")
+  else
+    id10 <- x$id
+
+  cat("<", paste0("id's of resample [", prettyNum(nrow(x$data), big.mark = ","), " x ",
+                  prettyNum(ncol(x$data), big.mark = ","), "]"), "> ",
+      paste(id10, collapse = ", "), "\n", sep = "")
 }

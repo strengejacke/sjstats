@@ -6,13 +6,16 @@
 #'
 #' @param data A data frame that containts the vector with bootstrapped
 #'          estimates, or directly the vector (see 'Examples').
-#' @param x Name of the variable with bootstrapped estimates. Required, if
-#'          \code{data} is a data frame and no vector.
+#' @param ... Optional, names of the variables with bootstrapped estimates.
+#'          Required, if either \code{data} is a data frame and no vector,
+#'          or if only selected variables from \code{data} should be used
+#'          in the function.
 #'
-#' @return The bootstrap standard error, the lower and upper confidence
-#'         intervals or the p-value of the bootstrapped estimates.
+#' @return A \code{\link[tibble]{data_frame}} with either bootstrap standard error,
+#'         the lower and upper confidence intervals or the p-value for all
+#'         bootstrapped estimates.
 #'
-#' @details This method requires a vector of bootstrap replicate estimates
+#' @details This method requires one or more vectors of bootstrap replicate estimates
 #'          as input. The function then computes the bootstrap standard error
 #'          by calculating the standard deviation of the input vector. The mean
 #'          value of the input vector is used to calculate the lower and upper
@@ -28,8 +31,9 @@
 #' # now run models for each bootstrapped sample
 #' bs$models <- lapply(bs$strap, function(x) lm(neg_c_7 ~ e42dep + c161sex, data = x))
 #'
-#' # extract coefficient "dependency" from each model
+#' # extract coefficient "dependency" and "gender" from each model
 #' bs$dependency <- unlist(lapply(bs$models, function(x) coef(x)[2]))
+#' bs$gender <- unlist(lapply(bs$models, function(x) coef(x)[3]))
 #'
 #' # get bootstrapped confidence intervals
 #' boot_ci(bs$dependency)
@@ -37,6 +41,12 @@
 #' # compare with model fit
 #' fit <- lm(neg_c_7 ~ e42dep + c161sex, data = efc)
 #' confint(fit)[2, ]
+#'
+#' # alternative function calls.
+#' boot_ci(bs$dependency)
+#' boot_ci(bs, dependency)
+#' boot_ci(bs, dependency, gender)
+#'
 #'
 #' # compare coefficients
 #' mean(bs$dependency)
@@ -53,67 +63,89 @@
 #'   boot_ci(dependency)
 #'
 #'
-#' # extract coefficient "gender" from each model
-#' bs$gender <- unlist(lapply(bs$models, function(x) coef(x)[3]))
-#'
 #' # check p-value
 #' boot_p(bs$gender)
 #' summary(fit)$coefficients[3, ]
 #'
 #' @importFrom stats qt
 #' @export
-boot_ci <- function(data, x) {
-  # check if data is a data frame
-  if (is.data.frame(data)) {
-    # evaluate argument
-    x <- deparse(substitute(x))
-    # get vector
-    x <- data[[x]]
-  } else {
-    x <- data
-  }
-  # get bootstrap standard error
-  bootse <- stats::qt(.975, df = length(x) - 1) * boot_se(data = x)
-  # lower and upper confidence interval
-  ci <- mean(x, na.rm = T) + c(-bootse, bootse)
-  names(ci) <- c("conf.low", "conf.high")
-  ci
+boot_ci <- function(data, ...) {
+  # evaluate arguments, generate data
+  .dat <- get_boot_data(data, ...)
+  # compute confidence intervalls for all values
+  transform_boot_result(lapply(.dat, function(x) {
+    # get bootstrap standard error
+    bootse <- stats::qt(.975, df = length(x) - 1) * stats::sd(x, na.rm = T)
+    # lower and upper confidence interval
+    ci <- mean(x, na.rm = T) + c(-bootse, bootse)
+    names(ci) <- c("conf.low", "conf.high")
+    ci
+  }))
 }
 
 
 #' @rdname boot_ci
 #' @importFrom stats sd
 #' @export
-boot_se <- function(data, x) {
-  # check if data is a data frame
-  if (is.data.frame(data)) {
-    # evaluate argument
-    x <- deparse(substitute(x))
-    # get vector
-    x <- data[[x]]
-  } else {
-    x <- data
-  }
-  # compute SE, see https://www.zoology.ubc.ca/~schluter/R/resample/
-  stats::sd(x, na.rm = T)
+boot_se <- function(data, ...) {
+  # evaluate arguments, generate data
+  .dat <- get_boot_data(data, ...)
+  # compute confidence intervalls for all values
+  transform_boot_result(lapply(.dat, function(x) {
+    # get bootstrap standard error
+    se <- stats::sd(x, na.rm = T)
+    names(se) <- "std.err"
+    se
+  }))
 }
 
 
 #' @rdname boot_ci
 #' @importFrom stats sd pt
 #' @export
-boot_p <- function(data, x) {
+boot_p <- function(data, ...) {
+  # evaluate arguments, generate data
+  .dat <- get_boot_data(data, ...)
+  # compute confidence intervalls for all values
+  transform_boot_result(lapply(.dat, function(x) {
+    # compute t-statistic
+    t.stat <- mean(x, na.rm = T) / stats::sd(x, na.rm = T)
+    # compute p-value
+    p <- 2 * stats::pt(abs(t.stat), df = length(x) - 1, lower.tail = FALSE)
+    names(p) <- "p.value"
+    p
+  }))
+}
+
+
+
+#' @importFrom tibble rownames_to_column
+transform_boot_result <- function(res) {
+  # transform a bit, so we have each estimate in a row, and ci's as columns...
+  tibble::rownames_to_column(as.data.frame(t(as.data.frame(res))), var = "term")
+}
+
+
+#' @importFrom lazyeval all_dots lazy_dots
+get_boot_data <- function(data, ...) {
+  # evaluate dots
+  dots <- lazyeval::all_dots(lazyeval::lazy_dots(...), all_named = T)
+  # any dots?
+  if (length(dots) > 0) {
+    # get variable names
+    vars <- unname(unlist(lapply(dots, function(x) as.character(x[["expr"]]))))
+  } else {
+    vars <- NULL
+  }
   # check if data is a data frame
   if (is.data.frame(data)) {
-    # evaluate argument
-    x <- deparse(substitute(x))
-    # get vector
-    x <- data[[x]]
+    # do we have any variables specified?
+    if (!is.null(vars))
+      x <- data[, vars, drop = FALSE]
+    else
+      x <- data
   } else {
-    x <- data
+    x <- as.data.frame(data)
   }
-  # compute t-statistic
-  t.stat <- mean(x, na.rm = T) / stats::sd(x, na.rm = T)
-  # compute p-value
-  2 * stats::pt(abs(t.stat), df = length(x) - 1, lower.tail = FALSE)
+  x
 }

@@ -60,6 +60,5 @@ bootstrap <- function(data, n, size) {
 
 
 resample <- function(data, size, replace) {
-  structure(class = c("sjstats.boot", "resample"),
-            list(data = data, id = sample(nrow(data), size = size, replace = replace)))
+  structure(class = "sj_resample", list(data = data, id = sample(nrow(data), size = size, replace = replace)))
 }

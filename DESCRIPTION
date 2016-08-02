@@ -28,6 +28,7 @@ Depends:
     utils
 Imports:
     coin,
+    lazyeval,
     lme4 (>= 1.1-10),
     MASS,
     Matrix,

@@ -1,9 +1,10 @@
 # sjstats 0.3.0-1
-------------------------------------------------------------------------------
 
 ## Changes to functions
 
 * `bootstrap` is now much more memory efficient due to use of pointers (thanks to [Hadley Wickham](https://twitter.com/hadleywickham) for the hint).
+* `boot_ci`, `boot_se` and `boot_p` now accept multiple variables as input.
+
 
 # sjstats 0.3.0
 

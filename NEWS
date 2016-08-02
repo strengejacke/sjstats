@@ -2,6 +2,7 @@ Version 0.3.0-1
 ------------------------------------------------------------------------------
 Changes to functions:
 * `bootstrap` is now much more memory efficient due to use of pointers.
+* `boot_ci`, `boot_se` and `boot_p` now accept multiple variables as input.
 
 Version 0.3.0
 ------------------------------------------------------------------------------

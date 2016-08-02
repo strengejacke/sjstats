@@ -6,29 +6,32 @@
 \alias{boot_se}
 \title{Standard Error and Confidence Intervals for bootstrapped estimates}
 \usage{
-boot_ci(data, x)
+boot_ci(data, ...)
 
-boot_se(data, x)
+boot_se(data, ...)
 
-boot_p(data, x)
+boot_p(data, ...)
 }
 \arguments{
 \item{data}{A data frame that containts the vector with bootstrapped
 estimates, or directly the vector (see 'Examples').}
 
-\item{x}{Name of the variable with bootstrapped estimates. Required, if
-\code{data} is a data frame and no vector.}
+\item{...}{Optional, names of the variables with bootstrapped estimates.
+Required, if either \code{data} is a data frame and no vector,
+or if only selected variables from \code{data} should be used
+in the function.}
 }
 \value{
-The bootstrap standard error, the lower and upper confidence
-        intervals or the p-value of the bootstrapped estimates.
+A \code{\link[tibble]{data_frame}} with either bootstrap standard error,
+        the lower and upper confidence intervals or the p-value for all
+        bootstrapped estimates.
 }
 \description{
 Compute bootstrap standard error, confidence intervals and
              p-value for a vector of bootstrap replicate estimates.
 }
 \details{
-This method requires a vector of bootstrap replicate estimates
+This method requires one or more vectors of bootstrap replicate estimates
          as input. The function then computes the bootstrap standard error
          by calculating the standard deviation of the input vector. The mean
          value of the input vector is used to calculate the lower and upper
@@ -42,8 +45,9 @@ bs <- bootstrap(efc, 100)
 # now run models for each bootstrapped sample
 bs$models <- lapply(bs$strap, function(x) lm(neg_c_7 ~ e42dep + c161sex, data = x))
 
-# extract coefficient "dependency" from each model
+# extract coefficient "dependency" and "gender" from each model
 bs$dependency <- unlist(lapply(bs$models, function(x) coef(x)[2]))
+bs$gender <- unlist(lapply(bs$models, function(x) coef(x)[3]))
 
 # get bootstrapped confidence intervals
 boot_ci(bs$dependency)
@@ -51,6 +55,12 @@ boot_ci(bs$dependency)
 # compare with model fit
 fit <- lm(neg_c_7 ~ e42dep + c161sex, data = efc)
 confint(fit)[2, ]
+
+# alternative function calls.
+boot_ci(bs$dependency)
+boot_ci(bs, dependency)
+boot_ci(bs, dependency, gender)
+
 
 # compare coefficients
 mean(bs$dependency)
@@ -66,9 +76,6 @@ efc \%>\%
   mutate(dependency = unlist(lapply(.$models, function(x) coef(x)[2]))) \%>\%
   boot_ci(dependency)
 
-
-# extract coefficient "gender" from each model
-bs$gender <- unlist(lapply(bs$models, function(x) coef(x)[3]))
 
 # check p-value
 boot_p(bs$gender)
