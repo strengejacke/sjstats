@@ -20,8 +20,8 @@ Other statistics:
 \tabular{rl}{
 Package: \tab sjstats\cr
 Type: \tab Package\cr
-Version: \tab 0.3.0-1\cr
-Date: \tab 2016-08-02\cr
+Version: \tab 0.3.1\cr
+Date: \tab 2016-08-14\cr
 License: \tab GPL-3\cr
 }
 }
