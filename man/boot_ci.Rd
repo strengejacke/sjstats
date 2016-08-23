@@ -81,6 +81,20 @@ efc \%>\%
 boot_p(bs$gender)
 summary(fit)$coefficients[3, ]
 
+
+# 'spread_coef()' from the 'sjmisc'-package makes it easy to
+# generate bootstrapped confidence intervals from multiple
+# coefficients at once.
+library(dplyr)
+library(sjmisc)
+efc \%>\%
+  bootstrap(100) \%>\%
+  mutate(models = lapply(.$strap, function(x) {
+    lm(neg_c_7 ~ e42dep + c161sex + c172code, data = x)
+  })) \%>\%
+  spread_coef(models) \%>\%
+  boot_ci(e42dep, c161sex, c172code)
+
 }
 \seealso{
 \code{\link{bootstrap}} to genearte bootstrap samples.
