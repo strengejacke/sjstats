@@ -1,8 +1,12 @@
-Version 0.3.1
+Version 0.4.0
 ------------------------------------------------------------------------------
+New functions:
+* `inequ_trend` to calculate proportional change of absolute and relative inequalities between two status groups for a vector of given prevalence rates.
+
 Changes to functions:
 * `bootstrap` is now much more memory efficient due to use of pointers.
 * `boot_ci`, `boot_se` and `boot_p` now accept multiple variables as input.
+* `resp_val` now also applies to models fitted with `nlme::lme`.
 
 Version 0.3.0
 ------------------------------------------------------------------------------

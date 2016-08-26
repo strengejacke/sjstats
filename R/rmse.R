@@ -53,15 +53,9 @@ rmse <- function(fit, normalized = FALSE) {
 
   # if normalized, divide by range of response
   if (normalized) {
-    if (any(class(fit) == "lmerMod") || any(class(fit) == "merModLmerTest")) {
-      # check for package availability
-      resp <- lme4::getME(fit, "y")
-    } else if (any(class(fit) == "lme")) {
-      # check for package availability
-      resp <- unname(nlme::getResponse(fit))
-    } else {
-      resp <- fit$model[[1]]
-    }
+    # get response
+    resp <- resp_val(fit)
+    # cpmpute rmse, normalized
     rmse_val <- rmse_val / (max(resp, na.rm = T) - min(resp, na.rm = T))
   }
   rmse_val

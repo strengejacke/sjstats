@@ -66,16 +66,8 @@ cv_helper <- function(x) {
   # check if we have a fitted linear model
   if (class(x) == "lm" || any(class(x) == "lmerMod") ||
       any(class(x) == "lme") || any(class(x) == "merModLmerTest")) {
-    if (class(x) == "lm") {
-      # dependent variable in lm
-      dv <- x$model[[1]]
-    } else if (any(class(x) == "lmerMod") || any(class(x) == "merModLmerTest")) {
-      # dependent variable in lmerMod
-      dv <- lme4::getME(x, "y")
-    } else if (any(class(x) == "lme")) {
-      # dependent variable in lme
-      dv <- unname(nlme::getResponse(x))
-    }
+    # get response
+    dv <- resp_val(x)
     # compute mean of dependent variable
     mw <- mean(dv, na.rm = TRUE)
     # check if mean is zero?

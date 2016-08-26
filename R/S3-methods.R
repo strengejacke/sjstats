@@ -1,3 +1,5 @@
+utils::globalVariables(c("zeit", "lo", "hi", "rr", "rd", "y", "grp"))
+
 #' @importFrom nlme getData getCovariateFormula
 #' @export
 model.matrix.gls <- function(object, ...) {
@@ -143,4 +145,45 @@ print.sj_resample <- function(x, ...) {
   cat("<", paste0("id's of resample [", prettyNum(nrow(x$data), big.mark = ","), " x ",
                   prettyNum(ncol(x$data), big.mark = ","), "]"), "> ",
       paste(id10, collapse = ", "), "\n", sep = "")
+}
+
+
+#' @importFrom tidyr gather
+#' @export
+plot.sj_inequ_trend <- function(x, ...) {
+  if (!requireNamespace("ggplot2", quietly = TRUE)) {
+    stop("Package `ggplot2` required for plotting inequalities trends.", call. = F)
+  }
+
+  # add time indicator
+  x$data$zeit <- 1:nrow(x$data)
+
+  # gather data to plot rr and rd
+  dat1 <- tidyr::gather(x$data, "grp", "y", -zeit, -lo, -hi)
+
+  # gather data for raw prevalences
+  dat2 <- tidyr::gather(x$data, "grp", "y", -zeit, -rr, -rd)
+
+  # Proper value names, for facet labels
+  dat1$grp[dat1$grp == "rr"] <- "Rate Ratios"
+  dat1$grp[dat1$grp == "rd"] <- "Rate Differences"
+
+  # plot prevalences
+  gp1 <- ggplot2::ggplot(dat2, ggplot2::aes(x = zeit, y = y, colour = grp)) +
+    ggplot2::stat_smooth(se = F) +
+    ggplot2::labs(title = "Prevalance Rates for Lower and Higher SES Groups",
+                  y = "Prevalances", x = "Time", colour = "") +
+    ggplot2::scale_color_manual(values = c("darkblue", "darkred"), labels = c("High SES", "Low SES"))
+
+
+  # plot rr and rd
+  gp2 <- ggplot2::ggplot(dat1, ggplot2::aes(x = zeit, y = y, colour = grp)) +
+    ggplot2::stat_smooth(se = F) +
+    ggplot2::facet_wrap(~grp, ncol = 1, scales = "free") +
+    ggplot2::labs(title = "Proportional Change in Rate Ratios and Rate Differences",
+                  colour = NULL, y = NULL, x = "Time") +
+    ggplot2::guides(colour = FALSE)
+
+  graphics::plot(gp1)
+  graphics::plot(gp2)
 }
