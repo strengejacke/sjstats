@@ -1,3 +1,9 @@
+Version 0.4.1
+------------------------------------------------------------------------------
+Changes to functions:
+* `se` now also computes the standard error for intra class correlation coefficients, as returned by the `icc()`-function.
+
+
 Version 0.4.0
 ------------------------------------------------------------------------------
 New functions:

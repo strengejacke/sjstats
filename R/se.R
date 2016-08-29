@@ -1,11 +1,16 @@
-#' @title Standard Error for variables
+#' @title Standard Error for variables or coefficients
 #' @name se
 #' @description Compute standard error for a variable, for all variables
-#'                of a data frame or for joint random and fixed effects
-#'                coefficients of mixed models.
+#'                of a data frame, for joint random and fixed effects
+#'                coefficients of mixed models, or for intraclass correlation
+#'                coefficients (ICC).
 #'
 #' @param x (Numeric) vector, a data frame or a \code{merMod}-object
 #'          as returned by the \code{\link[lme4]{lmer}}-method.
+#' @param nsim Numeric, the number of simulations for calculating the
+#'          standard error for intraclass correlation coefficients, as
+#'          obtained by the \code{\link{icc}}-function.
+#'
 #' @return The standard error of \code{x}, or for each variable
 #'           if \code{x} is a data frame, or for the coefficients
 #'           of a mixed model (see \code{\link[lme4]{coef.merMod}}).
@@ -18,6 +23,9 @@
 #'            the standard errors for joint (sums of) random and fixed
 #'            effects coefficients. Hence, \code{se} returns the appropriate
 #'            standard errors for \code{\link[lme4]{coef.merMod}}.
+#'            \cr \cr
+#'            The standard error for the \code{\link{icc}} is based on bootstrapping,
+#'            thus, the \code{nsim}-argument is required. See 'Examples'.
 #'
 #' @examples
 #' se(rnorm(n = 100, mean = 3))
@@ -29,16 +37,42 @@
 #' fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' se(fit)
 #'
+#' # compute standard error of ICC for the linear mixed model
+#' icc(fit)
+#' se(icc(fit))
+#'
+#' # the standard error for the ICC can be computed manually in this way,
+#' # taking the fitted model example from above
+#' library(dplyr)
+#' dummy <- sleepstudy %>%
+#'   # generate 100 bootstrap replicates of dataset
+#'   bootstrap(100) %>%
+#'   # run mixed effects regression on each bootstrap replicate
+#'   mutate(models = lapply(.$strap, function(x) {
+#'     lmer(Reaction ~ Days + (Days | Subject), data = x)
+#'   })) %>%
+#'   # compute ICC for each "bootstrapped" regression
+#'   mutate(icc = unlist(lapply(.$models, function(x) icc(x))))
+#' # now compute SE and p-values for the bootstrapped ICC, values
+#' # may differ from above example due to random seed
+#' boot_se(dummy, icc)
+#' boot_p(dummy, icc)
+#'
+#'
 #' @export
-se <- function(x) {
+se <- function(x, nsim = 100) {
   if (is_merMod(x)) {
+    # return standard error for mixed models
     return(std_merMod(x))
+  } else if (any(class(x) == "icc.lme4")) {
+    # we have a ICC object, so do bootstrapping and compute SE for ICC
+    return(std_e_icc(x, nsim))
   } else if (is.matrix(x) || is.data.frame(x)) {
     # init return variables
     stde <- c()
     stde_names <- c()
     # iterate all columns
-    for (i in 1:ncol(x)) {
+    for (i in seq_len(ncol(x))) {
       # get and save standard error for each variable
       # of the data frame
       stde <- c(stde, std_e_helper(x[[i]]))
@@ -79,4 +113,45 @@ std_merMod <- function(fit) {
   # set names of list
   names(se.merMod) <- inames
   return(se.merMod)
+}
+
+
+#' @importFrom dplyr "%>%"
+#' @importFrom stats model.frame
+std_e_icc <- function(x, nsim) {
+  # check whether model is still in environment?
+  obj.name <- attr(x, ".obj.name", exact = T)
+  if (!exists(obj.name, envir = globalenv()))
+    stop(sprintf("Can't find merMod-object `%s` (that was used to compute the ICC) in the environment.", obj.name), call. = F)
+
+  # get object, see whether formulas match
+  fitted.model <- globalenv()[[obj.name]]
+  model.formula <- attr(x, "formula", exact = T)
+  if (!identical(model.formula, formula(fitted.model)))
+    stop(sprintf("merMod-object `%s` was fitted with a different formula than ICC-model", obj.name), call. = F)
+
+  # check for all required arguments
+  if (missing(nsim) || is.null(nsim)) nsim <- 100
+  # get ICC, and compute bootstrapped SE, than return both
+  bstr <- bootstr_icc_se(stats::model.frame(fitted.model), nsim, model.formula)
+  res <- data.frame(model = obj.name,
+                    icc = as.vector(x),
+                    std.err = bstr[1],
+                    p.value = bstr[2])
+  res
+}
+
+#' @importFrom dplyr mutate
+#' @importFrom lme4 lmer
+bootstr_icc_se <- function(.data, nsim, formula) {
+  dummy <- .data %>%
+    bootstrap(nsim) %>%
+    dplyr::mutate(models = lapply(.$strap, function(x) {
+      lme4::lmer(formula, data = x)
+    })) %>%
+    # compute ICC for each "bootstrapped" regression
+    dplyr::mutate(icc = unlist(lapply(.$models, function(x) icc(x))))
+
+  # now compute SE and p-values for the bootstrapped ICC
+  c(boot_se(dummy, icc)[["std.err"]], boot_p(dummy, icc)[["p.value"]])
 }

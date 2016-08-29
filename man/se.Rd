@@ -2,13 +2,17 @@
 % Please edit documentation in R/se.R
 \name{se}
 \alias{se}
-\title{Standard Error for variables}
+\title{Standard Error for variables or coefficients}
 \usage{
-se(x)
+se(x, nsim = 100)
 }
 \arguments{
 \item{x}{(Numeric) vector, a data frame or a \code{merMod}-object
 as returned by the \code{\link[lme4]{lmer}}-method.}
+
+\item{nsim}{Numeric, the number of simulations for calculating the
+standard error for intraclass correlation coefficients, as
+obtained by the \code{\link{icc}}-function.}
 }
 \value{
 The standard error of \code{x}, or for each variable
@@ -17,8 +21,9 @@ The standard error of \code{x}, or for each variable
 }
 \description{
 Compute standard error for a variable, for all variables
-               of a data frame or for joint random and fixed effects
-               coefficients of mixed models.
+               of a data frame, for joint random and fixed effects
+               coefficients of mixed models, or for intraclass correlation
+               coefficients (ICC).
 }
 \details{
 Unlike \code{\link[arm]{se.coef}}, which returns the standard error
@@ -26,6 +31,9 @@ Unlike \code{\link[arm]{se.coef}}, which returns the standard error
            the standard errors for joint (sums of) random and fixed
            effects coefficients. Hence, \code{se} returns the appropriate
            standard errors for \code{\link[lme4]{coef.merMod}}.
+           \cr \cr
+           The standard error for the \code{\link{icc}} is based on bootstrapping,
+           thus, the \code{nsim}-argument is required. See 'Examples'.
 }
 \note{
 Computation of standard errors for coefficients of mixed models
@@ -40,6 +48,27 @@ se(efc[, 1:3])
 library(lme4)
 fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 se(fit)
+
+# compute standard error of ICC for the linear mixed model
+icc(fit)
+se(icc(fit))
+
+# the standard error for the ICC can be computed manually in this way,
+# taking the fitted model example from above
+library(dplyr)
+dummy <- sleepstudy \%>\%
+  # generate 100 bootstrap replicates of dataset
+  bootstrap(100) \%>\%
+  # run mixed effects regression on each bootstrap replicate
+  mutate(models = lapply(.$strap, function(x) {
+    lmer(Reaction ~ Days + (Days | Subject), data = x)
+  })) \%>\%
+  # compute ICC for each "bootstrapped" regression
+  mutate(icc = unlist(lapply(.$models, function(x) icc(x))))
+# now compute SE and p-values for the bootstrapped ICC
+boot_se(dummy, icc)
+boot_p(dummy, icc)
+
 
 }
 

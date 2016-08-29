@@ -27,3 +27,6 @@ get_glm_family <- function(fit) {
     sjmisc::str_contains(fitfam, "negative binomial", ignore.case = T)
   return(list(is_bin = binom_fam, is_pois = poisson_fam, is_logit = logit_link))
 }
+
+# return names of objects passed as ellipses argument
+dot_names <- function(dots) unname(unlist(lapply(dots, as.character)))

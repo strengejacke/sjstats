@@ -71,7 +71,7 @@
 #' @export
 boot_ci <- function(data, ...) {
   # evaluate arguments, generate data
-  .dat <- get_boot_data(data, ...)
+  .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
     # get bootstrap standard error
@@ -89,7 +89,7 @@ boot_ci <- function(data, ...) {
 #' @export
 boot_se <- function(data, ...) {
   # evaluate arguments, generate data
-  .dat <- get_boot_data(data, ...)
+  .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
     # get bootstrap standard error
@@ -105,7 +105,7 @@ boot_se <- function(data, ...) {
 #' @export
 boot_p <- function(data, ...) {
   # evaluate arguments, generate data
-  .dat <- get_boot_data(data, ...)
+  .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
     # compute t-statistic
@@ -126,17 +126,15 @@ transform_boot_result <- function(res) {
 }
 
 
-#' @importFrom lazyeval all_dots lazy_dots
-get_boot_data <- function(data, ...) {
-  # evaluate dots
-  dots <- lazyeval::all_dots(lazyeval::lazy_dots(...), all_named = T)
+get_boot_data <- function(data, dots) {
   # any dots?
   if (length(dots) > 0) {
     # get variable names
-    vars <- unname(unlist(lapply(dots, function(x) as.character(x[["expr"]]))))
+    vars <- dot_names(dots)
   } else {
     vars <- NULL
   }
+
   # check if data is a data frame
   if (is.data.frame(data)) {
     # do we have any variables specified?
