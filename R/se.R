@@ -137,11 +137,13 @@ std_e_icc <- function(x, nsim) {
   if (missing(nsim) || is.null(nsim)) nsim <- 100
   # get ICC, and compute bootstrapped SE, than return both
   bstr <- bootstr_icc_se(stats::model.frame(fitted.model), nsim, model.formula, model.family)
+
+  # now compute SE and p-values for the bootstrapped ICC
   res <- data.frame(model = obj.name,
                     icc = as.vector(x),
-                    std.err = bstr[1],
-                    p.value = bstr[2])
-  res
+                    std.err = boot_se(bstr, icc)[["std.err"]],
+                    p.value = boot_p(bstr, icc)[["p.value"]])
+  structure(class = "se.icc.lme4", list(result = res, bootstrap_data = bstr))
 }
 
 #' @importFrom dplyr mutate
@@ -168,7 +170,5 @@ bootstr_icc_se <- function(.data, nsim, formula, model.family) {
 
   # close progresss bar
   close(pb)
-
-  # now compute SE and p-values for the bootstrapped ICC
-  c(boot_se(dummy, icc)[["std.err"]], boot_p(dummy, icc)[["p.value"]])
+  return(dummy)
 }
