@@ -38,7 +38,7 @@ For vectors, this function is a convenient function for the \code{\link{chisq.te
         performing goodness-of-fit test.
         \cr \cr
         For \code{glm}-objects, this function performs a goodness-of-fit test
-        based on the \code{X2GOFtest} function of the \pkg{binomTools} package.
+        based on the \code{X2GOFtest} function of the \CRANpkg{binomTools} package.
         A well-fitting model shows no significant difference between
         the model and the observed data, i.e. the reported p-values should be
         greater than 0.05.

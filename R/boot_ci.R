@@ -22,7 +22,7 @@
 #'          confidence interval, assuming a t-distribution of bootstrap estimate
 #'          replicates.
 #'
-#' @seealso \code{\link{bootstrap}} to genearte bootstrap samples.
+#' @seealso \code{\link{bootstrap}} to generate bootstrap samples.
 #'
 #' @examples
 #' data(efc)

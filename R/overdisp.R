@@ -6,7 +6,7 @@
 #' @param x Fitted GLMM (\code{\link[lme4]{merMod}}-class) or \code{glm} model.
 #' @param trafo A specification of the alternative, can be numeric or a
 #'          (positive) function or \code{NULL} (the default). See 'Details'
-#'          in \code{\link[AER]{dispersiontest}} in package \pkg{AER}. Does not
+#'          in \code{\link[AER]{dispersiontest}} in package \CRANpkg{AER}. Does not
 #'          apply to \code{merMod} objects.
 #'
 #' @return Information on the overdispersion test.

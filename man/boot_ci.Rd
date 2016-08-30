@@ -83,6 +83,6 @@ summary(fit)$coefficients[3, ]
 
 }
 \seealso{
-\code{\link{bootstrap}} to genearte bootstrap samples.
+\code{\link{bootstrap}} to generate bootstrap samples.
 }
 

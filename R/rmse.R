@@ -19,13 +19,13 @@
 #'
 #' @note The RMSE is the square root of the variance of the residuals and indicates
 #'         the absolute fit of the model to the data (difference between observed data
-#'         to model's predicted values). "RMSE can be interpreted as the standard
+#'         to model's predicted values). \dQuote{RMSE can be interpreted as the standard
 #'         deviation of the unexplained variance, and has the useful property
 #'         of being in the same units as the response variable. Lower values
 #'         of RMSE indicate better fit. RMSE is a good measure of how accurately
 #'         the model predicts the response, and is the most important criterion
-#'         for fit if the main purpose of the model is prediction."
-#'         (Grace-Martin K: Assessing the Fit of Regression Models).
+#'         for fit if the main purpose of the model is prediction.}
+#'         \cite{(Grace-Martin K: Assessing the Fit of Regression Models)}
 #'         \cr \cr
 #'         The normalized RMSE is the proportion of the RMSE related to the
 #'         range of the response variable. Hence, lower values indicate

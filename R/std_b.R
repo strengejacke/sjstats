@@ -5,7 +5,7 @@
 #'                be of class \code{lm} or \code{\link[lme4]{merMod}}.
 #'
 #' @param fit Fitted linear (mixed) model of class \code{\link{lm}} or
-#'          \code{\link[lme4]{merMod}} (\pkg{lme4} package).
+#'          \code{\link[lme4]{merMod}} (\CRANpkg{lme4} package).
 #' @param include.ci Logical, if \code{TRUE}, a data frame with confidence
 #'          intervals will be returned, when \code{fit} is of class \code{lm}.
 #'          If \code{fit} is a \code{lmerMod} object (\pkg{lme4} package),
@@ -22,12 +22,12 @@
 #'           with standardized beta coefficients and confidence intervals, if
 #'           \code{include.ci = TRUE}.
 #'
-#' @details  "Standardized coefficients refer to how many standard deviations a dependent variable will change,
+#' @details \dQuote{Standardized coefficients refer to how many standard deviations a dependent variable will change,
 #'         per standard deviation increase in the predictor variable. Standardization of the coefficient is
 #'         usually done to answer the question of which of the independent variables have a greater effect
 #'         on the dependent variable in a multiple regression analysis, when the variables are measured
 #'         in different units of measurement (for example, income measured in dollars and family size
-#'         measured in number of individuals)." (Source: Wikipedia)
+#'         measured in number of individuals).} \cite{(Source: Wikipedia)}
 #'
 #' @note For \code{\link[nlme]{gls}}-objects, standardized beta coefficients may be wrong
 #'         for categorical variables (\code{factors}), because the \code{model.matrix} for
@@ -42,7 +42,7 @@
 #'
 #' @references \itemize{
 #'              \item \href{http://en.wikipedia.org/wiki/Standardized_coefficient}{Wikipedia: Standardized coefficient}
-#'              \item Gelman A (2008) "Scaling regression inputs by dividing by two standard deviations." \emph{Statistics in Medicine 27: 2865–2873.} \url{http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf}
+#'              \item Gelman A. 2008. Scaling regression inputs by dividing by two standard deviations. \emph{Statistics in Medicine 27: 2865–2873.} \url{http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf}
 #'              }
 #'
 #' @examples

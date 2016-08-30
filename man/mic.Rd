@@ -30,11 +30,10 @@ This function calculates a mean inter-item-correlation, i.e.
          items should be between .20 and .40, suggesting that while the
          items are reasonably homogenous, they do contain sufficiently
          unique variance so as to not be isomorphic with each other.
-
          When values are lower than .20, then the items may not be
          representative of the same content domain. If values are higher than
          .40, the items may be only capturing a small bandwidth of the construct.}
-         \emph{(Piedmont 2014)}
+         \cite{(Piedmont 2014)}
 }
 \examples{
 # Data from the EUROFAMCARE sample dataset

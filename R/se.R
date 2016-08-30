@@ -130,10 +130,13 @@ std_e_icc <- function(x, nsim) {
   if (!identical(model.formula, formula(fitted.model)))
     stop(sprintf("merMod-object `%s` was fitted with a different formula than ICC-model", obj.name), call. = F)
 
+  # get model family, we may have glmer
+  model.family <- attr(x, "family", exact = T)
+
   # check for all required arguments
   if (missing(nsim) || is.null(nsim)) nsim <- 100
   # get ICC, and compute bootstrapped SE, than return both
-  bstr <- bootstr_icc_se(stats::model.frame(fitted.model), nsim, model.formula)
+  bstr <- bootstr_icc_se(stats::model.frame(fitted.model), nsim, model.formula, model.family)
   res <- data.frame(model = obj.name,
                     icc = as.vector(x),
                     std.err = bstr[1],
@@ -142,15 +145,29 @@ std_e_icc <- function(x, nsim) {
 }
 
 #' @importFrom dplyr mutate
-#' @importFrom lme4 lmer
-bootstr_icc_se <- function(.data, nsim, formula) {
+#' @importFrom lme4 lmer glmer
+#' @importFrom utils txtProgressBar
+bootstr_icc_se <- function(.data, nsim, formula, model.family) {
+  # create progress bar
+  pb <- utils::txtProgressBar(min = 1, max = nsim, style = 3)
+
+  # generate bootstraps
   dummy <- .data %>%
     bootstrap(nsim) %>%
     dplyr::mutate(models = lapply(.$strap, function(x) {
-      lme4::lmer(formula, data = x)
+      # update progress bar
+      utils::setTxtProgressBar(pb, x$resample.id)
+      # check model family, then compute mixed model
+      if (model.family == "gaussian")
+        lme4::lmer(formula, data = x)
+      else
+        lme4::glmer(formula, data = x, family = model.family)
     })) %>%
     # compute ICC for each "bootstrapped" regression
     dplyr::mutate(icc = unlist(lapply(.$models, icc)))
+
+  # close progresss bar
+  close(pb)
 
   # now compute SE and p-values for the bootstrapped ICC
   c(boot_se(dummy, icc)[["std.err"]], boot_p(dummy, icc)[["p.value"]])

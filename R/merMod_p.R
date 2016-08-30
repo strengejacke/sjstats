@@ -3,7 +3,7 @@
 #'
 #' @description This function computes p-values for mixed effects models
 #'                (\code{merMod}-objects) that have been fitted with the
-#'                \pkg{lme4}-package.
+#'                \CRANpkg{lme4}-package.
 #'
 #' @param x A fitted (generalized) linear (mixed) model (\code{merMod}-object).
 #' @param p.kr Logical, if \code{TRUE}, the computation of p-values is based on
@@ -15,13 +15,13 @@
 #' @details For linear mixed models (\code{lmerMod}-objects), the computation of
 #'         p-values (if \code{p.kr = TRUE}) is based on conditional F-tests
 #'         with Kenward-Roger approximation for the df, using the
-#'         \pkg{pbkrtest}-package. If \pkg{pbkrtest} is not available or
+#'         \CRANpkg{pbkrtest}-package. If \pkg{pbkrtest} is not available or
 #'         \code{p.kr = FALSE}, or if \code{x} is a \code{glmerMod}-object,
 #'         computation of p-values is based on normal-distribution assumption,
 #'         treating the t-statistics as Wald z-statistics.
 #'         \cr \cr
 #'         If p-values already have been computed (e.g. for \code{merModLmerTest})-objects
-#'         from the \pkg{lmerTest}-package), these will be returned.
+#'         from the \CRANpkg{lmerTest}-package), these will be returned.
 #'
 #' @examples
 #' library(lme4)

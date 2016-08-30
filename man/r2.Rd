@@ -28,29 +28,29 @@ Compute R-squared values of linear (mixed) models, or
                pseudo-R-squared values for generalized linear (mixed) models.
 }
 \details{
+For linear models, the r-squared and adjusted r-squared value is returned,
+         as provided by the \code{summary}-function.
+         \cr \cr
+         For linear mixed models, an r-squared approximation by computing the
+         correlation between the fitted and observed values, as suggested by
+         \cite{Byrnes (2008)}, is returned as well as the Omega-squared value as
+         suggested by Xu (2003), unless \code{n} is specified. If \code{n}
+         is given, pseudo r-squared measures based on the variances of random
+         intercept (tau 00, between-group-variance) and random slope (tau 11,
+         random-slope-variance) are returned.
+         \cr \cr
+         For generalized linear models, Cox & Snell's and Nagelkerke's
+         pseudo r-squared values are returned.
+         \cr \cr
+         For generalized linear mixed models, the coefficient of determination
+         as suggested by \cite{Tjur (2009)} (see also \code{\link{cod}}).
+}
+\note{
 If \code{n} is given, the Pseudo-R2 statistic is the proportion of
          explained variance in the random effect after adding co-variates or
          predictors to the model, or in short: the proportion of the explained
          variance in the random effect of the full (conditional) model \code{x}
          compared to the null (unconditional) model \code{n}.
-}
-\note{
-For linear models, the r-squared and adjusted r-squared value is returned,
-        as provided by the \code{summary}-function.
-        \cr \cr
-        For linear mixed models, an r-squared approximation by computing the
-        correlation between the fitted and observed values, as suggested by
-        Byrnes (2008), is returned as well as the Omega-squared value as
-        suggested by Xu (2003), unless \code{n} is specified. If \code{n}
-        is given, pseudo r-squared measures based on the variances of random
-        intercept (tau 00, between-group-variance) and random slope (tau 11,
-        random-slope-variance) are returned.
-        \cr \cr
-        For generalized linear models, Cox & Snell's and Nagelkerke's
-        pseudo r-squared values are returned.
-        \cr \cr
-        For generalized linear mixed models, the coefficient of determination
-        as suggested by Tjur (2009) (see also \code{\link{cod}}).
 }
 \examples{
 library(sjmisc)

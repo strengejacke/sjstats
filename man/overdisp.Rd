@@ -11,7 +11,7 @@ overdisp(x, trafo = NULL)
 
 \item{trafo}{A specification of the alternative, can be numeric or a
 (positive) function or \code{NULL} (the default). See 'Details'
-in \code{\link[AER]{dispersiontest}} in package \pkg{AER}. Does not
+in \code{\link[AER]{dispersiontest}} in package \CRANpkg{AER}. Does not
 apply to \code{merMod} objects.}
 }
 \value{

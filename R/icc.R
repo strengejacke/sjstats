@@ -26,14 +26,14 @@
 #'             }
 #'
 #'
-#' @note Some notes on why the ICC is useful, based on Grace-Martin K: \emph{The Intraclass Correlation Coefficient in Mixed Models}, \href{http://www.theanalysisfactor.com/the-intraclass-correlation-coefficient-in-mixed-models/}{web}:
+#' @note Some notes on why the ICC is useful, based on Grace-Martin K: \cite{The Intraclass Correlation Coefficient in Mixed Models}, \href{http://www.theanalysisfactor.com/the-intraclass-correlation-coefficient-in-mixed-models/}{web}:
 #'       \itemize{
 #'        \item It can help you determine whether or not a linear mixed model is even necessary. If you find that the correlation is zero, that means the observations within clusters are no more similar than observations from different clusters. Go ahead and use a simpler analysis technique.
 #'        \item It can be theoretically meaningful to understand how much of the overall variation in the response is explained simply by clustering. For example, in a repeated measures psychological study you can tell to what extent mood is a trait (varies among people, but not within a person on different occasions) or state (varies little on average among people, but varies a lot across occasions).
 #'        \item It can also be meaningful to see how the ICC (as well as the between and within cluster variances) changes as variable are added to the model.
 #'       }
-#'       In short, the ICC can be interpreted as "the proportion of the variance
-#'       explained by the grouping structure in the population" (Hox 2002: 15).
+#'       In short, the ICC can be interpreted as \dQuote{the proportion of the variance
+#'       explained by the grouping structure in the population} \cite{(Hox 2002: 15)}.
 #'       \cr \cr
 #'       \strong{Caution:} For three-level-models, depending on the nested structure
 #'       of the model, the ICC only reports the proportion of variance explained
@@ -51,8 +51,8 @@
 #'       \code{get_re_var(fit)[2] / sum(get_re_var(fit))}
 #'
 #' @details The calculation of the ICC for generalized linear mixed models with binary outcome is based on
-#'       Wu et al. (2012). For Poisson multilevel models, please refere to Stryhn et al. (2006). Aly et al. (2014)
-#'       describe computation of ICC for negative binomial models.
+#'       \cite{Wu et al. (2012)}. For Poisson multilevel models, please refere to \cite{Stryhn et al. (2006)}.
+#'       \cite{Aly et al. (2014)} describe computation of ICC for negative binomial models.
 #'       \cr \cr
 #'       There is a \code{print}-method that prints the variance parameters using
 #'       the \code{comp}-argument set to \code{"var"}: \code{print(x, comp = "var")}

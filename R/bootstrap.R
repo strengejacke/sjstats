@@ -53,9 +53,12 @@ bootstrap <- function(data, n, size) {
     # generate bootstraps with replacement
     repl <- T
   }
-  tibble::data_frame(
-    strap = replicate(n, resample(data, size, repl), simplify = F)
-  )
+  # generate bootstrap resamples
+  strap <- replicate(n, resample(data, size, repl), simplify = F)
+  # add resample ID, may be used for other functions (like 'se()' for 'icc()')
+  for (i in seq_len(length(strap))) strap[[i]]$resample.id <- i
+  # return tibble
+  tibble::data_frame(strap)
 }
 
 
