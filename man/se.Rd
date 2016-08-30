@@ -64,7 +64,7 @@ dummy <- sleepstudy \%>\%
     lmer(Reaction ~ Days + (Days | Subject), data = x)
   })) \%>\%
   # compute ICC for each "bootstrapped" regression
-  mutate(icc = unlist(lapply(.$models, function(x) icc(x))))
+  mutate(icc = unlist(lapply(.$models, icc)))
 # now compute SE and p-values for the bootstrapped ICC, values
 # may differ from above example due to random seed
 boot_se(dummy, icc)
