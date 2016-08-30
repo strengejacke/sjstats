@@ -52,7 +52,7 @@
 #'     lmer(Reaction ~ Days + (Days | Subject), data = x)
 #'   })) %>%
 #'   # compute ICC for each "bootstrapped" regression
-#'   mutate(icc = unlist(lapply(.$models, function(x) icc(x))))
+#'   mutate(icc = unlist(lapply(.$models, icc)))
 #' # now compute SE and p-values for the bootstrapped ICC, values
 #' # may differ from above example due to random seed
 #' boot_se(dummy, icc)
@@ -150,7 +150,7 @@ bootstr_icc_se <- function(.data, nsim, formula) {
       lme4::lmer(formula, data = x)
     })) %>%
     # compute ICC for each "bootstrapped" regression
-    dplyr::mutate(icc = unlist(lapply(.$models, function(x) icc(x))))
+    dplyr::mutate(icc = unlist(lapply(.$models, icc)))
 
   # now compute SE and p-values for the bootstrapped ICC
   c(boot_se(dummy, icc)[["std.err"]], boot_p(dummy, icc)[["p.value"]])
