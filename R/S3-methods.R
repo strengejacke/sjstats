@@ -197,3 +197,56 @@ plot.sj_inequ_trend <- function(x, ...) {
   graphics::plot(gp1)
   graphics::plot(gp2)
 }
+
+
+#' @export
+print.sj_mwu <- function(x, ...) {
+  cat("Mann-Whitney-U-Test\n")
+  cat("-------------------\n")
+  cat("showing statistics between groups (x|y)\n\n")
+  # get data
+  .dat <- x$df
+  # print to console
+  for (i in seq_len(nrow(.dat))) {
+    # get value labels
+    l1 <- .dat[i, "grp1.label"]
+    l2 <- .dat[i, "grp2.label"]
+    # do we have value labels?
+    if (!is.null(l1) && !is.na(l1) %% !is.null(l2) && !is.na(l2)) {
+      cat(sprintf("Groups %i = %s (n = %i) | %i = %s (n = %i):\n",
+                  .dat[i, "grp1"], l1, .dat[i, "grp1.n"],
+                  .dat[i, "grp2"], l2, .dat[i, "grp2.n"]))
+    } else {
+      cat(sprintf("Groups (%i|%i), n = %i/%i:\n",
+                  .dat[i, "grp1"], .dat[i, "grp2"],
+                  .dat[i, "grp1.n"], .dat[i, "grp2.n"]))
+    }
+
+    pval <- .dat[i, "p"]
+    if (pval < 0.001) {
+      pval <- 0.001
+      p.string <- "<"
+    } else {
+      p.string <- "="
+    }
+    cat(sprintf("  U = %.3f, W = %.3f, p %s %.3f, Z = %.3f\n  effect-size r = %.3f\n  rank-mean(%i) = %.2f\n  rank-mean(%i) = %.2f\n\n",
+                .dat[i, "u"], .dat[i, "w"], p.string, pval, .dat[i, "z"], .dat[i, "r"], .dat[i, "grp1"], .dat[i, "rank.mean.grp1"], .dat[i, "grp2"], .dat[i, "rank.mean.grp2"]))
+  }
+
+  # if we have more than 2 groups, also perfom kruskal-wallis-test
+  if (length(unique(stats::na.omit(x$data$grp))) > 2) {
+    cat("\nPerforming Kruskal-Wallis-Test\n")
+    cat("------------------------------\n")
+    kw <- stats::kruskal.test(x$data$x, x$data$grp)
+    cat(sprintf("chi-squared = %.3f\n", kw$statistic))
+    cat(sprintf("df = %i\n", kw$parameter))
+    if (kw$p.value < 0.001) {
+      p  <- 0.001
+      p.string <- "<"
+    } else {
+      p <- kw$p.value
+      p.string <- "="
+    }
+    cat(sprintf("p %s %.3f\n", p.string, p))
+  }
+}

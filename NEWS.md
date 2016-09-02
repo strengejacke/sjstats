@@ -2,7 +2,7 @@
 
 ## Changes to functions
 
-* `se` now also computes the standard error for intra class correlation coefficients, as returned by the `icc()`-function.
+* `se` now also computes the standard error for intraclass correlation coefficients, as returned by the `icc()`-function.
 
 # sjstats 0.4.0
 

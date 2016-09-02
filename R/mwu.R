@@ -36,24 +36,21 @@
 #'
 #' @importFrom stats na.omit wilcox.test kruskal.test
 #' @importFrom coin wilcox_test pvalue statistic
-#' @importFrom sjmisc to_value get_labels
+#' @importFrom sjmisc to_value get_labels recode_to
 #' @export
 mwu <- function(x, grp, distribution = "asymptotic", weights = NULL) {
   # coerce factor and character to numeric
   if (is.factor(grp) || is.character(grp)) grp <- sjmisc::to_value(grp)
   # group "counter" (index) should start with 1, not 0
-  if (min(grp, na.rm = TRUE) == 0) grp <- grp + 1
+  if (min(grp, na.rm = TRUE) < 1) grp <- sjmisc::recode_to(grp, lowest = 1)
   # retrieve unique group values. need to iterate all values
   grp_values <- sort(unique(stats::na.omit(grp)))
   # length of value range
   cnt <- length(grp_values)
   labels <- sjmisc::get_labels(grp, attr.only = F, include.values = NULL,
                                include.non.labelled = T)
-  message("Performing Mann-Whitney-U-Test...")
-  message("---------------------------------")
-  message("showing statistics between groups (x|y)")
   df <- data.frame()
-  for (i in 1:cnt) {
+  for (i in seq_len(cnt)) {
     for (j in i:cnt) {
       if (i != j) {
         # retrieve cases (rows) of subgroups
@@ -88,22 +85,7 @@ mwu <- function(x, grp, distribution = "asymptotic", weights = NULL) {
         # compute n for each group
         n_grp1 <- length(xsub[which(ysub.n == grp_values[i])])
         n_grp2 <- length(xsub[which(ysub.n == grp_values[j])])
-        # print to console
-        if (is.null(labels)) {
-          cat(sprintf("Groups (%i|%i), n = %i/%i:\n", grp_values[i],
-                      grp_values[j], n_grp1, n_grp2))
-        } else {
-          cat(sprintf("Groups %i = %s (n = %i) | %i = %s (n = %i):\n",
-                      grp_values[i], labels[i], n_grp1, grp_values[j],
-                      labels[j], n_grp2))
-        }
-        if (p < 0.001) {
-          p <- 0.001
-          p.string <- "<"
-        } else {
-          p.string <- "="
-        }
-        cat(sprintf("  U = %.3f, W = %.3f, p %s %.3f, Z = %.3f\n  effect-size r = %.3f\n  rank-mean(%i) = %.2f\n  rank-mean(%i) = %.2f\n\n", u, w, p.string, p, z, r, i, rkm.i, j, rkm.j))
+        # generate result data frame
         df <- rbind(df, cbind(grp1 = grp_values[i], grp1.label = labels[i],
                               grp1.n = n_grp1, grp2 = grp_values[j], grp2.label = labels[j],
                               grp2.n = n_grp2, u = u, w = w, p = p, z = z, r = r,
@@ -111,35 +93,31 @@ mwu <- function(x, grp, distribution = "asymptotic", weights = NULL) {
       }
     }
   }
-  # if we have more than 2 groups, also perfom kruskal-wallis-test
-  if (cnt > 2) {
-    message("Performing Kruskal-Wallis-Test...")
-    message("---------------------------------")
-    kw <- stats::kruskal.test(x, grp)
-    cat(sprintf("chi-squared = %.3f\n", kw$statistic))
-    cat(sprintf("df = %i\n", kw$parameter))
-    if (kw$p.value < 0.001) {
-      p  <- 0.001
-      p.string <- "<"
-    } else {
-      p <- kw$p.value
-      p.string <- "="
-    }
-    cat(sprintf("p %s %.3f\n", p.string, p))
-  }
+  # convert variables
+  df[["grp1"]] <- as.numeric(as.character(df[["grp1"]]))
+  df[["grp2"]] <- as.numeric(as.character(df[["grp2"]]))
+  df[["grp1.n"]] <- as.numeric(as.character(df[["grp1.n"]]))
+  df[["grp2.n"]] <- as.numeric(as.character(df[["grp2.n"]]))
+  df[["grp1.label"]] <- as.character(df[["grp1.label"]])
+  df[["grp2.label"]] <- as.character(df[["grp2.label"]])
+  df[["u"]] <- as.numeric(as.character(df[["u"]]))
+  df[["w"]] <- as.numeric(as.character(df[["w"]]))
+  df[["p"]] <- as.numeric(as.character(df[["p"]]))
+  df[["z"]] <- as.numeric(as.character(df[["z"]]))
+  df[["r"]] <- as.numeric(as.character(df[["r"]]))
+  df[["rank.mean.grp1"]] <- as.numeric(as.character(df[["rank.mean.grp1"]]))
+  df[["rank.mean.grp2"]] <- as.numeric(as.character(df[["rank.mean.grp2"]]))
   # prepare a data frame that can be used for 'sjt.df'.
   tab.df <- data.frame(Groups = sprintf("%s<br>%s", df$grp1.label, df$grp2.label),
                        N = sprintf("%s<br>%s", df$grp1.n, df$grp2.n),
-                       'Mean Rank' = sprintf("%.2f<br>%.2f",
-                                             as.numeric(as.character(df$rank.mean.grp1)),
-                                             as.numeric(as.character(df$rank.mean.grp2))),
-                       'Mann-Whitney-U' = df$u,
-                       'Wilcoxon-W' = df$w,
-                       Z = sprintf("%.3f", as.numeric(as.character(df$z))),
-                       'Effect Size' = sprintf("%.3f", as.numeric(as.character(df$r))),
-                       p = sprintf("%.3f", as.numeric(as.character(df$p))))
+                       'Mean Rank' = sprintf("%.2f<br>%.2f", df$rank.mean.grp1, df$rank.mean.grp2),
+                       'Mann-Whitney-U' = as.character(df$u),
+                       'Wilcoxon-W' = as.character(df$w),
+                       Z = sprintf("%.3f", df$z),
+                       'Effect Size' = sprintf("%.3f", df$r),
+                       p = sprintf("%.3f", df$p))
   # replace 0.001 with <0.001
   levels(tab.df$p)[which(levels(tab.df$p) == "0.001")] <- "<0.001"
   # return both data frames
-  invisible(structure(class = "mwu",list(df = df, tab.df = tab.df)))
+  structure(class = c("mwu", "sj_mwu"), list(df = df, tab.df = tab.df, data = data.frame(x, grp)))
 }

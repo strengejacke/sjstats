@@ -30,7 +30,7 @@
 #'          \pkg{pwr}-package). The sample size of the standard design
 #'          is then adjusted for the design effect of two-level-designs (see
 #'          \code{\link{deff}}). Thus, the sample size calculation is appropriate
-#'          in particular for two-level-designs (see Snijders 2005). Models that
+#'          in particular for two-level-designs (see \cite{Snijders 2005}). Models that
 #'          additionally include repeated measures (three-level-designs) may work
 #'          as well, however, the computed sample size may be less accurate.
 #'
