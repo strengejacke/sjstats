@@ -1,5 +1,8 @@
 Version 0.4.1
 ------------------------------------------------------------------------------
+New functions:
+* Added S3-`print`-method for `mwu()`-function.
+
 Changes to functions:
 * `se` now also computes the standard error for intraclass correlation coefficients, as returned by the `icc()`-function.
 
@@ -20,24 +23,24 @@ General:
 * Removed non-necessary checks for package-availability.
 
 New functions:
-* `bootstrap` to generate bootstrap replicates of data frames.
-* `boot_ci` to compute confidence intervals from bootstrapped values.
-* `pred_vars` to get the names of predictor variables from fitted models.
-* `resp_var` to get the name of the response variable from fitted models.
-* `resp_val` to get the values of the response vector from fitted models.
+* `bootstrap()` to generate bootstrap replicates of data frames.
+* `boot_ci()` to compute confidence intervals from bootstrapped values.
+* `pred_vars()` to get the names of predictor variables from fitted models.
+* `resp_var()` to get the name of the response variable from fitted models.
+* `resp_val()` to get the values of the response vector from fitted models.
 
 Version 0.2.0
 ------------------------------------------------------------------------------
 New functions:
-* Added functions `weight` and `weight2` to weight vectors.
-* Added functions `wtd_sd` and `wtd_se` to compute weighted standard deviations and standard errors.
-* Added function `merMod_p` to compute p-values for merMod-objects.
+* Added functions `weight()` and `weight2()` to weight vectors.
+* Added functions `wtd_sd()` and `wtd_se()` to compute weighted standard deviations and standard errors.
+* Added function `merMod_p()` to compute p-values for merMod-objects.
 
 Changes to functions:
-* `r2` now supports `plm` objects.
+* `r2()` now supports `plm` objects.
 
 Bug fixes:
-* Fixed typo in print-method for `icc`.
+* Fixed typo in print-method for `icc()`.
 
 Version 0.1.0
 ------------------------------------------------------------------------------

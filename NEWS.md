@@ -1,5 +1,9 @@
 # sjstats 0.4.1
 
+## New functions
+
+* Added S3-`print`-method for `mwu()`-function.
+
 ## Changes to functions
 
 * `se` now also computes the standard error for intraclass correlation coefficients, as returned by the `icc()`-function.
