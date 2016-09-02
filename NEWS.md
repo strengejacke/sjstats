@@ -8,6 +8,7 @@
 ## Changes to functions
 
 * `se` now also computes the standard error for intraclass correlation coefficients, as returned by the `icc()`-function.
+* `std_beta()` now always returns a tidy data frame (tibble) with model term names, standardized estimate, standard error and confidence intervals.
 
 # sjstats 0.4.0
 

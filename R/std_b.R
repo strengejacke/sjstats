@@ -1,26 +1,19 @@
 #' @title Standardized Beta coefficients and CI of lm and mixed models
 #' @name std_beta
-#' @description Returns the standardized beta coefficients and confidence intervals
+#' @description Returns the standardized beta coefficients, std. error and confidence intervals
 #'                of a fitted linear (mixed) models, i.e. \code{fit} must either
 #'                be of class \code{lm} or \code{\link[lme4]{merMod}}.
 #'
 #' @param fit Fitted linear (mixed) model of class \code{\link{lm}} or
 #'          \code{\link[lme4]{merMod}} (\CRANpkg{lme4} package).
-#' @param include.ci Logical, if \code{TRUE}, a data frame with confidence
-#'          intervals will be returned, when \code{fit} is of class \code{lm}.
-#'          If \code{fit} is a \code{lmerMod} object (\pkg{lme4} package),
-#'          always returns standard error instead of confidence intervals
-#'          (hence, this parameter will be ignored when \code{fit} is a
-#'          \code{lmerMod} object).
 #' @param type If \code{fit} is of class \code{lm}, normal standardized coefficients
 #'          are computed by default. Use \code{type = "std2"} to follow
 #'          \href{http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf}{Gelman's (2008)}
 #'          suggestion, rescaling the estimates by deviding them by two standard
 #'          deviations, so resulting coefficients are directly comparable for
 #'          untransformed binary predictors.
-#' @return A vector with standardized beta coefficients of the fitted linear model, or a data frame
-#'           with standardized beta coefficients and confidence intervals, if
-#'           \code{include.ci = TRUE}.
+#' @return A \code{tibble} with term names, standardized beta coefficients,
+#'           standard error and confidence intervals of \code{fit}.
 #'
 #' @details \dQuote{Standardized coefficients refer to how many standard deviations a dependent variable will change,
 #'         per standard deviation increase in the predictor variable. Standardization of the coefficient is
@@ -51,58 +44,52 @@
 #' # print std. beta coefficients
 #' std_beta(fit)
 #'
-#' # print std. beta coefficients and ci
-#' std_beta(fit, include.ci = TRUE)
-#'
 #' # print std. beta coefficients and ci, using
 #' # 2 sd and center binary predictors
-#' std_beta(fit, include.ci = TRUE, type = "std2")
+#' std_beta(fit, type = "std2")
+#'
+#' # std. beta for mixed models
+#' library(lme4)
+#' fit1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+#' std_beta(fit)
 #'
 #' @importFrom stats model.matrix coef terms
 #' @importFrom nlme getResponse
+#' @importFrom tibble data_frame
 #' @export
-std_beta <- function(fit,
-                     include.ci = FALSE,
-                     type = "std") {
+std_beta <- function(fit, type = "std") {
   # if we have merMod object (lme4), we need
   # other function to compute std. beta
-  if (any(class(fit) == "lmerMod") || any(class(fit) == "merModLmerTest")) {
+  if (any(class(fit) == "lmerMod") || any(class(fit) == "merModLmerTest"))
     return(sjs.stdmm(fit))
-  } else if (type == "std2") {
+
+  # has model intercept?
+  tmp_i <- attr(stats::terms(fit), "intercept")
+  has_intercept <- !is.null(tmp_i) & tmp_i == 1
+
+  if (type == "std2" ) {
     # is package available?
     if (!requireNamespace("arm", quietly = TRUE)) {
       stop("Package `arm` needed for computing this type of standardized estimates. Please install it.", call. = FALSE)
     }
-    # has model intercept?
-    tmp_i <- attr(stats::terms(fit), "intercept")
-    has_intercept <- !is.null(tmp_i) & tmp_i == 1
-    # get standardized model parameter
-    stdbv2_all <- arm::standardize(fit)
     # get standardized estimates
-    beta <- stats::coef(stdbv2_all)
-    # remove intercept?
-    if (has_intercept) beta <- beta[-1]
-    # get standardized se
-    std2se <- summary(stdbv2_all)$coefficients[, 2]
-    # remove intercept?
-    if (has_intercept) std2se <- std2se[-1]
-    # check if confidence intervals should also be returned
-    # if yes, create data frame with sb and ci
-    if (include.ci) {
-      return(data.frame(beta = beta,
-                        ci.low = beta - std2se * 1.96,
-                        ci.hi = beta + std2se * 1.96))
-    } else {
-      return(beta)
-    }
+    b <- stats::coef(arm::standardize(fit))
   } else {
-    # has model intercept?
-    tmp_i <- attr(terms(fit), "intercept")
-    has_intercept <- !is.null(tmp_i) & tmp_i == 1
     # get coefficients
     b <- stats::coef(fit)
+  }
+
+  # remove intercept?
+  if (has_intercept) b <- b[-1]
+
+  if (type == "std2") {
+    # stand. estimates need to be in variabel "beta"
+    beta <- b
+    # get standardized se
+    beta.se <- summary(arm::standardize(fit))$coefficients[, 2]
     # remove intercept?
-    if (has_intercept) b <- b[-1]
+    if (has_intercept) beta.se <- beta.se[-1]
+  } else {
     # get data as data frame
     fit.data <- as.data.frame(stats::model.matrix(fit))
     # remove intercept?
@@ -129,21 +116,19 @@ std_beta <- function(fit,
     if (has_intercept) se <- se[-1]
     # compute standard error
     beta.se <- se * sx / sy
-    # check if confidence intervals should also be returned
-    # if yes, create data frame with sb and ci
-    if (include.ci) {
-      return(data.frame(beta = beta,
-                        ci.low = (beta - beta.se * 1.96),
-                        ci.hi = (beta + beta.se * 1.96)))
-    } else {
-      return(beta)
-    }
   }
+  # compute ci
+  beta.ci <- beta + 1.96 * c(-beta.se, beta.se)
+  # check if confidence intervals should also be returned
+  # if yes, create data frame with sb and ci
+  tibble::data_frame(term = names(b), std.estimate = beta,
+                     std.error = beta.se, conf.low = beta.ci[1], conf.hi = beta.ci[2])
 }
 
 
 #' @importFrom stats sd coef
 #' @importFrom lme4 fixef getME
+#' @importFrom tibble data_frame
 sjs.stdmm <- function(fit) {
   # code from Ben Bolker, see
   # http://stackoverflow.com/a/26206119/2094622
@@ -152,7 +137,7 @@ sjs.stdmm <- function(fit) {
   sc <- lme4::fixef(fit) * sdx / sdy
   se.fixef <- stats::coef(summary(fit))[, "Std. Error"]
   se <- se.fixef * sdx / sdy
-  mydf <- data.frame(stdcoef = sc, stdse = se)
-  rownames(mydf) <- names(lme4::fixef(fit))
-  return(mydf)
+  sb.ci <- sc + 1.96 * c(-se, se)
+  tibble::data_frame(term = names(lme4::fixef(fit)), std.estimate = sc,
+                     std.error = se, conf.low = sb.ci[1], conf.hi = sb.ci[2])
 }

@@ -4,18 +4,11 @@
 \alias{std_beta}
 \title{Standardized Beta coefficients and CI of lm and mixed models}
 \usage{
-std_beta(fit, include.ci = FALSE, type = "std")
+std_beta(fit, type = "std")
 }
 \arguments{
 \item{fit}{Fitted linear (mixed) model of class \code{\link{lm}} or
 \code{\link[lme4]{merMod}} (\CRANpkg{lme4} package).}
-
-\item{include.ci}{Logical, if \code{TRUE}, a data frame with confidence
-intervals will be returned, when \code{fit} is of class \code{lm}.
-If \code{fit} is a \code{lmerMod} object (\pkg{lme4} package),
-always returns standard error instead of confidence intervals
-(hence, this parameter will be ignored when \code{fit} is a
-\code{lmerMod} object).}
 
 \item{type}{If \code{fit} is of class \code{lm}, normal standardized coefficients
 are computed by default. Use \code{type = "std2"} to follow
@@ -25,12 +18,11 @@ deviations, so resulting coefficients are directly comparable for
 untransformed binary predictors.}
 }
 \value{
-A vector with standardized beta coefficients of the fitted linear model, or a data frame
-          with standardized beta coefficients and confidence intervals, if
-          \code{include.ci = TRUE}.
+A \code{tibble} with term names, standardized beta coefficients,
+          standard error and confidence intervals of \code{fit}.
 }
 \description{
-Returns the standardized beta coefficients and confidence intervals
+Returns the standardized beta coefficients, std. error and confidence intervals
                of a fitted linear (mixed) models, i.e. \code{fit} must either
                be of class \code{lm} or \code{\link[lme4]{merMod}}.
 }
@@ -60,12 +52,14 @@ fit <- lm(Ozone ~ Wind + Temp + Solar.R, data = airquality)
 # print std. beta coefficients
 std_beta(fit)
 
-# print std. beta coefficients and ci
-std_beta(fit, include.ci = TRUE)
-
 # print std. beta coefficients and ci, using
 # 2 sd and center binary predictors
-std_beta(fit, include.ci = TRUE, type = "std2")
+std_beta(fit, type = "std2")
+
+# std. beta for mixed models
+library(lme4)
+fit1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+std_beta(fit)
 
 }
 \references{
