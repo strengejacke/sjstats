@@ -1,8 +1,9 @@
-# sjstats 0.4.1
+# sjstats 0.5.0
 
 ## New functions
 
 * Added S3-`print`-method for `mwu()`-function.
+* `get_model_pval()` to return a tidy data frame (tibble) of model term names, p-values and standard errors from various regression model types.
 
 ## Changes to functions
 

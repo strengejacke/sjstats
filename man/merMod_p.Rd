@@ -2,7 +2,7 @@
 % Please edit documentation in R/merMod_p.R
 \name{merMod_p}
 \alias{merMod_p}
-\title{Get p-values for merMod objects}
+\title{Compute p-values for merMod objects}
 \usage{
 merMod_p(x, p.kr = TRUE)
 }
