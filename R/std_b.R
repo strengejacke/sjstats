@@ -122,7 +122,7 @@ std_beta <- function(fit, type = "std") {
   # check if confidence intervals should also be returned
   # if yes, create data frame with sb and ci
   tibble::data_frame(term = names(b), std.estimate = beta,
-                     std.error = beta.se, conf.low = beta.ci[1], conf.hi = beta.ci[2])
+                     std.error = beta.se, conf.low = beta.ci[1], conf.high = beta.ci[2])
 }
 
 
@@ -139,5 +139,5 @@ sjs.stdmm <- function(fit) {
   se <- se.fixef * sdx / sdy
   sb.ci <- sc + 1.96 * c(-se, se)
   tibble::data_frame(term = names(lme4::fixef(fit)), std.estimate = sc,
-                     std.error = se, conf.low = sb.ci[1], conf.hi = sb.ci[2])
+                     std.error = se, conf.low = sb.ci[1], conf.high = sb.ci[2])
 }
