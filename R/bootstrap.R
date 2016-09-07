@@ -19,6 +19,10 @@
 #'            \code{size} to get bootstrapped data with a specific number
 #'            of observations.
 #'
+#' @note Specifying the \code{size}-argument is much less memory-efficient than
+#'       the bootstrap with replacement. Hence, it is recommended to ignore the
+#'       \code{size}-argument, if it is not really needed.
+#'
 #' @seealso \code{\link{boot_ci}} to calculate confidence intervals from
 #'            bootstrap samples.
 #'

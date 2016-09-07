@@ -17,16 +17,22 @@
 #' @references \itemize{
 #'               \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
 #'               \item Aly SS, Zhao J, Li B, Jiang J. 2014. Reliability of environmental sampling culture results using the negative binomial intraclass correlation coefficient. Springerplus [Internet] 3. Available from: \url{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3916583/}
+#'               \item Grace-Martion K. The Intraclass Correlation Coefficient in Mixed Models, \href{http://www.theanalysisfactor.com/the-intraclass-correlation-coefficient-in-mixed-models/}{web}
 #'               \item Hox J. 2002. Multilevel analysis: techniques and applications. Mahwah, NJ: Erlbaum
+#'               \item Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication
+#'               \item Raudenbush SW, Bryk AS. 2002. Hierarchical linear models: applications and data analysis methods. 2nd ed. Thousand Oaks: Sage Publications
 #'               \item Stryhn H, Sanchez J, Morley P, Booker C, Dohoo IR. 2006. Interpretation of variance parameters in multilevel Poisson regression models. Proceedings of the 11th International Symposium on Veterinary Epidemiology and Economics, 2006 Available at \url{http://www.sciquest.org.nz/node/64294}
 #'               \item Wu S, Crespi CM, Wong WK. 2012. Comparison of methods for estimating the intraclass correlation coefficient for binary responses in cancer prevention cluster randomized trials. Contempory Clinical Trials 33: 869-880 (\doi{10.1016/j.cct.2012.05.004})
+#'             }
+#'             Further helpful online-ressources:
+#'             \itemize{
 #'               \item \href{http://stats.stackexchange.com/questions/18088/intraclass-correlation-icc-for-an-interaction/28100#28100}{CrossValidated (2012) \emph{Intraclass correlation (ICC) for an interaction?}}
 #'               \item \href{http://stats.stackexchange.com/questions/113577/interpreting-the-random-effect-in-a-mixed-effect-model/113825#113825}{CrossValidated (2014) \emph{Interpreting the random effect in a mixed-effect model}}
 #'               \item \href{http://stats.stackexchange.com/questions/67247/how-to-partition-the-variance-explained-at-group-level-and-individual-level/67356#67356}{CrossValidated (2014) \emph{how to partition the variance explained at group level and individual level}}
 #'             }
 #'
 #'
-#' @note Some notes on why the ICC is useful, based on Grace-Martin K: \cite{The Intraclass Correlation Coefficient in Mixed Models}, \href{http://www.theanalysisfactor.com/the-intraclass-correlation-coefficient-in-mixed-models/}{web}:
+#' @note Some notes on why the ICC is useful, based on \cite{Grace-Martin}:
 #'       \itemize{
 #'        \item It can help you determine whether or not a linear mixed model is even necessary. If you find that the correlation is zero, that means the observations within clusters are no more similar than observations from different clusters. Go ahead and use a simpler analysis technique.
 #'        \item It can be theoretically meaningful to understand how much of the overall variation in the response is explained simply by clustering. For example, in a repeated measures psychological study you can tell to what extent mood is a trait (varies among people, but not within a person on different occasions) or state (varies little on average among people, but varies a lot across occasions).
@@ -34,6 +40,13 @@
 #'       }
 #'       In short, the ICC can be interpreted as \dQuote{the proportion of the variance
 #'       explained by the grouping structure in the population} \cite{(Hox 2002: 15)}.
+#'       \cr \cr
+#'       Usually, the ICC is calculated for the null model ("unconditional model").
+#'       However, according to \cite{Raudenbush and Bryk (2002)} or
+#'       \cite{Rabe-Hesketh and Skrondal (2012)} it is also feasible to compute the ICC
+#'       for full models with covariates ("conditional models") and compare how
+#'       much a level-2 variable explains the portion of variation in the grouping
+#'       structure (random intercept).
 #'       \cr \cr
 #'       \strong{Caution:} For three-level-models, depending on the nested structure
 #'       of the model, the ICC only reports the proportion of variance explained
@@ -74,6 +87,9 @@
 #'
 #' @examples
 #' library(lme4)
+#' fit0 <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
+#' icc(fit0)
+#'
 #' fit1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' icc(fit1)
 #'
@@ -82,7 +98,7 @@
 #' icc(fit2)
 #'
 #' # return icc for all models at once
-#' icc(fit1, fit2)
+#' icc(fit0, fit1, fit2)
 #'
 #' icc1 <- icc(fit1)
 #' icc2 <- icc(fit2)
