@@ -35,7 +35,7 @@ Imports:
     nlme,
     sjmisc (>= 1.8),
     tidyr (>= 0.6.0),
-    tibble (>= 1.1.0)
+    tibble (>= 1.2.0)
 Suggests:
     AER,
     arm,
