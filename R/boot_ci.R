@@ -67,6 +67,36 @@
 #' boot_p(bs$gender)
 #' summary(fit)$coefficients[3, ]
 #'
+#'
+#' # 'spread_coef()' from the 'sjmisc'-package makes it easy to generate
+#' # bootstrapped statistics like confidence intervals or p-values
+#' library(dplyr)
+#' library(sjmisc)
+#' efc %>%
+#'   # generate bootstrap replicates
+#'   bootstrap(100) %>%
+#'   # apply lm to all bootstrapped data sets
+#'   mutate(models = lapply(.$strap, function(x) {
+#'     lm(neg_c_7 ~ e42dep + c161sex + c172code, data = x)
+#'   })) %>%
+#'   # spread model coefficient for all 100 models
+#'   spread_coef(models) %>%
+#'   # compute the CI for all bootstrapped model coefficients
+#'   boot_ci(e42dep, c161sex, c172code)
+#'
+#' # or...
+#' efc %>%
+#'   # generate bootstrap replicates
+#'   bootstrap(100) %>%
+#'   # apply lm to all bootstrapped data sets
+#'   mutate(models = lapply(strap, function(x) {
+#'     lm(neg_c_7 ~ e42dep + c161sex + c172code, data = x)
+#'   })) %>%
+#'   # spread model coefficient for all 100 models
+#'   spread_coef(models, append = FALSE) %>%
+#'   # compute the CI for all bootstrapped model coefficients
+#'   boot_ci()
+#'
 #' @importFrom stats qt
 #' @export
 boot_ci <- function(data, ...) {
