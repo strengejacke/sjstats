@@ -7,13 +7,13 @@
 get_model_pval(fit, p.kr = FALSE)
 }
 \arguments{
+\item{fit}{A fitted model object of \code{lm}, \code{glm}, \code{merMod},
+\code{merModLmerTest}, \code{pggls} or \code{gls}. Other classes may
+work as well.}
+
 \item{p.kr}{Logical, if \code{TRUE}, the computation of p-values is based on
 conditional F-tests with Kenward-Roger approximation for the df (see
 'Details').}
-
-\item{x}{A fitted model object of \code{lm}, \code{glm}, \code{merMod},
-\code{merModLmerTest}, \code{pggls} or \code{gls}. Other classes may
-work as well.}
 }
 \value{
 A \code{\link{tibble}} with the model coefficients' names (\code{term}),

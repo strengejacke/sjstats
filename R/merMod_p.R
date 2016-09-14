@@ -73,7 +73,7 @@ merMod_p <- function(x, p.kr = TRUE) {
 #'
 #' @description This function returns the p-values for fitted model objects.
 #'
-#' @param x A fitted model object of \code{lm}, \code{glm}, \code{merMod},
+#' @param fit A fitted model object of \code{lm}, \code{glm}, \code{merMod},
 #'        \code{merModLmerTest}, \code{pggls} or \code{gls}. Other classes may
 #'        work as well.
 #' @param p.kr Logical, if \code{TRUE}, the computation of p-values is based on

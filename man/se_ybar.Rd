@@ -7,7 +7,7 @@
 se_ybar(fit)
 }
 \arguments{
-\item{x}{Fitted mixed effects model (\code{\link[lme4]{merMod}}-class).}
+\item{fit}{Fitted mixed effects model (\code{\link[lme4]{merMod}}-class).}
 }
 \value{
 The standard error of the sample mean of \code{fit}.

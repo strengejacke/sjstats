@@ -1,3 +1,5 @@
+utils::globalVariables(c("strap", "models"))
+
 #' @title Standard Error for variables or coefficients
 #' @name se
 #' @description Compute standard error for a variable, for all variables
@@ -37,6 +39,7 @@
 #' fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' se(fit)
 #'
+#' \dontrun{
 #' # compute standard error of ICC for the linear mixed model
 #' icc(fit)
 #' se(icc(fit))
@@ -56,7 +59,7 @@
 #' # now compute SE and p-values for the bootstrapped ICC, values
 #' # may differ from above example due to random seed
 #' boot_se(dummy, icc)
-#' boot_p(dummy, icc)
+#' boot_p(dummy, icc)}
 #'
 #'
 #' @export
@@ -156,7 +159,7 @@ bootstr_icc_se <- function(.data, nsim, formula, model.family) {
   # generate bootstraps
   dummy <- .data %>%
     bootstrap(nsim) %>%
-    dplyr::mutate(models = lapply(.$strap, function(x) {
+    dplyr::mutate(models = lapply(strap, function(x) {
       # update progress bar
       utils::setTxtProgressBar(pb, x$resample.id)
       # check model family, then compute mixed model
@@ -166,7 +169,7 @@ bootstr_icc_se <- function(.data, nsim, formula, model.family) {
         lme4::glmer(formula, data = x, family = model.family)
     })) %>%
     # compute ICC for each "bootstrapped" regression
-    dplyr::mutate(icc = unlist(lapply(.$models, icc)))
+    dplyr::mutate(icc = unlist(lapply(models, icc)))
 
   # close progresss bar
   close(pb)

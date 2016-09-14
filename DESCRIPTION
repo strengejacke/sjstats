@@ -40,6 +40,7 @@ Suggests:
     AER,
     arm,
     ggplot2,
+    graphics,
     Hmisc,
     lmerTest,
     pbkrtest (>= 0.4-6),

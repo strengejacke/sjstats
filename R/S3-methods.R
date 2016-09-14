@@ -1,5 +1,3 @@
-utils::globalVariables(c("zeit", "lo", "hi", "rr", "rd", "y", "grp"))
-
 #' @importFrom nlme getData getCovariateFormula
 #' @export
 model.matrix.gls <- function(object, ...) {
@@ -165,7 +163,7 @@ print.se.icc.lme4 <- function(x, ...) {
 }
 
 
-#' @importFrom tidyr gather
+#' @importFrom tidyr gather_
 #' @export
 plot.sj_inequ_trend <- function(x, ...) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
@@ -173,20 +171,24 @@ plot.sj_inequ_trend <- function(x, ...) {
   }
 
   # add time indicator
-  x$data$zeit <- 1:nrow(x$data)
+  x$data$zeit <- seq_len(nrow(x$data))
+
+  # get gather column names
+  gather.cols1 <- colnames(x$data)[!colnames(x$data) %in% c("zeit", "lo", "hi")]
+  gather.cols2 <- colnames(x$data)[!colnames(x$data) %in% c("zeit", "rr", "rd")]
 
   # gather data to plot rr and rd
-  dat1 <- tidyr::gather(x$data, "grp", "y", -zeit, -lo, -hi)
+  dat1 <- tidyr::gather_(x$data, key_col = "grp", value_col = "y", gather_cols = gather.cols1)
 
   # gather data for raw prevalences
-  dat2 <- tidyr::gather(x$data, "grp", "y", -zeit, -rr, -rd)
+  dat2 <- tidyr::gather_(x$data, key_col = "grp", value_col = "y", gather_cols = gather.cols2)
 
   # Proper value names, for facet labels
   dat1$grp[dat1$grp == "rr"] <- "Rate Ratios"
   dat1$grp[dat1$grp == "rd"] <- "Rate Differences"
 
   # plot prevalences
-  gp1 <- ggplot2::ggplot(dat2, ggplot2::aes(x = zeit, y = y, colour = grp)) +
+  gp1 <- ggplot2::ggplot(dat2, ggplot2::aes_string(x = "zeit", y = "y", colour = "grp")) +
     ggplot2::stat_smooth(se = F) +
     ggplot2::labs(title = "Prevalance Rates for Lower and Higher SES Groups",
                   y = "Prevalances", x = "Time", colour = "") +
@@ -194,7 +196,7 @@ plot.sj_inequ_trend <- function(x, ...) {
 
 
   # plot rr and rd
-  gp2 <- ggplot2::ggplot(dat1, ggplot2::aes(x = zeit, y = y, colour = grp)) +
+  gp2 <- ggplot2::ggplot(dat1, ggplot2::aes_string(x = "zeit", y = "y", colour = "grp")) +
     ggplot2::stat_smooth(se = F) +
     ggplot2::facet_wrap(~grp, ncol = 1, scales = "free") +
     ggplot2::labs(title = "Proportional Change in Rate Ratios and Rate Differences",

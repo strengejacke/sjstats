@@ -1,8 +1,9 @@
 #' @title Standard Error and Confidence Intervals for bootstrapped estimates
 #' @name boot_ci
 #'
-#' @description Compute bootstrap standard error, confidence intervals and
-#'              p-value for a vector of bootstrap replicate estimates.
+#' @description Compute nonparametric bootstrap standard error, confidence
+#'              intervals and p-value for a vector of bootstrap replicate
+#'              estimates.
 #'
 #' @param data A data frame that containts the vector with bootstrapped
 #'          estimates, or directly the vector (see 'Examples').
@@ -16,13 +17,15 @@
 #'         bootstrapped estimates.
 #'
 #' @details This method requires one or more vectors of bootstrap replicate estimates
-#'          as input. The function then computes the bootstrap standard error
-#'          by calculating the standard deviation of the input vector. The mean
-#'          value of the input vector is used to calculate the lower and upper
-#'          confidence interval, assuming a t-distribution of bootstrap estimate
-#'          replicates.
+#'          as input. The function then computes the nonparametric bootstrap
+#'          standard error by calculating the standard deviation of the input
+#'          vector. The mean value of the input vector and its standard error is
+#'          used to calculate the lower and upper confidence interval, assuming
+#'          a t-distribution of bootstrap estimate replicates. P-values
+#'          from \code{boot_p} are also based on t-statistics, assuming normal
+#'          distribution.
 #'
-#' @seealso \code{\link{bootstrap}} to generate bootstrap samples.
+#' @seealso \code{\link{bootstrap}} to generate nonparametric bootstrap samples.
 #'
 #' @examples
 #' data(efc)

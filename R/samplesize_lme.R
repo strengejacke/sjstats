@@ -108,7 +108,7 @@ deff <- function(n, icc = 0.05) {
 #'                May be used as part of the multilevel power calculation for cluster sampling
 #'                (see \cite{Gelman and Hill 2007, 447ff}).
 #'
-#' @param x Fitted mixed effects model (\code{\link[lme4]{merMod}}-class).
+#' @param fit Fitted mixed effects model (\code{\link[lme4]{merMod}}-class).
 #'
 #' @return The standard error of the sample mean of \code{fit}.
 #'

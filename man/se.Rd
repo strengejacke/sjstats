@@ -49,6 +49,7 @@ library(lme4)
 fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 se(fit)
 
+\dontrun{
 # compute standard error of ICC for the linear mixed model
 icc(fit)
 se(icc(fit))
@@ -68,7 +69,7 @@ dummy <- sleepstudy \%>\%
 # now compute SE and p-values for the bootstrapped ICC, values
 # may differ from above example due to random seed
 boot_se(dummy, icc)
-boot_p(dummy, icc)
+boot_p(dummy, icc)}
 
 
 }

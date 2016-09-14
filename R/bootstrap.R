@@ -1,4 +1,4 @@
-#' @title Generate bootstrap replications
+#' @title Generate nonparametric bootstrap replications
 #' @name bootstrap
 #'
 #' @description Generates \code{n} bootstrap samples of \code{data} and
@@ -17,11 +17,14 @@
 #'            as \code{data}. To generate bootstrap samples without resampling
 #'            same observations (i.e. sampling without replacement), use
 #'            \code{size} to get bootstrapped data with a specific number
-#'            of observations.
+#'            of observations. However, specifying the \code{size}-argument is much
+#'            less memory-efficient than the bootstrap with replacement. Hence,
+#'            it is recommended to ignore the \code{size}-argument, if it is
+#'            not really needed.
 #'
-#' @note Specifying the \code{size}-argument is much less memory-efficient than
-#'       the bootstrap with replacement. Hence, it is recommended to ignore the
-#'       \code{size}-argument, if it is not really needed.
+#' @note This function applies nonparametric bootstrapping, i.e. the function
+#'       draws samples with replacement.
+#'
 #'
 #' @seealso \code{\link{boot_ci}} to calculate confidence intervals from
 #'            bootstrap samples.
