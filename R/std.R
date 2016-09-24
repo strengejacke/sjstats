@@ -7,7 +7,7 @@
 #'          data frame with such variables.
 #' @param ... Optional, names of the variables with that should be standardized
 #'          or centered. Required, if either \code{data} is a data frame and no vector,
-#'          or if only selected variables from \code{data} should be used
+#'          and only selected variables from \code{data} should be used
 #'          in the function.
 #' @param include.fac Logical, if \code{TRUE}, factors will be converted to numeric
 #'          vectors and also standardized or centered.
