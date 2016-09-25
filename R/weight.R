@@ -30,7 +30,7 @@
 weight2 <- function(x, weights) {
   items <- unique(x)
   newvar <- c()
-  for (i in 1:length(items)) {
+  for (i in seq_len(length(items))) {
     newcount = round(sum(weights[which(x == items[i])]))
     newvar <- c(newvar, rep(items[i], newcount))
   }
@@ -85,7 +85,7 @@ weight <- function(x, weights, digits = 0) {
                              exclude = NULL),
                 digits = digits)
   # iterate all table values
-  for (w in 1:length(wtab)) {
+  for (w in seq_len(length(wtab))) {
     # retrieve count of each table cell
     w_count <- wtab[[w]]
     # retrieve "cell name" which is identical to the variable value
@@ -132,7 +132,7 @@ wtd_sd <- function(x, weights = NULL) {
     stdd <- c()
     stdd_names <- c()
     # iterate all columns
-    for (i in 1:ncol(x)) {
+    for (i in seq_len(ncol(x))) {
       # get and save standard error for each variable
       # of the data frame
       stdd <- c(stdd,
@@ -178,7 +178,7 @@ wtd_se <- function(x, weights = NULL) {
     stde <- c()
     stde_names <- c()
     # iterate all columns
-    for (i in 1:ncol(x)) {
+    for (i in seq_len(ncol(x))) {
       # get and save standard error for each variable
       # of the data frame
       stde <- c(stde,

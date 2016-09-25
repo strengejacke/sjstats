@@ -90,7 +90,7 @@ reliab_test <- function(x,
     cronbachDeleted <- c()
 
     # iterate all items
-    for (i in 1:ncol(x)) {
+    for (i in seq_len(ncol(x))) {
       # create subset with all items except current one
       # (current item "deleted")
       sub.df <- subset(x, select = c(-i))
