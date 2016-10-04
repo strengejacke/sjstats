@@ -259,3 +259,9 @@ print.sj_mwu <- function(x, ...) {
     cat(sprintf("p %s %.3f\n", p.string, p))
   }
 }
+
+#' @export
+print.sj_splithalf <- function(x, ...) {
+  cat(sprintf("   Split-Half Reliability: %.3f\n", x$splithalf))
+  cat(sprintf("Spearman-Brown Adjustment: %.3f\n", x$spearmanbrown))
+}

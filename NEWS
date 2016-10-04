@@ -1,3 +1,9 @@
+Version 0.6.0
+------------------------------------------------------------------------------
+New functions:
+* `split_half()` to compute the split-half-reliability of tests or questionnaires.
+* `sd_pop()` and `var_pop()` to compute population variance and population standard deviation.
+
 Version 0.5.0
 ------------------------------------------------------------------------------
 New functions:
