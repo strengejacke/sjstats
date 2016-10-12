@@ -36,6 +36,9 @@ By default, each bootstrap sample has the same number of observations
 \note{
 This function applies nonparametric bootstrapping, i.e. the function
       draws samples with replacement.
+      \cr \cr
+      There is an \code{as.data.frame}- and a \code{print}-method to get or
+      print the resampled data frames. See 'Examples'.
 }
 \examples{
 data(efc)
@@ -50,6 +53,17 @@ bs <- bootstrap(efc, 5, 600)
 # generate bootstrap samples with 70\% observations of the original sample size
 bs <- bootstrap(efc, 5, .7)
 
+# compute standard error for a simple vector from bootstraps
+# use the `as.data.frame()`-method to get the resampled
+# data frame
+bs <- bootstrap(efc, 100)
+bs$c12hour <- unlist(lapply(bs$strap, function(x) {
+  mean(as.data.frame(x)$c12hour, na.rm = T)
+}))
+# bootstrapped standard error
+boot_se(bs, c12hour)
+# standard error of original variable
+se(efc$c12hour)
 
 }
 \seealso{
