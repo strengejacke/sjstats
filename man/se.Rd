@@ -7,8 +7,11 @@
 se(x, nsim = 100)
 }
 \arguments{
-\item{x}{(Numeric) vector, a data frame or a \code{merMod}-object
-as returned by the \code{\link[lme4]{lmer}}-method.}
+\item{x}{(Numeric) vector, a data frame, a \code{merMod}-object
+as returned by the \code{\link[lme4]{lmer}}-method,
+or a list with estimate and p-value. For the latter case, the list
+must contain elements named \code{estimate} and \code{p.value}
+(see 'Examples' and 'Details').}
 
 \item{nsim}{Numeric, the number of simulations for calculating the
 standard error for intraclass correlation coefficients, as
@@ -34,6 +37,10 @@ Unlike \code{\link[arm]{se.coef}}, which returns the standard error
            \cr \cr
            The standard error for the \code{\link{icc}} is based on bootstrapping,
            thus, the \code{nsim}-argument is required. See 'Examples'.
+           \cr \cr
+           \code{se} also returns the standard error of an estimate (regression
+           coefficient) and p-value, assuming a normal distribution to compute
+           the z-score from the p-value (formula in short: \code{b / qnorm(p / 2)}).
 }
 \note{
 Computation of standard errors for coefficients of mixed models
@@ -48,6 +55,9 @@ se(efc[, 1:3])
 library(lme4)
 fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 se(fit)
+
+# compute standard error from regression coefficient and p-value
+se(list(estimate = .3, p.value = .002))
 
 \dontrun{
 # compute standard error of ICC for the linear mixed model

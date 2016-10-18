@@ -7,8 +7,11 @@ utils::globalVariables(c("strap", "models"))
 #'                coefficients of mixed models, or for intraclass correlation
 #'                coefficients (ICC).
 #'
-#' @param x (Numeric) vector, a data frame or a \code{merMod}-object
-#'          as returned by the \code{\link[lme4]{lmer}}-method.
+#' @param x (Numeric) vector, a data frame, a \code{merMod}-object
+#'          as returned by the \code{\link[lme4]{lmer}}-method,
+#'          or a list with estimate and p-value. For the latter case, the list
+#'          must contain elements named \code{estimate} and \code{p.value}
+#'          (see 'Examples' and 'Details').
 #' @param nsim Numeric, the number of simulations for calculating the
 #'          standard error for intraclass correlation coefficients, as
 #'          obtained by the \code{\link{icc}}-function.
@@ -28,6 +31,11 @@ utils::globalVariables(c("strap", "models"))
 #'            \cr \cr
 #'            The standard error for the \code{\link{icc}} is based on bootstrapping,
 #'            thus, the \code{nsim}-argument is required. See 'Examples'.
+#'            \cr \cr
+#'            \code{se} also returns the standard error of an estimate (regression
+#'            coefficient) and p-value, assuming a normal distribution to compute
+#'            the z-score from the p-value (formula in short: \code{b / qnorm(p / 2)}).
+#'
 #'
 #' @examples
 #' se(rnorm(n = 100, mean = 3))
@@ -38,6 +46,9 @@ utils::globalVariables(c("strap", "models"))
 #' library(lme4)
 #' fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' se(fit)
+#'
+#' # compute standard error from regression coefficient and p-value
+#' se(list(estimate = .3, p.value = .002))
 #'
 #' \dontrun{
 #' # compute standard error of ICC for the linear mixed model
@@ -62,6 +73,7 @@ utils::globalVariables(c("strap", "models"))
 #' boot_p(dummy, icc)}
 #'
 #'
+#' @importFrom stats qnorm
 #' @export
 se <- function(x, nsim = 100) {
   if (is_merMod(x)) {
@@ -86,6 +98,9 @@ se <- function(x, nsim = 100) {
     names(stde) <- stde_names
     # return results
     return(stde)
+  } else if (is.list(x)) {
+    # compute standard error from regression coefficient and p-value
+    return(x$estimate / abs(stats::qnorm(x$p.value / 2)))
   } else {
     return(std_e_helper(x))
   }
