@@ -50,7 +50,7 @@
 #' # data frame
 #' bs <- bootstrap(efc, 100)
 #' bs$c12hour <- unlist(lapply(bs$strap, function(x) {
-#'   mean(as.data.frame(x)$c12hour, na.rm = T)
+#'   mean(as.data.frame(x)$c12hour, na.rm = TRUE)
 #' }))
 #' # bootstrapped standard error
 #' boot_se(bs, c12hour)

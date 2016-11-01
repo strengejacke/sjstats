@@ -1,4 +1,4 @@
-# sjstats 0.5.0
+# sjstats 0.6.0
 
 ## New functions
 
