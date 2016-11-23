@@ -49,9 +49,9 @@ prop <- function(data, ..., na.rm = FALSE) {
     x <- gsub(" ", "", deparse(x), fixed = T)
     x <- gsub("\"", "", x, fixed = TRUE)
     # split expression at ==, < or >
-    x.parts <- unlist(regmatches(x, regexec("(\\w+)(\\W+)(\\w+)", x)))[-1]
-    # original version
-    # x.parts <- unlist(regmatches(x, gregexpr("[!=]=|[<>]|(?:(?![=!]=)[^<>])+", x, perl = TRUE)))
+    x.parts <- unlist(regmatches(x, gregexpr("[!=]=|[<>]|(?:(?![=!]=)[^<>])+", x, perl = TRUE)))
+    # shorter version, however, does not split variable names with dots
+    # x.parts <- unlist(regmatches(x, regexec("(\\w+)(\\W+)(\\w+)", x)))[-1]
 
     # get variable from data and value from equation
     f <- data[[x.parts[1]]]
