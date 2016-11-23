@@ -1,3 +1,9 @@
+# sjstats 0.6.1
+
+## New functions
+
+* `prop()` to calculate proportion of values in a vector.
+
 # sjstats 0.6.0
 
 ## New functions
