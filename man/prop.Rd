@@ -9,7 +9,9 @@ prop(data, ..., na.rm = FALSE)
 \arguments{
 \item{data}{A data frame.}
 
-\item{...}{One or more value pairs. Put variable names the left-hand-side and}
+\item{...}{One or more value pairs of comparisons. Put variable names the
+left-hand-side and values to match on the right hand side.
+Expressions may be quoted or unquoted. See 'Examples'.}
 
 \item{na.rm}{Logical, whether to remove NA values from the vector when the
 proportion is calculated. \code{na.rm = FALSE} gives you the raw
@@ -28,6 +30,9 @@ data(efc)
 
 # proportion of value 1 in e42dep
 prop(efc, e42dep == 1)
+
+# expression may also be completely quotes
+prop(efc, "e42dep == 1")
 
 # proportion of value 1 in e42dep, and all values greater
 # than 2 in e42dep, excluding missing values
