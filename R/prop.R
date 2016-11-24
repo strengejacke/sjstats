@@ -53,6 +53,12 @@ prop <- function(data, ..., na.rm = FALSE) {
     # shorter version, however, does not split variable names with dots
     # x.parts <- unlist(regmatches(x, regexec("(\\w+)(\\W+)(\\w+)", x)))[-1]
 
+    # correct == assignment?
+    if (length(x.parts) < 3) {
+      message("?Syntax error in argument. You possibly used `=` instead of `==`.")
+      return(NULL)
+    }
+
     # get variable from data and value from equation
     f <- data[[x.parts[1]]]
     v <- suppressWarnings(as.numeric(x.parts[3]))
