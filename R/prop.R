@@ -26,7 +26,7 @@
 #'
 #' # proportion of value 1 in e42dep, and all values greater
 #' # than 2 in e42dep, excluding missing values
-#' prop(efc, e42dep == 1, e42dep > 2, na.rm = T)
+#' prop(efc, e42dep == 1, e42dep > 2, na.rm = TRUE)
 #'
 #'
 #' # for factors or character vectors, use quoted or unquoted values

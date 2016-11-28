@@ -22,6 +22,11 @@
 #'         centered variables, if \code{data} was a data frame. If \code{append = TRUE},
 #'         standardized and centered variables are added as new columns to \code{data}.
 #'
+#' @note \code{std()} and \code{center()} only return a vector, if \code{data} is
+#'         a vector. If \code{data} is a data frame and only one variable is specified
+#'         in the \code{...}-ellipses argument, both functions do return a
+#'         data frame (see 'Examples').
+#'
 #' @examples
 #' library(dplyr)
 #' data(efc)
@@ -32,6 +37,10 @@
 #' center(efc$c160age) %>% head()
 #' center(efc, e17age, c160age) %>% head()
 #' center(efc, e17age, c160age, append = TRUE) %>% head()
+#'
+#' # NOTE!
+#' std(efc$e17age) # returns a vector
+#' std(efc, e17age) # returns a tibble
 #'
 #' @export
 std <- function(data, ..., include.fac = TRUE, append = FALSE) {

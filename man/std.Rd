@@ -37,6 +37,12 @@ Either a vector with standardized or centered variables, if \code{data}
 \code{std} computes a z-transformation (standardized and centered)
              on the input. \code{center} centers the input.
 }
+\note{
+\code{std()} and \code{center()} only return a vector, if \code{data} is
+        a vector. If \code{data} is a data frame and only one variable is specified
+        in the \code{...}-ellipses argument, both functions do return a
+        data frame (see 'Examples').
+}
 \examples{
 library(dplyr)
 data(efc)
@@ -47,6 +53,10 @@ std(efc, e17age, c160age, append = TRUE) \%>\% head()
 center(efc$c160age) \%>\% head()
 center(efc, e17age, c160age) \%>\% head()
 center(efc, e17age, c160age, append = TRUE) \%>\% head()
+
+# NOTE!
+std(efc$e17age) # returns a vector
+std(efc, e17age) # returns a tibble
 
 }
 
