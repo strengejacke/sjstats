@@ -126,6 +126,8 @@ cod <- function(x) {
 #'          For generalized linear mixed models, the coefficient of determination
 #'          as suggested by \cite{Tjur (2009)} (see also \code{\link{cod}}).
 #'
+#' @seealso \code{\link{rmse}} for more methods to assedd model quality.
+#'
 #' @references \itemize{
 #'               \item \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ}
 #'               \item Byrnes, J. 2008. Re: Coefficient of determination (R^2) when using lme() (\url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q2/000713.html})

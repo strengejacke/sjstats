@@ -108,4 +108,7 @@ r2(fit, fit.null)
               \item Tjur T. 2009. Coefficients of determination in logistic regression models - a new proposal: The coefficient of discrimination. The American Statistician, 63(4): 366-372
             }
 }
+\seealso{
+\code{\link{rmse}} for more methods to assedd model quality.
+}
 

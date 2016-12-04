@@ -1,6 +1,7 @@
-#' @title Root Mean Squared Error (RMSE)
+#' @title Compute model quality
 #' @name rmse
-#' @description Compute root mean squared error  of fitted linear (mixed effects) models.
+#' @description Compute root mean squared error, residual standard error or
+#'              mean square error of fitted linear (mixed effects) models.
 #'
 #' @param fit Fitted linear model of class \code{\link{lm}},
 #'          \code{\link[lme4]{merMod}} (lme4) or \code{\link[nlme]{lme}} (nlme).
@@ -9,15 +10,17 @@
 #' @return The root mean squared error of \code{fit}; or the normalized
 #'           root mean squared error of \code{fit} if \code{normalized = TRUE}.
 #'
-#' @seealso \code{\link{cv}} for the coefficient of variation, and
-#'            \code{\link{rse}} for the residual standard error.
+#' @seealso \code{\link{r2}} for R-squared or pseude-R-squared values, and
+#'            \code{\link{cv}} for the coefficient of variation.
 #'
 #' @references \itemize{
 #'              \item \href{http://en.wikipedia.org/wiki/Root-mean-square_deviation}{Wikipedia: RMSD}
 #'              \item \href{http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/}{Grace-Martin K: Assessing the Fit of Regression Models}
 #'             }
 #'
-#' @note The RMSE is the square root of the variance of the residuals and indicates
+#' @note \describe{
+#'         \item{\strong{Root Mean Square Error}}{
+#'         The RMSE is the square root of the variance of the residuals and indicates
 #'         the absolute fit of the model to the data (difference between observed data
 #'         to model's predicted values). \dQuote{RMSE can be interpreted as the standard
 #'         deviation of the unexplained variance, and has the useful property
@@ -30,22 +33,35 @@
 #'         The normalized RMSE is the proportion of the RMSE related to the
 #'         range of the response variable. Hence, lower values indicate
 #'         less residual variance.
+#'         }
+#'         \item{\strong{Residual Standard Error}}{
+#'         The residual standard error is the square root of the residual
+#'         sum of squares divided by the residual degrees of freedom.
+#'         }
+#'         \item{\strong{Mean Square Error}}{
+#'         The mean square error is the mean of the sum of squared residuals,
+#'         i.e. it measures the average of the squares of the errors. Lower
+#'         values (closer to zero) indicate better fit.?
+#'         }
+#'       }
 #'
 #' @examples
 #' data(efc)
 #' fit <- lm(barthtot ~ c160age + c12hour, data = efc)
 #' rmse(fit)
+#' rse(fit)
 #'
 #' library(lme4)
 #' fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' rmse(fit)
+#' mse(fit)
 #'
 #' # normalized RMSE
 #' library(nlme)
 #' fit <- lme(distance ~ age, data = Orthodont)
 #' rmse(fit, normalized = TRUE)
 #'
-#' @importFrom stats residuals
+#' @importFrom stats residuals df.residual
 #' @export
 rmse <- function(fit, normalized = FALSE) {
   # compute rmse
@@ -62,33 +78,19 @@ rmse <- function(fit, normalized = FALSE) {
 }
 
 
-#' @title Residual Standard Error (RSE)
+#' @rdname rmse
 #' @name rse
-#' @description Compute the residual standard error of fitted linear (mixed effects) models.
-#'
-#' @param fit Fitted linear model of class \code{\link{lm}} or
-#'          \code{\link[lme4]{merMod}} (\pkg{lme4}).
-#'
-#' @return The residual standard error of \code{fit}.
-#'
-#' @seealso \code{\link{cv}} for the coefficient of variation, and
-#'            \code{\link{rmse}} for the root mean squared error.
-#'
-#' @note The residual standard error is the square root of the residual
-#'        sum of squares divided by the residual degrees of freedom.
-#'
-#' @examples
-#' data(efc)
-#' fit <- lm(barthtot ~ c160age + c12hour, data = efc)
-#' rse(fit)
-#'
-#' library(lme4)
-#' fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
-#' rse(fit)
-#'
-#' @importFrom stats residuals df.residual
 #' @export
 rse <- function(fit) {
   # Residual standard error
   sqrt(sum(stats::residuals(fit) ^ 2, na.rm = T) / stats::df.residual(fit))
+}
+
+
+#' @rdname rmse
+#' @name mse
+#' @export
+mse <- function(fit) {
+  # Mean square error
+  mean(sum(stats::residuals(fit) ^ 2, na.rm = T))
 }

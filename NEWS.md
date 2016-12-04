@@ -3,6 +3,7 @@
 ## New functions
 
 * `prop()` to calculate proportion of values in a vector.
+* `mse()` to calculate the mean square error for models.
 
 # sjstats 0.6.0
 
