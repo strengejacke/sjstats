@@ -16,8 +16,14 @@ between 1 and \code{nrow(data)} or a value between 0 and 1 to sample
 a proportion of observations from \code{data} (see 'Examples').}
 }
 \value{
-A \code{\link[tibble]{data_frame}} with one column: a list-variable
-          \code{strap}, which contains the bootstrapped samples from \code{data}.
+A \code{\link[tibble]{tibble}} with one column: a list-variable
+          \code{strap}, which contains resample-objects of class \code{sj_resample}.
+          These resample-objects are lists with three elemenents:
+          \enumerate{
+            \item the original data frame, \code{data}
+            \item the rownmumbers \code{id}, i.e. rownumbers of \code{data}, indicating the resampled rows with replacement
+            \item the \code{resample.id}, indicating the index of the resample (i.e. the position of the \code{sj_resample}-object in the list \code{strap})
+          }
 }
 \description{
 Generates \code{n} bootstrap samples of \code{data} and
@@ -38,7 +44,9 @@ This function applies nonparametric bootstrapping, i.e. the function
       draws samples with replacement.
       \cr \cr
       There is an \code{as.data.frame}- and a \code{print}-method to get or
-      print the resampled data frames. See 'Examples'.
+      print the resampled data frames. See 'Examples'. The \code{as.data.frame}-
+      method automatically applies whenever coercion is done because a data
+      frame is required as input. See 'Examples' in \code{\link{boot_ci}}.
 }
 \examples{
 data(efc)

@@ -137,7 +137,7 @@
 #'  }}
 #'
 #' @importFrom stats cor
-#' @importFrom tibble data_frame
+#' @importFrom tibble tibble
 #' @export
 reliab_test <- function(x, scale.items = FALSE, digits = 3) {
   # check param
@@ -183,9 +183,9 @@ reliab_test <- function(x, scale.items = FALSE, digits = 3) {
     }
 
     # create return value
-    ret.df <- tibble::data_frame(term = df.names,
-                                 alpha.if.deleted = round(cronbachDeleted, digits),
-                                 item.discr = round(totalCorr, digits))
+    ret.df <- tibble::tibble(term = df.names,
+                             alpha.if.deleted = round(cronbachDeleted, digits),
+                             item.discr = round(totalCorr, digits))
   } else {
     warning("Data frame needs at least three columns for reliability-test.", call. = F)
     ret.df <- NULL

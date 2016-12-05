@@ -22,7 +22,7 @@ or if only selected variables from \code{data} should be used
 in the function.}
 }
 \value{
-A \code{\link[tibble]{data_frame}} with either bootstrap standard error,
+A \code{\link[tibble]{tibble}} with either bootstrap standard error,
         the lower and upper confidence intervals or the p-value for all
         bootstrapped estimates.
 }

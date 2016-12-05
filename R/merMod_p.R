@@ -103,7 +103,7 @@ merMod_p <- function(x, p.kr = TRUE) {
 #' get_model_pval(fit, p.kr = TRUE)
 #'
 #' @importFrom stats coef
-#' @importFrom tibble data_frame
+#' @importFrom tibble tibble
 #' @export
 get_model_pval <- function(fit, p.kr = FALSE) {
   # retrieve sigificance level of independent variables (p-values)
@@ -120,5 +120,5 @@ get_model_pval <- function(fit, p.kr = FALSE) {
     p <- stats::coef(summary(fit))[, 4]
     se <- stats::coef(summary(fit))[, 2]
   }
-  tibble::data_frame(term = names(p), p.value = as.vector(p), std.error = as.vector(se))
+  tibble::tibble(term = names(p), p.value = as.vector(p), std.error = as.vector(se))
 }

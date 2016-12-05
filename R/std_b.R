@@ -55,7 +55,7 @@
 #'
 #' @importFrom stats model.matrix coef terms
 #' @importFrom nlme getResponse
-#' @importFrom tibble data_frame
+#' @importFrom tibble tibble
 #' @export
 std_beta <- function(fit, type = "std") {
   # if we have merMod object (lme4), we need
@@ -118,15 +118,15 @@ std_beta <- function(fit, type = "std") {
     beta.se <- se * sx / sy
   }
   # return result
-  tibble::data_frame(term = names(b), std.estimate = beta,
-                     std.error = beta.se, conf.low = beta - 1.96 * beta.se,
-                     conf.high = beta + 1.96 * beta.se)
+  tibble::tibble(term = names(b), std.estimate = beta,
+                 std.error = beta.se, conf.low = beta - 1.96 * beta.se,
+                 conf.high = beta + 1.96 * beta.se)
 }
 
 
 #' @importFrom stats sd coef
 #' @importFrom lme4 fixef getME
-#' @importFrom tibble data_frame
+#' @importFrom tibble tibble
 sjs.stdmm <- function(fit) {
   # code from Ben Bolker, see
   # http://stackoverflow.com/a/26206119/2094622
@@ -135,6 +135,6 @@ sjs.stdmm <- function(fit) {
   sc <- lme4::fixef(fit) * sdx / sdy
   se.fixef <- stats::coef(summary(fit))[, "Std. Error"]
   se <- se.fixef * sdx / sdy
-  tibble::data_frame(term = names(lme4::fixef(fit)), std.estimate = sc,
-                     std.error = se, conf.low = sc - 1.96 * se, conf.high = sc + 1.96 * se)
+  tibble::tibble(term = names(lme4::fixef(fit)), std.estimate = sc,
+                 std.error = se, conf.low = sc - 1.96 * se, conf.high = sc + 1.96 * se)
 }

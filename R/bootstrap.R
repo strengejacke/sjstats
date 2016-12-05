@@ -10,8 +10,14 @@
 #'          between 1 and \code{nrow(data)} or a value between 0 and 1 to sample
 #'          a proportion of observations from \code{data} (see 'Examples').
 #'
-#' @return A \code{\link[tibble]{data_frame}} with one column: a list-variable
-#'           \code{strap}, which contains the bootstrapped samples from \code{data}.
+#' @return A \code{\link[tibble]{tibble}} with one column: a list-variable
+#'           \code{strap}, which contains resample-objects of class \code{sj_resample}.
+#'           These resample-objects are lists with three elemenents:
+#'           \enumerate{
+#'             \item the original data frame, \code{data}
+#'             \item the rownmumbers \code{id}, i.e. rownumbers of \code{data}, indicating the resampled rows with replacement
+#'             \item the \code{resample.id}, indicating the index of the resample (i.e. the position of the \code{sj_resample}-object in the list \code{strap})
+#'           }
 #'
 #' @details By default, each bootstrap sample has the same number of observations
 #'            as \code{data}. To generate bootstrap samples without resampling
@@ -26,7 +32,9 @@
 #'       draws samples with replacement.
 #'       \cr \cr
 #'       There is an \code{as.data.frame}- and a \code{print}-method to get or
-#'       print the resampled data frames. See 'Examples'.
+#'       print the resampled data frames. See 'Examples'. The \code{as.data.frame}-
+#'       method automatically applies whenever coercion is done because a data
+#'       frame is required as input. See 'Examples' in \code{\link{boot_ci}}.
 #'
 #'
 #' @seealso \code{\link{boot_ci}} to calculate confidence intervals from
@@ -57,7 +65,7 @@
 #' # standard error of original variable
 #' se(efc$c12hour)
 #'
-#' @importFrom tibble data_frame
+#' @importFrom tibble tibble
 #' @export
 bootstrap <- function(data, n, size) {
   if (!missing(size) && !is.null(size)) {
@@ -79,7 +87,7 @@ bootstrap <- function(data, n, size) {
   # add resample ID, may be used for other functions (like 'se()' for 'icc()')
   for (i in seq_len(length(strap))) strap[[i]]$resample.id <- i
   # return tibble
-  tibble::data_frame(strap)
+  tibble::tibble(strap)
 }
 
 
