@@ -7,14 +7,14 @@
 mean_n(dat, n, digits = 2)
 }
 \arguments{
-\item{dat}{\code{\link{data.frame}} with at least two columns, where row means are applied.}
+\item{dat}{A data frame with at least two columns, where row means are applied.}
 
 \item{n}{May either be
 \itemize{
   \item a numeric value that indicates the amount of valid values per row to calculate the row mean;
   \item or a value between 0 and 1, indicating a proportion of valid values per row to calculate the row mean (see 'Details').
 }
-If a row's amount of valid values is less than \code{n}, \code{\link{NA}} will be returned as row mean value.}
+If a row's sum of valid values is less than \code{n}, \code{\link{NA}} will be returned as row mean value.}
 
 \item{digits}{Numeric value indicating the number of decimal places to be used for rounding mean
 value. Negative values are allowed (see ‘Details’).}

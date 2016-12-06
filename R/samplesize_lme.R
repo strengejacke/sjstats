@@ -70,7 +70,7 @@ smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, i
 #' @title Design effects for two-level mixed models
 #' @name deff
 #'
-#' @description Compute the design effect (also caled \emph{Variance Inflation Factor})
+#' @description Compute the design effect (also called \emph{Variance Inflation Factor})
 #'              for mixed models with two-level design.
 #'
 #' @param n Average number of observations per grouping cluster (i.e. level-2 unit).

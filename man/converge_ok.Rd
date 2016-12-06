@@ -7,7 +7,7 @@
 converge_ok(x, tolerance = 0.001)
 }
 \arguments{
-\item{x}{A \code{\link[lme4]{merMod}}-object.}
+\item{x}{A \code{merMod}-object.}
 
 \item{tolerance}{Indicates up to which value the convergence result is
 accepted. The smaller \code{tolerance} is, the stricter the test

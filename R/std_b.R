@@ -60,7 +60,7 @@
 std_beta <- function(fit, type = "std") {
   # if we have merMod object (lme4), we need
   # other function to compute std. beta
-  if (any(class(fit) == "lmerMod") || any(class(fit) == "merModLmerTest"))
+  if (inherits(fit, c("lmerMod", "merModLmerTest")))
     return(sjs.stdmm(fit))
 
   # has model intercept?

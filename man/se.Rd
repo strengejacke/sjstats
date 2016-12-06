@@ -8,8 +8,9 @@ se(x, nsim = 100)
 }
 \arguments{
 \item{x}{(Numeric) vector, a data frame, a \code{merMod}-object
-as returned by the \code{\link[lme4]{lmer}}-method,
-or a list with estimate and p-value. For the latter case, the list
+as returned by the \code{\link[lme4]{lmer}}-method, an ICC object
+(as obtained by the \code{\link{icc}}-function) or a list with
+estimate and p-value. For the latter case, the list
 must contain elements named \code{estimate} and \code{p.value}
 (see 'Examples' and 'Details').}
 

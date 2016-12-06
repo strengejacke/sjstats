@@ -2,9 +2,12 @@
 % Please edit documentation in R/weight.R
 \name{wtd_sd}
 \alias{wtd_sd}
-\title{Weighted standard deviation for variables}
+\alias{wtd_se}
+\title{Weighted statistics for variables}
 \usage{
 wtd_sd(x, weights = NULL)
+
+wtd_se(x, weights = NULL)
 }
 \arguments{
 \item{x}{(Numeric) vector or a data frame.}
@@ -16,8 +19,8 @@ The weighted standard deviation of \code{x}, or for each variable
           if \code{x} is a data frame.
 }
 \description{
-Compute weighted standard deviation for a variable or for all variables
-               of a data frame.
+Compute weighted standard deviation or standard error for a
+               variable or for all variables of a data frame.
 }
 \examples{
 wtd_sd(rnorm(n = 100, mean = 3),
@@ -25,6 +28,7 @@ wtd_sd(rnorm(n = 100, mean = 3),
 
 data(efc)
 wtd_sd(efc[, 1:3], runif(n = nrow(efc)))
+wtd_se(efc[, 1:3], runif(n = nrow(efc)))
 
 }
 

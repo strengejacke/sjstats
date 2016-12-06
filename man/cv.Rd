@@ -54,10 +54,7 @@ cv(fit)
 
 }
 \references{
-\itemize{
-              \item \href{http://www.ats.ucla.edu/stat/mult_pkg/faq/general/coefficient_of_variation.htm}{UCLA-FAQ: What is the coefficient of variation?}
-              \item  Everitt, Brian (1998). The Cambridge Dictionary of Statistics. Cambridge, UK New York: Cambridge University Press
-            }
+Everitt, Brian (1998). The Cambridge Dictionary of Statistics. Cambridge, UK New York: Cambridge University Press
 }
 \seealso{
 \code{\link{rmse}}

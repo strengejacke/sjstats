@@ -35,12 +35,12 @@
 #' @export
 cod <- function(x) {
   # check for valid object class
-  if (!any(class(x) == "glmerMod") && !any(class(x) == "glm")) {
+  if (!inherits(x, c("glmerMod", "glm"))) {
     stop("`x` must be an object of class `glm` or `glmerMod`.", call. = F)
   }
 
   # mixed models (lme4)
-  if (any(class(x) == "glmerMod")) {
+  if (inherits(x, "glmerMod")) {
     # check for package availability
     y <- lme4::getME(x, "y")
     pred <- stats::predict(x, type = "response", re.form = NULL)

@@ -15,7 +15,7 @@ deff(n, icc = 0.05)
 The design effect (Variance Inflation Factor) for the two-level model.
 }
 \description{
-Compute the design effect (also caled \emph{Variance Inflation Factor})
+Compute the design effect (also called \emph{Variance Inflation Factor})
              for mixed models with two-level design.
 }
 \examples{

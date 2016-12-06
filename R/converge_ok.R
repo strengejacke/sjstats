@@ -4,7 +4,7 @@
 #' @description This function provides an alternative convergence test for
 #'                \code{\link[lme4]{merMod}}-objects.
 #'
-#' @param x A \code{\link[lme4]{merMod}}-object.
+#' @param x A \code{merMod}-object.
 #' @param tolerance Indicates up to which value the convergence result is
 #'          accepted. The smaller \code{tolerance} is, the stricter the test
 #'          will be.

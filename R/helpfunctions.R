@@ -2,7 +2,7 @@
 
 
 is_merMod <- function(fit) {
-  return(any(class(fit) %in% c("lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
+  return(inherits(fit, c("lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
 }
 
 #' @importFrom sjmisc str_contains

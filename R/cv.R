@@ -27,10 +27,7 @@
 #'
 #' @seealso \code{\link{rmse}}
 #'
-#' @references \itemize{
-#'               \item \href{http://www.ats.ucla.edu/stat/mult_pkg/faq/general/coefficient_of_variation.htm}{UCLA-FAQ: What is the coefficient of variation?}
-#'               \item  Everitt, Brian (1998). The Cambridge Dictionary of Statistics. Cambridge, UK New York: Cambridge University Press
-#'             }
+#' @references Everitt, Brian (1998). The Cambridge Dictionary of Statistics. Cambridge, UK New York: Cambridge University Press
 #'
 #' @examples
 #' data(efc)
@@ -64,8 +61,7 @@ cv <- function(x, ...) {
 
 cv_helper <- function(x) {
   # check if we have a fitted linear model
-  if (class(x) == "lm" || any(class(x) == "lmerMod") ||
-      any(class(x) == "lme") || any(class(x) == "merModLmerTest")) {
+  if (inherits(x, c("lm", "lmerMod", "lme", "merModLmerTest"))) {
     # get response
     dv <- resp_val(x)
     # compute mean of dependent variable

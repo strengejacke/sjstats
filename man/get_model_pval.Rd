@@ -23,7 +23,16 @@ A \code{\link{tibble}} with the model coefficients' names (\code{term}),
 This function returns the p-values for fitted model objects.
 }
 \details{
-For linear mixed models (\code{lmerMod}-objects), see \code{\link{merMod_p}}.
+For linear mixed models (\code{lmerMod}-objects), the computation of
+        p-values (if \code{p.kr = TRUE}) is based on conditional F-tests
+        with Kenward-Roger approximation for the df, using the
+        \CRANpkg{pbkrtest}-package. If \pkg{pbkrtest} is not available or
+        \code{p.kr = FALSE}, or if \code{x} is a \code{glmerMod}-object,
+        computation of p-values is based on normal-distribution assumption,
+        treating the t-statistics as Wald z-statistics.
+        \cr \cr
+        If p-values already have been computed (e.g. for \code{merModLmerTest})-objects
+        from the \CRANpkg{lmerTest}-package), these will be returned.
 }
 \examples{
 data(efc)

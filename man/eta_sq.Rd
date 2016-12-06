@@ -38,11 +38,6 @@ eta_sq(efc$c12hour, efc$e42dep)
 
 }
 \references{
-\itemize{
-              \item \href{http://stats.stackexchange.com/questions/78808/}{How to compute eta-sq in ANOVA by hand?}
-              \item \href{http://stats.stackexchange.com/questions/15958/}{How to interpret and report eta squared?}
-              \item \href{http://en.wikiversity.org/wiki/Eta-squared}{Wikipedia: Eta-squared}
-              \item Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
-            }
+Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
 }
 

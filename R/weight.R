@@ -104,10 +104,10 @@ weight <- function(x, weights, digits = 0) {
 }
 
 
-#' @title Weighted standard deviation for variables
+#' @title Weighted statistics for variables
 #' @name wtd_sd
-#' @description Compute weighted standard deviation for a variable or for all variables
-#'                of a data frame.
+#' @description Compute weighted standard deviation or standard error for a
+#'                variable or for all variables of a data frame.
 #'
 #' @param x (Numeric) vector or a data frame.
 #' @param weights Numeric vector of weights.
@@ -120,6 +120,7 @@ weight <- function(x, weights, digits = 0) {
 #'
 #' data(efc)
 #' wtd_sd(efc[, 1:3], runif(n = nrow(efc)))
+#' wtd_se(efc[, 1:3], runif(n = nrow(efc)))
 #'
 #' @export
 wtd_sd <- function(x, weights = NULL) {
@@ -150,23 +151,7 @@ wtd_sd <- function(x, weights = NULL) {
 }
 
 
-#' @title Weighted standard error for variables
-#' @name wtd_se
-#' @description Compute weighted standard error for a variable or for all variables
-#'                of a data frame.
-#'
-#' @param x (Numeric) vector or a data frame.
-#' @param weights Numeric vector of weights.
-#' @return The weighted standard error of \code{x}, or for each variable
-#'           if \code{x} is a data frame.
-#'
-#' @examples
-#' wtd_se(rnorm(n = 100, mean = 3),
-#'        runif(n = 100))
-#'
-#' data(efc)
-#' wtd_se(efc[, 1:3], runif(n = nrow(efc)))
-#'
+#' @rdname wtd_sd
 #' @export
 wtd_se <- function(x, weights = NULL) {
   # check if suggested packages are available

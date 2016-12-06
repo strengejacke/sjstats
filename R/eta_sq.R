@@ -12,12 +12,7 @@
 #'          \item .26 ~ large
 #'         }
 #'
-#' @references \itemize{
-#'               \item \href{http://stats.stackexchange.com/questions/78808/}{How to compute eta-sq in ANOVA by hand?}
-#'               \item \href{http://stats.stackexchange.com/questions/15958/}{How to interpret and report eta squared?}
-#'               \item \href{http://en.wikiversity.org/wiki/Eta-squared}{Wikipedia: Eta-squared}
-#'               \item Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
-#'             }
+#' @references Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
 #'
 #' @examples
 #' # load sample data
@@ -39,7 +34,7 @@ eta_sq <- function(...) {
   input_list <- list(...)
 
   # check if fitted anova
-  if (length(input_list) == 1 && any(class(input_list[[1]]) == "aov")) {
+  if (length(input_list) == 1 && inherits(input_list[[1]], "aov")) {
     # retrieve model
     fit <- input_list[[1]]
   } else if (length(input_list) == 2) {

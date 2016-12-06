@@ -47,7 +47,7 @@
 #' @importFrom stats na.omit fitted resid formula as.formula lm pnorm chisq.test
 #' @export
 chisq_gof <- function(x, prob = NULL, weights = NULL) {
-  if (any(class(x) == "glm")) {
+  if (inherits(x, "glm")) {
 
     # This is an adapted version from the
     # "binomTools" package. The "X2GOFtest()"
@@ -129,12 +129,12 @@ chisq_gof <- function(x, prob = NULL, weights = NULL) {
 #' @export
 hoslem_gof <- function(x, g = 10) {
   # check for valid object class
-  if (!any(class(x) == "glmerMod") && !any(class(x) == "glm")) {
+  if (!inherits(x, c("glmerMod", "glm"))) {
     stop("'x' must be an object of class 'glm' or 'glmerMod'.", call. = F)
   }
 
   # mixed models (lme4)
-  if (any(class(x) == "glmerMod")) {
+  if (inherits(x, "glmerMod")) {
     # check for package availability
     if (!requireNamespace("lme4", quietly = TRUE)) {
       stop("Package 'lme4' needed for this function to work. Please install it.", call. = FALSE)

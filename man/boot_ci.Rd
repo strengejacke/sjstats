@@ -115,6 +115,9 @@ efc \%>\%
   boot_ci()
 
 }
+\references{
+Carpenter J, Bithell J. Bootstrap confdence intervals: when, which, what? A practical guide for medical statisticians. Statist. Med. 2000; 19:1141-1164
+}
 \seealso{
 \code{\link{bootstrap}} to generate nonparametric bootstrap samples.
 }

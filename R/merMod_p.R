@@ -1,16 +1,17 @@
-#' @title Compute p-values for merMod objects
-#' @name merMod_p
+#' @title Get p-values from regression model objects
+#' @name get_model_pval
 #'
-#' @description This function computes p-values for mixed effects models
-#'                (\code{merMod}-objects) that have been fitted with the
-#'                \CRANpkg{lme4}-package.
+#' @description This function returns the p-values for fitted model objects.
 #'
-#' @param x A fitted (generalized) linear (mixed) model (\code{merMod}-object).
+#' @param fit A fitted model object of \code{lm}, \code{glm}, \code{merMod},
+#'        \code{merModLmerTest}, \code{pggls} or \code{gls}. Other classes may
+#'        work as well.
 #' @param p.kr Logical, if \code{TRUE}, the computation of p-values is based on
 #'         conditional F-tests with Kenward-Roger approximation for the df (see
 #'         'Details').
 #'
-#' @return A named vector with p-values for the model coefficients.
+#' @return A \code{\link{tibble}} with the model coefficients' names (\code{term}),
+#'         p-values (\code{p.value}) and standard errors (\code{std.error}).
 #'
 #' @details For linear mixed models (\code{lmerMod}-objects), the computation of
 #'         p-values (if \code{p.kr = TRUE}) is based on conditional F-tests
@@ -24,14 +25,49 @@
 #'         from the \CRANpkg{lmerTest}-package), these will be returned.
 #'
 #' @examples
-#' library(lme4)
-#' # fit model
-#' fit <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
-#' merMod_p(fit)
-#' merMod_p(fit, p.kr = FALSE)
+#' data(efc)
+#' # linear model fit
+#' fit <- lm(neg_c_7 ~ e42dep + c172code, data = efc)
+#' get_model_pval(fit)
 #'
-#' @importFrom stats coef pt pnorm
+#' # Generalized Least Squares fit
+#' library(nlme)
+#' fit <- gls(follicles ~ sin(2*pi*Time) + cos(2*pi*Time), Ovary,
+#'            correlation = corAR1(form = ~ 1 | Mare))
+#' get_model_pval(fit)
+#'
+#' # lme4-fit
+#' library(lme4)
+#' fit <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
+#' get_model_pval(fit, p.kr = TRUE)
+#'
+#' @importFrom stats coef
+#' @importFrom tibble tibble
 #' @export
+get_model_pval <- function(fit, p.kr = FALSE) {
+  # retrieve sigificance level of independent variables (p-values)
+  if (inherits(fit, "pggls")) {
+    p <- summary(fit)$CoefTable[, 4]
+    se <- summary(fit)$CoefTable[, 2]
+  } else if (inherits(fit, "gls")) {
+    p <- summary(fit)$tTable[, 4]
+    se <- summary(fit)$tTable[, 2]
+  } else if (is_merMod(fit)) {
+    p <- merMod_p(fit, p.kr)
+    se <- stats::coef(summary(fit))[, 2]
+  } else if (inherits(fit, c("pglm", "maxLik"))) {
+    # p-values
+    p <- summary(fit)$estimate[, 4]
+    se <- summary(fit)$estimate[, 2]
+  } else {
+    p <- stats::coef(summary(fit))[, 4]
+    se <- stats::coef(summary(fit))[, 2]
+  }
+  tibble::tibble(term = names(p), p.value = as.vector(p), std.error = as.vector(se))
+}
+
+
+#' @importFrom stats coef pt pnorm
 merMod_p <- function(x, p.kr = TRUE) {
   # retrieve sigificance level of independent variables (p-values)
   if (any(class(x) == "merModLmerTest") && requireNamespace("lmerTest", quietly = TRUE)) {
@@ -65,60 +101,4 @@ merMod_p <- function(x, p.kr = TRUE) {
     pv <- 2 * stats::pnorm(abs(cs[, 3]), lower.tail = FALSE)
   }
   return(pv)
-}
-
-
-#' @title Get p-values from regression model objects
-#' @name get_model_pval
-#'
-#' @description This function returns the p-values for fitted model objects.
-#'
-#' @param fit A fitted model object of \code{lm}, \code{glm}, \code{merMod},
-#'        \code{merModLmerTest}, \code{pggls} or \code{gls}. Other classes may
-#'        work as well.
-#' @param p.kr Logical, if \code{TRUE}, the computation of p-values is based on
-#'         conditional F-tests with Kenward-Roger approximation for the df (see
-#'         'Details').
-#'
-#' @return A \code{\link{tibble}} with the model coefficients' names (\code{term}),
-#'         p-values (\code{p.value}) and standard errors (\code{std.error}).
-#'
-#' @details For linear mixed models (\code{lmerMod}-objects), see \code{\link{merMod_p}}.
-#'
-#' @examples
-#' data(efc)
-#' # linear model fit
-#' fit <- lm(neg_c_7 ~ e42dep + c172code, data = efc)
-#' get_model_pval(fit)
-#'
-#' # Generalized Least Squares fit
-#' library(nlme)
-#' fit <- gls(follicles ~ sin(2*pi*Time) + cos(2*pi*Time), Ovary,
-#'            correlation = corAR1(form = ~ 1 | Mare))
-#' get_model_pval(fit)
-#'
-#' # lme4-fit
-#' library(lme4)
-#' fit <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
-#' get_model_pval(fit, p.kr = TRUE)
-#'
-#' @importFrom stats coef
-#' @importFrom tibble tibble
-#' @export
-get_model_pval <- function(fit, p.kr = FALSE) {
-  # retrieve sigificance level of independent variables (p-values)
-  if (any(class(fit) == "pggls")) {
-    p <- summary(fit)$CoefTable[, 4]
-    se <- summary(fit)$CoefTable[, 2]
-  } else if (any(class(fit) == "gls")) {
-    p <- summary(fit)$tTable[, 4]
-    se <- summary(fit)$tTable[, 2]
-  } else if (is_merMod(fit)) {
-    p <- merMod_p(fit, p.kr)
-    se <- stats::coef(summary(fit))[, 2]
-  } else {
-    p <- stats::coef(summary(fit))[, 4]
-    se <- stats::coef(summary(fit))[, 2]
-  }
-  tibble::tibble(term = names(p), p.value = as.vector(p), std.error = as.vector(se))
 }
