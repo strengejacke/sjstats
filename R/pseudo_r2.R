@@ -170,13 +170,13 @@ r2 <- function(x, n = NULL) {
   osq <- NULL
   adjr2 <- NULL
   # do we have a glm? if so, report pseudo_r2
-  if (any(class(x) == "glm")) {
+  if (inherits(x, "glm")) {
     return(pseudo_ralt(x))
     # do we have a glmer?
-  } else if (any(class(x) == "glmerMod")) {
+  } else if (inherits(x, "glmerMod")) {
     return(cod(x))
     # do we have a simple linear model?
-  } else if (identical(class(x), "lm")) {
+  } else if (inherits(x, "lm")) {
     rsq <- summary(x)$r.squared
     adjr2 <- summary(x)$adj.r.squared
     # name vectors
@@ -185,7 +185,7 @@ r2 <- function(x, n = NULL) {
     # return results
     return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
     # else do we have a mixed model?
-  } else if (any(class(x) == "plm")) {
+  } else if (inherits(x, "plm")) {
     rsq <- summary(x)$r.squared[1]
     adjr2 <- summary(x)$r.squared[2]
     # name vectors

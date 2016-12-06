@@ -71,7 +71,7 @@ overdisp.default <- function(x, trafo) {
 
 overdisp.lme4 <- function(x) {
   # check object class
-  if (any(class(x) == "glmerMod")) {
+  if (inherits(x, "glmerMod")) {
     rdf <- stats::df.residual(x)
     rp <- stats::residuals(x, type = "pearson")
     Pearson.chisq <- sum(rp ^ 2)

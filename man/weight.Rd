@@ -2,9 +2,12 @@
 % Please edit documentation in R/weight.R
 \name{weight}
 \alias{weight}
+\alias{weight2}
 \title{Weight a variable}
 \usage{
 weight(x, weights, digits = 0)
+
+weight2(x, weights)
 }
 \arguments{
 \item{x}{(Unweighted) variable}
@@ -21,8 +24,14 @@ used for rounding the weighted values. By default, this value is
 The weighted \code{x}.
 }
 \description{
-This function weights the variable \code{x} by
+These functions weight the variable \code{x} by
                a specific vector of \code{weights}.
+}
+\details{
+\code{weight2()} sums up all \code{weights} values of the associated
+           categories of \code{x}, whereas \code{weight()} uses a
+           \code{\link{xtabs}} formula to weight cases. Thus, \code{weight()}
+           may return a vector of different length than \code{x}.
 }
 \note{
 The values of the returned vector are in sorted order, whereas the values'
@@ -36,6 +45,7 @@ v <- sample(1:4, 20, TRUE)
 table(v)
 w <- abs(rnorm(20))
 table(weight(v, w))
+table(weight2(v, w))
 
 set.seed(1)
 x <- sample(letters[1:5], size = 20, replace = TRUE)
@@ -44,8 +54,5 @@ w <- runif(n = 20)
 table(x)
 table(weight(x, w))
 
-}
-\seealso{
-\code{\link{weight2}}
 }
 

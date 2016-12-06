@@ -10,7 +10,7 @@ model.matrix.gls <- function(object, ...) {
 #' @importFrom sjmisc get_label
 #' @export
 model.frame.gls <- function(formula, ...) {
-  if (all(class(formula) != "gls")) {
+  if (!inherits(formula, "gls")) {
     stop("`formula` needs to be an object of class `gls`.", call. = F)
     return(NULL)
   } else {
@@ -76,13 +76,13 @@ print.icc.lme4 <- function(x, comp, ...) {
     tmp <- sprintf("%.3f", attr(x, "sigma_2", exact = TRUE))
     cat(sprintf("      Within-group-variance: %8s\n", tmp))
     # print between-group-variance tau00
-    for (i in 1:(length(tau.00))) {
+    for (i in seq_len(length(tau.00))) {
       tmp <- sprintf("%.3f", tau.00[i])
       cat(sprintf("     Between-group-variance: %8s (%s)\n",
                   tmp, names(tau.00)[i]))
     }
     # print random-slope-variance tau11
-    for (i in 1:length(tau.11)) {
+    for (i in seq_len(length(tau.11))) {
       tau.rs <- tau.11[i]
       # any random slope?
       if (!sjmisc::is_empty(tau.rs)) {
@@ -92,7 +92,7 @@ print.icc.lme4 <- function(x, comp, ...) {
       }
     }
     # print random-slope-covariance tau01
-    for (i in 1:length(tau.01)) {
+    for (i in seq_len(length(tau.01))) {
       tau.rs <- tau.01[i]
       # any random slope?
       if (!sjmisc::is_empty(tau.rs)) {
@@ -102,7 +102,7 @@ print.icc.lme4 <- function(x, comp, ...) {
       }
     }
     # print random-slope-correlation rho01
-    for (i in 1:length(rho.01)) {
+    for (i in seq_len(length(rho.01))) {
       rho.rs <- rho.01[i]
       # any random slope?
       if (!sjmisc::is_empty(rho.rs)) {
@@ -115,7 +115,7 @@ print.icc.lme4 <- function(x, comp, ...) {
     # get longest rand. effect name
     len <- max(nchar(names(x)))
     # print icc
-    for (i in 1:length(x)) {
+    for (i in seq_len(length(x))) {
       # create info string
       infs <- sprintf("ICC (%s)", names(x[i]))
       # print info line, formatting all ICC values so they're
@@ -189,7 +189,7 @@ plot.sj_inequ_trend <- function(x, ...) {
 
   # plot prevalences
   gp1 <- ggplot2::ggplot(dat2, ggplot2::aes_string(x = "zeit", y = "y", colour = "grp")) +
-    ggplot2::stat_smooth(se = F) +
+    ggplot2::geom_smooth(method = "loess", se = F) +
     ggplot2::labs(title = "Prevalance Rates for Lower and Higher SES Groups",
                   y = "Prevalances", x = "Time", colour = "") +
     ggplot2::scale_color_manual(values = c("darkblue", "darkred"), labels = c("High SES", "Low SES"))
@@ -197,14 +197,14 @@ plot.sj_inequ_trend <- function(x, ...) {
 
   # plot rr and rd
   gp2 <- ggplot2::ggplot(dat1, ggplot2::aes_string(x = "zeit", y = "y", colour = "grp")) +
-    ggplot2::stat_smooth(se = F) +
+    ggplot2::geom_smooth(method = "loess", se = F) +
     ggplot2::facet_wrap(~grp, ncol = 1, scales = "free") +
     ggplot2::labs(title = "Proportional Change in Rate Ratios and Rate Differences",
                   colour = NULL, y = NULL, x = "Time") +
     ggplot2::guides(colour = FALSE)
 
-  graphics::plot(gp1)
-  graphics::plot(gp2)
+  suppressMessages(graphics::plot(gp1))
+  suppressMessages(graphics::plot(gp2))
 }
 
 

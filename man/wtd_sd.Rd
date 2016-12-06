@@ -15,8 +15,8 @@ wtd_se(x, weights = NULL)
 \item{weights}{Numeric vector of weights.}
 }
 \value{
-The weighted standard deviation of \code{x}, or for each variable
-          if \code{x} is a data frame.
+The weighted standard deviation or standard error of \code{x},
+          or for each variable if \code{x} is a data frame.
 }
 \description{
 Compute weighted standard deviation or standard error for a
