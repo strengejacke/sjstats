@@ -1,7 +1,7 @@
 #' @title Standardize and center variables
 #' @name std
-#' @description \code{std} computes a z-transformation (standardized and centered)
-#'              on the input. \code{center} centers the input.
+#' @description \code{std()} computes a z-transformation (standardized and centered)
+#'              on the input. \code{center()} centers the input.
 #'
 #' @param data A variable that should be standardized or centered, or a
 #'          data frame with such variables.

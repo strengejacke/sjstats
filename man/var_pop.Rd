@@ -20,7 +20,7 @@ Calculate the population variance or standard deviation of a vector.
 }
 \details{
 Unlike \code{\link[stats]{var}}, which returns the sample variance,
-           \code{var_pop} returns the population variance. \code{sd_pop}
+           \code{var_pop()} returns the population variance. \code{sd_pop()}
            returns the standard deviation based on the population variance.
 }
 \examples{

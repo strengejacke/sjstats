@@ -108,7 +108,7 @@ cod <- function(x) {
 #'          \cr \cr
 #'          For linear mixed models, an r-squared approximation by computing the
 #'          correlation between the fitted and observed values, as suggested by
-#'          \cite{Byrnes (2008)}, is returned as well as a simpliefied version of
+#'          \cite{Byrnes (2008)}, is returned as well as a simplified version of
 #'          the Omega-squared value (1 - (residual variance / response variance),
 #'          \cite{Xu (2003)}, \cite{Nakagawa, Schielzeth 2013}), unless \code{n}
 #'          is specified.
@@ -126,7 +126,7 @@ cod <- function(x) {
 #'          For generalized linear mixed models, the coefficient of determination
 #'          as suggested by \cite{Tjur (2009)} (see also \code{\link{cod}}).
 #'
-#' @seealso \code{\link{rmse}} for more methods to assedd model quality.
+#' @seealso \code{\link{rmse}} for more methods to assess model quality.
 #'
 #' @references \itemize{
 #'               \item \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ}

@@ -25,7 +25,7 @@ when the variables have different measures / scales.}
 
 \item{digits}{Amount of digits for returned values.}
 
-\item{cor.method}{For \code{mic()}, indicates the correlation computation method. May be one of
+\item{cor.method}{Correlation computation method. May be one of
 \code{"spearman"} (default), \code{"pearson"} or \code{"kendall"}.
 You may use initial letter only.}
 }
@@ -79,12 +79,12 @@ These function compute various measures of internal consistencies
          }
 }
 \note{
-The \code{reliab_test} function is similar to a basic reliability test
+\code{reliab_test()} is similar to a basic reliability test
         in SPSS. The correlations in the Item-Total-Statistic are a computed
         correlation of each item against the sum of the remaining items
         (which are thus treated as one item).
         \cr \cr
-        For \code{split_half} and \code{cronb}, a value closer  to 1 indicates
+        For \code{split_half()} and \code{cronb()}, a value closer  to 1 indicates
         greater internal consistency.
         \cr \cr
         For the mean inter-item-correlation:
@@ -153,12 +153,5 @@ Spearman C. 1910. Correlation calculated from faulty data. British Journal of Ps
             Brown W. 1910. Some experimental results in the correlation of mental abilities. British Journal of Psychology (3): 296–322. \doi{10.1111/j.2044-8295.1910.tb00207.x}
             \cr \cr
             Piedmont RL. 2014. Inter-item Correlations. In: Michalos AC (eds) Encyclopedia of Quality of Life and Well-Being Research. Dordrecht: Springer, 3303-3304. \doi{10.1007/978-94-007-0753-5_1493}
-}
-\seealso{
-To check internal consistency: \code{\link{cronb}} to calculate
-           Cronbach's Alpha; \code{\link{reliab_test}} to compute a reliability
-           test (item-discrimination); \code{\link{mic}} to calculate the mean
-           inter-item-correlation and \code{\link{split_half}} to calculate
-           the split-half reliability (with Spearman–Brown adjustment).
 }
 

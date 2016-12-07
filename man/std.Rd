@@ -34,8 +34,8 @@ Either a vector with standardized or centered variables, if \code{data}
         standardized and centered variables are added as new columns to \code{data}.
 }
 \description{
-\code{std} computes a z-transformation (standardized and centered)
-             on the input. \code{center} centers the input.
+\code{std()} computes a z-transformation (standardized and centered)
+             on the input. \code{center()} centers the input.
 }
 \note{
 \code{std()} and \code{center()} only return a vector, if \code{data} is

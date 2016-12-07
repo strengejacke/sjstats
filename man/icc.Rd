@@ -118,7 +118,6 @@ print(icc2, comp = "var")
             }
 }
 \seealso{
-\code{\link{re_var}} to print random effect variances and \code{\link{get_re_var}}
-           to get the values from a particular variance component.
+\code{\link{re_var}}
 }
 

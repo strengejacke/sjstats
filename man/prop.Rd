@@ -9,9 +9,10 @@ prop(data, ..., na.rm = FALSE)
 \arguments{
 \item{data}{A data frame.}
 
-\item{...}{One or more value pairs of comparisons. Put variable names the
-left-hand-side and values to match on the right hand side.
-Expressions may be quoted or unquoted. See 'Examples'.}
+\item{...}{One or more value pairs of comparisons (logical predicates). Put
+variable names the left-hand-side and values to match on the
+right hand side. Expressions may be quoted or unquoted. See
+'Examples'.}
 
 \item{na.rm}{Logical, whether to remove NA values from the vector when the
 proportion is calculated. \code{na.rm = FALSE} gives you the raw

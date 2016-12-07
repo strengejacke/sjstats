@@ -31,7 +31,7 @@ For vectors, returns the object of the computed \code{\link{chisq.test}}.
 \description{
 This method performs a Chi-square goodness-of-fit-test (GOF)
                either on a numeric vector against probabilities, or
-               a Goodness-of-fit test for \code{\link{glm}}s for binary data.
+               a Goodness-of-fit test for \code{\link{glm}}-objects for binary data.
 }
 \note{
 For vectors, this function is a convenient function for the \code{\link{chisq.test}},

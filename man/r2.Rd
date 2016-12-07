@@ -34,7 +34,7 @@ For linear models, the r-squared and adjusted r-squared value is returned,
          \cr \cr
          For linear mixed models, an r-squared approximation by computing the
          correlation between the fitted and observed values, as suggested by
-         \cite{Byrnes (2008)}, is returned as well as a simpliefied version of
+         \cite{Byrnes (2008)}, is returned as well as a simplified version of
          the Omega-squared value (1 - (residual variance / response variance),
          \cite{Xu (2003)}, \cite{Nakagawa, Schielzeth 2013}), unless \code{n}
          is specified.
@@ -109,6 +109,6 @@ r2(fit, fit.null)
             }
 }
 \seealso{
-\code{\link{rmse}} for more methods to assedd model quality.
+\code{\link{rmse}} for more methods to assess model quality.
 }
 

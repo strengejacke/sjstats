@@ -14,13 +14,9 @@ mse(fit)
 }
 \arguments{
 \item{fit}{Fitted linear model of class \code{\link{lm}},
-\code{\link[lme4]{merMod}} (lme4) or \code{\link[nlme]{lme}} (nlme).}
+\code{\link[lme4]{merMod}} (\pkg{lme4}) or \code{\link[nlme]{lme}} (\pkg{nlme}).}
 
 \item{normalized}{Logical, use \code{TRUE} if normalized rmse should be returned.}
-}
-\value{
-The root mean squared error of \code{fit}; or the normalized
-          root mean squared error of \code{fit} if \code{normalized = TRUE}.
 }
 \description{
 Compute root mean squared error, residual standard error or
@@ -50,7 +46,7 @@ Compute root mean squared error, residual standard error or
         \item{\strong{Mean Square Error}}{
         The mean square error is the mean of the sum of squared residuals,
         i.e. it measures the average of the squares of the errors. Lower
-        values (closer to zero) indicate better fit.?
+        values (closer to zero) indicate better fit.
         }
       }
 }
@@ -72,10 +68,7 @@ rmse(fit, normalized = TRUE)
 
 }
 \references{
-\itemize{
-             \item \href{http://en.wikipedia.org/wiki/Root-mean-square_deviation}{Wikipedia: RMSD}
-             \item \href{http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/}{Grace-Martin K: Assessing the Fit of Regression Models}
-            }
+\href{http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/}{Grace-Martin K: Assessing the Fit of Regression Models}
 }
 \seealso{
 \code{\link{r2}} for R-squared or pseude-R-squared values, and

@@ -5,9 +5,10 @@
 #'                in a variable.
 #'
 #' @param data A data frame.
-#' @param ... One or more value pairs of comparisons. Put variable names the
-#'              left-hand-side and values to match on the right hand side.
-#'              Expressions may be quoted or unquoted. See 'Examples'.
+#' @param ... One or more value pairs of comparisons (logical predicates). Put
+#'              variable names the left-hand-side and values to match on the
+#'              right hand side. Expressions may be quoted or unquoted. See
+#'              'Examples'.
 #' @param na.rm Logical, whether to remove NA values from the vector when the
 #'          proportion is calculated. \code{na.rm = FALSE} gives you the raw
 #'          percentage of a value in a vector, \code{na.rm = TRUE} the valid

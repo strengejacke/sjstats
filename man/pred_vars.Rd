@@ -20,10 +20,10 @@ The name(s) of the response or predictor variables from \code{x}
           as character vector; or the values from \code{x}'s response vector.
 }
 \description{
-\code{pred_vars} and \code{resp_var} return the names of a
+\code{pred_vars()} and \code{resp_var()} return the names of a
                model's predictor or response variables as character vector.
                \cr \cr
-               \code{resp_val} returns the values of the model's response
+               \code{resp_val()} returns the values of the model's response
                vector.
 }
 \examples{

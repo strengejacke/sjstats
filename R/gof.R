@@ -3,7 +3,7 @@
 #'
 #' @description This method performs a Chi-square goodness-of-fit-test (GOF)
 #'                either on a numeric vector against probabilities, or
-#'                a Goodness-of-fit test for \code{\link{glm}}s for binary data.
+#'                a Goodness-of-fit test for \code{\link{glm}}-objects for binary data.
 #'
 #' @param x Numeric vector, or a \code{\link{glm}}-object.
 #' @param prob Vector of probabilities (indicating the population probabilities) of the same length

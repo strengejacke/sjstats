@@ -1,5 +1,8 @@
 Version 0.6.1
 ------------------------------------------------------------------------------
+General:
+* Largely revised the documentation.
+
 New functions:
 * `prop()` to calculate proportion of values in a vector.
 * `mse()` to calculate the mean square error for models.

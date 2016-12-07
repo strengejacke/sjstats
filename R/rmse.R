@@ -4,19 +4,13 @@
 #'              mean square error of fitted linear (mixed effects) models.
 #'
 #' @param fit Fitted linear model of class \code{\link{lm}},
-#'          \code{\link[lme4]{merMod}} (lme4) or \code{\link[nlme]{lme}} (nlme).
+#'          \code{\link[lme4]{merMod}} (\pkg{lme4}) or \code{\link[nlme]{lme}} (\pkg{nlme}).
 #' @param normalized Logical, use \code{TRUE} if normalized rmse should be returned.
-#'
-#' @return The root mean squared error of \code{fit}; or the normalized
-#'           root mean squared error of \code{fit} if \code{normalized = TRUE}.
 #'
 #' @seealso \code{\link{r2}} for R-squared or pseude-R-squared values, and
 #'            \code{\link{cv}} for the coefficient of variation.
 #'
-#' @references \itemize{
-#'              \item \href{http://en.wikipedia.org/wiki/Root-mean-square_deviation}{Wikipedia: RMSD}
-#'              \item \href{http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/}{Grace-Martin K: Assessing the Fit of Regression Models}
-#'             }
+#' @references \href{http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/}{Grace-Martin K: Assessing the Fit of Regression Models}
 #'
 #' @note \describe{
 #'         \item{\strong{Root Mean Square Error}}{
@@ -41,7 +35,7 @@
 #'         \item{\strong{Mean Square Error}}{
 #'         The mean square error is the mean of the sum of squared residuals,
 #'         i.e. it measures the average of the squares of the errors. Lower
-#'         values (closer to zero) indicate better fit.?
+#'         values (closer to zero) indicate better fit.
 #'         }
 #'       }
 #'

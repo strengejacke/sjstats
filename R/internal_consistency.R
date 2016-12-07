@@ -4,19 +4,13 @@
 #' @description These function compute various measures of internal consistencies
 #'                for tests or item-scales of questionnaires.
 #'
-#' @seealso To check internal consistency: \code{\link{cronb}} to calculate
-#'            Cronbach's Alpha; \code{\link{reliab_test}} to compute a reliability
-#'            test (item-discrimination); \code{\link{mic}} to calculate the mean
-#'            inter-item-correlation and \code{\link{split_half}} to calculate
-#'            the split-half reliability (with Spearman–Brown adjustment).
-#'
 #' @param x Depending on the function, \code{x} may be a \code{matrix} as
 #'          returned by the \code{\link{cor}}-function, or a data frame
 #'          with items (e.g. from a test or questionnaire).
 #' @param scale.items Logical, if \code{TRUE}, the data frame's vectors will be scaled. Recommended,
 #'          when the variables have different measures / scales.
 #' @param digits Amount of digits for returned values.
-#' @param cor.method For \code{mic()}, indicates the correlation computation method. May be one of
+#' @param cor.method Correlation computation method. May be one of
 #'          \code{"spearman"} (default), \code{"pearson"} or \code{"kendall"}.
 #'          You may use initial letter only.
 #'
@@ -63,12 +57,12 @@
 #'            }
 #'          }
 #'
-#' @note The \code{reliab_test} function is similar to a basic reliability test
+#' @note \code{reliab_test()} is similar to a basic reliability test
 #'         in SPSS. The correlations in the Item-Total-Statistic are a computed
 #'         correlation of each item against the sum of the remaining items
 #'         (which are thus treated as one item).
 #'         \cr \cr
-#'         For \code{split_half} and \code{cronb}, a value closer  to 1 indicates
+#'         For \code{split_half()} and \code{cronb()}, a value closer  to 1 indicates
 #'         greater internal consistency.
 #'         \cr \cr
 #'         For the mean inter-item-correlation:
@@ -220,11 +214,16 @@ split_half <- function(x, digits = 3) {
 #' @importFrom stats na.omit var
 #' @export
 cronb <- function(x) {
+  # remove missings
   .data <- stats::na.omit(x)
+
+  # we need at least two columns for Cronach's Alpha
   if (is.null(ncol(.data)) || ncol(.data) < 2) {
     warning("Too less columns in `x` to compute Cronbach's Alpha.", call. = F)
     return(NULL)
   }
+
+  # Compute Cronb. Alpha
   return(dim(.data)[2] / (dim(.data)[2] - 1) * (1 - sum(apply(.data, 2, var)) / stats::var(rowSums(.data))))
 }
 
