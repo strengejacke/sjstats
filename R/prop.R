@@ -14,7 +14,9 @@
 #'          percentage of a value in a vector, \code{na.rm = TRUE} the valid
 #'          percentage.
 #'
-#' @return Numeric, the proportion of the values inside a vector.
+#' @return For one condition, a numeric value with the proportion of the values
+#'         inside a vector. For more than one condition, a tibble with one column
+#'         of conditions and one column with proportions.
 #'
 #' @examples
 #' data(efc)
@@ -26,7 +28,7 @@
 #' prop(efc, "e42dep == 1")
 #'
 #' # proportion of value 1 in e42dep, and all values greater
-#' # than 2 in e42dep, excluding missing values
+#' # than 2 in e42dep, excluding missing values. will return a tibble
 #' prop(efc, e42dep == 1, e42dep > 2, na.rm = TRUE)
 #'
 #'
@@ -41,6 +43,16 @@
 #' # get proportion of male older persons
 #' prop(efc, e16sex == "male")
 #'
+#' # also works with pipe-chains
+#' efc %>% prop(e17age > 70)
+#' efc %>% summarise(age70 = prop(., e17age > 70))
+#'
+#' # and with group_by
+#' efc %>%
+#'   group_by(e16sex) %>%
+#'   summarise(hi.dependency = prop(., e42dep > 2))
+#'
+#' @importFrom tibble tibble
 #' @export
 prop <- function(data, ..., na.rm = FALSE) {
   # check argument
@@ -49,46 +61,68 @@ prop <- function(data, ..., na.rm = FALSE) {
   # get dots
   dots <- match.call(expand.dots = FALSE)$`...`
 
-  # iterate dots
-  result <- lapply(dots, function(x) {
+  # remember comparisons
+  comparisons <- lapply(dots, function(x) {
     # to character, and remove spaces and quotes
     x <- gsub(" ", "", deparse(x), fixed = T)
     x <- gsub("\"", "", x, fixed = TRUE)
-    # split expression at ==, < or >
-    x.parts <- unlist(regmatches(x, gregexpr("[!=]=|[<>]|(?:(?![=!]=)[^<>])+", x, perl = TRUE)))
-    # shorter version, however, does not split variable names with dots
-    # x.parts <- unlist(regmatches(x, regexec("(\\w+)(\\W+)(\\w+)", x)))[-1]
+    x
+  })
 
-    # correct == assignment?
-    if (length(x.parts) < 3) {
-      message("?Syntax error in argument. You possibly used `=` instead of `==`.")
-      return(NULL)
+  # iterate dots
+  result <- lapply(dots, function(x) {
+    # check if we have a structured pairlist (e.g. from 'group_by()' of dplyr)
+    if (startsWith(deparse(x)[1], "structure(")) {
+      # in this case, we just need to evaluate the expression, because the
+      # data values are already given as structure
+      dummy <- eval(x)
+    } else {
+      # to character, and remove spaces and quotes
+      x <- gsub(" ", "", deparse(x), fixed = T)
+      x <- gsub("\"", "", x, fixed = TRUE)
+
+      # split expression at ==, < or >
+      x.parts <- unlist(regmatches(x, gregexpr("[!=]=|[<>]|(?:(?![=!]=)[^<>])+", x, perl = TRUE)))
+      # shorter version, however, does not split variable names with dots
+      # x.parts <- unlist(regmatches(x, regexec("(\\w+)(\\W+)(\\w+)", x)))[-1]
+
+      # correct == assignment?
+      if (length(x.parts) < 3) {
+        message("?Syntax error in argument. You possibly used `=` instead of `==`.")
+        return(NULL)
+      }
+
+      # get variable from data and value from equation
+      f <- data[[x.parts[1]]]
+      v <- suppressWarnings(as.numeric(x.parts[3]))
+      # if we have factor, values maybe non-numeric
+      if (is.na(v)) v <- x.parts[3]
+
+      # get proportions
+      if (x.parts[2] == "==")
+        dummy <- f == v
+      else if (x.parts[2] == "!=")
+        dummy <- f != v
+      else if (x.parts[2] == "<")
+        dummy <- f < v
+      else if (x.parts[2] == ">")
+        dummy <- f > v
+      else
+        dummy <- f == v
     }
-
-    # get variable from data and value from equation
-    f <- data[[x.parts[1]]]
-    v <- suppressWarnings(as.numeric(x.parts[3]))
-    # if we have factor, values maybe non-numeric
-    if (is.na(v)) v <- x.parts[3]
-
-    # get proportions
-    if (x.parts[2] == "==")
-      dummy <- f == v
-    else if (x.parts[2] == "!=")
-      dummy <- f != v
-    else if (x.parts[2] == "<")
-      dummy <- f < v
-    else if (x.parts[2] == ">")
-      dummy <- f > v
-    else
-      dummy <- f == v
 
     # remove missings?
     if (na.rm) dummy <- na.omit(dummy)
 
     # get proportion
-    res <- sum(dummy, na.rm = T) / length(dummy)
+    sum(dummy, na.rm = T) / length(dummy)
   })
+
+  # if we have more than one proportion, return a tibble. this allows us
+  # to save more information, the condition and the proportion value
+  if (length(comparisons) > 1) {
+    return(tibble::tibble(condition = as.character(unlist(comparisons)), prop = unlist(result)))
+  }
 
   unlist(result)
 }
