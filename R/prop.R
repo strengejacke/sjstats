@@ -9,6 +9,9 @@
 #'              variable names the left-hand-side and values to match on the
 #'              right hand side. Expressions may be quoted or unquoted. See
 #'              'Examples'.
+#' @param weight.by Vector of weights that will be applied to weight all observations.
+#'          Must be a vector of same length as the input vector. Default is
+#'          \code{NULL}, so no weights are used.
 #' @param na.rm Logical, whether to remove NA values from the vector when the
 #'          proportion is calculated. \code{na.rm = FALSE} gives you the raw
 #'          percentage of a value in a vector, \code{na.rm = TRUE} the valid
@@ -44,6 +47,7 @@
 #' prop(efc, e16sex == "male")
 #'
 #' # also works with pipe-chains
+#' library(dplyr)
 #' efc %>% prop(e17age > 70)
 #' efc %>% summarise(age70 = prop(., e17age > 70))
 #'
@@ -54,7 +58,7 @@
 #'
 #' @importFrom tibble tibble
 #' @export
-prop <- function(data, ..., na.rm = FALSE) {
+prop <- function(data, ..., weight.by = NULL, na.rm = FALSE) {
   # check argument
   if (!is.data.frame(data)) stop("`data` needs to be a data frame.", call. = F)
 
@@ -97,6 +101,9 @@ prop <- function(data, ..., na.rm = FALSE) {
       v <- suppressWarnings(as.numeric(x.parts[3]))
       # if we have factor, values maybe non-numeric
       if (is.na(v)) v <- x.parts[3]
+
+      # weight vector?
+      if (!is.null(weight.by)) f <- weight(f, weights = weight.by)
 
       # get proportions
       if (x.parts[2] == "==")

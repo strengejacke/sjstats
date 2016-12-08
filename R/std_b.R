@@ -1,4 +1,4 @@
-#' @title Standardized Beta coefficients and CI of lm and mixed models
+#' @title Standardized beta coefficients and CI of linear and mixed models
 #' @name std_beta
 #' @description Returns the standardized beta coefficients, std. error and confidence intervals
 #'                of a fitted linear (mixed) models.

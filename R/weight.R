@@ -39,8 +39,11 @@
 #' table(weight(x, w))
 #'
 #' @importFrom stats na.pass xtabs
+#' @importFrom sjmisc to_value
 #' @export
 weight <- function(x, weights, digits = 0) {
+  # remember if x is numeric
+  x.is.num <- is.numeric(x)
   # init values
   weightedvar <- c()
   wtab <- round(stats::xtabs(weights ~ x,
@@ -64,6 +67,10 @@ weight <- function(x, weights, digits = 0) {
     # append variable value, repeating it "w_count" times.
     weightedvar <- c(weightedvar, rep(w_value, w_count))
   }
+  # if we have NA values, weighted var is coerced to character.
+  # coerce back to numeric then here
+  if (!is.numeric(weightedvar) && x.is.num) weightedvar <- sjmisc::to_value(weightedvar)
+  # return result
   return(weightedvar)
 }
 

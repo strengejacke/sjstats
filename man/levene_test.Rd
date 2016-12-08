@@ -2,7 +2,7 @@
 % Please edit documentation in R/sjStatistics.R
 \name{levene_test}
 \alias{levene_test}
-\title{Plot Levene-Test for One-Way-Anova}
+\title{Levene-Test for One-Way-Anova}
 \usage{
 levene_test(depVar, grpVar)
 }

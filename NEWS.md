@@ -1,4 +1,4 @@
-# sjstats 0.6.1
+# sjstats 0.7.0
 
 ## General
 
@@ -8,6 +8,7 @@
 
 * `prop()` to calculate proportion of values in a vector.
 * `mse()` to calculate the mean square error for models.
+* `robust()` to calculate robust standard errors and confidence intervals for regression models, returned as tidy data frame.
 
 # sjstats 0.6.0
 

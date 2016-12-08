@@ -4,19 +4,20 @@
 \alias{mwu}
 \title{Mann-Whitney-U-Test}
 \usage{
-mwu(x, grp, distribution = "asymptotic", weights = NULL)
+mwu(x, grp, distribution = "asymptotic", weight.by = NULL)
 }
 \arguments{
-\item{x}{Numeric vector / variable, where the Mann-Whitney-U-Test should be applied to}
+\item{x}{Numeric vector or variable.}
 
-\item{grp}{Grouping variable indicating the groups that should be used for comparison}
+\item{grp}{Grouping variable indicating the groups that should be used for comparison.}
 
 \item{distribution}{Indicates how the null distribution of the test statistic should be computed.
 May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
 (default). See \code{\link[coin]{wilcox_test}} for details.}
 
-\item{weights}{Integer valued weights for the observations. By default,
-this is \code{NULL}.}
+\item{weight.by}{Vector of weights that will be applied to weight all observations.
+Must be a vector of same length as the input vector. Default is
+\code{NULL}, so no weights are used.}
 }
 \value{
 (Invisibly) returns a data frame with U, p and Z-values for each group-comparison
@@ -24,7 +25,7 @@ this is \code{NULL}.}
         also included.
 }
 \description{
-This function performs a Mann-Whitney-U-Test (or \code{Wilcoxon rank sum test},
+This function performs a Mann-Whitney-U-Test (or Wilcoxon rank sum test,
                see \code{\link{wilcox.test}} and \code{\link[coin]{wilcox_test}})
                for \code{x}, for each group indicated by \code{grp}. If \code{grp}
                has more than two categories, a comparison between each combination of

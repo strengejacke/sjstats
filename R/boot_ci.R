@@ -1,4 +1,4 @@
-#' @title Standard Error and Confidence Intervals for bootstrapped estimates
+#' @title Standard error and confidence intervals for bootstrapped estimates
 #' @name boot_ci
 #'
 #' @description Compute nonparametric bootstrap standard error, confidence

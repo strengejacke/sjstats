@@ -2,7 +2,7 @@
 % Please edit documentation in R/std_b.R
 \name{std_beta}
 \alias{std_beta}
-\title{Standardized Beta coefficients and CI of lm and mixed models}
+\title{Standardized beta coefficients and CI of linear and mixed models}
 \usage{
 std_beta(fit, type = "std")
 }

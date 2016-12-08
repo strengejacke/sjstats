@@ -4,7 +4,7 @@
 \alias{prop}
 \title{Proportion of values in a vector}
 \usage{
-prop(data, ..., na.rm = FALSE)
+prop(data, ..., weight.by = NULL, na.rm = FALSE)
 }
 \arguments{
 \item{data}{A data frame.}
@@ -13,6 +13,10 @@ prop(data, ..., na.rm = FALSE)
 variable names the left-hand-side and values to match on the
 right hand side. Expressions may be quoted or unquoted. See
 'Examples'.}
+
+\item{weight.by}{Vector of weights that will be applied to weight all observations.
+Must be a vector of same length as the input vector. Default is
+\code{NULL}, so no weights are used.}
 
 \item{na.rm}{Logical, whether to remove NA values from the vector when the
 proportion is calculated. \code{na.rm = FALSE} gives you the raw
@@ -54,6 +58,7 @@ prop(efc, e16sex == female)
 prop(efc, e16sex == "male")
 
 # also works with pipe-chains
+library(dplyr)
 efc \%>\% prop(e17age > 70)
 efc \%>\% summarise(age70 = prop(., e17age > 70))
 

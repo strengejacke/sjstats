@@ -2,7 +2,7 @@
 % Please edit documentation in R/pseudo_r2.R
 \name{r2}
 \alias{r2}
-\title{Compute R-squared of (generalized) linear (mixed) models}
+\title{Compute r-squared of (generalized) linear (mixed) models}
 \usage{
 r2(x, n = NULL)
 }

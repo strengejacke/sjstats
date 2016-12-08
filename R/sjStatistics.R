@@ -41,7 +41,7 @@ table_values <- function(tab, digits = 2) {
 }
 
 
-#' @title Plot Levene-Test for One-Way-Anova
+#' @title Levene-Test for One-Way-Anova
 #' @name levene_test
 #'
 #' @description Plot results of Levene's Test for Equality of Variances for One-Way-Anova.

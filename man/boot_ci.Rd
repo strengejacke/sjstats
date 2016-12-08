@@ -4,7 +4,7 @@
 \alias{boot_ci}
 \alias{boot_p}
 \alias{boot_se}
-\title{Standard Error and Confidence Intervals for bootstrapped estimates}
+\title{Standard error and confidence intervals for bootstrapped estimates}
 \usage{
 boot_ci(data, ...)
 

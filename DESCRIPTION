@@ -2,8 +2,8 @@ Package: sjstats
 Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
-Version: 0.6.0
-Date: 2016-11-01
+Version: 0.7.0
+Date: 2016-12-08
 Author: Daniel Lüdecke <d.luedecke@uke.de>
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -30,10 +30,12 @@ Imports:
     coin,
     dplyr (>= 0.5.0),
     lme4 (>= 1.1-10),
+    lmtest (>= 0.9-34),
     MASS,
     Matrix,
     nlme,
-    sjmisc (>= 2.0.0),
+    sandwich (>= 2.3-4),
+    sjmisc (>= 2.1.0),
     tidyr (>= 0.6.0),
     tibble (>= 1.2.0)
 Suggests:

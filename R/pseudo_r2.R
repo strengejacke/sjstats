@@ -63,7 +63,7 @@ cod <- function(x) {
 
 
 
-#' @title Compute R-squared of (generalized) linear (mixed) models
+#' @title Compute r-squared of (generalized) linear (mixed) models
 #' @name r2
 #'
 #' @description Compute R-squared values of linear (mixed) models, or
