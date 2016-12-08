@@ -13,6 +13,9 @@
 #' @return A \code{\link{tibble}} with the model coefficients' names (\code{term}),
 #'         p-values (\code{p.value}) and standard errors (\code{std.error}).
 #'
+#' @note \code{merMod_p()} will become deprecated soon, please use
+#'       \code{get_model_pval()} instead.
+#'
 #' @details For linear mixed models (\code{lmerMod}-objects), the computation of
 #'         p-values (if \code{p.kr = TRUE}) is based on conditional F-tests
 #'         with Kenward-Roger approximation for the df, using the
@@ -67,13 +70,15 @@ get_model_pval <- function(fit, p.kr = FALSE) {
 }
 
 
+#' @rdname get_model_pval
 #' @importFrom stats coef pt pnorm
-merMod_p <- function(x, p.kr = TRUE) {
+#' @export
+merMod_p <- function(fit, p.kr = TRUE) {
   # retrieve sigificance level of independent variables (p-values)
-  if (any(class(x) == "merModLmerTest") && requireNamespace("lmerTest", quietly = TRUE)) {
-    cs <- suppressWarnings(stats::coef(lmerTest::summary(x)))
+  if (any(class(fit) == "merModLmerTest") && requireNamespace("lmerTest", quietly = TRUE)) {
+    cs <- suppressWarnings(stats::coef(lmerTest::summary(fit)))
   } else {
-    cs <- stats::coef(summary(x))
+    cs <- stats::coef(summary(fit))
   }
   # remeber coef-names
   coef_names <- rownames(cs)
@@ -84,14 +89,14 @@ merMod_p <- function(x, p.kr = TRUE) {
     # if not, default to 4
     if (length(pvcn) == 0) pvcn <- 4
     pv <- cs[, pvcn]
-  } else if (any(class(x) == "lmerMod") && requireNamespace("pbkrtest", quietly = TRUE) && p.kr) {
+  } else if (any(class(fit) == "lmerMod") && requireNamespace("pbkrtest", quietly = TRUE) && p.kr) {
     # compute Kenward-Roger-DF for p-statistic. Code snippet adapted from
     # http://mindingthebrain.blogspot.de/2014/02/three-ways-to-get-parameter-specific-p.html
     message("Computing p-values via Kenward-Roger approximation. Use `p.kr = FALSE` if computation takes too long.")
     #first coefficients need to be data frame
     cs <- as.data.frame(cs)
     # get KR DF
-    df.kr <- suppressMessages(pbkrtest::get_Lb_ddf(x, lme4::fixef(x)))
+    df.kr <- suppressMessages(pbkrtest::get_Lb_ddf(fit, lme4::fixef(fit)))
     # compute p-values, assuming an approximate t-dist
     pv <- 2 * stats::pt(abs(cs$`t value`), df = df.kr, lower.tail = FALSE)
     # name vector

@@ -2,9 +2,12 @@
 % Please edit documentation in R/merMod_p.R
 \name{get_model_pval}
 \alias{get_model_pval}
+\alias{merMod_p}
 \title{Get p-values from regression model objects}
 \usage{
 get_model_pval(fit, p.kr = FALSE)
+
+merMod_p(fit, p.kr = TRUE)
 }
 \arguments{
 \item{fit}{A fitted model object of \code{lm}, \code{glm}, \code{merMod},
@@ -33,6 +36,10 @@ For linear mixed models (\code{lmerMod}-objects), the computation of
         \cr \cr
         If p-values already have been computed (e.g. for \code{merModLmerTest})-objects
         from the \CRANpkg{lmerTest}-package), these will be returned.
+}
+\note{
+\code{merMod_p()} will become deprecated soon, please use
+      \code{get_model_pval()} instead.
 }
 \examples{
 data(efc)
