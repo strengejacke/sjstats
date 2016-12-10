@@ -16,6 +16,7 @@
 #'          proportion is calculated. \code{na.rm = FALSE} gives you the raw
 #'          percentage of a value in a vector, \code{na.rm = TRUE} the valid
 #'          percentage.
+#' @inheritParams reliab_test
 #'
 #' @return For one condition, a numeric value with the proportion of the values
 #'         inside a vector. For more than one condition, a tibble with one column
@@ -58,7 +59,7 @@
 #'
 #' @importFrom tibble tibble
 #' @export
-prop <- function(data, ..., weight.by = NULL, na.rm = FALSE) {
+prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
   # check argument
   if (!is.data.frame(data)) stop("`data` needs to be a data frame.", call. = F)
 
@@ -122,7 +123,7 @@ prop <- function(data, ..., weight.by = NULL, na.rm = FALSE) {
     if (na.rm) dummy <- na.omit(dummy)
 
     # get proportion
-    sum(dummy, na.rm = T) / length(dummy)
+    round(sum(dummy, na.rm = T) / length(dummy), digits = digits)
   })
 
   # if we have more than one proportion, return a tibble. this allows us

@@ -4,7 +4,7 @@
 \alias{prop}
 \title{Proportion of values in a vector}
 \usage{
-prop(data, ..., weight.by = NULL, na.rm = FALSE)
+prop(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4)
 }
 \arguments{
 \item{data}{A data frame.}
@@ -22,6 +22,8 @@ Must be a vector of same length as the input vector. Default is
 proportion is calculated. \code{na.rm = FALSE} gives you the raw
 percentage of a value in a vector, \code{na.rm = TRUE} the valid
 percentage.}
+
+\item{digits}{Amount of digits for returned values.}
 }
 \value{
 For one condition, a numeric value with the proportion of the values

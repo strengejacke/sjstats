@@ -1,3 +1,9 @@
+# sjstats 0.7.1
+
+## Changes to functions
+
+* `prop()` gets a `digits`-argument to round the return value to a specific number of decimal places.
+
 # sjstats 0.7.0
 
 ## General
