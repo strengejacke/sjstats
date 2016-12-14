@@ -159,10 +159,10 @@ icc.lme4 <- function(fit, obj.name) {
 
     # residual variances, i.e.
     # within-cluster-variance (sigma^2)
-    if (any(class(fit) == "glmerMod") && fitfam == "binomial") {
+    if (inherits(fit, "glmerMod") && fitfam == "binomial") {
       # for logistic models, we use pi / 3
       resid_var <- (pi ^ 2) / 3
-    } else if (any(class(fit) == "glmerMod") && is_negbin) {
+    } else if (inherits(fit, "glmerMod") && is_negbin) {
       # for negative binomial models, we use 0
       resid_var <- 0
     } else {
@@ -211,7 +211,7 @@ icc.lme4 <- function(fit, obj.name) {
     attr(ri.icc, "family") <- stats::family(fit)$family
     attr(ri.icc, "link") <- stats::family(fit)$link
     attr(ri.icc, "formula") <- stats::formula(fit)
-    attr(ri.icc, "model") <- ifelse(any(class(fit) == "glmerMod"), "Generalized linear mixed model", "Linear mixed model")
+    attr(ri.icc, "model") <- ifelse(inherits(fit, "glmerMod"), "Generalized linear mixed model", "Linear mixed model")
     attr(ri.icc, "tau.00") <- tau.00
     attr(ri.icc, "tau.01") <- tau.01
     attr(ri.icc, "rho.01") <- rho.01

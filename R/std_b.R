@@ -101,12 +101,12 @@ std_beta <- function(fit, type = "std") {
                                          x))
     # get standard deviations for predictors
     sx <- sapply(fit.data, sd, na.rm = T)
-    if (any(class(fit) == "gls"))
+    if (inherits(fit, "gls"))
       sy <- sapply(as.data.frame(as.vector(nlme::getResponse(fit))), sd, na.rm = T)
     else
       sy <- sapply(as.data.frame(fit$model)[1], sd, na.rm = T)
     beta <- b * sx / sy
-    if (any(class(fit) == "gls"))
+    if (inherits(fit, "gls"))
       se <- summary(fit)$tTable[, 2]
     else
       se <- summary(fit)$coef[, 2]
@@ -134,5 +134,6 @@ sjs.stdmm <- function(fit) {
   se.fixef <- stats::coef(summary(fit))[, "Std. Error"]
   se <- se.fixef * sdx / sdy
   tibble::tibble(term = names(lme4::fixef(fit)), std.estimate = sc,
-                 std.error = se, conf.low = sc - 1.96 * se, conf.high = sc + 1.96 * se)
+                 std.error = se, conf.low = sc - 1.96 * se,
+                 conf.high = sc + 1.96 * se)
 }

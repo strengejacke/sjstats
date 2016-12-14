@@ -75,7 +75,7 @@ get_model_pval <- function(fit, p.kr = FALSE) {
 #' @export
 merMod_p <- function(fit, p.kr = TRUE) {
   # retrieve sigificance level of independent variables (p-values)
-  if (any(class(fit) == "merModLmerTest") && requireNamespace("lmerTest", quietly = TRUE)) {
+  if (inherits(fit, "merModLmerTest") && requireNamespace("lmerTest", quietly = TRUE)) {
     cs <- suppressWarnings(stats::coef(lmerTest::summary(fit)))
   } else {
     cs <- stats::coef(summary(fit))
@@ -89,7 +89,7 @@ merMod_p <- function(fit, p.kr = TRUE) {
     # if not, default to 4
     if (length(pvcn) == 0) pvcn <- 4
     pv <- cs[, pvcn]
-  } else if (any(class(fit) == "lmerMod") && requireNamespace("pbkrtest", quietly = TRUE) && p.kr) {
+  } else if (inherits(fit, "lmerMod") && requireNamespace("pbkrtest", quietly = TRUE) && p.kr) {
     # compute Kenward-Roger-DF for p-statistic. Code snippet adapted from
     # http://mindingthebrain.blogspot.de/2014/02/three-ways-to-get-parameter-specific-p.html
     message("Computing p-values via Kenward-Roger approximation. Use `p.kr = FALSE` if computation takes too long.")
