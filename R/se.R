@@ -181,12 +181,12 @@ std_e_icc <- function(x, nsim) {
 #' @importFrom dplyr mutate
 #' @importFrom lme4 lmer glmer
 #' @importFrom utils txtProgressBar
-bootstr_icc_se <- function(.data, nsim, formula, model.family) {
+bootstr_icc_se <- function(dd, nsim, formula, model.family) {
   # create progress bar
   pb <- utils::txtProgressBar(min = 1, max = nsim, style = 3)
 
   # generate bootstraps
-  dummy <- .data %>%
+  dummy <- dd %>%
     bootstrap(nsim) %>%
     dplyr::mutate(models = lapply(strap, function(x) {
       # update progress bar
