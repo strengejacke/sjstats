@@ -2,8 +2,8 @@ Package: sjstats
 Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
-Version: 0.7.0
-Date: 2016-12-08
+Version: 0.7.1
+Date: 2016-12-18
 Author: Daniel Lüdecke <d.luedecke@uke.de>
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -23,7 +23,7 @@ Description: Collection of convenient functions for common statistical computati
              Cramer's V, Phi etc.
 License: GPL-3
 Depends:
-    R (>= 3.2),
+    R (>= 3.3),
     stats,
     utils
 Imports:

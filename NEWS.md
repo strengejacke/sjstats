@@ -1,5 +1,9 @@
 # sjstats 0.7.1
 
+## General
+
+* Package depends on R-version >= 3.3.
+
 ## Changes to functions
 
 * `prop()` gets a `digits`-argument to round the return value to a specific number of decimal places.
