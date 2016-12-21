@@ -58,5 +58,10 @@ center(efc, e17age, c160age, append = TRUE) \%>\% head()
 std(efc$e17age) # returns a vector
 std(efc, e17age) # returns a tibble
 
+# works with mutate()
+efc \%>\%
+  select(e17age, neg_c_7) \%>\%
+  mutate(age_std = std(e17age), burden = center(neg_c_7))
+
 }
 

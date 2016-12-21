@@ -42,6 +42,11 @@
 #' std(efc$e17age) # returns a vector
 #' std(efc, e17age) # returns a tibble
 #'
+#' # works with mutate()
+#' efc %>%
+#'   select(e17age, neg_c_7) %>%
+#'   mutate(age_std = std(e17age), burden = center(neg_c_7))
+#'
 #' @export
 std <- function(data, ..., include.fac = TRUE, append = FALSE) {
   if (is.data.frame(data)) {

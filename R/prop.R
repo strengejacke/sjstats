@@ -4,7 +4,7 @@
 #' @description This function calculates the proportion of a value or category
 #'                in a variable.
 #'
-#' @param data A data frame.
+#' @param data A data frame. May also be a grouped data frame (see 'Examples').
 #' @param ... One or more value pairs of comparisons (logical predicates). Put
 #'              variable names the left-hand-side and values to match on the
 #'              right hand side. Expressions may be quoted or unquoted. See

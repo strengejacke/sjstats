@@ -7,7 +7,7 @@
 prop(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4)
 }
 \arguments{
-\item{data}{A data frame.}
+\item{data}{A data frame. May also be a grouped data frame (see 'Examples').}
 
 \item{...}{One or more value pairs of comparisons (logical predicates). Put
 variable names the left-hand-side and values to match on the
