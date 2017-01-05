@@ -3,7 +3,7 @@
 #'
 #' @description This function returns the p-values for fitted model objects.
 #'
-#' @param fit A fitted model object of \code{lm}, \code{glm}, \code{merMod},
+#' @param fit A fitted model object of class \code{lm}, \code{glm}, \code{merMod},
 #'        \code{merModLmerTest}, \code{pggls} or \code{gls}. Other classes may
 #'        work as well.
 #' @param p.kr Logical, if \code{TRUE}, the computation of p-values is based on
@@ -13,9 +13,6 @@
 #' @return A \code{\link{tibble}} with the model coefficients' names (\code{term}),
 #'         p-values (\code{p.value}) and standard errors (\code{std.error}).
 #'
-#' @note \code{merMod_p()} will become deprecated soon, please use
-#'       \code{get_model_pval()} instead.
-#'
 #' @details For linear mixed models (\code{lmerMod}-objects), the computation of
 #'         p-values (if \code{p.kr = TRUE}) is based on conditional F-tests
 #'         with Kenward-Roger approximation for the df, using the
@@ -24,7 +21,7 @@
 #'         computation of p-values is based on normal-distribution assumption,
 #'         treating the t-statistics as Wald z-statistics.
 #'         \cr \cr
-#'         If p-values already have been computed (e.g. for \code{merModLmerTest})-objects
+#'         If p-values already have been computed (e.g. for \code{merModLmerTest}-objects
 #'         from the \CRANpkg{lmerTest}-package), these will be returned.
 #'
 #' @examples
@@ -70,9 +67,7 @@ get_model_pval <- function(fit, p.kr = FALSE) {
 }
 
 
-#' @rdname get_model_pval
 #' @importFrom stats coef pt pnorm
-#' @export
 merMod_p <- function(fit, p.kr = TRUE) {
   # retrieve sigificance level of independent variables (p-values)
   if (inherits(fit, "merModLmerTest") && requireNamespace("lmerTest", quietly = TRUE)) {

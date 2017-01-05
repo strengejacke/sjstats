@@ -49,11 +49,14 @@ Computation of standard errors for coefficients of mixed models
         is based \href{http://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{on this code}.
 }
 \examples{
+# compute standard error for vector
 se(rnorm(n = 100, mean = 3))
 
+# compute standard error for each variable in a data frame
 data(efc)
 se(efc[, 1:3])
 
+# compute standard error for merMod-coefficients
 library(lme4)
 fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 se(fit)
