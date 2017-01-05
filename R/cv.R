@@ -61,7 +61,7 @@ cv <- function(x, ...) {
 
 cv_helper <- function(x) {
   # check if we have a fitted linear model
-  if (inherits(x, c("lm", "lmerMod", "lme", "merModLmerTest"))) {
+  if (inherits(x, c("lm", "lmerMod", "lme", "merModLmerTest")) && !inherits(x, "glm")) {
     # get response
     dv <- resp_val(x)
     # compute mean of dependent variable

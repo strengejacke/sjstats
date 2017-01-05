@@ -50,14 +50,21 @@
 #' # also works with pipe-chains
 #' library(dplyr)
 #' efc %>% prop(e17age > 70)
-#' efc %>% summarise(age70 = prop(., e17age > 70))
+#' efc %>% prop(e17age > 70, e16sex == 1)
 #'
 #' # and with group_by
 #' efc %>%
 #'   group_by(e16sex) %>%
-#'   summarise(hi.dependency = prop(., e42dep > 2))
+#'   prop(e42dep > 2)
 #'
-#' @importFrom tibble tibble
+#' efc %>%
+#'   select(e42dep, c161sex, c172code, e16sex) %>%
+#'   group_by(c161sex, c172code) %>%
+#'   prop(e42dep > 2, e16sex == 1)
+#'
+#' @importFrom tibble tibble as_tibble
+#' @importFrom dplyr bind_cols bind_rows
+#' @importFrom sjmisc get_label get_labels
 #' @export
 prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
   # check argument
@@ -74,63 +81,102 @@ prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
     x
   })
 
-  # iterate dots
-  result <- lapply(dots, function(x) {
-    # check if we have a structured pairlist (e.g. from 'group_by()' of dplyr)
-    if (startsWith(deparse(x)[1], "structure(")) {
-      # in this case, we just need to evaluate the expression, because the
-      # data values are already given as structure
-      dummy <- eval(x)
-    } else {
-      # to character, and remove spaces and quotes
-      x <- gsub(" ", "", deparse(x), fixed = T)
-      x <- gsub("\"", "", x, fixed = TRUE)
+  # do we have a grouped data frame?
+  if (inherits(data, "grouped_df")) {
 
-      # split expression at ==, < or >
-      x.parts <- unlist(regmatches(x, gregexpr("[!=]=|[<>]|(?:(?![=!]=)[^<>])+", x, perl = TRUE)))
-      # shorter version, however, does not split variable names with dots
-      # x.parts <- unlist(regmatches(x, regexec("(\\w+)(\\W+)(\\w+)", x)))[-1]
+    # get grouped data
+    grps <- get_grouped_data(data)
 
-      # correct == assignment?
-      if (length(x.parts) < 3) {
-        message("?Syntax error in argument. You possibly used `=` instead of `==`.")
-        return(NULL)
-      }
+    # create a tibble for final results
+    fr <- tibble::as_tibble()
 
-      # get variable from data and value from equation
-      f <- data[[x.parts[1]]]
-      v <- suppressWarnings(as.numeric(x.parts[3]))
-      # if we have factor, values maybe non-numeric
-      if (is.na(v)) v <- x.parts[3]
+    # now get proportions for each subset
+    for (i in seq_len(nrow(grps))) {
+      # get data from grouped data frame
+      .d <- grps$data[[i]]
 
-      # weight vector?
-      if (!is.null(weight.by)) f <- weight(f, weights = weight.by)
+      # iterate dots (comparing conditions)
+      result <- lapply(dots, get_proportion, .d, weight.by, na.rm, digits)
 
-      # get proportions
-      if (x.parts[2] == "==")
-        dummy <- f == v
-      else if (x.parts[2] == "!=")
-        dummy <- f != v
-      else if (x.parts[2] == "<")
-        dummy <- f < v
-      else if (x.parts[2] == ">")
-        dummy <- f > v
-      else
-        dummy <- f == v
+      # bind all proportion values to data frame. we need to
+      # transform here to get each value in a new colummn
+      fr <- dplyr::bind_rows(fr, tibble::as_tibble(t(unlist(result))))
     }
 
-    # remove missings?
-    if (na.rm) dummy <- na.omit(dummy)
+    # now we need the values from the groups of the grouped data frame
+    for (i in (ncol(grps) - 1):1) {
+      # get value label
+      var.name <- colnames(grps)[i]
+      val.labels <- rep(sjmisc::get_labels(data[[var.name]]), length.out = nrow(fr))
 
-    # get proportion
-    round(sum(dummy, na.rm = T) / length(dummy), digits = digits)
-  })
+      # bind values as column
+      fr <- dplyr::bind_cols(tibble::as_tibble(val.labels), fr)
+    }
 
-  # if we have more than one proportion, return a tibble. this allows us
-  # to save more information, the condition and the proportion value
-  if (length(comparisons) > 1) {
-    return(tibble::tibble(condition = as.character(unlist(comparisons)), prop = unlist(result)))
+    # get column names. we need variable labels as column names
+    var.names <- colnames(grps)[1:(ncol(grps) - 1)]
+    var.labels <- sjmisc::get_label(data[, var.names], def.value = var.names)
+
+    # set variable labels and comparisons as colum names
+    colnames(fr) <- c(var.labels, comparisons)
+
+    return(fr)
+
+  } else {
+    # iterate dots (comparing conditions)
+    result <- lapply(dots, get_proportion, data, weight.by, na.rm, digits)
+
+    # if we have more than one proportion, return a tibble. this allows us
+    # to save more information, the condition and the proportion value
+    if (length(comparisons) > 1) {
+      return(tibble::tibble(condition = as.character(unlist(comparisons)), prop = unlist(result)))
+    }
+
+    return(unlist(result))
+  }
+}
+
+
+get_proportion <- function(x, data, weight.by, na.rm, digits) {
+  # to character, and remove spaces and quotes
+  x <- gsub(" ", "", deparse(x), fixed = T)
+  x <- gsub("\"", "", x, fixed = TRUE)
+
+  # split expression at ==, < or >
+  x.parts <- unlist(regmatches(x, gregexpr("[!=]=|[<>]|(?:(?![=!]=)[^<>])+", x, perl = TRUE)))
+  # shorter version, however, does not split variable names with dots
+  # x.parts <- unlist(regmatches(x, regexec("(\\w+)(\\W+)(\\w+)", x)))[-1]
+
+  # correct == assignment?
+  if (length(x.parts) < 3) {
+    message("?Syntax error in argument. You possibly used `=` instead of `==`.")
+    return(NULL)
   }
 
-  unlist(result)
+  # get variable from data and value from equation
+  f <- data[[x.parts[1]]]
+  v <- suppressWarnings(as.numeric(x.parts[3]))
+  # if we have factor, values maybe non-numeric
+  if (is.na(v)) v <- x.parts[3]
+
+  # weight vector?
+  if (!is.null(weight.by)) f <- weight(f, weights = weight.by)
+
+  # get proportions
+  if (x.parts[2] == "==")
+    dummy <- f == v
+  else if (x.parts[2] == "!=")
+    dummy <- f != v
+  else if (x.parts[2] == "<")
+    dummy <- f < v
+  else if (x.parts[2] == ">")
+    dummy <- f > v
+  else
+    dummy <- f == v
+
+  # remove missings?
+  if (na.rm) dummy <- na.omit(dummy)
+
+  # get proportion
+  round(sum(dummy, na.rm = T) / length(dummy), digits = digits)
 }

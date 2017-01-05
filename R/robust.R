@@ -1,12 +1,20 @@
 #' @title Robust standard errors for regression models
 #' @name robust
-#' @description Compute robust standard error for regression models. This method
-#'                wraps the \code{\link[lmtest]{coeftest}}-function with
+#' @description \code{robust()} computes robust standard error for regression models.
+#'                This method wraps the \code{\link[lmtest]{coeftest}}-function with
 #'                robust covariance matrix estimators based on the
 #'                \code{\link[sandwich]{vcovHC}}-function, and returns the
 #'                result as tidy data frame.
+#'                \cr \cr
+#'                \code{svy()} is intended to compute standard errors for survey-designs
+#'                fitted with regular \code{lm} or \code{glm} functions, as alternative
+#'                to the \pkg{survey}-package. It simulates sampling weights by
+#'                adjusting the residual degrees of freedom based on the precision
+#'                weights used to fit \code{x}, and then calls \code{robust()}
+#'                with the adjusted model.
 #'
 #' @param x A fitted model of any class that is supported by the \code{coeftest()}-function.
+#'          For \code{svy()}, \code{x} must be \code{lm} object, fitted with weights.
 #' @param vcov Character vector, specifying the estimation type for the
 #'          heteroskedasticity-consistent covariance matrix estimation
 #'          (see \code{\link[sandwich]{vcovHC}} for details).
@@ -17,6 +25,19 @@
 #'
 #' @return A summary of the model, including estimates, robust standard error,
 #'           p-value and - optionally - the confidence intervals.
+#'
+#' @note \code{svy()} simply calls \code{robust()}, but first adjusts the
+#'       residual degrees of freedom based on the model weights.
+#'       Hence, for \code{svy()}, \code{x} should be fitted with weights.
+#'       This simulates \emph{sampling weights} like in survey designs (which are
+#'       implemented in the \pkg{survey}-package), though \code{lm}
+#'       and \code{glm} implement \emph{precision weights}.
+#'       \cr \cr
+#'       \code{vcov} for \code{svy()} defaults to \code{"HC1"}, because
+#'       standard errors with this estimation type come closest to the standard
+#'       errors from the \pkg{survey}-package.
+#'       \cr \cr
+#'       Currently, \code{svy()} only works for objects of class \code{lm}.
 #'
 #' @examples
 #' data(efc)
@@ -76,4 +97,33 @@ robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4",
   }
 
   result
+}
+
+
+#' @rdname robust
+#' @importFrom stats weights
+#' @export
+svy <- function(x, vcov = c("HC1", "const", "HC", "HC0", "HC2", "HC3", "HC4", "HC4m", "HC5"), conf.int = FALSE, exponentiate = FALSE) {
+  # match arguments
+  vcov <- match.arg(vcov)
+
+  # check if we have lm-object
+  if (inherits(x, "lm", which = TRUE) == 1) {
+
+    # check if model has weights
+    w <- stats::weights(x)
+
+    if (!is.null(w))
+      # re-weight residuals
+      x$df.residual <- with(x, sum(weights) - length(coefficients))
+    else
+      warning("Model has no weights. Computing robust standard error for non-weighted model.", call. = F)
+
+  } else {
+    # no sampling-weights adjustment for other models than lm right now
+    warning("`x` must be of class `lm`. Computing robust standard errors now without adjusting residual df.", call. = F)
+  }
+
+  # compute robust se
+  suppressWarnings(robust(x, vcov, conf.int, exponentiate))
 }

@@ -99,7 +99,7 @@ lmer_var <- function(fit) {
 
 #' @importFrom stats pf
 lm_pval_fstat <- function(x) {
-  if (!inherits(x, "lm")) stop("Not an object of class 'lm'.", call. = F)
+  if (!inherits(x, "lm")) stop("Not an object of class `lm`.", call. = F)
   f <- summary(x)$fstatistic
   p <- stats::pf(f[1], f[2], f[3], lower.tail = F)
   return(as.vector(p))

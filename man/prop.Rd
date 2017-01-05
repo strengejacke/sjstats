@@ -62,12 +62,17 @@ prop(efc, e16sex == "male")
 # also works with pipe-chains
 library(dplyr)
 efc \%>\% prop(e17age > 70)
-efc \%>\% summarise(age70 = prop(., e17age > 70))
+efc \%>\% prop(e17age > 70, e16sex == 1)
 
 # and with group_by
 efc \%>\%
   group_by(e16sex) \%>\%
-  summarise(hi.dependency = prop(., e42dep > 2))
+  prop(e42dep > 2)
+
+efc \%>\%
+  select(e42dep, c161sex, c172code, e16sex) \%>\%
+  group_by(c161sex, c172code) \%>\%
+  prop(e42dep > 2, e16sex == 1)
 
 }
 

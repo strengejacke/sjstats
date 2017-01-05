@@ -1,3 +1,14 @@
+# sjstats 0.7.2
+
+## New functions
+
+* `svy()` to compute robust standard errors for weighted models, adjusting the residual degrees of freedom to simulate sampling weights.
+
+## Changes to functions
+
+* `prop()` no longer works within dplyr's `summarise()` function. Instead, when now used with grouped data frames, a summary of proportions is directly returned as tibble.
+
+
 # sjstats 0.7.1
 
 ## General
