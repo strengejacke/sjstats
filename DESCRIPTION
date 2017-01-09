@@ -3,7 +3,7 @@ Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
 Version: 0.7.1-1
-Date: 2016-12-18
+Date: 2017-01-11
 Author: Daniel Lüdecke <d.luedecke@uke.de>
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -35,7 +35,7 @@ Imports:
     Matrix,
     nlme,
     sandwich (>= 2.3-4),
-    sjmisc (>= 2.2.0),
+    sjmisc (>= 2.2.1),
     tidyr (>= 0.6.0),
     tibble (>= 1.2.0)
 Suggests:

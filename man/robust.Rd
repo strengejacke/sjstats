@@ -36,20 +36,22 @@ A summary of the model, including estimates, robust standard error,
                \code{\link[sandwich]{vcovHC}}-function, and returns the
                result as tidy data frame.
                \cr \cr
-               \code{svy()} is intended to compute standard errors for survey-designs
-               fitted with regular \code{lm} or \code{glm} functions, as alternative
-               to the \pkg{survey}-package. It simulates sampling weights by
-               adjusting the residual degrees of freedom based on the precision
-               weights used to fit \code{x}, and then calls \code{robust()}
-               with the adjusted model.
+               \code{svy()} is intended to compute standard errors for survey
+               designs (complex samples) fitted with regular \code{lm} or
+               \code{glm} functions, as alternative to the \pkg{survey}-package.
+               It simulates sampling weights by adjusting the residual degrees
+               of freedom based on the precision weights used to fit \code{x},
+               and then calls \code{robust()} with the adjusted model.
 }
 \note{
 \code{svy()} simply calls \code{robust()}, but first adjusts the
       residual degrees of freedom based on the model weights.
       Hence, for \code{svy()}, \code{x} should be fitted with weights.
-      This simulates \emph{sampling weights} like in survey designs (which are
-      implemented in the \pkg{survey}-package), though \code{lm}
-      and \code{glm} implement \emph{precision weights}.
+      This simulates \emph{sampling weights} like in survey designs, though
+      \code{lm} and \code{glm} implement \emph{precision weights}.
+      The results from \code{svy()} are usually more accurate than simple
+      weighted standard errors for complex samples, however, results from
+      the \pkg{survey}-package are still more exactly.
       \cr \cr
       \code{vcov} for \code{svy()} defaults to \code{"HC1"}, because
       standard errors with this estimation type come closest to the standard
