@@ -50,8 +50,9 @@ A summary of the model, including estimates, robust standard error,
       This simulates \emph{sampling weights} like in survey designs, though
       \code{lm} and \code{glm} implement \emph{precision weights}.
       The results from \code{svy()} are usually more accurate than simple
-      weighted standard errors for complex samples, however, results from
-      the \pkg{survey}-package are still more exactly.
+      weighted standard errors for complex samples. However, results from
+      the \pkg{survey} package are still more exactly, especially
+      regarding the estimates.
       \cr \cr
       \code{vcov} for \code{svy()} defaults to \code{"HC1"}, because
       standard errors with this estimation type come closest to the standard
