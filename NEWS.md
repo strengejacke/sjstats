@@ -3,6 +3,7 @@
 ## New functions
 
 * `svy()` to compute robust standard errors for weighted models, adjusting the residual degrees of freedom to simulate sampling weights.
+* `zero_count()` to check whether a poisson-model is over- or underfitting zero-counts in the outcome.
 
 ## Changes to functions
 

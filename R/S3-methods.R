@@ -29,6 +29,9 @@ print.sjstats_r2 <- function(x, ...) {
     if (identical(names(x[[2]]), "Nagelkerke")) {
       s1 <- "Cox & Snell's R-squared"
       s2 <- " Nagelkerke's R-squared"
+    } else if (identical(names(x[[2]]), "Sums-of-Squares-r-squared")) {
+      s1 <- "       R-squared (deviance)"
+      s2 <- "R-squared (sums-of-squares)"
     } else if (identical(names(x[[2]]), "adj.R2")) {
       s1 <- "         R-squared"
       s2 <- "adjusted R-squared"
@@ -264,4 +267,14 @@ print.sj_mwu <- function(x, ...) {
 print.sj_splithalf <- function(x, ...) {
   cat(sprintf("   Split-Half Reliability: %.3f\n", x$splithalf))
   cat(sprintf("Spearman-Brown Adjustment: %.3f\n", x$spearmanbrown))
+}
+
+#' @export
+print.sjstats_zcf <- function(x, ...) {
+  cat(sprintf("   Observed zero-counts: %i\n", x$observed.zeros))
+  cat(sprintf("  Predicted zero-counts: %i\n", x$predicted.zeros))
+  cat(sprintf("                  Ratio: %.2f\n", x$ratio))
+  cat(ifelse(x$ratio < 1,
+             "Model is underfitting zero-counts.\n",
+             "Model is overfitting zero-counts.\n"))
 }

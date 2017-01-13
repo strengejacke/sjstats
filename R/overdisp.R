@@ -1,7 +1,9 @@
 #' @title Check overdispersion of GL(M)M's
 #' @name overdisp
-#' @description This function checks generalized linear (mixed) models for
-#'                overdispersion.
+#' @description \code{overdisp()} checks generalized linear (mixed) models for
+#'              overdispersion, while \code{zero_count()} checks whether models
+#'              from poisson-families are over- or underfitting zero-counts in
+#'              the outcome.
 #'
 #' @param x Fitted GLMM (\code{\link[lme4]{merMod}}-class) or \code{glm} model.
 #' @param trafo A specification of the alternative, can be numeric or a
@@ -9,19 +11,21 @@
 #'          in \code{\link[AER]{dispersiontest}} in package \CRANpkg{AER}. Does not
 #'          apply to \code{merMod} objects.
 #'
-#' @return Information on the overdispersion test.
+#' @return For \code{overdisp()}, information on the overdispersion test; for
+#'         \code{zero_count()}, the amount of predicted and observed zeros in
+#'         the outcome, as well as the ratio between these two values.
 #'
-#' @note The interpretation of the returned p-value differs between GLM and
-#'         GLMM. For GLMs, a p-value < .05 indicates overdispersion, while
-#'         for GLMMs, a p-value > .05 indicates overdispersion.
+#' @note For the overdispersion-test, the interpretation of the returned p-value
+#'         differs between GLM and GLMM. For GLMs, a p-value < .05 indicates
+#'         overdispersion, while for GLMMs, a p-value > .05 indicates overdispersion.
 #'
-#' @details For \code{merMod}-objects, this function is based on the code in the
+#' @details For \code{merMod}-objects, \code{overdisp()} is based on the code in the
 #'            \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ},
 #'            section \emph{How can I deal with overdispersion in GLMMs?}.
 #'            Note that this function only returns an \emph{approximate} estimate
 #'            of an overdispersion parameter.
 #'            \cr \cr
-#'            For \code{glm}'s, this function simply wraps the \code{dispersiontest}
+#'            For \code{glm}'s, \code{overdisp()} simply wraps the \code{dispersiontest}
 #'            from the \pkg{AER}-package.
 #'
 #' @references \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ}
@@ -37,12 +41,14 @@
 #' fit <- glm(tot_sc_e ~ neg_c_7 + e42dep + c160age,
 #'            data = efc, family = poisson)
 #' overdisp(fit)
+#' zero_count(fit)
 #'
 #' library(lme4)
 #' efc$e15relat <- to_factor(efc$e15relat)
 #' fit <- glmer(tot_sc_e ~ neg_c_7 + e42dep + c160age + (1 | e15relat),
 #'              data = efc, family = poisson)
 #' overdisp(fit)
+#' zero_count(fit)
 #'
 #'
 #' @importFrom stats df.residual residuals pchisq
@@ -92,4 +98,30 @@ overdisp.lme4 <- function(x) {
   } else {
     warning("This method currently only supports `glmer` fitted models.", call. = F)
   }
+}
+
+
+#' @rdname overdisp
+#' @importFrom stats predict dpois family
+#' @export
+zero_count <- function(x) {
+  # check if we have poisson
+  if (!stats::family(x)$family %in% c("poisson", "quasipoisson"))
+    stop("`x` must be from poisson-family.", call. = F)
+
+  # get predictions of outcome
+  mu <- predict(x, type = "response")
+
+  # get predicted zero-counts
+  pred.zero <- round(sum(stats::dpois(x = 0, lambda = mu)))
+
+  # get actual zero of response
+  obs.zero <- sum(resp_val(x) == 0)
+
+  # proportion
+  return(structure(class = "sjstats_zcf", list(
+    predicted.zeros = pred.zero,
+    observed.zeros = obs.zero,
+    ratio = pred.zero / obs.zero)
+  ))
 }

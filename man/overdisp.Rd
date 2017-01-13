@@ -2,9 +2,12 @@
 % Please edit documentation in R/overdisp.R
 \name{overdisp}
 \alias{overdisp}
+\alias{zero_count}
 \title{Check overdispersion of GL(M)M's}
 \usage{
 overdisp(x, trafo = NULL)
+
+zero_count(x)
 }
 \arguments{
 \item{x}{Fitted GLMM (\code{\link[lme4]{merMod}}-class) or \code{glm} model.}
@@ -15,26 +18,30 @@ in \code{\link[AER]{dispersiontest}} in package \CRANpkg{AER}. Does not
 apply to \code{merMod} objects.}
 }
 \value{
-Information on the overdispersion test.
+For \code{overdisp()}, information on the overdispersion test; for
+        \code{zero_count()}, the amount of predicted and observed zeros in
+        the outcome, as well as the ratio between these two values.
 }
 \description{
-This function checks generalized linear (mixed) models for
-               overdispersion.
+\code{overdisp()} checks generalized linear (mixed) models for
+             overdispersion, while \code{zero_count()} checks whether models
+             from poisson-families are over- or underfitting zero-counts in
+             the outcome.
 }
 \details{
-For \code{merMod}-objects, this function is based on the code in the
+For \code{merMod}-objects, \code{overdisp()} is based on the code in the
            \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ},
            section \emph{How can I deal with overdispersion in GLMMs?}.
            Note that this function only returns an \emph{approximate} estimate
            of an overdispersion parameter.
            \cr \cr
-           For \code{glm}'s, this function simply wraps the \code{dispersiontest}
+           For \code{glm}'s, \code{overdisp()} simply wraps the \code{dispersiontest}
            from the \pkg{AER}-package.
 }
 \note{
-The interpretation of the returned p-value differs between GLM and
-        GLMM. For GLMs, a p-value < .05 indicates overdispersion, while
-        for GLMMs, a p-value > .05 indicates overdispersion.
+For the overdispersion-test, the interpretation of the returned p-value
+        differs between GLM and GLMM. For GLMs, a p-value < .05 indicates
+        overdispersion, while for GLMMs, a p-value > .05 indicates overdispersion.
 }
 \examples{
 library(sjmisc)
@@ -47,12 +54,14 @@ barplot(table(efc$tot_sc_e))
 fit <- glm(tot_sc_e ~ neg_c_7 + e42dep + c160age,
            data = efc, family = poisson)
 overdisp(fit)
+zero_count(fit)
 
 library(lme4)
 efc$e15relat <- to_factor(efc$e15relat)
 fit <- glmer(tot_sc_e ~ neg_c_7 + e42dep + c160age + (1 | e15relat),
              data = efc, family = poisson)
 overdisp(fit)
+zero_count(fit)
 
 
 }
