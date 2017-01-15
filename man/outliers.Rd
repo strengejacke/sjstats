@@ -105,7 +105,7 @@ outliers(fit)
 heteroskedastic(fit)
 autocorrelation(fit)
 normality(fit)
-check_assumptions(fit, as.logical = TRUE)
+check_assumptions(fit)
 
 fit <- lm(barthtot ~ c160age + c12hour + c161sex + c172code + neg_c_7,
           data = efc)

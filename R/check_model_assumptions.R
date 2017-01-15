@@ -272,7 +272,6 @@ normality <- function(x) {
 
 
 #' @rdname outliers
-#' @importFrom car vif
 #' @export
 multicollin <- function(x) {
   # check package availability
