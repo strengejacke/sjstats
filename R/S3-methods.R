@@ -278,3 +278,8 @@ print.sjstats_zcf <- function(x, ...) {
              "Model is underfitting zero-counts.\n",
              "Model is overfitting zero-counts.\n"))
 }
+
+#' @export
+print.sjstats_outliers <- function(x, ...) {
+  print(x$result, ...)
+}

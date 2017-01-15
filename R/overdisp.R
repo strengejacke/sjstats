@@ -19,6 +19,8 @@
 #'         differs between GLM and GLMM. For GLMs, a p-value < .05 indicates
 #'         overdispersion, while for GLMMs, a p-value > .05 indicates overdispersion.
 #'
+#' @seealso \code{link{check_outliers}}
+#'
 #' @details For \code{merMod}-objects, \code{overdisp()} is based on the code in the
 #'            \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ},
 #'            section \emph{How can I deal with overdispersion in GLMMs?}.

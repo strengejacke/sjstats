@@ -4,6 +4,12 @@
 
 * `svy()` to compute robust standard errors for weighted models, adjusting the residual degrees of freedom to simulate sampling weights.
 * `zero_count()` to check whether a poisson-model is over- or underfitting zero-counts in the outcome.
+* `outliers()` to detect outliers in (generalized) linear models.
+* `heteroskedastic()` to check linear models for (non-)constant error variance.
+* `autocorrelation()` to check linear models for auto-correlated residuals.
+* `normality()` to check whether residuals in linear models are normally distributed or not.
+* `multicollin()` to check predictors in a model for multicollinearity.
+* `check_assumptions()` to run a set of model assumption checks.
 
 ## Changes to functions
 
