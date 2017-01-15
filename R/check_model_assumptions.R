@@ -1,5 +1,5 @@
 #' @title Check model assumptions
-#' @name outliers
+#' @name check_assumptions
 #' @description \itemize{
 #'                \item \code{outliers()} detects outliers in (generalized) linear models.
 #'                \item \code{heteroskedastic()} checks a linear model for (non-)constant error variance.
@@ -9,7 +9,12 @@
 #'                \item \code{check_assumptions()} checks all of the above assumptions.
 #'              }
 #'
-#' @param x Fitted \code{lm}; for \code{outliers()}, may also be a \code{glm} model.
+#' @param x Fitted \code{lm} (for \code{outliers()}, may also be a \code{glm} model),
+#'        or a (nested) data frame with a list-variable that contains fitted model
+#'        objects.
+#' @param model.column Name or index of the list-variable that contains the fitted
+#'        model objects. Only applies, if \code{x} is a nested data frame (e.g
+#'        with models fitted to \code{\link{bootstrap}} replicates).
 #' @param iterations Numeric, indicates the number of iterations to remove
 #'        outliers.
 #' @param as.logical Logical, if \code{TRUE}, the values returned by
@@ -17,12 +22,14 @@
 #'        whether each violation of model assumotion holds true or not. If
 #'        \code{FALSE} (the default), the p-value of the respective test-statistics
 #'        is returned.
+#' @param ... Other arguments, passed down to \code{\link[car]{durbinWatsonTest}}.
 #'
 #' @return A tibble with the respective statistics.
 #'
-#' @details These functions are wrappers for respective functions that compute
-#'          the various test statistics, however, each of them returns a tibble
-#'          instead of a list of values.
+#' @details These functions are wrappers that compute various test statistics,
+#'          however, each of them returns a tibble instead of a list of values.
+#'          Furthermore, all functions can also be applied to multiples models
+#'          in stored in \emph{list-variables} (see 'Examples').
 #'          \cr \cr
 #'          \code{outliers()} wraps \code{\link[car]{outlierTest}} and iteratively
 #'          removes outliers for \code{iterations} times, or if the r-squared value
@@ -84,6 +91,48 @@
 #' outliers(fit)
 #' check_assumptions(fit, as.logical = TRUE)
 #'
+#' # apply function to multiple models in list-variable
+#' library(dplyr)
+#' tmp <- efc %>%
+#'   bootstrap(50) %>%
+#'   mutate(models = lapply(.$strap, function(x) {
+#'     lm(neg_c_7 ~ e42dep + c12hour + c161sex, data = x)
+#'   }))
+#'
+#' # for list-variables, argument 'model.column' is the
+#' # quoted name of the list-variable with fitted models
+#' tmp %>% heteroskedastic("models")
+#'
+#' # Durbin-Watson-Test from package 'car' takes a little bit longer due
+#' # to simulation of p-values...
+#' \dontrun{
+#' tmp %>% check_assumptions("models", as.logical = TRUE, reps = 100)}
+#'
+#' @importFrom tibble tibble
+#' @export
+check_assumptions <- function(x, model.column = NULL, as.logical = FALSE, ...) {
+  # check assumptions for original
+  hn <- suppressMessages(heteroskedastic(x, model.column)$heteroskedastic)
+  mn <- suppressMessages(multicollin(x, model.column)$multicollin)
+  nn <- suppressMessages(normality(x, model.column)$non.normality)
+  an <- suppressMessages(autocorrelation(x, model.column, ...)$autocorrelation)
+
+  # check whether user wants p-values or logical values
+  if (as.logical) {
+    hn <- hn < 0.05
+    nn <- nn < 0.05
+    an <- an < 0.05
+  }
+
+  tibble::tibble(
+    heteroskedasticity = hn,
+    multicollinearity = mn,
+    non.normal.resid = nn,
+    autocorrelation = an
+  )
+}
+
+#' @rdname check_assumptions
 #' @importFrom sjmisc is_empty
 #' @importFrom stats update
 #' @importFrom tibble tibble
@@ -209,144 +258,129 @@ outliers <- function(x, iterations = 5) {
 }
 
 
-#' @rdname outliers
+#' @rdname check_assumptions
+#' @importFrom purrr map_dbl map
 #' @export
-heteroskedastic <- function(x) {
+heteroskedastic <- function(x, model.column = NULL) {
   # check package availability
   if (!requireNamespace("car", quietly = TRUE)) {
     stop("Package `car` needed for this function to work. Please install it.", call. = F)
   }
 
-  # compute non-constant error variance test
-  ts <- car::ncvTest(x)
-  p.val <- ts$p
+  # check if we have list-variable, e.g. from nested data frames
+  if (!is.null(model.column) && inherits(x[[model.column]], "list")) {
 
-  if (p.val < 0.05) {
-    message(sprintf("Heteroscedasticity (non-constant error variance) detected: p = %.3f", p.val))
+    p.val <-
+      # iterate all model columns in nested data frame
+      purrr::map(x[[model.column]], ~ .x) %>%
+      # call ncvTest for each model, and just get p-value
+      purrr::map_dbl(~ car::ncvTest(.x)$p)
   } else {
-    message("Homoscedasticity (constant error variance) detected.")
+    # compute non-constant error variance test
+    ts <- car::ncvTest(x)
+    p.val <- ts$p
+
+    # print message, but not for nested models. only if 'x' is a single model
+    if (p.val < 0.05) {
+      message(sprintf("Heteroscedasticity (non-constant error variance) detected: p = %.3f", p.val))
+    } else {
+      message("Homoscedasticity (constant error variance) detected.")
+    }
   }
 
   tibble::tibble(heteroskedastic = p.val)
 }
 
 
-#' @rdname outliers
+#' @rdname check_assumptions
 #' @export
-autocorrelation <- function(x) {
+autocorrelation <- function(x, model.column = NULL, ...) {
   # check package availability
   if (!requireNamespace("car", quietly = TRUE)) {
     stop("Package `car` needed for this function to work. Please install it.", call. = F)
   }
 
-  # check for autocorrelation
-  ts <- car::durbinWatsonTest(x)
-  p.val <- ts$p
+  # check if we have list-variable, e.g. from nested data frames
+  if (!is.null(model.column) && inherits(x[[model.column]], "list")) {
 
-  if (p.val < 0.05) {
-    message(sprintf("Autocorrelated residuals detected: p = %.3f", p.val))
+    p.val <-
+      # iterate all model columns in nested data frame
+      purrr::map(x[[model.column]], ~ .x) %>%
+      # call ncvTest for each model, and just get p-value
+      purrr::map_dbl(~ car::durbinWatsonTest(.x, ...)$p)
   } else {
-    message("No autocorrelated residuals detected.")
+    # check for autocorrelation
+    ts <- car::durbinWatsonTest(x, ...)
+    p.val <- ts$p
+
+    if (p.val < 0.05) {
+      message(sprintf("Autocorrelated residuals detected: p = %.3f", p.val))
+    } else {
+      message("No autocorrelated residuals detected.")
+    }
   }
 
   tibble::tibble(autocorrelation = p.val)
 }
 
 
-#' @rdname outliers
+#' @rdname check_assumptions
 #' @importFrom stats shapiro.test rstandard
 #' @export
-normality <- function(x) {
-  # check for normality of residuals
-  ts <- stats::shapiro.test(stats::rstandard(x))
-  p.val <- ts$p.value
+normality <- function(x, model.column = NULL) {
+  # check if we have list-variable, e.g. from nested data frames
+  if (!is.null(model.column) && inherits(x[[model.column]], "list")) {
 
-  if (p.val < 0.05) {
-    message(sprintf("Non-normality of residuals detected: p = %.3f", p.val))
+    p.val <-
+      # iterate all model columns in nested data frame
+      purrr::map(x[[model.column]], ~ .x) %>%
+      # call ncvTest for each model, and just get p-value
+      purrr::map_dbl(~ stats::shapiro.test(stats::rstandard(.x))$p.value)
   } else {
-    message("Residuals are normally distributed.")
+    # check for normality of residuals
+    ts <- stats::shapiro.test(stats::rstandard(x))
+    p.val <- ts$p.value
+
+    if (p.val < 0.05) {
+      message(sprintf("Non-normality of residuals detected: p = %.3f", p.val))
+    } else {
+      message("Residuals are normally distributed.")
+    }
   }
 
   tibble::tibble(non.normality = p.val)
 }
 
 
-#' @rdname outliers
+#' @rdname check_assumptions
+#' @importFrom purrr map_lgl
 #' @export
-multicollin <- function(x) {
+multicollin <- function(x, model.column = NULL) {
   # check package availability
   if (!requireNamespace("car", quietly = TRUE)) {
     stop("Package `car` needed for this function to work. Please install it.", call. = F)
   }
 
-  # check for autocorrelation
-  ts <- sqrt(car::vif(x)) > 2
-
-  if (any(ts)) {
-    mp <- paste(sprintf("%s", names(ts)), collapse = ", ")
-    message(paste0("Multicollinearity detected for following predictors: ", mp))
+  # check if we have list-variable, e.g. from nested data frames
+  if (!is.null(model.column) && inherits(x[[model.column]], "list")) {
+    ts <-
+      # iterate all model columns in nested data frame
+      purrr::map(x[[model.column]], ~ .x) %>%
+      # call ncvTest for each model, and just get p-value
+      purrr::map_lgl(~ any(sqrt(car::vif(.x)) > 2))
   } else {
-    message("No multicollinearity detected.")
-  }
+    # check for autocorrelation
+    ts <- sqrt(car::vif(x)) > 2
 
-  tibble::tibble(multicollin = any(ts))
-}
-
-
-#' @export
-#' @rdname outliers
-check_assumptions <- function(x, as.logical = FALSE) {
-  # first, check outliers
-  models <- suppressMessages(outliers(x))
-
-  if (is.null(models))
-    result <- tibble::tibble()
-  else
-    result <- models$result
-
-  # check assumptions for original
-  hn <- suppressMessages(heteroskedastic(x)$heteroskedastic)
-  mn <- suppressMessages(multicollin(x)$multicollin)
-  nn <- suppressMessages(normality(x)$non.normality)
-  an <- suppressMessages(autocorrelation(x)$autocorrelation)
-
-  # check whether user wants p-values or logical values
-  if (as.logical) {
-    hn <- hn < 0.05
-    nn <- nn < 0.05
-    an <- an < 0.05
-  }
-
-  # if we have an updated model w/o outliers, check assumptions for
-  # this model as well
-  if (!is.null(models)) {
-    hu <- suppressMessages(heteroskedastic(models$updated.model)$heteroskedastic)
-    mu <- suppressMessages(multicollin(models$updated.model)$multicollin)
-    nu <- suppressMessages(normality(models$updated.model)$non.normality)
-    au <- suppressMessages(autocorrelation(models$updated.model)$autocorrelation)
-
-    # check whether user wants p-values or logical values
-    if (as.logical) {
-      hu <- hu < 0.05
-      nu <- nu < 0.05
-      au <- au < 0.05
+    if (any(ts)) {
+      mp <- paste(sprintf("%s", names(ts)), collapse = ", ")
+      message(paste0("Multicollinearity detected for following predictors: ", mp))
+    } else {
+      message("No multicollinearity detected.")
     }
 
-    result <- tibble::add_column(
-      result,
-      heteroskedasticity = c(hn, hu),
-      multicollinearity = c(mn, mu),
-      non.normal.resid = c(nn, nu),
-      autocorrelation = c(an, au)
-    )
-  } else {
-    result <- tibble::tibble(
-      heteroskedasticity = hn,
-      multicollinearity = mn,
-      non.normal.resid = nn,
-      autocorrelation = an
-    )
+    ts <- any(ts)
   }
 
-  result
+  tibble::tibble(multicollin = ts)
 }

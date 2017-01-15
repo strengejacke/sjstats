@@ -34,6 +34,7 @@ Imports:
     MASS,
     Matrix,
     nlme,
+    purrr (>= 0.2.2),
     sandwich (>= 2.3-4),
     sjmisc (>= 2.2.1),
     tidyr (>= 0.6.0),
