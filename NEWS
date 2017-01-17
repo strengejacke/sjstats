@@ -12,7 +12,7 @@ New functions:
 
 Changes to functions:
 * `prop()` no longer works within dplyr's `summarise()` function. Instead, when now used with grouped data frames, a summary of proportions is directly returned as tibble.
-
+* `se()` now computed adjusted standard errors for generalized linear models, using the Taylor serie-based delta method.
 
 Version 0.7.1
 ------------------------------------------------------------------------------

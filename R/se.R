@@ -4,13 +4,14 @@ utils::globalVariables(c("strap", "models"))
 #' @name se
 #' @description Compute standard error for a variable, for all variables
 #'                of a data frame, for joint random and fixed effects
-#'                coefficients of mixed models, or for intraclass correlation
+#'                coefficients of mixed models, the adjusted standard errors
+#'                for generalized linear models, or for intraclass correlation
 #'                coefficients (ICC).
 #'
 #' @param x (Numeric) vector, a data frame, a \code{merMod}-object
-#'          as returned by the \code{\link[lme4]{lmer}}-method, an ICC object
-#'          (as obtained by the \code{\link{icc}}-function) or a list with
-#'          estimate and p-value. For the latter case, the list
+#'          as returned by the \code{\link[lme4]{lmer}}-method, a \code{glm}-object,
+#'          an ICC object (as obtained by the \code{\link{icc}}-function) or a
+#'          list with estimate and p-value. For the latter case, the list
 #'          must contain elements named \code{estimate} and \code{p.value}
 #'          (see 'Examples' and 'Details').
 #' @param nsim Numeric, the number of simulations for calculating the
@@ -23,6 +24,9 @@ utils::globalVariables(c("strap", "models"))
 #'
 #' @note Computation of standard errors for coefficients of mixed models
 #'         is based \href{http://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{on this code}.
+#'         \cr \cr
+#'         Standard errors for generalized linear models are approximations based
+#'         on the delta method (Oehlert 1992).
 #'
 #' @details Unlike \code{\link[arm]{se.coef}}, which returns the standard error
 #'            for fixed and random effects separately, this function computes
@@ -38,6 +42,7 @@ utils::globalVariables(c("strap", "models"))
 #'            the z-score from the p-value (formula in short: \code{b / qnorm(p / 2)}).
 #'            See 'Examples'.
 #'
+#' @references Oehlert GW. 1992. A note on the delta method. American Statistician 46(1).
 #'
 #' @examples
 #' # compute standard error for vector
@@ -50,6 +55,14 @@ utils::globalVariables(c("strap", "models"))
 #' # compute standard error for merMod-coefficients
 #' library(lme4)
 #' fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+#' se(fit)
+#'
+#' # compute odds-ration adjusted standard errors, based on delta method
+#' # with first-order Taylor approximation.
+#' data(efc)
+#' efc$services <- sjmisc::dicho(efc$tot_sc_e, dich.by = 0)
+#' fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
+#'            data = efc, family = binomial(link = "logit"))
 #' se(fit)
 #'
 #' # compute standard error from regression coefficient and p-value
@@ -78,7 +91,9 @@ utils::globalVariables(c("strap", "models"))
 #' boot_p(dummy, icc)}
 #'
 #'
-#' @importFrom stats qnorm
+#' @importFrom stats qnorm vcov
+#' @importFrom broom tidy
+#' @importFrom dplyr mutate select_
 #' @export
 se <- function(x, nsim = 100) {
   if (is_merMod(x)) {
@@ -87,6 +102,12 @@ se <- function(x, nsim = 100) {
   } else if (inherits(x, "icc.lme4")) {
     # we have a ICC object, so do bootstrapping and compute SE for ICC
     return(std_e_icc(x, nsim))
+  } else if (inherits(x, "glm")) {
+    return(
+      broom::tidy(x, exponentiate = TRUE) %>%
+        dplyr::mutate(or.se = sqrt(estimate ^ 2 * diag(stats::vcov(x)))) %>%
+        dplyr::select_("term", "estimate", "or.se")
+    )
   } else if (is.matrix(x) || is.data.frame(x)) {
     # init return variables
     stde <- c()
