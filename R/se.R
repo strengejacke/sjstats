@@ -109,11 +109,12 @@ se <- function(x, nsim = 100) {
   } else if (inherits(x, c("glm", "glmerMod"))) {
       tm <- broom::tidy(x, effects = "fixed")
       tm$estimate <- exp(tm$estimate)
-      tm %>%
-        dplyr::mutate(or.se = sqrt(estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
-        dplyr::select_("term", "estimate", "or.se") %>%
-        sjmisc::var_rename(or.se = "std.error")
-    return(tm)
+      return(
+        tm %>%
+          dplyr::mutate(or.se = sqrt(estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
+          dplyr::select_("term", "estimate", "or.se") %>%
+          sjmisc::var_rename(or.se = "std.error")
+      )
   } else if (is.matrix(x) || is.data.frame(x)) {
     # init return variables
     stde <- c()
