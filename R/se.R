@@ -117,10 +117,14 @@ se <- function(x, nsim = 100) {
     # we have a ICC object, so do bootstrapping and compute SE for ICC
     return(std_e_icc(x, nsim))
   } else if (inherits(x, c("glm", "glmerMod"))) {
+      # 'exponentiate'-argument currently not works for lme4-tidiers
+    # so we need to do this manually for glmer's
       tm <- broom::tidy(x, effects = "fixed")
       tm$estimate <- exp(tm$estimate)
       return(
         tm %>%
+          # vcov for merMod returns a dpoMatrix-object, so we need
+          # to coerce to regular matrix here.
           dplyr::mutate(or.se = sqrt(estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
           dplyr::select_("term", "estimate", "or.se") %>%
           sjmisc::var_rename(or.se = "std.error")
