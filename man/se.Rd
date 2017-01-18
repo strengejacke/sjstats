@@ -77,6 +77,16 @@ fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
            data = efc, family = binomial(link = "logit"))
 se(fit)
 
+# compute odds-ratio adjusted standard errors for generalized
+# linear mixed model, also based on delta method
+library(lme4)
+library(sjmisc)
+# create binary response
+sleepstudy$Reaction.dicho <- dicho(sleepstudy$Reaction, dich.by = "median")
+fit <- glmer(Reaction.dicho ~ Days + (Days | Subject),
+             data = sleepstudy, family = binomial("logit"))
+se(fit)
+
 # compute standard error from regression coefficient and p-value
 se(list(estimate = .3, p.value = .002))
 
