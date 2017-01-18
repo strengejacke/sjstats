@@ -9,11 +9,11 @@ utils::globalVariables(c("strap", "models"))
 #'                for intraclass correlation coefficients (ICC).
 #'
 #' @param x (Numeric) vector, a data frame, a \code{merMod}-object
-#'          as returned by the \code{\link[lme4]{lmer}}-method, a \code{glm}-object,
-#'          an ICC object (as obtained by the \code{\link{icc}}-function) or a
-#'          list with estimate and p-value. For the latter case, the list
-#'          must contain elements named \code{estimate} and \code{p.value}
-#'          (see 'Examples' and 'Details').
+#'          as returned by the functions from the \pkg{lme4}-package, a
+#'          \code{glm}-object, an ICC object (as obtained by the
+#'          \code{\link{icc}}-function) or a list with estimate and p-value.
+#'          For the latter case, the list must contain elements named
+#'          \code{estimate} and \code{p.value} (see 'Examples' and 'Details').
 #' @param nsim Numeric, the number of simulations for calculating the
 #'          standard error for intraclass correlation coefficients, as
 #'          obtained by the \code{\link{icc}}-function.
