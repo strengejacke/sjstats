@@ -4,9 +4,9 @@ utils::globalVariables(c("strap", "models"))
 #' @name se
 #' @description Compute standard error for a variable, for all variables
 #'                of a data frame, for joint random and fixed effects
-#'                coefficients of mixed models, the adjusted standard errors
-#'                for generalized linear models, or for intraclass correlation
-#'                coefficients (ICC).
+#'                coefficients of (non-/linear) mixed models, the adjusted
+#'                standard errors for generalized linear (mixed) models, or
+#'                for intraclass correlation coefficients (ICC).
 #'
 #' @param x (Numeric) vector, a data frame, a \code{merMod}-object
 #'          as returned by the \code{\link[lme4]{lmer}}-method, a \code{glm}-object,
@@ -25,14 +25,18 @@ utils::globalVariables(c("strap", "models"))
 #' @note Computation of standard errors for coefficients of mixed models
 #'         is based \href{http://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{on this code}.
 #'         \cr \cr
-#'         Standard errors for generalized linear models are approximations based
-#'         on the delta method (Oehlert 1992).
+#'         Standard errors for generalized linear (mixed) models are
+#'         approximations based on the delta method (Oehlert 1992).
 #'
 #' @details Unlike \code{\link[arm]{se.coef}}, which returns the standard error
 #'            for fixed and random effects separately, this function computes
 #'            the standard errors for joint (sums of) random and fixed
 #'            effects coefficients. Hence, \code{se()} returns the appropriate
 #'            standard errors for \code{\link[lme4]{coef.merMod}}.
+#'            \cr \cr
+#'            For generalized linear models or generalized linear mixed models,
+#'            approximated standard errors, using the delta method for transformed
+#'            regression parameters are returned (Oehlert 1992).
 #'            \cr \cr
 #'            The standard error for the \code{\link{icc}} is based on bootstrapping,
 #'            thus, the \code{nsim}-argument is required. See 'Examples'.
@@ -96,18 +100,20 @@ utils::globalVariables(c("strap", "models"))
 #' @importFrom dplyr mutate select_
 #' @export
 se <- function(x, nsim = 100) {
-  if (is_merMod(x)) {
+  if (inherits(x, c("lmerMod", "nlmerMod", "merModLmerTest"))) {
     # return standard error for mixed models
     return(std_merMod(x))
   } else if (inherits(x, "icc.lme4")) {
     # we have a ICC object, so do bootstrapping and compute SE for ICC
     return(std_e_icc(x, nsim))
-  } else if (inherits(x, "glm")) {
-    return(
-      broom::tidy(x, exponentiate = TRUE) %>%
-        dplyr::mutate(or.se = sqrt(estimate ^ 2 * diag(stats::vcov(x)))) %>%
-        dplyr::select_("term", "estimate", "or.se")
-    )
+  } else if (inherits(x, c("glm", "glmerMod"))) {
+      tm <- broom::tidy(x, effects = "fixed")
+      tm$estimate <- exp(tm$estimate)
+      tm %>%
+        dplyr::mutate(or.se = sqrt(estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
+        dplyr::select_("term", "estimate", "or.se") %>%
+        sjmisc::var_rename(or.se = "std.error")
+    return(tm)
   } else if (is.matrix(x) || is.data.frame(x)) {
     # init return variables
     stde <- c()
