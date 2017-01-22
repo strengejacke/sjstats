@@ -1,9 +1,10 @@
-# sjstats 0.7.2
+# sjstats 0.8.0
 
 ## New functions
 
 * `svy()` to compute robust standard errors for weighted models, adjusting the residual degrees of freedom to simulate sampling weights.
 * `zero_count()` to check whether a poisson-model is over- or underfitting zero-counts in the outcome.
+* `pred_accuracy()` to calculate accuracy of predictions from model fit.
 * `outliers()` to detect outliers in (generalized) linear models.
 * `heteroskedastic()` to check linear models for (non-)constant error variance.
 * `autocorrelation()` to check linear models for auto-correlated residuals.

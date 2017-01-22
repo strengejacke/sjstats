@@ -34,6 +34,7 @@ Imports:
     lmtest (>= 0.9-34),
     MASS,
     Matrix,
+    modelr,
     nlme,
     purrr (>= 0.2.2),
     sandwich (>= 2.3-4),
@@ -49,6 +50,7 @@ Suggests:
     Hmisc,
     lmerTest,
     pbkrtest (>= 0.4-6),
+    pROC,
     pwr
 URL: https://github.com/sjPlot/sjstats
 BugReports: https://github.com/sjPlot/sjstats/issues
