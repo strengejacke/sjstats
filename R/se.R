@@ -1,4 +1,4 @@
-utils::globalVariables(c("strap", "models"))
+utils::globalVariables(c("strap", "models", "estimate"))
 
 #' @title Standard Error for variables or coefficients
 #' @name se

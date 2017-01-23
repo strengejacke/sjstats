@@ -15,7 +15,7 @@
 ## Changes to functions
 
 * `prop()` no longer works within dplyr's `summarise()` function. Instead, when now used with grouped data frames, a summary of proportions is directly returned as tibble.
-* `se()` now computed adjusted standard errors for generalized linear (mixed) models, using the Taylor serie-based delta method. 
+* `se()` now computes adjusted standard errors for generalized linear (mixed) models, using the Taylor series-based delta method. 
 
 
 # sjstats 0.7.1

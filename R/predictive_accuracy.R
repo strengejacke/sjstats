@@ -1,3 +1,5 @@
+utils::globalVariables(c("predictions", "response", "train", "test"))
+
 #' @title Accuracy of predictions from model fit
 #' @name pred_accuracy
 #'
