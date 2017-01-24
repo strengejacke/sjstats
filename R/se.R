@@ -18,9 +18,7 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #'          standard error for intraclass correlation coefficients, as
 #'          obtained by the \code{\link{icc}}-function.
 #'
-#' @return The standard error of \code{x}, or for each variable
-#'           if \code{x} is a data frame, or for the coefficients
-#'           of a mixed model (see \code{\link[lme4]{coef.merMod}}).
+#' @return The standard error of \code{x}.
 #'
 #' @note Computation of standard errors for coefficients of mixed models
 #'         is based \href{http://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{on this code}.
@@ -61,7 +59,7 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #' fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' se(fit)
 #'
-#' # compute odds-ration adjusted standard errors, based on delta method
+#' # compute odds-ratio adjusted standard errors, based on delta method
 #' # with first-order Taylor approximation.
 #' data(efc)
 #' efc$services <- sjmisc::dicho(efc$tot_sc_e, dich.by = 0)
@@ -111,28 +109,34 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #' @export
 se <- function(x, nsim = 100) {
   if (inherits(x, c("lmerMod", "nlmerMod", "merModLmerTest"))) {
-    # return standard error for mixed models
+
+    # return standard error for (linear) mixed models
     return(std_merMod(x))
   } else if (inherits(x, "icc.lme4")) {
+
     # we have a ICC object, so do bootstrapping and compute SE for ICC
     return(std_e_icc(x, nsim))
   } else if (inherits(x, c("glm", "glmerMod"))) {
-      # 'exponentiate'-argument currently not works for lme4-tidiers
+
+    # for glm, we want to exponentiate coefficients to get odds ratios, however
+    # 'exponentiate'-argument currently not works for lme4-tidiers
     # so we need to do this manually for glmer's
-      tm <- broom::tidy(x, effects = "fixed")
-      tm$estimate <- exp(tm$estimate)
-      return(
-        tm %>%
-          # vcov for merMod returns a dpoMatrix-object, so we need
-          # to coerce to regular matrix here.
-          dplyr::mutate(or.se = sqrt(estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
-          dplyr::select_("term", "estimate", "or.se") %>%
-          sjmisc::var_rename(or.se = "std.error")
-      )
+    tm <- broom::tidy(x, effects = "fixed")
+    tm$estimate <- exp(tm$estimate)
+    return(
+      tm %>%
+        # vcov for merMod returns a dpoMatrix-object, so we need
+        # to coerce to regular matrix here.
+        dplyr::mutate(or.se = sqrt(estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
+        dplyr::select_("term", "estimate", "or.se") %>%
+        sjmisc::var_rename(or.se = "std.error")
+    )
   } else if (is.matrix(x) || is.data.frame(x)) {
+
     # init return variables
     stde <- c()
     stde_names <- c()
+
     # iterate all columns
     for (i in seq_len(ncol(x))) {
       # get and save standard error for each variable
@@ -141,14 +145,19 @@ se <- function(x, nsim = 100) {
       # save column name as variable name
       stde_names <- c(stde_names, colnames(x)[i])
     }
+
     # set names to return vector
     names(stde) <- stde_names
+
     # return results
     return(stde)
   } else if (is.list(x)) {
+
     # compute standard error from regression coefficient and p-value
     return(x$estimate / abs(stats::qnorm(x$p.value / 2)))
   } else {
+
+    # standard error for a variable
     return(std_e_helper(x))
   }
 }

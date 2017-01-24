@@ -8,8 +8,8 @@ utils::globalVariables(c("predictions", "response", "train", "test"))
 #'
 #' @param fit Fitted model object of class \code{lm} or \code{glm}.
 #' @param k The number of folds for the kfold-crossvalidation.
-#' @param method Character string, indicating whether cross-validation
-#'          (\code{method = "cv"}) or bootstrapping ((\code{method = "boot"}))
+#' @param method Character string, indicating whether crossvalidation
+#'          (\code{method = "cv"}) or bootstrapping (\code{method = "boot"})
 #'          is used to compute the accuracy values.
 #'
 #' @inheritParams bootstrap
@@ -23,20 +23,20 @@ utils::globalVariables(c("predictions", "response", "train", "test"))
 #'          AUC-value, calculated with the \code{\link[pROC]{auc}}-function.
 #'          \cr \cr
 #'          The accuracy is the mean value of multiple correlation resp.
-#'          AUC-values, which are either computed with cross-validation
+#'          AUC-values, which are either computed with crossvalidation
 #'          or nonparametric bootstrapping (see argument \code{method}).
 #'
 #' @examples
 #' data(efc)
 #' fit <- lm(neg_c_7 ~ barthtot + c161sex, data = efc)
 #'
-#' # accuracy for linear model, with cross-validation
+#' # accuracy for linear model, with crossvalidation
 #' pred_accuracy(efc, fit)
 #'
 #' # accuracy for linear model, with bootstrapping
 #' pred_accuracy(efc, fit, method = "boot", n = 100)
 #'
-#' # accuracy for logistic regression, with cross-validation
+#' # accuracy for logistic regression, with crossvalidation
 #' efc$services <- sjmisc::dicho(efc$tot_sc_e, dich.by = 0, as.num = TRUE)
 #' fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
 #'            data = efc, family = binomial(link = "logit"))

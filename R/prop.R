@@ -65,7 +65,7 @@
 #'
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr bind_cols bind_rows
-#' @importFrom sjmisc get_label get_labels
+#' @importFrom sjmisc get_label get_labels to_value
 #' @export
 prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
   # check argument
@@ -84,6 +84,9 @@ prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
 
   # do we have a grouped data frame?
   if (inherits(data, "grouped_df")) {
+
+    # remember order of values
+    reihenfolge <- NULL
 
     # get grouped data
     grps <- get_grouped_data(data)
@@ -110,16 +113,25 @@ prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
       var.name <- colnames(grps)[i]
       val.labels <- rep(sjmisc::get_labels(data[[var.name]]), length.out = nrow(fr))
 
+      # add row order, based on values of grouping variables
+      reihenfolge <- dplyr::bind_cols(
+        tibble::as_tibble(rep(sort(unique(sjmisc::to_value(data[[var.name]]))), length.out = nrow(fr))),
+        reihenfolge
+      )
+
       # bind values as column
       fr <- dplyr::bind_cols(tibble::as_tibble(val.labels), fr)
     }
 
     # get column names. we need variable labels as column names
-    var.names <- colnames(grps)[1:(ncol(grps) - 1)]
+    var.names <- colnames(grps)[seq_len(ncol(grps) - 1)]
     var.labels <- sjmisc::get_label(data[, var.names], def.value = var.names)
 
     # set variable labels and comparisons as colum names
     colnames(fr) <- c(var.labels, comparisons)
+
+    # order rows by values of grouping variables
+    fr <- fr[do.call(order, reihenfolge), ]
 
     return(fr)
 

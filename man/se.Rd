@@ -19,9 +19,7 @@ standard error for intraclass correlation coefficients, as
 obtained by the \code{\link{icc}}-function.}
 }
 \value{
-The standard error of \code{x}, or for each variable
-          if \code{x} is a data frame, or for the coefficients
-          of a mixed model (see \code{\link[lme4]{coef.merMod}}).
+The standard error of \code{x}.
 }
 \description{
 Compute standard error for a variable, for all variables
@@ -69,7 +67,7 @@ library(lme4)
 fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 se(fit)
 
-# compute odds-ration adjusted standard errors, based on delta method
+# compute odds-ratio adjusted standard errors, based on delta method
 # with first-order Taylor approximation.
 data(efc)
 efc$services <- sjmisc::dicho(efc$tot_sc_e, dich.by = 0)
