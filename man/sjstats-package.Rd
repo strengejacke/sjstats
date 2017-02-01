@@ -16,22 +16,3 @@ Other statistics:
   \item Cramer's V, Cronbach's Alpha, Mean Inter-Item-Correlation, Mann-Whitney-U-Test, Item-scale reliability tests
 }
 }
-\details{
-\tabular{rl}{
-Package: \tab sjstats\cr
-Type: \tab Package\cr
-Version: \tab 0.7.1-1\cr
-Date: \tab 2017-01-11\cr
-License: \tab GPL-3\cr
-}
-}
-\author{
-Daniel Lüdecke \email{d.luedecke@uke.de}
-}
-\references{
-  \itemize{
-    \item Documentation: \url{http://www.strengejacke.de/sjPlot}
-    \item Github: \url{https://github.com/sjPlot/sjstats}
-    \item Bug reports: \url{https://github.com/sjPlot/sjstats/issues}
-    }
-}
