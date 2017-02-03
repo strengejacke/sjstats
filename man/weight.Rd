@@ -55,4 +55,3 @@ table(x)
 table(weight(x, w))
 
 }
-

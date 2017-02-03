@@ -120,4 +120,3 @@ print(icc2, comp = "var")
 \seealso{
 \code{\link{re_var}}
 }
-

@@ -59,4 +59,3 @@ odds_to_rr(fit)
 \references{
 Zhang J, Yu KF. 1998. What's the Relative Risk? A Method of Correcting the Odds Ratio in Cohort Studies of Common Outcomes. JAMA; 280(19): 1690-1. \doi{10.1001/jama.280.19.1690}
 }
-

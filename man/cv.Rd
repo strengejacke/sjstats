@@ -59,4 +59,3 @@ Everitt, Brian (1998). The Cambridge Dictionary of Statistics. Cambridge, UK New
 \seealso{
 \code{\link{rmse}}
 }
-

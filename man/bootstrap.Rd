@@ -78,4 +78,3 @@ se(efc$c12hour)
 \code{\link{boot_ci}} to calculate confidence intervals from
            bootstrap samples.
 }
-

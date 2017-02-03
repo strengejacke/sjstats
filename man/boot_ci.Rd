@@ -2,8 +2,8 @@
 % Please edit documentation in R/boot_ci.R
 \name{boot_ci}
 \alias{boot_ci}
-\alias{boot_p}
 \alias{boot_se}
+\alias{boot_p}
 \title{Standard error and confidence intervals for bootstrapped estimates}
 \usage{
 boot_ci(data, ...)
@@ -121,4 +121,3 @@ Carpenter J, Bithell J. Bootstrap confdence intervals: when, which, what? A prac
 \seealso{
 \code{\link{bootstrap}} to generate nonparametric bootstrap samples.
 }
-

@@ -57,4 +57,3 @@ fit <- glm(services ~ neg_c_7 + c161sex + e42dep, data = efc,
 chisq_gof(fit)
 
 }
-

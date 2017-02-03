@@ -2,8 +2,8 @@
 % Please edit documentation in R/pred_vars.R
 \name{pred_vars}
 \alias{pred_vars}
-\alias{resp_val}
 \alias{resp_var}
+\alias{resp_val}
 \title{Get predictor and response variables from models}
 \usage{
 pred_vars(x)
@@ -36,4 +36,3 @@ resp_var(fit)
 resp_val(fit)
 
 }
-

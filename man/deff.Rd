@@ -40,4 +40,3 @@ Bland JM. 2000. Sample size in guidelines trials. Fam Pract. (17), 17-20.
             \cr \cr
             Thompson DM, Fernald DH, Mold JW. 2012. Intraclass Correlation Coefficients Typical of Cluster-Randomized Studies: Estimates From the Robert Wood Johnson Prescription for Health Projects. The Annals of Family Medicine;10(3):235–40. \doi{10.1370/afm.1347}
 }
-

@@ -111,4 +111,3 @@ r2(fit, fit.null)
 \seealso{
 \code{\link{rmse}} for more methods to assess model quality.
 }
-

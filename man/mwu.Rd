@@ -50,4 +50,3 @@ data(efc)
 mwu(efc$e17age, efc$e42dep)
 
 }
-

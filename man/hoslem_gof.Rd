@@ -41,4 +41,3 @@ hoslem_gof(fit)
 \seealso{
 \code{\link{r2}}
 }
-

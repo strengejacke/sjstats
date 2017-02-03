@@ -40,4 +40,3 @@ eta_sq(efc$c12hour, efc$e42dep)
 \references{
 Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
 }
-

@@ -34,4 +34,3 @@ table_values(tab)$expected
 table_values(tab)$cell
 
 }
-

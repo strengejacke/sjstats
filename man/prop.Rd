@@ -76,4 +76,3 @@ efc \%>\%
   prop(e42dep > 2, e16sex == 1)
 
 }
-

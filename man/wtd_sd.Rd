@@ -31,4 +31,3 @@ wtd_sd(efc[, 1:3], runif(n = nrow(efc)))
 wtd_se(efc[, 1:3], runif(n = nrow(efc)))
 
 }
-

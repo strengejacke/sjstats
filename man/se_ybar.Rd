@@ -27,4 +27,3 @@ se_ybar(fit)
 \references{
 Gelman A, Hill J. 2007. Data analysis using regression and multilevel/hierarchical models. Cambridge, New York: Cambridge University Press
 }
-

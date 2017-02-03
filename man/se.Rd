@@ -115,4 +115,3 @@ boot_p(dummy, icc)}
 \references{
 Oehlert GW. 1992. A note on the delta method. American Statistician 46(1).
 }
-

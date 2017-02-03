@@ -19,4 +19,3 @@ data(efc)
 levene_test(efc$c12hour, efc$e42dep)
 
 }
-

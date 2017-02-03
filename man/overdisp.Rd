@@ -71,4 +71,3 @@ zero_count(fit)
 \seealso{
 \code{link{check_outliers}}
 }
-

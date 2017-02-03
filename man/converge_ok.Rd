@@ -50,4 +50,3 @@ fit <- glmer(hi_qol ~ sex + c12hour + neg_c_7 + (1|grp),
 converge_ok(fit)
 
 }
-

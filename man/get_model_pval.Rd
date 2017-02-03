@@ -52,4 +52,3 @@ fit <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
 get_model_pval(fit, p.kr = TRUE)
 
 }
-

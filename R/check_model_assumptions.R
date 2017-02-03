@@ -147,8 +147,6 @@ outliers <- function(x, iterations = 5) {
   model <- x
   # maximum loops
   maxcnt <- iterations
-  # remember how many cases have been removed
-  removedcases <- 0
   outlier <- c()
   loop <- TRUE
 
@@ -179,8 +177,6 @@ outliers <- function(x, iterations = 5) {
           model <- dummymodel
           # and get new AIC-value
           aic <- dummyaic
-          # count removed cases
-          removedcases <- removedcases + length(vars)
           # add outliers to final return value
           outlier <- c(outlier, vars)
         }
@@ -221,8 +217,6 @@ outliers <- function(x, iterations = 5) {
           model <- dummymodel
           # and get new r2
           rs <- dummyrs
-          # count removed cases
-          removedcases <- removedcases + length(vars)
           # add outliers to final return value
           outlier <- c(outlier, vars)
         }
@@ -241,19 +235,25 @@ outliers <- function(x, iterations = 5) {
     stop("Model is not of class `lm` or `glm`.", call. = F)
   }
 
+  # count removed cases
+  removedcases <- length(outlier)
+
   # do we have any outliers?
   if (removedcases < 1) {
     message("No outliers detected.")
   } else {
     message(sprintf("%i outliers removed in updated model.", removedcases))
 
-    structure(class = "sjstats_outliers",
-              list(result = rv,
-                   updated.model = model,
-                   removed.count = removedcases,
-                   removed.obs = vars,
-                   iterations = iterations - (maxcnt + 1))
-              )
+    structure(
+      class = "sjstats_outliers",
+      list(
+        result = rv,
+        updated.model = model,
+        removed.count = removedcases,
+        removed.obs = outlier,
+        iterations = iterations - (maxcnt + 1)
+      )
+    )
   }
 }
 

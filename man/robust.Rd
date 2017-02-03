@@ -80,4 +80,3 @@ robust(fit)
 robust(fit, conf.int = TRUE, exponentiate = TRUE)
 
 }
-

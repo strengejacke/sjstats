@@ -62,4 +62,3 @@ Cohen J. 1988. Statistical power analysis for the behavioral sciences (2nd ed.).
             \cr \cr
             Snijders TAB. 2005. Power and Sample Size in Multilevel Linear Models. In: Everitt BS, Howell DC (Hrsg.). Encyclopedia of Statistics in Behavioral Science. Chichester, UK: John Wiley & Sons, Ltd. \doi{10.1002/0470013192.bsa492}
 }
-
