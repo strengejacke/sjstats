@@ -302,7 +302,8 @@ print.sj_xtab_stat <- function(x, ...) {
       cat("\n")
 
   # print test statistic
-  cat(sprintf("  %*s: %.4f\n", l, x$method, x$s))
+  cat(sprintf("  %*s: %.4f\n", l, x$stat.name, x$statistic))
+  cat(sprintf("  %*s: %.4f\n", l, x$method, x$estimate))
 
   # check if p <.001
   if (x$p.value < 0.001)

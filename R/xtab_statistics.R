@@ -9,7 +9,9 @@
 #' @param data A data frame or a table object. If a table object, \code{x1} and
 #'          \code{x2} will be ignored. For Kendall's \emph{tau}, Spearman's \emph{rho}
 #'          or Pearson's product moment correlation coefficient, \code{data} needs
-#'          to be a data frame and \code{x1} and \code{x2} must be specified.
+#'          to be a data frame. If \code{x1} and \code{x2} are not specified,
+#'          the first two columns of the data frames are used as variables
+#'          to compute the crosstab.
 #' @param tab A \code{\link{table}} or \code{\link{ftable}}. Tables of class
 #'          \code{\link{xtabs}} and other will be coerced to \code{\link{ftable}}
 #'          objects.
@@ -83,22 +85,27 @@
 #' @importFrom dplyr case_when
 #' @importFrom MASS loglm
 #' @export
-xtab_statistics <- function(data, x1, x2, statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson"), ...) {
+xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson"), ...) {
   # match arguments
   statistics <- match.arg(statistics)
 
   # check if data is a table
   if (!is.table(data)) {
-    # evaluate unquoted names
-    x1 <- deparse(substitute(x1))
-    x2 <- deparse(substitute(x2))
-
-    # if names were quotes, remove quotes
-    x1 <- gsub("\"", "", x1, fixed = T)
-    x2 <- gsub("\"", "", x2, fixed = T)
-
-    # get data
-    data <- data[, c(x1, x2)]
+    # check if we have variable specified
+    if (!is.null(x1) && !is.null(x2)) {
+      # evaluate unquoted names
+      x1 <- deparse(substitute(x1))
+      x2 <- deparse(substitute(x2))
+      
+      # if names were quotes, remove quotes
+      x1 <- gsub("\"", "", x1, fixed = T)
+      x2 <- gsub("\"", "", x2, fixed = T)
+      
+      # get data
+      data <- data[, c(x1, x2)]
+    } else {
+      data <- data[, 1:2]
+    }
 
     # make simple table
     tab <- table(data)
@@ -128,7 +135,10 @@ xtab_statistics <- function(data, x1, x2, statistics = c("auto", "cramer", "phi"
     # get chisq-statistics, for df and p-value
     chsq <- suppressWarnings(stats::chisq.test(tab, ...))
     pv <- chsq$p.value
-
+    test <- chsq$statistic
+    # set statistics name
+    names(test) <- "Chi-squared"
+    
     # check row/column
     if ((nrow(tab) > 2 || ncol(tab) > 2 || statistics == "cramer") && statistics != "phi") {
       # get cramer's V
@@ -163,6 +173,7 @@ xtab_statistics <- function(data, x1, x2, statistics = c("auto", "cramer", "phi"
     # get statistics and p-value
     s <- cv$estimate
     pv <- cv$p.value
+    test <- cv$statistic
   }
 
   # compute method string
@@ -176,8 +187,10 @@ xtab_statistics <- function(data, x1, x2, statistics = c("auto", "cramer", "phi"
 
   # return result
   return(structure(class = "sj_xtab_stat", list(
-    statistic = s,
+    estimate = s,
     p.value = pv,
+    statistic = test,
+    stat.name = names(test),
     method = method,
     method.short = statistics,
     fisher = use.fisher
