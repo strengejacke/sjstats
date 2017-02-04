@@ -283,3 +283,30 @@ print.sjstats_zcf <- function(x, ...) {
 print.sjstats_outliers <- function(x, ...) {
   print(x$result, ...)
 }
+
+#' @export
+print.sj_xtab_stat <- function(x, ...) {
+  # get length of method name, to align output
+  l <- nchar(x$method)
+
+  # is method shorter than p-value?
+  if (l < 7) l <- 7
+
+  # headline
+  cat("Measure of Association for Contingency table\n")
+
+  # used fisher?
+  if (x$fisher)
+    cat("                 (using Fisher's Exact Test)\n")
+  else
+      cat("\n")
+
+  # print test statistic
+  cat(sprintf("  %*s: %.4f\n", l, x$method, x$s))
+
+  # check if p <.001
+  if (x$p.value < 0.001)
+    cat(sprintf("  %*s: <0.001\n", l, "p-value", x$p.value))
+  else
+    cat(sprintf("  %*s: %.4f\n", l, "p-value", x$p.value))
+}

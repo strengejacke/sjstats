@@ -111,7 +111,15 @@ prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
     for (i in (ncol(grps) - 1):1) {
       # get value label
       var.name <- colnames(grps)[i]
-      val.labels <- rep(sjmisc::get_labels(data[[var.name]]), length.out = nrow(fr))
+      val.labels <- suppressWarnings(
+        rep(sjmisc::get_labels(data[[var.name]]), length.out = nrow(fr))
+      )
+
+      # if we have no value labels, use values instead
+      if (is.null(val.labels)) {
+        val.labels <-
+          rep(unique(sort(data[[var.name]])), length.out = nrow(fr))
+      }
 
       # add row order, based on values of grouping variables
       reihenfolge <- dplyr::bind_cols(

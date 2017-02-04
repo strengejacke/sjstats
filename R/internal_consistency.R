@@ -132,6 +132,7 @@
 #'
 #' @importFrom stats cor
 #' @importFrom tibble tibble
+#' @importFrom sjmisc std
 #' @export
 reliab_test <- function(x, scale.items = FALSE, digits = 3) {
   # check param
@@ -155,7 +156,7 @@ reliab_test <- function(x, scale.items = FALSE, digits = 3) {
   if (ncol(x) > 2) {
     # Check whether items should be scaled. Needed,
     # when items have different measures / scales
-    if (scale.items) x <- std(x)
+    if (scale.items) x <- sjmisc::std(x)
 
     # init vars
     totalCorr <- c()

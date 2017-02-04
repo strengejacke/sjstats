@@ -1,3 +1,17 @@
+# sjstats 0.8.0.9000
+
+## General
+
+* Functions `std()` and `center()` were removed and are now in the [sjmisc-package](https://cran.r-project.org/package=sjmisc).
+
+## New functions
+
+* `xtab_statistics()` to compute various measures of assiciation for contigency tables.
+
+## Bug fixes
+
+* `prop()` did not work for non-labelled data frames when used with grouped data frames.
+
 # sjstats 0.8.0
 
 ## New functions
