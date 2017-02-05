@@ -10,8 +10,8 @@ phi(tab)
 
 cramer(tab)
 
-xtab_statistics(data, x1, x2, statistics = c("auto", "cramer", "phi",
-  "spearman", "kendall", "pearson"), ...)
+xtab_statistics(data, x1 = NULL, x2 = NULL, statistics = c("auto",
+  "cramer", "phi", "spearman", "kendall", "pearson"), ...)
 }
 \arguments{
 \item{tab}{A \code{\link{table}} or \code{\link{ftable}}. Tables of class
@@ -21,7 +21,9 @@ objects.}
 \item{data}{A data frame or a table object. If a table object, \code{x1} and
 \code{x2} will be ignored. For Kendall's \emph{tau}, Spearman's \emph{rho}
 or Pearson's product moment correlation coefficient, \code{data} needs
-to be a data frame and \code{x1} and \code{x2} must be specified.}
+to be a data frame. If \code{x1} and \code{x2} are not specified,
+the first two columns of the data frames are used as variables
+to compute the crosstab.}
 
 \item{x1}{Name of first variable that should be used to compute the
 contingency table. If \code{data} is a table object, this argument
