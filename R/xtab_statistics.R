@@ -33,11 +33,14 @@
 #'         \cr \cr
 #'         For \code{xtab_statistics()}, a list with following components:
 #'         \describe{
-#'           \item{statistic}{the value of the test statistic resp. the estimated measure of association.}
-#'           \item{p.value}{the p-value for the test.}
-#'           \item{method}{character string indicating the name of the measure of association.}
-#'           \item{method.short}{the short form of association measure, equals the \code{statistics}-aergument.}
-#'           \item{fisher}{logical, if Fisher's exact test was used to calculate the p-value.}
+#'           \item{\code{estimate}}{the value of the estimated measure of association.}
+#'           \item{\code{p.value}}{the p-value for the test.}
+#'           \item{\code{statistic}}{the value of the test statistic.}
+#'           \item{\code{stat.name}}{the name of the test statistic.}
+#'           \item{\code{df}}{the degrees of freedom for the contingency table.}
+#'           \item{\code{method}}{character string indicating the name of the measure of association.}
+#'           \item{\code{method.short}}{the short form of association measure, equals the \code{statistics}-aergument.}
+#'           \item{\code{fisher}}{logical, if Fisher's exact test was used to calculate the p-value.}
 #'         }
 #'
 #' @details The p-value for Cramer's V and the Phi coefficient are based
@@ -91,21 +94,19 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
 
   # check if data is a table
   if (!is.table(data)) {
-    # check if we have variable specified
-    if (!is.null(x1) && !is.null(x2)) {
-      # evaluate unquoted names
-      x1 <- deparse(substitute(x1))
-      x2 <- deparse(substitute(x2))
-      
-      # if names were quotes, remove quotes
-      x1 <- gsub("\"", "", x1, fixed = T)
-      x2 <- gsub("\"", "", x2, fixed = T)
-      
-      # get data
+    # evaluate unquoted names
+    x1 <- deparse(substitute(x1))
+    x2 <- deparse(substitute(x2))
+
+    # if names were quotes, remove quotes
+    x1 <- gsub("\"", "", x1, fixed = T)
+    x2 <- gsub("\"", "", x2, fixed = T)
+
+    # check for "NULL" and get data
+    if (x1 != "NULL" && x2 != "NULL")
       data <- data[, c(x1, x2)]
-    } else {
+    else
       data <- data[, 1:2]
-    }
 
     # make simple table
     tab <- table(data)
@@ -138,7 +139,7 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     test <- chsq$statistic
     # set statistics name
     names(test) <- "Chi-squared"
-    
+
     # check row/column
     if ((nrow(tab) > 2 || ncol(tab) > 2 || statistics == "cramer") && statistics != "phi") {
       # get cramer's V
@@ -191,6 +192,7 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     p.value = pv,
     statistic = test,
     stat.name = names(test),
+    df = (nrow(tab) - 1) * (ncol(tab) - 1),
     method = method,
     method.short = statistics,
     fisher = use.fisher

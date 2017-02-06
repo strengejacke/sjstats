@@ -47,11 +47,14 @@ For \code{phi()}, the table's Phi value. For \code{cramer()}, the
         \cr \cr
         For \code{xtab_statistics()}, a list with following components:
         \describe{
-          \item{statistic}{the value of the test statistic resp. the estimated measure of association.}
-          \item{p.value}{the p-value for the test.}
-          \item{method}{character string indicating the name of the measure of association.}
-          \item{method.short}{the short form of association measure, equals the \code{statistics}-aergument.}
-          \item{fisher}{logical, if Fisher's exact test was used to calculate the p-value.}
+          \item{\code{estimate}}{the value of the estimated measure of association.}
+          \item{\code{p.value}}{the p-value for the test.}
+          \item{\code{statistic}}{the value of the test statistic.}
+          \item{\code{stat.name}}{the name of the test statistic.}
+          \item{\code{df}}{the degrees of freedom for the contingency table.}
+          \item{\code{method}}{character string indicating the name of the measure of association.}
+          \item{\code{method.short}}{the short form of association measure, equals the \code{statistics}-aergument.}
+          \item{\code{fisher}}{logical, if Fisher's exact test was used to calculate the p-value.}
         }
 }
 \description{

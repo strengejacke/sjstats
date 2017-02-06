@@ -1,4 +1,4 @@
-Version 0.8.1
+Version 0.8.0.9000
 ------------------------------------------------------------------------------
 General:
 * Functions `std()` and `center()` were removed and are now in the sjmisc-package (https://cran.r-project.org/package=sjmisc).
