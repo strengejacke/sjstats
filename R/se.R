@@ -8,9 +8,9 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #'                standard errors for generalized linear (mixed) models, or
 #'                for intraclass correlation coefficients (ICC).
 #'
-#' @param x (Numeric) vector, a data frame, a \code{merMod}-object
-#'          as returned by the functions from the \pkg{lme4}-package, a
-#'          \code{glm}-object, an ICC object (as obtained by the
+#' @param x (Numeric) vector, a data frame, an \code{lm} or \code{glm}-object,
+#'          a \code{merMod}-object as returned by the functions from the
+#'          \pkg{lme4}-package, an ICC object (as obtained by the
 #'          \code{\link{icc}}-function) or a list with estimate and p-value.
 #'          For the latter case, the list must contain elements named
 #'          \code{estimate} and \code{p.value} (see 'Examples' and 'Details').
@@ -26,15 +26,17 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #'         Standard errors for generalized linear (mixed) models are
 #'         approximations based on the delta method (Oehlert 1992).
 #'
-#' @details Unlike \code{\link[arm]{se.coef}}, which returns the standard error
-#'            for fixed and random effects separately, this function computes
-#'            the standard errors for joint (sums of) random and fixed
-#'            effects coefficients. Hence, \code{se()} returns the appropriate
-#'            standard errors for \code{\link[lme4]{coef.merMod}}.
+#' @details For linear mixed models, this function computes the standard errors
+#'            for joint (sums of) random and fixed effects coefficients (unlike
+#'            \code{\link[arm]{se.coef}}, which returns the standard error
+#'            for fixed and random effects separately). Hence, \code{se()}
+#'            returns the appropriate standard errors for \code{\link[lme4]{coef.merMod}}.
 #'            \cr \cr
 #'            For generalized linear models or generalized linear mixed models,
 #'            approximated standard errors, using the delta method for transformed
-#'            regression parameters are returned (Oehlert 1992).
+#'            regression parameters are returned (Oehlert 1992). For generalized
+#'            linear mixed models, the standard errors refer to the fixed effects
+#'            only.
 #'            \cr \cr
 #'            The standard error for the \code{\link{icc}} is based on bootstrapping,
 #'            thus, the \code{nsim}-argument is required. See 'Examples'.
@@ -109,15 +111,12 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #' @export
 se <- function(x, nsim = 100) {
   if (inherits(x, c("lmerMod", "nlmerMod", "merModLmerTest"))) {
-
     # return standard error for (linear) mixed models
     return(std_merMod(x))
   } else if (inherits(x, "icc.lme4")) {
-
     # we have a ICC object, so do bootstrapping and compute SE for ICC
     return(std_e_icc(x, nsim))
   } else if (inherits(x, c("glm", "glmerMod"))) {
-
     # for glm, we want to exponentiate coefficients to get odds ratios, however
     # 'exponentiate'-argument currently not works for lme4-tidiers
     # so we need to do this manually for glmer's
@@ -131,8 +130,13 @@ se <- function(x, nsim = 100) {
         dplyr::select_("term", "estimate", "or.se") %>%
         sjmisc::var_rename(or.se = "std.error")
     )
+  } else if (inherits(x, "lm")) {
+    # for convenience reasons, also return se for simple linear models
+    return(x %>%
+             broom::tidy(effects = "fixed") %>%
+             dplyr::select_("term", "estimate", "std.error")
+    )
   } else if (is.matrix(x) || is.data.frame(x)) {
-
     # init return variables
     stde <- c()
     stde_names <- c()
@@ -152,11 +156,9 @@ se <- function(x, nsim = 100) {
     # return results
     return(stde)
   } else if (is.list(x)) {
-
     # compute standard error from regression coefficient and p-value
     return(x$estimate / abs(stats::qnorm(x$p.value / 2)))
   } else {
-
     # standard error for a variable
     return(std_e_helper(x))
   }

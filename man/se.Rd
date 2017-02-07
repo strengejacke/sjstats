@@ -7,9 +7,9 @@
 se(x, nsim = 100)
 }
 \arguments{
-\item{x}{(Numeric) vector, a data frame, a \code{merMod}-object
-as returned by the functions from the \pkg{lme4}-package, a
-\code{glm}-object, an ICC object (as obtained by the
+\item{x}{(Numeric) vector, a data frame, an \code{lm} or \code{glm}-object,
+a \code{merMod}-object as returned by the functions from the
+\pkg{lme4}-package, an ICC object (as obtained by the
 \code{\link{icc}}-function) or a list with estimate and p-value.
 For the latter case, the list must contain elements named
 \code{estimate} and \code{p.value} (see 'Examples' and 'Details').}
@@ -29,15 +29,17 @@ Compute standard error for a variable, for all variables
                for intraclass correlation coefficients (ICC).
 }
 \details{
-Unlike \code{\link[arm]{se.coef}}, which returns the standard error
-           for fixed and random effects separately, this function computes
-           the standard errors for joint (sums of) random and fixed
-           effects coefficients. Hence, \code{se()} returns the appropriate
-           standard errors for \code{\link[lme4]{coef.merMod}}.
+For linear mixed models, this function computes the standard errors
+           for joint (sums of) random and fixed effects coefficients (unlike
+           \code{\link[arm]{se.coef}}, which returns the standard error
+           for fixed and random effects separately). Hence, \code{se()}
+           returns the appropriate standard errors for \code{\link[lme4]{coef.merMod}}.
            \cr \cr
            For generalized linear models or generalized linear mixed models,
            approximated standard errors, using the delta method for transformed
-           regression parameters are returned (Oehlert 1992).
+           regression parameters are returned (Oehlert 1992). For generalized
+           linear mixed models, the standard errors refer to the fixed effects
+           only.
            \cr \cr
            The standard error for the \code{\link{icc}} is based on bootstrapping,
            thus, the \code{nsim}-argument is required. See 'Examples'.
