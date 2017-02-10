@@ -4,7 +4,7 @@
 \alias{se}
 \title{Standard Error for variables or coefficients}
 \usage{
-se(x, nsim = 100)
+se(x, nsim = 100, type = c("fe", "re"))
 }
 \arguments{
 \item{x}{(Numeric) vector, a data frame, an \code{lm} or \code{glm}-object,
@@ -17,6 +17,11 @@ For the latter case, the list must contain elements named
 \item{nsim}{Numeric, the number of simulations for calculating the
 standard error for intraclass correlation coefficients, as
 obtained by the \code{\link{icc}}-function.}
+
+\item{type}{Type of standard errors for generalized linear mixed models.
+\code{type = "fe"} returns the standard errors for fixed effects,
+based on the delta-method-approximation. \code{type = "se"} returns
+the standard errors for joint random and fixed effects. See 'Details'.}
 }
 \value{
 The standard error of \code{x}.
@@ -29,7 +34,8 @@ Compute standard error for a variable, for all variables
                for intraclass correlation coefficients (ICC).
 }
 \details{
-For linear mixed models, this function computes the standard errors
+For linear mixed models, and generalized linear mixed models with
+           \code{type = "re"}, this function computes the standard errors
            for joint (sums of) random and fixed effects coefficients (unlike
            \code{\link[arm]{se.coef}}, which returns the standard error
            for fixed and random effects separately). Hence, \code{se()}
@@ -38,8 +44,11 @@ For linear mixed models, this function computes the standard errors
            For generalized linear models or generalized linear mixed models,
            approximated standard errors, using the delta method for transformed
            regression parameters are returned (Oehlert 1992). For generalized
-           linear mixed models, the standard errors refer to the fixed effects
-           only.
+           linear mixed models, by default, the standard errors refer to the
+           fixed effects only. Use \code{type = "re"} to compute standard errors
+           for joint random and fixed effects coefficients. However, this
+           computation \emph{is not} based on the delta method, so standard
+           errors from \code{type = "re"} are on the logit-scale.
            \cr \cr
            The standard error for the \code{\link{icc}} is based on bootstrapping,
            thus, the \code{nsim}-argument is required. See 'Examples'.
@@ -53,8 +62,9 @@ For linear mixed models, this function computes the standard errors
 Computation of standard errors for coefficients of mixed models
         is based \href{http://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{on this code}.
         \cr \cr
-        Standard errors for generalized linear (mixed) models are
-        approximations based on the delta method (Oehlert 1992).
+        Standard errors for generalized linear (mixed) models, if
+           \code{type = "re"}, are approximations based on the delta
+           method (Oehlert 1992).
 }
 \examples{
 # compute standard error for vector

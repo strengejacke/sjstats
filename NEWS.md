@@ -8,6 +8,11 @@
 
 * `xtab_statistics()` to compute various measures of assiciation for contigency tables.
 
+## Changes to functions
+
+* `se()` gets a `type`-argument, which applies to generalized linear mixed models. You can now choose to compute either standard errors with delta-method approximation for fixed effects only, or standard errors for joint random and fixed effects.
+
+
 ## Bug fixes
 
 * `prop()` did not work for non-labelled data frames when used with grouped data frames.
