@@ -50,7 +50,14 @@ For linear models, the r-squared and adjusted r-squared value is returned,
          pseudo r-squared values are returned.
          \cr \cr
          For generalized linear mixed models, the coefficient of determination
-         as suggested by \cite{Tjur (2009)} (see also \code{\link{cod}}).
+         as suggested by \cite{Tjur (2009)} (see also \code{\link{cod}}). Note
+         that \emph{Tjur's D} is restricted to models with binary response.
+         \cr \cr
+         More ways to compute coefficients of determination are shown
+         in this great \href{https://rawgit.com/bbolker/mixedmodels-misc/master/glmmFAQ.html#how-do-i-compute-a-coefficient-of-determination-r2-or-an-analogue-for-glmms}{GLMM faq}.
+         Furthermore, see \code{\link[MuMIn]{r.squaredGLMM}} or
+         \code{\link[piecewiseSEM]{rsquared}} for conditional and marginal
+         r-squared values for GLMM's.
 }
 \note{
 If \code{n} is given, the Pseudo-R2 statistic is the proportion of

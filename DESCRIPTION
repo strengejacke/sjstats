@@ -54,4 +54,4 @@ Suggests:
     pwr
 URL: https://github.com/sjPlot/sjstats
 BugReports: https://github.com/sjPlot/sjstats/issues
-RoxygenNote: 6.0.0
+RoxygenNote: 6.0.1
