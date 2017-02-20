@@ -37,8 +37,10 @@
 #'           \item{\code{p.value}}{the p-value for the test.}
 #'           \item{\code{statistic}}{the value of the test statistic.}
 #'           \item{\code{stat.name}}{the name of the test statistic.}
+#'           \item{\code{stat.html}}{if applicable, the name of the test statistic, in HTML-format.}
 #'           \item{\code{df}}{the degrees of freedom for the contingency table.}
 #'           \item{\code{method}}{character string indicating the name of the measure of association.}
+#'           \item{\code{method.html}}{if applicable, the name of the measure of association, in HTML-format.}
 #'           \item{\code{method.short}}{the short form of association measure, equals the \code{statistics}-aergument.}
 #'           \item{\code{fisher}}{logical, if Fisher's exact test was used to calculate the p-value.}
 #'         }
@@ -92,6 +94,9 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
   # match arguments
   statistics <- match.arg(statistics)
 
+  # name for test statistics in HTML
+  stat.html <- NULL
+
   # check if data is a table
   if (!is.table(data)) {
     # evaluate unquoted names
@@ -137,8 +142,10 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     chsq <- suppressWarnings(stats::chisq.test(tab, ...))
     pv <- chsq$p.value
     test <- chsq$statistic
+
     # set statistics name
     names(test) <- "Chi-squared"
+    stat.html <- "&chi;<sup>2</sup>"
 
     # check row/column
     if ((nrow(tab) > 2 || ncol(tab) > 2 || statistics == "cramer") && statistics != "phi") {
@@ -175,6 +182,7 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     s <- cv$estimate
     pv <- cv$p.value
     test <- cv$statistic
+    stat.html <- names(test)
   }
 
   # compute method string
@@ -186,14 +194,25 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     statistics == "phi" ~ "Phi"
   )
 
+  # compute method string
+  method.html <- dplyr::case_when(
+    statistics == "kendall" ~ "Kendall's &tau;",
+    statistics == "spearman" ~ "Spearman's &rho;",
+    statistics == "pearson" ~ "Person's r",
+    statistics == "cramer" ~ "Cramer's V",
+    statistics == "phi" ~ "&phi;"
+  )
+
   # return result
   return(structure(class = "sj_xtab_stat", list(
     estimate = s,
     p.value = pv,
     statistic = test,
     stat.name = names(test),
+    stat.html = stat.html,
     df = (nrow(tab) - 1) * (ncol(tab) - 1),
     method = method,
+    method.html = method.html,
     method.short = statistics,
     fisher = use.fisher
   )))

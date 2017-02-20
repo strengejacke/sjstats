@@ -51,8 +51,10 @@ For \code{phi()}, the table's Phi value. For \code{cramer()}, the
           \item{\code{p.value}}{the p-value for the test.}
           \item{\code{statistic}}{the value of the test statistic.}
           \item{\code{stat.name}}{the name of the test statistic.}
+          \item{\code{stat.html}}{if applicable, the name of the test statistic, in HTML-format.}
           \item{\code{df}}{the degrees of freedom for the contingency table.}
           \item{\code{method}}{character string indicating the name of the measure of association.}
+          \item{\code{method.html}}{if applicable, the name of the measure of association, in HTML-format.}
           \item{\code{method.short}}{the short form of association measure, equals the \code{statistics}-aergument.}
           \item{\code{fisher}}{logical, if Fisher's exact test was used to calculate the p-value.}
         }
