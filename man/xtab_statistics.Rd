@@ -37,7 +37,7 @@ will be irgnored.}
 be one of \code{"auto"}, \code{"cramer"}, \code{"phi"}, \code{"spearman"},
 \code{"kendall"} or \code{"pearson"}. See 'Details'.}
 
-\item{...}{Other arguments, passed down to the statistic function
+\item{...}{Other arguments, passed down to the statistic functions
 \code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
 \code{\link[stats]{cor.test}}.}
 }

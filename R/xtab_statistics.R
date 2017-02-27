@@ -24,7 +24,7 @@
 #' @param statistics Name of measure of association that should be computed. May
 #'          be one of \code{"auto"}, \code{"cramer"}, \code{"phi"}, \code{"spearman"},
 #'          \code{"kendall"} or \code{"pearson"}. See 'Details'.
-#' @param ... Other arguments, passed down to the statistic function
+#' @param ... Other arguments, passed down to the statistic functions
 #'          \code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
 #'          \code{\link[stats]{cor.test}}.
 #'
