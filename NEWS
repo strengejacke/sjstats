@@ -4,6 +4,7 @@ General:
 * Functions `std()` and `center()` were removed and are now in the sjmisc-package (https://cran.r-project.org/package=sjmisc).
 
 New functions:
+* `svyglm.nb()` to compute survey-weighted negative binomial regressions.
 * `xtab_statistics()` to compute various measures of assiciation for contigency tables.
 
 Changes to functions:

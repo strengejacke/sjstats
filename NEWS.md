@@ -6,6 +6,7 @@
 
 ## New functions
 
+* `svyglm.nb()` to compute survey-weighted negative binomial regressions. 
 * `xtab_statistics()` to compute various measures of assiciation for contigency tables.
 
 ## Changes to functions
