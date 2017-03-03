@@ -2,6 +2,7 @@
 
 S3method(as.data.frame,sj_resample)
 S3method(as.integer,sj_resample)
+S3method(model.frame,gee)
 S3method(model.frame,gls)
 S3method(model.matrix,gls)
 S3method(plot,sj_inequ_trend)

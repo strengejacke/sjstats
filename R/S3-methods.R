@@ -21,6 +21,17 @@ model.frame.gls <- function(formula, ...) {
   }
 }
 
+
+#' @export
+model.frame.gee <- function(formula, ...) {
+  # get function call
+  tmp <- as.list(formula$call)
+  model.vars <- all.vars(tmp$formula)
+  all.data <- get(deparse(tmp$data))
+  all.data[, model.vars]
+}
+
+
 #' @export
 print.sjstats_r2 <- function(x, ...) {
   s3 <- NULL
