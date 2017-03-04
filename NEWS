@@ -1,4 +1,4 @@
-Version 0.8.0.9000
+Version 0.9.0
 ------------------------------------------------------------------------------
 General:
 * Functions `std()` and `center()` were removed and are now in the sjmisc-package (https://cran.r-project.org/package=sjmisc).
@@ -6,6 +6,7 @@ General:
 New functions:
 * `svyglm.nb()` to compute survey-weighted negative binomial regressions.
 * `xtab_statistics()` to compute various measures of assiciation for contigency tables.
+* Added S3-`model.frame()`-function for `gee`-models.
 
 Changes to functions:
 * `se()` gets a `type`-argument, which applies to generalized linear mixed models. You can now choose to compute either standard errors with delta-method approximation for fixed effects only, or standard errors for joint random and fixed effects.

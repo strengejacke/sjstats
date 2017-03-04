@@ -1,4 +1,4 @@
-# sjstats 0.8.0.9000
+# sjstats 0.9.0
 
 ## General
 
@@ -8,6 +8,7 @@
 
 * `svyglm.nb()` to compute survey-weighted negative binomial regressions. 
 * `xtab_statistics()` to compute various measures of assiciation for contigency tables.
+* Added S3-`model.frame()`-function for `gee`-models.
 
 ## Changes to functions
 

@@ -1,3 +1,5 @@
+utils::globalVariables("scaled.weights")
+
 #' @title Survey-weighted negative binomial generalised linear model
 #' @name svyglm.nb
 #' @description \code{svyglm.nb()} is an extension to the \CRANpkg{survey}-package
