@@ -7,7 +7,7 @@
 ## New functions
 
 * `svyglm.nb()` to compute survey-weighted negative binomial regressions. 
-* `xtab_statistics()` to compute various measures of assiciation for contigency tables.
+* `xtab_statistics()` to compute various measures of assiciation for contingency tables.
 * Added S3-`model.frame()`-function for `gee`-models.
 
 ## Changes to functions

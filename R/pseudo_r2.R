@@ -128,7 +128,7 @@ cod <- function(x) {
 #'          that \emph{Tjur's D} is restricted to models with binary response.
 #'          \cr \cr
 #'          More ways to compute coefficients of determination are shown
-#'          in this great \href{https://rawgit.com/bbolker/mixedmodels-misc/master/glmmFAQ.html#how-do-i-compute-a-coefficient-of-determination-r2-or-an-analogue-for-glmms}{GLMM faq}.
+#'          in this great \href{https://github.com/bbolker/mixedmodels-misc/blob/master/glmmFAQ.rmd#model-summaries-goodness-of-fit-decomposition-of-variance-etc}{GLMM faq}.
 #'          Furthermore, see \code{\link[MuMIn]{r.squaredGLMM}} or
 #'          \code{\link[piecewiseSEM]{rsquared}} for conditional and marginal
 #'          r-squared values for GLMM's.

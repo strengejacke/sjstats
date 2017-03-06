@@ -61,10 +61,14 @@ For linear mixed models, and generalized linear mixed models with
 \note{
 Computation of standard errors for coefficients of mixed models
         is based \href{http://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{on this code}.
-        \cr \cr
         Standard errors for generalized linear (mixed) models, if
-           \code{type = "re"}, are approximations based on the delta
-           method (Oehlert 1992).
+        \code{type = "re"}, are approximations based on the delta
+        method (Oehlert 1992).
+        \cr \cr
+        A remark on standard errors:
+        \dQuote{Standard error represents variation in the point estimate, but
+        confidence interval has usual Bayesian interpretation only with flat prior.}
+        (Gelman 2017)
 }
 \examples{
 # compute standard error for vector
@@ -126,4 +130,6 @@ boot_p(dummy, icc)}
 }
 \references{
 Oehlert GW. 1992. A note on the delta method. American Statistician 46(1).
+            \cr \cr
+            Gelman A 2017. How to interpret confidence intervals? \url{http://andrewgelman.com/2017/03/04/interpret-confidence-intervals/}
 }
