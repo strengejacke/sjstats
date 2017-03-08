@@ -1,5 +1,7 @@
 # sjstats 0.9.0.9000
 
+* `props()` to calculate proportions in a vector, supporting multiple logical statements.
+
 # sjstats 0.9.0
 
 ## General

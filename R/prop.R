@@ -1,8 +1,10 @@
-#' @title Proportion of values in a vector
+#' @title Proportions of values in a vector
 #' @name prop
 #'
-#' @description This function calculates the proportion of a value or category
-#'                in a variable.
+#' @description \code{prop()} calculates the proportion of a value or category
+#'                in a variable. \code{props()} does the same, but allows for
+#'                multiple logical conditions in one statement. However,
+#'                \code{props()} does not work on factors with non-numeric levels.
 #'
 #' @param data A data frame. May also be a grouped data frame (see 'Examples').
 #' @param ... One or more value pairs of comparisons (logical predicates). Put
@@ -32,6 +34,9 @@
 #'
 #' # expression may also be completely quoted
 #' prop(efc, "e42dep == 1")
+#'
+#' # use "props()" for multiple logical statements
+#' props(efc, e17age > 70 & e17age < 80)
 #'
 #' # proportion of value 1 in e42dep, and all values greater
 #' # than 2 in e42dep, excluding missing values. will return a tibble
@@ -63,6 +68,12 @@
 #'   group_by(c161sex, c172code) %>%
 #'   prop(e42dep > 2, e16sex == 1)
 #'
+#' # same for "props()"
+#' efc %>%
+#'   select(e42dep, c161sex, c172code, c12hour) %>%
+#'   group_by(c161sex, c172code) %>%
+#'   props(e42dep > 2, c12hour > 20 & c12hour < 40)
+#'
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr bind_cols bind_rows
 #' @importFrom sjmisc get_label get_labels to_value
@@ -74,6 +85,24 @@ prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
   # get dots
   dots <- match.call(expand.dots = FALSE)$`...`
 
+  proportions(data, dots, weight.by, na.rm, digits, multi_logical = FALSE)
+}
+
+
+#' @rdname prop
+#' @export
+props <- function(data, ..., na.rm = FALSE, digits = 4) {
+  # check argument
+  if (!is.data.frame(data)) stop("`data` needs to be a data frame.", call. = F)
+
+  # get dots
+  dots <- match.call(expand.dots = FALSE)$`...`
+
+  proportions(data, dots, NULL, na.rm, digits, multi_logical = TRUE)
+}
+
+
+proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
   # remember comparisons
   comparisons <- lapply(dots, function(x) {
     # to character, and remove spaces and quotes
@@ -100,7 +129,10 @@ prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
       .d <- grps$data[[i]]
 
       # iterate dots (comparing conditions)
-      result <- lapply(dots, get_proportion, .d, weight.by, na.rm, digits)
+      if (multi_logical)
+        result <- lapply(dots, get_multiple_proportion, .d, na.rm, digits)
+      else
+        result <- lapply(dots, get_proportion, .d, weight.by, na.rm, digits)
 
       # bind all proportion values to data frame. we need to
       # transform here to get each value in a new colummn
@@ -145,7 +177,10 @@ prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
 
   } else {
     # iterate dots (comparing conditions)
-    result <- lapply(dots, get_proportion, data, weight.by, na.rm, digits)
+    if (multi_logical)
+      result <- lapply(dots, get_multiple_proportion, data, na.rm, digits)
+    else
+      result <- lapply(dots, get_proportion, data, weight.by, na.rm, digits)
 
     # if we have more than one proportion, return a tibble. this allows us
     # to save more information, the condition and the proportion value
@@ -194,6 +229,22 @@ get_proportion <- function(x, data, weight.by, na.rm, digits) {
     dummy <- f > v
   else
     dummy <- f == v
+
+  # remove missings?
+  if (na.rm) dummy <- na.omit(dummy)
+
+  # get proportion
+  round(sum(dummy, na.rm = T) / length(dummy), digits = digits)
+}
+
+
+get_multiple_proportion <- function(x, data, na.rm, digits) {
+  # to character, and remove spaces and quotes
+  x <- gsub(" ", "", deparse(x), fixed = T)
+  x <- gsub("\"", "", x, fixed = TRUE)
+
+  # evaluate argument
+  dummy <- with(data, eval(parse(text = x)))
 
   # remove missings?
   if (na.rm) dummy <- na.omit(dummy)

@@ -2,9 +2,12 @@
 % Please edit documentation in R/prop.R
 \name{prop}
 \alias{prop}
-\title{Proportion of values in a vector}
+\alias{props}
+\title{Proportions of values in a vector}
 \usage{
 prop(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4)
+
+props(data, ..., na.rm = FALSE, digits = 4)
 }
 \arguments{
 \item{data}{A data frame. May also be a grouped data frame (see 'Examples').}
@@ -33,8 +36,10 @@ For one condition, a numeric value with the proportion of the values
         followed by one column with proportions per condition.
 }
 \description{
-This function calculates the proportion of a value or category
-               in a variable.
+\code{prop()} calculates the proportion of a value or category
+               in a variable. \code{props()} does the same, but allows for
+               multiple logical conditions in one statement. However,
+               \code{props()} does not work on factors with non-numeric levels.
 }
 \examples{
 data(efc)
@@ -44,6 +49,9 @@ prop(efc, e42dep == 1)
 
 # expression may also be completely quoted
 prop(efc, "e42dep == 1")
+
+# use "props()" for multiple logical statements
+props(efc, e17age > 70 & e17age < 80)
 
 # proportion of value 1 in e42dep, and all values greater
 # than 2 in e42dep, excluding missing values. will return a tibble
@@ -74,5 +82,11 @@ efc \%>\%
   select(e42dep, c161sex, c172code, e16sex) \%>\%
   group_by(c161sex, c172code) \%>\%
   prop(e42dep > 2, e16sex == 1)
+
+# same for "props()"
+efc \%>\%
+  select(e42dep, c161sex, c172code, c12hour) \%>\%
+  group_by(c161sex, c172code) \%>\%
+  props(e42dep > 2, c12hour > 20 & c12hour < 40)
 
 }
