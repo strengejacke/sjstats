@@ -40,6 +40,14 @@ For one condition, a numeric value with the proportion of the values
                in a variable. \code{props()} does the same, but allows for
                multiple logical conditions in one statement.
 }
+\details{
+\code{prop()} only allows one logical statement per comparison,
+         while \code{props()} allows multiple logical statements per comparison.
+         However, \code{prop()} supports weighting of variables before calculating
+         proportions, and comparisons may also be quoted. Hence, \code{prop()}
+         also processes comparisons, which are passed as character vector
+         (see 'Examples').
+}
 \examples{
 data(efc)
 
@@ -91,8 +99,12 @@ efc \%>\%
 
 # same for "props()"
 efc \%>\%
-  select(e42dep, c161sex, c172code, c12hour) \%>\%
+  select(e42dep, c161sex, c172code, c12hour, n4pstu) \%>\%
   group_by(c161sex, c172code) \%>\%
-  props(e42dep > 2, c12hour > 20 & c12hour < 40)
+  props(
+    e42dep > 2,
+    c12hour > 20 & c12hour < 40,
+    n4pstu == 'Care Level 1' | n4pstu == 'Care Level 3'
+  )
 
 }

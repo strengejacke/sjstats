@@ -26,7 +26,7 @@ To install the latest development snapshot (see latest changes below), type foll
 
 ```r
 library(devtools)
-devtools::install_github("sjPlot/sjstats")
+devtools::install_github("strengejacke/sjstats")
 ```
 
 ### Officiale, stable release

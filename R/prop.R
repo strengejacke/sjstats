@@ -19,6 +19,14 @@
 #'          percentage.
 #' @inheritParams reliab_test
 #'
+#' @details \code{prop()} only allows one logical statement per comparison,
+#'          while \code{props()} allows multiple logical statements per comparison.
+#'          However, \code{prop()} supports weighting of variables before calculating
+#'          proportions, and comparisons may also be quoted. Hence, \code{prop()}
+#'          also processes comparisons, which are passed as character vector
+#'          (see 'Examples').
+#'
+#'
 #' @return For one condition, a numeric value with the proportion of the values
 #'         inside a vector. For more than one condition, a tibble with one column
 #'         of conditions and one column with proportions. For grouped data frames,
@@ -76,9 +84,13 @@
 #'
 #' # same for "props()"
 #' efc %>%
-#'   select(e42dep, c161sex, c172code, c12hour) %>%
+#'   select(e42dep, c161sex, c172code, c12hour, n4pstu) %>%
 #'   group_by(c161sex, c172code) %>%
-#'   props(e42dep > 2, c12hour > 20 & c12hour < 40)
+#'   props(
+#'     e42dep > 2,
+#'     c12hour > 20 & c12hour < 40,
+#'     n4pstu == 'Care Level 1' | n4pstu == 'Care Level 3'
+#'   )
 #'
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr bind_cols bind_rows

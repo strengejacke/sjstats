@@ -53,6 +53,6 @@ Suggests:
     pROC,
     pwr,
     survey
-URL: https://github.com/sjPlot/sjstats
-BugReports: https://github.com/sjPlot/sjstats/issues
+URL: https://github.com/strengejacke/sjstats
+BugReports: https://github.com/strengejacke/sjstats/issues
 RoxygenNote: 6.0.1
