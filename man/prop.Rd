@@ -38,8 +38,7 @@ For one condition, a numeric value with the proportion of the values
 \description{
 \code{prop()} calculates the proportion of a value or category
                in a variable. \code{props()} does the same, but allows for
-               multiple logical conditions in one statement. However,
-               \code{props()} does not work on factors with non-numeric levels.
+               multiple logical conditions in one statement.
 }
 \examples{
 data(efc)
@@ -61,12 +60,19 @@ prop(efc, e42dep == 1, e42dep > 2, na.rm = TRUE)
 library(sjmisc)
 # convert numeric to factor, using labels as factor levels
 efc$e16sex <- to_label(efc$e16sex)
+efc$n4pstu <- to_label(efc$n4pstu)
 
 # get proportion of female older persons
 prop(efc, e16sex == female)
 
 # get proportion of male older persons
 prop(efc, e16sex == "male")
+
+# "props()" needs quotes around non-numeric factor levels
+props(efc,
+  e17age > 70 & e17age < 80,
+  n4pstu == 'Care Level 1' | n4pstu == 'Care Level 3'
+)
 
 # also works with pipe-chains
 library(dplyr)

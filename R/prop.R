@@ -3,8 +3,7 @@
 #'
 #' @description \code{prop()} calculates the proportion of a value or category
 #'                in a variable. \code{props()} does the same, but allows for
-#'                multiple logical conditions in one statement. However,
-#'                \code{props()} does not work on factors with non-numeric levels.
+#'                multiple logical conditions in one statement.
 #'
 #' @param data A data frame. May also be a grouped data frame (see 'Examples').
 #' @param ... One or more value pairs of comparisons (logical predicates). Put
@@ -46,12 +45,19 @@
 #' library(sjmisc)
 #' # convert numeric to factor, using labels as factor levels
 #' efc$e16sex <- to_label(efc$e16sex)
+#' efc$n4pstu <- to_label(efc$n4pstu)
 #'
 #' # get proportion of female older persons
 #' prop(efc, e16sex == female)
 #'
 #' # get proportion of male older persons
 #' prop(efc, e16sex == "male")
+#'
+#' # "props()" needs quotes around non-numeric factor levels
+#' props(efc,
+#'   e17age > 70 & e17age < 80,
+#'   n4pstu == 'Care Level 1' | n4pstu == 'Care Level 3'
+#' )
 #'
 #' # also works with pipe-chains
 #' library(dplyr)
@@ -239,12 +245,8 @@ get_proportion <- function(x, data, weight.by, na.rm, digits) {
 
 
 get_multiple_proportion <- function(x, data, na.rm, digits) {
-  # to character, and remove spaces and quotes
-  x <- gsub(" ", "", deparse(x), fixed = T)
-  x <- gsub("\"", "", x, fixed = TRUE)
-
   # evaluate argument
-  dummy <- with(data, eval(parse(text = x)))
+  dummy <- with(data, eval(parse(text = deparse(x))))
 
   # remove missings?
   if (na.rm) dummy <- na.omit(dummy)
