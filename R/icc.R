@@ -63,7 +63,10 @@
 #'       or for the ICC between level 2 and 3: \cr
 #'       \code{get_re_var(fit)[2] / sum(get_re_var(fit))}
 #'
-#' @details The calculation of the ICC for generalized linear mixed models with binary outcome is based on
+#' @details The ICC is calculated by dividing the between-group-variance (random
+#'          intercept variance) by the total variance (i.e. sum of between-group-variance
+#'          and within-group (residual) variance). \cr \cr
+#'       The calculation of the ICC for generalized linear mixed models with binary outcome is based on
 #'       \cite{Wu et al. (2012)}. For Poisson multilevel models, please refere to \cite{Stryhn et al. (2006)}.
 #'       \cite{Aly et al. (2014)} describe computation of ICC for negative binomial models.
 #'       \cr \cr

@@ -25,7 +25,10 @@ This function calculates the intraclass-correlation
                are supported.
 }
 \details{
-The calculation of the ICC for generalized linear mixed models with binary outcome is based on
+The ICC is calculated by dividing the between-group-variance (random
+         intercept variance) by the total variance (i.e. sum of between-group-variance
+         and within-group (residual) variance). \cr \cr
+      The calculation of the ICC for generalized linear mixed models with binary outcome is based on
       \cite{Wu et al. (2012)}. For Poisson multilevel models, please refere to \cite{Stryhn et al. (2006)}.
       \cite{Aly et al. (2014)} describe computation of ICC for negative binomial models.
       \cr \cr
