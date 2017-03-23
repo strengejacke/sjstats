@@ -1,6 +1,9 @@
 # sjstats 0.9.0.9000
 
+## New functions
+
 * `props()` to calculate proportions in a vector, supporting multiple logical statements.
+* `or_to_rr()` to convert odds ratio estimates into risk ratio estimates.
 
 # sjstats 0.9.0
 

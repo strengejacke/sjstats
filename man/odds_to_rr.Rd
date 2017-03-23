@@ -2,21 +2,31 @@
 % Please edit documentation in R/odds_to_rr.R
 \name{odds_to_rr}
 \alias{odds_to_rr}
-\title{Get relative risks estimates from logistic regressions}
+\alias{or_to_rr}
+\title{Get relative risks estimates from logistic regressions or odds ratio values}
 \usage{
 odds_to_rr(fit)
+
+or_to_rr(or, p0)
 }
 \arguments{
 \item{fit}{A fitted binomial generalized linear (mixed) model with logit-link function
 (logistic (multilevel) regression model).}
+
+\item{or}{Numeric, an odds ratio estimate.}
+
+\item{p0}{Numeric, proportion of the incidence in the outcome variable
+(base line risk).}
 }
 \value{
 A data frame with relative risks and lower/upper confidence interval for
-          the relative risks estimates.
+          the relative risks estimates; for \code{or_to_rr()}, the risk ratio
+          estimate.
 }
 \description{
-This function converts odds ratios from a logistic regression
-               model (including mixed models) into relative risks.
+\code{odds_to_rr()} converts odds ratios from a logistic regression
+               model (including mixed models) into relative risks; \code{or_to_rr()}
+               converts a single odds ratio estimate into a relative risk estimate.
 }
 \details{
 This function extracts the odds ratios (exponentiated model coefficients)
@@ -24,8 +34,9 @@ This function extracts the odds ratios (exponentiated model coefficients)
            and their related confidence intervals, and transforms these values
            into relative risks (and their related confidence intervals).
            \cr \cr
-           The formula for transformation is based on Zhang and Yu (1998):
-           \code{RR <- OR / ((1 - P0) + (P0 * OR))}, where \code{OR} is the odds
+           The formula for transformation is based on Zhang and Yu (1998)
+           and Grant (2014):
+           \code{RR <- OR / (1 - P0 + (P0 * OR))}, where \code{OR} is the odds
            ratio and \code{P0} indicates the proportion of the incidence in
            the outcome variable.
 }
@@ -55,7 +66,12 @@ fit <- glm(y ~., data = mydf, family = binomial(link = "logit"))
 # convert to relative risks
 odds_to_rr(fit)
 
+# replicate OR/RR for coefficient "sex" from above regression
+or_to_rr(1.913887, .5516)
+
 }
 \references{
 Zhang J, Yu KF. 1998. What's the Relative Risk? A Method of Correcting the Odds Ratio in Cohort Studies of Common Outcomes. JAMA; 280(19): 1690-1. \doi{10.1001/jama.280.19.1690}
+            \cr \cr
+            Grant RL. 2014. Converting an odds ratio to a range of plausible relative risks for better communication of research findings. BMJ 348:f7450. \doi{ 10.1136/bmj.f7450}
 }
