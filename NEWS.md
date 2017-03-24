@@ -4,6 +4,7 @@
 
 * `props()` to calculate proportions in a vector, supporting multiple logical statements.
 * `or_to_rr()` to convert odds ratio estimates into risk ratio estimates.
+* `mn()`, `md()` and `sm()` to calculate mean, median or sum of a vector, but using `na.rm = TRUE` as default.
 
 # sjstats 0.9.0
 
