@@ -5,9 +5,9 @@
 \alias{props}
 \title{Proportions of values in a vector}
 \usage{
-prop(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4)
+prop(data, ..., weight.by = NULL, na.rm = TRUE, digits = 4)
 
-props(data, ..., na.rm = FALSE, digits = 4)
+props(data, ..., na.rm = TRUE, digits = 4)
 }
 \arguments{
 \item{data}{A data frame. May also be a grouped data frame (see 'Examples').}
@@ -61,8 +61,8 @@ prop(efc, "e42dep == 1")
 props(efc, e17age > 70 & e17age < 80)
 
 # proportion of value 1 in e42dep, and all values greater
-# than 2 in e42dep, excluding missing values. will return a tibble
-prop(efc, e42dep == 1, e42dep > 2, na.rm = TRUE)
+# than 2 in e42dep, including missing values. will return a tibble
+prop(efc, e42dep == 1, e42dep > 2, na.rm = FALSE)
 
 # for factors or character vectors, use quoted or unquoted values
 library(sjmisc)

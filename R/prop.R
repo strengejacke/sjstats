@@ -46,8 +46,8 @@
 #' props(efc, e17age > 70 & e17age < 80)
 #'
 #' # proportion of value 1 in e42dep, and all values greater
-#' # than 2 in e42dep, excluding missing values. will return a tibble
-#' prop(efc, e42dep == 1, e42dep > 2, na.rm = TRUE)
+#' # than 2 in e42dep, including missing values. will return a tibble
+#' prop(efc, e42dep == 1, e42dep > 2, na.rm = FALSE)
 #'
 #' # for factors or character vectors, use quoted or unquoted values
 #' library(sjmisc)
@@ -96,7 +96,7 @@
 #' @importFrom dplyr bind_cols bind_rows
 #' @importFrom sjmisc get_label get_labels to_value
 #' @export
-prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
+prop <- function(data, ..., weight.by = NULL, na.rm = TRUE, digits = 4) {
   # check argument
   if (!is.data.frame(data)) stop("`data` needs to be a data frame.", call. = F)
 
@@ -109,7 +109,7 @@ prop <- function(data, ..., weight.by = NULL, na.rm = FALSE, digits = 4) {
 
 #' @rdname prop
 #' @export
-props <- function(data, ..., na.rm = FALSE, digits = 4) {
+props <- function(data, ..., na.rm = TRUE, digits = 4) {
   # check argument
   if (!is.data.frame(data)) stop("`data` needs to be a data frame.", call. = F)
 
