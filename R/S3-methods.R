@@ -22,6 +22,59 @@ model.frame.gls <- function(formula, ...) {
 }
 
 
+#' @importFrom dplyr select one_of
+#' @importFrom tibble as_tibble
+#' @export
+model.frame.svyglm.nb <- function(formula, ...) {
+  pred <- attr(formula, "nb.terms", exact = T)
+  tibble::as_tibble(dplyr::select(formula$design$variables, dplyr::one_of(pred)))
+}
+
+
+#' @export
+family.svyglm.nb <- function(object, ...) {
+  attr(object, "family", exact = TRUE)
+}
+
+
+#' @export
+formula.svyglm.nb <- function(x, ...) {
+  attr(x, "nb.formula", exact = TRUE)
+}
+
+
+#' @importFrom MASS glm.nb
+#' @importFrom stats coef setNames predict.glm
+#' @export
+predict.svyglm.nb <- function(object, newdata = NULL,
+                              type = c("link", "response", "terms"),
+                              se.fit = FALSE, dispersion = NULL, terms = NULL,
+                              na.action = na.pass, ...) {
+
+  fnb <- MASS::glm.nb(
+    attr(object, "nb.formula", exact = TRUE),
+    data = object$design$variables
+  )
+
+  cf <- stats::coef(fnb)
+  names.cf <- names(cf)
+  cf <- stats::coef(object)[-1]
+  cf <- stats::setNames(cf, names.cf)
+  fnb$coefficients <- cf
+
+  stats::predict.glm(
+    object = fnb,
+    newdata = newdata,
+    type = type,
+    se.fit = se.fit,
+    dispersion = dispersion,
+    terms = terms,
+    na.action = na.action,
+    ...
+  )
+}
+
+
 #' @export
 model.frame.gee <- function(formula, ...) {
   # get function call

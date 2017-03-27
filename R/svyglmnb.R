@@ -47,7 +47,7 @@ utils::globalVariables("scaled.weights")
 #' round(cbind(coef(fit), survey::SE(fit)), 2)
 #'
 #' @importFrom MASS glm.nb
-#' @importFrom stats weights update model.frame coef as.formula
+#' @importFrom stats weights update model.frame coef as.formula family
 #' @export
 svyglm.nb <- function(formula, design, ...) {
   # check if pkg survey is available
@@ -63,6 +63,7 @@ svyglm.nb <- function(formula, design, ...) {
 
   # fit negative binomial model, with scaled design weights
   mod <- MASS::glm.nb(formula, data = stats::model.frame(design), weights = scaled.weights, ...)
+  fam <- stats::family(mod)
 
   # fit survey model, using maximum likelihood estimation
   svyfit <-
@@ -74,6 +75,13 @@ svyglm.nb <- function(formula, design, ...) {
       start = c(mod$theta, stats::coef(mod)),
       na.action = "na.omit"
     )
+
+
+  # add additoinal information
+  class(svyfit) <- c(class(svyfit), "svyglm.nb")
+  attr(svyfit, "nb.terms") <- all.vars(formula)
+  attr(svyfit, "nb.formula") <- formula
+  attr(svyfit, "family") <- fam
 
   svyfit
 }
