@@ -134,6 +134,11 @@ se <- function(x, nsim = 100, type = c("fe", "re")) {
   } else if (inherits(x, "icc.lme4")) {
     # we have a ICC object, so do bootstrapping and compute SE for ICC
     return(std_e_icc(x, nsim))
+  } else if (inherits(x, c("svyglm.nb", "svymle"))) {
+    return(
+      tidy_svyglm.nb(x) %>%
+        dplyr::select_("term", "estimate", "std.error")
+    )
   } else if (inherits(x, c("glm", "glmerMod"))) {
     # check type of se
     if (type == "fe") {

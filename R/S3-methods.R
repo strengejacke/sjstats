@@ -22,6 +22,26 @@ model.frame.gls <- function(formula, ...) {
 }
 
 
+#' @importFrom tibble tibble
+#' @importFrom stats coef vcov pnorm
+#' @export
+print.svyglm.nb <- function(x, ...) {
+  print(tidy_svyglm.nb(x)[-1, ], ...)
+}
+
+tidy_svyglm.nb <- function(x, digits = 4) {
+  if (!isNamespaceLoaded("survey"))
+    requireNamespace("survey", quietly = TRUE)
+  tibble::tibble(
+    term = substring(names(stats::coef(x)), 5),
+    estimate = round(stats::coef(x), digits),
+    irr = round(exp(estimate), digits),
+    std.error = round(sqrt(diag(stats::vcov(x, stderr = "robust"))), digits),
+    p.value = round(2 * stats::pnorm(abs(estimate / std.error), lower.tail = FALSE), digits)
+  )
+}
+
+
 #' @importFrom dplyr select one_of
 #' @importFrom tibble as_tibble
 #' @export
@@ -50,6 +70,9 @@ predict.svyglm.nb <- function(object, newdata = NULL,
                               type = c("link", "response", "terms"),
                               se.fit = FALSE, dispersion = NULL, terms = NULL,
                               na.action = na.pass, ...) {
+
+  if (!isNamespaceLoaded("survey"))
+    requireNamespace("survey", quietly = TRUE)
 
   fnb <- MASS::glm.nb(
     attr(object, "nb.formula", exact = TRUE),
