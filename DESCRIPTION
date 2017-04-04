@@ -38,9 +38,9 @@ Imports:
     nlme,
     purrr (>= 0.2.2),
     sandwich (>= 2.3-4),
-    sjmisc (>= 2.3.0),
-    tidyr (>= 0.6.0),
-    tibble (>= 1.2.0)
+    sjmisc (>= 2.3.1),
+    tidyr (>= 0.6.1),
+    tibble (>= 1.3.0)
 Suggests:
     AER,
     arm,
@@ -49,7 +49,7 @@ Suggests:
     graphics,
     Hmisc,
     lmerTest,
-    pbkrtest (>= 0.4-6),
+    pbkrtest (>= 0.4-7),
     pROC,
     pwr,
     survey
