@@ -2,10 +2,15 @@
 
 ## New functions
 
+* `cv_error()` and `cv_compare()` to compute the root mean squared error for test and training data from cross-validation.
 * `props()` to calculate proportions in a vector, supporting multiple logical statements.
 * `or_to_rr()` to convert odds ratio estimates into risk ratio estimates.
 * `mn()`, `md()` and `sm()` to calculate mean, median or sum of a vector, but using `na.rm = TRUE` as default.
 * S3-generics for `svyglm.nb`-models: `family()`, `print()`, `formula()`, `model.frame()` and `predict()`.
+
+## Bug fixes
+
+* Fixed error in computation of `mse()`.
 
 # sjstats 0.9.0
 

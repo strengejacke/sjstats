@@ -71,18 +71,22 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
       # accuracy linear models with bootstrapping
       cv <- data %>%
         bootstrap(n) %>%
-        dplyr::mutate(models = purrr::map(strap, ~ stats::lm(formula, data = .x))) %>%
-        dplyr::mutate(predictions = purrr::map(models, ~ stats::predict(.x, type = "response"))) %>%
-        dplyr::mutate(response = purrr::map(models, ~ resp_val(.x))) %>%
-        dplyr::mutate(accuracy = purrr::map2_dbl(predictions, response, ~ stats::cor(.x, .y, use = "pairwise.complete.obs")))
+        dplyr::mutate(
+          models = purrr::map(strap, ~ stats::lm(formula, data = .x)),
+          predictions = purrr::map(models, ~ stats::predict(.x, type = "response")),
+          response = purrr::map(models, ~ resp_val(.x)),
+          accuracy = purrr::map2_dbl(predictions, response, ~ stats::cor(.x, .y, use = "pairwise.complete.obs"))
+        )
     } else {
 
       # accuracy linear models with cross validation
       cv <- modelr::crossv_kfold(data, k = k) %>%
-        dplyr::mutate(models = purrr::map(train, ~ stats::lm(formula, data = .x))) %>%
-        dplyr::mutate(predictions = purrr::map2(test, models, ~ modelr::add_predictions(.x, .y)[["pred"]])) %>%
-        dplyr::mutate(response = purrr::map(test, ~ as.data.frame(.x)[[resp.name]])) %>%
-        dplyr::mutate(accuracy = purrr::map2_dbl(predictions, response, ~ stats::cor(.x, .y, use = "pairwise.complete.obs")))
+        dplyr::mutate(
+          models = purrr::map(train, ~ stats::lm(formula, data = .x)),
+          predictions = purrr::map2(test, models, ~ modelr::add_predictions(.x, .y)[["pred"]]),
+          response = purrr::map(test, ~ as.data.frame(.x)[[resp.name]]),
+          accuracy = purrr::map2_dbl(predictions, response, ~ stats::cor(.x, .y, use = "pairwise.complete.obs"))
+        )
     }
 
   } else if (inherits(fit, "glm") && stats::family(fit) == "binomial") {
@@ -93,15 +97,19 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
       # accuracy linear models with bootstrapping
       cv <- data %>%
         bootstrap(n) %>%
-        dplyr::mutate(models = purrr::map(strap, ~ stats::lm(formula, data = .x))) %>%
-        dplyr::mutate(accuracy = purrr::map_dbl(models, ~ pROC::auc(pROC::roc(response = resp_val(.x), predictor = stats::predict.glm(.x, stats::model.frame(.x))))))
+        dplyr::mutate(
+          models = purrr::map(strap, ~ stats::lm(formula, data = .x)),
+          accuracy = purrr::map_dbl(models, ~ pROC::auc(pROC::roc(response = resp_val(.x), predictor = stats::predict.glm(.x, stats::model.frame(.x)))))
+        )
 
     } else {
 
       # accuracy logistic regression models with cross validation
       cv <- modelr::crossv_kfold(data, k = k) %>%
-        dplyr::mutate(models = purrr::map(train, ~ stats::glm(formula, data = ., family = stats::binomial(link = "logit")))) %>%
-        dplyr::mutate(accuracy = purrr::map_dbl(models, ~ pROC::auc(pROC::roc(response = resp_val(.x), predictor = stats::predict.glm(.x, stats::model.frame(.x))))))
+        dplyr::mutate(
+          models = purrr::map(train, ~ stats::glm(formula, data = ., family = stats::binomial(link = "logit"))),
+          accuracy = purrr::map_dbl(models, ~ pROC::auc(pROC::roc(response = resp_val(.x), predictor = stats::predict.glm(.x, stats::model.frame(.x)))))
+        )
     }
   }
 

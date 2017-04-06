@@ -1,3 +1,5 @@
+utils::globalVariables(c("std.error"))
+
 #' @importFrom nlme getData getCovariateFormula
 #' @export
 model.matrix.gls <- function(object, ...) {

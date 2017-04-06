@@ -17,7 +17,7 @@
 #'
 #' @references Zhang J, Yu KF. 1998. What's the Relative Risk? A Method of Correcting the Odds Ratio in Cohort Studies of Common Outcomes. JAMA; 280(19): 1690-1. \doi{10.1001/jama.280.19.1690}
 #'             \cr \cr
-#'             Grant RL. 2014. Converting an odds ratio to a range of plausible relative risks for better communication of research findings. BMJ 348:f7450. \doi{ 10.1136/bmj.f7450}
+#'             Grant RL. 2014. Converting an odds ratio to a range of plausible relative risks for better communication of research findings. BMJ 348:f7450. \doi{10.1136/bmj.f7450}
 #'
 #' @details This function extracts the odds ratios (exponentiated model coefficients)
 #'            from logistic regressions (fitted with \code{glm} or \code{glmer})

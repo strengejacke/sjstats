@@ -59,7 +59,7 @@
 #' @export
 rmse <- function(fit, normalized = FALSE) {
   # compute rmse
-  rmse_val <- sqrt(mean(stats::residuals(fit) ^ 2, na.rm = TRUE))
+  rmse_val <- sqrt(mse(fit))
 
   # if normalized, divide by range of response
   if (normalized) {
@@ -86,5 +86,5 @@ rse <- function(fit) {
 #' @export
 mse <- function(fit) {
   # Mean square error
-  mean(sum(stats::residuals(fit) ^ 2, na.rm = T))
+  mean(stats::residuals(fit) ^ 2, na.rm = T)
 }
