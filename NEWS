@@ -1,4 +1,4 @@
-Version 0.9.0.9000
+Version 0.10.0
 ------------------------------------------------------------------------------
 New functions:
 * `cv_error()` and `cv_compare()` to compute the root mean squared error for test and training data from cross-validation.
