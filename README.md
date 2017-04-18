@@ -1,5 +1,5 @@
-sjstats - Collection of Convenient Functions for Common Statistical Computations
-------------------------------------------------------------------------------
+# sjstats - Collection of Convenient Functions for Common Statistical Computations <img src="man/figures/logo.png" align="right" />
+
 Collection of convenient functions for common statistical computations, which are not directly provided by R's base or stats packages. 
 
 This package aims at providing, **first**, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like standard errors or root mean squared errors).
