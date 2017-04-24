@@ -68,6 +68,15 @@ bs <- bootstrap(efc, 100)
 bs$c12hour <- unlist(lapply(bs$strap, function(x) {
   mean(as.data.frame(x)$c12hour, na.rm = TRUE)
 }))
+
+# or as tidyverse-approach
+library(tidyverse)
+bs <- efc \%>\%
+  bootstrap(100) \%>\%
+  mutate(
+    c12hour = map_dbl(strap, ~mean(as.data.frame(.x)$c12hour, na.rm = TRUE))
+  )
+
 # bootstrapped standard error
 boot_se(bs, c12hour)
 # standard error of original variable

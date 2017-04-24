@@ -42,15 +42,16 @@ The methods require one or more vectors of bootstrap replicate estimates
          distribution.
 }
 \examples{
+library(tidyverse)
 data(efc)
 bs <- bootstrap(efc, 100)
 
 # now run models for each bootstrapped sample
-bs$models <- lapply(bs$strap, function(x) lm(neg_c_7 ~ e42dep + c161sex, data = x))
+bs$models <- map(strap, ~lm(neg_c_7 ~ e42dep + c161sex, data = .x))
 
 # extract coefficient "dependency" and "gender" from each model
-bs$dependency <- unlist(lapply(bs$models, function(x) coef(x)[2]))
-bs$gender <- unlist(lapply(bs$models, function(x) coef(x)[3]))
+bs$dependency <- map_dbl(models, ~coef(.x)[2])
+bs$gender <- map_dbl(models, ~coef(x)[3])
 
 # get bootstrapped confidence intervals
 boot_ci(bs$dependency)
@@ -70,15 +71,13 @@ mean(bs$dependency)
 coef(fit)[2]
 
 # bootstrap() and boot_ci() work fine within pipe-chains
-library(dplyr)
 efc \%>\%
   bootstrap(100) \%>\%
-  mutate(models = lapply(.$strap, function(x) {
-    lm(neg_c_7 ~ e42dep + c161sex, data = x)
-  })) \%>\%
-  mutate(dependency = unlist(lapply(.$models, function(x) coef(x)[2]))) \%>\%
+  mutate(
+    models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex, data = .x)),
+    dependency = map_dbl(models, ~coef(.x)[2])
+  ) \%>\%
   boot_ci(dependency)
-
 
 # check p-value
 boot_p(bs$gender)
@@ -93,9 +92,9 @@ efc \%>\%
   # generate bootstrap replicates
   bootstrap(100) \%>\%
   # apply lm to all bootstrapped data sets
-  mutate(models = lapply(.$strap, function(x) {
-    lm(neg_c_7 ~ e42dep + c161sex + c172code, data = x)
-  })) \%>\%
+  mutate(
+    models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex + c172code, data = .x))
+  ) \%>\%
   # spread model coefficient for all 100 models
   spread_coef(models) \%>\%
   # compute the CI for all bootstrapped model coefficients
@@ -106,9 +105,9 @@ efc \%>\%
   # generate bootstrap replicates
   bootstrap(100) \%>\%
   # apply lm to all bootstrapped data sets
-  mutate(models = lapply(strap, function(x) {
-    lm(neg_c_7 ~ e42dep + c161sex + c172code, data = x)
-  })) \%>\%
+  mutate(
+    models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex + c172code, data = .x))
+  ) \%>\%
   # spread model coefficient for all 100 models
   spread_coef(models, append = FALSE) \%>\%
   # compute the CI for all bootstrapped model coefficients
