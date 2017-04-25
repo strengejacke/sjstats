@@ -104,16 +104,17 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #'
 #' # the standard error for the ICC can be computed manually in this way,
 #' # taking the fitted model example from above
-#' library(dplyr)
+#' library(tidyverse)
 #' dummy <- sleepstudy %>%
 #'   # generate 100 bootstrap replicates of dataset
 #'   bootstrap(100) %>%
 #'   # run mixed effects regression on each bootstrap replicate
-#'   mutate(models = lapply(.$strap, function(x) {
-#'     lmer(Reaction ~ Days + (Days | Subject), data = x)
-#'   })) %>%
-#'   # compute ICC for each "bootstrapped" regression
-#'   mutate(icc = unlist(lapply(.$models, icc)))
+#'   # and compute ICC for each "bootstrapped" regression
+#'   mutate(
+#'     models = map(strap, ~lmer(Reaction ~ Days + (Days | Subject), data = .x)),
+#'     icc = map_dbl(models, ~icc(.x))
+#'   )
+#'
 #' # now compute SE and p-values for the bootstrapped ICC, values
 #' # may differ from above example due to random seed
 #' boot_se(dummy, icc)
