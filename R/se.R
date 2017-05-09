@@ -123,7 +123,8 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #'
 #' @importFrom stats qnorm vcov
 #' @importFrom broom tidy
-#' @importFrom dplyr mutate select_
+#' @importFrom dplyr mutate select
+#' @importFrom rlang .data
 #' @export
 se <- function(x, nsim = 100, type = c("fe", "re")) {
   # match arguments
@@ -138,7 +139,7 @@ se <- function(x, nsim = 100, type = c("fe", "re")) {
   } else if (inherits(x, c("svyglm.nb", "svymle"))) {
     return(
       tidy_svyglm.nb(x) %>%
-        dplyr::select_("term", "estimate", "std.error")
+        dplyr::select(.data$term, .data$estimate, .data$std.error)
     )
   } else if (inherits(x, c("glm", "glmerMod"))) {
     # check type of se
@@ -170,8 +171,8 @@ se <- function(x, nsim = 100, type = c("fe", "re")) {
         tm %>%
           # vcov for merMod returns a dpoMatrix-object, so we need
           # to coerce to regular matrix here.
-          dplyr::mutate(or.se = sqrt(estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
-          dplyr::select_("term", "estimate", "or.se") %>%
+          dplyr::mutate(or.se = sqrt(.data$estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
+          dplyr::select(.data$term, .data$estimate, .data$or.se) %>%
           sjmisc::var_rename(or.se = "std.error")
       )
     } else {
@@ -183,7 +184,7 @@ se <- function(x, nsim = 100, type = c("fe", "re")) {
     # for convenience reasons, also return se for simple linear models
     return(x %>%
              broom::tidy(effects = "fixed") %>%
-             dplyr::select_("term", "estimate", "std.error")
+             dplyr::select(.data$term, .data$estimate, .data$std.error)
     )
   } else if (is.matrix(x) || is.data.frame(x)) {
     # init return variables

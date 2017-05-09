@@ -55,7 +55,7 @@
 #' # (while rel. inequ. are still increasing)
 #' plot(inequ_trend(prev.data, lo, hi))
 #'
-#' @importFrom dplyr select_
+#' @importFrom dplyr select
 #' @export
 inequ_trend <- function(data, prev.low, prev.hi) {
   # prepare data for prevalence rates for low and hi status groups
