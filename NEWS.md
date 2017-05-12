@@ -4,6 +4,10 @@
 
 * The `print()`-method for `svyglm.nb()`-objects now also prints confidence intervals.
 
+## Bug fixes
+
+* `se()` did not work for `icc()`-objects, when the mixed model had more than one random effect term.
+
 # sjstats 0.10.0
 
 ## New functions
