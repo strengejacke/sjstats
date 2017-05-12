@@ -3,7 +3,9 @@
 #'
 #' @description \code{prop()} calculates the proportion of a value or category
 #'                in a variable. \code{props()} does the same, but allows for
-#'                multiple logical conditions in one statement.
+#'                multiple logical conditions in one statement. It is similar
+#'                to \code{mean()} with logical predicates, however, both
+#'                \code{prop()} and \code{props()} work with grouped data frames.
 #'
 #' @param data A data frame. May also be a grouped data frame (see 'Examples').
 #' @param ... One or more value pairs of comparisons (logical predicates). Put

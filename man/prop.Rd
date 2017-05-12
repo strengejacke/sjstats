@@ -38,7 +38,9 @@ For one condition, a numeric value with the proportion of the values
 \description{
 \code{prop()} calculates the proportion of a value or category
                in a variable. \code{props()} does the same, but allows for
-               multiple logical conditions in one statement.
+               multiple logical conditions in one statement. It is similar
+               to \code{mean()} with logical predicates, however, both
+               \code{prop()} and \code{props()} work with grouped data frames.
 }
 \details{
 \code{prop()} only allows one logical statement per comparison,

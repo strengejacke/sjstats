@@ -31,15 +31,20 @@ print.svyglm.nb <- function(x, ...) {
   print(tidy_svyglm.nb(x)[-1, ], ...)
 }
 
+
+#' @importFrom stats qnorm coef pnorm vcov
 tidy_svyglm.nb <- function(x, digits = 4) {
   if (!isNamespaceLoaded("survey"))
     requireNamespace("survey", quietly = TRUE)
+
   tibble::tibble(
     term = substring(names(stats::coef(x)), 5),
     estimate = round(stats::coef(x), digits),
     irr = round(exp(estimate), digits),
     std.error = round(sqrt(diag(stats::vcov(x, stderr = "robust"))), digits),
-    p.value = round(2 * stats::pnorm(abs(estimate / std.error), lower.tail = FALSE), digits)
+    p.value = round(2 * stats::pnorm(abs(estimate / std.error), lower.tail = FALSE), digits),
+    conf.low = estimate - stats::qnorm(.975) * std.error,
+    conf.high = estimate + stats::qnorm(.975) * std.error
   )
 }
 

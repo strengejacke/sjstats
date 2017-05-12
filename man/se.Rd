@@ -20,8 +20,9 @@ obtained by the \code{\link{icc}}-function.}
 
 \item{type}{Type of standard errors for generalized linear mixed models.
 \code{type = "fe"} returns the standard errors for fixed effects,
-based on the delta-method-approximation. \code{type = "se"} returns
-the standard errors for joint random and fixed effects. See 'Details'.}
+based on the delta-method-approximation. \code{type = "re"} returns
+the standard errors for joint random and fixed effects, which are
+on the scale of the link function. See 'Details'.}
 }
 \value{
 The standard error of \code{x}.
@@ -34,8 +35,8 @@ Compute standard error for a variable, for all variables
                for intraclass correlation coefficients (ICC).
 }
 \details{
-For linear mixed models, and generalized linear mixed models with
-           \code{type = "re"}, this function computes the standard errors
+For linear mixed models, and generalized linear mixed models \strong{with
+           \code{type = "re"}}, this function computes the standard errors
            for joint (sums of) random and fixed effects coefficients (unlike
            \code{\link[arm]{se.coef}}, which returns the standard error
            for fixed and random effects separately). Hence, \code{se()}
@@ -46,9 +47,10 @@ For linear mixed models, and generalized linear mixed models with
            regression parameters are returned (Oehlert 1992). For generalized
            linear mixed models, by default, the standard errors refer to the
            fixed effects only. Use \code{type = "re"} to compute standard errors
-           for joint random and fixed effects coefficients. However, this
-           computation \emph{is not} based on the delta method, so standard
-           errors from \code{type = "re"} are on the logit-scale.
+           for joint random and fixed effects coefficients. However,
+           computation for the latter \emph{is not} based on the delta method,
+           so standard errors from \code{type = "re"} are on the scale of the
+           link-function (and not back transformed).
            \cr \cr
            The standard error for the \code{\link{icc}} is based on bootstrapping,
            thus, the \code{nsim}-argument is required. See 'Examples'.

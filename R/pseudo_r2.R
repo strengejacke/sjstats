@@ -200,8 +200,7 @@ r2 <- function(x, n = NULL) {
     names(adjr2) <- "adj.R2"
     # return results
     return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
-  } else if (sjmisc::str_contains(class(x), pattern = c("lmerMod", "lme"),
-                                  ignore.case = T, logic = "OR")) {
+  } else if (inherits(x, c("lmerMod", "lme"))) {
     # do we have null model?
     if (!is.null(n)) {
       # compute tau for both models

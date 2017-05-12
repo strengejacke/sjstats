@@ -19,8 +19,9 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #'          obtained by the \code{\link{icc}}-function.
 #' @param type Type of standard errors for generalized linear mixed models.
 #'          \code{type = "fe"} returns the standard errors for fixed effects,
-#'          based on the delta-method-approximation. \code{type = "se"} returns
-#'          the standard errors for joint random and fixed effects. See 'Details'.
+#'          based on the delta-method-approximation. \code{type = "re"} returns
+#'          the standard errors for joint random and fixed effects, which are
+#'          on the scale of the link function. See 'Details'.
 #'
 #' @return The standard error of \code{x}.
 #'
@@ -35,8 +36,8 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #'         confidence interval has usual Bayesian interpretation only with flat prior.}
 #'         (Gelman 2017)
 #'
-#' @details For linear mixed models, and generalized linear mixed models with
-#'            \code{type = "re"}, this function computes the standard errors
+#' @details For linear mixed models, and generalized linear mixed models \strong{with
+#'            \code{type = "re"}}, this function computes the standard errors
 #'            for joint (sums of) random and fixed effects coefficients (unlike
 #'            \code{\link[arm]{se.coef}}, which returns the standard error
 #'            for fixed and random effects separately). Hence, \code{se()}
@@ -47,9 +48,10 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #'            regression parameters are returned (Oehlert 1992). For generalized
 #'            linear mixed models, by default, the standard errors refer to the
 #'            fixed effects only. Use \code{type = "re"} to compute standard errors
-#'            for joint random and fixed effects coefficients. However, this
-#'            computation \emph{is not} based on the delta method, so standard
-#'            errors from \code{type = "re"} are on the logit-scale.
+#'            for joint random and fixed effects coefficients. However,
+#'            computation for the latter \emph{is not} based on the delta method,
+#'            so standard errors from \code{type = "re"} are on the scale of the
+#'            link-function (and not back transformed).
 #'            \cr \cr
 #'            The standard error for the \code{\link{icc}} is based on bootstrapping,
 #'            thus, the \code{nsim}-argument is required. See 'Examples'.
@@ -287,6 +289,8 @@ std_e_icc <- function(x, nsim) {
 #' @importFrom dplyr mutate
 #' @importFrom lme4 lmer glmer
 #' @importFrom utils txtProgressBar
+#' @importFrom purrr map map_dbl
+#' @importFrom rlang .data
 bootstr_icc_se <- function(dd, nsim, formula, model.family) {
   # create progress bar
   pb <- utils::txtProgressBar(min = 1, max = nsim, style = 3)
@@ -294,17 +298,19 @@ bootstr_icc_se <- function(dd, nsim, formula, model.family) {
   # generate bootstraps
   dummy <- dd %>%
     bootstrap(nsim) %>%
-    dplyr::mutate(models = lapply(strap, function(x) {
-      # update progress bar
-      utils::setTxtProgressBar(pb, x$resample.id)
-      # check model family, then compute mixed model
-      if (model.family == "gaussian")
-        lme4::lmer(formula, data = x)
-      else
-        lme4::glmer(formula, data = x, family = model.family)
-    })) %>%
-    # compute ICC for each "bootstrapped" regression
-    dplyr::mutate(icc = unlist(lapply(models, icc)))
+    dplyr::mutate(
+      models = purrr::map(.data$strap, function(x) {
+        # update progress bar
+        utils::setTxtProgressBar(pb, x$resample.id)
+        # check model family, then compute mixed model
+        if (model.family == "gaussian")
+          lme4::lmer(formula, data = x)
+        else
+          lme4::glmer(formula, data = x, family = model.family)
+      }),
+      # compute ICC for each "bootstrapped" regression
+      icc = purrr::map_dbl(.data$models, icc)
+  )
 
   # close progresss bar
   close(pb)

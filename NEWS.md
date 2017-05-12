@@ -1,3 +1,9 @@
+# sjstats 0.10.0.9000
+
+## Changes to functions
+
+* The `print()`-method for `svyglm.nb()`-objects now also prints confidence intervals.
+
 # sjstats 0.10.0
 
 ## New functions
