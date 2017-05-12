@@ -253,10 +253,15 @@ print.sj_resample <- function(x, ...) {
 #' @export
 print.se.icc.lme4 <- function(x, ...) {
   cat("Standard Error of ICC\n")
-  cat(sprintf("      Model: %s\n", x$result$model))
-  cat(sprintf("        ICC: %.4f\n", x$result$icc))
-  cat(sprintf("  std. err.: %.4f\n", x$result$std.err))
-  cat(sprintf("    p-value: %.4f\n", x$result$p.value))
+  cat(sprintf("      Model: %s\n", x$result$model[[1]]))
+
+  for (i in 1:nrow(x$result)) {
+    cat(sprintf("        ICC: %.4f\n", x$result$icc[i]))
+    cat(sprintf("  std. err.: %.4f\n", x$result$std.err[i]))
+    cat(sprintf("    p-value: %.4f\n", x$result$p.value[i]))
+
+    if (i < nrow(x$result)) cat("\n")
+  }
 }
 
 

@@ -279,8 +279,8 @@ std_e_icc <- function(x, nsim) {
   # now compute SE and p-values for the bootstrapped ICC
   res <- data.frame(model = obj.name,
                     icc = as.vector(x),
-                    std.err = boot_se(bstr, icc)[["std.err"]],
-                    p.value = boot_p(bstr, icc)[["p.value"]])
+                    std.err = boot_se(bstr)[["std.err"]],
+                    p.value = boot_p(bstr)[["p.value"]])
   structure(class = "se.icc.lme4", list(result = res, bootstrap_data = bstr))
 }
 
@@ -308,11 +308,17 @@ bootstr_icc_se <- function(dd, nsim, formula, model.family) {
         else
           lme4::glmer(formula, data = x, family = model.family)
       }),
-      # compute ICC for each "bootstrapped" regression
-      icc = purrr::map_dbl(.data$models, icc)
-  )
+      # compute ICC(s) for each "bootstrapped" regression
+      icc = purrr::map(.data$models, icc)
+    )
+
+  # we may have more than one random term in the model, so we might have
+  # multiple ICC values. In this case, we need to split the multiple icc-values
+  # into multiple columns, i.e. one column per ICC value
+  icc_data <-
+    tibble::as_tibble(matrix(unlist(purrr::map(dummy$icc, ~ .x)), nrow = nrow(dummy)))
 
   # close progresss bar
   close(pb)
-  return(dummy)
+  return(icc_data)
 }
