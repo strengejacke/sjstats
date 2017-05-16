@@ -28,7 +28,19 @@ model.frame.gls <- function(formula, ...) {
 #' @importFrom stats coef vcov pnorm
 #' @export
 print.svyglm.nb <- function(x, ...) {
-  print(tidy_svyglm.nb(x)[-1, ], ...)
+  sm <- tidy_svyglm.nb(x)[-1, -2]
+
+  pan <- dplyr::case_when(
+    sm$p.value < 0.001 ~ "<0.001 ***",
+    sm$p.value < 0.01 ~ sprintf("%.4f ** ", sm$p.value),
+    sm$p.value < 0.05 ~ sprintf("%.4f *  ", sm$p.value),
+    sm$p.value < 0.1 ~ sprintf("%.4f .  ", sm$p.value),
+    TRUE ~  sprintf("%.4f    ", sm$p.value)
+  )
+
+  sm$p.value <- pan
+  print(sm, ...)
+  message("Showing robust standard errors on link-scale (untransformed).")
 }
 
 
@@ -42,9 +54,9 @@ tidy_svyglm.nb <- function(x, digits = 4) {
     estimate = round(stats::coef(x), digits),
     irr = round(exp(estimate), digits),
     std.error = round(sqrt(diag(stats::vcov(x, stderr = "robust"))), digits),
-    p.value = round(2 * stats::pnorm(abs(estimate / std.error), lower.tail = FALSE), digits),
-    conf.low = estimate - stats::qnorm(.975) * std.error,
-    conf.high = estimate + stats::qnorm(.975) * std.error
+    conf.low = round(exp(estimate - stats::qnorm(.975) * std.error), digits),
+    conf.high = round(exp(estimate + stats::qnorm(.975) * std.error), digits),
+    p.value = round(2 * stats::pnorm(abs(estimate / std.error), lower.tail = FALSE), digits)
   )
 }
 
