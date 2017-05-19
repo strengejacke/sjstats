@@ -48,6 +48,7 @@ cod <- function(x) {
     y <- x$y
     pred <- stats::predict.glm(x, type = "response")
   }
+
   # delete pred for cases with missing residuals
   if (anyNA(stats::residuals(x))) pred <- pred[!is.na(stats::residuals(x))]
 
@@ -58,7 +59,7 @@ cod <- function(x) {
   cod = abs(m2 - m1)
   names(cod) <- "D"
 
-  return(structure(class = "sjstats_r2", list(cod = cod)))
+  structure(class = "sjstats_r2", list(cod = cod))
 }
 
 
@@ -176,6 +177,7 @@ r2 <- function(x, n = NULL) {
   rsq <- NULL
   osq <- NULL
   adjr2 <- NULL
+
   # do we have a glm? if so, report pseudo_r2
   if (inherits(x, "glm")) {
     return(pseudo_ralt(x))
@@ -186,18 +188,22 @@ r2 <- function(x, n = NULL) {
   } else if (inherits(x, "lm")) {
     rsq <- summary(x)$r.squared
     adjr2 <- summary(x)$adj.r.squared
+
     # name vectors
     names(rsq) <- "R2"
     names(adjr2) <- "adj.R2"
+
     # return results
     return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
     # else do we have a mixed model?
   } else if (inherits(x, "plm")) {
     rsq <- summary(x)$r.squared[1]
     adjr2 <- summary(x)$r.squared[2]
+
     # name vectors
     names(rsq) <- "R2"
     names(adjr2) <- "adj.R2"
+
     # return results
     return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
   } else if (inherits(x, c("lmerMod", "lme"))) {
@@ -206,25 +212,32 @@ r2 <- function(x, n = NULL) {
       # compute tau for both models
       tau_full <- icc(x)
       tau_null <- icc(n)
+
       # get taus. tau.00 is the random intercept variance, i.e. for growth models,
       # the difference in the outcome's mean at first time point
       rsq0 <- (attr(tau_null, "tau.00") - attr(tau_full, "tau.00")) / attr(tau_null, "tau.00")
+
       # tau.11 is the variance of the random slopes, i.e. how model predictors
       # affect the trajectory of subjects over time (for growth models)
       rsq1 <- (attr(tau_null, "tau.11") - attr(tau_full, "tau.11")) / attr(tau_null, "tau.11")
+
       # get r2
       rsq <- ((attr(tau_null, "tau.00") + attr(tau_null, "sigma_2")) -
         (attr(tau_full, "tau.00") + attr(tau_full, "sigma_2"))) /
         (attr(tau_null, "tau.00") + attr(tau_null, "sigma_2"))
+
       # get omega-squared
       osq <- 1 - ((attr(tau_full, "sigma_2") / attr(tau_null, "sigma_2")))
+
       # if model has no random slope, we need to set this value to NA
       if (is.null(rsq1) || sjmisc::is_empty(rsq1)) rsq1 <- NA
+
       # name vectors
       names(rsq0) <- "R2(tau-00)"
       names(rsq1) <- "R2(tau-11)"
       names(rsq) <- "R2"
       names(osq) <- "O2"
+
       # return results
       return(structure(class = "sjstats_r2", list(r2_tau00 = rsq0, r2_tau11 = rsq1, r2 = rsq, o2 = osq)))
     } else {

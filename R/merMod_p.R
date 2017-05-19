@@ -63,6 +63,7 @@ get_model_pval <- function(fit, p.kr = FALSE) {
     p <- stats::coef(summary(fit))[, 4]
     se <- stats::coef(summary(fit))[, 2]
   }
+
   tibble::tibble(term = names(p), p.value = as.vector(p), std.error = as.vector(se))
 }
 
@@ -75,8 +76,10 @@ merMod_p <- function(fit, p.kr) {
   } else {
     cs <- stats::coef(summary(fit))
   }
+
   # remeber coef-names
   coef_names <- rownames(cs)
+
   # check if we have p-values in summary
   if (ncol(cs) >= 4) {
     # do we have a p-value column?
@@ -100,5 +103,6 @@ merMod_p <- function(fit, p.kr) {
     message("Computing p-values via Wald-statistics approximation (treating t as Wald z).")
     pv <- 2 * stats::pnorm(abs(cs[, 3]), lower.tail = FALSE)
   }
-  return(pv)
+
+  pv
 }

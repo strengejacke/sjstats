@@ -204,7 +204,7 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
   )
 
   # return result
-  return(structure(class = "sj_xtab_stat", list(
+  structure(class = "sj_xtab_stat", list(
     estimate = s,
     p.value = pv,
     statistic = test,
@@ -215,5 +215,5 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     method.html = method.html,
     method.short = statistics,
     fisher = use.fisher
-  )))
+  ))
 }

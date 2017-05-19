@@ -185,7 +185,8 @@ reliab_test <- function(x, scale.items = FALSE, digits = 3) {
     warning("Data frame needs at least three columns for reliability-test.", call. = F)
     ret.df <- NULL
   }
-  return(ret.df)
+
+  ret.df
 }
 
 
@@ -259,5 +260,6 @@ mic <- function(x, cor.method = c("pearson", "spearman", "kendall")) {
       }
     }
   }
-  return(mean(meanic))
+
+  mean(meanic)
 }

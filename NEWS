@@ -1,5 +1,8 @@
 Version 0.10.0.9000
 ------------------------------------------------------------------------------
+New functions:
+* `boot_est()` to return the estimate from bootstrap replicates.
+
 Changes to functions:
 * The `print()`-method for `svyglm.nb()`-objects now also prints confidence intervals.
 

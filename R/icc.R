@@ -114,21 +114,26 @@
 icc <- function(x, ...) {
   # return value
   icc_ <- icc.lme4(x, deparse(substitute(x)))
+
   # check if we have multiple parameters
   if (nargs() > 1) {
     # evaluate dots
     dots <- match.call(expand.dots = FALSE)$`...`
     # get paramater names
     dot.names <- dot_names(dots)
+
     # get input list
     params_ <- list(...)
     icc_ <- list(icc_)
+
     for (i in seq_len(length(params_))) {
       icc_[[length(icc_) + 1]] <- icc.lme4(params_[[i]], dot.names[i])
     }
+
     names(icc_) <- NULL
   }
-  return(icc_)
+
+  icc_
 }
 
 #' @importFrom lme4 VarCorr fixef getME
@@ -173,8 +178,10 @@ icc.lme4 <- function(fit, obj.name) {
       # residual variance
       resid_var <- attr(reva, "sc") ^ 2
     }
+
     # total variance, sum of random intercept and residual variances
     total_var <- sum(sapply(vars, sum), resid_var)
+
     # check whether we have negative binomial
     if (is_negbin) {
       # for negative binomial models, we also need the intercept...
@@ -220,9 +227,11 @@ icc.lme4 <- function(fit, obj.name) {
     attr(ri.icc, "rho.01") <- rho.01
     attr(ri.icc, "tau.11") <- tau.11
     attr(ri.icc, "sigma_2") <- resid_var
+
     # finally, save name of fitted model object. May be needed for
     # the 'se()' function, which accesses the global environment
     attr(ri.icc, ".obj.name") <- obj.name
+
     # return results
     return(ri.icc)
   } else {

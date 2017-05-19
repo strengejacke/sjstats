@@ -132,6 +132,7 @@ check_assumptions <- function(x, model.column = NULL, as.logical = FALSE, ...) {
   )
 }
 
+
 #' @rdname check_assumptions
 #' @importFrom sjmisc is_empty
 #' @importFrom stats update
@@ -158,6 +159,7 @@ outliers <- function(x, iterations = 5) {
     while (isTRUE(loop)) {
       # get outliers of model
       vars <- as.numeric(names(which(car::outlierTest(model, cutoff = Inf, n.max = Inf)$bonf.p < 1)))
+
       # no outliers found? then stop...
       if (sjmisc::is_empty(vars)) {
         loop <- FALSE
@@ -168,6 +170,7 @@ outliers <- function(x, iterations = 5) {
         dummyaic <- dummymodel$aic
         # decrease maximum loops
         maxcnt <- maxcnt - 1
+
         # check whether AIC-value of updated model is larger
         # than previous AIC-value or if we have already all iterations done,
         if (dummyaic >= aic || maxcnt < 1) {
@@ -196,6 +199,7 @@ outliers <- function(x, iterations = 5) {
     while (isTRUE(loop)) {
       # get outliers of model
       vars <- as.numeric(names(which(car::outlierTest(model, cutoff = Inf, n.max = Inf)$bonf.p < 1)))
+
       # do we have any outliers?
       if (sjmisc::is_empty(vars)) {
         loop <- FALSE
@@ -207,6 +211,7 @@ outliers <- function(x, iterations = 5) {
         dummyrs <- summary(dummymodel)$r.squared
         # decrease maximum loops
         maxcnt <- maxcnt - 1
+
         # check whether r2 of updated model is lower
         # than previous r2 or if we have already all loop-steps done,
         # stop loop

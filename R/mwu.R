@@ -41,10 +41,13 @@
 mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
   # coerce factor and character to numeric
   if (is.factor(grp) || is.character(grp)) grp <- sjmisc::to_value(grp)
+
   # group "counter" (index) should start with 1, not 0
   if (min(grp, na.rm = TRUE) < 1) grp <- sjmisc::recode_to(grp, lowest = 1)
+
   # retrieve unique group values. need to iterate all values
   grp_values <- sort(unique(stats::na.omit(grp)))
+
   # length of value range
   cnt <- length(grp_values)
   labels <- sjmisc::get_labels(grp, attr.only = F, include.values = NULL,
@@ -74,10 +77,13 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
         if (is.null(weight.by)) {
           wt <- coin::wilcox_test(xsub ~ ysub, distribution = distribution)
         } else {
-          wt <- coin::wilcox_test(xsub ~ ysub,
-                                  distribution = distribution,
-                                  weight.by = as.formula("~wsub"))
+          wt <- coin::wilcox_test(
+            xsub ~ ysub,
+            distribution = distribution,
+            weight.by = as.formula("~wsub")
+          )
         }
+
         # compute statistics
         u <- as.numeric(coin::statistic(wt, type = "linear"))
         z <- as.numeric(coin::statistic(wt, type = "standardized"))
@@ -99,6 +105,7 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
       }
     }
   }
+
   # convert variables
   df[["grp1"]] <- as.numeric(as.character(df[["grp1"]]))
   df[["grp2"]] <- as.numeric(as.character(df[["grp2"]]))
@@ -126,6 +133,7 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
 
   # replace 0.001 with <0.001
   levels(tab.df$p)[which(levels(tab.df$p) == "0.001")] <- "<0.001"
+
   # return both data frames
   structure(class = c("mwu", "sj_mwu"), list(df = df, tab.df = tab.df, data = data.frame(x, grp)))
 }

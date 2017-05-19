@@ -68,6 +68,3 @@ zero_count(fit)
 \references{
 \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ}
 }
-\seealso{
-\code{link{check_outliers}}
-}

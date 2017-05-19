@@ -92,6 +92,7 @@ std_beta <- function(fit, type = "std") {
     fit.data <- as.data.frame(stats::model.matrix(fit))
     # remove intercept?
     if (has_intercept) fit.data <- fit.data[, -1]
+
     # convert factor to numeric, else sd throws a warning
     fit.data <- as.data.frame(sapply(fit.data,
                                      function(x)
@@ -99,19 +100,25 @@ std_beta <- function(fit, type = "std") {
                                          sjmisc::to_value(x, keep.labels = F)
                                        else
                                          x))
+
     # get standard deviations for predictors
     sx <- sapply(fit.data, sd, na.rm = T)
+
     if (inherits(fit, "gls"))
       sy <- sapply(as.data.frame(as.vector(nlme::getResponse(fit))), sd, na.rm = T)
     else
       sy <- sapply(as.data.frame(fit$model)[1], sd, na.rm = T)
+
     beta <- b * sx / sy
+
     if (inherits(fit, "gls"))
       se <- summary(fit)$tTable[, 2]
     else
       se <- summary(fit)$coef[, 2]
+
     # remove intercept?
     if (has_intercept) se <- se[-1]
+
     # compute standard error
     beta.se <- se * sx / sy
   }
@@ -133,6 +140,7 @@ sjs.stdmm <- function(fit) {
   sc <- lme4::fixef(fit) * sdx / sdy
   se.fixef <- stats::coef(summary(fit))[, "Std. Error"]
   se <- se.fixef * sdx / sdy
+
   tibble::tibble(term = names(lme4::fixef(fit)), std.estimate = sc,
                  std.error = se, conf.low = sc - 1.96 * se,
                  conf.high = sc + 1.96 * se)

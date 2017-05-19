@@ -139,22 +139,31 @@ hoslem_gof <- function(x, g = 10) {
     if (!requireNamespace("lme4", quietly = TRUE)) {
       stop("Package 'lme4' needed for this function to work. Please install it.", call. = FALSE)
     }
+
     y <- lme4::getME(x, "y")
     yhat <- stats::fitted(x)
   } else {
     y <- x$y
     yhat <- stats::fitted(x)
   }
-  cutyhat <- cut(yhat,
-                 breaks = stats::quantile(yhat, probs = seq(0, 1, 1 / g)),
-                 include.lowest = TRUE)
+
+  cutyhat <- cut(
+    yhat,
+    breaks = stats::quantile(yhat, probs = seq(0, 1, 1 / g)),
+    include.lowest = TRUE
+  )
+
   obs <- stats::xtabs(cbind(1 - y, y) ~ cutyhat)
   expect <- stats::xtabs(cbind(1 - yhat, yhat) ~ cutyhat)
   chisq <- sum((obs - expect)^2 / expect)
   p.value <- 1 - stats::pchisq(chisq, g - 2)
-  hoslem <- list(chisq = chisq,
-                 df = g - 2,
-                 p.value = p.value)
+
+  hoslem <- list(
+    chisq = chisq,
+    df = g - 2,
+    p.value = p.value
+  )
+
   class(hoslem) <- "hoslem_test"
-  return(hoslem)
+  hoslem
 }

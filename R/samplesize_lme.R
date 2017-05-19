@@ -50,6 +50,7 @@ smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, i
   if (!requireNamespace("pwr", quietly = TRUE)) {
     stop("Package `pwr` needed for this function to work. Please install it.", call. = FALSE)
   }
+
   # compute sample size for standard design
   if (is.null(df.n))
     # if we have no degrees of freedom specified, use t-test
@@ -57,10 +58,13 @@ smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, i
   else
     # we have df, so power-calc for linear models
     n <- pwr::pwr.f2.test(u = df.n, f2 = eff.size, sig.level = sig.level, power = power)$v + df.n + 1
+
   # adjust standard design by design effect
   total.n <- n * deff(n = k, icc = icc)
+
   # sample size for each group and total n
   smpsz <- list(round(total.n / k), round(total.n))
+
   # name list
   names(smpsz) <- c("Subjects per Cluster", "Total Sample Size")
   smpsz
@@ -126,16 +130,22 @@ deff <- function(n, icc = 0.05) {
 se_ybar <- function(fit) {
   # get model icc
   icc <- icc(fit)
+
   # get group variances
   tau.00 <- unname(attr(icc, "tau.00", exact = T))
+
   # total variance
   tot_var <- sum(tau.00, attr(icc, "sigma_2", exact = T))
+
   # get number of groups
   m.cnt <- unlist(lapply(getME(fit, "flist"), nlevels))
+
   # compute standard error of sample mean
   y.se <- c()
+
   for (i in seq_len(length(m.cnt))) {
     y.se <- c(y.se, sqrt((tot_var / nobs(fit)) * deff(n = m.cnt[i], icc = icc[i])))
   }
+
   y.se
 }

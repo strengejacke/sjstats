@@ -47,6 +47,7 @@ eta_sq <- function(...) {
     fit <- stats::aov(depVar ~ grpVar)
   }
   # return eta squared
-  return(stats::summary.lm(fit)$r.squared)
-  # return (1 - var(fit$residuals, na.rm = T) / var(fit$model[,1], na.rm = T))
+  stats::summary.lm(fit)$r.squared
+
+  # 1 - var(fit$residuals, na.rm = T) / var(fit$model[,1], na.rm = T)
 }

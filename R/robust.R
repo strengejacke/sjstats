@@ -74,11 +74,13 @@ robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4",
   tmp <- lmtest::coeftest(x, vcov. = sandwich::vcovHC(x, type = vcov))
 
   # create tidy tibble
-  result <- tibble::tibble(term = rownames(tmp),
-                           estimate = tmp[, 1],
-                           std.error = tmp[, 2],
-                           statistic = tmp[, 3],
-                           p.value = tmp[, 4])
+  result <- tibble::tibble(
+    term = rownames(tmp),
+    estimate = tmp[, 1],
+    std.error = tmp[, 2],
+    statistic = tmp[, 3],
+    p.value = tmp[, 4]
+  )
 
   # add CI
   if (conf.int) {

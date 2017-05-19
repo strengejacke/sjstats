@@ -1,9 +1,9 @@
 #' @title Standard error and confidence intervals for bootstrapped estimates
 #' @name boot_ci
 #'
-#' @description Compute nonparametric bootstrap standard error, confidence
-#'              intervals and p-value for a vector of bootstrap replicate
-#'              estimates.
+#' @description Compute nonparametric bootstrap estimate, standard error,
+#'              confidence intervals and p-value for a vector of bootstrap
+#'              replicate estimates.
 #'
 #' @param data A data frame that containts the vector with bootstrapped
 #'          estimates, or directly the vector (see 'Examples').
@@ -12,15 +12,17 @@
 #'          or if only selected variables from \code{data} should be used
 #'          in the function.
 #'
-#' @return A \code{\link[tibble]{tibble}} with either bootstrap standard error,
-#'         the lower and upper confidence intervals or the p-value for all
-#'         bootstrapped estimates.
+#' @return A \code{\link[tibble]{tibble}} with either bootstrap estimate,
+#'         standard error, the lower and upper confidence intervals or the
+#'         p-value for all bootstrapped estimates.
 #'
 #' @details The methods require one or more vectors of bootstrap replicate estimates
-#'          as input. \code{boot_se()} computes the nonparametric bootstrap
-#'          standard error by calculating the standard deviation of the input
-#'          vector. The mean value of the input vector and its standard error is
-#'          used by \code{boot_ci()} to calculate the lower and upper confidence interval, assuming
+#'          as input. \code{boot_est()} returns the bootstrapped estimate, simply by
+#'          computing the mean value of all bootstrap estimates. \code{boot_se()}
+#'          computes the nonparametric bootstrap standard error by calculating
+#'          the standard deviation of the input vector. The mean value of the
+#'          input vector and its standard error is used by \code{boot_ci()}
+#'          to calculate the lower and upper confidence interval, assuming
 #'          a t-distribution of bootstrap estimate replicates. P-values
 #'          from \code{boot_p()} are also based on t-statistics, assuming normal
 #'          distribution.
@@ -35,11 +37,11 @@
 #' bs <- bootstrap(efc, 100)
 #'
 #' # now run models for each bootstrapped sample
-#' bs$models <- map(strap, ~lm(neg_c_7 ~ e42dep + c161sex, data = .x))
+#' bs$models <- map(bs$strap, ~lm(neg_c_7 ~ e42dep + c161sex, data = .x))
 #'
 #' # extract coefficient "dependency" and "gender" from each model
-#' bs$dependency <- map_dbl(models, ~coef(.x)[2])
-#' bs$gender <- map_dbl(models, ~coef(x)[3])
+#' bs$dependency <- map_dbl(bs$models, ~coef(.x)[2])
+#' bs$gender <- map_dbl(bs$models, ~coef(.x)[3])
 #'
 #' # get bootstrapped confidence intervals
 #' boot_ci(bs$dependency)
@@ -56,7 +58,9 @@
 #'
 #' # compare coefficients
 #' mean(bs$dependency)
+#' boot_est(bs$dependency)
 #' coef(fit)[2]
+#'
 #'
 #' # bootstrap() and boot_ci() work fine within pipe-chains
 #' efc %>%
@@ -106,6 +110,7 @@
 boot_ci <- function(data, ...) {
   # evaluate arguments, generate data
   .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
+
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
     # get bootstrap standard error
@@ -124,6 +129,7 @@ boot_ci <- function(data, ...) {
 boot_se <- function(data, ...) {
   # evaluate arguments, generate data
   .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
+
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
     # get bootstrap standard error
@@ -140,6 +146,7 @@ boot_se <- function(data, ...) {
 boot_p <- function(data, ...) {
   # evaluate arguments, generate data
   .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
+
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
     # compute t-statistic
@@ -148,6 +155,21 @@ boot_p <- function(data, ...) {
     p <- 2 * stats::pt(abs(t.stat), df = length(x) - 1, lower.tail = FALSE)
     names(p) <- "p.value"
     p
+  }))
+}
+
+
+#' @rdname boot_ci
+#' @export
+boot_est <- function(data, ...) {
+  # evaluate arguments, generate data
+  .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
+
+  # compute mean for all values (= bootstrapped estimate)
+  transform_boot_result(lapply(.dat, function(x) {
+    estimate <- mean(x, na.rm = T)
+    names(estimate) <- "estimate"
+    estimate
   }))
 }
 
@@ -179,5 +201,6 @@ get_boot_data <- function(data, dots) {
   } else {
     x <- as.data.frame(data)
   }
+
   x
 }

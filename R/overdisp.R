@@ -19,8 +19,6 @@
 #'         differs between GLM and GLMM. For GLMs, a p-value < .05 indicates
 #'         overdispersion, while for GLMMs, a p-value > .05 indicates overdispersion.
 #'
-#' @seealso \code{link{check_outliers}}
-#'
 #' @details For \code{merMod}-objects, \code{overdisp()} is based on the code in the
 #'            \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ},
 #'            section \emph{How can I deal with overdispersion in GLMMs?}.
@@ -62,18 +60,22 @@ overdisp <- function(x, trafo = NULL) {
     return(overdisp.default(x, trafo))
 }
 
+
 overdisp.default <- function(x, trafo) {
   # check if suggested package is available
   if (!requireNamespace("AER", quietly = TRUE)) {
     stop("Package `AER` needed for this function to work. Please install it.", call. = FALSE)
   }
+
   result <- AER::dispersiontest(x, trafo = trafo, alternative = "greater")
   print(result)
+
   if (result$p.value < 0.05)
     message("Overdispersion detected.")
   else
     message("No overdispersion detected.")
-  return(invisible(result))
+
+  invisible(result)
 }
 
 
@@ -87,10 +89,12 @@ overdisp.lme4 <- function(x) {
     pval <- stats::pchisq(Pearson.chisq, df = rdf, lower.tail = FALSE)
     cat(sprintf("\n        Overdispersion test\n\ndispersion ratio = %.4f, p-value = %.4f\n\n",
                 prat, pval))
+
     if (pval > 0.05)
       message("No overdispersion detected.")
     else
       message("Overdispersion detected.")
+
     return(invisible(list(
       chisq = Pearson.chisq,
       ratio = prat,
@@ -121,9 +125,9 @@ zero_count <- function(x) {
   obs.zero <- sum(resp_val(x) == 0)
 
   # proportion
-  return(structure(class = "sjstats_zcf", list(
+  structure(class = "sjstats_zcf", list(
     predicted.zeros = pred.zero,
     observed.zeros = obs.zero,
     ratio = pred.zero / obs.zero)
-  ))
+  )
 }

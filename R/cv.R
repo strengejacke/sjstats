@@ -49,13 +49,15 @@
 cv <- function(x, ...) {
   # return value
   cv_ <- cv_helper(x)
+
   # check if we have multiple parameters
   if (nargs() > 1) {
     # get input list
     params_ <- list(...)
     cv_ <- c(cv_, sapply(params_, cv_helper))
   }
-  return(cv_)
+
+  cv_
 }
 
 
@@ -66,6 +68,7 @@ cv_helper <- function(x) {
     dv <- resp_val(x)
     # compute mean of dependent variable
     mw <- mean(dv, na.rm = TRUE)
+
     # check if mean is zero?
     if (mw != 0) {
       # cv = root mean squared error (RMSE) divided by mean of dep. var.
@@ -76,6 +79,7 @@ cv_helper <- function(x) {
   } else {
     # compute mean of variable
     mw <- mean(x, na.rm = TRUE)
+
     # check if mean is zero?
     if (mw != 0) {
       #  we assume a simple vector
@@ -84,5 +88,6 @@ cv_helper <- function(x) {
       warning("Mean of `x` is zero. Cannot compute coefficient of variation.", call. = F)
     }
   }
-  return(NULL)
+
+  NULL
 }

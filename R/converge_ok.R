@@ -46,6 +46,7 @@ converge_ok <- function(x, tolerance = 0.001) {
   if (!requireNamespace("Matrix", quietly = TRUE)) {
     stop("Package `Matrix` needed for this function to work. Please install it.", call. = FALSE)
   }
+
   # is 'x' an lmer object?
   if (is_merMod(x)) {
     relgrad <- with(x@optinfo$derivs, Matrix::solve(Hessian, gradient))

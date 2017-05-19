@@ -68,6 +68,7 @@ rmse <- function(fit, normalized = FALSE) {
     # cpmpute rmse, normalized
     rmse_val <- rmse_val / (max(resp, na.rm = T) - min(resp, na.rm = T))
   }
+
   rmse_val
 }
 
