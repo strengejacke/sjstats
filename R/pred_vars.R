@@ -36,6 +36,7 @@ resp_var <- function(x) {
 
 #' @rdname pred_vars
 #' @importFrom nlme getResponse
+#' @importFrom stats model.frame
 #' @export
 resp_val <- function(x) {
   if (inherits(x, "lme"))
