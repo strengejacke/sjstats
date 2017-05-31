@@ -9,7 +9,7 @@ model.matrix.gls <- function(object, ...) {
 }
 
 #' @importFrom nlme getResponse getData getCovariateFormula
-#' @importFrom sjmisc get_label
+#' @importFrom sjlabelled get_label
 #' @export
 model.frame.gls <- function(formula, ...) {
   if (!inherits(formula, "gls")) {
@@ -18,7 +18,7 @@ model.frame.gls <- function(formula, ...) {
   } else {
     y <- nlme::getResponse(formula)
     mf <- cbind(y, nlme::getData(formula)[, all.vars(nlme::getCovariateFormula(formula))])
-    colnames(mf)[1] <- sjmisc::get_label(y, def.value = "Response")
+    colnames(mf)[1] <- sjlabelled::get_label(y, def.value = "Response")
     return(mf)
   }
 }

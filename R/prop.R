@@ -96,7 +96,7 @@
 #'
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr bind_cols bind_rows
-#' @importFrom sjmisc get_label get_labels to_value
+#' @importFrom sjlabelled get_label get_labels as_numeric
 #' @export
 prop <- function(data, ..., weight.by = NULL, na.rm = TRUE, digits = 4) {
   # check argument
@@ -164,7 +164,7 @@ proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
       # get value label
       var.name <- colnames(grps)[i]
       val.labels <- suppressWarnings(
-        rep(sjmisc::get_labels(data[[var.name]]), length.out = nrow(fr))
+        rep(sjlabelled::get_labels(data[[var.name]]), length.out = nrow(fr))
       )
 
       # if we have no value labels, use values instead
@@ -175,7 +175,7 @@ proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
 
       # add row order, based on values of grouping variables
       reihenfolge <- dplyr::bind_cols(
-        tibble::as_tibble(rep(sort(unique(sjmisc::to_value(data[[var.name]]))), length.out = nrow(fr))),
+        tibble::as_tibble(rep(sort(unique(sjlabelled::as_numeric(data[[var.name]]))), length.out = nrow(fr))),
         reihenfolge
       )
 
@@ -185,7 +185,7 @@ proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
 
     # get column names. we need variable labels as column names
     var.names <- colnames(grps)[seq_len(ncol(grps) - 1)]
-    var.labels <- sjmisc::get_label(data[, var.names], def.value = var.names)
+    var.labels <- sjlabelled::get_label(data[, var.names], def.value = var.names)
 
     # set variable labels and comparisons as colum names
     colnames(fr) <- c(var.labels, comparisons)

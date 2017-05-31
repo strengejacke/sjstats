@@ -1,5 +1,9 @@
 Version 0.10.0.9000
 ------------------------------------------------------------------------------
+General:
+
+* Revised imports: Labelled data functions from package *sjmisc* have been moved to package *sjlabelled*.
+
 New functions:
 * `boot_est()` to return the estimate from bootstrap replicates.
 

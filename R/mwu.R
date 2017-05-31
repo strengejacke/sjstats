@@ -36,11 +36,12 @@
 #'
 #' @importFrom stats na.omit wilcox.test kruskal.test
 #' @importFrom coin wilcox_test pvalue statistic
-#' @importFrom sjmisc to_value get_labels recode_to
+#' @importFrom sjmisc recode_to
+#' @importFrom sjlabelled get_labels as_numeric
 #' @export
 mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
   # coerce factor and character to numeric
-  if (is.factor(grp) || is.character(grp)) grp <- sjmisc::to_value(grp)
+  if (is.factor(grp) || is.character(grp)) grp <- sjlabelled::as_numeric(grp)
 
   # group "counter" (index) should start with 1, not 0
   if (min(grp, na.rm = TRUE) < 1) grp <- sjmisc::recode_to(grp, lowest = 1)
@@ -50,8 +51,10 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
 
   # length of value range
   cnt <- length(grp_values)
-  labels <- sjmisc::get_labels(grp, attr.only = F, include.values = NULL,
-                               include.non.labelled = T)
+  labels <- sjlabelled::get_labels(
+    grp, attr.only = F, include.values = NULL, include.non.labelled = T
+  )
+
   df <- data.frame()
   for (i in seq_len(cnt)) {
     for (j in i:cnt) {

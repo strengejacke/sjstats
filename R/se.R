@@ -127,6 +127,7 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #' @importFrom broom tidy
 #' @importFrom dplyr mutate select
 #' @importFrom rlang .data
+#' @importFrom sjlabelled var_rename
 #' @export
 se <- function(x, nsim = 100, type = c("fe", "re")) {
   # match arguments
@@ -175,7 +176,7 @@ se <- function(x, nsim = 100, type = c("fe", "re")) {
           # to coerce to regular matrix here.
           dplyr::mutate(or.se = sqrt(.data$estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
           dplyr::select(.data$term, .data$estimate, .data$or.se) %>%
-          sjmisc::var_rename(or.se = "std.error")
+          sjlabelled::var_rename(or.se = "std.error")
       )
     } else {
       # return standard error for mixed models,

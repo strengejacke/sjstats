@@ -81,7 +81,7 @@ odds_to_rr <- function(fit) {
   modfram <- stats::model.frame(fit)
   # make sure that outcome is 0/1-numeric, so we can simply
   # compute the mean to get the ratio
-  P0 <- mean(sjmisc::to_value(modfram[[1]], start.at = 0, keep.labels = F), na.rm = T)
+  P0 <- mean(sjlabelled::as_numeric(modfram[[1]], start.at = 0, keep.labels = F), na.rm = T)
   # compute relative risks for estimate and confidence intervals
   rr.dat <- or.dat / ((1 - P0) + (P0 * or.dat))
   colnames(rr.dat) <- c("RR", "lower.ci", "upper.ci")

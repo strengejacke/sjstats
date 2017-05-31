@@ -39,6 +39,7 @@ Imports:
     purrr (>= 0.2.2),
     rlang,
     sandwich (>= 2.3-4),
+    sjlabelled (>= 1.0.0),
     sjmisc (>= 2.4.0),
     tidyr (>= 0.6.2),
     tibble (>= 1.3.0)
@@ -53,7 +54,8 @@ Suggests:
     pbkrtest (>= 0.4-7),
     pROC,
     pwr,
-    survey
+    survey,
+    tidyverse
 URL: https://github.com/strengejacke/sjstats
 BugReports: https://github.com/strengejacke/sjstats/issues
 RoxygenNote: 6.0.1

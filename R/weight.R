@@ -39,7 +39,7 @@
 #' table(weight(x, w))
 #'
 #' @importFrom stats na.pass xtabs
-#' @importFrom sjmisc to_value
+#' @importFrom sjlabelled as_numeric
 #' @export
 weight <- function(x, weights, digits = 0) {
   # remember if x is numeric
@@ -69,7 +69,7 @@ weight <- function(x, weights, digits = 0) {
   }
   # if we have NA values, weighted var is coerced to character.
   # coerce back to numeric then here
-  if (!is.numeric(weightedvar) && x.is.num) weightedvar <- sjmisc::to_value(weightedvar)
+  if (!is.numeric(weightedvar) && x.is.num) weightedvar <- sjlabelled::as_numeric(weightedvar)
   # return result
   return(weightedvar)
 }

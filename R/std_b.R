@@ -97,7 +97,7 @@ std_beta <- function(fit, type = "std") {
     fit.data <- as.data.frame(sapply(fit.data,
                                      function(x)
                                        if (is.factor(x))
-                                         sjmisc::to_value(x, keep.labels = F)
+                                         sjlabelled::as_numeric(x, keep.labels = F)
                                        else
                                          x))
 

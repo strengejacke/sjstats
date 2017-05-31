@@ -24,7 +24,8 @@
 #' sd_pop(efc$c12hour)
 #'
 #' @importFrom stats na.omit var
-#' @importFrom sjmisc is_num_fac to_value
+#' @importFrom sjmisc is_num_fac
+#' @importFrom sjlabelled as_numeric
 #' @export
 var_pop <- function(x) {
   # check for categorical
@@ -35,7 +36,7 @@ var_pop <- function(x) {
       return(NA)
     }
     # convert factor to numeric
-    x <- sjmisc::to_value(x)
+    x <- sjlabelled::as_numeric(x)
   }
   # remove NA
   x <- stats::na.omit(x)

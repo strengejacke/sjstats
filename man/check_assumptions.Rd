@@ -122,12 +122,12 @@ outliers(fit)
 check_assumptions(fit, as.logical = TRUE)
 
 # apply function to multiple models in list-variable
-library(dplyr)
+library(tidyverse)
 tmp <- efc \%>\%
   bootstrap(50) \%>\%
-  mutate(models = lapply(.$strap, function(x) {
-    lm(neg_c_7 ~ e42dep + c12hour + c161sex, data = x)
-  }))
+  mutate(
+    models = map(strap, ~lm(neg_c_7 ~ e42dep + c12hour + c161sex, data = .x))
+  )
 
 # for list-variables, argument 'model.column' is the
 # quoted name of the list-variable with fitted models
