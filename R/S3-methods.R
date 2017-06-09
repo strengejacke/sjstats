@@ -26,37 +26,45 @@ model.frame.gls <- function(formula, ...) {
 
 #' @importFrom tibble tibble
 #' @importFrom stats coef vcov pnorm
+#' @importFrom dplyr case_when
 #' @export
-print.svyglm.nb <- function(x, ...) {
-  sm <- tidy_svyglm.nb(x)[-1, -2]
+print.svyglm.nb <- function(x, se = c("robust", "model"), digits = 4, ...) {
+  se <- match.arg(se)
+  sm <- tidy_svyglm.nb(x, digits, v_se = se)[-1, -2]
 
   pan <- dplyr::case_when(
     sm$p.value < 0.001 ~ "<0.001 ***",
-    sm$p.value < 0.01 ~ sprintf("%.4f ** ", sm$p.value),
-    sm$p.value < 0.05 ~ sprintf("%.4f *  ", sm$p.value),
-    sm$p.value < 0.1 ~ sprintf("%.4f .  ", sm$p.value),
-    TRUE ~  sprintf("%.4f    ", sm$p.value)
+    sm$p.value < 0.01 ~ sprintf("%.*f ** ", digits, sm$p.value),
+    sm$p.value < 0.05 ~ sprintf("%.*f *  ", digits, sm$p.value),
+    sm$p.value < 0.1 ~ sprintf("%.*f .  ", digits, sm$p.value),
+    TRUE ~  sprintf("%.*f    ", digits, sm$p.value)
   )
 
   sm$p.value <- pan
   print(sm, ...)
-  message("Showing robust standard errors on link-scale (untransformed).")
+  message(sprintf("Showing %s standard errors on link-scale (untransformed).", se))
 }
 
 
 #' @importFrom stats qnorm coef pnorm vcov
-tidy_svyglm.nb <- function(x, digits = 4) {
+tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
+  v_se <- match.arg(v_se)
+
   if (!isNamespaceLoaded("survey"))
     requireNamespace("survey", quietly = TRUE)
 
+  # keep original value, not rounded
+  est <- stats::coef(x)
+  se <- sqrt(diag(stats::vcov(x, stderr = v_se)))
+
   tibble::tibble(
     term = substring(names(stats::coef(x)), 5),
-    estimate = round(stats::coef(x), digits),
-    irr = round(exp(estimate), digits),
-    std.error = round(sqrt(diag(stats::vcov(x, stderr = "robust"))), digits),
-    conf.low = round(exp(estimate - stats::qnorm(.975) * std.error), digits),
-    conf.high = round(exp(estimate + stats::qnorm(.975) * std.error), digits),
-    p.value = round(2 * stats::pnorm(abs(estimate / std.error), lower.tail = FALSE), digits)
+    estimate = round(est, digits),
+    irr = round(exp(est), digits),
+    std.error = round(se, digits),
+    conf.low = round(exp(est - stats::qnorm(.975) * se), digits),
+    conf.high = round(exp(est + stats::qnorm(.975) * se), digits),
+    p.value = round(2 * stats::pnorm(abs(est / se), lower.tail = FALSE), digits)
   )
 }
 
