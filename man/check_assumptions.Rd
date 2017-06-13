@@ -88,7 +88,7 @@ These functions are wrappers that compute various test statistics,
          are preferable (see \code{\link[sjPlot]{sjp.lm}} with \code{type = "ma"}).
          \cr \cr
          \code{multicollin()} wraps \code{\link[car]{vif}} and returns
-         the logical result as tibble. If \code{TRUE}, multicollinearity
+         the logical result as tibble. \code{TRUE}, if multicollinearity
          exists, else not. In case of multicollinearity, the names of independent
          variables that vioalte contribute to multicollinearity are printed
          to the console.
@@ -122,7 +122,8 @@ outliers(fit)
 check_assumptions(fit, as.logical = TRUE)
 
 # apply function to multiple models in list-variable
-library(tidyverse)
+library(purrr)
+library(dplyr)
 tmp <- efc \%>\%
   bootstrap(50) \%>\%
   mutate(
@@ -131,6 +132,7 @@ tmp <- efc \%>\%
 
 # for list-variables, argument 'model.column' is the
 # quoted name of the list-variable with fitted models
+tmp \%>\% normality("models")
 tmp \%>\% heteroskedastic("models")
 
 # Durbin-Watson-Test from package 'car' takes a little bit longer due

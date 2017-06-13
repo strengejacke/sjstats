@@ -98,7 +98,7 @@ These function compute various measures of internal consistencies
          \cite{(Piedmont 2014)}
 }
 \examples{
-library(sjmisc)
+library(sjlabelled)
 # Data from the EUROFAMCARE sample dataset
 data(efc)
 
