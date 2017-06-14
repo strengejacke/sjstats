@@ -101,10 +101,25 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
         n_grp2 <- length(xsub[which(ysub.n == grp_values[j])])
 
         # generate result data frame
-        df <- rbind(df, cbind(grp1 = grp_values[i], grp1.label = labels[i],
-                              grp1.n = n_grp1, grp2 = grp_values[j], grp2.label = labels[j],
-                              grp2.n = n_grp2, u = u, w = w, p = p, z = z, r = r,
-                              rank.mean.grp1 = rkm.i, rank.mean.grp2 = rkm.j))
+        df <-
+          rbind(
+            df,
+            cbind(
+              grp1 = grp_values[i],
+              grp1.label = labels[i],
+              grp1.n = n_grp1,
+              grp2 = grp_values[j],
+              grp2.label = labels[j],
+              grp2.n = n_grp2,
+              u = u,
+              w = w,
+              p = p,
+              z = z,
+              r = r,
+              rank.mean.grp1 = rkm.i,
+              rank.mean.grp2 = rkm.j
+            )
+          )
       }
     }
   }
@@ -125,14 +140,17 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
   df[["rank.mean.grp2"]] <- as.numeric(as.character(df[["rank.mean.grp2"]]))
 
   # prepare a data frame that can be used for 'sjt.df'.
-  tab.df <- data.frame(Groups = sprintf("%s<br>%s", df$grp1.label, df$grp2.label),
-                       N = sprintf("%s<br>%s", df$grp1.n, df$grp2.n),
-                       'Mean Rank' = sprintf("%.2f<br>%.2f", df$rank.mean.grp1, df$rank.mean.grp2),
-                       'Mann-Whitney-U' = as.character(df$u),
-                       'Wilcoxon-W' = as.character(df$w),
-                       Z = sprintf("%.3f", df$z),
-                       'Effect Size' = sprintf("%.3f", df$r),
-                       p = sprintf("%.3f", df$p))
+  tab.df <-
+    data.frame(
+      Groups = sprintf("%s<br>%s", df$grp1.label, df$grp2.label),
+      N = sprintf("%s<br>%s", df$grp1.n, df$grp2.n),
+      'Mean Rank' = sprintf("%.2f<br>%.2f", df$rank.mean.grp1, df$rank.mean.grp2),
+      'Mann-Whitney-U' = as.character(df$u),
+      'Wilcoxon-W' = as.character(df$w),
+      Z = sprintf("%.3f", df$z),
+      'Effect Size' = sprintf("%.3f", df$r),
+      p = sprintf("%.3f", df$p)
+    )
 
   # replace 0.001 with <0.001
   levels(tab.df$p)[which(levels(tab.df$p) == "0.001")] <- "<0.001"

@@ -2,10 +2,11 @@
 #' @name icc
 #' @description This function calculates the intraclass-correlation
 #'                (icc) for random intercepts of mixed effects models.
-#'                Currently, only \code{\link[lme4]{merMod}} objects
-#'                are supported.
+#'                Currently, \code{\link[lme4]{merMod}} and
+#'                \code{\link[glmmTMB]{glmmTMB}} objects are supported.
 #'
-#' @param x Fitted mixed effects model (\code{\link[lme4]{merMod}}-class).
+#' @param x Fitted mixed effects model (of class \code{\link[lme4]{merMod}} or
+#'           \code{\link[glmmTMB]{glmmTMB}}).
 #' @param ... More fitted model objects, to compute multiple intraclass-correlation
 #'              coefficients at once.
 #'
@@ -137,37 +138,42 @@ icc <- function(x, ...) {
 }
 
 #' @importFrom lme4 VarCorr fixef getME
-#' @importFrom stats family formula
+#' @importFrom glmmTMB VarCorr fixef getME
+#' @importFrom stats family formula sigma
+#' @importFrom purrr map map_dbl map_lgl
 icc.lme4 <- function(fit, obj.name) {
-  # check if suggested package is available
-  if (!requireNamespace("lme4", quietly = TRUE)) {
-    stop("Package `lme4` needed for this function to work. Please install it.", call. = FALSE)
-  }
-
   # check object class
-  if (is_merMod(fit)) {
+  if (is_merMod(fit) || inherits(fit, "glmmTMB")) {
     # get family
     fitfam <- stats::family(fit)$family
-    # is neg. binomoal?
-    is_negbin <- sjmisc::str_contains(fitfam, "Negative Binomial", ignore.case = TRUE)
+    # is neg. binomial?
+    is_negbin <-
+      sjmisc::str_contains(fitfam,
+                           c("Negative Binomial", "nbinom"),
+                           ignore.case = TRUE,
+                           logic = "OR")
 
     # random effects variances
     # for details on tau and sigma, see
     # Aguinis H, Gottfredson RK, Culpepper SA2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528. doi:10.1177/0149206313478188.
-    reva <- lme4::VarCorr(fit)
+    reva <- if (inherits(fit, "glmmTMB"))
+      glmmTMB::VarCorr(fit)[[1]]
+    else
+      lme4::VarCorr(fit)
+
     # retrieve only intercepts
-    vars <- lapply(reva, function(x) x[[1]])
+    vars <- purrr::map(reva, ~ .x[1])
 
     # random intercept-variances, i.e.
     # between-subject-variance (tau 00)
-    tau.00 <- sapply(vars, function(x) x[1])
+    tau.00 <- purrr::map_dbl(vars, ~ .x)
 
     # random slope-variances (tau 11)
     tau.11 <- unlist(lapply(reva, function(x) diag(x)[-1]))
 
     # residual variances, i.e.
     # within-cluster-variance (sigma^2)
-    if (inherits(fit, "glmerMod") && fitfam == "binomial") {
+    if (inherits(fit, c("glmerMod", "glmmTMB")) && fitfam == "binomial") {
       # for logistic models, we use pi / 3
       resid_var <- (pi ^ 2) / 3
     } else if (inherits(fit, "glmerMod") && is_negbin) {
@@ -176,18 +182,27 @@ icc.lme4 <- function(fit, obj.name) {
     } else {
       # for linear and poisson models, we have a clear
       # residual variance
-      resid_var <- attr(reva, "sc") ^ 2
+      # resid_var <- attr(reva, "sc") ^ 2
+      resid_var <- stats::sigma(fit) ^ 2
     }
 
     # total variance, sum of random intercept and residual variances
-    total_var <- sum(sapply(vars, sum), resid_var)
+    total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid_var)
 
     # check whether we have negative binomial
     if (is_negbin) {
-      # for negative binomial models, we also need the intercept...
-      beta <- as.numeric(lme4::fixef(fit)["(Intercept)"])
-      # ... and the theta value to compute the ICC
-      r <- lme4::getME(fit, "glmer.nb.theta")
+      if (is_merMod(fit)) {
+        # for negative binomial models, we also need the intercept...
+        beta <- as.numeric(lme4::fixef(fit)["(Intercept)"])
+        # ... and the theta value to compute the ICC
+        r <- lme4::getME(fit, "glmer.nb.theta")
+      } else {
+        # for negative binomial models, we also need the intercept...
+        beta <- as.numeric(glmmTMB::fixef(fit)[[1]]["(Intercept)"])
+        # ... and the theta value to compute the ICC
+        r <- stats::sigma(fit)
+      }
+
       ri.icc <-
         (exp(tau.00) - 1) /
         ((exp(total_var) - 1) + (exp(total_var) / r) + exp(-beta - (total_var / 2)))
@@ -198,19 +213,18 @@ icc.lme4 <- function(fit, obj.name) {
 
     # get random slope random intercep correlations
     # do we have any rnd slopes?
-    has_rnd_slope <- unlist(lapply(reva, function(x) dim(attr(x, "correlation"))[1] > 1))
+    has_rnd_slope <- purrr::map_lgl(reva, ~ dim(attr(.x, "correlation"))[1] > 1)
     tau.01 <- rho.01 <- NULL
 
     # get rnd slopes
     if (any(has_rnd_slope)) {
       rnd_slope <- reva[has_rnd_slope]
       # get slope-intercept-correlations
-      cor_ <- lapply(rnd_slope, function(x) attr(x, "correlation")[1, 2])
+      rho.01 <- purrr::map_dbl(rnd_slope, ~ attr(.x, "correlation")[1, 2])
       # get standard deviations, multiplied
-      std_ <- lapply(rnd_slope, function(x) prod(attr(x, "stddev")))
+      std_ <- purrr::map_dbl(rnd_slope, ~ prod(attr(.x, "stddev")))
       # bind to matrix
-      tau.01 <- apply(as.matrix(cbind(unlist(cor_), unlist(std_))), MARGIN = 1, FUN = prod)
-      rho.01 <- unlist(cor_)
+      tau.01 <- apply((cbind(rho.01, std_)), MARGIN = 1, FUN = prod)
     }
 
     # name values
@@ -221,7 +235,7 @@ icc.lme4 <- function(fit, obj.name) {
     attr(ri.icc, "family") <- stats::family(fit)$family
     attr(ri.icc, "link") <- stats::family(fit)$link
     attr(ri.icc, "formula") <- stats::formula(fit)
-    attr(ri.icc, "model") <- ifelse(inherits(fit, "glmerMod"), "Generalized linear mixed model", "Linear mixed model")
+    attr(ri.icc, "model") <- ifelse(inherits(fit, c("glmerMod", "glmmTMB")), "Generalized linear mixed model", "Linear mixed model")
     attr(ri.icc, "tau.00") <- tau.00
     attr(ri.icc, "tau.01") <- tau.01
     attr(ri.icc, "rho.01") <- rho.01
@@ -235,7 +249,7 @@ icc.lme4 <- function(fit, obj.name) {
     # return results
     return(ri.icc)
   } else {
-    warning("Function `icc` currently only supports `merMod` objects (package `lme4`).", call. = TRUE)
+    warning("Function `icc` currently only supports `merMod` (package `lme4`) or `glmmTMB` (package `glmmTMB`) objects.", call. = TRUE)
   }
 }
 
@@ -244,12 +258,13 @@ icc.lme4 <- function(fit, obj.name) {
 #' @name re_var
 #' @description These functions extracts random effect variances as well as
 #'                random-intercept-slope-correlation of mixed effects models.
-#'                Currently, only \code{\link[lme4]{merMod}} objects
-#'                are supported.
+#'                Currently, \code{\link[lme4]{merMod}} and
+#'                \code{\link[glmmTMB]{glmmTMB}} objects are supported.
 #'
-#' @param x Fitted mixed effects model (\code{\link[lme4]{merMod}}-class).
-#'          \code{get_re_var()} also accepts an object of class \code{icc.lme4},
-#'          as returned by the \code{\link{icc}} function.
+#' @param x Fitted mixed effects model (of class \code{\link[lme4]{merMod}} or
+#'           \code{\link[glmmTMB]{glmmTMB}}). \code{get_re_var()} also accepts
+#'           an object of class \code{icc.lme4}, as returned by the
+#'           \code{\link{icc}} function.
 #' @param comp Name of the variance component to be returned. See 'Details'.
 #'
 #' @return \code{get_re_var()} returns the value of the requested variance component,
@@ -298,15 +313,15 @@ re_var <- function(x) {
 #' @export
 get_re_var <- function(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01", "sigma_2")) {
   # check if we have a valid object
-  if (!inherits(x, "icc.lme4") && !is_merMod(x)) {
-    stop("`x` must either be an object returned by the `icc` function, or a merMod-object.", call. = F)
+  if (!inherits(x, "icc.lme4") && !is_merMod(x) && !inherits(x, "glmmTMB")) {
+    stop("`x` must either be an object returned by the `icc` function, or a merMod- or glmmTMB-object.", call. = F)
   }
 
   # check arguments
   comp <- match.arg(comp)
 
   # do we have a merMod object? If yes, get ICC and var components
-  if (is_merMod(x)) x <- icc(x)
+  if (is_merMod(x) || inherits(x, "glmmTMB")) x <- icc(x)
 
   # return results
   return(attr(x, comp, exact = TRUE))

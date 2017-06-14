@@ -174,10 +174,9 @@ proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
       }
 
       # add row order, based on values of grouping variables
-      reihenfolge <- dplyr::bind_cols(
-        tibble::as_tibble(rep(sort(unique(sjlabelled::as_numeric(data[[var.name]]))), length.out = nrow(fr))),
-        reihenfolge
-      )
+      reihenfolge <- rep(sort(unique(sjlabelled::as_numeric(data[[var.name]]))), length.out = nrow(fr)) %>%
+        tibble::as_tibble() %>%
+        dplyr::bind_cols(reihenfolge)
 
       # bind values as column
       fr <- dplyr::bind_cols(tibble::as_tibble(val.labels), fr)

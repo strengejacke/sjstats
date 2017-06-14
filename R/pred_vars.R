@@ -39,7 +39,7 @@ resp_var <- function(x) {
 #' @importFrom stats model.frame
 #' @export
 resp_val <- function(x) {
-  if (inherits(x, "lme"))
+  if (inherits(x, c("lme", "gls")))
     as.vector(nlme::getResponse(x))
   else
     as.vector(stats::model.frame(x)[[resp_var(x)]])

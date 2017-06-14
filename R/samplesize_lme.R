@@ -138,14 +138,8 @@ se_ybar <- function(fit) {
   tot_var <- sum(tau.00, attr(icc, "sigma_2", exact = T))
 
   # get number of groups
-  m.cnt <- unlist(lapply(getME(fit, "flist"), nlevels))
+  m.cnt <- purrr::map_dbl(lme4::getME(fit, "flist"), ~ nlevels(.x))
 
   # compute standard error of sample mean
-  y.se <- c()
-
-  for (i in seq_len(length(m.cnt))) {
-    y.se <- c(y.se, sqrt((tot_var / nobs(fit)) * deff(n = m.cnt[i], icc = icc[i])))
-  }
-
-  y.se
+  purrr::map_dbl(seq_len(length(m.cnt)), ~ sqrt((tot_var / nobs(fit)) * deff(n = m.cnt[.x], icc = icc[.x])))
 }

@@ -6,7 +6,7 @@
 #'              of prevalence rates for two different status groups, as proposed
 #'              by Mackenbach et al. (2015).
 #'
-#' @param data A data frame that the variables with prevalence rates for both low
+#' @param data A data frame that contains the variables with prevalence rates for both low
 #'          and high status groups (see 'Examples').
 #' @param prev.low The name of the variable with the prevalence rates for
 #'          the low status groups.

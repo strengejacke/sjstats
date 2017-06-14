@@ -7,7 +7,7 @@
 inequ_trend(data, prev.low, prev.hi)
 }
 \arguments{
-\item{data}{A data frame that the variables with prevalence rates for both low
+\item{data}{A data frame that contains the variables with prevalence rates for both low
 and high status groups (see 'Examples').}
 
 \item{prev.low}{The name of the variable with the prevalence rates for

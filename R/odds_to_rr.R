@@ -63,28 +63,36 @@
 odds_to_rr <- function(fit) {
   # check model family
   fitinfo <- get_glm_family(fit)
+
   # no binomial model with logit-link?
   if (!fitinfo$is_bin && !fitinfo$is_logit)
     stop("`fit` must be a binomial model with logit-link (logistic regression).", call. = F)
+
   # get model estimates
   est <- exp(stats::coef(summary(fit))[, 1])
+
   # get confidence intervals
   if (is_merMod(fit))
     ci <- stats::confint(fit, method = "Wald", parm = "beta_")
   else
     ci <- stats::confint(fit)
+
   # bind to data frame
   or.dat <- data.frame(est, exp(ci))
   colnames(or.dat) <- c("OR", "lower.ci", "upper.ci")
+
   # get P0, i.e. the incidence ratio of the outcome for the
   # non-exposed group
   modfram <- stats::model.frame(fit)
+
   # make sure that outcome is 0/1-numeric, so we can simply
   # compute the mean to get the ratio
   P0 <- mean(sjlabelled::as_numeric(modfram[[1]], start.at = 0, keep.labels = F), na.rm = T)
+
   # compute relative risks for estimate and confidence intervals
   rr.dat <- or.dat / ((1 - P0) + (P0 * or.dat))
   colnames(rr.dat) <- c("RR", "lower.ci", "upper.ci")
+
   rr.dat
 }
 

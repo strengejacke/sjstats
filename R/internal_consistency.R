@@ -248,6 +248,7 @@ mic <- function(x, cor.method = c("pearson", "spearman", "kendall")) {
 
   # Sum up all correlation values
   meanic <- c()
+
   for (j in seq_len((ncol(corr) - 1))) {
     # first correlation is always "1" (self-correlation)
     for (i in (j + 1):nrow(corr)) {

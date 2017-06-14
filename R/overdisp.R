@@ -87,6 +87,7 @@ overdisp.lme4 <- function(x) {
     Pearson.chisq <- sum(rp ^ 2)
     prat <- Pearson.chisq / rdf
     pval <- stats::pchisq(Pearson.chisq, df = rdf, lower.tail = FALSE)
+
     cat(sprintf("\n        Overdispersion test\n\ndispersion ratio = %.4f, p-value = %.4f\n\n",
                 prat, pval))
 

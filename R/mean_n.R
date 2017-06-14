@@ -73,5 +73,6 @@ mean_n <- function(dat, n, digits = 2) {
     warning("`n` must be smaller or equal to number of columns in data frame.", call. = TRUE)
     return(NA)
   }
+
   round(apply(dat, 1, function(x) ifelse(sum(!is.na(x)) >= n, mean(x, na.rm = TRUE), NA)), digits)
 }

@@ -38,9 +38,11 @@ var_pop <- function(x) {
     # convert factor to numeric
     x <- sjlabelled::as_numeric(x)
   }
+
   # remove NA
   x <- stats::na.omit(x)
   n <- length(x)
+
   # population variance
   stats::var(x) * ((n - 1) / n)
 }
@@ -52,6 +54,7 @@ var_pop <- function(x) {
 sd_pop <- function(x) {
   # get population variance
   pv <- var_pop(x)
+
   # factors with non-numeric level return NULL
   if (!is.null(pv) && !is.na(pv))
     sqrt(pv)

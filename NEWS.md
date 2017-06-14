@@ -1,3 +1,9 @@
+# sjstats 0.10.2
+
+## Changes to functions
+
+* `icc()`, `re_var()` and `get_re_var()` now support `glmmTMB`-objects.
+
 # sjstats 0.10.1
 
 ## General

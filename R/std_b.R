@@ -51,9 +51,10 @@
 #' fit1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' std_beta(fit)
 #'
-#' @importFrom stats model.matrix coef terms
+#' @importFrom stats model.matrix coef terms qnorm sd
 #' @importFrom nlme getResponse
-#' @importFrom tibble tibble
+#' @importFrom tibble tibble as_tibble
+#' @importFrom purrr map_if
 #' @export
 std_beta <- function(fit, type = "std") {
   # if we have merMod object (lme4), we need
@@ -94,20 +95,13 @@ std_beta <- function(fit, type = "std") {
     if (has_intercept) fit.data <- fit.data[, -1]
 
     # convert factor to numeric, else sd throws a warning
-    fit.data <- as.data.frame(sapply(fit.data,
-                                     function(x)
-                                       if (is.factor(x))
-                                         sjlabelled::as_numeric(x, keep.labels = F)
-                                       else
-                                         x))
+    fit.data <- fit.data %>%
+      purrr::map_if(is.numeric, ~sjlabelled::as_numeric(.x, keep.labels = F)) %>%
+      tibble::as_tibble()
 
     # get standard deviations for predictors
-    sx <- sapply(fit.data, sd, na.rm = T)
-
-    if (inherits(fit, "gls"))
-      sy <- sapply(as.data.frame(as.vector(nlme::getResponse(fit))), sd, na.rm = T)
-    else
-      sy <- sapply(as.data.frame(fit$model)[1], sd, na.rm = T)
+    sx <- purrr::map_dbl(fit.data, ~ stats::sd(.x, na.rm = TRUE))
+    sy <- stats::sd(resp_val(fit), na.rm = TRUE)
 
     beta <- b * sx / sy
 
@@ -124,8 +118,8 @@ std_beta <- function(fit, type = "std") {
   }
   # return result
   tibble::tibble(term = names(b), std.estimate = beta,
-                 std.error = beta.se, conf.low = beta - 1.96 * beta.se,
-                 conf.high = beta + 1.96 * beta.se)
+                 std.error = beta.se, conf.low = beta - stats::qnorm(.975) * beta.se,
+                 conf.high = beta + stats::qnorm(.975) * beta.se)
 }
 
 
@@ -141,7 +135,11 @@ sjs.stdmm <- function(fit) {
   se.fixef <- stats::coef(summary(fit))[, "Std. Error"]
   se <- se.fixef * sdx / sdy
 
-  tibble::tibble(term = names(lme4::fixef(fit)), std.estimate = sc,
-                 std.error = se, conf.low = sc - 1.96 * se,
-                 conf.high = sc + 1.96 * se)
+  tibble::tibble(
+    term = names(lme4::fixef(fit)),
+    std.estimate = sc,
+    std.error = se,
+    conf.low = sc - stats::qnorm(.975) * se,
+    conf.high = sc + stats::qnorm(.975) * se
+  )
 }
