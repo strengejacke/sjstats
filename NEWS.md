@@ -3,6 +3,11 @@
 ## Changes to functions
 
 * `icc()`, `re_var()` and `get_re_var()` now support `glmmTMB`-objects.
+* `pred_accuracy()` now also reports the standard error of accuracy, and gets a print-method.
+
+## Bug fixes
+
+* `pred_accuracy()` with cross-validation-method did not correctly account for the generated test data.
 
 # sjstats 0.10.1
 

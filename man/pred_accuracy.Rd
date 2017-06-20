@@ -9,7 +9,8 @@ pred_accuracy(data, fit, method = c("cv", "boot"), k = 5, n = 1000)
 \arguments{
 \item{data}{A data frame.}
 
-\item{fit}{Fitted model object of class \code{lm} or \code{glm}.}
+\item{fit}{Fitted model object of class \code{lm} or \code{glm}, the latter
+being a logistic regression model (binary response).}
 
 \item{method}{Character string, indicating whether crossvalidation
 (\code{method = "cv"}) or bootstrapping (\code{method = "boot"})
@@ -20,12 +21,13 @@ is used to compute the accuracy values.}
 \item{n}{Number of bootstraps to be generated}
 }
 \value{
-The accuracy of the model predictions, i.e. the proportion of
-        accurately predicted values from the model.
+A list with two values: The \code{accuracy} of the model predictions, i.e.
+        the proportion of accurately predicted values from the model and
+        its standard error, \code{std.error}.
 }
 \description{
-This function calculates the predictive accuracy of (generalized)
-             linear models.
+This function calculates the predictive accuracy of linear
+             or logistic regression models.
 }
 \details{
 For linar models, the accuracy is the correlation coefficient
@@ -36,6 +38,8 @@ For linar models, the accuracy is the correlation coefficient
          The accuracy is the mean value of multiple correlation resp.
          AUC-values, which are either computed with crossvalidation
          or nonparametric bootstrapping (see argument \code{method}).
+         The standard error is the standard deviation of the computed
+         correlation resp. AUC-values.
 }
 \examples{
 data(efc)

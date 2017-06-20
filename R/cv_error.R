@@ -1,5 +1,3 @@
-utils::globalVariables(c("trained.models", "rmse.train", "predicted"))
-
 #' @title Test and training error from model cross-validation
 #' @name cv_error
 #'
@@ -47,10 +45,10 @@ cv_error <- function(data, formula, k = 5) {
   cv_data <- data %>%
     modelr::crossv_kfold(k = k) %>%
     dplyr::mutate(
-      trained.models = purrr::map(train, ~ stats::lm(formula, data = .x)),
-      predicted = purrr::map2(trained.models, test, ~ broom::augment(.x, newdata = .y)),
-      residuals = purrr::map(predicted, ~.x[[resp_var(formula)]] - .x$.fitted),
-      rmse.train = purrr::map_dbl(trained.models, ~ sjstats::rmse(.x))
+      trained.models = purrr::map(.data$train, ~ stats::lm(formula, data = .x)),
+      predicted = purrr::map2(.data$trained.models, .data$test, ~ broom::augment(.x, newdata = .y)),
+      residuals = purrr::map(.data$predicted, ~.x[[resp_var(formula)]] - .x$.fitted),
+      rmse.train = purrr::map_dbl(.data$trained.models, ~ sjstats::rmse(.x))
     )
 
 

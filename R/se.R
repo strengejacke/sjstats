@@ -1,5 +1,3 @@
-utils::globalVariables(c("strap", "models", "estimate"))
-
 #' @title Standard Error for variables or coefficients
 #' @name se
 #' @description Compute standard error for a variable, for all variables
@@ -127,7 +125,6 @@ utils::globalVariables(c("strap", "models", "estimate"))
 #' @importFrom broom tidy
 #' @importFrom dplyr mutate select
 #' @importFrom rlang .data
-#' @importFrom sjmisc var_rename
 #' @export
 se <- function(x, nsim = 100, type = c("fe", "re")) {
   # match arguments
@@ -174,9 +171,8 @@ se <- function(x, nsim = 100, type = c("fe", "re")) {
         tm %>%
           # vcov for merMod returns a dpoMatrix-object, so we need
           # to coerce to regular matrix here.
-          dplyr::mutate(or.se = sqrt(.data$estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
-          dplyr::select(.data$term, .data$estimate, .data$or.se) %>%
-          sjmisc::var_rename(or.se = "std.error")
+          dplyr::mutate(std.error = sqrt(.data$estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
+          dplyr::select(.data$term, .data$estimate, .data$std.error)
       )
     } else {
       # return standard error for mixed models,
@@ -243,13 +239,14 @@ std_merMod <- function(fit) {
     seVals <- sqrt(sweep(cmode.vars, 2, fixed.vars, "+"))
 
     # add results to return list
-    se.merMod[[length(se.merMod) + 1]] <- stats::setNames(as.vector(seVals[1, ]),
-                                                          c("intercept_se", "slope_se"))
+    se.merMod[[length(se.merMod) + 1]] <-
+      stats::setNames(as.vector(seVals[1,]), c("intercept_se", "slope_se"))
   }
 
   # set names of list
   names(se.merMod) <- inames
-  return(se.merMod)
+
+  se.merMod
 }
 
 
@@ -278,10 +275,13 @@ std_e_icc <- function(x, nsim) {
   bstr <- bootstr_icc_se(stats::model.frame(fitted.model), nsim, model.formula, model.family)
 
   # now compute SE and p-values for the bootstrapped ICC
-  res <- data.frame(model = obj.name,
-                    icc = as.vector(x),
-                    std.err = boot_se(bstr)[["std.err"]],
-                    p.value = boot_p(bstr)[["p.value"]])
+  res <- data.frame(
+    model = obj.name,
+    icc = as.vector(x),
+    std.err = boot_se(bstr)[["std.err"]],
+    p.value = boot_p(bstr)[["p.value"]]
+  )
+
   structure(class = "se.icc.lme4", list(result = res, bootstrap_data = bstr))
 }
 

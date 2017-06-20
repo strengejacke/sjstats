@@ -1,12 +1,11 @@
-utils::globalVariables(c("predictions", "response", "train", "test"))
-
 #' @title Accuracy of predictions from model fit
 #' @name pred_accuracy
 #'
-#' @description This function calculates the predictive accuracy of (generalized)
-#'              linear models.
+#' @description This function calculates the predictive accuracy of linear
+#'              or logistic regression models.
 #'
-#' @param fit Fitted model object of class \code{lm} or \code{glm}.
+#' @param fit Fitted model object of class \code{lm} or \code{glm}, the latter
+#'          being a logistic regression model (binary response).
 #' @param k The number of folds for the kfold-crossvalidation.
 #' @param method Character string, indicating whether crossvalidation
 #'          (\code{method = "cv"}) or bootstrapping (\code{method = "boot"})
@@ -14,8 +13,9 @@ utils::globalVariables(c("predictions", "response", "train", "test"))
 #'
 #' @inheritParams bootstrap
 #'
-#' @return The accuracy of the model predictions, i.e. the proportion of
-#'         accurately predicted values from the model.
+#' @return A list with two values: The \code{accuracy} of the model predictions, i.e.
+#'         the proportion of accurately predicted values from the model and
+#'         its standard error, \code{std.error}.
 #'
 #' @details For linar models, the accuracy is the correlation coefficient
 #'          between the actual and the predicted value of the outcome. For
@@ -25,6 +25,8 @@ utils::globalVariables(c("predictions", "response", "train", "test"))
 #'          The accuracy is the mean value of multiple correlation resp.
 #'          AUC-values, which are either computed with crossvalidation
 #'          or nonparametric bootstrapping (see argument \code{method}).
+#'          The standard error is the standard deviation of the computed
+#'          correlation resp. AUC-values.
 #'
 #' @examples
 #' data(efc)
@@ -65,6 +67,8 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
   # accuracy for linear models
   if (inherits(fit, "lm") && !inherits(fit, "glm")) {
 
+    measure <- "Correlation between observed and predicted"
+
     # check if bootstrapping or cross validation is requested
     if (method == "boot") {
 
@@ -72,24 +76,26 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
       cv <- data %>%
         bootstrap(n) %>%
         dplyr::mutate(
-          models = purrr::map(strap, ~ stats::lm(formula, data = .x)),
-          predictions = purrr::map(models, ~ stats::predict(.x, type = "response")),
-          response = purrr::map(models, ~ resp_val(.x)),
-          accuracy = purrr::map2_dbl(predictions, response, ~ stats::cor(.x, .y, use = "pairwise.complete.obs"))
+          models = purrr::map(.data$strap, ~ stats::lm(formula, data = .x)),
+          predictions = purrr::map(.data$models, ~ stats::predict(.x, type = "response")),
+          response = purrr::map(.data$models, ~ resp_val(.x)),
+          accuracy = purrr::map2_dbl(.data$predictions, .data$response, ~ stats::cor(.x, .y, use = "pairwise.complete.obs"))
         )
     } else {
 
       # accuracy linear models with cross validation
       cv <- modelr::crossv_kfold(data, k = k) %>%
         dplyr::mutate(
-          models = purrr::map(train, ~ stats::lm(formula, data = .x)),
-          predictions = purrr::map2(test, models, ~ modelr::add_predictions(.x, .y)[["pred"]]),
-          response = purrr::map(test, ~ as.data.frame(.x)[[resp.name]]),
-          accuracy = purrr::map2_dbl(predictions, response, ~ stats::cor(.x, .y, use = "pairwise.complete.obs"))
+          models = purrr::map(.data$train, ~ stats::lm(formula, data = .x)),
+          predictions = purrr::map2(.data$test, .data$models, ~ modelr::add_predictions(.x, .y)[["pred"]]),
+          response = purrr::map(.data$test, ~ as.data.frame(.x)[[resp.name]]),
+          accuracy = purrr::map2_dbl(.data$predictions, .data$response, ~ stats::cor(.x, .y, use = "pairwise.complete.obs"))
         )
     }
 
   } else if (inherits(fit, "glm") && stats::family(fit) == "binomial") {
+
+    measure <- "Area under Curve"
 
     # check if bootstrapping or cross validation is requested
     if (method == "boot") {
@@ -98,8 +104,8 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
       cv <- data %>%
         bootstrap(n) %>%
         dplyr::mutate(
-          models = purrr::map(strap, ~ stats::lm(formula, data = .x)),
-          accuracy = purrr::map_dbl(models, ~ pROC::auc(pROC::roc(response = resp_val(.x), predictor = stats::predict.glm(.x, stats::model.frame(.x)))))
+          models = purrr::map(.data$strap, ~ stats::glm(formula, data = .x, family = stats::binomial(link = "logit"))),
+          accuracy = purrr::map_dbl(.data$models, ~ pROC::auc(pROC::roc(response = resp_val(.x), predictor = stats::predict.glm(.x, stats::model.frame(.x)))))
         )
 
     } else {
@@ -107,12 +113,21 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
       # accuracy logistic regression models with cross validation
       cv <- modelr::crossv_kfold(data, k = k) %>%
         dplyr::mutate(
-          models = purrr::map(train, ~ stats::glm(formula, data = ., family = stats::binomial(link = "logit"))),
-          accuracy = purrr::map_dbl(models, ~ pROC::auc(pROC::roc(response = resp_val(.x), predictor = stats::predict.glm(.x, stats::model.frame(.x)))))
+          models = purrr::map(.data$train, ~ stats::glm(formula, data = .x, family = stats::binomial(link = "logit"))),
+          predictions = purrr::map2(.data$models, .data$test, ~ stats::predict.glm(.x, newdata = .y)),
+          response = purrr::map(.data$test, ~ as.data.frame(.x)[[resp.name]]),
+          accuracy = purrr::map2_dbl(.data$response, .data$predictions, ~ pROC::auc(pROC::roc(response = .x, predictor = .y)))
         )
     }
   }
 
   # return mean value of accuracy
-  mean(cv$accuracy)
+  structure(
+    class = c("sjstats_pred_accuracy", "list"),
+    list(
+      accuracy = mean(cv$accuracy),
+      std.error = sd(cv$accuracy),
+      stat = measure
+    )
+  )
 }
