@@ -81,7 +81,7 @@ overdisp.default <- function(x, trafo) {
 
 overdisp.lme4 <- function(x) {
   # check object class
-  if (inherits(x, "glmerMod")) {
+  if (inherits(x, c("glmerMod", "glmmTMB"))) {
     rdf <- stats::df.residual(x)
     rp <- stats::residuals(x, type = "pearson")
     Pearson.chisq <- sum(rp ^ 2)
@@ -103,7 +103,7 @@ overdisp.lme4 <- function(x) {
       p = pval
     )))
   } else {
-    warning("This method currently only supports `glmer` fitted models.", call. = F)
+    warning("This method currently only supports `glmer` or `glmmTMB` fitted models.", call. = F)
   }
 }
 

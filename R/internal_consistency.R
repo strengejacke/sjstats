@@ -178,9 +178,11 @@ reliab_test <- function(x, scale.items = FALSE, digits = 3) {
     }
 
     # create return value
-    ret.df <- tibble::tibble(term = df.names,
-                             alpha.if.deleted = round(cronbachDeleted, digits),
-                             item.discr = round(totalCorr, digits))
+    ret.df <- tibble::tibble(
+      term = df.names,
+      alpha.if.deleted = round(cronbachDeleted, digits),
+      item.discr = round(totalCorr, digits)
+    )
   } else {
     warning("Data frame needs at least three columns for reliability-test.", call. = F)
     ret.df <- NULL

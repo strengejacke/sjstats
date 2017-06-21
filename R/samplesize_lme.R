@@ -103,7 +103,7 @@ smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, i
 #'
 #' @export
 deff <- function(n, icc = 0.05) {
-  return(1 + (n - 1) * icc)
+  1 + (n - 1) * icc
 }
 
 

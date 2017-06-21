@@ -3,7 +3,7 @@
 #'
 #' @description This method performs a Chi-square goodness-of-fit-test (GOF)
 #'                either on a numeric vector against probabilities, or
-#'                a Goodness-of-fit test for \code{\link{glm}}-objects for binary data.
+#'                a Goodness-of-fit test for \code{\link[stats]{glm}}-objects for binary data.
 #'
 #' @param x Numeric vector, or a \code{\link{glm}}-object.
 #' @param prob Vector of probabilities (indicating the population probabilities) of the same length
@@ -11,7 +11,7 @@
 #'          determine the amount of necessary values for \code{prob}. Only used,
 #'          when \code{x} is a vector, and not a \code{glm}-object.
 #' @param weights Vector with weights, used to weight \code{x}.
-#' @return For vectors, returns the object of the computed \code{\link{chisq.test}}.
+#' @return For vectors, returns the object of the computed \code{\link[stats]{chisq.test}}.
 #'           \cr \cr
 #'           For \code{glm}-objects, an object of class \code{chisq_gof} with
 #'           following values:
@@ -22,7 +22,7 @@
 #'            \item \code{X2} the pearson chi-squared statistic
 #'           }
 #'
-#' @note For vectors, this function is a convenient function for the \code{\link{chisq.test}},
+#' @note For vectors, this function is a convenient function for the \code{chisq.test},
 #'         performing goodness-of-fit test.
 #'         \cr \cr
 #'         For \code{glm}-objects, this function performs a goodness-of-fit test
@@ -125,6 +125,8 @@ chisq_gof <- function(x, prob = NULL, weights = NULL) {
 #'
 #' @seealso \code{\link{r2}}
 #'
+#' @references Hosmer, D. W., & Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley & Sons, Inc. \doi{10.1002/0471722146}
+#'
 #' @examples
 #' data(efc)
 #' # goodness-of-fit test for logistic regression
@@ -143,11 +145,6 @@ hoslem_gof <- function(x, g = 10) {
 
   # mixed models (lme4)
   if (inherits(x, "glmerMod")) {
-    # check for package availability
-    if (!requireNamespace("lme4", quietly = TRUE)) {
-      stop("Package 'lme4' needed for this function to work. Please install it.", call. = FALSE)
-    }
-
     y <- lme4::getME(x, "y")
     yhat <- stats::fitted(x)
   } else {
@@ -172,6 +169,6 @@ hoslem_gof <- function(x, g = 10) {
     p.value = p.value
   )
 
-  class(hoslem) <- "hoslem_test"
+  class(hoslem) <- c("hoslem_test", "list")
   hoslem
 }

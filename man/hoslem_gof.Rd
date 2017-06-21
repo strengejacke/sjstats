@@ -38,6 +38,9 @@ fit <- glm(services ~ neg_c_7 + c161sex + e42dep, data = efc,
 hoslem_gof(fit)
 
 }
+\references{
+Hosmer, D. W., & Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley & Sons, Inc. \doi{10.1002/0471722146}
+}
 \seealso{
 \code{\link{r2}}
 }

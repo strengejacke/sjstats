@@ -64,7 +64,9 @@ get_model_pval <- function(fit, p.kr = FALSE) {
     se <- stats::coef(summary(fit))[, 2]
   }
 
-  tibble::tibble(term = names(p), p.value = as.vector(p), std.error = as.vector(se))
+  tibble::tibble(term = names(p),
+                 p.value = as.vector(p),
+                 std.error = as.vector(se))
 }
 
 

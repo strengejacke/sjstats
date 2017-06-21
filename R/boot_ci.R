@@ -7,10 +7,11 @@
 #'
 #' @param data A data frame that containts the vector with bootstrapped
 #'          estimates, or directly the vector (see 'Examples').
-#' @param ... Optional, names of the variables with bootstrapped estimates.
-#'          Required, if either \code{data} is a data frame and no vector,
-#'          or if only selected variables from \code{data} should be used
-#'          in the function.
+#' @param ... Optional, unquoted names of variables with bootstrapped estimates.
+#'          Required, if either \code{data} is a data frame (and no vector),
+#'          and only selected variables from \code{data} should be processed.
+#'          You may also use functions like \code{:} or dplyr's
+#'          \code{\link[dplyr]{select_helpers}}.
 #'
 #' @return A \code{\link[tibble]{tibble}} with either bootstrap estimate,
 #'         standard error, the lower and upper confidence intervals or the
@@ -106,10 +107,12 @@
 #'   boot_ci()
 #'
 #' @importFrom stats qt
+#' @importFrom dplyr quos
+#' @importFrom rlang .data
 #' @export
 boot_ci <- function(data, ...) {
   # evaluate arguments, generate data
-  .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
+  .dat <- get_dot_data(data, dplyr::quos(...))
 
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
@@ -128,7 +131,7 @@ boot_ci <- function(data, ...) {
 #' @export
 boot_se <- function(data, ...) {
   # evaluate arguments, generate data
-  .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
+  .dat <- get_dot_data(data, dplyr::quos(...))
 
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
@@ -145,7 +148,7 @@ boot_se <- function(data, ...) {
 #' @export
 boot_p <- function(data, ...) {
   # evaluate arguments, generate data
-  .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
+  .dat <- get_dot_data(data, dplyr::quos(...))
 
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
@@ -163,7 +166,7 @@ boot_p <- function(data, ...) {
 #' @export
 boot_est <- function(data, ...) {
   # evaluate arguments, generate data
-  .dat <- get_boot_data(data, match.call(expand.dots = FALSE)$`...`)
+  .dat <- get_dot_data(data, dplyr::quos(...))
 
   # compute mean for all values (= bootstrapped estimate)
   transform_boot_result(lapply(.dat, function(x) {
@@ -178,29 +181,19 @@ boot_est <- function(data, ...) {
 #' @importFrom tibble rownames_to_column
 transform_boot_result <- function(res) {
   # transform a bit, so we have each estimate in a row, and ci's as columns...
-  tibble::rownames_to_column(as.data.frame(t(as.data.frame(res))), var = "term")
+  res %>%
+    as.data.frame() %>%
+    t() %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var = "term")
 }
 
 
-get_boot_data <- function(data, dots) {
-  # any dots?
-  if (length(dots) > 0) {
-    # get variable names
-    vars <- dot_names(dots)
-  } else {
-    vars <- NULL
-  }
-
-  # check if data is a data frame
-  if (is.data.frame(data)) {
-    # do we have any variables specified?
-    if (!is.null(vars))
-      x <- data[, vars, drop = FALSE]
-    else
-      x <- data
-  } else {
-    x <- as.data.frame(data)
-  }
-
-  x
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr quos select
+get_dot_data <- function(x, qs) {
+  if (sjmisc::is_empty(qs))
+    tibble::as_tibble(x)
+  else
+    dplyr::select(x, !!!qs)
 }

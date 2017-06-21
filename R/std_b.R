@@ -96,7 +96,7 @@ std_beta <- function(fit, type = "std") {
 
     # convert factor to numeric, else sd throws a warning
     fit.data <- fit.data %>%
-      purrr::map_if(is.numeric, ~sjlabelled::as_numeric(.x, keep.labels = F)) %>%
+      purrr::map_if(is.factor, ~sjlabelled::as_numeric(.x, keep.labels = F)) %>%
       tibble::as_tibble()
 
     # get standard deviations for predictors
@@ -116,10 +116,15 @@ std_beta <- function(fit, type = "std") {
     # compute standard error
     beta.se <- se * sx / sy
   }
+
   # return result
-  tibble::tibble(term = names(b), std.estimate = beta,
-                 std.error = beta.se, conf.low = beta - stats::qnorm(.975) * beta.se,
-                 conf.high = beta + stats::qnorm(.975) * beta.se)
+  tibble::tibble(
+    term = names(b),
+    std.estimate = beta,
+    std.error = beta.se,
+    conf.low = beta - stats::qnorm(.975) * beta.se,
+    conf.high = beta + stats::qnorm(.975) * beta.se
+  )
 }
 
 

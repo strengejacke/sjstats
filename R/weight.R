@@ -44,34 +44,42 @@
 weight <- function(x, weights, digits = 0) {
   # remember if x is numeric
   x.is.num <- is.numeric(x)
+
   # init values
   weightedvar <- c()
+
   wtab <- round(stats::xtabs(weights ~ x,
                              data = data.frame(weights = weights, x = x),
                              na.action = stats::na.pass,
                              exclude = NULL),
                 digits = digits)
+
   # iterate all table values
   for (w in seq_len(length(wtab))) {
     # retrieve count of each table cell
     w_count <- wtab[[w]]
+
     # retrieve "cell name" which is identical to the variable value
     # first check whether values are numeric or not
     nval_ <- suppressWarnings(as.numeric(names(wtab[w])))
+
     # if value is not numeric, use as is
     if (is.na(nval_))
       w_value <- names(wtab[w])
     else
       # else, use numeric value
       w_value <- nval_
+
     # append variable value, repeating it "w_count" times.
     weightedvar <- c(weightedvar, rep(w_value, w_count))
   }
+
   # if we have NA values, weighted var is coerced to character.
   # coerce back to numeric then here
   if (!is.numeric(weightedvar) && x.is.num) weightedvar <- sjlabelled::as_numeric(weightedvar)
+
   # return result
-  return(weightedvar)
+  weightedvar
 }
 
 #' @rdname weight
@@ -79,11 +87,13 @@ weight <- function(x, weights, digits = 0) {
 weight2 <- function(x, weights) {
   items <- unique(x)
   newvar <- c()
+
   for (i in seq_len(length(items))) {
-    newcount = round(sum(weights[which(x == items[i])]))
+    newcount <- round(sum(weights[which(x == items[i])]))
     newvar <- c(newvar, rep(items[i], newcount))
   }
-  return(newvar)
+
+  newvar
 }
 
 
@@ -111,27 +121,32 @@ wtd_sd <- function(x, weights = NULL) {
   if (!requireNamespace("Hmisc", quietly = TRUE)) {
     stop("Package `Hmisc` needed for this function to work. Please install it.", call. = FALSE)
   }
-  if (is.matrix(x) || is.data.frame(x)) {
-    # init return variables
-    stdd <- c()
-    stdd_names <- c()
-    # iterate all columns
-    for (i in seq_len(ncol(x))) {
-      # get and save standard error for each variable
-      # of the data frame
-      stdd <- c(stdd,
-                sqrt(Hmisc::wtd.var(x[[i]], weights = weights, na.rm = TRUE)))
-      # save column name as variable name
-      stdd_names <- c(stdd_names, colnames(x)[i])
-    }
-    # set names to return vector
-    names(stdd) <- stdd_names
-    # return results
-    return(stdd)
-  } else {
-    return(sqrt(Hmisc::wtd.var(x, weights = weights, na.rm = TRUE)))
-  }
+
+  UseMethod("wtd_sd")
 }
+
+
+#' @export
+wtd_sd.data.frame <- function(x, weights = NULL) {
+  sd_result <- purrr::map_dbl(x, ~ sqrt(Hmisc::wtd.var(.x, weights = weights, na.rm = TRUE)))
+  names(sd_result) <- colnames(x)
+
+  sd_result
+}
+
+#' @export
+wtd_sd.matrix <- function(x, weights = NULL) {
+  sd_result <- purrr::map_dbl(x, ~ sqrt(Hmisc::wtd.var(.x, weights = weights, na.rm = TRUE)))
+  names(sd_result) <- colnames(x)
+
+  sd_result
+}
+
+#' @export
+wtd_sd.default <- function(x, weights = NULL) {
+  sqrt(Hmisc::wtd.var(x, weights = weights, na.rm = TRUE))
+}
+
 
 
 #' @rdname wtd_sd
@@ -141,24 +156,28 @@ wtd_se <- function(x, weights = NULL) {
   if (!requireNamespace("Hmisc", quietly = TRUE)) {
     stop("Package `Hmisc` needed for this function to work. Please install it.", call. = FALSE)
   }
-  if (is.matrix(x) || is.data.frame(x)) {
-    # init return variables
-    stde <- c()
-    stde_names <- c()
-    # iterate all columns
-    for (i in seq_len(ncol(x))) {
-      # get and save standard error for each variable
-      # of the data frame
-      stde <- c(stde,
-                sqrt(Hmisc::wtd.var(x[[i]], weights = weights, na.rm = TRUE) / length(stats::na.omit(x[[i]]))))
-      # save column name as variable name
-      stde_names <- c(stde_names, colnames(x)[i])
-    }
-    # set names to return vector
-    names(stde) <- stde_names
-    # return results
-    return(stde)
-  } else {
-    return(sqrt(Hmisc::wtd.var(x, weights = weights, na.rm = TRUE) / length(stats::na.omit(x))))
-  }
+
+  UseMethod("wtd_se")
+}
+
+
+#' @export
+wtd_se.data.frame <- function(x, weights = NULL) {
+  se_result <- purrr::map_dbl(x, ~ sqrt(Hmisc::wtd.var(.x, weights = weights, na.rm = TRUE) / length(stats::na.omit(.x))))
+  names(se_result) <- colnames(x)
+
+  se_result
+}
+
+#' @export
+wtd_se.matrix <- function(x, weights = NULL) {
+  se_result <- purrr::map_dbl(x, ~ sqrt(Hmisc::wtd.var(.x, weights = weights, na.rm = TRUE) / length(stats::na.omit(.x))))
+  names(se_result) <- colnames(x)
+
+  se_result
+}
+
+#' @export
+wtd_se.default <- function(x, weights = NULL) {
+  sqrt(Hmisc::wtd.var(x, weights = weights, na.rm = TRUE) / length(stats::na.omit(x)))
 }

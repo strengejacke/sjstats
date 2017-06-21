@@ -17,7 +17,7 @@ when \code{x} is a vector, and not a \code{glm}-object.}
 \item{weights}{Vector with weights, used to weight \code{x}.}
 }
 \value{
-For vectors, returns the object of the computed \code{\link{chisq.test}}.
+For vectors, returns the object of the computed \code{\link[stats]{chisq.test}}.
           \cr \cr
           For \code{glm}-objects, an object of class \code{chisq_gof} with
           following values:
@@ -31,10 +31,10 @@ For vectors, returns the object of the computed \code{\link{chisq.test}}.
 \description{
 This method performs a Chi-square goodness-of-fit-test (GOF)
                either on a numeric vector against probabilities, or
-               a Goodness-of-fit test for \code{\link{glm}}-objects for binary data.
+               a Goodness-of-fit test for \code{\link[stats]{glm}}-objects for binary data.
 }
 \note{
-For vectors, this function is a convenient function for the \code{\link{chisq.test}},
+For vectors, this function is a convenient function for the \code{chisq.test},
         performing goodness-of-fit test.
         \cr \cr
         For \code{glm}-objects, this function performs a goodness-of-fit test

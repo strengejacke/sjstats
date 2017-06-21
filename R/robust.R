@@ -90,7 +90,7 @@ robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4",
     result <- tibble::add_column(
       result,
       conf.low = result$estimate - (stats::qt(.975, df = dendf) * result$std.error),
-      conf.high = result$estimate + stats::qt(.975, df = dendf) * result$std.error
+      conf.high = result$estimate + (stats::qt(.975, df = dendf) * result$std.error)
     )
   }
 

@@ -86,16 +86,16 @@ bootstrap <- function(data, n, size) {
     if (size < 1) size <- as.integer(nrow(data) * size)
 
     # generate bootstraps w/o replacement
-    repl <- F
+    repl <- FALSE
   } else {
     # size = observations
     size <- nrow(data)
     # generate bootstraps with replacement
-    repl <- T
+    repl <- TRUE
   }
 
   # generate bootstrap resamples
-  strap <- replicate(n, resample(data, size, repl), simplify = F)
+  strap <- replicate(n, resample(data, size, repl), simplify = FALSE)
 
   # add resample ID, may be used for other functions (like 'se()' for 'icc()')
   for (i in seq_len(length(strap))) strap[[i]]$resample.id <- i
@@ -106,5 +106,10 @@ bootstrap <- function(data, n, size) {
 
 
 resample <- function(data, size, replace) {
-  structure(class = "sj_resample", list(data = data, id = sample(nrow(data), size = size, replace = replace)))
+  structure(
+    class = "sj_resample",
+    list(
+      data = data,
+      id = sample(nrow(data), size = size, replace = replace)
+    ))
 }

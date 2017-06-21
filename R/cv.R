@@ -41,7 +41,7 @@
 #' cv(fit)
 #'
 #' library(nlme)
-#' fit <- lme(distance ~ age, data = Orthodont)
+#' fit <- lme(Reaction ~ Days, random = ~ Days | Subject, data = sleepstudy)
 #' cv(fit)
 #'
 #' @importFrom stats sd
@@ -66,28 +66,16 @@ cv_helper <- function(x) {
   if (inherits(x, c("lm", "lmerMod", "lme", "merModLmerTest")) && !inherits(x, "glm")) {
     # get response
     dv <- resp_val(x)
-    # compute mean of dependent variable
     mw <- mean(dv, na.rm = TRUE)
-
-    # check if mean is zero?
-    if (mw != 0) {
-      # cv = root mean squared error (RMSE) divided by mean of dep. var.
-      return(rmse(x) / mw)
-    } else {
-      warning("Mean of dependent variable is zero. Cannot compute model's coefficient of variation.", call. = F)
-    }
+    stddev <- rmse(x)
   } else {
-    # compute mean of variable
     mw <- mean(x, na.rm = TRUE)
-
-    # check if mean is zero?
-    if (mw != 0) {
-      #  we assume a simple vector
-      return(stats::sd(x, na.rm = TRUE) / mw)
-    } else {
-      warning("Mean of `x` is zero. Cannot compute coefficient of variation.", call. = F)
-    }
+    stddev <- stats::sd(x, na.rm = TRUE)
   }
 
-  NULL
+  # check if mean is zero?
+  if (mw == 0)
+    stop("Mean of dependent variable is zero. Cannot compute model's coefficient of variation.", call. = F)
+
+  stddev / mw
 }

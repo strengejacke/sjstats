@@ -282,12 +282,15 @@ pseudo_ralt <- function(x) {
   #   names(r2ss) <- "Sums-of-Squares-r-squared"
   #   return(structure(class = "sjstats_r2", list(R2dev = r2dev, R2ss = r2ss)))
   # } else {
-    # get nr of observations
-    n <- stats::nobs(x)
-    CoxSnell <- 1 - exp((stats::deviance(x) - x$null.deviance) / n)
-    Nagelkerke <- CoxSnell / (1 - exp(-x$null.deviance / n))
-    names(CoxSnell) <- "CoxSnell"
-    names(Nagelkerke) <- "Nagelkerke"
-    return(structure(class = "sjstats_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke)))
+  # get nr of observations
+  n <- stats::nobs(x)
+
+  CoxSnell <- 1 - exp((stats::deviance(x) - x$null.deviance) / n)
+  Nagelkerke <- CoxSnell / (1 - exp(-x$null.deviance / n))
+
+  names(CoxSnell) <- "CoxSnell"
+  names(Nagelkerke) <- "Nagelkerke"
+
+  structure(class = "sjstats_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke))
   # }
 }

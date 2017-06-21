@@ -19,10 +19,11 @@ boot_est(data, ...)
 \item{data}{A data frame that containts the vector with bootstrapped
 estimates, or directly the vector (see 'Examples').}
 
-\item{...}{Optional, names of the variables with bootstrapped estimates.
-Required, if either \code{data} is a data frame and no vector,
-or if only selected variables from \code{data} should be used
-in the function.}
+\item{...}{Optional, unquoted names of variables with bootstrapped estimates.
+Required, if either \code{data} is a data frame (and no vector),
+and only selected variables from \code{data} should be processed.
+You may also use functions like \code{:} or dplyr's
+\code{\link[dplyr]{select_helpers}}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with either bootstrap estimate,
