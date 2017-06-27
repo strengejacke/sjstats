@@ -1,3 +1,5 @@
+utils::globalVariables(c("rmse.train", "predicted", "residuals"))
+
 #' @title Test and training error from model cross-validation
 #' @name cv_error
 #'

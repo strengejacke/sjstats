@@ -135,6 +135,9 @@ deff <- function(n, icc = 0.05) {
 #' fit <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
 #' se_ybar(fit)
 #'
+#' @importFrom lme4 ngrps
+#' @importFrom stats nobs
+#' @importFrom purrr map_dbl
 #' @export
 se_ybar <- function(fit) {
   # get model icc
@@ -147,8 +150,15 @@ se_ybar <- function(fit) {
   tot_var <- sum(tau.00, attr(icc, "sigma_2", exact = T))
 
   # get number of groups
-  m.cnt <- purrr::map_dbl(lme4::getME(fit, "flist"), ~ nlevels(.x))
+  m.cnt <- lme4::ngrps(fit)
+
+  # compute number of observations per group (level-2-unit)
+  obs <- round(stats::nobs(fit) / m.cnt)
 
   # compute standard error of sample mean
-  purrr::map_dbl(seq_len(length(m.cnt)), ~ sqrt((tot_var / nobs(fit)) * deff(n = m.cnt[.x], icc = icc[.x])))
+  se <- purrr::map_dbl(seq_len(length(m.cnt)), ~ sqrt((tot_var / stats::nobs(fit)) * deff(n = obs[.x], icc = icc[.x])))
+
+  # give names for se, so user sees, which random effect has what impact
+  names(se) <- names(m.cnt)
+  se
 }

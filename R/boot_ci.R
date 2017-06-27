@@ -190,10 +190,10 @@ transform_boot_result <- function(res) {
 
 
 #' @importFrom tibble as_tibble
-#' @importFrom dplyr quos select
+#' @importFrom dplyr select
 get_dot_data <- function(x, qs) {
   if (sjmisc::is_empty(qs))
     tibble::as_tibble(x)
   else
-    dplyr::select(x, !!!qs)
+    suppressWarnings(dplyr::select(x, !!!qs))
 }

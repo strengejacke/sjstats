@@ -1,3 +1,10 @@
+# sjstats 0.10.3
+
+## Changes to functions
+
+* Better `print()`-method for `overdisp()`.
+* `overdisp()` now supports `glmmTMB`-objects.
+
 # sjstats 0.10.2
 
 ## Changes to functions
@@ -8,7 +15,7 @@
 ## Bug fixes
 
 * `pred_accuracy()` with cross-validation-method did not correctly account for the generated test data.
-* Fixed issue with calculation in `smpsize_lmm()`.
+* Fixed issue with calculation in `smpsize_lmm()` and `se_ybar()`.
 
 # sjstats 0.10.1
 

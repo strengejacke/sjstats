@@ -396,6 +396,21 @@ print.sjstats_zcf <- function(x, ...) {
              "Model is overfitting zero-counts.\n"))
 }
 
+
+#' @export
+print.sjstats_ovderdisp <- function(x, ...) {
+  cat("Overdispersion test\n\n")
+  cat(sprintf("       dispersion ratio = %.4f\n", x$ratio))
+  cat(sprintf("  Pearson's Chi-Squared = %.4f\n", x$chisq))
+  cat(sprintf("                p-value = %.4f\n", x$p))
+
+  if (x$p > 0.05)
+    message("No overdispersion detected.")
+  else
+    message("Overdispersion detected.")
+}
+
+
 #' @export
 print.sjstats_outliers <- function(x, ...) {
   print(x$result, ...)
