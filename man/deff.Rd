@@ -22,12 +22,13 @@ Compute the design effect (also called \emph{Variance Inflation Factor})
 The formula for the design effect is simply \code{(1 + (n - 1) * icc)}.
 }
 \examples{
-# Design effect for two-level model with 30 cluster groups
-# and an assumed intraclass correlation coefficient of 0.05.
+# Design effect for two-level model with 30 observations per
+# cluster group (level-2 unit) and an assumed intraclass
+# correlation coefficient of 0.05.
 deff(n = 30)
 
-# Design effect for two-level model with 24 cluster groups
-# and an assumed intraclass correlation coefficient of 0.2.
+# Design effect for two-level model with 24 observation per cluster
+# group and an assumed intraclass correlation coefficient of 0.2.
 deff(n = 24, icc = 0.2)
 
 }

@@ -10,6 +10,8 @@
 #' @param power Power of test (1 minus Type II error probability).
 #' @param sig.level Significance level (Type I error probability).
 #' @param k Number of cluster groups (level-2-unit) in multilevel-design.
+#' @param n Optional, number of observations per cluster groups
+#'       (level-2-unit) in multilevel-design.
 #' @param icc Expected intraclass correlation coefficient for multilevel-model.
 #'
 #' @return A list with two values: The number of subjects per cluster, and the
@@ -36,17 +38,18 @@
 #'
 #' @examples
 #' # Sample size for multilevel model with 30 cluster groups and a small to
-#' # medium effect size (Cohen's d) of 0.3. 29 subjects per cluster and
-#' # hence a total sample size of about 859 observations is needed.
+#' # medium effect size (Cohen's d) of 0.3. 27 subjects per cluster and
+#' # hence a total sample size of about 802 observations is needed.
 #' smpsize_lmm(eff.size = .3, k = 30)
 #'
 #' # Sample size for multilevel model with 20 cluster groups and a medium
-#' # to large effect size for linear models of 0.2. Nine subjects per cluster and
-#' # hence a total sample size of about 172 observations is needed.
+#' # to large effect size for linear models of 0.2. Five subjects per cluster and
+#' # hence a total sample size of about 107 observations is needed.
 #' smpsize_lmm(eff.size = .2, df.n = 5, k = 20, power = .9)
 #'
+#'
 #' @export
-smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, icc = 0.05) {
+smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, n, icc = 0.05) {
   if (!requireNamespace("pwr", quietly = TRUE)) {
     stop("Package `pwr` needed for this function to work. Please install it.", call. = FALSE)
   }
@@ -54,13 +57,18 @@ smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, i
   # compute sample size for standard design
   if (is.null(df.n))
     # if we have no degrees of freedom specified, use t-test
-    n <- 2 * pwr::pwr.t.test(d = eff.size, sig.level = sig.level, power = power)$n
+    obs <- 2 * pwr::pwr.t.test(d = eff.size, sig.level = sig.level, power = power)$n
   else
     # we have df, so power-calc for linear models
-    n <- pwr::pwr.f2.test(u = df.n, f2 = eff.size, sig.level = sig.level, power = power)$v + df.n + 1
+    obs <- pwr::pwr.f2.test(u = df.n, f2 = eff.size, sig.level = sig.level, power = power)$v + df.n + 1
+
+  # if we have no information on the number of observations per cluster,
+  # compute this number now
+  if (missing(n) || is.null(n)) n <- (obs * (1 - icc)) / (k - (obs * icc))
 
   # adjust standard design by design effect
-  total.n <- n * deff(n = k, icc = icc)
+  total.n <- obs * deff(n = n, icc = icc)
+
 
   # sample size for each group and total n
   smpsz <- list(round(total.n / k), round(total.n))
@@ -93,12 +101,13 @@ smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, i
 #' @details The formula for the design effect is simply \code{(1 + (n - 1) * icc)}.
 #'
 #' @examples
-#' # Design effect for two-level model with 30 cluster groups
-#' # and an assumed intraclass correlation coefficient of 0.05.
+#' # Design effect for two-level model with 30 observations per
+#' # cluster group (level-2 unit) and an assumed intraclass
+#' # correlation coefficient of 0.05.
 #' deff(n = 30)
 #'
-#' # Design effect for two-level model with 24 cluster groups
-#' # and an assumed intraclass correlation coefficient of 0.2.
+#' # Design effect for two-level model with 24 observation per cluster
+#' # group and an assumed intraclass correlation coefficient of 0.2.
 #' deff(n = 24, icc = 0.2)
 #'
 #' @export

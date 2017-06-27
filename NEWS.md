@@ -8,6 +8,7 @@
 ## Bug fixes
 
 * `pred_accuracy()` with cross-validation-method did not correctly account for the generated test data.
+* Fixed issue with calculation in `smpsize_lmm()`.
 
 # sjstats 0.10.1
 
