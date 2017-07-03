@@ -2,6 +2,7 @@
 
 ## Changes to functions
 
+* Computation of `r2()` for `glm`-objects is now based on log-Likelihood methods and also accounts for count models.
 * Better `print()`-method for `overdisp()`.
 * `overdisp()` now supports `glmmTMB`-objects.
 

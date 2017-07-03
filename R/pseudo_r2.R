@@ -259,38 +259,18 @@ r2 <- function(x, n = NULL) {
   }
 }
 
-#' @importFrom stats nobs deviance predict formula
+
+#' @importFrom stats logLik update nobs
 pseudo_ralt <- function(x) {
-  # fam <- get_glm_family(x)
-  #
-  # if (fam$is_pois) {
-  #   yi <- resp_val(x)
-  #   mui <- stats::predict(x, type = "response")
-  #   yh <- mean(yi)
-  #   k <- length(all.vars(stats::formula(x))) - 1
-  #
-  #   # deviance r2
-  #   r1 <- sum((yi * log(yi) - yi) - (yi * log(mui) - mui), na.rm = T) + (k / 2)
-  #   r2 <- sum((yi * log(yi) - yi) - (yi * log(yh) - yh), na.rm = T)
-  #
-  #   r2dev <- 1 - (r1 / r2)
-  #
-  #   # sums-of-squares r2
-  #   r2ss <- 1 - (sum((yi - mui) ^ 2) / sum((yi - yh) ^ 2))
-  #
-  #   names(r2dev) <- "Deviance-r-squared"
-  #   names(r2ss) <- "Sums-of-Squares-r-squared"
-  #   return(structure(class = "sjstats_r2", list(R2dev = r2dev, R2ss = r2ss)))
-  # } else {
-  # get nr of observations
+  ll <- stats::logLik(x)
+  ll0 <- stats::logLik(stats::update(x, ~1))
   n <- stats::nobs(x)
 
-  CoxSnell <- 1 - exp((stats::deviance(x) - x$null.deviance) / n)
-  Nagelkerke <- CoxSnell / (1 - exp(-x$null.deviance / n))
+  CoxSnell <- 1 - exp(2 * (ll0 - ll) / n)
+  Nagelkerke <- CoxSnell / (1 - exp(ll0 * 2 / n))
 
   names(CoxSnell) <- "CoxSnell"
   names(Nagelkerke) <- "Nagelkerke"
 
   structure(class = "sjstats_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke))
-  # }
 }
