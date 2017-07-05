@@ -324,5 +324,5 @@ get_re_var <- function(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01", "sigm
   if (is_merMod(x) || inherits(x, "glmmTMB")) x <- icc(x)
 
   # return results
-  return(attr(x, comp, exact = TRUE))
+  attr(x, comp, exact = TRUE)
 }

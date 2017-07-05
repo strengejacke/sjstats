@@ -392,7 +392,7 @@ print.sjstats_zcf <- function(x, ...) {
   cat(sprintf("  Predicted zero-counts: %i\n", x$predicted.zeros))
   cat(sprintf("                  Ratio: %.2f\n", x$ratio))
   cat(ifelse(x$ratio < 1,
-             "Model is underfitting zero-counts.\n",
+             "Model is underfitting zero-counts (probable zero-inflation).\n",
              "Model is overfitting zero-counts.\n"))
 }
 

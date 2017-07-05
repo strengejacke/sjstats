@@ -228,7 +228,7 @@ cronb <- function(x) {
   }
 
   # Compute Cronb. Alpha
-  return(dim(.data)[2] / (dim(.data)[2] - 1) * (1 - sum(apply(.data, 2, var)) / stats::var(rowSums(.data))))
+  dim(.data)[2] / (dim(.data)[2] - 1) * (1 - sum(apply(.data, 2, var)) / stats::var(rowSums(.data)))
 }
 
 

@@ -54,7 +54,7 @@ For linear models, the r-squared and adjusted r-squared value is returned,
          that \emph{Tjur's D} is restricted to models with binary response.
          \cr \cr
          More ways to compute coefficients of determination are shown
-         in this great \href{https://github.com/bbolker/mixedmodels-misc/blob/master/glmmFAQ.rmd#model-summaries-goodness-of-fit-decomposition-of-variance-etc}{GLMM faq}.
+         in this great \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-summaries-goodness-of-fit-decomposition-of-variance-etc.}{GLMM faq}.
          Furthermore, see \code{\link[MuMIn]{r.squaredGLMM}} or
          \code{\link[piecewiseSEM]{rsquared}} for conditional and marginal
          r-squared values for GLMM's.
@@ -105,6 +105,7 @@ r2(fit, fit.null)
 \references{
 \itemize{
               \item \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ}
+              \item Bolker B et al. (2017): \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html}{GLMM FAQ.}
               \item Byrnes, J. 2008. Re: Coefficient of determination (R^2) when using lme() (\url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q2/000713.html})
               \item Kwok OM, Underhill AT, Berry JW, Luo W, Elliott TR, Yoon M. 2008. Analyzing Longitudinal Data with Multilevel Models: An Example with Individuals Living with Lower Extremity Intra-Articular Fractures. Rehabilitation Psychology 53(3): 370–86. \doi{10.1037/a0012765}
               \item Nakagawa S, Schielzeth H. 2013. A general and simple method for obtaining R2 from generalized linear mixed-effects models. Methods in Ecology and Evolution, 4(2):133–142. \doi{10.1111/j.2041-210x.2012.00261.x}

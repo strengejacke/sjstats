@@ -29,19 +29,24 @@ For \code{overdisp()}, information on the overdispersion test; for
              the outcome.
 }
 \details{
-For \code{merMod}-objects, \code{overdisp()} is based on the code in the
-           \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ},
-           section \emph{How can I deal with overdispersion in GLMMs?}.
-           Note that this function only returns an \emph{approximate} estimate
-           of an overdispersion parameter.
-           \cr \cr
-           For \code{glm}'s, \code{overdisp()} simply wraps the \code{dispersiontest}
-           from the \pkg{AER}-package.
+For \code{merMod}- and \code{glmmTMB}-objects, \code{overdisp()} is
+         based on the code in the \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ},
+         section \emph{How can I deal with overdispersion in GLMMs?}.
+         Note that this function only returns an \emph{approximate} estimate
+         of an overdispersion parameter, and is probably inaccurate for
+         zero-inflated mixed models (fitted with \code{glmmTMB}).
+         \cr \cr
+         For \code{glm}'s, \code{overdisp()} simply wraps the \code{dispersiontest}
+         from the \pkg{AER}-package.
 }
 \note{
 For the overdispersion-test, the interpretation of the returned p-value
-        differs between GLM and GLMM. For GLMs, a p-value < .05 indicates
-        overdispersion, while for GLMMs, a p-value > .05 indicates overdispersion.
+      differs between GLM and GLMM. For GLMs, a p-value < .05 indicates
+      overdispersion, while for GLMMs, a p-value > .05 indicates overdispersion.
+      \cr \cr
+      For \code{zero_count()}, a model that is underfitting zero-counts
+      indicates a zero-inflation in the data, i.e. it is recommended to
+      use negative binomial or zero-inflated models then.
 }
 \examples{
 library(sjmisc)
@@ -67,4 +72,6 @@ zero_count(fit)
 }
 \references{
 \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ}
+            \cr \cr
+            Bolker B et al. (2017): \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html}{GLMM FAQ.}
 }
