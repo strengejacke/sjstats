@@ -4,14 +4,16 @@
 \alias{typical_value}
 \title{Return the typical value of a vector}
 \usage{
-typical_value(x, fun = c("mean", "median"))
+typical_value(x, fun = c("mean", "median", "weighted.mean"), ...)
 }
 \arguments{
 \item{x}{A variable.}
 
 \item{fun}{Character vector, naming the function to be applied to numeric
-\code{x}. Currently, only \code{"mean"} and \code{"median"} are
-supported.}
+\code{x}. Currently, \code{"mean"}, \code{"weighted.mean"} and
+\code{"median"} are supported, which call the corresponding R functions.}
+
+\item{...}{Further arguments, passed down to \code{fun}.}
 }
 \value{
 The "typical" value of \code{x}.
@@ -31,5 +33,12 @@ typical_value(iris$Sepal.Length)
 
 library(purrr)
 map(iris, ~ typical_value(.x))
+
+# example from ?stats::weighted.mean
+wt <- c(5,  5,  4,  1) / 15
+x <- c(3.7, 3.3, 3.5, 2.8)
+
+typical_value(x, "weighted.mean")
+typical_value(x, "weighted.mean", w = wt)
 
 }

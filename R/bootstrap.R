@@ -77,6 +77,35 @@
 #' @importFrom tibble tibble
 #' @export
 bootstrap <- function(data, n, size) {
+  UseMethod("bootstrap")
+}
+
+
+#' @export
+bootstrap.default <- function(data, n, size) {
+  bootstrap_helper(data, n, size)
+}
+
+
+#' @importFrom dplyr group_vars mutate group_by_
+#' @importFrom sjmisc remove_var
+#' @importFrom tidyr nest unnest
+#' @importFrom purrr map
+#' @export
+bootstrap.grouped_df <- function(data, n, size) {
+  # remember grouping variable
+  groups <- dplyr::group_vars(data)
+
+  data %>%
+    tidyr::nest(.key = "nested_data") %>%
+    dplyr::mutate(strap = purrr::map(.data$nested_data, ~ bootstrap_helper(.x, n = n, size = NULL))) %>%
+    sjmisc::remove_var("nested_data") %>%
+    tidyr::unnest() %>%
+    dplyr::group_by_(groups)
+}
+
+
+bootstrap_helper <- function(data, n, size) {
   if (!missing(size) && !is.null(size)) {
     # check for valid range
     if (size < 0 || size > nrow(data))
