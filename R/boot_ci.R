@@ -12,23 +12,43 @@
 #'          and only selected variables from \code{data} should be processed.
 #'          You may also use functions like \code{:} or dplyr's
 #'          \code{\link[dplyr]{select_helpers}}.
+#' @param method Character vector, indicating if confidence intervals should be
+#'          based on bootstrap standard error, multiplied by the value of the
+#'          quantile function of the t distribution (default), or on sample
+#'          quantiles of the bootstrapped values. See 'Details'. May be
+#'          abbreviated.
 #'
 #' @return A \code{\link[tibble]{tibble}} with either bootstrap estimate,
 #'         standard error, the lower and upper confidence intervals or the
 #'         p-value for all bootstrapped estimates.
 #'
 #' @details The methods require one or more vectors of bootstrap replicate estimates
-#'          as input. \code{boot_est()} returns the bootstrapped estimate, simply by
-#'          computing the mean value of all bootstrap estimates. \code{boot_se()}
-#'          computes the nonparametric bootstrap standard error by calculating
-#'          the standard deviation of the input vector. The mean value of the
-#'          input vector and its standard error is used by \code{boot_ci()}
-#'          to calculate the lower and upper confidence interval, assuming
-#'          a t-distribution of bootstrap estimate replicates. P-values
-#'          from \code{boot_p()} are also based on t-statistics, assuming normal
-#'          distribution.
+#'          as input.
+#'          \itemize{
+#'            \item{
+#'              \code{boot_est()} returns the bootstrapped estimate, simply by
+#'              computing the mean value of all bootstrap estimates.
+#'            }
+#'            \item{
+#'              \code{boot_se()} computes the nonparametric bootstrap standard
+#'              error by calculating the standard deviation of the input vector.
+#'            }
+#'            \item{
+#'              The mean value of the input vector and its standard error is used
+#'              by \code{boot_ci()} to calculate the lower and upper confidence
+#'              interval, assuming a t-distribution of bootstrap estimate replicates
+#'              (for \code{method = "dist"}, the default, which is
+#'              \code{mean(x) +/- qt(.975, df = length(x) - 1) * sd(x)}); for
+#'              \code{method = "quantile"}, 95\% sample quantiles are used to compute
+#'              the confidence intervals (\code{quantile(x, probs = c(.025, .975))}).
+#'            }
+#'            \item{
+#'              P-values from \code{boot_p()} are also based on t-statistics,
+#'              assuming normal distribution.
+#'            }
+#'          }
 #'
-  #' @references Carpenter J, Bithell J. Bootstrap confdence intervals: when, which, what? A practical guide for medical statisticians. Statist. Med. 2000; 19:1141-1164
+#' @references Carpenter J, Bithell J. Bootstrap confdence intervals: when, which, what? A practical guide for medical statisticians. Statist. Med. 2000; 19:1141-1164
 #'
 #' @seealso \code{\link{bootstrap}} to generate nonparametric bootstrap samples.
 #'
@@ -55,6 +75,7 @@
 #' boot_ci(bs$dependency)
 #' boot_ci(bs, dependency)
 #' boot_ci(bs, dependency, gender)
+#' boot_ci(bs, dependency, gender, method = "q")
 #'
 #'
 #' # compare coefficients
@@ -106,20 +127,31 @@
 #'   # compute the CI for all bootstrapped model coefficients
 #'   boot_ci()
 #'
-#' @importFrom stats qt
+#' @importFrom stats qt quantile
 #' @importFrom dplyr quos
 #' @importFrom rlang .data
 #' @export
-boot_ci <- function(data, ...) {
+boot_ci <- function(data, ..., method = c("dist", "quantile")) {
+  # match arguments
+  method <- match.arg(method)
+
   # evaluate arguments, generate data
   .dat <- get_dot_data(data, dplyr::quos(...))
 
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
-    # get bootstrap standard error
-    bootse <- stats::qt(.975, df = length(x) - 1) * stats::sd(x, na.rm = T)
-    # lower and upper confidence interval
-    ci <- mean(x, na.rm = T) + c(-bootse, bootse)
+    # check if method should be based on t-distribution of
+    # bootstrap values or quantiles
+    if (method == "dist") {
+      # get bootstrap standard error
+      bootse <- stats::qt(.975, df = length(x) - 1) * stats::sd(x, na.rm = T)
+      # lower and upper confidence interval
+      ci <- mean(x, na.rm = T) + c(-bootse, bootse)
+    } else {
+      # CI based on quantiles of bootstrapped values
+      ci <- stats::quantile(x, probs = c(.025, .975))
+    }
+    # give proper names
     names(ci) <- c("conf.low", "conf.high")
     ci
   }))

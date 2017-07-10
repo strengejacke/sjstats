@@ -7,7 +7,7 @@
 \alias{boot_est}
 \title{Standard error and confidence intervals for bootstrapped estimates}
 \usage{
-boot_ci(data, ...)
+boot_ci(data, ..., method = c("dist", "quantile"))
 
 boot_se(data, ...)
 
@@ -24,6 +24,12 @@ Required, if either \code{data} is a data frame (and no vector),
 and only selected variables from \code{data} should be processed.
 You may also use functions like \code{:} or dplyr's
 \code{\link[dplyr]{select_helpers}}.}
+
+\item{method}{Character vector, indicating if confidence intervals should be
+based on bootstrap standard error, multiplied by the value of the
+quantile function of the t distribution (default), or on sample
+quantiles of the bootstrapped values. See 'Details'. May be
+abbreviated.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with either bootstrap estimate,
@@ -37,15 +43,30 @@ Compute nonparametric bootstrap estimate, standard error,
 }
 \details{
 The methods require one or more vectors of bootstrap replicate estimates
-         as input. \code{boot_est()} returns the bootstrapped estimate, simply by
-         computing the mean value of all bootstrap estimates. \code{boot_se()}
-         computes the nonparametric bootstrap standard error by calculating
-         the standard deviation of the input vector. The mean value of the
-         input vector and its standard error is used by \code{boot_ci()}
-         to calculate the lower and upper confidence interval, assuming
-         a t-distribution of bootstrap estimate replicates. P-values
-         from \code{boot_p()} are also based on t-statistics, assuming normal
-         distribution.
+         as input.
+         \itemize{
+           \item{
+             \code{boot_est()} returns the bootstrapped estimate, simply by
+             computing the mean value of all bootstrap estimates.
+           }
+           \item{
+             \code{boot_se()} computes the nonparametric bootstrap standard
+             error by calculating the standard deviation of the input vector.
+           }
+           \item{
+             The mean value of the input vector and its standard error is used
+             by \code{boot_ci()} to calculate the lower and upper confidence
+             interval, assuming a t-distribution of bootstrap estimate replicates
+             (for \code{method = "dist"}, the default, which is
+             \code{mean(x) +/- qt(.975, df = length(x) - 1) * sd(x)}); for
+             \code{method = "quantile"}, 95\% sample quantiles are used to compute
+             the confidence intervals (\code{quantile(x, probs = c(.025, .975))}).
+           }
+           \item{
+             P-values from \code{boot_p()} are also based on t-statistics,
+             assuming normal distribution.
+           }
+         }
 }
 \examples{
 library(tidyverse)
@@ -70,6 +91,7 @@ confint(fit)[2, ]
 boot_ci(bs$dependency)
 boot_ci(bs, dependency)
 boot_ci(bs, dependency, gender)
+boot_ci(bs, dependency, gender, method = "q")
 
 
 # compare coefficients
