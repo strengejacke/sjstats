@@ -1,11 +1,17 @@
-#' @title Eta-squared of fitted anova
+#' @title Effect size statistics for anova
 #' @name eta_sq
-#' @description Returns the eta-squared value for one-way-anovas.
+#' @description Returns the (partial) eta-squared or omega-squared statistic
+#'              for all terms in an anovas. \code{anova_stats()} returns
+#'              a tidy summary, including all three statistics.
 #'
-#' @param ... Fitted one-way-anova model or a dependent and grouping variable (see 'Examples').
-#' @return The eta-squared value.
+#' @param model A fitted anova-model of class \code{aov} or \code{anova}. Other
+#'              models are coerced to \code{\link[stats]{anova}}.
+#' @param partial Logical, if \code{TRUE}, the partial eta-squared is returned.
 #'
-#' @note Interpret eta-squared like r-squared or R-squared; a rule of thumb (Cohen):
+#' @return A numeric vector with the effect size statistics; for \code{anova_stats()},
+#'         a tidy data frame with all three statistics.
+#'
+#' @note Interpret eta-squared like r-squared; a rule of thumb (Cohen):
 #'         \itemize{
 #'          \item .02 ~ small
 #'          \item .13 ~ medium
@@ -19,35 +25,106 @@
 #' data(efc)
 #'
 #' # fit linear model
-#' fit <- aov(c12hour ~ as.factor(e42dep), data = efc)
+#' fit <- aov(
+#'   c12hour ~ as.factor(e42dep) + as.factor(c172code) + c160age,
+#'   data = efc
+#' )
 #'
-#' # print eta sqaured
 #' eta_sq(fit)
+#' omega_sq(fit)
+#' eta_sq(fit, partial = TRUE)
 #'
-#' # grouping variable will be converted to factor autoamtically
-#' eta_sq(efc$c12hour, efc$e42dep)
+#' anova_stats(car::Anova(fit, type = 2))
 #'
-#' @importFrom stats aov summary.lm
+#' @importFrom broom tidy
+#' @importFrom purrr map_dbl
+#' @importFrom stats anova
 #' @export
-eta_sq <- function(...) {
-  # retrieve list of parameters
-  input_list <- list(...)
+eta_sq <- function(model, partial = FALSE) {
+  if (partial)
+    aov_stat(model, type = "peta")
+  else
+    aov_stat(model, type = "eta")
+}
 
-  # check if fitted anova
-  if (length(input_list) == 1 && inherits(input_list[[1]], "aov")) {
-    # retrieve model
-    fit <- input_list[[1]]
-  } else if (length(input_list) == 2) {
-    # retrieve variables
-    depVar <- input_list[[1]]
-    grpVar <- input_list[[2]]
-    # convert to factor
-    if (!is.factor(grpVar)) grpVar <- as.factor(grpVar)
-    # fit anova
-    fit <- stats::aov(depVar ~ grpVar)
+
+
+#' @rdname eta_sq
+#' @export
+omega_sq <- function(model) {
+  aov_stat(model, type = "omega")
+}
+
+
+
+#' @importFrom tibble tibble add_row
+#' @importFrom sjmisc add_columns
+#' @importFrom broom tidy
+#' @importFrom stats anova
+#' @rdname eta_sq
+#' @export
+anova_stats <- function(model) {
+  # check that model inherits from correct class
+  # else, try to coerce to anova table
+  if (!inherits(model, c("aov", "anova"))) model <- stats::anova(model)
+
+  # compute all model statstics
+  etasq <- aov_stat(model, type = "eta")
+  partial.etasq <- aov_stat(model, type = "peta")
+  omegasq <- aov_stat(model, type = "omega")
+
+  # bind as data frame
+  tibble::tibble(etasq, partial.etasq, omegasq) %>%
+    tibble::add_row(etasq = NA, partial.etasq = NA, omegasq = NA) %>%
+    sjmisc::add_columns(broom::tidy(model))
+}
+
+
+
+#' @importFrom tibble has_name
+#' @importFrom dplyr mutate
+#' @importFrom rlang .data
+aov_stat <- function(model, type) {
+  # check that model inherits from correct class
+  # else, try to coerce to anova table
+  if (!inherits(model, c("aov", "anova"))) model <- stats::anova(model)
+
+  # get summary table and number of terms in model
+  aov.sum <- broom::tidy(model)
+  n_terms <- nrow(aov.sum) - 1
+
+  # for car::Anova, the meansq-column might be missing, so add it manually
+  if (!tibble::has_name(aov.sum, "meansq"))
+    aov.sum <- dplyr::mutate(aov.sum, meansq = .data$sumsq / .data$df)
+
+  # get mean squared of residuals
+  meansq.resid <- aov.sum[["meansq"]][nrow(aov.sum)]
+  # get total sum of squares
+  ss.total <- sum(aov.sum[["sumsq"]])
+  # get sum of squares of residuals
+  ss.resid <- aov.sum[["sumsq"]][nrow(aov.sum)]
+
+
+  if (type == "omega") {
+    # compute omega squared for each model term
+    aovstat <- purrr::map_dbl(1:n_terms, function(x) {
+      ss.term <- aov.sum[["sumsq"]][x]
+      df.term <- aov.sum[["df"]][x]
+      (ss.term - df.term * meansq.resid) / (ss.total + meansq.resid)
+    })
+  } else if (type == "eta") {
+    # compute eta squared for each model term
+    aovstat <-
+      purrr::map_dbl(1:n_terms, ~ aov.sum[["sumsq"]][.x] / sum(aov.sum[["sumsq"]]))
+  } else {
+    # compute partial eta squared for each model term
+    aovstat <-
+      purrr::map_dbl(1:n_terms, ~ aov.sum[["sumsq"]][.x] / (aov.sum[["sumsq"]][.x] + ss.resid))
   }
-  # return eta squared
-  stats::summary.lm(fit)$r.squared
 
-  # 1 - var(fit$residuals, na.rm = T) / var(fit$model[,1], na.rm = T)
+
+  # give values names of terms
+  names(aovstat) <- aov.sum[["term"]][1:n_terms]
+
+  aovstat
 }

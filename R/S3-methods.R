@@ -6,6 +6,8 @@ model.matrix.gls <- function(object, ...) {
   return(mm)
 }
 
+
+
 #' @importFrom nlme getResponse getData getCovariateFormula
 #' @importFrom sjlabelled get_label
 #' @export
@@ -20,6 +22,7 @@ model.frame.gls <- function(formula, ...) {
     return(mf)
   }
 }
+
 
 
 #' @importFrom tibble tibble
@@ -42,6 +45,7 @@ print.svyglm.nb <- function(x, se = c("robust", "model"), digits = 4, ...) {
   print(sm, ...)
   message(sprintf("Showing %s standard errors on link-scale (untransformed).", se))
 }
+
 
 
 #' @importFrom stats qnorm coef pnorm vcov
@@ -67,6 +71,7 @@ tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
 }
 
 
+
 #' @importFrom dplyr select one_of
 #' @importFrom tibble as_tibble
 #' @export
@@ -76,16 +81,19 @@ model.frame.svyglm.nb <- function(formula, ...) {
 }
 
 
+
 #' @export
 family.svyglm.nb <- function(object, ...) {
   attr(object, "family", exact = TRUE)
 }
 
 
+
 #' @export
 formula.svyglm.nb <- function(x, ...) {
   attr(x, "nb.formula", exact = TRUE)
 }
+
 
 
 #' @importFrom MASS glm.nb
@@ -123,6 +131,7 @@ predict.svyglm.nb <- function(object, newdata = NULL,
 }
 
 
+
 #' @export
 model.frame.gee <- function(formula, ...) {
   # get function call
@@ -131,6 +140,7 @@ model.frame.gee <- function(formula, ...) {
   all.data <- get(deparse(tmp$data))
   all.data[, model.vars]
 }
+
 
 
 #' @export
@@ -171,6 +181,7 @@ print.sjstats_r2 <- function(x, ...) {
     cat(sprintf("%s: %.4f\n", s1, x[[1]]))
   }
 }
+
 
 
 #' @export
@@ -244,15 +255,20 @@ print.icc.lme4 <- function(x, comp, ...) {
 }
 
 
+
 #' @export
 as.integer.sj_resample <- function(x, ...) {
   x$id
 }
 
+
+
 #' @export
 as.data.frame.sj_resample <- function(x, ...) {
   x$data[x$id, , drop = FALSE]
 }
+
+
 
 #' @export
 print.sj_resample <- function(x, ...) {
@@ -268,6 +284,7 @@ print.sj_resample <- function(x, ...) {
 }
 
 
+
 #' @export
 print.se.icc.lme4 <- function(x, ...) {
   cat("Standard Error of ICC\n")
@@ -281,6 +298,7 @@ print.se.icc.lme4 <- function(x, ...) {
     if (i < nrow(x$result)) cat("\n")
   }
 }
+
 
 
 #' @importFrom tidyr gather_
@@ -326,6 +344,7 @@ plot.sj_inequ_trend <- function(x, ...) {
   suppressMessages(graphics::plot(gp1))
   suppressMessages(graphics::plot(gp2))
 }
+
 
 
 #' @export
@@ -380,11 +399,15 @@ print.sj_mwu <- function(x, ...) {
   }
 }
 
+
+
 #' @export
 print.sj_splithalf <- function(x, ...) {
   cat(sprintf("   Split-Half Reliability: %.3f\n", x$splithalf))
   cat(sprintf("Spearman-Brown Adjustment: %.3f\n", x$spearmanbrown))
 }
+
+
 
 #' @export
 print.sjstats_zcf <- function(x, ...) {
@@ -395,6 +418,7 @@ print.sjstats_zcf <- function(x, ...) {
              "Model is underfitting zero-counts (probable zero-inflation).\n",
              "Model is overfitting zero-counts.\n"))
 }
+
 
 
 #' @export
@@ -411,10 +435,12 @@ print.sjstats_ovderdisp <- function(x, ...) {
 }
 
 
+
 #' @export
 print.sjstats_outliers <- function(x, ...) {
   print(x$result, ...)
 }
+
 
 #' @export
 print.sj_xtab_stat <- function(x, ...) {
@@ -443,6 +469,7 @@ print.sj_xtab_stat <- function(x, ...) {
   else
     cat(sprintf("  %*s: %.4f\n", l, "p-value", x$p.value))
 }
+
 
 
 #' @export

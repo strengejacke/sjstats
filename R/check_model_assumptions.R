@@ -72,7 +72,7 @@
 #'          regression).
 #'
 #' @note These formal tests are very strict and in most cases violation of model
-#'       assumptions are alerted, thought the model is actually ok. It is
+#'       assumptions are alerted, though the model is actually ok. It is
 #'       preferable to check model assumptions based on visual inspection
 #'       (see \code{\link[sjPlot]{sjp.lm}} with \code{type = "ma"}).
 #'

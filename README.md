@@ -11,7 +11,9 @@ Most functions of this package are designed as _summary functions_, i.e. they do
 The comprised tools include:
 
 * For regression and mixed models: Coefficient of Variation, Root Mean Squared Error, Residual Standard Error, Coefficient of Discrimination, R-squared and pseudo-R-squared values, standardized beta values
-* Especially for mixed models: Design effect, ICC, sample size calculation, convergence and overdispersion tests
+* Especially for mixed models: Design effect, ICC, sample size calculation and convergence tests
+* Fit and accuracy measures for regression models: Overdispersion tests, accuracy of predictions, test/training-error comparisons
+* For anova-tables: Eta-squared, Partial Eta-squared and Omega-squared statistics
 
 Other statistics:
 

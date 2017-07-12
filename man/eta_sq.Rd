@@ -2,21 +2,33 @@
 % Please edit documentation in R/eta_sq.R
 \name{eta_sq}
 \alias{eta_sq}
-\title{Eta-squared of fitted anova}
+\alias{omega_sq}
+\alias{anova_stats}
+\title{Effect size statistics for anova}
 \usage{
-eta_sq(...)
+eta_sq(model, partial = FALSE)
+
+omega_sq(model)
+
+anova_stats(model)
 }
 \arguments{
-\item{...}{Fitted one-way-anova model or a dependent and grouping variable (see 'Examples').}
+\item{model}{A fitted anova-model of class \code{aov} or \code{anova}. Other
+models are coerced to \code{\link[stats]{anova}}.}
+
+\item{partial}{Logical, if \code{TRUE}, the partial eta-squared is returned.}
 }
 \value{
-The eta-squared value.
+A numeric vector with the effect size statistics; for \code{anova_stats()},
+        a tidy data frame with all three statistics.
 }
 \description{
-Returns the eta-squared value for one-way-anovas.
+Returns the (partial) eta-squared or omega-squared statistic
+             for all terms in an anovas. \code{anova_stats()} returns
+             a tidy summary, including all three statistics.
 }
 \note{
-Interpret eta-squared like r-squared or R-squared; a rule of thumb (Cohen):
+Interpret eta-squared like r-squared; a rule of thumb (Cohen):
         \itemize{
          \item .02 ~ small
          \item .13 ~ medium
@@ -28,13 +40,16 @@ Interpret eta-squared like r-squared or R-squared; a rule of thumb (Cohen):
 data(efc)
 
 # fit linear model
-fit <- aov(c12hour ~ as.factor(e42dep), data = efc)
+fit <- aov(
+  c12hour ~ as.factor(e42dep) + as.factor(c172code) + c160age,
+  data = efc
+)
 
-# print eta sqaured
 eta_sq(fit)
+omega_sq(fit)
+eta_sq(fit, partial = TRUE)
 
-# grouping variable will be converted to factor autoamtically
-eta_sq(efc$c12hour, efc$e42dep)
+anova_stats(car::Anova(fit, type = 2))
 
 }
 \references{
