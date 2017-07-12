@@ -92,7 +92,7 @@ std_beta <- function(fit, type = "std") {
     # get data as data frame
     fit.data <- as.data.frame(stats::model.matrix(fit))
     # remove intercept?
-    if (has_intercept) fit.data <- fit.data[, -1]
+    if (has_intercept) fit.data <- fit.data[, -1, drop = FALSE]
 
     # convert factor to numeric, else sd throws a warning
     fit.data <- fit.data %>%

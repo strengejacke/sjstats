@@ -11,6 +11,9 @@ Changes to functions:
 * `overdisp()` now supports `glmmTMB`-objects.
 * `boot_ci()` also displays CI based on sample quantiles.
 
+Bug fixes:
+* `std_beta()` did not work for models with only one predictor.
+
 Version 0.10.2
 ------------------------------------------------------------------------------
 Changes to functions:
