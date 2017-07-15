@@ -4,14 +4,16 @@
 \alias{typical_value}
 \title{Return the typical value of a vector}
 \usage{
-typical_value(x, fun = c("mean", "median", "weighted.mean"), ...)
+typical_value(x, fun = c("mean", "median", "mode", "weighted.mean"), ...)
 }
 \arguments{
 \item{x}{A variable.}
 
 \item{fun}{Character vector, naming the function to be applied to numeric
-\code{x}. Currently, \code{"mean"}, \code{"weighted.mean"} and
-\code{"median"} are supported, which call the corresponding R functions.}
+\code{x}. Currently, \code{"mean"}, \code{"weighted.mean"},
+\code{"median"} and \code{"mode"} are supported, which call the
+corresponding R functions (except \code{"mode"}, which calls an
+internal function to compute the most common value).}
 
 \item{...}{Further arguments, passed down to \code{fun}.}
 }
@@ -25,7 +27,7 @@ This function returns the "typical" value of a variable.
 By default, for numeric variables, \code{typical_value()} returns the
          mean value of \code{x} (unless changed with the \code{fun}-argument).
          For factors, the reference level and for character vectors, to the
-         most common value is returned.
+         most common value (mode) is returned.
 }
 \examples{
 data(iris)
