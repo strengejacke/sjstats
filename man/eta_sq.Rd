@@ -3,6 +3,7 @@
 \name{eta_sq}
 \alias{eta_sq}
 \alias{omega_sq}
+\alias{cohens_f}
 \alias{anova_stats}
 \title{Effect size statistics for anova}
 \usage{
@@ -10,22 +11,27 @@ eta_sq(model, partial = FALSE)
 
 omega_sq(model)
 
-anova_stats(model)
+cohens_f(model)
+
+anova_stats(model, digits = 4)
 }
 \arguments{
 \item{model}{A fitted anova-model of class \code{aov} or \code{anova}. Other
 models are coerced to \code{\link[stats]{anova}}.}
 
 \item{partial}{Logical, if \code{TRUE}, the partial eta-squared is returned.}
+
+\item{digits}{Number of decimal points in the returned data frame.}
 }
 \value{
 A numeric vector with the effect size statistics; for \code{anova_stats()},
-        a tidy data frame with all three statistics.
+        a tidy data frame with all these statistics.
 }
 \description{
-Returns the (partial) eta-squared or omega-squared statistic
-             for all terms in an anovas. \code{anova_stats()} returns
-             a tidy summary, including all three statistics.
+Returns the (partial) eta-squared, omega-squared statistic
+             or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
+             a tidy summary, including all these statistics, including
+             power for each term.
 }
 \note{
 Interpret eta-squared like r-squared; a rule of thumb (Cohen):

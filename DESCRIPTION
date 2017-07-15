@@ -38,6 +38,7 @@ Imports:
     modelr,
     nlme,
     purrr (>= 0.2.2),
+    pwr,
     rlang,
     sandwich (>= 2.3-4),
     sjlabelled (>= 1.0.1),
@@ -54,7 +55,6 @@ Suggests:
     lmerTest,
     pbkrtest (>= 0.4-7),
     pROC,
-    pwr,
     survey,
     tidyverse
 URL: https://github.com/strengejacke/sjstats

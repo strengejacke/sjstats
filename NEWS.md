@@ -3,8 +3,8 @@
 ## New functions
 
 * `typical_value()`, to return the typical value of a variable.
-* `eta_sq()` and `omega_sq()` to compute (partial) eta-squared or omega-squared statistics for anova tables.
-* `anova_stats()` to compute a complete model summary, including (partial) eta-squared and omega-squared statistics for anova tables, returned as tidy data frame.
+* `eta_sq()`, `cohens_f()` and `omega_sq()` to compute (partial) eta-squared or omega-squared statistics, or Cohen's F for anova tables.
+* `anova_stats()` to compute a complete model summary, including (partial) eta-squared, omega-squared and Cohen's F statistics for anova tables, returned as tidy data frame.
 
 ## Changes to functions
 

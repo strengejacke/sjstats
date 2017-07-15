@@ -1,15 +1,17 @@
 #' @title Effect size statistics for anova
 #' @name eta_sq
-#' @description Returns the (partial) eta-squared or omega-squared statistic
-#'              for all terms in an anovas. \code{anova_stats()} returns
-#'              a tidy summary, including all three statistics.
+#' @description Returns the (partial) eta-squared, omega-squared statistic
+#'              or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
+#'              a tidy summary, including all these statistics, including
+#'              power for each term.
 #'
 #' @param model A fitted anova-model of class \code{aov} or \code{anova}. Other
 #'              models are coerced to \code{\link[stats]{anova}}.
 #' @param partial Logical, if \code{TRUE}, the partial eta-squared is returned.
+#' @param digits Number of decimal points in the returned data frame.
 #'
 #' @return A numeric vector with the effect size statistics; for \code{anova_stats()},
-#'         a tidy data frame with all three statistics.
+#'         a tidy data frame with all these statistics.
 #'
 #' @note Interpret eta-squared like r-squared; a rule of thumb (Cohen):
 #'         \itemize{
@@ -48,7 +50,6 @@ eta_sq <- function(model, partial = FALSE) {
 }
 
 
-
 #' @rdname eta_sq
 #' @export
 omega_sq <- function(model) {
@@ -56,14 +57,22 @@ omega_sq <- function(model) {
 }
 
 
+#' @rdname eta_sq
+#' @export
+cohens_f <- function(model) {
+  aov_stat(model, type = "cohens.f")
+}
 
-#' @importFrom tibble tibble add_row
+
+
+#' @importFrom tibble tibble add_row add_column
 #' @importFrom sjmisc add_columns
 #' @importFrom broom tidy
 #' @importFrom stats anova
+#' @importFrom pwr pwr.f2.test
 #' @rdname eta_sq
 #' @export
-anova_stats <- function(model) {
+anova_stats <- function(model, digits = 4) {
   # check that model inherits from correct class
   # else, try to coerce to anova table
   if (!inherits(model, c("aov", "anova"))) model <- stats::anova(model)
@@ -73,10 +82,26 @@ anova_stats <- function(model) {
   partial.etasq <- aov_stat(model, type = "peta")
   omegasq <- aov_stat(model, type = "omega")
 
+  # compute power for each estimate
+  cohens.f <- sqrt(partial.etasq / (1 - partial.etasq))
+
   # bind as data frame
-  tibble::tibble(etasq, partial.etasq, omegasq) %>%
-    tibble::add_row(etasq = NA, partial.etasq = NA, omegasq = NA) %>%
+  as <- tibble::tibble(etasq, partial.etasq, omegasq, cohens.f) %>%
+    tibble::add_row(etasq = NA, partial.etasq = NA, omegasq = NA, cohens.f = NA) %>%
     sjmisc::add_columns(broom::tidy(model))
+
+  # get nr of terms
+  nt <- nrow(as) - 1
+
+  # finally, compute power
+  power <- c(
+    pwr::pwr.f2.test(u = as$df[1:nt], v = as$df[nrow(as)], f2 = as$cohens.f[1:nt] ^ 2)[["power"]],
+    NA
+  )
+
+  tibble::add_column(as, power = power) %>%
+    purrr::map_if(is.numeric, ~ round(.x, digits = digits)) %>%
+    tibble::as_tibble()
 }
 
 
@@ -116,12 +141,14 @@ aov_stat <- function(model, type) {
     # compute eta squared for each model term
     aovstat <-
       purrr::map_dbl(1:n_terms, ~ aov.sum[["sumsq"]][.x] / sum(aov.sum[["sumsq"]]))
-  } else {
+  } else if (type %in% c("cohens.f", "peta")) {
     # compute partial eta squared for each model term
     aovstat <-
       purrr::map_dbl(1:n_terms, ~ aov.sum[["sumsq"]][.x] / (aov.sum[["sumsq"]][.x] + ss.resid))
   }
 
+  # compute Cohen's F
+  if (type == "cohens.f") aovstat <- sqrt(aovstat / (1 - aovstat))
 
   # give values names of terms
   names(aovstat) <- aov.sum[["term"]][1:n_terms]
