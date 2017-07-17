@@ -2,8 +2,7 @@
 #' @name eta_sq
 #' @description Returns the (partial) eta-squared, omega-squared statistic
 #'              or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
-#'              a tidy summary, including all these statistics, including
-#'              power for each term.
+#'              a tidy summary, including all these statistics and power for each term.
 #'
 #' @param model A fitted anova-model of class \code{aov} or \code{anova}. Other
 #'              models are coerced to \code{\link[stats]{anova}}.
@@ -12,13 +11,6 @@
 #'
 #' @return A numeric vector with the effect size statistics; for \code{anova_stats()},
 #'         a tidy data frame with all these statistics.
-#'
-#' @note Interpret eta-squared like r-squared; a rule of thumb (Cohen):
-#'         \itemize{
-#'          \item .02 ~ small
-#'          \item .13 ~ medium
-#'          \item .26 ~ large
-#'         }
 #'
 #' @references Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
 #'
@@ -72,15 +64,14 @@ cohens_f <- function(model) {
 #' @importFrom pwr pwr.f2.test
 #' @rdname eta_sq
 #' @export
-anova_stats <- function(model, digits = 4) {
-  # check that model inherits from correct class
-  # else, try to coerce to anova table
-  if (!inherits(model, c("aov", "anova"))) model <- stats::anova(model)
+anova_stats <- function(model, digits = 3) {
+  # get tidy summary table
+  aov.sum <- aov_stat_summary(model)
 
   # compute all model statstics
-  etasq <- aov_stat(model, type = "eta")
-  partial.etasq <- aov_stat(model, type = "peta")
-  omegasq <- aov_stat(model, type = "omega")
+  etasq <- aov_stat_core(aov.sum, type = "eta")
+  partial.etasq <- aov_stat_core(aov.sum, type = "peta")
+  omegasq <- aov_stat_core(aov.sum, type = "omega")
 
   # compute power for each estimate
   cohens.f <- sqrt(partial.etasq / (1 - partial.etasq))
@@ -88,7 +79,7 @@ anova_stats <- function(model, digits = 4) {
   # bind as data frame
   as <- tibble::tibble(etasq, partial.etasq, omegasq, cohens.f) %>%
     tibble::add_row(etasq = NA, partial.etasq = NA, omegasq = NA, cohens.f = NA) %>%
-    sjmisc::add_columns(broom::tidy(model))
+    sjmisc::add_columns(aov.sum)
 
   # get nr of terms
   nt <- nrow(as) - 1
@@ -110,18 +101,30 @@ anova_stats <- function(model, digits = 4) {
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
 aov_stat <- function(model, type) {
+  aov.sum <- aov_stat_summary(model)
+  aov_stat_core(aov.sum, type)
+}
+
+
+
+aov_stat_summary <- function(model) {
   # check that model inherits from correct class
   # else, try to coerce to anova table
   if (!inherits(model, c("aov", "anova"))) model <- stats::anova(model)
 
-  # get summary table and number of terms in model
+  # get summary table
   aov.sum <- broom::tidy(model)
-  n_terms <- nrow(aov.sum) - 1
 
   # for car::Anova, the meansq-column might be missing, so add it manually
   if (!tibble::has_name(aov.sum, "meansq"))
     aov.sum <- dplyr::mutate(aov.sum, meansq = .data$sumsq / .data$df)
 
+  aov.sum
+}
+
+
+
+aov_stat_core <- function(aov.sum, type) {
   # get mean squared of residuals
   meansq.resid <- aov.sum[["meansq"]][nrow(aov.sum)]
   # get total sum of squares
@@ -129,6 +132,8 @@ aov_stat <- function(model, type) {
   # get sum of squares of residuals
   ss.resid <- aov.sum[["sumsq"]][nrow(aov.sum)]
 
+  # number of terms in model
+  n_terms <- nrow(aov.sum) - 1
 
   if (type == "omega") {
     # compute omega squared for each model term

@@ -13,7 +13,7 @@ omega_sq(model)
 
 cohens_f(model)
 
-anova_stats(model, digits = 4)
+anova_stats(model, digits = 3)
 }
 \arguments{
 \item{model}{A fitted anova-model of class \code{aov} or \code{anova}. Other
@@ -30,16 +30,7 @@ A numeric vector with the effect size statistics; for \code{anova_stats()},
 \description{
 Returns the (partial) eta-squared, omega-squared statistic
              or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
-             a tidy summary, including all these statistics, including
-             power for each term.
-}
-\note{
-Interpret eta-squared like r-squared; a rule of thumb (Cohen):
-        \itemize{
-         \item .02 ~ small
-         \item .13 ~ medium
-         \item .26 ~ large
-        }
+             a tidy summary, including all these statistics and power for each term.
 }
 \examples{
 # load sample data
