@@ -97,7 +97,7 @@ anova_stats <- function(model, digits = 3) {
 
 
 
-#' @importFrom tibble has_name
+#' @importFrom tibble has_name add_column
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
 aov_stat <- function(model, type) {
@@ -117,7 +117,7 @@ aov_stat_summary <- function(model) {
 
   # for car::Anova, the meansq-column might be missing, so add it manually
   if (!tibble::has_name(aov.sum, "meansq"))
-    aov.sum <- dplyr::mutate(aov.sum, meansq = .data$sumsq / .data$df)
+    aov.sum <- tibble::add_column(aov.sum, meansq = aov.sum$sumsq / aov.sum$df, .after = "sumsq")
 
   aov.sum
 }
