@@ -43,7 +43,15 @@ print.svyglm.nb <- function(x, se = c("robust", "model"), digits = 4, ...) {
 
   sm$p.value <- pan
   print(sm, ...)
-  message(sprintf("Showing %s standard errors on link-scale (untransformed).", se))
+
+  # add dispersion parameter
+  cat(sprintf("\nDispersion parameter Theta: %.*f", digits, attr(x, "nb.theta", exact = TRUE)))
+  cat(sprintf("\n   Standard Error of Theta: %.*f", digits, attr(x, "nb.theta.se", exact = TRUE)))
+
+  # print weighted median of response
+  cat(sprintf("\n\nSurvey-weighted median of the outcome: %i", attr(x, "response.median", exact = TRUE)))
+
+  message(sprintf("\nShowing %s standard errors on link-scale (untransformed).", se))
 }
 
 

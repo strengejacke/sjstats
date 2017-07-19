@@ -3,11 +3,14 @@
 \name{wtd_sd}
 \alias{wtd_sd}
 \alias{wtd_se}
+\alias{svy_md}
 \title{Weighted statistics for variables}
 \usage{
 wtd_sd(x, weights = NULL)
 
 wtd_se(x, weights = NULL)
+
+svy_md(x, design)
 }
 \arguments{
 \item{x}{(Numeric) vector or a data frame.}
@@ -19,8 +22,10 @@ The weighted standard deviation or standard error of \code{x},
           or for each variable if \code{x} is a data frame.
 }
 \description{
-Compute weighted standard deviation or standard error for a
-               variable or for all variables of a data frame.
+\code{wtd_sd()} and \code{wtd_se()} compute weighted standard
+  deviation or standard error for a variable or for all variables of a data
+  frame. \code{svy_md()} computes the median for a variable in a survey-design
+  (see \code{\link[survey]{svydesign}}).
 }
 \examples{
 wtd_sd(rnorm(n = 100, mean = 3),
@@ -29,5 +34,20 @@ wtd_sd(rnorm(n = 100, mean = 3),
 data(efc)
 wtd_sd(efc[, 1:3], runif(n = nrow(efc)))
 wtd_se(efc[, 1:3], runif(n = nrow(efc)))
+
+
+# median for variables from weighted survey designs
+library(survey)
+data(nhanes_sample)
+
+des <- svydesign(
+  id = ~SDMVPSU,
+  strat = ~SDMVSTRA,
+  weights = ~WTINT2YR,
+  nest = TRUE,
+  data = nhanes_sample
+)
+
+svy_md(nhanes_sample$total, des)
 
 }

@@ -99,8 +99,10 @@ weight2 <- function(x, weights) {
 
 #' @title Weighted statistics for variables
 #' @name wtd_sd
-#' @description Compute weighted standard deviation or standard error for a
-#'                variable or for all variables of a data frame.
+#' @description \code{wtd_sd()} and \code{wtd_se()} compute weighted standard
+#'   deviation or standard error for a variable or for all variables of a data
+#'   frame. \code{svy_md()} computes the median for a variable in a survey-design
+#'   (see \code{\link[survey]{svydesign}}).
 #'
 #' @param x (Numeric) vector or a data frame.
 #' @param weights Numeric vector of weights.
@@ -114,6 +116,21 @@ weight2 <- function(x, weights) {
 #' data(efc)
 #' wtd_sd(efc[, 1:3], runif(n = nrow(efc)))
 #' wtd_se(efc[, 1:3], runif(n = nrow(efc)))
+#'
+#'
+#' # median for variables from weighted survey designs
+#' library(survey)
+#' data(nhanes_sample)
+#'
+#' des <- svydesign(
+#'   id = ~SDMVPSU,
+#'   strat = ~SDMVSTRA,
+#'   weights = ~WTINT2YR,
+#'   nest = TRUE,
+#'   data = nhanes_sample
+#' )
+#'
+#' svy_md(nhanes_sample$total, des)
 #'
 #' @export
 wtd_sd <- function(x, weights = NULL) {
@@ -180,4 +197,24 @@ wtd_se.matrix <- function(x, weights = NULL) {
 #' @export
 wtd_se.default <- function(x, weights = NULL) {
   sqrt(Hmisc::wtd.var(x, weights = weights, na.rm = TRUE) / length(stats::na.omit(x)))
+}
+
+
+#' @rdname wtd_sd
+#' @export
+svy_md <- function(x, design) {
+  # check if pkg survey is available
+  if (!requireNamespace("survey", quietly = TRUE)) {
+    stop("Package `survey` needed to for this function to work. Please install it.", call. = FALSE)
+  }
+
+  as.vector(
+    survey::svyquantile(
+      ~ x,
+      design = design,
+      quantiles = 0.5,
+      ci = FALSE,
+      na.rm = TRUE
+    )
+  )
 }
