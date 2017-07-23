@@ -1,10 +1,14 @@
 #' @title Convergence test for mixed effects models
 #' @name converge_ok
 #'
-#' @description This function provides an alternative convergence test for
-#'                \code{\link[lme4]{merMod}}-objects.
+#' @description \code{converge_ok()} provides an alternative convergence test for
+#'                \code{\link[lme4]{merMod}}-objects; \code{is_singular()} checks
+#'                post-fitting convergence warnings. If the model fit is singular,
+#'                warning about negative eigenvalues of the Hessian can most likely
+#'                be ignored.
 #'
-#' @param x A \code{merMod}-object.
+#' @param x A \code{merMod}-object. For \code{is_singluar()}, may also be a
+#'          \code{glmmTMB}-object.
 #' @param tolerance Indicates up to which value the convergence result is
 #'          accepted. The smaller \code{tolerance} is, the stricter the test
 #'          will be.
@@ -59,4 +63,17 @@ converge_ok <- function(x, tolerance = 0.001) {
   } else {
     warning("`x` must be a `merMod` object.", call. = F)
   }
+}
+
+#' @importFrom lme4 getME
+#' @importFrom glmmTMB getME
+#' @rdname converge_ok
+#' @export
+is_singular <- function(x, tolerance = 1e-6) {
+  if (is_merMod(x))
+    any(abs(lme4::getME(x, "theta")) < tolerance)
+  else if (inherits(x, "glmmTMB"))
+    any(abs(glmmTMB::getME(x, "theta")) < tolerance)
+  else
+    warning("`x` must be a merMod- or glmmTMB-object.", call. = F)
 }

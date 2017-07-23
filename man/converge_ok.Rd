@@ -2,12 +2,16 @@
 % Please edit documentation in R/converge_ok.R
 \name{converge_ok}
 \alias{converge_ok}
+\alias{is_singular}
 \title{Convergence test for mixed effects models}
 \usage{
 converge_ok(x, tolerance = 0.001)
+
+is_singular(x, tolerance = 1e-06)
 }
 \arguments{
-\item{x}{A \code{merMod}-object.}
+\item{x}{A \code{merMod}-object. For \code{is_singluar()}, may also be a
+\code{glmmTMB}-object.}
 
 \item{tolerance}{Indicates up to which value the convergence result is
 accepted. The smaller \code{tolerance} is, the stricter the test
@@ -19,8 +23,11 @@ Logical vector, \code{TRUE} if convergence is fine, \code{FALSE}
           value is returned as return value's name.
 }
 \description{
-This function provides an alternative convergence test for
-               \code{\link[lme4]{merMod}}-objects.
+\code{converge_ok()} provides an alternative convergence test for
+               \code{\link[lme4]{merMod}}-objects; \code{is_singular()} checks
+               post-fitting convergence warnings. If the model fit is singular,
+               warning about negative eigenvalues of the Hessian can most likely
+               be ignored.
 }
 \details{
 This function provides an alternative convergence test for

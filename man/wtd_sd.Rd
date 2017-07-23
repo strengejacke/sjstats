@@ -13,9 +13,14 @@ wtd_se(x, weights = NULL)
 svy_md(x, design)
 }
 \arguments{
-\item{x}{(Numeric) vector or a data frame.}
+\item{x}{(Numeric) vector or a data frame. For \code{svy_md()}, the bare
+(unquoted) variable name, or a character vector with the variable
+name.}
 
 \item{weights}{Numeric vector of weights.}
+
+\item{design}{An object of class \code{\link[survey]{svydesign}}, providing
+a specification of the survey design.}
 }
 \value{
 The weighted standard deviation or standard error of \code{x},
@@ -48,6 +53,7 @@ des <- svydesign(
   data = nhanes_sample
 )
 
-svy_md(nhanes_sample$total, des)
+svy_md(total, des)
+svy_md("total", des)
 
 }

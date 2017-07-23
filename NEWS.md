@@ -6,6 +6,7 @@
 * `eta_sq()`, `cohens_f()` and `omega_sq()` to compute (partial) eta-squared or omega-squared statistics, or Cohen's F for anova tables.
 * `anova_stats()` to compute a complete model summary, including (partial) eta-squared, omega-squared and Cohen's F statistics for anova tables, returned as tidy data frame.
 * `svy_md()` as convenient shortcut to compute the median for variables from survey designs.
+* `is_singular()` to check a model fit for singularity in case of post-fitting convergence warnings.
 
 ## Changes to functions
 

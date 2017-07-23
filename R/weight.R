@@ -104,8 +104,13 @@ weight2 <- function(x, weights) {
 #'   frame. \code{svy_md()} computes the median for a variable in a survey-design
 #'   (see \code{\link[survey]{svydesign}}).
 #'
-#' @param x (Numeric) vector or a data frame.
+#' @param x (Numeric) vector or a data frame. For \code{svy_md()}, the bare
+#'          (unquoted) variable name, or a character vector with the variable
+#'          name.
 #' @param weights Numeric vector of weights.
+#'
+#' @inheritParams svyglm.nb
+#'
 #' @return The weighted standard deviation or standard error of \code{x},
 #'           or for each variable if \code{x} is a data frame.
 #'
@@ -130,7 +135,8 @@ weight2 <- function(x, weights) {
 #'   data = nhanes_sample
 #' )
 #'
-#' svy_md(nhanes_sample$total, des)
+#' svy_md(total, des)
+#' svy_md("total", des)
 #'
 #' @export
 wtd_sd <- function(x, weights = NULL) {
@@ -180,7 +186,7 @@ wtd_se <- function(x, weights = NULL) {
 
 #' @export
 wtd_se.data.frame <- function(x, weights = NULL) {
-  se_result <- purrr::map_dbl(x, ~ sqrt(Hmisc::wtd.var(.x, weights = weights, na.rm = TRUE) / length(stats::na.omit(.x))))
+  se_result <- purrr::map_dbl(x, ~ wtd_se_helper(.x, weights = weights))
   names(se_result) <- colnames(x)
 
   se_result
@@ -188,7 +194,7 @@ wtd_se.data.frame <- function(x, weights = NULL) {
 
 #' @export
 wtd_se.matrix <- function(x, weights = NULL) {
-  se_result <- purrr::map_dbl(x, ~ sqrt(Hmisc::wtd.var(.x, weights = weights, na.rm = TRUE) / length(stats::na.omit(.x))))
+  se_result <- purrr::map_dbl(x, ~ wtd_se_helper(.x, weights = weights))
   names(se_result) <- colnames(x)
 
   se_result
@@ -196,11 +202,16 @@ wtd_se.matrix <- function(x, weights = NULL) {
 
 #' @export
 wtd_se.default <- function(x, weights = NULL) {
+  wtd_se_helper(x, weights)
+}
+
+wtd_se_helper <- function(x, weights) {
   sqrt(Hmisc::wtd.var(x, weights = weights, na.rm = TRUE) / length(stats::na.omit(x)))
 }
 
 
 #' @rdname wtd_sd
+#' @importFrom stats as.formula
 #' @export
 svy_md <- function(x, design) {
   # check if pkg survey is available
@@ -208,9 +219,12 @@ svy_md <- function(x, design) {
     stop("Package `survey` needed to for this function to work. Please install it.", call. = FALSE)
   }
 
+  # deparse
+  v <- stats::as.formula(paste("~", as.character(substitute(x))))
+
   as.vector(
     survey::svyquantile(
-      ~ x,
+      v,
       design = design,
       quantiles = 0.5,
       ci = FALSE,
