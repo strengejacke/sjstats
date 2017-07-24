@@ -1,3 +1,9 @@
+# sjstats 0.11.0
+
+## General
+
+* Added vignettes for various functions.
+
 # sjstats 0.10.3
 
 ## New functions

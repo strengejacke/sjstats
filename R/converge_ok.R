@@ -13,15 +13,22 @@
 #'          accepted. The smaller \code{tolerance} is, the stricter the test
 #'          will be.
 #'
-#' @return Logical vector, \code{TRUE} if convergence is fine, \code{FALSE}
-#'           if convergence is suspicious. Additionally, the convergence
-#'           value is returned as return value's name.
+#' @return For \code{converge_ok()}, a logical vector, which is \code{TRUE} if
+#'           convergence is fine and \code{FALSE} if convergence is suspicious.
+#'           Additionally, the convergence value is returned as return value's name.
+#'           \code{is_sungluar()} returns \code{TRUE} if the model fit is singular.
 #'
-#' @details This function provides an alternative convergence test for
+#' @details \code{converge_ok()} provides an alternative convergence test for
 #'                \code{\link[lme4]{merMod}}-objects, as discussed
 #'                \href{https://github.com/lme4/lme4/issues/120}{here}
 #'                and suggested by Ben Bolker in
 #'                \href{https://github.com/lme4/lme4/issues/120#issuecomment-39920269}{this comment}.
+#'                \cr \cr
+#'                \code{is_singular()} checks if a model fit is singular, and can
+#'                be used in case of post-fitting convergence warnings, such as
+#'                warnings about negative eigenvalues of the Hessian. If the fit
+#'                is singular (i.e. \code{is_singular()} returns \code{TRUE}), these
+#'                warnings can most likely be ignored.
 #'
 #' @examples
 #' library(sjmisc)

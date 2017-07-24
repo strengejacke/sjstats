@@ -1,0 +1,102 @@
+---
+title: "Statistics for Anova Tables"
+author: "Daniel Lüdecke"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Statistics for Anova Tables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r set-options, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", dev = "png", fig.width = 7, fig.height = 3.5, message = FALSE, warning = FALSE)
+options(width = 800, tibble.width = Inf)
+```
+
+# Effect Size Statistics for Anova Tables
+
+This vignettes demontrates those functions of the *sjstats*-package that deal with Anova tables. These functions report different effect size measures, which are useful beyond significance tests (p-values), because they estimate the magnitude of effects, independent from sample size. *sjstats* provides following functions:
+
+* `eta_sq()`
+* `omega_sq()`
+* `cohens_f()`
+* `anova_stats()`
+
+Befor we start, we fit a simple model:
+
+```{r}
+library(sjstats)
+# load sample data
+data(efc)
+
+# fit linear model
+fit <- aov(
+  c12hour ~ as.factor(e42dep) + as.factor(c172code) + c160age,
+  data = efc
+)
+```
+
+All functions accept objects of class `aov` or `anova`, so you can also use model fits from the *car* package, which allows fitting Anova's with different types of sum of squares. Other objects, like `lm`, will be coerced to `anova` internally. 
+
+The following functions return the effect size statistic as named numeric vector, using the model's term names.
+
+## Eta Squared
+
+The eta squared is the proportion of the total variability in the dependent variable that is accounted for by the variation in the independent variable. It is the ratio of the sum of squares for each group level to the total sum of squares. It can be interpreted as percentage of variance accounted for by a variable.
+
+For variables with 1 degree of freedeom (in the numerator), the square root of eta squared is equal to the correlation coefficient _r_. For variables with more than 1 degree of freedom, eta squared equals _R2_. This makes eta squared easily interpretable. Furthermore, these effect sizes can easily be converted into effect size measures that can be, for instance, further processed in meta-analyses.
+
+Eta squared can be computed simply with:
+
+```{r}
+eta_sq(fit)
+```
+
+## Partial Eta Squared
+
+The partial eta squared value is the ratio of the sum of squares for each group level to the sum of squares for each group level plus the residual sum of squares. It is more difficult to interpret, because its value strongly depends on the variability of the residuals. Partial eta squared values should be reported with caution, and Levine and Hullett (2002) recommend reporting eta or omega squared rather than partial eta squared.
+
+Use the `partial`-argument to compute partial eta squared values:
+
+```{r}
+eta_sq(fit, partial = TRUE)
+```
+
+
+## Omega Squared
+
+While eta squared estimates tend to be biased in certain situations, e.g. when the sample size is small or the independent variables have many group levels, omega squared estimates are corrected for this bias.
+
+Omega squared can be simply computed with:
+
+
+```{r}
+omega_sq(fit)
+```
+
+## Cohen's F
+
+Finally, `cohens_f()` computes Cohen's F effect size for all independent variables in the model:
+
+```{r}
+cohens_f(fit)
+```
+
+# Complete Statistical Table Output
+
+The `anova_stats()` function takes a model input and computes a comprehensive summary, including the above effect size measures, returned as tidy data frame (as `tibble`, to be exact):
+
+```{r}
+anova_stats(fit)
+```
+
+Like the other functions, the input may also be an object of class `anova`, so you can also use model fits from the *car* package, which allows fitting Anova's with different types of sum of squares:
+
+```{r}
+anova_stats(car::Anova(fit, type = 3))
+```
+
+# References
+
+Levine TR, Hullet CR. Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research. Human Communication Research 28(4); 2002: 612-625
