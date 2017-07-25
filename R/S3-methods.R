@@ -487,3 +487,26 @@ print.sjstats_pred_accuracy <- function(x, ...) {
   cat(sprintf("      SE: %.2f%%-points\n", 100 * x$std.error))
   cat(sprintf("  Method: %s", x$stat))
 }
+
+
+
+#' @export
+print.sj_grpmean <- function(x, ...) {
+  # headline
+  cat(sprintf(
+    "Grouped Means for %s by %s\n\n",
+    attr(x, "dv.label", exact = TRUE),
+    attr(x, "grp.label", exact = TRUE)
+  ))
+
+  # means
+  print(as.data.frame(x))
+
+  # statistics
+  cat(sprintf(
+    "\nAnova: R2=%.3f; adj.R2=%.3f; F=%.3f",
+    attr(x, "r2", exact = TRUE),
+    attr(x, "adj.r2", exact = TRUE),
+    attr(x, "fstat", exact = TRUE)
+  ))
+}

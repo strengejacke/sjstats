@@ -4,6 +4,10 @@
 
 * Added vignettes for various functions.
 
+## New functions
+
+* `grpmean` to compute mean values by groups (One-way Anova).
+
 # sjstats 0.10.3
 
 ## New functions
