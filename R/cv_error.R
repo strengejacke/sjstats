@@ -3,6 +3,8 @@ utils::globalVariables(c("rmse.train", "predicted", "residuals"))
 #' @title Test and training error from model cross-validation
 #' @name cv_error
 #'
+#' @seealso \code{\link{pred_accuracy}}
+#'
 #' @description \code{cv_error} computes the root mean squared error from a model fitted
 #'          to kfold cross-validated test-training-data. \code{cv_compare}
 #'          does the same, for multiple formulas at once (by calling \code{cv_error}

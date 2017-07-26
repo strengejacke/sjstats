@@ -1,6 +1,8 @@
 #' @title Accuracy of predictions from model fit
 #' @name pred_accuracy
 #'
+#' @seealso \code{\link{cv_error}}
+#'
 #' @description This function calculates the predictive accuracy of linear
 #'              or logistic regression models.
 #'

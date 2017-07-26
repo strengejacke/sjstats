@@ -4,8 +4,8 @@ Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
 Version: 0.10.3.9000
 Date: 2017-07-22
-Author: Daniel L?decke <d.luedecke@uke.de>
-Maintainer: Daniel L?decke <d.luedecke@uke.de>
+Author: Daniel Lüdecke <d.luedecke@uke.de>
+Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
              which are not directly provided by R's base or stats packages.
              This package aims at providing, first, shortcuts for statistical

@@ -1,7 +1,8 @@
 #' @title Intraclass-Correlation Coefficient
 #' @name icc
 #' @description This function calculates the intraclass-correlation
-#'                (icc) for random intercepts of mixed effects models.
+#'                (icc) - sometimes also called \emph{variance partition coefficient}
+#'                (vpc) - for random intercepts of mixed effects models.
 #'                Currently, \code{\link[lme4]{merMod}} and
 #'                \code{\link[glmmTMB]{glmmTMB}} objects are supported.
 #'
@@ -180,9 +181,7 @@ icc.lme4 <- function(fit, obj.name) {
       # for negative binomial models, we use 0
       resid_var <- 0
     } else {
-      # for linear and poisson models, we have a clear
-      # residual variance
-      # resid_var <- attr(reva, "sc") ^ 2
+      # for linear and poisson models, we have a clear residual variance
       resid_var <- stats::sigma(fit) ^ 2
     }
 
@@ -203,15 +202,17 @@ icc.lme4 <- function(fit, obj.name) {
         r <- stats::sigma(fit)
       }
 
-      ri.icc <-
-        (exp(tau.00) - 1) /
-        ((exp(total_var) - 1) + (exp(total_var) / r) + exp(-beta - (total_var / 2)))
+      # make formula more readable
+      numerator <- (exp(tau.00) - 1)
+      denominator <- ((exp(total_var) - 1) + (exp(total_var) / r) + exp(-beta - (total_var / 2)))
+
+      ri.icc <- numerator / denominator
     } else {
       # random intercept icc
       ri.icc <- tau.00 / total_var
     }
 
-    # get random slope random intercep correlations
+    # get random slope random intercept correlations
     # do we have any rnd slopes?
     has_rnd_slope <- purrr::map_lgl(reva, ~ dim(attr(.x, "correlation"))[1] > 1)
     tau.01 <- rho.01 <- NULL

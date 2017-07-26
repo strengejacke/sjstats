@@ -313,7 +313,7 @@ autocorrelation <- function(x, model.column = NULL, ...) {
       # iterate all model columns in nested data frame
       purrr::map(x[[model.column]], ~ .x) %>%
       # call ncvTest for each model, and just get p-value
-      purrr::map_dbl(~ car::durbinWatsonTest(.x, ...)$p)
+      purrr::map_dbl(~ car::durbinWatsonTest(.x)$p)
   } else {
     # check for autocorrelation
     ts <- car::durbinWatsonTest(x, ...)

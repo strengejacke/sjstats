@@ -47,3 +47,6 @@ cv_compare(efc, formulas = list(
 ))
 
 }
+\seealso{
+\code{\link{pred_accuracy}}
+}

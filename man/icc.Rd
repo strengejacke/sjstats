@@ -21,7 +21,8 @@ A numeric vector with all random intercept intraclass-correlation-coefficients,
 }
 \description{
 This function calculates the intraclass-correlation
-               (icc) for random intercepts of mixed effects models.
+               (icc) - sometimes also called \emph{variance partition coefficient}
+               (vpc) - for random intercepts of mixed effects models.
                Currently, \code{\link[lme4]{merMod}} and
                \code{\link[glmmTMB]{glmmTMB}} objects are supported.
 }

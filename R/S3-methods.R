@@ -492,6 +492,11 @@ print.sjstats_pred_accuracy <- function(x, ...) {
 
 #' @export
 print.sj_grpmean <- function(x, ...) {
+  print_grpmean(x, ...)
+}
+
+
+print_grpmean <- function(x, ...) {
   # headline
   cat(sprintf(
     "Grouped Means for %s by %s\n\n",
@@ -509,4 +514,22 @@ print.sj_grpmean <- function(x, ...) {
     attr(x, "adj.r2", exact = TRUE),
     attr(x, "fstat", exact = TRUE)
   ))
+}
+
+
+#' @importFrom purrr walk
+#' @export
+print.sj_grpmeans <- function(x, ...) {
+  purrr::walk(x, function(dat) {
+    # get grouping title label
+    grp <- attr(dat, "group", exact = T)
+
+    # print title for grouping
+    cat(sprintf("## Grouped by:\n%s\n\n", grp))
+
+    # print grpmean-table
+    print_grpmean(dat, ...)
+
+    cat("\n\n\n")
+  })
 }
