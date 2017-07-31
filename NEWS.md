@@ -6,7 +6,9 @@
 
 ## New functions
 
-* `grpmean` to compute mean values by groups (One-way Anova).
+* `grpmean()` to compute mean values by groups (One-way Anova).
+* `find_beta()` and `find_beta2()` to find the shape parameters of a Beta distribution.
+* `find_normal()` and `find_cauchy()` to find the parameters of a normal or cauchy distribution.
 
 # sjstats 0.10.3
 
