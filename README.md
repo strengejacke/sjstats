@@ -42,6 +42,8 @@ Please note the package dependencies when installing from GitHub. The GitHub ver
 [![downloads](http://cranlogs.r-pkg.org/badges/sjstats)](http://cranlogs.r-pkg.org/)
 &#160;&#160;
 [![total](http://cranlogs.r-pkg.org/badges/grand-total/sjstats)](http://cranlogs.r-pkg.org/)
+&#160;&#160;
+[![Travis-CI Build Status](https://travis-ci.org/strengejacke/sjstats.svg?branch=master)](https://travis-ci.org/strengejacke/sjstats)
 
 To install the latest stable release from CRAN, type following command into the R console:
 
