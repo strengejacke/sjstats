@@ -22,13 +22,13 @@ cv_compare(data, formulas, k = 5)
 A tibble with the root mean squared errors for the training and test data.
 }
 \description{
-\code{cv_error} computes the root mean squared error from a model fitted
-         to kfold cross-validated test-training-data. \code{cv_compare}
-         does the same, for multiple formulas at once (by calling \code{cv_error}
+\code{cv_error()} computes the root mean squared error from a model fitted
+         to kfold cross-validated test-training-data. \code{cv_compare()}
+         does the same, for multiple formulas at once (by calling \code{cv_error()}
          for each formula).
 }
 \details{
-\code{cv_error} first generates cross-validated test-training pairs, using
+\code{cv_error()} first generates cross-validated test-training pairs, using
          \code{\link[modelr]{crossv_kfold}} and then fits a linear model, which
          is described in \code{formula}, to the training data. Then, predictions
          for the test data are computed, based on the trained models.

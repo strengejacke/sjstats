@@ -40,9 +40,9 @@ typical_value <- function(x, fun = c("mean", "median", "mode", "weighted.mean"),
 
   if (fun == "median")
     myfun <- get("median", asNamespace("stats"))
-  if (fun == "weighted.mean")
+  else if (fun == "weighted.mean")
     myfun <- get("weighted.mean", asNamespace("stats"))
-  if (fun == "mode")
+  else if (fun == "mode")
     myfun <- get("mode_value", asNamespace("sjstats"))
   else
     myfun <- get("mean", asNamespace("base"))
@@ -51,13 +51,19 @@ typical_value <- function(x, fun = c("mean", "median", "mode", "weighted.mean"),
     do.call(myfun, args = list(x = x, na.rm = TRUE, ...))
   else if (is.factor(x))
     levels(x)[1]
-  else {
+  else
     mode_value(x)
-  }
 }
 
 
 mode_value <- function(x, ...) {
+  # create frequency table, to find most common value
   counts <- table(x)
-  names(counts)[max(counts) == counts]
+  modus <- names(counts)[max(counts) == counts]
+
+  # check if it's numeric
+  if (!is.na(as.numeric(modus)))
+    as.numeric(modus)
+  else
+    modus
 }
