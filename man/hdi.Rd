@@ -4,7 +4,7 @@
 \alias{hdi}
 \title{Compute high density intervals (HDI) for MCMC samples}
 \usage{
-hdi(x, prob = 0.9)
+hdi(x, prob = 0.9, trans = NULL)
 }
 \arguments{
 \item{x}{A vector of values from a probability distribution (e.g., posterior
@@ -12,6 +12,9 @@ probabilities from MCMC sampling), or a \code{stanreg}-object.}
 
 \item{prob}{Scalar between 0 and 1, indicating the mass within the credible
 interval that is to be estimated.}
+
+\item{trans}{Name of a function or character vector naming a function, used
+to apply transformations on the returned HDI-values.}
 }
 \value{
 If \code{x} is a vector, \code{hdi()} returns a vector of length two
@@ -30,6 +33,16 @@ Computation is based on the code from Kruschke 2015, pp. 727f.
 library(rstanarm)
 fit <- stan_glm(mpg ~ wt + am, data = mtcars, chains = 1)
 hdi(fit)
+
+# fit logistic regression model
+fit <- stan_glm(
+  vs ~ wt + am,
+  data = mtcars,
+  family = binomial("logit"),
+  chains = 1
+)
+# compute hdi, transform on "odds ratio scale"
+hdi(fit, trans = exp)
 
 }
 \references{
