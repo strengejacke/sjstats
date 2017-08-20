@@ -5,6 +5,7 @@ General:
 
 New functions:
 * `grpmean()` to compute mean values by groups (One-way Anova).
+* `hdi()` to compute high density intervals (HDI) for MCMC samples.
 * `find_beta()` and `find_beta2()` to find the shape parameters of a Beta distribution.
 * `find_normal()` and `find_cauchy()` to find the parameters of a normal or cauchy distribution.
 
