@@ -3,6 +3,7 @@
 ## General
 
 * Added vignettes for various functions.
+* Fixed issue with latest tidyr-update on CRAN.
 
 ## New functions
 

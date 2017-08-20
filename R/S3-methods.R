@@ -306,7 +306,8 @@ print.se.icc.lme4 <- function(x, ...) {
 
 
 
-#' @importFrom tidyr gather_
+#' @importFrom tidyr gather
+#' @importFrom rlang .data
 #' @export
 plot.sj_inequ_trend <- function(x, ...) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
@@ -320,11 +321,14 @@ plot.sj_inequ_trend <- function(x, ...) {
   gather.cols1 <- colnames(x$data)[!colnames(x$data) %in% c("zeit", "lo", "hi")]
   gather.cols2 <- colnames(x$data)[!colnames(x$data) %in% c("zeit", "rr", "rd")]
 
+  key_col <- "grp"
+  value_col <- "y"
+
   # gather data to plot rr and rd
-  dat1 <- tidyr::gather_(x$data, key_col = "grp", value_col = "y", gather_cols = gather.cols1)
+  dat1 <- tidyr::gather(x$data, !! key_col, !! value_col, !! gather.cols1)
 
   # gather data for raw prevalences
-  dat2 <- tidyr::gather_(x$data, key_col = "grp", value_col = "y", gather_cols = gather.cols2)
+  dat2 <- tidyr::gather(x$data, !! key_col, !! value_col, !! gather.cols2)
 
   # Proper value names, for facet labels
   dat1$grp[dat1$grp == "rr"] <- "Rate Ratios"

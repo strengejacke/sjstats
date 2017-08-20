@@ -2,6 +2,7 @@ Version 0.11.0
 ------------------------------------------------------------------------------
 General:
 * Added vignettes for various functions.
+* Fixed issue with latest tidyr-update on CRAN.
 
 New functions:
 * `grpmean()` to compute mean values by groups (One-way Anova).

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2017-07-24" />
+<meta name="date" content="2017-08-20" />
 
 <title>Statistics for Anova Tables</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Statistics for Anova Tables</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2017-07-24</em></h4>
+<h4 class="date"><em>2017-08-20</em></h4>
 
 
 
@@ -90,7 +90,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <span class="co"># fit linear model</span>
 fit &lt;-<span class="st"> </span><span class="kw">aov</span>(
-  c12hour ~<span class="st"> </span><span class="kw">as.factor</span>(e42dep) +<span class="st"> </span><span class="kw">as.factor</span>(c172code) +<span class="st"> </span>c160age,
+  c12hour <span class="op">~</span><span class="st"> </span><span class="kw">as.factor</span>(e42dep) <span class="op">+</span><span class="st"> </span><span class="kw">as.factor</span>(c172code) <span class="op">+</span><span class="st"> </span>c160age,
   <span class="dt">data =</span> efc
 )</code></pre></div>
 <p>All functions accept objects of class <code>aov</code> or <code>anova</code>, so you can also use model fits from the <em>car</em> package, which allows fitting Anova’s with different types of sum of squares. Other objects, like <code>lm</code>, will be coerced to <code>anova</code> internally.</p>
@@ -140,7 +140,7 @@ fit &lt;-<span class="st"> </span><span class="kw">aov</span>(
 <span class="co">#&gt; 3             c160age     1  105169.60 105169.595    59.408   0.000 0.048         0.066   0.048    0.267  1.00</span>
 <span class="co">#&gt; 4           Residuals   834 1476436.34   1770.307        NA      NA    NA            NA      NA       NA    NA</span></code></pre></div>
 <p>Like the other functions, the input may also be an object of class <code>anova</code>, so you can also use model fits from the <em>car</em> package, which allows fitting Anova’s with different types of sum of squares:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova_stats</span>(car::<span class="kw">Anova</span>(fit, <span class="dt">type =</span> <span class="dv">3</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova_stats</span>(car<span class="op">::</span><span class="kw">Anova</span>(fit, <span class="dt">type =</span> <span class="dv">3</span>))
 <span class="co">#&gt; # A tibble: 5 x 11</span>
 <span class="co">#&gt;                  term       sumsq     meansq    df statistic p.value etasq partial.etasq omegasq cohens.f power</span>
 <span class="co">#&gt;                 &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;</span>
