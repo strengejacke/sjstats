@@ -9,7 +9,8 @@
 #'        \code{x}. Currently, \code{"mean"}, \code{"weighted.mean"},
 #'        \code{"median"} and \code{"mode"} are supported, which call the
 #'        corresponding R functions (except \code{"mode"}, which calls an
-#'        internal function to compute the most common value).
+#'        internal function to compute the most common value). \code{"zero"}
+#'        simply returns 0.
 #' @param ... Further arguments, passed down to \code{fun}.
 #'
 #' @return The "typical" value of \code{x}.
@@ -35,7 +36,7 @@
 #' typical_value(x, "weighted.mean", w = wt)
 #'
 #' @export
-typical_value <- function(x, fun = c("mean", "median", "mode", "weighted.mean"), ...) {
+typical_value <- function(x, fun = c("mean", "median", "mode", "weighted.mean", "zero"), ...) {
   fun <- match.arg(fun)
 
   if (fun == "median")
@@ -44,6 +45,8 @@ typical_value <- function(x, fun = c("mean", "median", "mode", "weighted.mean"),
     myfun <- get("weighted.mean", asNamespace("stats"))
   else if (fun == "mode")
     myfun <- get("mode_value", asNamespace("sjstats"))
+  else if (fun == "zero")
+    return(0)
   else
     myfun <- get("mean", asNamespace("base"))
 

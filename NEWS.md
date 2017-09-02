@@ -1,3 +1,9 @@
+# sjstats 0.11.1
+
+## Changes to functions
+
+* `typical_value()` gets a "zero"-option for the `fun`-argument.
+
 # sjstats 0.11.0
 
 ## General

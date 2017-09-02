@@ -113,7 +113,7 @@ efc \%>\%
 boot_p(bs$gender)
 summary(fit)$coefficients[3, ]
 
-
+\dontrun{
 # 'spread_coef()' from the 'sjmisc'-package makes it easy to generate
 # bootstrapped statistics like confidence intervals or p-values
 library(dplyr)
@@ -141,7 +141,7 @@ efc \%>\%
   # spread model coefficient for all 100 models
   spread_coef(models, append = FALSE) \%>\%
   # compute the CI for all bootstrapped model coefficients
-  boot_ci()
+  boot_ci()}
 
 }
 \references{

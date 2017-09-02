@@ -4,7 +4,8 @@
 \alias{typical_value}
 \title{Return the typical value of a vector}
 \usage{
-typical_value(x, fun = c("mean", "median", "mode", "weighted.mean"), ...)
+typical_value(x, fun = c("mean", "median", "mode", "weighted.mean", "zero"),
+  ...)
 }
 \arguments{
 \item{x}{A variable.}
@@ -13,7 +14,8 @@ typical_value(x, fun = c("mean", "median", "mode", "weighted.mean"), ...)
 \code{x}. Currently, \code{"mean"}, \code{"weighted.mean"},
 \code{"median"} and \code{"mode"} are supported, which call the
 corresponding R functions (except \code{"mode"}, which calls an
-internal function to compute the most common value).}
+internal function to compute the most common value). \code{"zero"}
+simply returns 0.}
 
 \item{...}{Further arguments, passed down to \code{fun}.}
 }
