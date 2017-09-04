@@ -140,7 +140,7 @@ icc <- function(x, ...) {
 
 #' @importFrom lme4 VarCorr fixef getME
 #' @importFrom glmmTMB VarCorr fixef getME
-#' @importFrom stats family formula sigma
+#' @importFrom stats family formula
 #' @importFrom purrr map map_dbl map_lgl
 icc.lme4 <- function(fit, obj.name) {
   # check object class
@@ -172,6 +172,9 @@ icc.lme4 <- function(fit, obj.name) {
     # random slope-variances (tau 11)
     tau.11 <- unlist(lapply(reva, function(x) diag(x)[-1]))
 
+    # get residual standard deviation sigma
+    sig <- attr(reva, "sc")
+
     # residual variances, i.e.
     # within-cluster-variance (sigma^2)
     if (inherits(fit, c("glmerMod", "glmmTMB")) && fitfam == "binomial") {
@@ -179,10 +182,13 @@ icc.lme4 <- function(fit, obj.name) {
       resid_var <- (pi ^ 2) / 3
     } else if (inherits(fit, "glmerMod") && is_negbin) {
       # for negative binomial models, we use 0
-      resid_var <- 0
+      resid_var <- 1
     } else {
       # for linear and poisson models, we have a clear residual variance
-      resid_var <- stats::sigma(fit) ^ 2
+      resid_var <- sig ^ 2
+
+      # requires R >= 3.3
+      # resid_var <- stats::sigma(fit) ^ 2
     }
 
     # total variance, sum of random intercept and residual variances
@@ -199,7 +205,10 @@ icc.lme4 <- function(fit, obj.name) {
         # for negative binomial models, we also need the intercept...
         beta <- as.numeric(glmmTMB::fixef(fit)[[1]]["(Intercept)"])
         # ... and the theta value to compute the ICC
-        r <- stats::sigma(fit)
+        r <- sig
+
+        # requires R >= 3.3
+        # r <- stats::sigma(fit)
       }
 
       # make formula more readable

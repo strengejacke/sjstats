@@ -3,6 +3,7 @@
 ## Changes to functions
 
 * `typical_value()` gets a "zero"-option for the `fun`-argument.
+* Changes to `icc()`, which used `stats::sigma()` and thus required R-version 3.3 or higher. Now should depend on R 3.2 again.
 
 # sjstats 0.11.0
 
