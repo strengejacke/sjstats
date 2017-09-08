@@ -5,6 +5,10 @@
 * `typical_value()` gets a "zero"-option for the `fun`-argument.
 * Changes to `icc()`, which used `stats::sigma()` and thus required R-version 3.3 or higher. Now should depend on R 3.2 again.
 
+## New functions
+
+* `rope()` to calculate the region of practical equivalence for MCMC samples.
+
 # sjstats 0.11.0
 
 ## General

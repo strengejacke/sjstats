@@ -2,20 +2,29 @@
 #' @name hdi
 #'
 #' @description \code{hdi()} computes the high density interval for values from
-#'              MCMC samples.
+#'              MCMC samples. \code{rope()} calculates the proportion of a posterior
+#'              distribution that lies within of a region of practical equivalence.
 #'
 #' @param x A vector of values from a probability distribution (e.g., posterior
 #'        probabilities from MCMC sampling), or a \code{stanreg}-object.
 #' @param prob Scalar between 0 and 1, indicating the mass within the credible
 #'        interval that is to be estimated.
+#' @param rope Vector of length two, indicating the lower and upper limit of a
+#'        range around zero, which indicates the region of practical equivalence.
+#'        Values of the posterior distribution within this range are considered as
+#'        being "practically equivalent to zero".
 #' @param trans Name of a function or character vector naming a function, used
-#'        to apply transformations on the returned HDI-values.
+#'        to apply transformations on the returned HDI-values resp.
+#'        (for \code{rope()}) on the values of the posterior distribution, before
+#'        calculating the rope based on the boundaries given in \code{rope}. Note
+#'        that the values in \code{rope} are not transformed.
 #'
 #'
-#' @return If \code{x} is a vector, \code{hdi()} returns a vector of length two
+#' @return For \code{hdi()}, if \code{x} is a vector, returns a vector of length two
 #'         with the lower and upper limit of the HDI; if \code{x} is a
 #'         \code{stanreg}-object, returns a tibble with lower and upper HDI-limits
-#'         for each predictor.
+#'         for each predictor. For \code{rope()}, returns the percentage of values
+#'         from \code{x} that are within the boundaries of \code{rope}.
 #'
 #' @details Computation is based on the code from Kruschke 2015, pp. 727f.
 #'
@@ -36,12 +45,28 @@
 #' # compute hdi, transform on "odds ratio scale"
 #' hdi(fit, trans = exp)
 #'
+#' # compute rope, on scale of linear predictor. finds proportion
+#' # of posterior distribution values between -1 and 1.
+#' rope(fit, rope = c(-1, 1))
+#'
+#' # compute rope, boundaries as "odds ratios". finds proportion of
+#' # posterior distribution values, which - after being exponentiated -
+#' # are between .8 and 1.25 (about -.22 and .22 on linear scale)
+#' rope(fit, rope = c(.8, 1.25), trans = exp)
+#'
 #' @importFrom tibble as_tibble rownames_to_column
 #' @importFrom purrr map_dbl map_df
 #' @importFrom sjmisc rotate_df
 #' @export
 hdi <- function(x, prob = .9, trans = NULL) {
   UseMethod("hdi")
+}
+
+
+#' @rdname hdi
+#' @export
+rope <- function(x, rope, trans = NULL) {
+  UseMethod("rope")
 }
 
 
@@ -83,4 +108,53 @@ hdi_helper <- function(x, prob, trans) {
   }
 
   c(HDImin, HDImax)
+}
+
+
+#' @export
+rope.default <- function(x, rope, trans = NULL) {
+  rope_helper(x, rope, trans)
+}
+
+
+#' @export
+rope.stanreg <- function(x, rope, trans = NULL) {
+  # get posterior data
+  dat <- x %>%
+    tibble::as_tibble() %>%
+    purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
+    sjmisc::rotate_df() %>%
+    tibble::rownames_to_column()
+
+  colnames(dat) <- c("term", "rope")
+
+  dat
+}
+
+
+#' @importFrom dplyr between
+rope_helper <- function(x, rope, trans) {
+  # stop if argument is not correct
+  if (length(rope) != 2)
+    stop("Argument `rope` needs to be a vector of length two.", call. = F)
+
+  # switch values, if lower bound is larger than upper bound
+  if (rope[1] > rope[2]) {
+    tmp <- rope[2]
+    rope[2] <- rope[1]
+    rope[1] <- tmp
+  }
+
+  # check if we have correct function
+  if (!is.null(trans)) {
+    trans <- match.fun(trans)
+    x <- trans(x)
+  }
+
+  # sort values, to compute rope
+  x <- sort(x)
+  r <- dplyr::between(x, rope[1], rope[2])
+
+  # compute proportion of values within boundaries
+  sum(r) / length(x)
 }
