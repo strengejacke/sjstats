@@ -3,10 +3,11 @@
 #'
 #' @description \code{hdi()} computes the high density interval for values from
 #'              MCMC samples. \code{rope()} calculates the proportion of a posterior
-#'              distribution that lies within of a region of practical equivalence.
+#'              distribution that lies within a region of practical equivalence.
 #'
 #' @param x A vector of values from a probability distribution (e.g., posterior
-#'        probabilities from MCMC sampling), or a \code{stanreg}-object.
+#'        probabilities from MCMC sampling), or a \code{stanreg}- or
+#'        \code{stanfit}-object.
 #' @param prob Scalar between 0 and 1, indicating the mass within the credible
 #'        interval that is to be estimated.
 #' @param rope Vector of length two, indicating the lower and upper limit of a
@@ -26,7 +27,7 @@
 #'         for each predictor. For \code{rope()}, returns the proportion of values
 #'         from \code{x} that are within the boundaries of \code{rope}.
 #'
-#' @details Computation is based on the code from Kruschke 2015, pp. 727f.
+#' @details Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
 #'
 #' @references Kruschke JK. Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and Stan. 2nd edition. Academic Press, 2015
 #'
@@ -86,6 +87,21 @@ hdi.stanreg <- function(x, prob = .9, trans = NULL) {
 
 
 #' @export
+hdi.stanfit <- function(x, prob = .9, trans = NULL) {
+  # get posterior data
+  dat <- x %>%
+    as.data.frame() %>%
+    purrr::map_df(~ hdi_helper(.x, prob, trans)) %>%
+    sjmisc::rotate_df() %>%
+    tibble::rownames_to_column()
+
+  colnames(dat) <- c("term", "hdi.low", "hdi.high")
+
+  dat
+}
+
+
+#' @export
 hdi.default <- function(x, prob = .9, trans = NULL) {
   hdi_helper(x, prob, trans)
 }
@@ -122,6 +138,21 @@ rope.stanreg <- function(x, rope, trans = NULL) {
   # get posterior data
   dat <- x %>%
     tibble::as_tibble() %>%
+    purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
+    sjmisc::rotate_df() %>%
+    tibble::rownames_to_column()
+
+  colnames(dat) <- c("term", "rope")
+
+  dat
+}
+
+
+#' @export
+rope.stanfit <- function(x, rope, trans = NULL) {
+  # get posterior data
+  dat <- x %>%
+    as.data.frame() %>%
     purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
     sjmisc::rotate_df() %>%
     tibble::rownames_to_column()

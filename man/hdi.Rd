@@ -11,7 +11,8 @@ rope(x, rope, trans = NULL)
 }
 \arguments{
 \item{x}{A vector of values from a probability distribution (e.g., posterior
-probabilities from MCMC sampling), or a \code{stanreg}-object.}
+probabilities from MCMC sampling), or a \code{stanreg}- or
+\code{stanfit}-object.}
 
 \item{prob}{Scalar between 0 and 1, indicating the mass within the credible
 interval that is to be estimated.}
@@ -37,10 +38,10 @@ For \code{hdi()}, if \code{x} is a vector, returns a vector of length two
 \description{
 \code{hdi()} computes the high density interval for values from
              MCMC samples. \code{rope()} calculates the proportion of a posterior
-             distribution that lies within of a region of practical equivalence.
+             distribution that lies within a region of practical equivalence.
 }
 \details{
-Computation is based on the code from Kruschke 2015, pp. 727f.
+Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
 }
 \examples{
 library(rstanarm)
