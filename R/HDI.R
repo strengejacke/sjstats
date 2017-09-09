@@ -23,7 +23,7 @@
 #' @return For \code{hdi()}, if \code{x} is a vector, returns a vector of length two
 #'         with the lower and upper limit of the HDI; if \code{x} is a
 #'         \code{stanreg}-object, returns a tibble with lower and upper HDI-limits
-#'         for each predictor. For \code{rope()}, returns the percentage of values
+#'         for each predictor. For \code{rope()}, returns the proportion of values
 #'         from \code{x} that are within the boundaries of \code{rope}.
 #'
 #' @details Computation is based on the code from Kruschke 2015, pp. 727f.

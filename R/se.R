@@ -131,7 +131,11 @@ se <- function(x, nsim = 100, type = c("fe", "re")) {
   # match arguments
   type <- match.arg(type)
 
-  if (inherits(x, c("lmerMod", "nlmerMod", "merModLmerTest"))) {
+  if (inherits(x, c("stanreg", "stanfit"))) {
+    se_result <- x %>%
+      broom::tidy() %>%
+      dplyr::select(.data$term, .data$estimate, .data$std.error)
+  } else if (inherits(x, c("lmerMod", "nlmerMod", "merModLmerTest"))) {
     # return standard error for (linear) mixed models
     se_result <- std_merMod(x)
   } else if (inherits(x, "icc.lme4")) {
