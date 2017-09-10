@@ -6,6 +6,7 @@
 * Changes to `icc()`, which used `stats::sigma()` and thus required R-version 3.3 or higher. Now should depend on R 3.2 again.
 * `se()` now also supports `stanreg` and `stanfit` objects.
 * `hdi()` now also supports `stanfit`-objects.
+* `std_beta()` gets a `ci.lvl`-argument, to specify the level of the calculated confidence interval for standardized coefficients.
 
 ## New functions
 

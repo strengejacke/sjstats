@@ -11,6 +11,8 @@
 #'          suggestion, rescaling the estimates by deviding them by two standard
 #'          deviations, so resulting coefficients are directly comparable for
 #'          untransformed binary predictors.
+#' @param ci.lvl Numeric, the level of the confidence intervals.
+#'
 #' @return A \code{tibble} with term names, standardized beta coefficients,
 #'           standard error and confidence intervals of \code{fit}.
 #'
@@ -56,11 +58,14 @@
 #' @importFrom tibble tibble as_tibble
 #' @importFrom purrr map_if
 #' @export
-std_beta <- function(fit, type = "std") {
+std_beta <- function(fit, type = "std", ci.lvl = .95) {
+  # compute ci, two-ways
+  ci <- 1 - ((1 - ci.lvl) / 2)
+
   # if we have merMod object (lme4), we need
   # other function to compute std. beta
   if (inherits(fit, c("lmerMod", "merModLmerTest")))
-    return(sjs.stdmm(fit))
+    return(sjs.stdmm(fit, ci.lvl))
 
   # has model intercept?
   tmp_i <- attr(stats::terms(fit), "intercept")
@@ -122,8 +127,8 @@ std_beta <- function(fit, type = "std") {
     term = names(b),
     std.estimate = beta,
     std.error = beta.se,
-    conf.low = beta - stats::qnorm(.975) * beta.se,
-    conf.high = beta + stats::qnorm(.975) * beta.se
+    conf.low = beta - stats::qnorm(ci) * beta.se,
+    conf.high = beta + stats::qnorm(ci) * beta.se
   )
 }
 
@@ -131,7 +136,10 @@ std_beta <- function(fit, type = "std") {
 #' @importFrom stats sd coef
 #' @importFrom lme4 fixef getME
 #' @importFrom tibble tibble
-sjs.stdmm <- function(fit) {
+sjs.stdmm <- function(fit, ci.lvl) {
+  # compute ci, two-ways
+  ci <- 1 - ((1 - ci.lvl) / 2)
+
   # code from Ben Bolker, see
   # http://stackoverflow.com/a/26206119/2094622
   sdy <- stats::sd(lme4::getME(fit, "y"))
@@ -144,7 +152,7 @@ sjs.stdmm <- function(fit) {
     term = names(lme4::fixef(fit)),
     std.estimate = sc,
     std.error = se,
-    conf.low = sc - stats::qnorm(.975) * se,
-    conf.high = sc + stats::qnorm(.975) * se
+    conf.low = sc - stats::qnorm(ci) * se,
+    conf.high = sc + stats::qnorm(ci) * se
   )
 }

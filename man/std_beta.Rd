@@ -4,7 +4,7 @@
 \alias{std_beta}
 \title{Standardized beta coefficients and CI of linear and mixed models}
 \usage{
-std_beta(fit, type = "std")
+std_beta(fit, type = "std", ci.lvl = 0.95)
 }
 \arguments{
 \item{fit}{Fitted linear (mixed) model of class \code{lm} or
@@ -16,6 +16,8 @@ are computed by default. Use \code{type = "std2"} to follow
 suggestion, rescaling the estimates by deviding them by two standard
 deviations, so resulting coefficients are directly comparable for
 untransformed binary predictors.}
+
+\item{ci.lvl}{Numeric, the level of the confidence intervals.}
 }
 \value{
 A \code{tibble} with term names, standardized beta coefficients,
