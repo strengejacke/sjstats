@@ -45,7 +45,7 @@ get_grouped_data <- function(x) {
     stats::complete.cases()
 
   # select only complete cases
-  grps <- grps %>% dplyr::filter(cc)
+  grps <- grps %>% dplyr::filter(!! cc)
 
   # arrange data
   if (length(attr(x, "vars", exact = T)) == 1)
@@ -57,3 +57,10 @@ get_grouped_data <- function(x) {
   grps
 }
 
+
+str_ends_with <- function(x, .match) {
+  l <- nchar(x)
+  n <- nchar(.match)
+  m <- substr(x, pmax(1, l - n + 1), l)
+  which(m == .match)
+}

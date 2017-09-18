@@ -16,7 +16,7 @@
 #' @return For \code{converge_ok()}, a logical vector, which is \code{TRUE} if
 #'           convergence is fine and \code{FALSE} if convergence is suspicious.
 #'           Additionally, the convergence value is returned as return value's name.
-#'           \code{is_sungluar()} returns \code{TRUE} if the model fit is singular.
+#'           \code{is_singluar()} returns \code{TRUE} if the model fit is singular.
 #'
 #' @details \code{converge_ok()} provides an alternative convergence test for
 #'                \code{\link[lme4]{merMod}}-objects, as discussed
@@ -54,33 +54,43 @@
 #' @export
 converge_ok <- function(x, tolerance = 0.001) {
   # check for package availability
-  if (!requireNamespace("Matrix", quietly = TRUE)) {
+  if (!requireNamespace("Matrix", quietly = TRUE))
     stop("Package `Matrix` needed for this function to work. Please install it.", call. = FALSE)
-  }
 
   # is 'x' an lmer object?
-  if (is_merMod(x)) {
-    relgrad <- with(x@optinfo$derivs, Matrix::solve(Hessian, gradient))
-    # copy logical value, TRUE if convergence is OK
-    retval <- max(abs(relgrad)) < tolerance
-    # copy convergence value
-    names(retval) <- max(abs(relgrad))
-    # return result
-    return(retval)
-  } else {
+  if (!is_merMod(x))
     warning("`x` must be a `merMod` object.", call. = F)
-  }
+
+
+  relgrad <- with(x@optinfo$derivs, Matrix::solve(Hessian, gradient))
+
+  # copy logical value, TRUE if convergence is OK
+  retval <- max(abs(relgrad)) < tolerance
+  # copy convergence value
+  names(retval) <- max(abs(relgrad))
+
+  # return result
+  retval
 }
+
 
 #' @importFrom lme4 getME
 #' @importFrom glmmTMB getME
 #' @rdname converge_ok
 #' @export
-is_singular <- function(x, tolerance = 1e-6) {
-  if (is_merMod(x))
-    any(abs(lme4::getME(x, "theta")) < tolerance)
-  else if (inherits(x, "glmmTMB"))
-    any(abs(glmmTMB::getME(x, "theta")) < tolerance)
-  else
+is_singular <- function(x, tolerance = 1e-5) {
+  if (is_merMod(x)) {
+    theta <- lme4::getME(x, "theta")
+    # diagonal elements are identifiable because they are fitted
+    #  with a lower bound of zero ...
+    diag.element <- lme4::getME(x, "lower") == 0
+    any(abs(theta[diag.element]) < tolerance)
+  } else if (inherits(x, "glmmTMB")) {
+    theta <- glmmTMB::getME(x, "theta")
+    # diagonal elements are identifiable because they are fitted
+    #  with a lower bound of zero ...
+    diag.element <- glmmTMB::getME(x, "lower") == 0
+    any(abs(theta[diag.element]) < tolerance)
+  } else
     warning("`x` must be a merMod- or glmmTMB-object.", call. = F)
 }

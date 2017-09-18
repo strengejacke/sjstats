@@ -1,5 +1,3 @@
-utils::globalVariables(c("rmse.train", "predicted", "residuals"))
-
 #' @title Test and training error from model cross-validation
 #' @name cv_error
 #'
@@ -42,6 +40,7 @@ utils::globalVariables(c("rmse.train", "predicted", "residuals"))
 #' @importFrom broom augment
 #' @importFrom tidyr unnest
 #' @importFrom tibble tibble
+#' @importFrom rlang .data
 #' @export
 cv_error <- function(data, formula, k = 5) {
 
@@ -57,13 +56,13 @@ cv_error <- function(data, formula, k = 5) {
 
 
   # Training error
-  train.error <- dplyr::summarise(cv_data, train.error = mean(rmse.train, na.rm = TRUE))
+  train.error <- dplyr::summarise(cv_data, train.error = mean(.data$rmse.train, na.rm = TRUE))
 
 
   # Test error
   test.error <- cv_data %>%
-    tidyr::unnest(predicted, residuals) %>%
-    dplyr::summarise(test.error = sqrt(mean(residuals ^ 2, na.rm = TRUE)))
+    tidyr::unnest(.data$predicted, .data$residuals) %>%
+    dplyr::summarise(test.error = sqrt(mean(.data$residuals ^ 2, na.rm = TRUE)))
 
   tibble::tibble(
     model = deparse(formula),

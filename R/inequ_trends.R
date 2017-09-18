@@ -56,6 +56,7 @@
 #' plot(inequ_trend(prev.data, lo, hi))
 #'
 #' @importFrom dplyr select
+#' @importFrom rlang quo_name enquo .data
 #' @export
 inequ_trend <- function(data, prev.low, prev.hi) {
   # prepare data for prevalence rates for low and hi status groups
@@ -63,10 +64,10 @@ inequ_trend <- function(data, prev.low, prev.hi) {
     dat <- data.frame(prev.low, prev.hi)
   } else {
     # get variable names
-    low <- deparse(substitute(prev.low))
-    high <- deparse(substitute(prev.hi))
-    dat <- dplyr::select_(data, low, high)
-
+    # create quosures
+    low <- rlang::quo_name(rlang::enquo(prev.low))
+    high <- rlang::quo_name(rlang::enquo(prev.hi))
+    dat <- dplyr::select(data, !! low, !! high)
   }
 
   # ensure common column names

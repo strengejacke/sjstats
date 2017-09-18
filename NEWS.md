@@ -7,6 +7,7 @@
 * `se()` now also supports `stanreg` and `stanfit` objects.
 * `hdi()` now also supports `stanfit`-objects.
 * `std_beta()` gets a `ci.lvl`-argument, to specify the level of the calculated confidence interval for standardized coefficients.
+* `get_model_pval()` is now deprecated. Please use `p_value()` instead.
 
 ## New functions
 

@@ -62,7 +62,7 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2) {
   vars <- c(grp.name, dv.name, weights)
 
   # get data
-  x <- suppressMessages(dplyr::select(x, vars))
+  x <- suppressMessages(dplyr::select(x, !! vars))
 
   # set value and row labels
   varGrpLabel <- sjlabelled::get_label(x[[grp.name]], def.value = grp.name)
@@ -146,7 +146,7 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
   }
 
   # p-values of means
-  means.p <- get_model_pval(fit)[["p.value"]]
+  means.p <- p_value(fit)[["p.value"]]
 
   # create string with p-values
   pval <- purrr::map_chr(seq_len(length(means.p)), function(i) {

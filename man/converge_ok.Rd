@@ -7,7 +7,7 @@
 \usage{
 converge_ok(x, tolerance = 0.001)
 
-is_singular(x, tolerance = 1e-06)
+is_singular(x, tolerance = 1e-05)
 }
 \arguments{
 \item{x}{A \code{merMod}-object. For \code{is_singluar()}, may also be a
@@ -21,7 +21,7 @@ will be.}
 For \code{converge_ok()}, a logical vector, which is \code{TRUE} if
           convergence is fine and \code{FALSE} if convergence is suspicious.
           Additionally, the convergence value is returned as return value's name.
-          \code{is_sungluar()} returns \code{TRUE} if the model fit is singular.
+          \code{is_singluar()} returns \code{TRUE} if the model fit is singular.
 }
 \description{
 \code{converge_ok()} provides an alternative convergence test for

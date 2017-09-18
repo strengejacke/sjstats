@@ -1,5 +1,5 @@
 #' @title Get p-values from regression model objects
-#' @name get_model_pval
+#' @name p_value
 #'
 #' @description This function returns the p-values for fitted model objects.
 #'
@@ -28,23 +28,23 @@
 #' data(efc)
 #' # linear model fit
 #' fit <- lm(neg_c_7 ~ e42dep + c172code, data = efc)
-#' get_model_pval(fit)
+#' p_value(fit)
 #'
 #' # Generalized Least Squares fit
 #' library(nlme)
 #' fit <- gls(follicles ~ sin(2*pi*Time) + cos(2*pi*Time), Ovary,
 #'            correlation = corAR1(form = ~ 1 | Mare))
-#' get_model_pval(fit)
+#' p_value(fit)
 #'
 #' # lme4-fit
 #' library(lme4)
 #' fit <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
-#' get_model_pval(fit, p.kr = TRUE)
+#' p_value(fit, p.kr = TRUE)
 #'
 #' @importFrom stats coef
 #' @importFrom tibble tibble
 #' @export
-get_model_pval <- function(fit, p.kr = FALSE) {
+p_value <- function(fit, p.kr = FALSE) {
   # retrieve sigificance level of independent variables (p-values)
   if (inherits(fit, "pggls")) {
     p <- summary(fit)$CoefTable[, 4]
@@ -67,6 +67,14 @@ get_model_pval <- function(fit, p.kr = FALSE) {
   tibble::tibble(term = names(p),
                  p.value = as.vector(p),
                  std.error = as.vector(se))
+}
+
+
+#' @export
+#' @rdname p_value
+get_model_pval <- function(fit, p.kr = FALSE) {
+  .Deprecated("p_value")
+  p_value(fit = fit, p.kr = p.kr)
 }
 
 

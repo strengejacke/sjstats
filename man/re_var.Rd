@@ -19,7 +19,7 @@ an object of class \code{icc.lme4}, as returned by the
 }
 \value{
 \code{get_re_var()} returns the value of the requested variance component,
-          \code{re_var()} returns \code{NULL}.
+          \code{re_var()} returns all random effects variances.
 }
 \description{
 These functions extracts random effect variances as well as
@@ -39,6 +39,11 @@ The random effect variances indicate the between- and within-group
          \item{\code{"tau.01"}}{Random-Intercept-Slope-covariance}
          \item{\code{"rho.01"}}{Random-Intercept-Slope-correlation}
         }
+        The within-group-variance is affected by factors at level one, i.e.
+        by the lower-level direct effects. Level two factors (i.e. cross-level
+        direct effects) affect the between-group-variance. Cross-level
+        interaction effects are group-level factors that explain the
+        variance in random slopes (Aguinis et al. 2013).
 }
 \examples{
 library(lme4)

@@ -197,21 +197,26 @@ print.icc.lme4 <- function(x, comp, ...) {
               attr(x, "family", exact = T),
               attr(x, "link", exact = T),
               paste(as.character(attr(x, "formula"))[c(2, 1, 3)], collapse = " ")))
+
+
   if (!missing(comp) && !is.null(comp) && comp == "var") {
     # get parameters
     tau.00 <- attr(x, "tau.00", exact = TRUE)
     tau.01 <- attr(x, "tau.01", exact = TRUE)
     tau.11 <- attr(x, "tau.11", exact = TRUE)
     rho.01 <- attr(x, "rho.01", exact = TRUE)
+
     # print within-group-variance sigma^2
     tmp <- sprintf("%.3f", attr(x, "sigma_2", exact = TRUE))
     cat(sprintf("      Within-group-variance: %8s\n", tmp))
+
     # print between-group-variance tau00
     for (i in seq_len(length(tau.00))) {
       tmp <- sprintf("%.3f", tau.00[i])
       cat(sprintf("     Between-group-variance: %8s (%s)\n",
                   tmp, names(tau.00)[i]))
     }
+
     # print random-slope-variance tau11
     for (i in seq_len(length(tau.11))) {
       tau.rs <- tau.11[i]
@@ -222,6 +227,7 @@ print.icc.lme4 <- function(x, comp, ...) {
                     tmp, names(tau.rs)))
       }
     }
+
     # print random-slope-covariance tau01
     for (i in seq_len(length(tau.01))) {
       tau.rs <- tau.01[i]
@@ -232,6 +238,7 @@ print.icc.lme4 <- function(x, comp, ...) {
                     tmp, names(tau.rs)))
       }
     }
+
     # print random-slope-correlation rho01
     for (i in seq_len(length(rho.01))) {
       rho.rs <- rho.01[i]
@@ -245,6 +252,7 @@ print.icc.lme4 <- function(x, comp, ...) {
   } else {
     # get longest rand. effect name
     len <- max(nchar(names(x)))
+
     # print icc
     for (i in seq_len(length(x))) {
       # create info string
@@ -422,10 +430,12 @@ print.sj_splithalf <- function(x, ...) {
 print.sjstats_zcf <- function(x, ...) {
   cat(sprintf("   Observed zero-counts: %i\n", x$observed.zeros))
   cat(sprintf("  Predicted zero-counts: %i\n", x$predicted.zeros))
-  cat(sprintf("                  Ratio: %.2f\n", x$ratio))
-  cat(ifelse(x$ratio < 1,
-             "Model is underfitting zero-counts (probable zero-inflation).\n",
-             "Model is overfitting zero-counts.\n"))
+  cat(sprintf("                  Ratio: %.2f\n\n", x$ratio))
+
+  if (x$ratio < 1)
+    message("Model is underfitting zero-counts (probable zero-inflation).")
+  else
+    message("Model is overfitting zero-counts.")
 }
 
 
@@ -435,7 +445,7 @@ print.sjstats_ovderdisp <- function(x, ...) {
   cat("Overdispersion test\n\n")
   cat(sprintf("       dispersion ratio = %.4f\n", x$ratio))
   cat(sprintf("  Pearson's Chi-Squared = %.4f\n", x$chisq))
-  cat(sprintf("                p-value = %.4f\n", x$p))
+  cat(sprintf("                p-value = %.4f\n\n", x$p))
 
   if (x$p > 0.05)
     message("No overdispersion detected.")
@@ -513,7 +523,7 @@ print_grpmean <- function(x, ...) {
 
   # statistics
   cat(sprintf(
-    "\nAnova: R2=%.3f; adj.R2=%.3f; F=%.3f",
+    "\nAnova: R2=%.3f; adj.R2=%.3f; F=%.3f\n",
     attr(x, "r2", exact = TRUE),
     attr(x, "adj.r2", exact = TRUE),
     attr(x, "fstat", exact = TRUE)
@@ -534,6 +544,74 @@ print.sj_grpmeans <- function(x, ...) {
     # print grpmean-table
     print_grpmean(dat, ...)
 
-    cat("\n\n\n")
+    cat("\n\n")
   })
+}
+
+
+#' @export
+print.sj_revar <- function(x, ...) {
+  # get parameters
+  xn <- names(x)
+  tau.00 <- x[str_ends_with(xn, "tau.00")]
+  tau.01 <- x[str_ends_with(xn, "tau.01")]
+  tau.11 <- x[str_ends_with(xn, "tau.11")]
+  rho.01 <- x[str_ends_with(xn, "rho.01")]
+  sigma_2 <- x[str_ends_with(xn, "sigma_2")]
+
+  # print within-group-variance sigma^2
+  tmp <- sprintf("%.3f", sigma_2)
+  cat(sprintf("      Within-group-variance: %8s\n", tmp))
+
+  # print between-group-variance tau00
+  for (i in seq_len(length(tau.00))) {
+    tmp <- sprintf("%.3f", tau.00[i])
+    cat(sprintf(
+      "     Between-group-variance: %8s (%s)\n",
+      tmp,
+      substr(names(tau.00)[i], start = 1, stop = nchar(names(tau.00)[i]) - 7)
+    ))
+  }
+
+  # print random-slope-variance tau11
+  for (i in seq_len(length(tau.11))) {
+    tau.rs <- tau.11[i]
+    # any random slope?
+    if (!sjmisc::is_empty(tau.rs)) {
+      tmp <- sprintf("%.3f", tau.rs)
+      cat(sprintf(
+        "      Random-slope-variance: %8s (%s)\n",
+        tmp,
+        substr(names(tau.rs), start = 1, stop = nchar(names(tau.rs)) - 7)
+      ))
+    }
+  }
+
+  # print random-slope-covariance tau01
+  for (i in seq_len(length(tau.01))) {
+    tau.rs <- tau.01[i]
+    # any random slope?
+    if (!sjmisc::is_empty(tau.rs)) {
+      tmp <- sprintf("%.3f", tau.rs)
+      cat(sprintf(
+        " Slope-Intercept-covariance: %8s (%s)\n",
+        tmp,
+        substr(names(tau.rs), start = 1, stop = nchar(names(tau.rs)) - 7)
+      ))
+    }
+  }
+
+  # print random-slope-correlation rho01
+  for (i in seq_len(length(rho.01))) {
+    rho.rs <- rho.01[i]
+    # any random slope?
+    if (!sjmisc::is_empty(rho.rs)) {
+      tmp <- sprintf("%.3f", rho.rs)
+      cat(sprintf(
+        "Slope-Intercept-correlation: %8s (%s)\n",
+        tmp,
+        substr(names(rho.rs), start = 1, stop = nchar(names(rho.rs)) - 7)
+      ))
+    }
+  }
 }

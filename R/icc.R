@@ -278,7 +278,7 @@ icc.lme4 <- function(fit, obj.name) {
 #' @param comp Name of the variance component to be returned. See 'Details'.
 #'
 #' @return \code{get_re_var()} returns the value of the requested variance component,
-#'           \code{re_var()} returns \code{NULL}.
+#'           \code{re_var()} returns all random effects variances.
 #'
 #' @references Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
 #'
@@ -293,6 +293,11 @@ icc.lme4 <- function(fit, obj.name) {
 #'          \item{\code{"tau.01"}}{Random-Intercept-Slope-covariance}
 #'          \item{\code{"rho.01"}}{Random-Intercept-Slope-correlation}
 #'         }
+#'         The within-group-variance is affected by factors at level one, i.e.
+#'         by the lower-level direct effects. Level two factors (i.e. cross-level
+#'         direct effects) affect the between-group-variance. Cross-level
+#'         interaction effects are group-level factors that explain the
+#'         variance in random slopes (Aguinis et al. 2013).
 #'
 #' @seealso \code{\link{icc}}
 #'
@@ -311,11 +316,25 @@ icc.lme4 <- function(fit, obj.name) {
 #' re_var(fit2)
 #'
 #' @importFrom stats family
+#' @importFrom purrr map map2 flatten_dbl flatten_chr
+#' @importFrom sjmisc trim
 #' @export
 re_var <- function(x) {
   # return value
   revar_ <- icc(x)
-  print(revar_, comp = "var")
+
+  # iterate all attributes and return them as vector
+  rv <- c("sigma_2", "tau.00", "tau.11", "tau.01", "rho.01")
+
+  rv_ <- purrr::map(rv, ~ attr(revar_, .x, exact = TRUE))
+  rn <- purrr::map2(1:length(rv_), rv, ~ sjmisc::trim(paste(names(rv_[[.x]]), .y, sep = "_")))
+  rv_ <- purrr::flatten_dbl(rv_)
+
+  names(rv_) <- purrr::flatten_chr(rn)
+
+  class(rv_) <- c("sj_revar", class(rv_))
+
+  rv_
 }
 
 
