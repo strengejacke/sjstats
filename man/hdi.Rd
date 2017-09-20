@@ -44,28 +44,29 @@ For \code{hdi()}, if \code{x} is a vector, returns a vector of length two
 Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
 }
 \examples{
-library(rstanarm)
-fit <- stan_glm(mpg ~ wt + am, data = mtcars, chains = 1)
-hdi(fit)
+if (require("rstanarm")) {
+  fit <- stan_glm(mpg ~ wt + am, data = mtcars, chains = 1)
+  hdi(fit)
 
-# fit logistic regression model
-fit <- stan_glm(
-  vs ~ wt + am,
-  data = mtcars,
-  family = binomial("logit"),
-  chains = 1
-)
-# compute hdi, transform on "odds ratio scale"
-hdi(fit, trans = exp)
+  # fit logistic regression model
+  fit <- stan_glm(
+    vs ~ wt + am,
+    data = mtcars,
+    family = binomial("logit"),
+    chains = 1
+  )
+  # compute hdi, transform on "odds ratio scale"
+  hdi(fit, trans = exp)
 
-# compute rope, on scale of linear predictor. finds proportion
-# of posterior distribution values between -1 and 1.
-rope(fit, rope = c(-1, 1))
+  # compute rope, on scale of linear predictor. finds proportion
+  # of posterior distribution values between -1 and 1.
+  rope(fit, rope = c(-1, 1))
 
-# compute rope, boundaries as "odds ratios". finds proportion of
-# posterior distribution values, which - after being exponentiated -
-# are between .8 and 1.25 (about -.22 and .22 on linear scale)
-rope(fit, rope = c(.8, 1.25), trans = exp)
+  # compute rope, boundaries as "odds ratios". finds proportion of
+  # posterior distribution values, which - after being exponentiated -
+  # are between .8 and 1.25 (about -.22 and .22 on linear scale)
+  rope(fit, rope = c(.8, 1.25), trans = exp)
+}
 
 }
 \references{
