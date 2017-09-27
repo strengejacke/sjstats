@@ -27,6 +27,7 @@ Depends:
     stats,
     utils
 Imports:
+    bayesplot,
     broom,
     coin,
     dplyr (>= 0.7.1),

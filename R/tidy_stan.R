@@ -14,16 +14,37 @@
 #'        values for standard errors are \emph{not} transformed!
 #' @param digits Amount of digits to round numerical values in the output.
 #'
-#' @return A tidy data frame, summarizing \code{x}, giving information on the
-#'         Bayesian point estimate, standard error (which are effectively
-#'         \emph{median absolute deviations}), HDI, ratio of effective
-#'         sample size numbers and Rhat statistics.
+#' @return A tidy data frame, summarizing \code{x}, with consistent column names.
+#'         To distinguish multiple HDI values, column names for the HDI get a suffix
+#'         when \code{probs} has more than one element.
 #'
-#' @details Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
+#' @details The returned data frame gives information on the Bayesian point
+#'          estimate (column \emph{estimate}, which is by default the posterior
+#'          median; other statistics are also possible, see \code{typical}), the
+#'          standard error (which are actually \emph{median absolute deviations}),
+#'          the HDI, the ratio of effective numbers of samples (i.e. effective
+#'          number of samples divided by total number of samples) and Rhat
+#'          statistics.
+#'          \cr \cr
+#'          The ratio of effective number of samples ranges from 0 to 1,
+#'          and should be close to 1. The closer this ratio comes to zero means
+#'          that the chains may be inefficient, but possibly still okay.
+#'          \cr \cr
+#'          When Rhat is above 1, it usually indicates that the chain has not
+#'          yet converged, indicating that the drawn samples might not be
+#'          trustworthy. Drawing more iteration may solve this issue.
+#'          \cr \cr
+#'          Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
 #'
 #' @seealso \code{\link{hdi}}
 #'
-#' @references Kruschke JK. Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and Stan. 2nd edition. Academic Press, 2015
+#' @references Kruschke JK. \emph{Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and Stan.} 2nd edition. Academic Press, 2015
+#' \cr \cr
+#' Gelman A, Carlin JB, Stern HS, Dunson DB, Vehtari A, Rubin DB. \emph{Bayesian data analysis.} 3rd ed. Boca Raton: Chapman & Hall/CRC, 2013
+#' \cr \cr
+#' Gelman A, Rubin DB. \emph{Inference from iterative simulation using multiple sequences.} Statistical Science 1992;7: 457–511
+#' \cr \cr
+#' McElreath R. \emph{Statistical Rethinking. A Bayesian Course with Examples in R and Stan.} Chapman and Hall, 2015
 #'
 #' @examples
 #' if (require("rstanarm")) {
@@ -33,9 +54,10 @@
 #' }
 #'
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
-#' @importFrom dplyr bind_cols select starts_with mutate pull
+#' @importFrom dplyr bind_cols select starts_with mutate
 #' @importFrom tibble add_column
 #' @importFrom stats mad
+#' @importFrom bayesplot rhat neff_ratio
 #' @export
 tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, digits = 3) {
 
@@ -80,8 +102,8 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, digits =
       .after = 2
     ) %>%
     dplyr::mutate(
-      n_eff = neff_ratio(x)[1:nrow(out)],
-      Rhat = rhat(x)[1:nrow(out)]
+      n_eff = bayesplot::neff_ratio(x)[1:nrow(out)],
+      Rhat = bayesplot::rhat(x)[1:nrow(out)]
     )
 
 
