@@ -4,6 +4,15 @@
 
 * Fixed examples, to resolve issues with CRAN package checks.
 
+## New functions
+
+* `tidy_stan()` to return a tidy summary of stanreg-objects.
+* S3-methods `rhat()` and `neff_ratio()` for `stanreg`-models.
+
+## Changes to functions
+
+* `hdi()` and `rope()` now also work for `brmsfit`-models, from package *brms*.
+
 # sjstats 0.11.1
 
 ## Changes to functions

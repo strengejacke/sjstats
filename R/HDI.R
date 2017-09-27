@@ -6,8 +6,8 @@
 #'              distribution that lies within a region of practical equivalence.
 #'
 #' @param x A vector of values from a probability distribution (e.g., posterior
-#'        probabilities from MCMC sampling), or a \code{stanreg}- or
-#'        \code{stanfit}-object.
+#'        probabilities from MCMC sampling), or a \code{stanreg},
+#'        \code{stanfit}, or \code{brmsfit} object.
 #' @param prob Scalar between 0 and 1, indicating the mass within the credible
 #'        interval that is to be estimated.
 #' @param rope Vector of length two, indicating the lower and upper limit of a
@@ -23,9 +23,10 @@
 #'
 #' @return For \code{hdi()}, if \code{x} is a vector, returns a vector of length two
 #'         with the lower and upper limit of the HDI; if \code{x} is a
-#'         \code{stanreg}-object, returns a tibble with lower and upper HDI-limits
-#'         for each predictor. For \code{rope()}, returns the proportion of values
-#'         from \code{x} that are within the boundaries of \code{rope}.
+#'         \code{stanreg}, \code{stanfit} or \code{brmsfit} object, returns a
+#'         tibble with lower and upper HDI-limits for each predictor.
+#'         For \code{rope()}, returns the proportion of values from \code{x}
+#'         that are within the boundaries of \code{rope}.
 #'
 #' @details Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
 #'
@@ -88,6 +89,21 @@ hdi.stanreg <- function(x, prob = .9, trans = NULL) {
 
 
 #' @export
+hdi.brmsfit <- function(x, prob = .9, trans = NULL) {
+  # get posterior data
+  dat <- x %>%
+    tibble::as_tibble() %>%
+    purrr::map_df(~ hdi_helper(.x, prob, trans)) %>%
+    sjmisc::rotate_df() %>%
+    tibble::rownames_to_column()
+
+  colnames(dat) <- c("term", "hdi.low", "hdi.high")
+
+  dat
+}
+
+
+#' @export
 hdi.stanfit <- function(x, prob = .9, trans = NULL) {
   # get posterior data
   dat <- x %>%
@@ -136,6 +152,21 @@ rope.default <- function(x, rope, trans = NULL) {
 
 #' @export
 rope.stanreg <- function(x, rope, trans = NULL) {
+  # get posterior data
+  dat <- x %>%
+    tibble::as_tibble() %>%
+    purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
+    sjmisc::rotate_df() %>%
+    tibble::rownames_to_column()
+
+  colnames(dat) <- c("term", "rope")
+
+  dat
+}
+
+
+#' @export
+rope.brmsfit <- function(x, rope, trans = NULL) {
   # get posterior data
   dat <- x %>%
     tibble::as_tibble() %>%

@@ -11,8 +11,8 @@ rope(x, rope, trans = NULL)
 }
 \arguments{
 \item{x}{A vector of values from a probability distribution (e.g., posterior
-probabilities from MCMC sampling), or a \code{stanreg}- or
-\code{stanfit}-object.}
+probabilities from MCMC sampling), or a \code{stanreg},
+\code{stanfit}, or \code{brmsfit} object.}
 
 \item{prob}{Scalar between 0 and 1, indicating the mass within the credible
 interval that is to be estimated.}
@@ -31,9 +31,10 @@ being "practically equivalent to zero".}
 \value{
 For \code{hdi()}, if \code{x} is a vector, returns a vector of length two
         with the lower and upper limit of the HDI; if \code{x} is a
-        \code{stanreg}-object, returns a tibble with lower and upper HDI-limits
-        for each predictor. For \code{rope()}, returns the proportion of values
-        from \code{x} that are within the boundaries of \code{rope}.
+        \code{stanreg}, \code{stanfit} or \code{brmsfit} object, returns a
+        tibble with lower and upper HDI-limits for each predictor.
+        For \code{rope()}, returns the proportion of values from \code{x}
+        that are within the boundaries of \code{rope}.
 }
 \description{
 \code{hdi()} computes the high density interval for values from
