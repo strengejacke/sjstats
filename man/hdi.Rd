@@ -5,9 +5,9 @@
 \alias{rope}
 \title{Compute high density intervals (HDI) for MCMC samples}
 \usage{
-hdi(x, prob = 0.9, trans = NULL)
+hdi(x, prob = 0.9, trans = NULL, type = c("fixed", "random", "all"))
 
-rope(x, rope, trans = NULL)
+rope(x, rope, trans = NULL, type = c("fixed", "random", "all"))
 }
 \arguments{
 \item{x}{A vector of values from a probability distribution (e.g., posterior
@@ -22,6 +22,11 @@ to apply transformations on the returned HDI-values resp.
 (for \code{rope()}) on the values of the posterior distribution, before
 calculating the rope based on the boundaries given in \code{rope}. Note
 that the values in \code{rope} are not transformed.}
+
+\item{type}{For mixed effects models, specify the type of effects that should
+be returned. \code{type = "fixed"} returns fixed effects only,
+\code{type = "random"} the random effects and \code{type = "all"} returns
+both fixed and random effects.}
 
 \item{rope}{Vector of length two, indicating the lower and upper limit of a
 range around zero, which indicates the region of practical equivalence.

@@ -19,6 +19,10 @@
 #'        (for \code{rope()}) on the values of the posterior distribution, before
 #'        calculating the rope based on the boundaries given in \code{rope}. Note
 #'        that the values in \code{rope} are not transformed.
+#' @param type For mixed effects models, specify the type of effects that should
+#'        be returned. \code{type = "fixed"} returns fixed effects only,
+#'        \code{type = "random"} the random effects and \code{type = "all"} returns
+#'        both fixed and random effects.
 #'
 #'
 #' @return For \code{hdi()}, if \code{x} is a vector, returns a vector of length two
@@ -61,20 +65,23 @@
 #' @importFrom purrr map_dbl map_df
 #' @importFrom sjmisc rotate_df
 #' @export
-hdi <- function(x, prob = .9, trans = NULL) {
+hdi <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
   UseMethod("hdi")
 }
 
 
 #' @rdname hdi
 #' @export
-rope <- function(x, rope, trans = NULL) {
+rope <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
   UseMethod("rope")
 }
 
 
 #' @export
-hdi.stanreg <- function(x, prob = .9, trans = NULL) {
+hdi.stanreg <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+  # check arguments
+  type <- match.arg(type)
+
   # get posterior data
   dat <- x %>%
     tibble::as_tibble() %>%
@@ -84,12 +91,20 @@ hdi.stanreg <- function(x, prob = .9, trans = NULL) {
 
   colnames(dat) <- c("term", "hdi.low", "hdi.high")
 
-  dat
+  # check if we need to remove random or fixed effects
+  remove_effects_from_stan(dat, type)
 }
 
 
 #' @export
-hdi.brmsfit <- function(x, prob = .9, trans = NULL) {
+hdi.brmsfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+  # check arguments
+  type <- match.arg(type)
+
+  # check for pkg availability, else function might fail
+  if (!requireNamespace("brms", quietly = TRUE))
+    stop("Please install and load package `brms` first.")
+
   # get posterior data
   dat <- x %>%
     tibble::as_tibble() %>%
@@ -99,12 +114,16 @@ hdi.brmsfit <- function(x, prob = .9, trans = NULL) {
 
   colnames(dat) <- c("term", "hdi.low", "hdi.high")
 
-  dat
+  # check if we need to remove random or fixed effects
+  remove_effects_from_stan(dat, type)
 }
 
 
 #' @export
-hdi.stanfit <- function(x, prob = .9, trans = NULL) {
+hdi.stanfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+  # check arguments
+  type <- match.arg(type)
+
   # get posterior data
   dat <- x %>%
     as.data.frame() %>%
@@ -114,12 +133,13 @@ hdi.stanfit <- function(x, prob = .9, trans = NULL) {
 
   colnames(dat) <- c("term", "hdi.low", "hdi.high")
 
-  dat
+  # check if we need to remove random or fixed effects
+  remove_effects_from_stan(dat, type)
 }
 
 
 #' @export
-hdi.default <- function(x, prob = .9, trans = NULL) {
+hdi.default <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
   hdi_helper(x, prob, trans)
 }
 
@@ -145,43 +165,16 @@ hdi_helper <- function(x, prob, trans) {
 
 
 #' @export
-rope.default <- function(x, rope, trans = NULL) {
+rope.default <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
   rope_helper(x, rope, trans)
 }
 
 
 #' @export
-rope.stanreg <- function(x, rope, trans = NULL) {
-  # get posterior data
-  dat <- x %>%
-    tibble::as_tibble() %>%
-    purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
-    sjmisc::rotate_df() %>%
-    tibble::rownames_to_column()
+rope.stanreg <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
+  # check arguments
+  type <- match.arg(type)
 
-  colnames(dat) <- c("term", "rope")
-
-  dat
-}
-
-
-#' @export
-rope.brmsfit <- function(x, rope, trans = NULL) {
-  # get posterior data
-  dat <- x %>%
-    tibble::as_tibble() %>%
-    purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
-    sjmisc::rotate_df() %>%
-    tibble::rownames_to_column()
-
-  colnames(dat) <- c("term", "rope")
-
-  dat
-}
-
-
-#' @export
-rope.stanfit <- function(x, rope, trans = NULL) {
   # get posterior data
   dat <- x %>%
     as.data.frame() %>%
@@ -191,7 +184,50 @@ rope.stanfit <- function(x, rope, trans = NULL) {
 
   colnames(dat) <- c("term", "rope")
 
-  dat
+  # check if we need to remove random or fixed effects
+  remove_effects_from_stan(dat, type)
+}
+
+
+#' @export
+rope.brmsfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
+  # check arguments
+  type <- match.arg(type)
+
+  # check for pkg availability, else function might fail
+  if (!requireNamespace("brms", quietly = TRUE))
+    stop("Please install and load package `brms` first.")
+
+  # get posterior data
+  dat <- x %>%
+    tibble::as_tibble() %>%
+    purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
+    sjmisc::rotate_df() %>%
+    tibble::rownames_to_column()
+
+  colnames(dat) <- c("term", "rope")
+
+  # check if we need to remove random or fixed effects
+  remove_effects_from_stan(dat, type)
+}
+
+
+#' @export
+rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
+  # check arguments
+  type <- match.arg(type)
+
+  # get posterior data
+  dat <- x %>%
+    as.data.frame() %>%
+    purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
+    sjmisc::rotate_df() %>%
+    tibble::rownames_to_column()
+
+  colnames(dat) <- c("term", "rope")
+
+  # check if we need to remove random or fixed effects
+  remove_effects_from_stan(dat, type)
 }
 
 

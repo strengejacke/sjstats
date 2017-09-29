@@ -4,13 +4,14 @@
 \alias{tidy_stan}
 \title{Tidy summary output for stan models}
 \usage{
-tidy_stan(x, probs = 0.89, typical = "median", trans = NULL, digits = 3)
+tidy_stan(x, probs = 0.89, typical = "median", trans = NULL,
+  type = c("fixed", "random", "all"), digits = 3)
 }
 \arguments{
 \item{x}{A \code{stanreg}, \code{stanfit} or \code{brmsfit} object.}
 
 \item{probs}{Vector of scalars between 0 and 1, indicating the mass within
-the credible interval that is to be estimated.}
+the credible interval that is to be estimated. See \code{\link{hdi}}.}
 
 \item{typical}{The typical value that will represent the Bayesian point estimate.
 By default, the posterior median is returned. See \code{\link{typical_value}}
@@ -19,6 +20,11 @@ for possible values for this argument.}
 \item{trans}{Name of a function or character vector naming a function, used
 to apply transformations on the estimate and HDI-values. The
 values for standard errors are \emph{not} transformed!}
+
+\item{type}{For mixed effects models, specify the type of effects that should
+be returned. \code{type = "fixed"} returns fixed effects only,
+\code{type = "random"} the random effects and \code{type = "all"} returns
+both fixed and random effects.}
 
 \item{digits}{Amount of digits to round numerical values in the output.}
 }
@@ -35,9 +41,9 @@ The returned data frame gives information on the Bayesian point
          estimate (column \emph{estimate}, which is by default the posterior
          median; other statistics are also possible, see \code{typical}), the
          standard error (which are actually \emph{median absolute deviations}),
-         the HDI, the ratio of effective numbers of samples (i.e. effective
-         number of samples divided by total number of samples) and Rhat
-         statistics.
+         the HDI, the ratio of effective numbers of samples, \emph{n_eff},
+         (i.e. effective number of samples divided by total number of samples)
+         and Rhat statistics.
          \cr \cr
          The ratio of effective number of samples ranges from 0 to 1,
          and should be close to 1. The closer this ratio comes to zero means

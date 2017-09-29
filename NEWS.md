@@ -11,6 +11,7 @@
 ## Changes to functions
 
 * `hdi()` and `rope()` now also work for `brmsfit`-models, from package *brms*.
+* `hdi()` and `rope()` now have a `type`-argument, to return fixed, random or all effects for mixed effects models.
 
 # sjstats 0.11.1
 

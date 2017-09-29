@@ -5,7 +5,7 @@
 #'
 #' @param x A \code{stanreg}, \code{stanfit} or \code{brmsfit} object.
 #' @param probs Vector of scalars between 0 and 1, indicating the mass within
-#'        the credible interval that is to be estimated.
+#'        the credible interval that is to be estimated. See \code{\link{hdi}}.
 #' @param typical The typical value that will represent the Bayesian point estimate.
 #'        By default, the posterior median is returned. See \code{\link{typical_value}}
 #'        for possible values for this argument.
@@ -13,6 +13,8 @@
 #'        to apply transformations on the estimate and HDI-values. The
 #'        values for standard errors are \emph{not} transformed!
 #' @param digits Amount of digits to round numerical values in the output.
+#'
+#' @inheritParams hdi
 #'
 #' @return A tidy data frame, summarizing \code{x}, with consistent column names.
 #'         To distinguish multiple HDI values, column names for the HDI get a suffix
@@ -22,9 +24,9 @@
 #'          estimate (column \emph{estimate}, which is by default the posterior
 #'          median; other statistics are also possible, see \code{typical}), the
 #'          standard error (which are actually \emph{median absolute deviations}),
-#'          the HDI, the ratio of effective numbers of samples (i.e. effective
-#'          number of samples divided by total number of samples) and Rhat
-#'          statistics.
+#'          the HDI, the ratio of effective numbers of samples, \emph{n_eff},
+#'          (i.e. effective number of samples divided by total number of samples)
+#'          and Rhat statistics.
 #'          \cr \cr
 #'          The ratio of effective number of samples ranges from 0 to 1,
 #'          and should be close to 1. The closer this ratio comes to zero means
@@ -54,24 +56,29 @@
 #' }
 #'
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
-#' @importFrom dplyr bind_cols select starts_with mutate
+#' @importFrom dplyr bind_cols select mutate
+#' @importFrom tidyselect starts_with
 #' @importFrom tibble add_column
 #' @importFrom stats mad
 #' @importFrom bayesplot rhat neff_ratio
 #' @export
-tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, digits = 3) {
+tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c("fixed", "random", "all"), digits = 3) {
 
   # only works for rstanarm-models
 
   if (!inherits(x, c("stanreg", "stanfit", "brmsfit")))
-    stop("`x` needs to be a stanreg-object.", call. = F)
+    stop("`x` needs to be a stanreg- or brmsfit-object.", call. = F)
+
+
+  # check arguments
+  type <- match.arg(type)
 
 
   # compute HDI
 
-  out <- purrr::map(probs, ~ hdi(x, prob = .x, trans = trans)) %>%
+  out <- purrr::map(probs, ~ hdi(x, prob = .x, trans = trans, type = "all")) %>%
     dplyr::bind_cols() %>%
-    dplyr::select(1, dplyr::starts_with("hdi."))
+    dplyr::select(1, tidyselect::starts_with("hdi."))
 
 
   # for multiple HDIs, fix column names
@@ -115,7 +122,40 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, digits =
   }
 
 
+  # check if we need to remove random or fixed effects
+
+  out <- remove_effects_from_stan(out, type)
+
+
   # round values
 
   purrr::modify_if(out, is.numeric, ~ round(.x, digits = digits))
+}
+
+
+#' @importFrom tidyselect starts_with
+#' @importFrom dplyr slice
+#' @importFrom tibble as_tibble
+remove_effects_from_stan <- function(out, type) {
+
+  # check if we need to remove random or fixed effects
+  # therefor, find random effect parts first
+
+  re <- tidyselect::starts_with("b[", vars = out$term)
+  re.s <- tidyselect::starts_with("Sigma[", vars = out$term)
+
+  removers <- c(re, re.s)
+
+  if (!sjmisc::is_empty(removers)) {
+    if (type == "fixed") {
+      # remove all random effects
+      out <- dplyr::slice(out, !! -removers)
+    } else if (type == "random") {
+      # remove all fixed effects
+      out <- dplyr::slice(out, !! removers)
+    }
+  }
+
+
+  tibble::as_tibble(out)
 }
