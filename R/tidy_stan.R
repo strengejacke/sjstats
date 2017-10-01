@@ -49,11 +49,12 @@
 #' McElreath R. \emph{Statistical Rethinking. A Bayesian Course with Examples in R and Stan.} Chapman and Hall, 2015
 #'
 #' @examples
+#' \dontrun{
 #' if (require("rstanarm")) {
 #'   fit <- stan_glm(mpg ~ wt + am, data = mtcars, chains = 1)
 #'   tidy_stan(fit)
 #'   tidy_stan(fit, probs = c(.89, .5))
-#' }
+#' }}
 #'
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
 #' @importFrom dplyr bind_cols select mutate

@@ -1,3 +1,9 @@
+# sjstats 0.11.3
+
+## General
+
+* Fixed examples, to resolve issues with CRAN package checks.
+
 # sjstats 0.11.2
 
 ## General

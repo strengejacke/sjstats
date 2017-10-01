@@ -56,11 +56,12 @@ The returned data frame gives information on the Bayesian point
          Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
 }
 \examples{
+\dontrun{
 if (require("rstanarm")) {
   fit <- stan_glm(mpg ~ wt + am, data = mtcars, chains = 1)
   tidy_stan(fit)
   tidy_stan(fit, probs = c(.89, .5))
-}
+}}
 
 }
 \references{

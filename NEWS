@@ -1,8 +1,11 @@
-Version 0.11.2
+Version 0.11.3
 ------------------------------------------------------------------------------
 General:
 * Fixed examples, to resolve issues with CRAN package checks.
+* S3-generic `model.frame.lme()`.
 
+Version 0.11.2
+------------------------------------------------------------------------------
 New functions:
 * `tidy_stan()` to return a tidy summary of stanreg-objects.
 

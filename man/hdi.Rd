@@ -50,6 +50,7 @@ For \code{hdi()}, if \code{x} is a vector, returns a vector of length two
 Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
 }
 \examples{
+\dontrun{
 if (require("rstanarm")) {
   fit <- stan_glm(mpg ~ wt + am, data = mtcars, chains = 1)
   hdi(fit)
@@ -72,7 +73,7 @@ if (require("rstanarm")) {
   # posterior distribution values, which - after being exponentiated -
   # are between .8 and 1.25 (about -.22 and .22 on linear scale)
   rope(fit, rope = c(.8, 1.25), trans = exp)
-}
+}}
 
 }
 \references{

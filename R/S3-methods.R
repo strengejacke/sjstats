@@ -1,9 +1,10 @@
 #' @importFrom nlme getData getCovariateFormula
 #' @export
 model.matrix.gls <- function(object, ...) {
-  mm <- cbind(`(Intercept)` = 1,
-              nlme::getData(object)[, all.vars(nlme::getCovariateFormula(object))])
-  return(mm)
+  cbind(
+    `(Intercept)` = 1,
+    nlme::getData(object)[, all.vars(nlme::getCovariateFormula(object))]
+  )
 }
 
 
@@ -12,17 +13,15 @@ model.matrix.gls <- function(object, ...) {
 #' @importFrom sjlabelled get_label
 #' @export
 model.frame.gls <- function(formula, ...) {
-  if (!inherits(formula, "gls")) {
+  if (!inherits(formula, "gls"))
     stop("`formula` needs to be an object of class `gls`.", call. = F)
-    return(NULL)
-  } else {
-    y <- nlme::getResponse(formula)
-    mf <- cbind(y, nlme::getData(formula)[, all.vars(nlme::getCovariateFormula(formula))])
-    colnames(mf)[1] <- sjlabelled::get_label(y, def.value = "Response")
-    return(mf)
-  }
-}
 
+  y <- nlme::getResponse(formula)
+  mf <- cbind(y, nlme::getData(formula)[, all.vars(nlme::getCovariateFormula(formula))])
+  colnames(mf)[1] <- sjlabelled::get_label(y, def.value = "Response")
+
+  as.data.frame(mf)
+}
 
 
 #' @importFrom tibble tibble
