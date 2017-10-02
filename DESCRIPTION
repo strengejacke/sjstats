@@ -38,6 +38,7 @@ Imports:
     Matrix,
     modelr,
     nlme,
+    prediction,
     purrr (>= 0.2.2),
     pwr,
     rlang,
