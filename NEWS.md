@@ -4,11 +4,11 @@
 
 * Fixed examples, to resolve issues with CRAN package checks.
 
+## New functions
+
+* `link_inverse()` to get the inverse link function from model objects.
+
 # sjstats 0.11.2
-
-## General
-
-* Fixed examples, to resolve issues with CRAN package checks.
 
 ## New functions
 
