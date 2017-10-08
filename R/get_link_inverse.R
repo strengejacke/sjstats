@@ -48,6 +48,8 @@ link_inverse <- function(model) {
     il <- stats::gaussian(link = "identity")$linkinv
   } else if (inherits(model, "betareg")) {
     il <- model$link$mean$linkinv
+  } else if (inherits(model, "vgam")) {
+    il <- model@family@linkinv
   } else if (inherits(model, c("lrm", "polr"))) {
     # "lrm"-object from pkg "rms" have no family method
     # so we construct a logistic-regression-family-object

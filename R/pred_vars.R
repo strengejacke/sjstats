@@ -22,10 +22,15 @@
 #'
 #' resp_val(fit)
 #'
-#' @importFrom stats formula
+#' @importFrom stats formula terms
 #' @export
 pred_vars <- function(x) {
-  all.vars(stats::formula(x)[[3L]])
+  av <- all.vars(stats::formula(x)[[3L]])
+
+  if (length(av) == 1 && av == ".")
+    av <- all.vars(stats::terms(x))
+
+  av
 }
 
 #' @rdname pred_vars
@@ -37,10 +42,13 @@ resp_var <- function(x) {
 #' @rdname pred_vars
 #' @importFrom nlme getResponse
 #' @importFrom stats model.frame
+#' @importFrom prediction find_data
 #' @export
 resp_val <- function(x) {
   if (inherits(x, c("lme", "gls")))
     as.vector(nlme::getResponse(x))
+  else if (inherits(x, "vgam"))
+    as.vector(prediction::find_data(x)[[resp_var(x)]])
   else
     as.vector(stats::model.frame(x)[[resp_var(x)]])
 }

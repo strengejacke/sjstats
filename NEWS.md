@@ -3,10 +3,16 @@
 ## General
 
 * Fixed examples, to resolve issues with CRAN package checks.
+* More model objects supported in `p_value()`.
 
 ## New functions
 
 * `link_inverse()` to get the inverse link function from model objects.
+
+## Bug fixes
+
+* Fixed issue with specific model formulas in `pred_vars()`.
+* Fixed issue with specific model objects in `resp_val()`.
 
 # sjstats 0.11.2
 

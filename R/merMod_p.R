@@ -56,9 +56,13 @@ p_value <- function(fit, p.kr = FALSE) {
     p <- merMod_p(fit, p.kr)
     se <- stats::coef(summary(fit))[, 2]
   } else if (inherits(fit, c("pglm", "maxLik"))) {
-    # p-values
     p <- summary(fit)$estimate[, 4]
     se <- summary(fit)$estimate[, 2]
+  } else if (inherits(fit, "gam")) {
+    sm <- summary(fit)
+    lc <- length(sm$p.coeff)
+    p <- sm$p.pv[1:lc]
+    se <- sm$se[1:lc]
   } else {
     p <- stats::coef(summary(fit))[, 4]
     se <- stats::coef(summary(fit))[, 2]

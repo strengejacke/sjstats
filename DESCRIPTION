@@ -3,7 +3,7 @@ Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
 Version: 0.11.2.9000
-Date: 2017-09-28
+Date: 2017-10-08
 Author: Daniel Lüdecke <d.luedecke@uke.de>
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -43,7 +43,7 @@ Imports:
     pwr,
     rlang,
     sandwich (>= 2.3-4),
-    sjlabelled (>= 1.0.3),
+    sjlabelled (>= 1.0.4),
     sjmisc (>= 2.6.1),
     tidyr (>= 0.7.0),
     tidyselect,
