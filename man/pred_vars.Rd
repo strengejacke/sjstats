@@ -4,27 +4,44 @@
 \alias{pred_vars}
 \alias{resp_var}
 \alias{resp_val}
-\title{Get predictor and response variables from models}
+\alias{link_inverse}
+\alias{get_model_frame}
+\alias{get_varnames}
+\title{Access information from model objects}
 \usage{
 pred_vars(x)
 
 resp_var(x)
 
 resp_val(x)
+
+link_inverse(x)
+
+get_model_frame(x, fe.only = TRUE)
+
+get_varnames(x)
 }
 \arguments{
 \item{x}{A fitted model.}
+
+\item{fe.only}{Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
+model, returns the model frame for fixed effects only.}
 }
 \value{
-The name(s) of the response or predictor variables from \code{x}
-          as character vector; or the values from \code{x}'s response vector.
+For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
+   response or predictor variables from \code{x} as character vector.
+   \code{resp_val()} returns the values from \code{x}'s response vector.
+   \code{link_inverse()} returns, if known, the inverse link function from
+   \code{x}; else \code{NULL} for those models where the inverse link function
+   can't be identified. \code{get_model_frame()} is similar to \code{model.frame()},
+   but should also work for model objects that don't have a S3-generic for
+   \code{model.frame()}. \code{get_varnames()} returns the "cleaned" variable
+   names, i.e. things like \code{s()} for splines or \code{log()} are
+   removed.
 }
 \description{
-\code{pred_vars()} and \code{resp_var()} return the names of a
-               model's predictor or response variables as character vector.
-               \cr \cr
-               \code{resp_val()} returns the values of the model's response
-               vector.
+Several functions to retrieve information from model objects,
+   like variable names, link-inverse function, model frame etc.
 }
 \examples{
 data(efc)
@@ -32,7 +49,18 @@ fit <- lm(neg_c_7 ~ e42dep + c161sex, data = efc)
 
 pred_vars(fit)
 resp_var(fit)
-
 resp_val(fit)
+
+link_inverse(m)(2.3)
+
+# example from ?stats::glm
+counts <- c(18, 17, 15, 20, 10, 20, 25, 13, 12)
+outcome <- gl(3, 1, 9)
+treatment <- gl(3, 3)
+m <- glm(counts ~ outcome + treatment, family = poisson())
+
+link_inverse(m)(.3)
+# same as
+exp(.3)
 
 }

@@ -21,7 +21,7 @@ Description: Collection of convenient functions for common statistical computati
              models and mixed effects models. However, some of the functions
              also deal with other statistical measures, like Cronbach's Alpha,
              Cramer's V, Phi etc.
-License: GPL-3
+License: MIT + file LICENSE
 Depends:
     R (>= 3.2),
     stats,

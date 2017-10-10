@@ -9,7 +9,6 @@ model.matrix.gls <- function(object, ...) {
 }
 
 
-
 #' @importFrom prediction find_data
 #' @export
 model.frame.gls <- function(formula, ...) {

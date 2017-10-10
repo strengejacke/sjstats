@@ -7,13 +7,15 @@
 
 ## New functions
 
+* `get_model_frame()` to get the model frame from model objects, also of those models that don't have a S3-generic model.frame-function.
+* `get_varnames()` to get cleaned variable names from model objects.
 * `link_inverse()` to get the inverse link function from model objects.
 
 ## Bug fixes
 
 * Fixed issue with specific model formulas in `pred_vars()`.
 * Fixed issue with specific model objects in `resp_val()`.
-* Fixed issze with nested models in `re_var()`.
+* Fixed issue with nested models in `re_var()`.
 
 # sjstats 0.11.2
 
