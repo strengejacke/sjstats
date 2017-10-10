@@ -13,6 +13,7 @@
 
 * Fixed issue with specific model formulas in `pred_vars()`.
 * Fixed issue with specific model objects in `resp_val()`.
+* Fixed issze with nested models in `re_var()`.
 
 # sjstats 0.11.2
 

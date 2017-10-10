@@ -6,10 +6,8 @@
 #'                Currently, \code{\link[lme4]{merMod}} and
 #'                \code{\link[glmmTMB]{glmmTMB}} objects are supported.
 #'
-#' @param x Fitted mixed effects model (of class \code{\link[lme4]{merMod}} or
-#'           \code{\link[glmmTMB]{glmmTMB}}).
-#' @param ... More fitted model objects, to compute multiple intraclass-correlation
-#'              coefficients at once.
+#' @param ... One or more fitted mixed effects model (of class \code{\link[lme4]{merMod}}
+#'   or \code{\link[glmmTMB]{glmmTMB}}).
 #'
 #' @return A numeric vector with all random intercept intraclass-correlation-coefficients,
 #'           or a list of numeric vectors, when more than one model were used
@@ -111,72 +109,81 @@
 #' print(icc2, comp = "var")
 #'
 #'
-#' @importFrom stats family
+#' @importFrom purrr map2
 #' @export
-icc <- function(x, ...) {
-  # return value
-  icc_ <- icc.lme4(x, deparse(substitute(x)))
+icc <- function(...) {
+  # evaluate dots
+  dots <- match.call(expand.dots = FALSE)$`...`
+  # get paramater names
+  dot.names <- dot_names(dots)
 
-  # check if we have multiple parameters
-  if (nargs() > 1) {
-    # evaluate dots
-    dots <- match.call(expand.dots = FALSE)$`...`
-    # get paramater names
-    dot.names <- dot_names(dots)
+  icc_ <- purrr::map2(list(...), dot.names, ~ icc.lme4(.x, .y))
+  names(icc_) <- NULL
 
-    # get input list
-    params_ <- list(...)
-    icc_ <- list(icc_)
-
-    for (i in seq_len(length(params_))) {
-      icc_[[length(icc_) + 1]] <- icc.lme4(params_[[i]], dot.names[i])
-    }
-
-    names(icc_) <- NULL
-  }
-
-  icc_
+  if (length(icc_) == 1)
+    icc_[[1]]
+  else
+    icc_
 }
+
 
 #' @importFrom lme4 VarCorr fixef getME
 #' @importFrom glmmTMB VarCorr fixef getME
 #' @importFrom stats family formula
 #' @importFrom purrr map map_dbl map_lgl
+#' @importFrom sjmisc str_contains
 icc.lme4 <- function(fit, obj.name) {
   # check object class
   if (is_merMod(fit) || inherits(fit, "glmmTMB")) {
+
     # get family
     fitfam <- stats::family(fit)$family
+
+
     # is neg. binomial?
+
     is_negbin <-
-      sjmisc::str_contains(fitfam,
-                           c("Negative Binomial", "nbinom"),
-                           ignore.case = TRUE,
-                           logic = "OR")
+      sjmisc::str_contains(
+        fitfam,
+        c("Negative Binomial", "nbinom"),
+        ignore.case = TRUE,
+        logic = "OR"
+      )
+
 
     # random effects variances
     # for details on tau and sigma, see
-    # Aguinis H, Gottfredson RK, Culpepper SA2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528. doi:10.1177/0149206313478188.
+    # Aguinis H, Gottfredson RK, Culpepper SA2013. Best-Practice Recommendations
+    # for Estimating Cross-Level Interaction Effects Using Multilevel Modeling.
+    # Journal of Management 39(6): 1490–1528. doi:10.1177/0149206313478188.
+
     reva <- if (inherits(fit, "glmmTMB"))
       glmmTMB::VarCorr(fit)[[1]]
     else
       lme4::VarCorr(fit)
 
+
     # retrieve only intercepts
     vars <- purrr::map(reva, ~ .x[1])
 
+
     # random intercept-variances, i.e.
     # between-subject-variance (tau 00)
+
     tau.00 <- purrr::map_dbl(vars, ~ .x)
+
 
     # random slope-variances (tau 11)
     tau.11 <- unlist(lapply(reva, function(x) diag(x)[-1]))
 
+
     # get residual standard deviation sigma
     sig <- attr(reva, "sc")
 
+
     # residual variances, i.e.
     # within-cluster-variance (sigma^2)
+
     if (inherits(fit, c("glmerMod", "glmmTMB")) && fitfam == "binomial") {
       # for logistic models, we use pi / 3
       resid_var <- (pi ^ 2) / 3
@@ -186,15 +193,15 @@ icc.lme4 <- function(fit, obj.name) {
     } else {
       # for linear and poisson models, we have a clear residual variance
       resid_var <- sig ^ 2
-
-      # requires R >= 3.3
-      # resid_var <- stats::sigma(fit) ^ 2
     }
+
 
     # total variance, sum of random intercept and residual variances
     total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid_var)
 
+
     # check whether we have negative binomial
+
     if (is_negbin) {
       if (is_merMod(fit)) {
         # for negative binomial models, we also need the intercept...
@@ -206,12 +213,11 @@ icc.lme4 <- function(fit, obj.name) {
         beta <- as.numeric(glmmTMB::fixef(fit)[[1]]["(Intercept)"])
         # ... and the theta value to compute the ICC
         r <- sig
-
-        # requires R >= 3.3
-        # r <- stats::sigma(fit)
       }
 
+
       # make formula more readable
+
       numerator <- (exp(tau.00) - 1)
       denominator <- ((exp(total_var) - 1) + (exp(total_var) / r) + exp(-beta - (total_var / 2)))
 
@@ -221,12 +227,16 @@ icc.lme4 <- function(fit, obj.name) {
       ri.icc <- tau.00 / total_var
     }
 
+
     # get random slope random intercept correlations
     # do we have any rnd slopes?
+
     has_rnd_slope <- purrr::map_lgl(reva, ~ dim(attr(.x, "correlation"))[1] > 1)
     tau.01 <- rho.01 <- NULL
 
+
     # get rnd slopes
+
     if (any(has_rnd_slope)) {
       rnd_slope <- reva[has_rnd_slope]
       # get slope-intercept-correlations
@@ -234,7 +244,7 @@ icc.lme4 <- function(fit, obj.name) {
       # get standard deviations, multiplied
       std_ <- purrr::map_dbl(rnd_slope, ~ prod(attr(.x, "stddev")))
       # bind to matrix
-      tau.01 <- apply((cbind(rho.01, std_)), MARGIN = 1, FUN = prod)
+      tau.01 <- apply(cbind(rho.01, std_), MARGIN = 1, FUN = prod)
     }
 
     # name values
@@ -252,8 +262,10 @@ icc.lme4 <- function(fit, obj.name) {
     attr(ri.icc, "tau.11") <- tau.11
     attr(ri.icc, "sigma_2") <- resid_var
 
+
     # finally, save name of fitted model object. May be needed for
     # the 'se()' function, which accesses the global environment
+
     attr(ri.icc, ".obj.name") <- obj.name
 
     # return results
@@ -320,17 +332,14 @@ icc.lme4 <- function(fit, obj.name) {
 #' @importFrom sjmisc trim
 #' @export
 re_var <- function(x) {
-  # return value
-  revar_ <- icc(x)
-
   # iterate all attributes and return them as vector
   rv <- c("sigma_2", "tau.00", "tau.11", "tau.01", "rho.01")
 
-  rv_ <- purrr::map(rv, ~ attr(revar_, .x, exact = TRUE))
+  rv_ <- purrr::map(rv, ~ attr(icc(x), .x, exact = TRUE))
   rn <- purrr::map2(1:length(rv_), rv, ~ sjmisc::trim(paste(names(rv_[[.x]]), .y, sep = "_")))
   rv_ <- purrr::flatten_dbl(rv_)
 
-  names(rv_) <- purrr::flatten_chr(rn)
+  names(rv_) <- purrr::flatten_chr(rn)[1:length(rv_)]
 
   class(rv_) <- c("sj_revar", class(rv_))
 
