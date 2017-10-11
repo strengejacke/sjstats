@@ -93,7 +93,7 @@ hdi.stanreg <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
   colnames(dat) <- c("term", "hdi.low", "hdi.high")
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type)
+  remove_effects_from_stan(dat, type, is.brms = FALSE)
 }
 
 
@@ -116,7 +116,7 @@ hdi.brmsfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
   colnames(dat) <- c("term", "hdi.low", "hdi.high")
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type)
+  remove_effects_from_stan(dat, type, is.brms = TRUE)
 }
 
 
@@ -135,7 +135,7 @@ hdi.stanfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
   colnames(dat) <- c("term", "hdi.low", "hdi.high")
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type)
+  remove_effects_from_stan(dat, type, is.brms = FALSE)
 }
 
 
@@ -186,7 +186,7 @@ rope.stanreg <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
   colnames(dat) <- c("term", "rope")
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type)
+  remove_effects_from_stan(dat, type, is.brms = FALSE)
 }
 
 
@@ -209,7 +209,7 @@ rope.brmsfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
   colnames(dat) <- c("term", "rope")
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type)
+  remove_effects_from_stan(dat, type, is.brms = TRUE)
 }
 
 
@@ -228,7 +228,7 @@ rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
   colnames(dat) <- c("term", "rope")
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type)
+  remove_effects_from_stan(dat, type, is.brms = FALSE)
 }
 
 

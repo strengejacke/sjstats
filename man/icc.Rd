@@ -4,11 +4,14 @@
 \alias{icc}
 \title{Intraclass-Correlation Coefficient}
 \usage{
-icc(...)
+icc(x, ...)
 }
 \arguments{
-\item{...}{One or more fitted mixed effects model (of class \code{\link[lme4]{merMod}}
-or \code{\link[glmmTMB]{glmmTMB}}).}
+\item{x}{Fitted mixed effects model (of class \code{\link[lme4]{merMod}} or
+\code{\link[glmmTMB]{glmmTMB}}).}
+
+\item{...}{More fitted model objects, to compute multiple intraclass-correlation
+coefficients at once.}
 }
 \value{
 A numeric vector with all random intercept intraclass-correlation-coefficients,

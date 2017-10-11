@@ -75,6 +75,25 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
   type <- match.arg(type)
 
 
+  # get data frame
+
+  mod.dat <- as.data.frame(x)
+  brmsfit.removers <- NULL
+
+  # for brmsfit models, we need to remove some columns here to
+  # match data rows later
+
+  if (inherits(x, "brmsfit")) {
+    re.sd <- tidyselect::starts_with("sd_", vars = colnames(mod.dat))
+    re.cor <- tidyselect::starts_with("cor_", vars = colnames(mod.dat))
+
+    brmsfit.removers <- unique(c(re.sd, re.cor))
+
+    if (!sjmisc::is_empty(brmsfit.removers))
+      mod.dat <- dplyr::select(mod.dat, !! -brmsfit.removers)
+  }
+
+
   # compute HDI
 
   out <- purrr::map(probs, ~ hdi(x, prob = .x, trans = trans, type = "all")) %>%
@@ -100,18 +119,27 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
 
   # compute additional statistics, like point estimate, standard errors etc.
 
+  if (sjmisc::is_empty(brmsfit.removers)) {
+    nr <- bayesplot::neff_ratio(x)[1:nrow(out)]
+    rh <- bayesplot::rhat(x)[1:nrow(out)]
+  } else {
+    nr <- bayesplot::neff_ratio(x)[-brmsfit.removers]
+    rh <- bayesplot::rhat(x)[-brmsfit.removers]
+  }
+
+
   out <- out %>%
     tibble::add_column(
-      estimate = purrr::map_dbl(as.data.frame(x), ~ typical_value(.x, fun = typical)),
+      estimate = purrr::map_dbl(mod.dat, ~ typical_value(.x, fun = typical)),
       .after = 1
     ) %>%
     tibble::add_column(
-      std.error = purrr::map_dbl(as.data.frame(x), stats::mad),
+      std.error = purrr::map_dbl(mod.dat, stats::mad),
       .after = 2
     ) %>%
     dplyr::mutate(
-      n_eff = bayesplot::neff_ratio(x)[1:nrow(out)],
-      Rhat = bayesplot::rhat(x)[1:nrow(out)]
+      n_eff = nr,
+      Rhat = rh
     )
 
 
@@ -125,7 +153,7 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
 
   # check if we need to remove random or fixed effects
 
-  out <- remove_effects_from_stan(out, type)
+  out <- remove_effects_from_stan(out, type, is.brms = inherits(x, "brmsfit"))
 
 
   # round values
@@ -134,18 +162,41 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
 }
 
 
-#' @importFrom tidyselect starts_with
+#' @importFrom tidyselect starts_with ends_with
 #' @importFrom dplyr slice
 #' @importFrom tibble as_tibble
-remove_effects_from_stan <- function(out, type) {
+remove_effects_from_stan <- function(out, type, is.brms) {
+
+  # brmsfit-objects also include sd and cor for mixed
+  # effecs models, so remove these here
+
+  if (is.brms) {
+    re.sd <- tidyselect::starts_with("sd_", vars = out$term)
+    re.cor <- tidyselect::starts_with("cor_", vars = out$term)
+
+    removers <- unique(c(re.sd, re.cor))
+
+    if (!sjmisc::is_empty(removers))
+      out <- dplyr::slice(out, !! -removers)
+  }
+
+
+  # if user wants all terms, return data here
+
+  if (type == "all") return(tibble::as_tibble(out))
+
 
   # check if we need to remove random or fixed effects
   # therefor, find random effect parts first
 
   re <- tidyselect::starts_with("b[", vars = out$term)
   re.s <- tidyselect::starts_with("Sigma[", vars = out$term)
+  re.i <- intersect(
+    tidyselect::starts_with("r_", vars = out$term),
+    tidyselect::ends_with(".", vars = out$term)
+  )
 
-  removers <- c(re, re.s)
+  removers <- unique(c(re, re.s, re.i))
 
   if (!sjmisc::is_empty(removers)) {
     if (type == "fixed") {

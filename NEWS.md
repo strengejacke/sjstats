@@ -21,7 +21,7 @@
 
 ## New functions
 
-* `tidy_stan()` to return a tidy summary of stanreg-objects.
+* `tidy_stan()` to return a tidy summary of Stan-models.
 
 ## Changes to functions
 

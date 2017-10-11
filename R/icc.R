@@ -6,8 +6,10 @@
 #'                Currently, \code{\link[lme4]{merMod}} and
 #'                \code{\link[glmmTMB]{glmmTMB}} objects are supported.
 #'
-#' @param ... One or more fitted mixed effects model (of class \code{\link[lme4]{merMod}}
-#'   or \code{\link[glmmTMB]{glmmTMB}}).
+#' @param x Fitted mixed effects model (of class \code{\link[lme4]{merMod}} or
+#'           \code{\link[glmmTMB]{glmmTMB}}).
+#' @param ... More fitted model objects, to compute multiple intraclass-correlation
+#'              coefficients at once.
 #'
 #' @return A numeric vector with all random intercept intraclass-correlation-coefficients,
 #'           or a list of numeric vectors, when more than one model were used
@@ -111,20 +113,45 @@
 #'
 #' @importFrom purrr map2
 #' @export
-icc <- function(...) {
-  # evaluate dots
-  dots <- match.call(expand.dots = FALSE)$`...`
-  # get paramater names
-  dot.names <- dot_names(dots)
+icc <- function(x, ...) {
+  # return value
+  icc_ <- icc.lme4(x, deparse(substitute(x)))
 
-  icc_ <- purrr::map2(list(...), dot.names, ~ icc.lme4(.x, .y))
-  names(icc_) <- NULL
+  # check if we have multiple parameters
+  if (nargs() > 1) {
+    # evaluate dots
+    dots <- match.call(expand.dots = FALSE)$`...`
+    # get paramater names
+    dot.names <- dot_names(dots)
 
-  if (length(icc_) == 1)
-    icc_[[1]]
-  else
-    icc_
+    # get input list
+    params_ <- list(...)
+    icc_ <- list(icc_)
+
+    for (i in seq_len(length(params_))) {
+      icc_[[length(icc_) + 1]] <- icc.lme4(params_[[i]], dot.names[i])
+    }
+
+    names(icc_) <- NULL
+  }
+
+  icc_
 }
+
+# icc <- function(...) {
+#   # evaluate dots
+#   dots <- match.call(expand.dots = FALSE)$`...`
+#   # get paramater names
+#   dot.names <- dot_names(dots)
+#
+#   icc_ <- purrr::map2(list(...), dot.names, ~ icc.lme4(.x, .y))
+#   names(icc_) <- NULL
+#
+#   if (length(icc_) == 1)
+#     icc_[[1]]
+#   else
+#     icc_
+# }
 
 
 #' @importFrom lme4 VarCorr fixef getME

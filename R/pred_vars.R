@@ -43,7 +43,10 @@
 #' @importFrom stats formula terms
 #' @export
 pred_vars <- function(x) {
-  av <- all.vars(stats::formula(x)[[3L]])
+  if (inherits(x, "brmsfit"))
+    av <- all.vars(stats::formula(x)$formula[[3L]])
+  else
+    av <- all.vars(stats::formula(x)[[3L]])
 
   if (length(av) == 1 && av == ".")
     av <- all.vars(stats::terms(x))
@@ -54,7 +57,10 @@ pred_vars <- function(x) {
 #' @rdname pred_vars
 #' @export
 resp_var <- function(x) {
-  deparse(stats::formula(x)[[2L]])
+  if (inherits(x, "brmsfit"))
+    deparse(stats::formula(x)$formula[[2L]])
+  else
+    deparse(stats::formula(x)[[2L]])
 }
 
 #' @rdname pred_vars
