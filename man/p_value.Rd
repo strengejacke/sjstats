@@ -2,12 +2,9 @@
 % Please edit documentation in R/merMod_p.R
 \name{p_value}
 \alias{p_value}
-\alias{get_model_pval}
 \title{Get p-values from regression model objects}
 \usage{
 p_value(fit, p.kr = FALSE)
-
-get_model_pval(fit, p.kr = FALSE)
 }
 \arguments{
 \item{fit}{A fitted model object of class \code{lm}, \code{glm}, \code{merMod},

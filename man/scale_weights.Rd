@@ -10,10 +10,10 @@ scale_weights(x, cluster.id, pweight)
 \item{x}{A data frame.}
 
 \item{cluster.id}{Variable indicating the grouping structure (strata) of
-the survey data.}
+the survey data (level-2-cluster variable).}
 
 \item{pweight}{Variable indicating the probability (design or sampling)
-weights of the survey data.}
+weights of the survey data (level-1-weight).}
 }
 \value{
 \code{x}, with two new variables: \code{svywght_a} and \code{svywght_b},
@@ -27,6 +27,19 @@ Most functions to fit multilevel and mixed effects models only
    and Carle (2009) to rescale design weights in survey data to account for
    the grouping structure of multilevel models, which then can be used for
    multilevel modelling.
+}
+\details{
+Rescaling is based on two methods: For \code{svywght_a}, the sample
+   weights \code{pweight} are adjusted by a factor that represents the proportion
+   of cluster size divided by the sum of sampling weights within each cluster.
+   The adjustment factor for \code{svywght_b} is the sum of sample weights
+   within each cluster devided by the sum of squared sample weights within
+   each cluster (see Carle (2009), Appendix B).
+}
+\examples{
+data(nhanes_sample)
+scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
+
 }
 \references{
 Carle AC. \emph{Fitting multilevel models in complex survey data with design weights: Recommendations.} BMC Medical Research Methodology 2009, 9(49): 1-13
