@@ -5,8 +5,8 @@
 \alias{resp_var}
 \alias{resp_val}
 \alias{link_inverse}
-\alias{get_model_frame}
-\alias{get_varnames}
+\alias{model_frame}
+\alias{var_names}
 \title{Access information from model objects}
 \usage{
 pred_vars(x)
@@ -17,9 +17,9 @@ resp_val(x)
 
 link_inverse(x)
 
-get_model_frame(x, fe.only = TRUE)
+model_frame(x, fe.only = TRUE)
 
-get_varnames(x)
+var_names(x)
 }
 \arguments{
 \item{x}{A fitted model.}
@@ -33,9 +33,9 @@ For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
    \code{resp_val()} returns the values from \code{x}'s response vector.
    \code{link_inverse()} returns, if known, the inverse link function from
    \code{x}; else \code{NULL} for those models where the inverse link function
-   can't be identified. \code{get_model_frame()} is similar to \code{model.frame()},
+   can't be identified. \code{model_frame()} is similar to \code{model.frame()},
    but should also work for model objects that don't have a S3-generic for
-   \code{model.frame()}. \code{get_varnames()} returns the "cleaned" variable
+   \code{model.frame()}. \code{var_names()} returns the "cleaned" variable
    names, i.e. things like \code{s()} for splines or \code{log()} are
    removed.
 }
@@ -51,7 +51,7 @@ pred_vars(fit)
 resp_var(fit)
 resp_val(fit)
 
-link_inverse(m)(2.3)
+link_inverse(fit)(2.3)
 
 # example from ?stats::glm
 counts <- c(18, 17, 15, 20, 10, 20, 25, 13, 12)

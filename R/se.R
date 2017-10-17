@@ -240,9 +240,6 @@ std_merMod <- function(fit) {
 }
 
 
-
-#' @importFrom dplyr "%>%"
-#' @importFrom stats model.frame
 std_e_icc <- function(x, nsim) {
   # check whether model is still in environment?
   obj.name <- attr(x, ".obj.name", exact = T)
@@ -264,7 +261,7 @@ std_e_icc <- function(x, nsim) {
 
   # get ICC, and compute bootstrapped SE, than return both
   bstr <-
-    bootstr_icc_se(stats::model.frame(fitted.model),
+    bootstr_icc_se(model_frame(fitted.model),
                    nsim,
                    model.formula,
                    model.family)

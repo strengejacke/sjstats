@@ -2,8 +2,8 @@ Package: sjstats
 Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
-Version: 0.11.2.9000
-Date: 2017-10-08
+Version: 0.12.0
+Date: 2017-10-16
 Author: Daniel Lüdecke <d.luedecke@uke.de>
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -21,7 +21,7 @@ Description: Collection of convenient functions for common statistical computati
              models and mixed effects models. However, some of the functions
              also deal with other statistical measures, like Cronbach's Alpha,
              Cramer's V, Phi etc.
-License: MIT + file LICENSE
+License: GPL-3
 Depends:
     R (>= 3.2),
     stats,
@@ -34,6 +34,7 @@ Imports:
     lme4 (>= 1.1-12),
     lmtest (>= 0.9-34),
     glmmTMB,
+    magrittr,
     MASS,
     Matrix,
     modelr,

@@ -1,4 +1,10 @@
-# sjstats 0.11.3
+# sjstats 0.12.0.9000
+
+## General
+
+* `scale_weights()` to rescale design weights for multilevel models.
+
+# sjstats 0.12.0
 
 ## General
 
@@ -7,9 +13,13 @@
 
 ## New functions
 
-* `get_model_frame()` to get the model frame from model objects, also of those models that don't have a S3-generic model.frame-function.
-* `get_varnames()` to get cleaned variable names from model objects.
+* `model_frame()` to get the model frame from model objects, also of those models that don't have a S3-generic model.frame-function.
+* `var_names()` to get cleaned variable names from model objects.
 * `link_inverse()` to get the inverse link function from model objects.
+
+## Changes to functions
+
+* The `fun`-argument in `typical_value()` can now also be a named vector, to apply different functions for numeric and categorical variables.
 
 ## Bug fixes
 

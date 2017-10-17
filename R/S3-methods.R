@@ -9,13 +9,6 @@ model.matrix.gls <- function(object, ...) {
 }
 
 
-#' @importFrom prediction find_data
-#' @export
-model.frame.gls <- function(formula, ...) {
-  prediction::find_data(formula, ...)
-}
-
-
 #' @importFrom tibble tibble
 #' @importFrom stats coef vcov pnorm
 #' @importFrom dplyr case_when
@@ -125,18 +118,6 @@ predict.svyglm.nb <- function(object, newdata = NULL,
     ...
   )
 }
-
-
-
-#' @export
-model.frame.gee <- function(formula, ...) {
-  # get function call
-  tmp <- as.list(formula$call)
-  model.vars <- all.vars(tmp$formula)
-  all.data <- get(deparse(tmp$data))
-  all.data[, model.vars]
-}
-
 
 
 #' @export

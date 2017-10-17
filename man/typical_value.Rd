@@ -4,18 +4,23 @@
 \alias{typical_value}
 \title{Return the typical value of a vector}
 \usage{
-typical_value(x, fun = c("mean", "median", "mode", "weighted.mean", "zero"),
-  ...)
+typical_value(x, fun = "mean", ...)
 }
 \arguments{
 \item{x}{A variable.}
 
-\item{fun}{Character vector, naming the function to be applied to numeric
+\item{fun}{Character vector, naming the function to be applied to
 \code{x}. Currently, \code{"mean"}, \code{"weighted.mean"},
 \code{"median"} and \code{"mode"} are supported, which call the
 corresponding R functions (except \code{"mode"}, which calls an
 internal function to compute the most common value). \code{"zero"}
-simply returns 0.}
+simply returns 0. \strong{Note:} By default, if \code{x} is a factor,
+only \code{fun = "mode"} is applicable; for all other values (including
+the default, \code{"mean"}) the reference level of \code{x} is returned.
+For character vectors, only the mode is returned. You can use a named
+vector to apply other different functions to numeric and categorical
+\code{x}, where factor are first converted to numeric vectors, e.g.
+\code{fun = c(numeric = "median", factor = "mean")}. See 'Examples'.}
 
 \item{...}{Further arguments, passed down to \code{fun}.}
 }
@@ -28,8 +33,17 @@ This function returns the "typical" value of a variable.
 \details{
 By default, for numeric variables, \code{typical_value()} returns the
          mean value of \code{x} (unless changed with the \code{fun}-argument).
-         For factors, the reference level and for character vectors, to the
-         most common value (mode) is returned.
+         \cr \cr
+         For factors, the reference level is returned or the most common value
+         (if \code{fun = "mode"}), unless \code{fun} is a named vector. If
+         \code{fun} is a named vector, specify the function for numeric
+         and categorical variables as element names, e.g.
+         \code{fun = c(numeric = "median", factor = "mean")}. In this case,
+         factors are converted to numeric values (using \code{\link[sjmisc]{to_value}})
+         and the related function is applied. You may abbreviate the names
+         \code{fun = c(n = "median", f = "mean")}. See also 'Examples'.
+         \cr \cr
+         For character vectors the most common value (mode) is returned.
 }
 \examples{
 data(iris)
@@ -44,5 +58,15 @@ x <- c(3.7, 3.3, 3.5, 2.8)
 
 typical_value(x, "weighted.mean")
 typical_value(x, "weighted.mean", w = wt)
+
+# for factors, return either reference level or mode value
+set.seed(123)
+x <- sample(iris$Species, size = 30, replace = TRUE)
+typical_value(x)
+typical_value(x, fun = "mode")
+
+# for factors, use a named vector to apply other functions than "mode"
+map(iris, ~ typical_value(.x, fun = c(n = "median", f = "mean")))
+
 
 }

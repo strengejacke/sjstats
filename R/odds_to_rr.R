@@ -59,6 +59,8 @@
 #' # replicate OR/RR for coefficient "sex" from above regression
 #' or_to_rr(1.913887, .5516)
 #'
+#' @importFrom stats coef confint model.frame
+#' @importFrom sjlabelled as_numeric
 #' @export
 odds_to_rr <- function(fit) {
   # check model family

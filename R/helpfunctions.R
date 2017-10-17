@@ -1,5 +1,9 @@
 # Help-functions
 
+#' @importFrom magrittr %>%
+#' @export
+magrittr::`%>%`
+
 
 is_merMod <- function(fit) {
   inherits(fit, c("lmerMod", "glmerMod", "nlmerMod", "merModLmerTest"))

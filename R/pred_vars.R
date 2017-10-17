@@ -13,9 +13,9 @@
 #'    \code{resp_val()} returns the values from \code{x}'s response vector.
 #'    \code{link_inverse()} returns, if known, the inverse link function from
 #'    \code{x}; else \code{NULL} for those models where the inverse link function
-#'    can't be identified. \code{get_model_frame()} is similar to \code{model.frame()},
+#'    can't be identified. \code{model_frame()} is similar to \code{model.frame()},
 #'    but should also work for model objects that don't have a S3-generic for
-#'    \code{model.frame()}. \code{get_varnames()} returns the "cleaned" variable
+#'    \code{model.frame()}. \code{var_names()} returns the "cleaned" variable
 #'    names, i.e. things like \code{s()} for splines or \code{log()} are
 #'    removed.
 #'
@@ -28,7 +28,7 @@
 #' resp_var(fit)
 #' resp_val(fit)
 #'
-#' link_inverse(m)(2.3)
+#' link_inverse(fit)(2.3)
 #'
 #' # example from ?stats::glm
 #' counts <- c(18, 17, 15, 20, 10, 20, 25, 13, 12)
@@ -63,18 +63,15 @@ resp_var <- function(x) {
     deparse(stats::formula(x)[[2L]])
 }
 
+
 #' @rdname pred_vars
 #' @importFrom nlme getResponse
-#' @importFrom stats model.frame
-#' @importFrom prediction find_data
 #' @export
 resp_val <- function(x) {
   if (inherits(x, c("lme", "gls")))
     as.vector(nlme::getResponse(x))
-  else if (inherits(x, "vgam"))
-    as.vector(prediction::find_data(x)[[resp_var(x)]])
   else
-    as.vector(stats::model.frame(x)[[resp_var(x)]])
+    as.vector(model_frame(x)[[resp_var(x)]])
 }
 
 
@@ -124,12 +121,12 @@ link_inverse <- function(x) {
 #' @importFrom purrr map_lgl
 #' @importFrom dplyr select bind_cols one_of
 #' @export
-get_model_frame <- function(x, fe.only = TRUE) {
+model_frame <- function(x, fe.only = TRUE) {
   if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
     fitfram <- stats::model.frame(x, fixed.only = fe.only)
   else if (inherits(x, "lme"))
     fitfram <- x$data
-  else if (inherits(x, "vgam"))
+  else if (inherits(x, c("vgam", "gee", "gls")))
     fitfram <- prediction::find_data(x)
   else
     fitfram <- stats::model.frame(x)
@@ -142,7 +139,7 @@ get_model_frame <- function(x, fe.only = TRUE) {
   # proper column names and bind them back to the original model frame
   if (any(mc)) {
     fitfram <- dplyr::select(fitfram, -which(mc))
-    spline.term <- get_varnames(names(which(mc)))
+    spline.term <- var_names(names(which(mc)))
     # try to get model data from environment
     md <- eval(stats::getCall(x)$data, environment(stats::formula(x)))
     # bind spline terms to model frame
@@ -150,7 +147,7 @@ get_model_frame <- function(x, fe.only = TRUE) {
   }
 
   # clean variable names
-  colnames(fitfram) <- get_varnames(colnames(fitfram))
+  colnames(fitfram) <- var_names(colnames(fitfram))
 
   fitfram
 }
@@ -159,11 +156,11 @@ get_model_frame <- function(x, fe.only = TRUE) {
 #' @rdname pred_vars
 #' @importFrom purrr map_chr
 #' @export
-get_varnames <- function(x) {
+var_names <- function(x) {
   if (is.character(x))
     get_vn_helper(x)
   else
-    get_vn_helper(colnames(get_model_frame(x)))
+    get_vn_helper(colnames(model_frame(x)))
 }
 
 
