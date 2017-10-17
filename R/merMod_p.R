@@ -74,14 +74,6 @@ p_value <- function(fit, p.kr = FALSE) {
 }
 
 
-#' @export
-#' @rdname p_value
-get_model_pval <- function(fit, p.kr = FALSE) {
-  .Deprecated("p_value")
-  p_value(fit = fit, p.kr = p.kr)
-}
-
-
 #' @importFrom stats coef pt pnorm
 merMod_p <- function(fit, p.kr) {
   # retrieve sigificance level of independent variables (p-values)

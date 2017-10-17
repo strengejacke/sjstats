@@ -2,6 +2,10 @@
 
 ## General
 
+* Remove deprecated `get_model_pval()`.
+
+## New functions
+
 * `scale_weights()` to rescale design weights for multilevel models.
 
 # sjstats 0.12.0
