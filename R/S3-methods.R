@@ -587,3 +587,48 @@ print.sj_revar <- function(x, ...) {
     }
   }
 }
+
+
+#' @importFrom rlang .data
+#' @importFrom sjmisc rotate_df
+#' @importFrom dplyr case_when
+#' @importFrom purrr map_df
+#' @importFrom tibble add_column
+#' @export
+print.sjstats.pca_rotate <- function(x, cutoff = .1, ...) {
+
+  xs <- attr(x, "variance", exact = TRUE)
+
+  rn <- rownames(x)
+
+  x <- x %>%
+    round(4) %>%
+    purrr::map_df(~ dplyr::case_when(
+      abs(.x) < cutoff ~ "",
+      TRUE ~ as.character(.x)
+    )) %>%
+    as.data.frame() %>%
+    tibble::add_column(variable = rn, .before = 1)
+
+  xs <- xs %>%
+    round(3) %>%
+    as.data.frame() %>%
+    sjmisc::rotate_df()
+
+  colnames(xs) <- sprintf("PC%i", 1:ncol(xs))
+  rownames(xs) <- c("Proportion variance", "Cumulative variance", "Proportion explained", "Cumulative explained")
+
+  print(x, quote = FALSE, ...)
+  cat("\n")
+  print(xs, ...)
+}
+
+
+#' @export
+print.sjstats.pca <- function(x, ...) {
+
+  x <- as.data.frame(round(x, 4))
+  rownames(x) <- c("Standard deviation", "Eigenvalue", "Proportion variance", "Cumulative variance")
+
+  print(x, ...)
+}
