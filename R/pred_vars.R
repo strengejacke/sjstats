@@ -167,7 +167,7 @@ var_names <- function(x) {
 get_vn_helper <- function(x) {
   # for gam-smoothers/loess, remove s()- and lo()-function in column name
   # for survival, remove strata()
-  pattern <- c("log", "s", "lo", "bs", "poly", "strata")
+  pattern <- c("log", "s", "lo", "bs", "poly", "strata", "offset")
 
   # do we have a "log()" pattern here? if yes, get capture region
   # which matches the "cleaned" variable name

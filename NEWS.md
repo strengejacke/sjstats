@@ -9,6 +9,10 @@
 * `scale_weights()` to rescale design weights for multilevel models.
 * `pca()` and `pca_rotate()` to create tidy summaries of principal component analyses or rotated loadings matrices from PCA.
 
+## Changes to functions
+
+* `var_names()` now also cleans variable names from variables modelled with the `offset()` function.
+
 # sjstats 0.12.0
 
 ## General
