@@ -45,7 +45,7 @@ Imports:
     rlang,
     sandwich (>= 2.3-4),
     sjlabelled (>= 1.0.4),
-    sjmisc (>= 2.6.1),
+    sjmisc (>= 2.6.2),
     tidyr (>= 0.7.0),
     tidyselect,
     tibble (>= 1.3.3)
