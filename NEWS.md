@@ -12,6 +12,7 @@
 ## Changes to functions
 
 * `var_names()` now also cleans variable names from variables modelled with the `offset()` function.
+* `icc()`, `re_var()` and `get_re_var()` now support `brmsfit`-objects (models fitted with the *brms*-package).
 
 # sjstats 0.12.0
 

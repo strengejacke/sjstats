@@ -10,10 +10,10 @@ re_var(x)
 get_re_var(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01", "sigma_2"))
 }
 \arguments{
-\item{x}{Fitted mixed effects model (of class \code{\link[lme4]{merMod}} or
-\code{\link[glmmTMB]{glmmTMB}}). \code{get_re_var()} also accepts
-an object of class \code{icc.lme4}, as returned by the
-\code{\link{icc}} function.}
+\item{x}{Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
+\code{stanreg} or \code{brmsfit}). \code{get_re_var()} also accepts
+ an object of class \code{icc.lme4}, as returned by the
+ \code{\link{icc}} function.}
 
 \item{comp}{Name of the variance component to be returned. See 'Details'.}
 }
@@ -24,8 +24,9 @@ an object of class \code{icc.lme4}, as returned by the
 \description{
 These functions extracts random effect variances as well as
                random-intercept-slope-correlation of mixed effects models.
-               Currently, \code{\link[lme4]{merMod}} and
-               \code{\link[glmmTMB]{glmmTMB}} objects are supported.
+               Currently, \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}}
+               \code{\link[rstanarm]{stanreg}} and \code{\link[brms]{brmsfit}}
+               objects are supported.
 }
 \details{
 The random effect variances indicate the between- and within-group

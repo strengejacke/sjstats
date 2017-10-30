@@ -7,8 +7,8 @@
 icc(x, ...)
 }
 \arguments{
-\item{x}{Fitted mixed effects model (of class \code{\link[lme4]{merMod}} or
-\code{\link[glmmTMB]{glmmTMB}}).}
+\item{x}{Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
+\code{stanreg} or \code{brmsfit}).}
 
 \item{...}{More fitted model objects, to compute multiple intraclass-correlation
 coefficients at once.}
@@ -23,8 +23,9 @@ A numeric vector with all random intercept intraclass-correlation-coefficients,
 This function calculates the intraclass-correlation
                (icc) - sometimes also called \emph{variance partition coefficient}
                (vpc) - for random intercepts of mixed effects models.
-               Currently, \code{\link[lme4]{merMod}} and
-               \code{\link[glmmTMB]{glmmTMB}} objects are supported.
+               Currently, \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}}
+               \code{\link[rstanarm]{stanreg}} and \code{\link[brms]{brmsfit}}
+               objects are supported.
 }
 \details{
 The ICC is calculated by dividing the between-group-variance (random
