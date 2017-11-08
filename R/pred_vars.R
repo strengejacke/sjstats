@@ -4,7 +4,8 @@
 #' @description Several functions to retrieve information from model objects,
 #'    like variable names, link-inverse function, model frame etc.
 #'
-#' @param x A fitted model.
+#' @param x A fitted model; for \code{var_names()}, \code{x} may also be a
+#'    character vector.
 #' @param fe.only Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
 #'    model, returns the model frame for fixed effects only.
 #'
@@ -39,6 +40,10 @@
 #' link_inverse(m)(.3)
 #' # same as
 #' exp(.3)
+#'
+#' outcome <- as.numeric(outcome)
+#' m <- glm(counts ~ log(outcome) + as.factor(treatment), family = poisson())
+#' var_names(m)
 #'
 #' @importFrom stats formula terms
 #' @export
@@ -167,7 +172,7 @@ var_names <- function(x) {
 get_vn_helper <- function(x) {
   # for gam-smoothers/loess, remove s()- and lo()-function in column name
   # for survival, remove strata()
-  pattern <- c("log", "lo", "bs", "ns", "pspline", "poly", "strata", "offset", "s")
+  pattern <- c("as.factor", "log", "lo", "bs", "ns", "pspline", "poly", "strata", "offset", "s")
 
   # do we have a "log()" pattern here? if yes, get capture region
   # which matches the "cleaned" variable name

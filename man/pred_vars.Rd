@@ -22,7 +22,8 @@ model_frame(x, fe.only = TRUE)
 var_names(x)
 }
 \arguments{
-\item{x}{A fitted model.}
+\item{x}{A fitted model; for \code{var_names()}, \code{x} may also be a
+character vector.}
 
 \item{fe.only}{Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
 model, returns the model frame for fixed effects only.}
@@ -62,5 +63,9 @@ m <- glm(counts ~ outcome + treatment, family = poisson())
 link_inverse(m)(.3)
 # same as
 exp(.3)
+
+outcome <- as.numeric(outcome)
+m <- glm(counts ~ log(outcome) + as.factor(treatment), family = poisson())
+var_names(m)
 
 }
