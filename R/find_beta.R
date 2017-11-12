@@ -50,6 +50,8 @@
 #' @examples
 #' # example from blogpost:
 #' # https://www.johndcook.com/blog/2010/01/31/parameters-from-percentiles/
+#' # 10% of patients respond within 30 days of treatment
+#' # and 80% respond within 90 days of treatment
 #' find_normal(x1 = 30, p1 = .1, x2 = 90, p2 = .8)
 #' find_cauchy(x1 = 30, p1 = .1, x2 = 90, p2 = .8)
 #'

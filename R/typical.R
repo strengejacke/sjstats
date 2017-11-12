@@ -84,19 +84,30 @@ typical_value <- function(x, fun = "mean", ...) {
   # iterate all arguments
   add.args <- lapply(match.call(expand.dots = F)$`...`, function(x) x)
 
+
   # for weighted mean, check that weights are of same length as x
 
   if (fun == "weighted.mean" && "w" %in% names(add.args)) {
+
     # if yes, get value
     weights <- eval(add.args[["w"]])
 
-    # make sure weights and x have same length
-    if (length(weights) != length(x)) {
 
+    # make sure weights and x have same length
+
+    if (length(weights) != length(x)) {
       # if not, tell user and change function to mean
       warning("Vector of weights if of different length than `x`. Using `mean` as function for typical value.", call. = F)
       fun <- "mean"
+    }
 
+
+    # make sure weights are differen from 1
+
+    if (all(weights == 1)) {
+      # if not, tell user and change function to mean
+      warning("All weight values are `1`. Using `mean` as function for typical value.", call. = F)
+      fun <- "mean"
     }
   }
 

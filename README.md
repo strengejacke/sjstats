@@ -15,6 +15,10 @@ The comprised tools include:
 * Fit and accuracy measures for regression models: Overdispersion tests, accuracy of predictions, test/training-error comparisons
 * For anova-tables: Eta-squared, Partial Eta-squared and Omega-squared statistics
 
+Furthermore, *sjstats* has functions to access information from model objects, which either support more model objects than their *stats* counterparts, or provide easy access to model attributes, like:
+
+* `model_frame()` to get the model frame, `link_inverse()` to get the link-inverse function, `pred_vars()` and `resp_var()` to get the names of either the dependent or independent variables, or `var_names()` to get the "cleaned" variables names from a model object (cleaned means, things like `s()` or `log()` are removed from the returned character vector with variable names.)
+
 Other statistics:
 
 * Cramer's V, Cronbach's Alpha, Mean Inter-Item-Correlation, Mann-Whitney-U-Test, Item-scale reliability tests

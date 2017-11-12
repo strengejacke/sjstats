@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2017-09-15" />
+<meta name="date" content="2017-11-12" />
 
 <title>Statistics for Mixed Effects Models</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Statistics for Mixed Effects Models</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2017-09-15</em></h4>
+<h4 class="date"><em>2017-11-12</em></h4>
 
 
 
@@ -81,6 +81,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>deff()</code> and <code>smpsize_lmm()</code></li>
 <li><code>converge_ok()</code> and <code>is_singular()</code></li>
 <li><code>p_value()</code></li>
+<li><code>scale_weights()</code></li>
 <li><code>get_re_var()</code> and <code>re_var()</code></li>
 <li><code>icc()</code></li>
 </ul>
@@ -144,6 +145,29 @@ m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span clas
 
 <span class="kw">is_singular</span>(m)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
+</div>
+<div id="rescale-model-weights-for-complex-samples" class="section level2">
+<h2>Rescale model weights for complex samples</h2>
+<p>Most functions to fit multilevel and mixed effects models only allow to specify frequency weights, but not design (i.e. <em>sampling</em> or <em>probability</em>) weights, which should be used when analyzing complex samples and survey data.</p>
+<p><code>scale_weights()</code> implements an algorithm proposed by Aaparouhov (2006) and Carle (2009) to rescale design weights in survey data to account for the grouping structure of multilevel models, which then can be used for multilevel modelling.</p>
+<p>To calculate a weight-vector that can be used in multilevel models, <code>scale_weights()</code> needs that data frame with survey data as <code>x</code>-argument. This data frame should contain 1) a <em>cluster ID</em> (argument <code>cluster.id</code>), which represents the <em>strata</em> of the survey data (the level-2-cluster variable) and 2) the probability weights (argument <code>pweight</code>), which represents the design or sampling weights of the survey data (level-1-weight).</p>
+<p><code>scale_weights()</code> then returns the original data frame, including two new variables: <code>svywght_a</code>, where the sample weights <code>pweight</code> are adjusted by a factor that represents the proportion of cluster size divided by the sum of sampling weights within each cluster. The adjustment factor for <code>svywght_b</code> is the sum of sample weights within each cluster devided by the sum of squared sample weights within each cluster (see Carle (2009), Appendix B, for details).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(nhanes_sample)
+<span class="kw">scale_weights</span>(nhanes_sample, SDMVSTRA, WTINT2YR)
+<span class="co">#&gt; # A tibble: 2,992 x 9</span>
+<span class="co">#&gt;    total   age RIAGENDR RIDRETH1 SDMVPSU SDMVSTRA WTINT2YR svywght_a svywght_b</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt;  1     1  2.20        1        3       2       31 97593.68 1.5733612 1.2005159</span>
+<span class="co">#&gt;  2     7  2.08        2        3       1       29 39599.36 0.6231745 0.5246593</span>
+<span class="co">#&gt;  3     3  1.48        2        1       2       42 26619.83 0.8976966 0.5439111</span>
+<span class="co">#&gt;  4     4  1.32        2        4       2       33 34998.53 0.7083628 0.5498944</span>
+<span class="co">#&gt;  5     1  2.00        2        1       1       41 14746.45 0.4217782 0.3119698</span>
+<span class="co">#&gt;  6     6  2.20        2        4       1       38 28232.10 0.6877550 0.5155503</span>
+<span class="co">#&gt;  7   350  1.60        1        3       2       33 93162.43 1.8855878 1.4637614</span>
+<span class="co">#&gt;  8    NA  1.48        2        3       1       29 82275.99 1.2947757 1.0900898</span>
+<span class="co">#&gt;  9     3  2.28        2        4       1       41 24726.39 0.7072244 0.5231011</span>
+<span class="co">#&gt; 10    30  0.84        1        3       2       35 39895.05 0.7600105 0.5937167</span>
+<span class="co">#&gt; # ... with 2,982 more rows</span></code></pre></div>
 </div>
 <div id="p-values" class="section level2">
 <h2>P-Values</h2>
@@ -225,10 +249,12 @@ m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span cla
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<p>Hox J. 2002. Multilevel analysis: techniques and applications. Mahwah, NJ: Erlbaum</p>
-<p>Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. An Overview of Variance Inflation Factors for Sample-Size Calculation. Evaluation &amp; the Health Professions 26: 239–257. doi: <a href="http://doi.org/10.1177/0163278703255230">10.1177/0163278703255230</a></p>
-<p>Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication</p>
-<p>Raudenbush SW, Bryk AS. 2002. Hierarchical linear models: applications and data analysis methods. 2nd ed. Thousand Oaks: Sage Publications</p>
+<p>Aaparouhov T. 2006. <em>General Multi-Level Modeling with Sampling Weights.</em> Communications in Statistics—Theory and Methods (35): 439–460</p>
+<p>Carle AC. 2009. <em>Fitting multilevel models in complex survey data with design weights: Recommendations.</em> BMC Medical Research Methodology 9(49): 1-13</p>
+<p>Hox J. 2002. <em>Multilevel analysis: techniques and applications.</em> Mahwah, NJ: Erlbaum</p>
+<p>Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. <em>An Overview of Variance Inflation Factors for Sample-Size Calculation.</em> Evaluation &amp; the Health Professions 26: 239–257. doi: <a href="http://doi.org/10.1177/0163278703255230">10.1177/0163278703255230</a></p>
+<p>Rabe-Hesketh S, Skrondal A. 2012. <em>Multilevel and longitudinal modeling using Stata.</em> 3rd ed. College Station, Tex: Stata Press Publication</p>
+<p>Raudenbush SW, Bryk AS. 2002. <em>Hierarchical linear models: applications and data analysis methods.</em> 2nd ed. Thousand Oaks: Sage Publications</p>
 </div>
 
 
