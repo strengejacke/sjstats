@@ -15,6 +15,7 @@
 * `var_names()` now also cleans variable names from variables modelled with the `offset()` function.
 * `icc()`, `re_var()` and `get_re_var()` now support `brmsfit`-objects (models fitted with the *brms*-package).
 * For `fun = "weighted.mean"`, `typical_value()` now checks if vector of weights is of same length as `x`.
+* The print-method for `grpmean()` now also prints the overall p-value from the model.
 
 # sjstats 0.12.0
 

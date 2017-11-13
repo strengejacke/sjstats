@@ -129,6 +129,10 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2) {
 }
 
 
+#' @importFrom stats pf lm weighted.mean na.omit sd
+#' @importFrom tibble tibble add_row add_column
+#' @importFrom sjmisc to_value
+#' @importFrom purrr map_chr
 grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCountLabel, varGrpLabel) {
   # copy vectors from data frame
   dv <- x[[dv]]
@@ -207,18 +211,24 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
     .before = 1
   )
 
+
   # get anova statistics for mean table
   sum.fit <- summary(fit)
+
   # r-squared values
   r2 <- sum.fit$r.squared
   r2.adj <- sum.fit$adj.r.squared
+
   # F-statistics
-  fstat <- sum.fit$fstatistic[1]
+  fstat <- sum.fit$fstatistic
+  pval <- stats::pf(fstat[1], fstat[2], fstat[3], lower.tail = F)
+
 
   # copy as attributes
   attr(dat, "r2") <- r2
   attr(dat, "adj.r2") <- r2.adj
-  attr(dat, "fstat") <- fstat
+  attr(dat, "fstat") <- fstat[1]
+  attr(dat, "p.value") <- pval
   attr(dat, "dv.label") <- varCountLabel
   attr(dat, "grp.label") <- varGrpLabel
 

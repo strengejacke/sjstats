@@ -336,6 +336,7 @@ plot.sj_inequ_trend <- function(x, ...) {
 
 
 
+#' @importFrom stats kruskal.test na.omit
 #' @export
 print.sj_mwu <- function(x, ...) {
   cat("Mann-Whitney-U-Test\n")
@@ -495,10 +496,11 @@ print_grpmean <- function(x, ...) {
 
   # statistics
   cat(sprintf(
-    "\nAnova: R2=%.3f; adj.R2=%.3f; F=%.3f\n",
+    "\nAnova: R2=%.3f; adj.R2=%.3f; F=%.3f; p=%.3f\n",
     attr(x, "r2", exact = TRUE),
     attr(x, "adj.r2", exact = TRUE),
-    attr(x, "fstat", exact = TRUE)
+    attr(x, "fstat", exact = TRUE),
+    attr(x, "p.value", exact = TRUE)
   ))
 }
 
