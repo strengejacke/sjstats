@@ -107,7 +107,11 @@ link_inverse <- function(x) {
     il <- x$link$mean$linkinv
   } else if (inherits(x, "vgam")) {
     il <- x@family@linkinv
-  } else if (inherits(x, c("lrm", "polr"))) {
+  } else if (inherits(x, "brmsfit")) {
+    fam <- stats::family(x)
+    ff <- get(fam$family, asNamespace("stats"))
+    il <- ff(fam$link)$linkinv
+  } else if (inherits(x, c("lrm", "polr", "clm", "logistf"))) {
     # "lrm"-object from pkg "rms" have no family method
     # so we construct a logistic-regression-family-object
     il <- stats::binomial(link = "logit")$linkinv
