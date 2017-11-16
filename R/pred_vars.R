@@ -95,8 +95,17 @@ link_inverse <- function(x) {
       return(match.fun("exp"))
   }
 
+
+  # for gam-components from gamm4, add class attributes, so family
+  # function works correctly
+
+  if (inherits(x, "gam") && !inherits(x, c("glm", "lm")))
+    class(x) <- c(class(x), "glm", "lm")
+
+
   # do we have glm? if so, get link family. make exceptions
   # for specific models that don't have family function
+
   if (inherits(x, c("truncreg", "coxph"))) {
     il <- NULL
   } else if (inherits(x, c("hurdle", "zeroinfl"))) {
@@ -111,7 +120,7 @@ link_inverse <- function(x) {
     fam <- stats::family(x)
     ff <- get(fam$family, asNamespace("stats"))
     il <- ff(fam$link)$linkinv
-  } else if (inherits(x, c("lrm", "polr", "clm", "logistf"))) {
+  } else if (inherits(x, c("lrm", "polr", "clm", "logistf", "multinom"))) {
     # "lrm"-object from pkg "rms" have no family method
     # so we construct a logistic-regression-family-object
     il <- stats::binomial(link = "logit")$linkinv
@@ -127,8 +136,9 @@ link_inverse <- function(x) {
 #' @rdname pred_vars
 #' @importFrom stats model.frame formula getCall
 #' @importFrom prediction find_data
-#' @importFrom purrr map_lgl
+#' @importFrom purrr map_lgl map
 #' @importFrom dplyr select bind_cols one_of
+#' @importFrom tibble as_tibble
 #' @export
 model_frame <- function(x, fe.only = TRUE) {
   if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
@@ -147,12 +157,15 @@ model_frame <- function(x, fe.only = TRUE) {
   # model frame and convert them to regular data frames, give
   # proper column names and bind them back to the original model frame
   if (any(mc)) {
-    fitfram <- dplyr::select(fitfram, -which(mc))
+    fitfram_matrix <- dplyr::select(fitfram, -which(mc))
     spline.term <- var_names(names(which(mc)))
     # try to get model data from environment
     md <- eval(stats::getCall(x)$data, environment(stats::formula(x)))
-    # bind spline terms to model frame
-    fitfram <- dplyr::bind_cols(fitfram, dplyr::select(md, dplyr::one_of(spline.term)))
+    # if data not found in environment, reduce matrix variables into regular vectors
+    if (is.null(md))
+      fitfram <- dplyr::bind_cols(purrr::map(fitfram, ~ tibble::as_tibble(.x)))
+    else
+      fitfram <- dplyr::bind_cols(fitfram_matrix, dplyr::select(md, dplyr::one_of(spline.term)))
   }
 
   # clean variable names
@@ -173,7 +186,13 @@ var_names <- function(x) {
 }
 
 
+#' @importFrom sjmisc is_empty
+#' @importFrom purrr map_chr
 get_vn_helper <- function(x) {
+
+  # return if x is empty
+  if (sjmisc::is_empty(x)) return("")
+
   # for gam-smoothers/loess, remove s()- and lo()-function in column name
   # for survival, remove strata()
   pattern <- c("as.factor", "log", "lo", "bs", "ns", "pspline", "poly", "strata", "offset", "s")

@@ -41,8 +41,10 @@
 #' fit <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
 #' p_value(fit, p.kr = TRUE)
 #'
-#' @importFrom stats coef
+#' @importFrom stats coef pnorm
 #' @importFrom tibble tibble
+#' @importFrom broom tidy
+#' @importFrom dplyr select
 #' @export
 p_value <- function(fit, p.kr = FALSE) {
   # retrieve sigificance level of independent variables (p-values)
@@ -63,6 +65,16 @@ p_value <- function(fit, p.kr = FALSE) {
     lc <- length(sm$p.coeff)
     p <- sm$p.pv[1:lc]
     se <- sm$se[1:lc]
+  } else if (inherits(fit, "polr")) {
+    smry <- suppressMessages(as.data.frame(stats::coef(summary(fit))))
+    tstat <- smry[[3]]
+    se <- smry[[2]]
+    p <- 2 * stats::pnorm(abs(tstat), lower.tail = FALSE)
+    names(p) <- rownames(smry)
+  } else if (inherits(fit, "multinom")) {
+    return(fit %>%
+      broom::tidy() %>%
+      dplyr::select(.data$term, .data$p.value, .data$std.error))
   } else {
     p <- stats::coef(summary(fit))[, 4]
     se <- stats::coef(summary(fit))[, 2]
@@ -72,6 +84,8 @@ p_value <- function(fit, p.kr = FALSE) {
                  p.value = as.vector(p),
                  std.error = as.vector(se))
 }
+
+
 
 
 #' @importFrom stats coef pt pnorm
