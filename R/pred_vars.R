@@ -194,8 +194,8 @@ get_vn_helper <- function(x) {
   if (sjmisc::is_empty(x)) return("")
 
   # for gam-smoothers/loess, remove s()- and lo()-function in column name
-  # for survival, remove strata()
-  pattern <- c("as.factor", "log", "lo", "bs", "ns", "pspline", "poly", "strata", "offset", "s")
+  # for survival, remove strata(), and so on...
+  pattern <- c("as.factor", "log", "lag", "diff", "lo", "bs", "ns", "pspline", "poly", "strata", "offset", "s")
 
   # do we have a "log()" pattern here? if yes, get capture region
   # which matches the "cleaned" variable name

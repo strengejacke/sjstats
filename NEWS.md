@@ -2,6 +2,7 @@
 ## General
 
 * Remove deprecated `get_model_pval()`.
+* Revised documentation for `overdisp()`.
 
 ## New functions
 
@@ -13,7 +14,8 @@
 
 * `link_inverse()` now supports `brmsfit`, `multinom` and `clm`-models.
 * `p_value()` now supports `polr` and `multinom`-models.
-* `var_names()` now also cleans variable names from variables modelled with the `offset()` function.
+* `zero_count()` gets a `tolerance`-argument, to accept models with a ratio within a certain range of 1.
+* `var_names()` now also cleans variable names from variables modelled with the `offset()`, `lag()` or `diff()` function.
 * `icc()`, `re_var()` and `get_re_var()` now support `brmsfit`-objects (models fitted with the *brms*-package).
 * For `fun = "weighted.mean"`, `typical_value()` now checks if vector of weights is of same length as `x`.
 * The print-method for `grpmean()` now also prints the overall p-value from the model.

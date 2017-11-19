@@ -10,21 +10,23 @@
 #'          (positive) function or \code{NULL} (the default). See 'Details'
 #'          in \code{\link[AER]{dispersiontest}} in package \CRANpkg{AER}. Does not
 #'          apply to \code{merMod} objects.
+#' @param tolerance The tolerance for the ratio of observed and predicted
+#'          zeros to considered as over- or underfitting zero-counts. A ratio
+#'          between 1 +/- \code{tolerance} are considered as OK, while a ratio
+#'          beyond or below this treshold would indicate over- or underfitting.
 #'
 #' @return For \code{overdisp()}, information on the overdispersion test; for
 #'         \code{zero_count()}, the amount of predicted and observed zeros in
 #'         the outcome, as well as the ratio between these two values.
 #'
-#' @note For the overdispersion-test, the interpretation of the returned p-value
-#'       differs between GLM and GLMM. For GLMs, a p-value < .05 indicates
-#'       overdispersion, while for GLMMs, a p-value > .05 indicates overdispersion.
+#' @note For overdispersoion test, a p-value < .05 indicates overdispersion.
 #'       \cr \cr
 #'       For \code{zero_count()}, a model that is underfitting zero-counts
 #'       indicates a zero-inflation in the data, i.e. it is recommended to
 #'       use negative binomial or zero-inflated models then.
 #'
 #' @details For \code{merMod}- and \code{glmmTMB}-objects, \code{overdisp()} is
-#'          based on the code in the \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ},
+#'          based on the code in the \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html}{GLMM FAQ},
 #'          section \emph{How can I deal with overdispersion in GLMMs?}.
 #'          Note that this function only returns an \emph{approximate} estimate
 #'          of an overdispersion parameter, and is probably inaccurate for
@@ -33,9 +35,7 @@
 #'          For \code{glm}'s, \code{overdisp()} simply wraps the \code{dispersiontest}
 #'          from the \pkg{AER}-package.
 #'
-#' @references \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ}
-#'             \cr \cr
-#'             Bolker B et al. (2017): \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html}{GLMM FAQ.}
+#' @references Bolker B et al. (2017): \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html}{GLMM FAQ.}
 #'
 #' @examples
 #' library(sjmisc)
@@ -106,7 +106,7 @@ overdisp.lme4 <- function(x) {
 #' @rdname overdisp
 #' @importFrom stats predict dpois family
 #' @export
-zero_count <- function(x) {
+zero_count <- function(x, tolerance = .05) {
   # check if we have poisson
   if (!stats::family(x)$family %in% c("poisson", "quasipoisson"))
     stop("`x` must be from poisson-family.", call. = F)
@@ -124,6 +124,7 @@ zero_count <- function(x) {
   structure(class = "sjstats_zcf", list(
     predicted.zeros = pred.zero,
     observed.zeros = obs.zero,
-    ratio = pred.zero / obs.zero)
+    ratio = pred.zero / obs.zero,
+    tolerance = tolerance)
   )
 }

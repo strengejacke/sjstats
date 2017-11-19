@@ -405,10 +405,15 @@ print.sjstats_zcf <- function(x, ...) {
   cat(sprintf("  Predicted zero-counts: %i\n", x$predicted.zeros))
   cat(sprintf("                  Ratio: %.2f\n\n", x$ratio))
 
-  if (x$ratio < 1)
+  lower <- 1 - x$tolerance
+  upper <- 1 + x$tolerance
+
+  if (x$ratio < lower)
     message("Model is underfitting zero-counts (probable zero-inflation).")
-  else
+  else if (x$ratio > upper)
     message("Model is overfitting zero-counts.")
+  else
+    message("Model seems ok, ratio of observed and predicted zeros is within the tolerance range.")
 }
 
 
