@@ -50,7 +50,7 @@ cv_error <- function(data, formula, k = 5) {
     dplyr::mutate(
       trained.models = purrr::map(.data$train, ~ stats::lm(formula, data = .x)),
       predicted = purrr::map2(.data$trained.models, .data$test, ~ broom::augment(.x, newdata = .y)),
-      residuals = purrr::map(.data$predicted, ~.x[[resp_var(formula)]] - .x$.fitted),
+      residuals = purrr::map(.data$predicted, ~.x[[var_names(resp_var(formula))]] - .x$.fitted),
       rmse.train = purrr::map_dbl(.data$trained.models, ~ sjstats::rmse(.x))
     )
 

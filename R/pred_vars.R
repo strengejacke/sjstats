@@ -76,7 +76,7 @@ resp_val <- function(x) {
   if (inherits(x, c("lme", "gls")))
     as.vector(nlme::getResponse(x))
   else
-    as.vector(model_frame(x)[[resp_var(x)]])
+    as.vector(model_frame(x)[[var_names(resp_var(x))]])
 }
 
 

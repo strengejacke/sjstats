@@ -1,4 +1,5 @@
 # sjstats 0.13.0
+
 ## General
 
 * Remove deprecated `get_model_pval()`.
@@ -19,6 +20,11 @@
 * `icc()`, `re_var()` and `get_re_var()` now support `brmsfit`-objects (models fitted with the *brms*-package).
 * For `fun = "weighted.mean"`, `typical_value()` now checks if vector of weights is of same length as `x`.
 * The print-method for `grpmean()` now also prints the overall p-value from the model.
+
+## Bug fixes
+
+* `resp_val()`, `cv_error()` and `pred_accuracy()` did not work for formulas with transforming function for response terms, e.g. `log(response)`.
+
 
 # sjstats 0.12.0
 

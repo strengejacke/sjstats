@@ -64,7 +64,7 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
   formula <- stats::formula(fit)
 
   # get name of response
-  resp.name <- resp_var(fit)
+  resp.name <- var_names(resp_var(fit))
 
   # accuracy for linear models
   if (inherits(fit, "lm") && !inherits(fit, "glm")) {
