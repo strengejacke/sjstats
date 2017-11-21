@@ -137,8 +137,9 @@ link_inverse <- function(x) {
 #' @importFrom stats model.frame formula getCall
 #' @importFrom prediction find_data
 #' @importFrom purrr map_lgl map
-#' @importFrom dplyr select bind_cols one_of
+#' @importFrom dplyr select bind_cols
 #' @importFrom tibble as_tibble
+#' @importFrom tidyselect one_of
 #' @export
 model_frame <- function(x, fe.only = TRUE) {
   if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
@@ -165,7 +166,7 @@ model_frame <- function(x, fe.only = TRUE) {
     if (is.null(md))
       fitfram <- dplyr::bind_cols(purrr::map(fitfram, ~ tibble::as_tibble(.x)))
     else
-      fitfram <- dplyr::bind_cols(fitfram_matrix, dplyr::select(md, dplyr::one_of(spline.term)))
+      fitfram <- dplyr::bind_cols(fitfram_matrix, dplyr::select(md, tidyselect::one_of(spline.term)))
   }
 
   # clean variable names

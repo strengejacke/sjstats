@@ -61,12 +61,13 @@ tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
 
 
 
-#' @importFrom dplyr select one_of
+#' @importFrom dplyr select
 #' @importFrom tibble as_tibble
+#' @importFrom tidyselect one_of
 #' @export
 model.frame.svyglm.nb <- function(formula, ...) {
   pred <- attr(formula, "nb.terms", exact = T)
-  tibble::as_tibble(dplyr::select(formula$design$variables, dplyr::one_of(pred)))
+  tibble::as_tibble(dplyr::select(formula$design$variables, tidyselect::one_of(pred)))
 }
 
 
