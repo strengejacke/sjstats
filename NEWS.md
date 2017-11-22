@@ -9,6 +9,7 @@
 
 * `scale_weights()` to rescale design weights for multilevel models.
 * `pca()` and `pca_rotate()` to create tidy summaries of principal component analyses or rotated loadings matrices from PCA.
+* `gmd()` to compute Gini's mean difference.
 * `is_prime()` to check whether a number is a prime number or not.
 
 ## Changes to functions

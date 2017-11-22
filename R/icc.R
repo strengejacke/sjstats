@@ -4,7 +4,7 @@
 #'                (icc) - sometimes also called \emph{variance partition coefficient}
 #'                (vpc) - for random intercepts of mixed effects models.
 #'                Currently, \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}}
-#'                \code{\link[rstanarm]{stanreg}} and \code{\link[brms]{brmsfit}}
+#'                \code{stanreg} and \code{\link[brms]{brmsfit}}
 #'                objects are supported.
 #'
 #' @param x Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
@@ -160,10 +160,12 @@ icc <- function(x, ...) {
 #' @importFrom stats family formula
 #' @importFrom purrr map map_dbl map_lgl
 #' @importFrom sjmisc str_contains
-#' @importFrom brms VarCorr
 icc.lme4 <- function(fit, obj.name) {
   # check object class
   if (is_merMod(fit) || inherits(fit, c("glmmTMB", "brmsfit"))) {
+
+    if (inherits(fit, "brmsfit") && !requireNamespace("brms", quietly = TRUE))
+      stop("Please install and load package `brms` first.", call. = F)
 
     # get family
     fitfam <- stats::family(fit)$family
@@ -369,7 +371,7 @@ icc.lme4 <- function(fit, obj.name) {
 #' @description These functions extracts random effect variances as well as
 #'                random-intercept-slope-correlation of mixed effects models.
 #'                Currently, \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}}
-#'                \code{\link[rstanarm]{stanreg}} and \code{\link[brms]{brmsfit}}
+#'                \code{stanreg} and \code{\link[brms]{brmsfit}}
 #'                objects are supported.
 #'
 #' @param x Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},

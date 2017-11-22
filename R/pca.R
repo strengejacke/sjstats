@@ -86,6 +86,9 @@ pca_rotate <- function(x, nf = NULL, rotation = c("varimax", "oblimin")) {
   if (!inherits(x, "data.frame") && rotation == "oblimin")
     stop("`x` must be a data frame for oblimin-rotation.", call. = F)
 
+  if (rotation == "oblimin" && !requireNamespace("psych", quietly = TRUE))
+    stop("Package `psych` required for `oblimin`-rotation.", call. = F)
+
 
   # rotate loadings
 

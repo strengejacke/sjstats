@@ -24,7 +24,7 @@ This function calculates the intraclass-correlation
                (icc) - sometimes also called \emph{variance partition coefficient}
                (vpc) - for random intercepts of mixed effects models.
                Currently, \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}}
-               \code{\link[rstanarm]{stanreg}} and \code{\link[brms]{brmsfit}}
+               \code{stanreg} and \code{\link[brms]{brmsfit}}
                objects are supported.
 }
 \details{
