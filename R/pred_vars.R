@@ -151,6 +151,14 @@ model_frame <- function(x, fe.only = TRUE) {
   else
     fitfram <- stats::model.frame(x)
 
+  # clean 1-dimensional matrices
+  fitfram <- purrr::modify_if(fitfram, is.matrix, function(x) {
+    if (dim(x)[2] == 1)
+      as.vector(x)
+    else
+      x
+  })
+
   # check if we have any matrix columns, e.g. from splines
   mc <- purrr::map_lgl(fitfram, is.matrix)
 
