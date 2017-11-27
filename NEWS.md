@@ -1,5 +1,9 @@
 # sjstats 0.13.1
 
+## General
+
+* Beautiful colored output for `grpmean()` and `mwu()`.
+
 ## Bug fixes
 
 * `model_frame()` did not work properly for variables that were standardized with `scale()`.

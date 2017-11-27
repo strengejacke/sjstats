@@ -29,7 +29,9 @@ Depends:
 Imports:
     bayesplot,
     broom,
+    cli,
     coin,
+    crayon,
     dplyr (>= 0.7.1),
     lme4 (>= 1.1-12),
     lmtest (>= 0.9-34),

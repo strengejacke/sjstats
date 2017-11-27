@@ -336,13 +336,12 @@ plot.sj_inequ_trend <- function(x, ...) {
 }
 
 
-
+#' @importFrom cli cat_line
+#' @importFrom crayon blue red italic
 #' @importFrom stats kruskal.test na.omit
 #' @export
 print.sj_mwu <- function(x, ...) {
-  cat("Mann-Whitney-U-Test\n")
-  cat("-------------------\n")
-  cat("showing statistics between groups (x|y)\n\n")
+  cli::cat_line(crayon::red(crayon::italic("Mann-Whitney-U-Test\n")))
   # get data
   .dat <- x$df
   # print to console
@@ -352,13 +351,13 @@ print.sj_mwu <- function(x, ...) {
     l2 <- .dat[i, "grp2.label"]
     # do we have value labels?
     if (!is.null(l1) && !is.na(l1) %% !is.null(l2) && !is.na(l2)) {
-      cat(sprintf("Groups %i = %s (n = %i) | %i = %s (n = %i):\n",
+      cli::cat_line(crayon::blue(sprintf("Groups %i = %s (n = %i) | %i = %s (n = %i):",
                   .dat[i, "grp1"], l1, .dat[i, "grp1.n"],
-                  .dat[i, "grp2"], l2, .dat[i, "grp2.n"]))
+                  .dat[i, "grp2"], l2, .dat[i, "grp2.n"])))
     } else {
-      cat(sprintf("Groups (%i|%i), n = %i/%i:\n",
+      cli::cat_line(crayon::blue(sprintf("Groups (%i|%i), n = %i/%i:",
                   .dat[i, "grp1"], .dat[i, "grp2"],
-                  .dat[i, "grp1.n"], .dat[i, "grp2.n"]))
+                  .dat[i, "grp1.n"], .dat[i, "grp2.n"])))
     }
 
     pval <- .dat[i, "p"]
@@ -374,8 +373,7 @@ print.sj_mwu <- function(x, ...) {
 
   # if we have more than 2 groups, also perfom kruskal-wallis-test
   if (length(unique(stats::na.omit(x$data$grp))) > 2) {
-    cat("\nPerforming Kruskal-Wallis-Test\n")
-    cat("------------------------------\n")
+    cli::cat_line(crayon::red(crayon::italic("Kruskal-Wallis-Test\n")))
     kw <- stats::kruskal.test(x$data$x, x$data$grp)
     cat(sprintf("chi-squared = %.3f\n", kw$statistic))
     cat(sprintf("df = %i\n", kw$parameter))
@@ -489,13 +487,15 @@ print.sj_grpmean <- function(x, ...) {
 }
 
 
+#' @importFrom cli cat_line
+#' @importFrom crayon blue
 print_grpmean <- function(x, ...) {
   # headline
-  cat(sprintf(
-    "Grouped Means for %s by %s\n\n",
+  cli::cat_line(crayon::blue(sprintf(
+    "Grouped Means for %s by %s\n",
     attr(x, "dv.label", exact = TRUE),
     attr(x, "grp.label", exact = TRUE)
-  ))
+  )))
 
   # means
   print(as.data.frame(x))
@@ -511,6 +511,8 @@ print_grpmean <- function(x, ...) {
 }
 
 
+#' @importFrom cli cat_line
+#' @importFrom crayon red italic
 #' @importFrom purrr walk
 #' @export
 print.sj_grpmeans <- function(x, ...) {
@@ -519,7 +521,7 @@ print.sj_grpmeans <- function(x, ...) {
     grp <- attr(dat, "group", exact = T)
 
     # print title for grouping
-    cat(sprintf("## Grouped by:\n%s\n\n", grp))
+    cli::cat_line(crayon::red(crayon::italic(sprintf("Grouped by:\n%s\n", grp))))
 
     # print grpmean-table
     print_grpmean(dat, ...)
