@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-* `mode_frame()` did not work properly for variables that were standardized with `scale()`.
+* `model_frame()` did not work properly for variables that were standardized with `scale()`.
 
 # sjstats 0.13.0
 
