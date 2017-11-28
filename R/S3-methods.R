@@ -165,7 +165,7 @@ print.sjstats_r2 <- function(x, ...) {
 #' @export
 print.icc.lme4 <- function(x, comp, ...) {
   # print model information
-  cat(sprintf("%s\n Family: %s (%s)\nFormula: %s\n\n",
+  cat(sprintf("\n%s\n Family: %s (%s)\nFormula: %s\n\n",
               attr(x, "model", exact = T),
               attr(x, "family", exact = T),
               attr(x, "link", exact = T),
@@ -337,11 +337,11 @@ plot.sj_inequ_trend <- function(x, ...) {
 
 
 #' @importFrom cli cat_line
-#' @importFrom crayon blue red italic
+#' @importFrom crayon blue cyan italic
 #' @importFrom stats kruskal.test na.omit
 #' @export
 print.sj_mwu <- function(x, ...) {
-  cli::cat_line(crayon::red(crayon::italic("Mann-Whitney-U-Test\n")))
+  cli::cat_line(crayon::cyan(crayon::italic("\nMann-Whitney-U-Test\n")))
   # get data
   .dat <- x$df
   # print to console
@@ -373,7 +373,7 @@ print.sj_mwu <- function(x, ...) {
 
   # if we have more than 2 groups, also perfom kruskal-wallis-test
   if (length(unique(stats::na.omit(x$data$grp))) > 2) {
-    cli::cat_line(crayon::red(crayon::italic("Kruskal-Wallis-Test\n")))
+    cli::cat_line(crayon::cyan(crayon::italic("Kruskal-Wallis-Test\n")))
     kw <- stats::kruskal.test(x$data$x, x$data$grp)
     cat(sprintf("chi-squared = %.3f\n", kw$statistic))
     cat(sprintf("df = %i\n", kw$parameter))
@@ -392,7 +392,7 @@ print.sj_mwu <- function(x, ...) {
 
 #' @export
 print.sj_splithalf <- function(x, ...) {
-  cat(sprintf("   Split-Half Reliability: %.3f\n", x$splithalf))
+  cat(sprintf("\n   Split-Half Reliability: %.3f\n", x$splithalf))
   cat(sprintf("Spearman-Brown Adjustment: %.3f\n", x$spearmanbrown))
 }
 
@@ -438,6 +438,8 @@ print.sjstats_outliers <- function(x, ...) {
 }
 
 
+#' @importFrom cli cat_line
+#' @importFrom crayon cyan italic
 #' @export
 print.sj_xtab_stat <- function(x, ...) {
   # get length of method name, to align output
@@ -447,13 +449,15 @@ print.sj_xtab_stat <- function(x, ...) {
   if (l < 7) l <- 7
 
   # headline
-  cat("Measure of Association for Contingency table\n")
+  cli::cat_line(crayon::cyan(
+    crayon::italic("\nMeasure of Association for Contingency Tables")
+  ))
 
   # used fisher?
   if (x$fisher)
-    cat("                 (using Fisher's Exact Test)\n")
-  else
-      cat("\n")
+    cli::cat_line(crayon::cyan("                  (using Fisher's Exact Test)"))
+
+  cat("\n")
 
   # print test statistic
   cat(sprintf("  %*s: %.4f\n", l, x$stat.name, x$statistic))
@@ -468,10 +472,12 @@ print.sj_xtab_stat <- function(x, ...) {
 
 
 
+#' @importFrom cli cat_line
+#' @importFrom crayon cyan italic
 #' @export
 print.sjstats_pred_accuracy <- function(x, ...) {
   # headline
-  cat("Accuracy of Model Predictions\n\n")
+  cli::cat_line(crayon::cyan(crayon::italic("\nAccuracy of Model Predictions\n")))
 
   # statistics
   cat(sprintf("Accuracy: %.2f%%\n", 100 * x$accuracy))
@@ -483,6 +489,7 @@ print.sjstats_pred_accuracy <- function(x, ...) {
 
 #' @export
 print.sj_grpmean <- function(x, ...) {
+  cat("\n")
   print_grpmean(x, ...)
 }
 
@@ -512,16 +519,17 @@ print_grpmean <- function(x, ...) {
 
 
 #' @importFrom cli cat_line
-#' @importFrom crayon red italic
+#' @importFrom crayon cyan italic
 #' @importFrom purrr walk
 #' @export
 print.sj_grpmeans <- function(x, ...) {
+  cat("\n")
   purrr::walk(x, function(dat) {
     # get grouping title label
     grp <- attr(dat, "group", exact = T)
 
     # print title for grouping
-    cli::cat_line(crayon::red(crayon::italic(sprintf("Grouped by:\n%s\n", grp))))
+    cli::cat_line(crayon::cyan(crayon::italic(sprintf("Grouped by:\n%s\n", grp))))
 
     # print grpmean-table
     print_grpmean(dat, ...)
