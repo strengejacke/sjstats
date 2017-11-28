@@ -35,10 +35,9 @@ Computes mean, sd and se for each sub-group (indicated by \code{grp})
 \details{
 This function performs a One-Way-Anova with \code{dv} as dependent
            and \code{grp} as independent variable, by calling
-           \code{lm(count ~ as.factor(grp))}, to get p-values for each
-           sub-group and the complete "model". P-values indicate whether
-           each group-mean is significantly different from the reference
-           group (reference level of \code{grp}).
+           \code{lm(count ~ as.factor(grp))}. Then \code{\link[emmeans]{contrast}}
+           is called to get p-values for each sub-group. P-values indicate whether
+           each group-mean is significantly different from the total mean.
 }
 \examples{
 data(efc)

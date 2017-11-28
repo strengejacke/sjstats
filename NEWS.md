@@ -4,6 +4,10 @@
 
 * Beautiful colored output for `grpmean()` and `mwu()`.
 
+## Changes to functions
+
+* `grpmean()` now uses `contrasts()` from package *emmeans* to compute p-values, which now correclty indicate whether the sub-group mean is significantly different from the total mean.
+
 ## Bug fixes
 
 * `model_frame()` did not work properly for variables that were standardized with `scale()`.

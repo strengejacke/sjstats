@@ -22,10 +22,9 @@
 #'
 #' @details This function performs a One-Way-Anova with \code{dv} as dependent
 #'            and \code{grp} as independent variable, by calling
-#'            \code{lm(count ~ as.factor(grp))}, to get p-values for each
-#'            sub-group and the complete "model". P-values indicate whether
-#'            each group-mean is significantly different from the reference
-#'            group (reference level of \code{grp}).
+#'            \code{lm(count ~ as.factor(grp))}. Then \code{\link[emmeans]{contrast}}
+#'            is called to get p-values for each sub-group. P-values indicate whether
+#'            each group-mean is significantly different from the total mean.
 #'
 #' @examples
 #' data(efc)
@@ -132,25 +131,39 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2) {
 #' @importFrom stats pf lm weighted.mean na.omit sd
 #' @importFrom tibble tibble add_row add_column
 #' @importFrom sjmisc to_value
+#' @importFrom emmeans emmeans contrast
+#' @importFrom dplyr pull select
 #' @importFrom purrr map_chr
+#' @importFrom rlang .data
 grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCountLabel, varGrpLabel) {
   # copy vectors from data frame
   dv <- x[[dv]]
   grp <- x[[grp]]
-  if (!is.null(weight.by)) weight.by <- x[[weight.by]]
+
+  if (!is.null(weight.by))
+    weight.by <- x[[weight.by]]
+  else
+    weight.by <- 1
 
   # convert values to numeric
   dv <- sjmisc::to_value(dv)
 
-  # compute anova statistics for mean table
-  if (!is.null(weight.by)) {
-    fit <- stats::lm(dv ~ as.factor(grp), weights = weight.by)
-  } else {
-    fit <- stats::lm(dv ~ as.factor(grp))
-  }
+  # create data frame, for emmeans
+  mydf <- stats::na.omit(data.frame(
+    dv = dv,
+    grp = as.factor(grp),
+    weight.by = weight.by
+  ))
 
-  # p-values of means
-  means.p <- p_value(fit)[["p.value"]]
+  # compute anova statistics for mean table
+  fit <- stats::lm(dv ~ grp, weights = weight.by, data = mydf)
+
+  # p-values of contrast-means
+  means.p <- fit %>%
+    emmeans::emmeans(specs = "grp") %>%
+    emmeans::contrast(method = "eff") %>%
+    summary() %>%
+    dplyr::pull("p.value")
 
   # create string with p-values
   pval <- purrr::map_chr(seq_len(length(means.p)), function(i) {
@@ -161,46 +174,25 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
     }
   })
 
-  # retrieve group indices
-  indices <- sort(unique(stats::na.omit(grp)))
-
-  dat <- purrr::map_df(seq_len(length(indices)), function(i) {
-    # do we have weighted means?
-    if (!is.null(weight.by)) {
-      mw <- stats::weighted.mean(
-        dv[grp == indices[i]],
-        w = weight.by[grp == indices[i]],
-        na.rm = TRUE
-      )
-    } else {
-      mw <- mean(dv[grp == indices[i]], na.rm = TRUE)
-    }
-
-    # add new row to data frame with mean, N, sd and se of dv
-    # for each sub-group (indicated by indices)
-    tibble::tibble(
-      mean = sprintf("%.*f", digits, mw),
-      N = length(stats::na.omit(dv[grp == indices[i]])),
-      std.dev = sprintf("%.*f", digits, stats::sd(dv[grp == indices[i]], na.rm = TRUE)),
-      std.error = sprintf("%.*f", digits, se(dv[grp == indices[i]])),
-      p.value = pval[i]
-    )
-  })
-
-  # total mean
-  if (!is.null(weight.by)) {
-    mw <- weighted.mean(dv, w = weight.by, na.rm = TRUE)
-  } else {
-    mw <- mean(dv, na.rm = TRUE)
-  }
+  # create summary
+  dat <- mydf %>%
+    dplyr::group_by(.data$grp) %>%
+    summarise(
+      mean = sprintf("%.*f", digits, stats::weighted.mean(.data$dv, w = .data$weight.by, na.rm = TRUE)),
+      N = n(),
+      std.dev = sprintf("%.*f", digits, stats::sd(.data$dv, na.rm = TRUE)),
+      std.error = sprintf("%.*f", digits, se(.data$dv))
+    ) %>%
+    mutate(p.value = pval) %>%
+    dplyr::select(-.data$grp)
 
   # finally, add total-row
   dat <- tibble::add_row(
     dat,
-    mean = sprintf("%.*f", digits, mw),
-    N = length(stats::na.omit(dv)),
-    std.dev = sprintf("%.*f", digits, stats::sd(dv, na.rm = TRUE)),
-    std.error = sprintf("%.*f", digits, se(dv)),
+    mean = sprintf("%.*f", digits, stats::weighted.mean(mydf$dv, w = mydf$weight.by, na.rm = TRUE)),
+    N = nrow(mydf),
+    std.dev = sprintf("%.*f", digits, stats::sd(mydf$dv, na.rm = TRUE)),
+    std.error = sprintf("%.*f", digits, se(mydf$dv)),
     p.value = ""
   )
 
