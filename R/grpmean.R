@@ -53,7 +53,7 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2) {
 
   # weights need extra checking, might be NULL
   if (!is.null(weight.by))
-    weights <- rlang::quo_name(rlang::enquo(weight.by))
+    weights <- gsub("\"", "", deparse(substitute(weight.by)), fixed = T)
   else
     weights <- NULL
 
