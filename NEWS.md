@@ -1,12 +1,18 @@
-# sjstats 0.13.1
+# sjstats 0.14.0
 
 ## General
 
 * Beautiful colored output for `grpmean()` and `mwu()`.
 
+## New functions
+
+* `mcse()` to compute the Monte Carlo standard error for `stanreg`- and `brmsfit`-models.
+* `n_eff()` to compute the effective sample size for `stanreg`- and `brmsfit`-models.
+
 ## Changes to functions
 
 * `grpmean()` now uses `contrasts()` from package *emmeans* to compute p-values, which correclty indicate whether the sub-group mean is significantly different from the total mean.
+* `tidy_stan()` now includes information on the Monte Carlo standard error.
 
 ## Bug fixes
 

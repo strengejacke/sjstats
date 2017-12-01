@@ -122,24 +122,24 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
   if (sjmisc::is_empty(brmsfit.removers)) {
     nr <- bayesplot::neff_ratio(x)[1:nrow(out)]
     rh <- bayesplot::rhat(x)[1:nrow(out)]
+    se <- dplyr::pull(mcse(x), "mcse")[1:nrow(out)]
   } else {
     nr <- bayesplot::neff_ratio(x)[-brmsfit.removers]
     rh <- bayesplot::rhat(x)[-brmsfit.removers]
+    se <- dplyr::pull(mcse(x), "mcse")[1:nrow(out)]
   }
 
 
   out <- out %>%
     tibble::add_column(
       estimate = purrr::map_dbl(mod.dat, ~ typical_value(.x, fun = typical)),
-      .after = 1
-    ) %>%
-    tibble::add_column(
       std.error = purrr::map_dbl(mod.dat, stats::mad),
-      .after = 2
+      .after = 1
     ) %>%
     dplyr::mutate(
       n_eff = nr,
-      Rhat = rh
+      Rhat = rh,
+      mcse = se
     )
 
 
@@ -165,21 +165,13 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
 #' @importFrom tidyselect starts_with ends_with
 #' @importFrom dplyr slice
 #' @importFrom tibble as_tibble
+#' @importFrom sjmisc is_empty
 remove_effects_from_stan <- function(out, type, is.brms) {
 
   # brmsfit-objects also include sd and cor for mixed
   # effecs models, so remove these here
 
-  if (is.brms) {
-    re.sd <- tidyselect::starts_with("sd_", vars = out$term)
-    re.cor <- tidyselect::starts_with("cor_", vars = out$term)
-
-    removers <- unique(c(re.sd, re.cor))
-
-    if (!sjmisc::is_empty(removers))
-      out <- dplyr::slice(out, !! -removers)
-  }
-
+  if (is.brms) out <- brms_clean(out)
 
   # if user wants all terms, return data here
 
@@ -210,4 +202,24 @@ remove_effects_from_stan <- function(out, type, is.brms) {
 
 
   tibble::as_tibble(out)
+}
+
+
+#' @importFrom tidyselect starts_with ends_with
+#' @importFrom dplyr slice
+#' @importFrom sjmisc is_empty
+brms_clean <- function(out) {
+
+  # brmsfit-objects also include sd and cor for mixed
+  # effecs models, so remove these here
+
+  re.sd <- tidyselect::starts_with("sd_", vars = out$term)
+  re.cor <- tidyselect::starts_with("cor_", vars = out$term)
+
+  removers <- unique(c(re.sd, re.cor))
+
+  if (!sjmisc::is_empty(removers))
+    out <- dplyr::slice(out, !! -removers)
+
+  out
 }

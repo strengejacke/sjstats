@@ -65,6 +65,7 @@ Suggests:
     pROC,
     psych,
     survey,
+    rstan,
     rstanarm,
     tidyverse,
     knitr
