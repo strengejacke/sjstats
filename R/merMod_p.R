@@ -54,6 +54,11 @@ p_value <- function(fit, p.kr = FALSE) {
   } else if (inherits(fit, "gls")) {
     p <- summary(fit)$tTable[, 4]
     se <- summary(fit)$tTable[, 2]
+  } else if (inherits(fit, "Zelig-relogit")) {
+    if (!requireNamespace("Zelig", quietly = T))
+      stop("Package `Zelig` required. Please install", call. = F)
+    p <- unlist(Zelig::get_pvalue(fit))
+    se <- unlist(Zelig::get_se(fit))
   } else if (is_merMod(fit)) {
     p <- merMod_p(fit, p.kr)
     se <- stats::coef(summary(fit))[, 2]

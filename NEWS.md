@@ -13,6 +13,7 @@
 
 * `grpmean()` now uses `contrasts()` from package *emmeans* to compute p-values, which correclty indicate whether the sub-group mean is significantly different from the total mean.
 * `tidy_stan()` now includes information on the Monte Carlo standard error.
+* `model_frame()`, `p_value()` and `link_inverse()` now support Zelig-relogit-models.
 
 ## Bug fixes
 

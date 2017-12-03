@@ -68,7 +68,8 @@ Suggests:
     rstan,
     rstanarm,
     tidyverse,
-    knitr
+    knitr,
+    Zelig
 URL: https://github.com/strengejacke/sjstats
 BugReports: https://github.com/strengejacke/sjstats/issues
 RoxygenNote: 6.0.1
