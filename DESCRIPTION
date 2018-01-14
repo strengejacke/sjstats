@@ -2,7 +2,7 @@ Package: sjstats
 Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
-Version: 0.14.0
+Version: 0.14.0.9000
 Date: 2018-01-14
 Author: Daniel Lüdecke <d.luedecke@uke.de>
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
@@ -37,7 +37,6 @@ Imports:
     lme4 (>= 1.1-12),
     lmtest (>= 0.9-34),
     glmmTMB,
-    knitr,
     magrittr,
     MASS,
     Matrix,
