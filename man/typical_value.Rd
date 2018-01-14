@@ -4,7 +4,7 @@
 \alias{typical_value}
 \title{Return the typical value of a vector}
 \usage{
-typical_value(x, fun = "mean", ...)
+typical_value(x, fun = "mean", weight.by = NULL, ...)
 }
 \arguments{
 \item{x}{A variable.}
@@ -15,12 +15,16 @@ typical_value(x, fun = "mean", ...)
 corresponding R functions (except \code{"mode"}, which calls an
 internal function to compute the most common value). \code{"zero"}
 simply returns 0. \strong{Note:} By default, if \code{x} is a factor,
-only \code{fun = "mode"} is applicable; for all other values (including
+only \code{fun = "mode"} is applicable; for all other functions (including
 the default, \code{"mean"}) the reference level of \code{x} is returned.
 For character vectors, only the mode is returned. You can use a named
 vector to apply other different functions to numeric and categorical
-\code{x}, where factor are first converted to numeric vectors, e.g.
+\code{x}, where factors are first converted to numeric vectors, e.g.
 \code{fun = c(numeric = "median", factor = "mean")}. See 'Examples'.}
+
+\item{weight.by}{Vector of weights that will be applied to weight all cases.
+Must be a vector of same length as the input vector. Default is
+\code{NULL}, so no weights are used.}
 
 \item{...}{Further arguments, passed down to \code{fun}.}
 }
@@ -57,7 +61,7 @@ wt <- c(5,  5,  4,  1) / 15
 x <- c(3.7, 3.3, 3.5, 2.8)
 
 typical_value(x, "weighted.mean")
-typical_value(x, "weighted.mean", w = wt)
+typical_value(x, "weighted.mean", weight.by = wt)
 
 # for factors, return either reference level or mode value
 set.seed(123)

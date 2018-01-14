@@ -14,6 +14,9 @@
 #'        Must be a vector of same length as the input vector. Default is
 #'        \code{NULL}, so no weights are used.
 #' @param digits Numeric, amount of digits after decimal point when rounding estimates and values.
+#' @param out Character vector, indicating whether the results should be printed
+#'        to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
+#'        (\code{out = "viewer"}) or browser (\code{out = "browser"}).
 #'
 #' @return For non-grouped data frames, \code{grpmean()} returns a data frame with
 #'         following columns: \code{term}, \code{mean}, \code{N}, \code{std.dev},
@@ -46,7 +49,10 @@
 #' @importFrom sjmisc to_value
 #' @importFrom rlang enquo .data quo_name
 #' @export
-grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2) {
+grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "viewer", "browser")) {
+
+  out <- match.arg(out)
+
   # create quosures
   grp.name <- rlang::quo_name(rlang::enquo(grp))
   dv.name <- rlang::quo_name(rlang::enquo(dv))
@@ -104,10 +110,14 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2) {
 
       # save data frame for return value
       dataframes[[length(dataframes) + 1]] <- dummy
-
-      # add class-attr for print-method()
-      class(dataframes) <- c("sj_grpmeans", "list")
     }
+
+    # add class-attr for print-method()
+    if (out == "txt")
+      class(dataframes) <- c("sj_grpmeans", "list")
+    else
+      class(dataframes) <- c("sjt_grpmeans", "list")
+
   } else {
     dataframes <- grpmean_helper(
       x = x,
@@ -121,8 +131,14 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2) {
     )
 
     # add class-attr for print-method()
-    class(dataframes) <- c("sj_grpmean", class(dataframes))
+    if (out == "txt")
+      class(dataframes) <- c("sj_grpmean", "list")
+    else
+      class(dataframes) <- c("sjt_grpmean", "list")
   }
+
+  # save how to print output
+  attr(dataframes, "print") <- out
 
   dataframes
 }
@@ -132,7 +148,7 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2) {
 #' @importFrom tibble tibble add_row add_column
 #' @importFrom sjmisc to_value
 #' @importFrom emmeans emmeans contrast
-#' @importFrom dplyr pull select
+#' @importFrom dplyr pull select n_distinct
 #' @importFrom purrr map_chr
 #' @importFrom rlang .data
 grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCountLabel, varGrpLabel) {
@@ -173,6 +189,10 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
       sprintf("%.*f", digits, means.p[i])
     }
   })
+
+  # check if value labels length matches group count
+  if (dplyr::n_distinct(mydf$grp) != length(value.labels))
+    value.labels <- unique(mydf$grp)
 
   # create summary
   dat <- mydf %>%

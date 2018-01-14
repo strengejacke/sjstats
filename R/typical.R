@@ -11,13 +11,15 @@
 #'        corresponding R functions (except \code{"mode"}, which calls an
 #'        internal function to compute the most common value). \code{"zero"}
 #'        simply returns 0. \strong{Note:} By default, if \code{x} is a factor,
-#'        only \code{fun = "mode"} is applicable; for all other values (including
+#'        only \code{fun = "mode"} is applicable; for all other functions (including
 #'        the default, \code{"mean"}) the reference level of \code{x} is returned.
 #'        For character vectors, only the mode is returned. You can use a named
 #'        vector to apply other different functions to numeric and categorical
-#'        \code{x}, where factor are first converted to numeric vectors, e.g.
+#'        \code{x}, where factors are first converted to numeric vectors, e.g.
 #'        \code{fun = c(numeric = "median", factor = "mean")}. See 'Examples'.
 #' @param ... Further arguments, passed down to \code{fun}.
+#'
+#' @inheritParams grpmean
 #'
 #' @return The "typical" value of \code{x}.
 #'
@@ -47,7 +49,7 @@
 #' x <- c(3.7, 3.3, 3.5, 2.8)
 #'
 #' typical_value(x, "weighted.mean")
-#' typical_value(x, "weighted.mean", w = wt)
+#' typical_value(x, "weighted.mean", weight.by = wt)
 #'
 #' # for factors, return either reference level or mode value
 #' set.seed(123)
@@ -60,7 +62,7 @@
 #'
 #'
 #' @export
-typical_value <- function(x, fun = "mean", ...) {
+typical_value <- function(x, fun = "mean", weight.by = NULL, ...) {
 
   # check if we have named vectors and find the requested function
   # for special functions for factors, convert to numeric first
@@ -81,35 +83,32 @@ typical_value <- function(x, fun = "mean", ...) {
     stop("`fun` must be one of \"mean\", \"median\", \"mode\", \"weighted.mean\" or \"zero\".", call. = F)
 
 
-  # iterate all arguments
-  add.args <- lapply(match.call(expand.dots = F)$`...`, function(x) x)
-
-
   # for weighted mean, check that weights are of same length as x
 
-  if (fun == "weighted.mean" && "w" %in% names(add.args)) {
-
-    # if yes, get value
-    weights <- eval(add.args[["w"]])
-
+  if (fun == "weighted.mean" && !is.null(weight.by)) {
 
     # make sure weights and x have same length
 
-    if (length(weights) != length(x)) {
+    if (length(weight.by) != length(x)) {
       # if not, tell user and change function to mean
-      warning("Vector of weights if of different length than `x`. Using `mean` as function for typical value.", call. = F)
+      warning("Vector of weights is of different length than `x`. Using `mean` as function for typical value.", call. = F)
       fun <- "mean"
     }
 
 
     # make sure weights are differen from 1
 
-    if (all(weights == 1)) {
+    if (all(weight.by == 1)) {
       # if not, tell user and change function to mean
       warning("All weight values are `1`. Using `mean` as function for typical value.", call. = F)
       fun <- "mean"
     }
   }
+
+
+  # no weights, than use normal mean function
+
+  if (fun == "weighted.mean" && is.null(weight.by)) fun <- "mean"
 
 
   if (fun == "median")
@@ -124,7 +123,7 @@ typical_value <- function(x, fun = "mean", ...) {
     myfun <- get("mean", asNamespace("base"))
 
   if (is.numeric(x)) {
-    do.call(myfun, args = list(x = x, na.rm = TRUE, ...))
+    do.call(myfun, args = list(x = x, na.rm = TRUE, w = weight.by, ...))
   } else if (is.factor(x)) {
     if (fun != "mode")
       levels(x)[1]

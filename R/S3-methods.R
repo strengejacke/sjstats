@@ -505,7 +505,7 @@ print_grpmean <- function(x, ...) {
   )))
 
   # means
-  print(as.data.frame(x))
+  print(as.data.frame(x), ...)
 
   # statistics
   cat(sprintf(
@@ -523,6 +523,7 @@ print_grpmean <- function(x, ...) {
 #' @importFrom purrr walk
 #' @export
 print.sj_grpmeans <- function(x, ...) {
+
   cat("\n")
   purrr::walk(x, function(dat) {
     # get grouping title label
