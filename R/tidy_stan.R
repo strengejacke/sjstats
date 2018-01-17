@@ -83,15 +83,7 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
   # for brmsfit models, we need to remove some columns here to
   # match data rows later
 
-  if (inherits(x, "brmsfit")) {
-    re.sd <- tidyselect::starts_with("sd_", vars = colnames(mod.dat))
-    re.cor <- tidyselect::starts_with("cor_", vars = colnames(mod.dat))
-
-    brmsfit.removers <- unique(c(re.sd, re.cor))
-
-    if (!sjmisc::is_empty(brmsfit.removers))
-      mod.dat <- dplyr::select(mod.dat, !! -brmsfit.removers)
-  }
+  if (inherits(x, "brmsfit")) mod.dat <- brms_clean(mod.dat)
 
 
   # compute HDI
@@ -122,11 +114,11 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
   if (sjmisc::is_empty(brmsfit.removers)) {
     nr <- bayesplot::neff_ratio(x)[1:nrow(out)]
     rh <- bayesplot::rhat(x)[1:nrow(out)]
-    se <- dplyr::pull(mcse(x), "mcse")[1:nrow(out)]
+    se <- dplyr::pull(mcse(x, type = "all"), "mcse")[1:nrow(out)]
   } else {
     nr <- bayesplot::neff_ratio(x)[-brmsfit.removers]
     rh <- bayesplot::rhat(x)[-brmsfit.removers]
-    se <- dplyr::pull(mcse(x), "mcse")[1:nrow(out)]
+    se <- dplyr::pull(mcse(x, type = "all"), "mcse")[1:nrow(out)]
   }
 
 
@@ -173,6 +165,13 @@ remove_effects_from_stan <- function(out, type, is.brms) {
 
   if (is.brms) out <- brms_clean(out)
 
+
+  # remove certain terms like log-posterior etc. from output
+
+  keep <-  which(!(out$term %in% c("lp__", "log-posterior", "mean_PPD")))
+  out <- dplyr::slice(out, !! keep)
+
+
   # if user wants all terms, return data here
 
   if (type == "all") return(tibble::as_tibble(out))
@@ -213,13 +212,29 @@ brms_clean <- function(out) {
   # brmsfit-objects also include sd and cor for mixed
   # effecs models, so remove these here
 
-  re.sd <- tidyselect::starts_with("sd_", vars = out$term)
-  re.cor <- tidyselect::starts_with("cor_", vars = out$term)
+  if (tibble::has_name(out, "term")) {
+    re.sd <- tidyselect::starts_with("sd_", vars = out$term)
+    re.cor <- tidyselect::starts_with("cor_", vars = out$term)
+    lp <- tidyselect::starts_with("lp__", vars = out$term)
 
-  removers <- unique(c(re.sd, re.cor))
+    removers <- unique(c(re.sd, re.cor, lp))
+
+    if (!sjmisc::is_empty(removers))
+      out <- dplyr::slice(out, !! -removers)
+  }
+
+
+  # we may have transformed data frame, where columns
+  # need to be removed
+
+  re.sd <- tidyselect::starts_with("sd_", vars = colnames(out))
+  re.cor <- tidyselect::starts_with("cor_", vars = colnames(out))
+  lp <- tidyselect::starts_with("lp__", vars = colnames(out))
+
+  removers <- unique(c(re.sd, re.cor, lp))
 
   if (!sjmisc::is_empty(removers))
-    out <- dplyr::slice(out, !! -removers)
+    out <- dplyr::select(out, !! -removers)
 
   out
 }

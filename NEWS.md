@@ -4,6 +4,10 @@
 
 * Remove unused imports.
 
+## Bug fixes
+
+* Fix issues with `mcse()`, `n_eff()` and `tidy_stan()` with more complex _brmsfit_-models.
+
 # sjstats 0.14.0
 
 ## General

@@ -132,9 +132,9 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
 
     # add class-attr for print-method()
     if (out == "txt")
-      class(dataframes) <- c("sj_grpmean", "list")
+      class(dataframes) <- c("sj_grpmean", class(dataframes))
     else
-      class(dataframes) <- c("sjt_grpmean", "list")
+      class(dataframes) <- c("sjt_grpmean", class(dataframes))
   }
 
   # save how to print output

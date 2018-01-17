@@ -370,7 +370,7 @@ icc.lme4 <- function(fit, obj.name) {
 #' @name re_var
 #' @description These functions extracts random effect variances as well as
 #'                random-intercept-slope-correlation of mixed effects models.
-#'                Currently, \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}}
+#'                Currently, \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}},
 #'                \code{stanreg} and \code{\link[brms]{brmsfit}}
 #'                objects are supported.
 #'

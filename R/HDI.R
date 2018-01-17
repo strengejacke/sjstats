@@ -42,6 +42,10 @@
 #'   (see \code{n_eff()}) of at least 10.000 is recommended if 95\% intervals
 #'   should be computed (see Kruschke 2015, p. 183ff). \cr \cr
 #'   The formula for \code{mcse()} is from Kruschke 2015, p. 187.
+#'   \cr \cr
+#'   For \code{n_eff()}, the ratio of effective number of samples ranges from 0
+#'   to 1, and should be close to 1. The closer this ratio comes to zero means
+#'   that the chains may be inefficient, but possibly still okay.
 #'
 #' @references Kruschke JK. Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and Stan. 2nd edition. Academic Press, 2015
 #'

@@ -30,6 +30,7 @@ n_eff.brmsfit <- function(x, type = c("fixed", "random", "all")) {
 
 
 #' @importFrom tibble as_tibble
+#' @importFrom dplyr slice
 n_eff_helper <- function(x, smry, type) {
 
   if (inherits(x, "brmsfit"))
@@ -43,6 +44,5 @@ n_eff_helper <- function(x, smry, type) {
   )
 
   # check if we need to remove random or fixed effects
-  dat <- remove_effects_from_stan(dat, type, is.brms = inherits(x, "brmsfit"))
-  dat[1:(nrow(dat) - 2), ]
+  remove_effects_from_stan(dat, type, is.brms = inherits(x, "brmsfit"))
 }
