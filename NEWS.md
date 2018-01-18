@@ -3,6 +3,7 @@
 ## General
 
 * Remove unused imports.
+* Cross refences from `dplyr::select_helpers` were updated to `tidyselect::select_helpers`.
 
 ## Bug fixes
 

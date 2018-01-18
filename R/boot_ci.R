@@ -10,8 +10,8 @@
 #' @param ... Optional, unquoted names of variables with bootstrapped estimates.
 #'          Required, if either \code{data} is a data frame (and no vector),
 #'          and only selected variables from \code{data} should be processed.
-#'          You may also use functions like \code{:} or dplyr's
-#'          \code{\link[dplyr]{select_helpers}}.
+#'          You may also use functions like \code{:} or tidyselect's
+#'          \code{\link[tidyselect]{select_helpers}}.
 #' @param method Character vector, indicating if confidence intervals should be
 #'          based on bootstrap standard error, multiplied by the value of the
 #'          quantile function of the t distribution (default), or on sample
