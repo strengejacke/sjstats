@@ -8,6 +8,7 @@
 ## Bug fixes
 
 * Fix issues with `mcse()`, `n_eff()` and `tidy_stan()` with more complex _brmsfit_-models.
+* Fix issue in `typical_value()` to prevent error for R-oldrel-Windows.
 
 # sjstats 0.14.0
 

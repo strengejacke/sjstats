@@ -123,7 +123,10 @@ typical_value <- function(x, fun = "mean", weight.by = NULL, ...) {
     myfun <- get("mean", asNamespace("base"))
 
   if (is.numeric(x)) {
-    do.call(myfun, args = list(x = x, na.rm = TRUE, w = weight.by, ...))
+    if (fun == "weighted.mean")
+      do.call(myfun, args = list(x = x, na.rm = TRUE, w = weight.by, ...))
+    else
+      do.call(myfun, args = list(x = x, na.rm = TRUE, ...))
   } else if (is.factor(x)) {
     if (fun != "mode")
       levels(x)[1]
