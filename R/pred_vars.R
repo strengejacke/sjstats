@@ -153,7 +153,9 @@ model_frame <- function(x, fe.only = TRUE) {
   else
     fitfram <- stats::model.frame(x)
 
+
   # clean 1-dimensional matrices
+
   fitfram <- purrr::modify_if(fitfram, is.matrix, function(x) {
     if (dim(x)[2] == 1)
       as.vector(x)
@@ -161,17 +163,29 @@ model_frame <- function(x, fe.only = TRUE) {
       x
   })
 
+
   # check if we have any matrix columns, e.g. from splines
+
   mc <- purrr::map_lgl(fitfram, is.matrix)
+
+
+  # don't change response value, if it's a matrix
+  # bound with cbind()
+
+  if (mc[1] && resp_var(x) == colnames(fitfram)[1]) mc[1] <- FALSE
+
 
   # if we have any matrix columns, we remove them from original
   # model frame and convert them to regular data frames, give
   # proper column names and bind them back to the original model frame
+
   if (any(mc)) {
     fitfram_matrix <- dplyr::select(fitfram, -which(mc))
     spline.term <- var_names(names(which(mc)))
+
     # try to get model data from environment
     md <- eval(stats::getCall(x)$data, environment(stats::formula(x)))
+
     # if data not found in environment, reduce matrix variables into regular vectors
     if (is.null(md))
       fitfram <- dplyr::bind_cols(purrr::map(fitfram, ~ tibble::as_tibble(.x)))
