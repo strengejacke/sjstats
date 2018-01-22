@@ -44,7 +44,7 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
   if (is.factor(grp) || is.character(grp)) grp <- sjlabelled::as_numeric(grp)
 
   # group "counter" (index) should start with 1, not 0
-  if (min(grp, na.rm = TRUE) < 1) grp <- sjmisc::recode_to(grp, lowest = 1)
+  if (min(grp, na.rm = TRUE) < 1) grp <- sjmisc::recode_to(grp, lowest = 1, append = FALSE)
 
   # retrieve unique group values. need to iterate all values
   grp_values <- sort(unique(stats::na.omit(grp)))
