@@ -5,6 +5,10 @@
 * Remove unused imports.
 * Cross refences from `dplyr::select_helpers` were updated to `tidyselect::select_helpers`.
 
+## Changes to functions
+
+* `var_names()` now also cleans variable names from variables modelled with the `mi()` function (multiple imputation on the fly in *brms*).
+
 ## Bug fixes
 
 * Fix issues with `mcse()`, `n_eff()` and `tidy_stan()` with more complex _brmsfit_-models.
