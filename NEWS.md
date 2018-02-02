@@ -14,7 +14,8 @@
 
 * Fix issues with `mcse()`, `n_eff()` and `tidy_stan()` with more complex _brmsfit_-models.
 * Fix issue in `typical_value()` to prevent error for R-oldrel-Windows.
-* `model_frame()` now returns response values from models, which are in matrix form (bound with `cbind()`), as is. 
+* `model_frame()` now returns response values from models, which are in matrix form (bound with `cbind()`), as is.
+* Fixed issues in `grpmean()`, where values instead of value labels were printed if some categories were not present in the data.
 
 # sjstats 0.14.0
 

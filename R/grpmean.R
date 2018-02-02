@@ -78,7 +78,7 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
 
   # now get valid value labels
   value.labels <- sjlabelled::get_labels(
-    x[[grp.name]], attr.only = F, include.values = NULL, include.non.labelled = TRUE
+    x[[grp.name]], attr.only = F, include.values = "n", include.non.labelled = TRUE
   )
 
   # return values
@@ -198,8 +198,17 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
 
 
   # check if value labels length matches group count
-  if (dplyr::n_distinct(mydf$grp) != length(value.labels))
-    value.labels <- unique(mydf$grp)
+  if (dplyr::n_distinct(mydf$grp) != length(value.labels)) {
+    # get unique factor levels and check if these are numeric.
+    # if so, we match the values from value labels and the remaining
+    # factor levels, so we get the correct value labels for printing
+    nl <- unique(mydf$grp)
+    if (sjmisc::is_num_fac(nl))
+      value.labels <- value.labels[names(value.labels) %in% levels(nl)]
+    else
+      value.labels <- nl
+  }
+
 
   # create summary
   dat <- mydf %>%
@@ -226,7 +235,7 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
   # add row labels
   dat <- tibble::add_column(
     dat,
-    term = c(value.labels, "Total"),
+    term = c(unname(value.labels), "Total"),
     .before = 1
   )
 
