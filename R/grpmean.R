@@ -190,6 +190,13 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
     }
   })
 
+
+  ## TODO
+  # efc %>%
+  #   group_by(c172code, c161sex) %>%
+  #   grpmean(c12hour, e42dep)
+
+
   # check if value labels length matches group count
   if (dplyr::n_distinct(mydf$grp) != length(value.labels))
     value.labels <- unique(mydf$grp)

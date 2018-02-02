@@ -7,7 +7,8 @@
 \alias{mic}
 \title{Check internal consistency of a test or questionnaire}
 \usage{
-reliab_test(x, scale.items = FALSE, digits = 3)
+reliab_test(x, scale.items = FALSE, digits = 3, out = c("txt", "viewer",
+  "browser"))
 
 split_half(x, digits = 3)
 
@@ -24,6 +25,10 @@ with items (e.g. from a test or questionnaire).}
 when the variables have different measures / scales.}
 
 \item{digits}{Amount of digits for returned values.}
+
+\item{out}{Character vector, indicating whether the results should be printed
+to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
+(\code{out = "viewer"}) or browser (\code{out = "browser"}).}
 
 \item{cor.method}{Correlation computation method. May be one of
 \code{"spearman"} (default), \code{"pearson"} or \code{"kendall"}.
