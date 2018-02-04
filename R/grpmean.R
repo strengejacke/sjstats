@@ -53,6 +53,12 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
 
   out <- match.arg(out)
 
+  if (out != "txt" && !requireNamespace("sjPlot", quietly = TRUE)) {
+    message("Package `sjPlot` needs to be loaded to print HTML tables.")
+    out <- "txt"
+  }
+
+
   # create quosures
   grp.name <- rlang::quo_name(rlang::enquo(grp))
   dv.name <- rlang::quo_name(rlang::enquo(dv))

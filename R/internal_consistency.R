@@ -145,6 +145,12 @@ reliab_test <- function(x, scale.items = FALSE, digits = 3, out = c("txt", "view
 
   out <- match.arg(out)
 
+  if (out != "txt" && !requireNamespace("sjPlot", quietly = TRUE)) {
+    message("Package `sjPlot` needs to be loaded to print HTML tables.")
+    out <- "txt"
+  }
+
+
   # remove missings, so correlation works
   x <- stats::na.omit(x)
 

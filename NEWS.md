@@ -1,4 +1,4 @@
-# sjstats 0.14.0.9000
+# sjstats 0.14.1
 
 ## General
 
@@ -7,7 +7,7 @@
 
 ## Changes to functions
 
-* `var_names()` now also cleans variable names from variables modelled with the `mi()` function (multiple imputation on the fly in *brms*).
+* `var_names()` now also cleans variable names from variables modeled with the `mi()` function (multiple imputation on the fly in *brms*).
 * `reliab_test()` gets an `out`-argument, to print output to console, or as HTML table in the viewer or web browser.
 
 ## Bug fixes

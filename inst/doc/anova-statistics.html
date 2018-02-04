@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2017-11-12" />
+<meta name="date" content="2018-02-04" />
 
 <title>Statistics for Anova Tables</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Statistics for Anova Tables</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2017-11-12</em></h4>
+<h4 class="date"><em>2018-02-04</em></h4>
 
 
 
@@ -133,22 +133,22 @@ fit &lt;-<span class="st"> </span><span class="kw">aov</span>(
 <p>The <code>anova_stats()</code> function takes a model input and computes a comprehensive summary, including the above effect size measures, returned as tidy data frame (as <code>tibble</code>, to be exact):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova_stats</span>(fit)
 <span class="co">#&gt; # A tibble: 4 x 11</span>
-<span class="co">#&gt;                  term    df      sumsq     meansq statistic p.value etasq partial.etasq omegasq cohens.f power</span>
-<span class="co">#&gt;                 &lt;chr&gt; &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1   as.factor(e42dep)     3  577756.33 192585.444   108.786   0.000 0.266         0.281   0.263    0.626  1.00</span>
-<span class="co">#&gt; 2 as.factor(c172code)     2   11722.05   5861.024     3.311   0.037 0.005         0.008   0.004    0.089  0.63</span>
-<span class="co">#&gt; 3             c160age     1  105169.60 105169.595    59.408   0.000 0.048         0.066   0.048    0.267  1.00</span>
-<span class="co">#&gt; 4           Residuals   834 1476436.34   1770.307        NA      NA    NA            NA      NA       NA    NA</span></code></pre></div>
+<span class="co">#&gt;   term                    df   sumsq meansq statistic p.value    etasq partial.etasq  omegasq cohens.f  power</span>
+<span class="co">#&gt;   &lt;chr&gt;                &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 as.factor(e42dep)     3.00  577756 192585    109     0       0.266         0.281    0.263     0.626   1.00 </span>
+<span class="co">#&gt; 2 as.factor(c172code)   2.00   11722   5861      3.31  0.0370  0.00500       0.00800  0.00400   0.0890  0.630</span>
+<span class="co">#&gt; 3 c160age               1.00  105170 105170     59.4   0       0.0480        0.0660   0.0480    0.267   1.00 </span>
+<span class="co">#&gt; 4 Residuals           834    1476436   1770     NA    NA      NA            NA       NA        NA      NA</span></code></pre></div>
 <p>Like the other functions, the input may also be an object of class <code>anova</code>, so you can also use model fits from the <em>car</em> package, which allows fitting Anova’s with different types of sum of squares:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova_stats</span>(car<span class="op">::</span><span class="kw">Anova</span>(fit, <span class="dt">type =</span> <span class="dv">3</span>))
 <span class="co">#&gt; # A tibble: 5 x 11</span>
-<span class="co">#&gt;                  term       sumsq     meansq    df statistic p.value etasq partial.etasq omegasq cohens.f power</span>
-<span class="co">#&gt;                 &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1         (Intercept)   26851.070  26851.070     1    15.167   0.000 0.013         0.018   0.012    0.135 0.973</span>
-<span class="co">#&gt; 2   as.factor(e42dep)  426461.571 142153.857     3    80.299   0.000 0.209         0.224   0.206    0.537 1.000</span>
-<span class="co">#&gt; 3 as.factor(c172code)    7352.049   3676.025     2     2.076   0.126 0.004         0.005   0.002    0.071 0.429</span>
-<span class="co">#&gt; 4             c160age  105169.595 105169.595     1    59.408   0.000 0.051         0.066   0.051    0.267 1.000</span>
-<span class="co">#&gt; 5           Residuals 1476436.343   1770.307   834        NA      NA    NA            NA      NA       NA    NA</span></code></pre></div>
+<span class="co">#&gt;   term                  sumsq meansq     df statistic p.value    etasq partial.etasq  omegasq cohens.f  power</span>
+<span class="co">#&gt;   &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 (Intercept)           26851  26851   1.00     15.2    0      0.0130        0.0180   0.0120    0.135   0.973</span>
+<span class="co">#&gt; 2 as.factor(e42dep)    426462 142154   3.00     80.3    0      0.209         0.224    0.206     0.537   1.00 </span>
+<span class="co">#&gt; 3 as.factor(c172code)    7352   3676   2.00      2.08   0.126  0.00400       0.00500  0.00200   0.0710  0.429</span>
+<span class="co">#&gt; 4 c160age              105170 105170   1.00     59.4    0      0.0510        0.0660   0.0510    0.267   1.00 </span>
+<span class="co">#&gt; 5 Residuals           1476436   1770 834        NA     NA     NA            NA       NA        NA      NA</span></code></pre></div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
