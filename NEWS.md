@@ -1,3 +1,9 @@
+# sjstats 0.14.2
+
+## Changes to functions
+
+* `mwu()` gets an `out`-argument, to print output to console, or as HTML table in the viewer or web browser.
+
 # sjstats 0.14.1
 
 ## General

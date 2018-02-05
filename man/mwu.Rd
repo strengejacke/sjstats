@@ -4,7 +4,8 @@
 \alias{mwu}
 \title{Mann-Whitney-U-Test}
 \usage{
-mwu(x, grp, distribution = "asymptotic", weight.by = NULL)
+mwu(x, grp, distribution = "asymptotic", weight.by = NULL, out = c("txt",
+  "viewer", "browser"))
 }
 \arguments{
 \item{x}{Numeric vector or variable.}
@@ -18,6 +19,10 @@ May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
 \item{weight.by}{Vector of weights that will be applied to weight all observations.
 Must be a vector of same length as the input vector. Default is
 \code{NULL}, so no weights are used.}
+
+\item{out}{Character vector, indicating whether the results should be printed
+to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
+(\code{out = "viewer"}) or browser (\code{out = "browser"}).}
 }
 \value{
 (Invisibly) returns a data frame with U, p and Z-values for each group-comparison

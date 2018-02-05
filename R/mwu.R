@@ -13,7 +13,9 @@
 #' @param distribution Indicates how the null distribution of the test statistic should be computed.
 #'          May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
 #'          (default). See \code{\link[coin]{wilcox_test}} for details.
+#'
 #' @inheritParams prop
+#' @inheritParams grpmean
 #'
 #' @return (Invisibly) returns a data frame with U, p and Z-values for each group-comparison
 #'         as well as effect-size r; additionally, group-labels and groups' n's are
@@ -39,7 +41,16 @@
 #' @importFrom sjmisc recode_to
 #' @importFrom sjlabelled get_labels as_numeric
 #' @export
-mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
+mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL, out = c("txt", "viewer", "browser")) {
+
+  out <- match.arg(out)
+
+  if (out != "txt" && !requireNamespace("sjPlot", quietly = TRUE)) {
+    message("Package `sjPlot` needs to be loaded to print HTML tables.")
+    out <- "txt"
+  }
+
+
   # coerce factor and character to numeric
   if (is.factor(grp) || is.character(grp)) grp <- sjlabelled::as_numeric(grp)
 
@@ -155,6 +166,15 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL) {
   # replace 0.001 with <0.001
   levels(tab.df$p)[which(levels(tab.df$p) == "0.001")] <- "<0.001"
 
-  # return both data frames
-  structure(class = c("mwu", "sj_mwu"), list(df = df, tab.df = tab.df, data = data.frame(x, grp)))
+  ret.df <- list(df = df, tab.df = tab.df, data = data.frame(x, grp))
+
+  # save how to print output
+  attr(ret.df, "print") <- out
+
+  if (out %in% c("viewer", "browser"))
+    class(ret.df) <- c("mwu", "sjt_mwu")
+  else
+    class(ret.df) <- c("mwu", "sj_mwu")
+
+  ret.df
 }
