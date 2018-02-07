@@ -99,7 +99,8 @@ predict.svyglm.nb <- function(object, newdata = NULL,
 
   fnb <- MASS::glm.nb(
     attr(object, "nb.formula", exact = TRUE),
-    data = object$design$variables
+    data = object$design$variables,
+    weights = scaled.weights
   )
 
   cf <- stats::coef(fnb)
@@ -118,6 +119,28 @@ predict.svyglm.nb <- function(object, newdata = NULL,
     na.action = na.action,
     ...
   )
+}
+
+
+#' @importFrom MASS glm.nb
+#' @importFrom stats coef setNames predict.glm
+#' @export
+residuals.svyglm.nb <- function(object, ...) {
+
+  if (!isNamespaceLoaded("survey"))
+    requireNamespace("survey", quietly = TRUE)
+
+  fnb <- MASS::glm.nb(
+    attr(object, "nb.formula", exact = TRUE),
+    data = object$design$variables,
+    weights = scaled.weights
+  )
+
+  y <- resp_val(fnb)
+  mu <- stats::predict.glm(fnb, type = "response")
+  wts <- fnb$prior.weights
+
+  (y - mu) * sqrt(wts) / sqrt(fnb$family$variance(mu))
 }
 
 

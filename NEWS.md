@@ -1,5 +1,9 @@
 # sjstats 0.14.2
 
+## New functions
+
+* `residuals.svyglm.nb()` as S3-generic `residuals()` method for objects fitted with `svyglm.nb()`.
+
 ## Changes to functions
 
 * `mwu()` gets an `out`-argument, to print output to console, or as HTML table in the viewer or web browser.
