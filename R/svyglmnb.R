@@ -104,6 +104,11 @@ svyglm.nb <- function(formula, design, ...) {
   attr(svyfit, "nb.theta") <- mod[["theta"]]
   attr(svyfit, "nb.theta.se") <- mod[["SE.theta"]]
 
+  svyfit$deviance <- mod$deviance
+  svyfit$df.residuals <- mod$df.residuals
+  svyfit$df <- length(stats::coef(mod)) + 1
+  svyfit$aic <- mod$aic
+
   svyfit
 }
 

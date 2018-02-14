@@ -144,6 +144,40 @@ residuals.svyglm.nb <- function(object, ...) {
 }
 
 
+#' @importFrom stats terms formula
+#' @export
+terms.svyglm.nb <- function(x, ...) {
+
+  if (!isNamespaceLoaded("survey"))
+    requireNamespace("survey", quietly = TRUE)
+
+  stats::terms(stats::formula(x), ...)
+}
+
+
+#' @importFrom purrr map flatten_df
+#' @export
+AIC.svyglm.nb <- function(object, ...) {
+  ## FIXME this one just returns the AIC of the underlying glm.nb() model
+  list(object, ...) %>%
+    purrr::map(~ getaic(.x)) %>%
+    purrr::flatten_df() %>%
+    as.data.frame()
+}
+
+
+getaic <- function(x) {
+  c(df = x$df, AIC = x$aic)
+}
+
+
+#' @export
+deviance.svyglm.nb <- function(object, ...) {
+  ## FIXME this one just returns the deviance of the underlying glm.nb() model
+  object$deviance
+}
+
+
 #' @export
 print.sjstats_r2 <- function(x, ...) {
   s3 <- NULL
