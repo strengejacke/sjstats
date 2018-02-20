@@ -257,7 +257,7 @@ mic <- function(x, cor.method = c("pearson", "spearman", "kendall")) {
   cor.method <- match.arg(cor.method)
 
   # Mean-interitem-corelation
-  if (class(x) == "matrix") {
+  if (inherits(x, "matrix")) {
     corr <- x
   } else {
     x <- stats::na.omit(x)
