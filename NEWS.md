@@ -8,6 +8,11 @@
 
 * `mwu()` gets an `out`-argument, to print output to console, or as HTML table in the viewer or web browser.
 
+## Bug fixes
+
+* Fix unnecessary warning for tibbles in `mic()`.
+
+
 # sjstats 0.14.1
 
 ## General
