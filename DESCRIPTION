@@ -47,8 +47,8 @@ Imports:
     pwr,
     rlang,
     sandwich (>= 2.3-4),
-    sjlabelled (>= 1.0.6),
-    sjmisc (>= 2.6.3),
+    sjlabelled (>= 1.0.8),
+    sjmisc (>= 2.7.0),
     tidyr (>= 0.7.0),
     tidyselect,
     tibble (>= 1.3.3)
