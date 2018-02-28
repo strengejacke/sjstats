@@ -49,9 +49,10 @@
 #' data(nhanes_sample)
 #' scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
 #'
-#' @importFrom dplyr group_by summarise n right_join enquo bind_cols
+#' @importFrom dplyr group_by summarise n right_join enquo filter quo_name slice
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
+#' @importFrom sjmisc is_empty
 #' @export
 scale_weights <- function(x, cluster.id, pweight) {
 
@@ -67,10 +68,23 @@ scale_weights <- function(x, cluster.id, pweight) {
   pw.name <- dplyr::quo_name(quo.weights)
 
 
+  # check if weight has missings. we need to remove them first,
+  # and add back weights to correct cases later
+
+  weight_missings <- which(is.na(x[[pw.name]]))
+  weight_non_na <- which(!is.na(x[[pw.name]]))
+
+  if (!sjmisc::is_empty(weight_missings)) {
+    dummy_x <- dplyr::slice(x, !! weight_non_na)
+  } else {
+    dummy_x <- x
+  }
+
+
   # copy data set, so we only append the two new weights
 
-  tmp <- x
-  tmp$s_q_w <- x[[pw.name]] ^ 2
+  tmp <- dummy_x
+  tmp$s_q_w <- dummy_x[[pw.name]] ^ 2
 
 
   # compute sum of weights per cluster
@@ -82,7 +96,7 @@ scale_weights <- function(x, cluster.id, pweight) {
       sum_sqwij = sum(.data$s_q_w),
       nj = n()
     ) %>%
-    dplyr::right_join(x, by = id.name)
+    dplyr::right_join(dummy_x, by = id.name)
 
 
   # multiply the original weight by the fraction of the
@@ -91,9 +105,12 @@ scale_weights <- function(x, cluster.id, pweight) {
   w_a <- tmp[[pw.name]] * tmp$nj / tmp$sum_wij
   w_b <- tmp[[pw.name]] * tmp$sum_wij / tmp$sum_sqwij
 
-  dplyr::bind_cols(x, tibble::tibble(
-    svywght_a = w_a,
-    svywght_b = w_b
-  ))
+  x$svywght_a <- NA
+  x$svywght_b <- NA
+
+  x$svywght_a[weight_non_na] <- w_a
+  x$svywght_b[weight_non_na] <- w_b
+
+  x
 }
 

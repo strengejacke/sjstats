@@ -1,15 +1,16 @@
 #' @title Compute statistics for MCMC samples
 #' @name hdi
 #'
-#' @description \code{hdi()} computes the high density interval for values from
+#' @description \code{hdi()} computes the highest density interval for values from
 #'   MCMC samples. \code{rope()} calculates the proportion of a posterior
 #'   distribution that lies within a region of practical equivalence.
 #'   \code{n_eff()} calculates the number of effective samples (effective
 #'   sample size). \code{mcse()} returns the Monte Carlo standard error.
 #'
 #' @param x A \code{stanreg}, \code{stanfit}, or \code{brmsfit} object. For
-#'   \code{hdi()} and \code{rope()}, may also be a vector of values from a
-#'   probability distribution (e.g., posterior probabilities from MCMC sampling).
+#'   \code{hdi()} and \code{rope()}, may also be a data frame or a vector
+#'   of values from a probability distribution (e.g., posterior probabilities
+#'   from MCMC sampling).
 #' @param prob Scalar between 0 and 1, indicating the mass within the credible
 #'   interval that is to be estimated.
 #' @param rope Vector of length two, indicating the lower and upper limit of a
@@ -31,10 +32,13 @@
 #'   two with the lower and upper limit of the HDI; if \code{x} is a
 #'   \code{stanreg}, \code{stanfit} or \code{brmsfit} object, returns a
 #'   tibble with lower and upper HDI-limits for each predictor.
-#'   For \code{rope()}, returns the proportion of values from \code{x}
-#'   that are within the boundaries of \code{rope}. \code{mcse()} and
-#'   \code{n_eff()} return a tibble with two columns: one with the term names
-#'   and one with the related statistic.
+#'   \cr \cr
+#'   For \code{rope()}, returns a tibble with two columns: the proportion of
+#'   values from \code{x} that are within and outside the boundaries of
+#'   \code{rope}.
+#'   \cr \cr
+#'   \code{mcse()} and \code{n_eff()} return a tibble with two columns: one
+#'   with the term names and one with the related statistic.
 #'
 #' @details Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
 #'   For default sampling in Stan (4000 samples), the 90\% intervals for HDI are
@@ -75,9 +79,6 @@
 #'   rope(fit, rope = c(.8, 1.25), trans = exp)
 #' }}
 #'
-#' @importFrom tibble as_tibble rownames_to_column
-#' @importFrom purrr map_dbl map_df
-#' @importFrom sjmisc rotate_df
 #' @export
 hdi <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
   UseMethod("hdi")
@@ -89,14 +90,7 @@ hdi.stanreg <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
   # check arguments
   type <- match.arg(type)
 
-  # get posterior data
-  dat <- x %>%
-    tibble::as_tibble() %>%
-    purrr::map_df(~ hdi_helper(.x, prob, trans)) %>%
-    sjmisc::rotate_df() %>%
-    tibble::rownames_to_column()
-
-  colnames(dat) <- c("term", "hdi.low", "hdi.high")
+  dat <- hdi_worker(x = x, prob = prob, trans = trans, type = type)
 
   # check if we need to remove random or fixed effects
   remove_effects_from_stan(dat, type, is.brms = FALSE)
@@ -112,14 +106,7 @@ hdi.brmsfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.")
 
-  # get posterior data
-  dat <- x %>%
-    tibble::as_tibble() %>%
-    purrr::map_df(~ hdi_helper(.x, prob, trans)) %>%
-    sjmisc::rotate_df() %>%
-    tibble::rownames_to_column()
-
-  colnames(dat) <- c("term", "hdi.low", "hdi.high")
+  dat <- hdi_worker(x = x, prob = prob, trans = trans, type = type)
 
   # check if we need to remove random or fixed effects
   remove_effects_from_stan(dat, type, is.brms = TRUE)
@@ -131,17 +118,19 @@ hdi.stanfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
   # check arguments
   type <- match.arg(type)
 
-  # get posterior data
-  dat <- x %>%
-    as.data.frame() %>%
-    purrr::map_df(~ hdi_helper(.x, prob, trans)) %>%
-    sjmisc::rotate_df() %>%
-    tibble::rownames_to_column()
-
-  colnames(dat) <- c("term", "hdi.low", "hdi.high")
+  dat <- hdi_worker(x = x, prob = prob, trans = trans, type = type)
 
   # check if we need to remove random or fixed effects
   remove_effects_from_stan(dat, type, is.brms = FALSE)
+}
+
+
+#' @export
+hdi.data.frame <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+  # check arguments
+  type <- match.arg(type)
+
+  hdi_worker(x = x, prob = prob, trans = trans, type = type)
 }
 
 
@@ -151,7 +140,25 @@ hdi.default <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
 }
 
 
+#' @importFrom tibble as_tibble rownames_to_column
+#' @importFrom purrr map_df
+#' @importFrom sjmisc rotate_df
+hdi_worker <- function(x, prob, trans, type) {
+  # get posterior data
+  dat <- x %>%
+    tibble::as_tibble() %>%
+    purrr::map_df(~ hdi_helper(.x, prob, trans)) %>%
+    sjmisc::rotate_df() %>%
+    tibble::rownames_to_column()
+
+  colnames(dat) <- c("term", "hdi.low", "hdi.high")
+
+  dat
+}
+
+
 # based on Kruschke 2015, pp727f
+#' @importFrom purrr map_dbl map_df
 hdi_helper <- function(x, prob, trans) {
   x <- sort(x)
   ci.index <- ceiling(prob * length(x))

@@ -7,6 +7,8 @@
 ## Changes to functions
 
 * `mwu()` gets an `out`-argument, to print output to console, or as HTML table in the viewer or web browser.
+* `scale_weights()` now also works for if weights have missing values.
+* `hdi()` and `rope()` get `data.frame`-methods.
 
 ## Bug fixes
 

@@ -17,8 +17,9 @@ rope(x, rope, trans = NULL, type = c("fixed", "random", "all"))
 }
 \arguments{
 \item{x}{A \code{stanreg}, \code{stanfit}, or \code{brmsfit} object. For
-\code{hdi()} and \code{rope()}, may also be a vector of values from a
-probability distribution (e.g., posterior probabilities from MCMC sampling).}
+\code{hdi()} and \code{rope()}, may also be a data frame or a vector
+of values from a probability distribution (e.g., posterior probabilities
+from MCMC sampling).}
 
 \item{prob}{Scalar between 0 and 1, indicating the mass within the credible
 interval that is to be estimated.}
@@ -44,13 +45,16 @@ For \code{hdi()}, if \code{x} is a vector, returns a vector of length
   two with the lower and upper limit of the HDI; if \code{x} is a
   \code{stanreg}, \code{stanfit} or \code{brmsfit} object, returns a
   tibble with lower and upper HDI-limits for each predictor.
-  For \code{rope()}, returns the proportion of values from \code{x}
-  that are within the boundaries of \code{rope}. \code{mcse()} and
-  \code{n_eff()} return a tibble with two columns: one with the term names
-  and one with the related statistic.
+  \cr \cr
+  For \code{rope()}, returns a tibble with two columns: the proportion of
+  values from \code{x} that are within and outside the boundaries of
+  \code{rope}.
+  \cr \cr
+  \code{mcse()} and \code{n_eff()} return a tibble with two columns: one
+  with the term names and one with the related statistic.
 }
 \description{
-\code{hdi()} computes the high density interval for values from
+\code{hdi()} computes the highest density interval for values from
   MCMC samples. \code{rope()} calculates the proportion of a posterior
   distribution that lies within a region of practical equivalence.
   \code{n_eff()} calculates the number of effective samples (effective

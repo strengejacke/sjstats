@@ -16,14 +16,7 @@ rope.stanreg <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
   # check arguments
   type <- match.arg(type)
 
-  # get posterior data
-  dat <- x %>%
-    as.data.frame() %>%
-    purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
-    sjmisc::rotate_df() %>%
-    tibble::rownames_to_column()
-
-  colnames(dat) <- c("term", "rope")
+  dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
 
   # check if we need to remove random or fixed effects
   remove_effects_from_stan(dat, type, is.brms = FALSE)
@@ -39,14 +32,7 @@ rope.brmsfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.")
 
-  # get posterior data
-  dat <- x %>%
-    tibble::as_tibble() %>%
-    purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
-    sjmisc::rotate_df() %>%
-    tibble::rownames_to_column()
-
-  colnames(dat) <- c("term", "rope")
+  dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
 
   # check if we need to remove random or fixed effects
   remove_effects_from_stan(dat, type, is.brms = TRUE)
@@ -58,6 +44,27 @@ rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
   # check arguments
   type <- match.arg(type)
 
+  dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
+
+  # check if we need to remove random or fixed effects
+  remove_effects_from_stan(dat, type, is.brms = FALSE)
+}
+
+
+#' @export
+rope.data.frame <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
+  # check arguments
+  type <- match.arg(type)
+  rope_worker(x = x, rope = rope, trans = trans, type = type)
+}
+
+
+#' @importFrom purrr map_df
+#' @importFrom sjmisc rotate_df
+#' @importFrom tibble rownames_to_column as_tibble
+#' @importFrom dplyr mutate
+#' @importFrom rlang .data
+rope_worker <- function(x, rope, trans, type) {
   # get posterior data
   dat <- x %>%
     as.data.frame() %>%
@@ -67,8 +74,10 @@ rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
 
   colnames(dat) <- c("term", "rope")
 
-  # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type, is.brms = FALSE)
+  # for convenience reasons, also add proportion of values outside rope
+  dat <- dplyr::mutate(dat, outside.rope = 100 - .data$rope)
+
+  dat
 }
 
 
@@ -96,6 +105,6 @@ rope_helper <- function(x, rope, trans) {
   r <- dplyr::between(x, rope[1], rope[2])
 
   # compute proportion of values within boundaries
-  sum(r) / length(x)
+  round(100 * sum(r) / length(x), 2)
 }
 
