@@ -9,6 +9,7 @@
 * `mwu()` gets an `out`-argument, to print output to console, or as HTML table in the viewer or web browser.
 * `scale_weights()` now also works for if weights have missing values.
 * `hdi()` and `rope()` get `data.frame`-methods.
+* `omega_sq()` and `eta_sq()` get a `ci.lvl`-argument to compute confidence intervals for the effect size statistics.
 
 ## Bug fixes
 

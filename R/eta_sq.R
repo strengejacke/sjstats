@@ -1,16 +1,20 @@
 #' @title Effect size statistics for anova
 #' @name eta_sq
 #' @description Returns the (partial) eta-squared, omega-squared statistic
-#'              or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
-#'              a tidy summary, including all these statistics and power for each term.
+#'   or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
+#'   a tidy summary, including all these statistics and power for each term.
 #'
 #' @param model A fitted anova-model of class \code{aov} or \code{anova}. Other
-#'              models are coerced to \code{\link[stats]{anova}}.
+#'   models are coerced to \code{\link[stats]{anova}}.
 #' @param partial Logical, if \code{TRUE}, the partial eta-squared is returned.
 #' @param digits Number of decimal points in the returned data frame.
+#' @param ci.lvl Scalar between 0 and 1. If not \code{NULL}, returns a data
+#'   frame with effect sizes including lower and upper confidence intervals.
 #'
-#' @return A numeric vector with the effect size statistics; for \code{anova_stats()},
-#'         a tidy data frame with all these statistics.
+#' @return A numeric vector with the effect size statistics; if \code{ci.lvl}
+#'   is not \code{NULL}, a tidy data frame with effect sizes including lower and
+#'   upper confidence intervals is returned.For \code{anova_stats()}, a tidy
+#'   data frame with all statistics is returned (excluding confidence intervals).
 #'
 #' @references Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
 #'
@@ -26,6 +30,7 @@
 #'
 #' eta_sq(fit)
 #' omega_sq(fit)
+#' omega_sq(fit, ci.lvl = .95)
 #' eta_sq(fit, partial = TRUE)
 #'
 #' anova_stats(car::Anova(fit, type = 2))
@@ -34,18 +39,48 @@
 #' @importFrom purrr map_dbl
 #' @importFrom stats anova
 #' @export
-eta_sq <- function(model, partial = FALSE) {
-  if (partial)
-    aov_stat(model, type = "peta")
-  else
-    aov_stat(model, type = "eta")
+eta_sq <- function(model, partial = FALSE, ci.lvl = NULL) {
+  if (partial) {
+    pes <- aov_stat(model, type = "peta")
+    if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
+      x <- dplyr::bind_cols(
+        tibble::tibble(
+          term = names(pes),
+          partial.etasq = pes
+        ),
+        peta_sq_ci(aov.sum = aov_stat_summary(model), ci.lvl = ci.lvl)
+      )
+    }
+  } else {
+    x <- aov_stat(model, type = "eta")
+    if (!is.null(ci.lvl) && !is.na(ci.lvl))
+      warning("Calculation of confidence intervals currently only implemented for partial eta squared.", call. = FALSE)
+  }
+
+  x
 }
 
 
 #' @rdname eta_sq
+#' @importFrom dplyr bind_cols
+#' @importFrom tibble tibble
 #' @export
-omega_sq <- function(model) {
-  aov_stat(model, type = "omega")
+omega_sq <- function(model, ci.lvl = NULL) {
+  os <- aov_stat(model, type = "omega")
+
+  if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
+    x <- dplyr::bind_cols(
+      tibble::tibble(
+        term = names(os),
+        omega_sq = os
+      ),
+      omega_sq_ci(aov.sum = aov_stat_summary(model), ci.lvl = ci.lvl)
+    )
+  } else {
+    x <- os
+  }
+
+  x
 }
 
 
@@ -159,4 +194,70 @@ aov_stat_core <- function(aov.sum, type) {
   names(aovstat) <- aov.sum[["term"]][1:n_terms]
 
   aovstat
+}
+
+
+#' @importFrom tibble tibble
+#' @importFrom purrr map_df
+omega_sq_ci <- function(aov.sum, ci.lvl = .95) {
+
+  if (!requireNamespace("MBESS", quietly = TRUE))
+    stop("Package `MBESS` needed to compute confidence intervals. Pleas install that package first.")
+
+  rows <- nrow(aov.sum) - 1
+  df.den <- aov.sum[["df"]][rows + 1]
+  N <- sum(aov.sum[["df"]]) + 1
+
+  purrr::map_df(
+    1:rows,
+    function(.x) {
+      df.num = aov.sum[.x, "df"]
+
+      ci <- MBESS::conf.limits.ncf(
+        F.value = aov.sum[.x, "statistic"],
+        conf.level = ci.lvl,
+        df.1 = df.num,
+        df.2 = df.den
+      )
+
+      ci.low <- ci$Lower.Limit / (ci$Lower.Limit + N)
+      ci.high <- ci$Upper.Limit / (ci$Upper.Limit + N)
+
+      tibble::tibble(
+        conf.low = ci.low,
+        conf.high = ci.high
+      )
+    }
+  )
+}
+
+
+#' @importFrom tibble tibble
+#' @importFrom purrr map_df
+peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
+
+  if (!requireNamespace("apaTables", quietly = TRUE))
+    stop("Package `apaTables` needed to compute confidence intervals. Pleas install that package first.")
+
+  rows <- nrow(aov.sum) - 1
+  df.den <- aov.sum[["df"]][rows + 1]
+
+  purrr::map_df(
+    1:rows,
+    function(.x) {
+      df.num = aov.sum[.x, "df"]
+
+      ci <- apaTables::get.ci.partial.eta.squared(
+        F.value = aov.sum[.x, "statistic"],
+        df1 = df.num,
+        df2 = df.den,
+        conf.level = ci.lvl
+      )
+
+      tibble::tibble(
+        conf.low = ci$LL,
+        conf.high = ci$UL
+      )
+    }
+  )
 }

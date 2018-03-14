@@ -7,9 +7,9 @@
 \alias{anova_stats}
 \title{Effect size statistics for anova}
 \usage{
-eta_sq(model, partial = FALSE)
+eta_sq(model, partial = FALSE, ci.lvl = NULL)
 
-omega_sq(model)
+omega_sq(model, ci.lvl = NULL)
 
 cohens_f(model)
 
@@ -21,16 +21,21 @@ models are coerced to \code{\link[stats]{anova}}.}
 
 \item{partial}{Logical, if \code{TRUE}, the partial eta-squared is returned.}
 
+\item{ci.lvl}{Scalar between 0 and 1. If not \code{NULL}, returns a data
+frame with effect sizes including lower and upper confidence intervals.}
+
 \item{digits}{Number of decimal points in the returned data frame.}
 }
 \value{
-A numeric vector with the effect size statistics; for \code{anova_stats()},
-        a tidy data frame with all these statistics.
+A numeric vector with the effect size statistics; if \code{ci.lvl}
+  is not \code{NULL}, a tidy data frame with effect sizes including lower and
+  upper confidence intervals is returned.For \code{anova_stats()}, a tidy
+  data frame with all statistics is returned (excluding confidence intervals).
 }
 \description{
 Returns the (partial) eta-squared, omega-squared statistic
-             or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
-             a tidy summary, including all these statistics and power for each term.
+  or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
+  a tidy summary, including all these statistics and power for each term.
 }
 \examples{
 # load sample data
@@ -44,6 +49,7 @@ fit <- aov(
 
 eta_sq(fit)
 omega_sq(fit)
+omega_sq(fit, ci.lvl = .95)
 eta_sq(fit, partial = TRUE)
 
 anova_stats(car::Anova(fit, type = 2))
