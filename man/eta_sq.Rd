@@ -7,7 +7,7 @@
 \alias{anova_stats}
 \title{Effect size statistics for anova}
 \usage{
-eta_sq(model, partial = FALSE, ci.lvl = NULL)
+eta_sq(model, partial = FALSE, ci.lvl = NULL, n = 1000)
 
 omega_sq(model, ci.lvl = NULL)
 
@@ -24,6 +24,8 @@ models are coerced to \code{\link[stats]{anova}}.}
 \item{ci.lvl}{Scalar between 0 and 1. If not \code{NULL}, returns a data
 frame with effect sizes including lower and upper confidence intervals.}
 
+\item{n}{Number of bootstraps to be generated}
+
 \item{digits}{Number of decimal points in the returned data frame.}
 }
 \value{
@@ -36,6 +38,17 @@ A numeric vector with the effect size statistics; if \code{ci.lvl}
 Returns the (partial) eta-squared, omega-squared statistic
   or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
   a tidy summary, including all these statistics and power for each term.
+}
+\details{
+For \code{eta_sq()} (with \code{partial = FALSE}), due to
+  non-symmetry, confidence intervals are based on bootstrap-methods. In this
+  case, \code{n} indicates the number of bootstrap samples to be drawn to
+  compute the confidence intervals.
+  \cr \cr
+  For partial eta-squared (\code{eta_sq()} with \code{partial = TRUE}),
+  confidence intervals are based on \code{\link[apaTables]{get.ci.partial.eta.squared}}
+  and for omega-squared, confidence intervals are based on
+  \code{\link[MBESS]{conf.limits.ncf}}.
 }
 \examples{
 # load sample data

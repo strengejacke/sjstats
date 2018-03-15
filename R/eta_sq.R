@@ -11,10 +11,22 @@
 #' @param ci.lvl Scalar between 0 and 1. If not \code{NULL}, returns a data
 #'   frame with effect sizes including lower and upper confidence intervals.
 #'
+#' @inheritParams bootstrap
+#'
 #' @return A numeric vector with the effect size statistics; if \code{ci.lvl}
 #'   is not \code{NULL}, a tidy data frame with effect sizes including lower and
 #'   upper confidence intervals is returned.For \code{anova_stats()}, a tidy
 #'   data frame with all statistics is returned (excluding confidence intervals).
+#'
+#' @details For \code{eta_sq()} (with \code{partial = FALSE}), due to
+#'   non-symmetry, confidence intervals are based on bootstrap-methods. In this
+#'   case, \code{n} indicates the number of bootstrap samples to be drawn to
+#'   compute the confidence intervals.
+#'   \cr \cr
+#'   For partial eta-squared (\code{eta_sq()} with \code{partial = TRUE}),
+#'   confidence intervals are based on \code{\link[apaTables]{get.ci.partial.eta.squared}}
+#'   and for omega-squared, confidence intervals are based on
+#'   \code{\link[MBESS]{conf.limits.ncf}}.
 #'
 #' @references Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
 #'
@@ -36,10 +48,13 @@
 #' anova_stats(car::Anova(fit, type = 2))
 #'
 #' @importFrom broom tidy
-#' @importFrom purrr map_dbl
-#' @importFrom stats anova
+#' @importFrom purrr map map_df
+#' @importFrom dplyr bind_cols mutate pull
+#' @importFrom tibble tibble
+#' @importFrom stats anova formula
+#' @importFrom sjmisc rotate_df
 #' @export
-eta_sq <- function(model, partial = FALSE, ci.lvl = NULL) {
+eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
   if (partial) {
     pes <- aov_stat(model, type = "peta")
     if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
@@ -53,8 +68,34 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL) {
     }
   } else {
     x <- aov_stat(model, type = "eta")
-    if (!is.null(ci.lvl) && !is.na(ci.lvl))
-      warning("Calculation of confidence intervals currently only implemented for partial eta squared.", call. = FALSE)
+
+    if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
+      mdata <- sjstats::model_frame(model)
+      mformula <- stats::formula(model)
+
+      # this is a bit sloppy, but I need to catch all exceptions here
+      # if we have a 1-way-anova, map() could return a column with
+      # one value per row (a vector). However, if the model has more
+      # covariates/factors, map() returns a list-colum with 3 values
+      # per row, which need to be spread into a 3 columns data frame.
+
+      es <- mdata %>%
+        bootstrap(n = n) %>%
+        dplyr::mutate(eta_squared = purrr::map(
+          .data$strap,
+          ~ sjmisc::rotate_df(as.data.frame(eta_sq(aov(mformula, data = .x))))
+        )) %>%
+        dplyr::pull(2) %>%
+        purrr::map_df(~ .x) %>%
+        boot_ci()
+
+      x <- tibble::tibble(
+        term = names(x),
+        etasq = x,
+        conf.low = es$conf.low,
+        conf.high = es$conf.high
+      )
+    }
   }
 
   x
