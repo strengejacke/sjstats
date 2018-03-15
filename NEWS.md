@@ -10,6 +10,7 @@
 * `scale_weights()` now also works for if weights have missing values.
 * `hdi()` and `rope()` get `data.frame`-methods.
 * `omega_sq()` and `eta_sq()` get a `ci.lvl`-argument to compute confidence intervals for the effect size statistics.
+* `omega_sq()`, `eta_sq()`, `cohens_f()` and `anova_stats()` now support `anova.rms`-objects from the *rms*-package.
 
 ## Bug fixes
 

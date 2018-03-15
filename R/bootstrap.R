@@ -5,7 +5,7 @@
 #'              returns the bootstrapped data frames as list-variable.
 #'
 #' @param data A data frame.
-#' @param n Number of bootstraps to be generated
+#' @param n Number of bootstraps to be generated.
 #' @param size Optional, size of the bootstrap samples. May either be a number
 #'          between 1 and \code{nrow(data)} or a value between 0 and 1 to sample
 #'          a proportion of observations from \code{data} (see 'Examples').

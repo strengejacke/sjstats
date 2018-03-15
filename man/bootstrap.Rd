@@ -9,7 +9,7 @@ bootstrap(data, n, size)
 \arguments{
 \item{data}{A data frame.}
 
-\item{n}{Number of bootstraps to be generated}
+\item{n}{Number of bootstraps to be generated.}
 
 \item{size}{Optional, size of the bootstrap samples. May either be a number
 between 1 and \code{nrow(data)} or a value between 0 and 1 to sample

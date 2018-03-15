@@ -18,7 +18,7 @@ is used to compute the accuracy values.}
 
 \item{k}{The number of folds for the kfold-crossvalidation.}
 
-\item{n}{Number of bootstraps to be generated}
+\item{n}{Number of bootstraps to be generated.}
 }
 \value{
 A list with two values: The \code{accuracy} of the model predictions, i.e.

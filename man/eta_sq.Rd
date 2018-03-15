@@ -24,7 +24,7 @@ models are coerced to \code{\link[stats]{anova}}.}
 \item{ci.lvl}{Scalar between 0 and 1. If not \code{NULL}, returns a data
 frame with effect sizes including lower and upper confidence intervals.}
 
-\item{n}{Number of bootstraps to be generated}
+\item{n}{Number of bootstraps to be generated.}
 
 \item{digits}{Number of decimal points in the returned data frame.}
 }

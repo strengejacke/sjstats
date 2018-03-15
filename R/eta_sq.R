@@ -83,7 +83,7 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
         bootstrap(n = n) %>%
         dplyr::mutate(eta_squared = purrr::map(
           .data$strap,
-          ~ sjmisc::rotate_df(as.data.frame(eta_sq(aov(mformula, data = .x))))
+          ~ sjmisc::rotate_df(as.data.frame(eta_sq(lm(mformula, data = .x))))
         )) %>%
         dplyr::pull(2) %>%
         purrr::map_df(~ .x) %>%
@@ -186,10 +186,14 @@ aov_stat <- function(model, type) {
 aov_stat_summary <- function(model) {
   # check that model inherits from correct class
   # else, try to coerce to anova table
-  if (!inherits(model, c("aov", "anova"))) model <- stats::anova(model)
+  if (!inherits(model, c("aov", "anova", "anova.rms"))) model <- stats::anova(model)
 
   # get summary table
   aov.sum <- broom::tidy(model)
+
+  # need special handling for rms-anova
+  if (inherits(model, "anova.rms"))
+    colnames(aov.sum) <- c("term", "df", "sumsq", "meansq", "statistic", "p.value")
 
   # for car::Anova, the meansq-column might be missing, so add it manually
   if (!tibble::has_name(aov.sum, "meansq"))
