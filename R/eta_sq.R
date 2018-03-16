@@ -110,7 +110,7 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 
   if (partial) {
-    pos <- x <- aov_stat(model, type = "pomega")
+    x <- aov_stat(model, type = "pomega")
 
     if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
       mdata <- sjstats::model_frame(model)
@@ -124,7 +124,7 @@ omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 
       es <- mdata %>%
         bootstrap(n = n) %>%
-        dplyr::mutate(eta_squared = purrr::map(
+        dplyr::mutate(omega_squared = purrr::map(
           .data$strap,
           ~ sjmisc::rotate_df(as.data.frame(omega_sq(lm(mformula, data = .x))))
         )) %>%
