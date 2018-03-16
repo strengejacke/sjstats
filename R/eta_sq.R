@@ -1,6 +1,6 @@
 #' @title Effect size statistics for anova
 #' @name eta_sq
-#' @description Returns the (partial) eta-squared, omega-squared statistic
+#' @description Returns the (partial) eta-squared, (partial) omega-squared statistic
 #'   or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
 #'   a tidy summary, including all these statistics and power for each term.
 #'
@@ -15,7 +15,7 @@
 #'
 #' @return A numeric vector with the effect size statistics; if \code{ci.lvl}
 #'   is not \code{NULL}, a tidy data frame with effect sizes including lower and
-#'   upper confidence intervals is returned.For \code{anova_stats()}, a tidy
+#'   upper confidence intervals is returned. For \code{anova_stats()}, a tidy
 #'   data frame with all statistics is returned (excluding confidence intervals).
 #'
 #' @details For \code{eta_sq()} (with \code{partial = FALSE}), due to
@@ -26,7 +26,8 @@
 #'   For partial eta-squared (\code{eta_sq()} with \code{partial = TRUE}),
 #'   confidence intervals are based on \code{\link[apaTables]{get.ci.partial.eta.squared}}
 #'   and for omega-squared, confidence intervals are based on
-#'   \code{\link[MBESS]{conf.limits.ncf}}.
+#'   \code{\link[MBESS]{conf.limits.ncf}}. Confidence intervals for partial
+#'   omega-squared is also based on bootstrapping.
 #'
 #' @references Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
 #'
@@ -56,7 +57,7 @@
 #' @export
 eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
   if (partial) {
-    pes <- aov_stat(model, type = "peta")
+    pes <- x <- aov_stat(model, type = "peta")
     if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
       x <- dplyr::bind_cols(
         tibble::tibble(
@@ -106,19 +107,50 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 #' @importFrom dplyr bind_cols
 #' @importFrom tibble tibble
 #' @export
-omega_sq <- function(model, ci.lvl = NULL) {
-  os <- aov_stat(model, type = "omega")
+omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 
-  if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
-    x <- dplyr::bind_cols(
-      tibble::tibble(
-        term = names(os),
-        omega_sq = os
-      ),
-      omega_sq_ci(aov.sum = aov_stat_summary(model), ci.lvl = ci.lvl)
-    )
+  if (partial) {
+    pos <- x <- aov_stat(model, type = "pomega")
+
+    if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
+      mdata <- sjstats::model_frame(model)
+      mformula <- stats::formula(model)
+
+      # this is a bit sloppy, but I need to catch all exceptions here
+      # if we have a 1-way-anova, map() could return a column with
+      # one value per row (a vector). However, if the model has more
+      # covariates/factors, map() returns a list-colum with 3 values
+      # per row, which need to be spread into a 3 columns data frame.
+
+      es <- mdata %>%
+        bootstrap(n = n) %>%
+        dplyr::mutate(eta_squared = purrr::map(
+          .data$strap,
+          ~ sjmisc::rotate_df(as.data.frame(omega_sq(lm(mformula, data = .x))))
+        )) %>%
+        dplyr::pull(2) %>%
+        purrr::map_df(~ .x) %>%
+        boot_ci()
+
+      x <- tibble::tibble(
+        term = names(x),
+        partial.omegasq = x,
+        conf.low = es$conf.low,
+        conf.high = es$conf.high
+      )
+    }
   } else {
-    x <- os
+    os <- x <- aov_stat(model, type = "omega")
+
+    if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
+      x <- dplyr::bind_cols(
+        tibble::tibble(
+          term = names(os),
+          omega_sq = os
+        ),
+        omega_sq_ci(aov.sum = aov_stat_summary(model), ci.lvl = ci.lvl)
+      )
+    }
   }
 
   x
@@ -148,13 +180,14 @@ anova_stats <- function(model, digits = 3) {
   etasq <- aov_stat_core(aov.sum, type = "eta")
   partial.etasq <- aov_stat_core(aov.sum, type = "peta")
   omegasq <- aov_stat_core(aov.sum, type = "omega")
+  partial.omegasq <- aov_stat_core(aov.sum, type = "pomega")
 
   # compute power for each estimate
   cohens.f <- sqrt(partial.etasq / (1 - partial.etasq))
 
   # bind as data frame
-  as <- tibble::tibble(etasq, partial.etasq, omegasq, cohens.f) %>%
-    tibble::add_row(etasq = NA, partial.etasq = NA, omegasq = NA, cohens.f = NA) %>%
+  as <- tibble::tibble(etasq, partial.etasq, omegasq, partial.omegasq, cohens.f) %>%
+    tibble::add_row(etasq = NA, partial.etasq = NA, omegasq = NA, partial.omegasq = NA, cohens.f = NA) %>%
     sjmisc::add_columns(aov.sum)
 
   # get nr of terms
@@ -215,12 +248,23 @@ aov_stat_core <- function(aov.sum, type) {
   # number of terms in model
   n_terms <- nrow(aov.sum) - 1
 
+  # number of observations
+  N <- sum(aov.sum[["df"]]) + 1
+
+
   if (type == "omega") {
     # compute omega squared for each model term
     aovstat <- purrr::map_dbl(1:n_terms, function(x) {
       ss.term <- aov.sum[["sumsq"]][x]
       df.term <- aov.sum[["df"]][x]
       (ss.term - df.term * meansq.resid) / (ss.total + meansq.resid)
+    })
+  } else if (type == "pomega") {
+    # compute partial omega squared for each model term
+    aovstat <- purrr::map_dbl(1:n_terms, function(x) {
+      df.term <- aov.sum[["df"]][x]
+      meansq.term <- aov.sum[["meansq"]][x]
+      (df.term * (meansq.term - meansq.resid)) / (df.term * meansq.term + (N - df.term) * meansq.resid)
     })
   } else if (type == "eta") {
     # compute eta squared for each model term

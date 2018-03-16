@@ -9,7 +9,7 @@
 \usage{
 eta_sq(model, partial = FALSE, ci.lvl = NULL, n = 1000)
 
-omega_sq(model, ci.lvl = NULL)
+omega_sq(model, partial = FALSE, ci.lvl = NULL, n = 1000)
 
 cohens_f(model)
 
@@ -31,11 +31,11 @@ frame with effect sizes including lower and upper confidence intervals.}
 \value{
 A numeric vector with the effect size statistics; if \code{ci.lvl}
   is not \code{NULL}, a tidy data frame with effect sizes including lower and
-  upper confidence intervals is returned.For \code{anova_stats()}, a tidy
+  upper confidence intervals is returned. For \code{anova_stats()}, a tidy
   data frame with all statistics is returned (excluding confidence intervals).
 }
 \description{
-Returns the (partial) eta-squared, omega-squared statistic
+Returns the (partial) eta-squared, (partial) omega-squared statistic
   or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
   a tidy summary, including all these statistics and power for each term.
 }
@@ -48,7 +48,8 @@ For \code{eta_sq()} (with \code{partial = FALSE}), due to
   For partial eta-squared (\code{eta_sq()} with \code{partial = TRUE}),
   confidence intervals are based on \code{\link[apaTables]{get.ci.partial.eta.squared}}
   and for omega-squared, confidence intervals are based on
-  \code{\link[MBESS]{conf.limits.ncf}}.
+  \code{\link[MBESS]{conf.limits.ncf}}. Confidence intervals for partial
+  omega-squared is also based on bootstrapping.
 }
 \examples{
 # load sample data
