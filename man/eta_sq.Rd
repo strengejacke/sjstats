@@ -29,8 +29,8 @@ frame with effect sizes including lower and upper confidence intervals.}
 \item{digits}{Number of decimal points in the returned data frame.}
 }
 \value{
-A numeric vector with the effect size statistics; if \code{ci.lvl}
-  is not \code{NULL}, a tidy data frame with effect sizes including lower and
+A data frame with the term name(s) and effect size statistics; if
+  \code{ci.lvl} is not \code{NULL}, a data frame including lower and
   upper confidence intervals is returned. For \code{anova_stats()}, a tidy
   data frame with all statistics is returned (excluding confidence intervals).
 }

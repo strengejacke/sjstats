@@ -13,8 +13,8 @@
 #'
 #' @inheritParams bootstrap
 #'
-#' @return A numeric vector with the effect size statistics; if \code{ci.lvl}
-#'   is not \code{NULL}, a tidy data frame with effect sizes including lower and
+#' @return A data frame with the term name(s) and effect size statistics; if
+#'   \code{ci.lvl} is not \code{NULL}, a data frame including lower and
 #'   upper confidence intervals is returned. For \code{anova_stats()}, a tidy
 #'   data frame with all statistics is returned (excluding confidence intervals).
 #'
@@ -48,110 +48,92 @@
 #'
 #' anova_stats(car::Anova(fit, type = 2))
 #'
-#' @importFrom broom tidy
-#' @importFrom purrr map map_df
-#' @importFrom dplyr bind_cols mutate pull
 #' @importFrom tibble tibble
-#' @importFrom stats anova formula
-#' @importFrom sjmisc rotate_df
 #' @export
 eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
+
+  if (partial)
+    type <- "peta"
+  else
+    type <- "eta"
+
+
+  es <- aov_stat(model, type = type)
+
+  x <- tibble::tibble(
+    term = names(es),
+    es = es
+  )
+
+
   if (partial) {
-    pes <- x <- aov_stat(model, type = "peta")
     if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
-      x <- dplyr::bind_cols(
-        tibble::tibble(
-          term = names(pes),
-          partial.etasq = pes
-        ),
-        peta_sq_ci(aov.sum = aov_stat_summary(model), ci.lvl = ci.lvl)
-      )
+      x <- dplyr::bind_cols(x, peta_sq_ci(aov.sum = aov_stat_summary(model), ci.lvl = ci.lvl))
     }
   } else {
-    x <- aov_stat(model, type = "eta")
-
     if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
-      mdata <- sjstats::model_frame(model)
-      mformula <- stats::formula(model)
-
-      # this is a bit sloppy, but I need to catch all exceptions here
-      # if we have a 1-way-anova, map() could return a column with
-      # one value per row (a vector). However, if the model has more
-      # covariates/factors, map() returns a list-colum with 3 values
-      # per row, which need to be spread into a 3 columns data frame.
-
-      es <- mdata %>%
-        bootstrap(n = n) %>%
-        dplyr::mutate(eta_squared = purrr::map(
-          .data$strap,
-          ~ sjmisc::rotate_df(as.data.frame(eta_sq(lm(mformula, data = .x))))
-        )) %>%
-        dplyr::pull(2) %>%
-        purrr::map_df(~ .x) %>%
-        boot_ci()
-
-      x <- tibble::tibble(
-        term = names(x),
-        etasq = x,
-        conf.low = es$conf.low,
-        conf.high = es$conf.high
-      )
+      x <-
+        es_boot_fun(
+          model = model,
+          type = "eta",
+          ci.lvl = ci.lvl,
+          n = n
+        )
     }
   }
+
+  colnames(x)[2] <- dplyr::case_when(
+    type == "eta" ~ "etasq",
+    type == "peta" ~ "partial.etasq",
+    TRUE ~ "effect.size"
+  )
 
   x
 }
 
 
+
 #' @rdname eta_sq
-#' @importFrom dplyr bind_cols
+#' @importFrom dplyr bind_cols mutate
 #' @importFrom tibble tibble
 #' @export
 omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 
+  if (partial)
+    type <- "pomega"
+  else
+    type <- "omega"
+
+
+  es <- aov_stat(model, type = type)
+
+  x <- tibble::tibble(
+    term = names(es),
+    es = es
+  )
+
+
   if (partial) {
-    x <- aov_stat(model, type = "pomega")
-
     if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
-      mdata <- sjstats::model_frame(model)
-      mformula <- stats::formula(model)
-
-      # this is a bit sloppy, but I need to catch all exceptions here
-      # if we have a 1-way-anova, map() could return a column with
-      # one value per row (a vector). However, if the model has more
-      # covariates/factors, map() returns a list-colum with 3 values
-      # per row, which need to be spread into a 3 columns data frame.
-
-      es <- mdata %>%
-        bootstrap(n = n) %>%
-        dplyr::mutate(omega_squared = purrr::map(
-          .data$strap,
-          ~ sjmisc::rotate_df(as.data.frame(omega_sq(lm(mformula, data = .x))))
-        )) %>%
-        dplyr::pull(2) %>%
-        purrr::map_df(~ .x) %>%
-        boot_ci()
-
-      x <- tibble::tibble(
-        term = names(x),
-        partial.omegasq = x,
-        conf.low = es$conf.low,
-        conf.high = es$conf.high
+      x <-
+      es_boot_fun(
+        model = model,
+        type = "pomega",
+        ci.lvl = ci.lvl,
+        n = n
       )
     }
   } else {
-    os <- x <- aov_stat(model, type = "omega")
-
     if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
-      x <- dplyr::bind_cols(
-        tibble::tibble(
-          term = names(os),
-          omega_sq = os
-        ),
-        omega_sq_ci(aov.sum = aov_stat_summary(model), ci.lvl = ci.lvl)
-      )
+      x <- dplyr::bind_cols(x, omega_sq_ci(aov.sum = aov_stat_summary(model), ci.lvl = ci.lvl))
     }
   }
+
+  colnames(x)[2] <- dplyr::case_when(
+    type == "omega" ~ "omegasq",
+    type == "pomega" ~ "partial.omegasq",
+    TRUE ~ "effect.size"
+  )
 
   x
 }
@@ -160,7 +142,12 @@ omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 #' @rdname eta_sq
 #' @export
 cohens_f <- function(model) {
-  aov_stat(model, type = "cohens.f")
+  es <- aov_stat(model, type = "cohens.f")
+
+  tibble::tibble(
+    term = names(es),
+    cohens.f = es
+  )
 }
 
 
@@ -349,4 +336,56 @@ peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
       )
     }
   )
+}
+
+
+#' @importFrom broom tidy
+#' @importFrom purrr map map_df
+#' @importFrom dplyr bind_cols mutate case_when pull
+#' @importFrom tibble tibble
+#' @importFrom stats anova formula
+#' @importFrom sjmisc rotate_df
+es_boot_fun <- function(model, type, ci.lvl, n) {
+
+  es <- aov_stat(model = model, type = type)
+
+  x <- tibble::tibble(
+    term = names(es),
+    es = es
+  )
+
+  mdata <- sjstats::model_frame(model)
+  mformula <- stats::formula(model)
+
+  # this is a bit sloppy, but I need to catch all exceptions here
+  # if we have a 1-way-anova, map() could return a column with
+  # one value per row (a vector). However, if the model has more
+  # covariates/factors, map() returns a list-colum with 3 values
+  # per row, which need to be spread into a 3 columns data frame.
+
+  es <- mdata %>%
+    bootstrap(n = n) %>%
+    dplyr::mutate(es = purrr::map(
+      .data$strap,
+      function(i) {
+        m <- lm(mformula, data = i)
+        dat <- aov_stat(m, type = type)
+        sjmisc::rotate_df(as.data.frame(dat))
+      }
+    )) %>%
+    dplyr::pull(2) %>%
+    purrr::map_df(~ .x) %>%
+    boot_ci()
+
+  x <- dplyr::bind_cols(x, es[, -1])
+
+  colnames(x)[2] <- dplyr::case_when(
+    type == "eta" ~ "etasq",
+    type == "peta" ~ "partial.etasq",
+    type == "omega" ~ "omegasq",
+    type == "pomega" ~ "partial.omegasq",
+    TRUE ~ "effect.size"
+  )
+
+  x
 }
