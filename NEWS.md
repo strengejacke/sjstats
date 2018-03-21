@@ -17,7 +17,7 @@
 ## Bug fixes
 
 * Fix unnecessary warning for tibbles in `mic()`.
-
+* Make sure that `model_frame()` does not return duplicated column names.
 
 # sjstats 0.14.1
 

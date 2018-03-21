@@ -181,7 +181,7 @@ model_frame <- function(x, fe.only = TRUE) {
 
   if (any(mc)) {
     fitfram_matrix <- dplyr::select(fitfram, -which(mc))
-    spline.term <- var_names(names(which(mc)))
+    spline.term <- get_vn_helper(names(which(mc)))
 
     # try to get model data from environment
     md <- eval(stats::getCall(x)$data, environment(stats::formula(x)))
@@ -194,8 +194,13 @@ model_frame <- function(x, fe.only = TRUE) {
   }
 
   # clean variable names
-  colnames(fitfram) <- var_names(colnames(fitfram))
+  cvn <- get_vn_helper(colnames(fitfram))
 
+  # do we have duplicated names?
+  dupes <- which(duplicated(cvn))
+  if (!sjmisc::is_empty(dupes)) cvn[dupes] <- sprintf("%s.%s", cvn[dupes], 1:length(dupes))
+
+  colnames(fitfram) <- cvn
   fitfram
 }
 
@@ -212,7 +217,7 @@ var_names <- function(x) {
   if (is.character(x))
     get_vn_helper(x)
   else
-    get_vn_helper(colnames(model_frame(x)))
+    colnames(model_frame(x))
 }
 
 
