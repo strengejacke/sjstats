@@ -6,7 +6,8 @@
 
 ## Changes to functions
 
-* Argument `prob` in `hdi()` was renamed to `probs` and now accepts a vector of scalars to compute HDIs for multiple probability tresholds at once.
+* Argument `prob` in `hdi()` now accepts a vector of scalars to compute HDIs for multiple probability tresholds at once.
+* Argument `probs` in `tidy_stan()` was renamed into `prob`, to be consistent with `hdi()`.
 * `mwu()` gets an `out`-argument, to print output to console, or as HTML table in the viewer or web browser.
 * `scale_weights()` now also works if weights have missing values.
 * `hdi()` and `rope()` get `data.frame`-methods.

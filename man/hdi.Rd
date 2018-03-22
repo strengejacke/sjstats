@@ -7,7 +7,7 @@
 \alias{rope}
 \title{Compute statistics for MCMC samples}
 \usage{
-hdi(x, probs = 0.9, trans = NULL, type = c("fixed", "random", "all"))
+hdi(x, prob = 0.9, trans = NULL, type = c("fixed", "random", "all"))
 
 mcse(x, type = c("fixed", "random", "all"))
 
@@ -21,7 +21,7 @@ rope(x, rope, trans = NULL, type = c("fixed", "random", "all"))
 of values from a probability distribution (e.g., posterior probabilities
 from MCMC sampling).}
 
-\item{probs}{Vector of scalars between 0 and 1, indicating the mass within
+\item{prob}{Vector of scalars between 0 and 1, indicating the mass within
 the credible interval that is to be estimated. See \code{\link{hdi}}.}
 
 \item{trans}{Name of a function or character vector naming a function, used
@@ -44,7 +44,9 @@ being "practically equivalent to zero".}
 For \code{hdi()}, if \code{x} is a vector, returns a vector of length
   two with the lower and upper limit of the HDI; if \code{x} is a
   \code{stanreg}, \code{stanfit} or \code{brmsfit} object, returns a
-  tibble with lower and upper HDI-limits for each predictor.
+  tibble with lower and upper HDI-limits for each predictor. To distinguish
+  multiple HDI values, column names for the HDI get a suffix when \code{prob}
+  has more than one element.
   \cr \cr
   For \code{rope()}, returns a tibble with two columns: the proportion of
   values from \code{x} that are within and outside the boundaries of
@@ -79,7 +81,7 @@ if (require("rstanarm")) {
   hdi(fit)
 
   # return multiple intervals
-  hdi(fit, probs = c(.5, .7, .9))
+  hdi(fit, prob = c(.5, .7, .9))
 
   # fit logistic regression model
   fit <- stan_glm(

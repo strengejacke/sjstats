@@ -4,13 +4,13 @@
 \alias{tidy_stan}
 \title{Tidy summary output for stan models}
 \usage{
-tidy_stan(x, probs = 0.89, typical = "median", trans = NULL,
+tidy_stan(x, prob = 0.89, typical = "median", trans = NULL,
   type = c("fixed", "random", "all"), digits = 3)
 }
 \arguments{
 \item{x}{A \code{stanreg}, \code{stanfit} or \code{brmsfit} object.}
 
-\item{probs}{Vector of scalars between 0 and 1, indicating the mass within
+\item{prob}{Vector of scalars between 0 and 1, indicating the mass within
 the credible interval that is to be estimated. See \code{\link{hdi}}.}
 
 \item{typical}{The typical value that will represent the Bayesian point estimate.
@@ -31,7 +31,7 @@ both fixed and random effects.}
 \value{
 A tidy data frame, summarizing \code{x}, with consistent column names.
         To distinguish multiple HDI values, column names for the HDI get a suffix
-        when \code{probs} has more than one element.
+        when \code{prob} has more than one element.
 }
 \description{
 Returns a tidy summary output for stan models.
@@ -60,7 +60,7 @@ The returned data frame gives information on the Bayesian point
 if (require("rstanarm")) {
   fit <- stan_glm(mpg ~ wt + am, data = mtcars, chains = 1)
   tidy_stan(fit)
-  tidy_stan(fit, probs = c(.89, .5))
+  tidy_stan(fit, prob = c(.89, .5))
 }}
 
 }

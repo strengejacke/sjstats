@@ -16,7 +16,7 @@
 #'
 #' @return A tidy data frame, summarizing \code{x}, with consistent column names.
 #'         To distinguish multiple HDI values, column names for the HDI get a suffix
-#'         when \code{probs} has more than one element.
+#'         when \code{prob} has more than one element.
 #'
 #' @details The returned data frame gives information on the Bayesian point
 #'          estimate (column \emph{estimate}, which is by default the posterior
@@ -51,7 +51,7 @@
 #' if (require("rstanarm")) {
 #'   fit <- stan_glm(mpg ~ wt + am, data = mtcars, chains = 1)
 #'   tidy_stan(fit)
-#'   tidy_stan(fit, probs = c(.89, .5))
+#'   tidy_stan(fit, prob = c(.89, .5))
 #' }}
 #'
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
@@ -61,7 +61,7 @@
 #' @importFrom stats mad
 #' @importFrom bayesplot rhat neff_ratio
 #' @export
-tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c("fixed", "random", "all"), digits = 3) {
+tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c("fixed", "random", "all"), digits = 3) {
 
   # only works for rstanarm- or brms-models
   if (!inherits(x, c("stanreg", "stanfit", "brmsfit")))
@@ -78,7 +78,7 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
   if (inherits(x, "brmsfit")) mod.dat <- brms_clean(mod.dat)
 
   # compute HDI
-  out <- hdi(x, probs = probs, trans = trans, type = "all")
+  out <- hdi(x, prob = prob, trans = trans, type = "all")
 
   # we need names of elements, for correct removal
   nr <- bayesplot::neff_ratio(x)
