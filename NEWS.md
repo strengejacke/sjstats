@@ -7,7 +7,7 @@
 ## Changes to functions
 
 * `mwu()` gets an `out`-argument, to print output to console, or as HTML table in the viewer or web browser.
-* `scale_weights()` now also works for if weights have missing values.
+* `scale_weights()` now also works if weights have missing values.
 * `hdi()` and `rope()` get `data.frame`-methods.
 * `omega_sq()` and `eta_sq()` get a `ci.lvl`-argument to compute confidence intervals for the effect size statistics.
 * `omega_sq()`, `eta_sq()` and `cohens_f()` now always return a data frame with at least two columns: term name and effect size. Confidence intervals are added as additional columns, if the `ci.lvl`-argument is `TRUE`.
@@ -18,6 +18,7 @@
 
 * Fix unnecessary warning for tibbles in `mic()`.
 * Make sure that `model_frame()` does not return duplicated column names.
+* Fix issue in `tidy_stan()` with incorrect *n_eff* statistics for _sigma_ parameter in mixed models.
 
 # sjstats 0.14.1
 

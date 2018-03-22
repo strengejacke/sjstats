@@ -78,7 +78,7 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
   # get data frame
 
   mod.dat <- as.data.frame(x)
-  brmsfit.removers <- NULL
+
 
   # for brmsfit models, we need to remove some columns here to
   # match data rows later
@@ -109,17 +109,23 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
   }
 
 
+  # we need names of elements, for correct removal
+
+  nr <- bayesplot::neff_ratio(x)
+
+  if (inherits(x, "brmsfit")) {
+    cnames <- make.names(names(nr))
+    keep <- cnames %in% out$term
+  } else {
+    keep <- 1:nrow(out)
+  }
+
+
   # compute additional statistics, like point estimate, standard errors etc.
 
-  if (sjmisc::is_empty(brmsfit.removers)) {
-    nr <- bayesplot::neff_ratio(x)[1:nrow(out)]
-    rh <- bayesplot::rhat(x)[1:nrow(out)]
-    se <- dplyr::pull(mcse(x, type = "all"), "mcse")[1:nrow(out)]
-  } else {
-    nr <- bayesplot::neff_ratio(x)[-brmsfit.removers]
-    rh <- bayesplot::rhat(x)[-brmsfit.removers]
-    se <- dplyr::pull(mcse(x, type = "all"), "mcse")[1:nrow(out)]
-  }
+  nr <- nr[keep]
+  rh <- bayesplot::rhat(x)[keep]
+  se <- dplyr::pull(mcse(x, type = "all"), "mcse")[keep]
 
 
   out <- out %>%
