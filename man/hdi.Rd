@@ -7,7 +7,7 @@
 \alias{rope}
 \title{Compute statistics for MCMC samples}
 \usage{
-hdi(x, prob = 0.9, trans = NULL, type = c("fixed", "random", "all"))
+hdi(x, probs = 0.9, trans = NULL, type = c("fixed", "random", "all"))
 
 mcse(x, type = c("fixed", "random", "all"))
 
@@ -21,8 +21,8 @@ rope(x, rope, trans = NULL, type = c("fixed", "random", "all"))
 of values from a probability distribution (e.g., posterior probabilities
 from MCMC sampling).}
 
-\item{prob}{Scalar between 0 and 1, indicating the mass within the credible
-interval that is to be estimated.}
+\item{probs}{Vector of scalars between 0 and 1, indicating the mass within
+the credible interval that is to be estimated. See \code{\link{hdi}}.}
 
 \item{trans}{Name of a function or character vector naming a function, used
 to apply transformations on the returned HDI-values resp.
@@ -77,6 +77,9 @@ Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
 if (require("rstanarm")) {
   fit <- stan_glm(mpg ~ wt + am, data = mtcars, chains = 1)
   hdi(fit)
+
+  # return multiple intervals
+  hdi(fit, probs = c(.5, .7, .9))
 
   # fit logistic regression model
   fit <- stan_glm(

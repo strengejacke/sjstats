@@ -6,6 +6,7 @@
 
 ## Changes to functions
 
+* Argument `prob` in `hdi()` was renamed to `probs` and now accepts a vector of scalars to compute HDIs for multiple probability tresholds at once.
 * `mwu()` gets an `out`-argument, to print output to console, or as HTML table in the viewer or web browser.
 * `scale_weights()` now also works if weights have missing values.
 * `hdi()` and `rope()` get `data.frame`-methods.
@@ -19,6 +20,7 @@
 * Fix unnecessary warning for tibbles in `mic()`.
 * Make sure that `model_frame()` does not return duplicated column names.
 * Fix issue in `tidy_stan()` with incorrect *n_eff* statistics for _sigma_ parameter in mixed models.
+* Fix issue in `tidy_stan()`, which did not work when `probs` was of length larger than 2.
 
 # sjstats 0.14.1
 

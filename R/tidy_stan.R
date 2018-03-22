@@ -4,8 +4,6 @@
 #' @description Returns a tidy summary output for stan models.
 #'
 #' @param x A \code{stanreg}, \code{stanfit} or \code{brmsfit} object.
-#' @param probs Vector of scalars between 0 and 1, indicating the mass within
-#'        the credible interval that is to be estimated. See \code{\link{hdi}}.
 #' @param typical The typical value that will represent the Bayesian point estimate.
 #'        By default, the posterior median is returned. See \code{\link{typical_value}}
 #'        for possible values for this argument.
@@ -65,52 +63,24 @@
 #' @export
 tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c("fixed", "random", "all"), digits = 3) {
 
-  # only works for rstanarm-models
-
+  # only works for rstanarm- or brms-models
   if (!inherits(x, c("stanreg", "stanfit", "brmsfit")))
     stop("`x` needs to be a stanreg- or brmsfit-object.", call. = F)
-
 
   # check arguments
   type <- match.arg(type)
 
-
   # get data frame
-
   mod.dat <- as.data.frame(x)
-
 
   # for brmsfit models, we need to remove some columns here to
   # match data rows later
-
   if (inherits(x, "brmsfit")) mod.dat <- brms_clean(mod.dat)
 
-
   # compute HDI
-
-  out <- purrr::map(probs, ~ hdi(x, prob = .x, trans = trans, type = "all")) %>%
-    dplyr::bind_cols() %>%
-    dplyr::select(1, tidyselect::starts_with("hdi."))
-
-
-  # for multiple HDIs, fix column names
-
-  if (length(probs) > 1) {
-    suffix <- probs %>%
-      purrr::map(~ rep(.x, length(probs))) %>%
-      purrr::flatten_dbl()
-
-    colnames(out)[2:ncol(out)] <-
-      sprintf(
-        "%s_%s",
-        rep(c("hdi.low", "hdi.high"), length(probs)),
-        as.character(suffix)
-      )
-  }
-
+  out <- hdi(x, probs = probs, trans = trans, type = "all")
 
   # we need names of elements, for correct removal
-
   nr <- bayesplot::neff_ratio(x)
 
   if (inherits(x, "brmsfit")) {
@@ -150,12 +120,9 @@ tidy_stan <- function(x, probs = .89, typical = "median", trans = NULL, type = c
 
 
   # check if we need to remove random or fixed effects
-
   out <- remove_effects_from_stan(out, type, is.brms = inherits(x, "brmsfit"))
 
-
   # round values
-
   purrr::modify_if(out, is.numeric, ~ round(.x, digits = digits))
 }
 

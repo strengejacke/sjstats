@@ -11,8 +11,8 @@
 #'   \code{hdi()} and \code{rope()}, may also be a data frame or a vector
 #'   of values from a probability distribution (e.g., posterior probabilities
 #'   from MCMC sampling).
-#' @param prob Scalar between 0 and 1, indicating the mass within the credible
-#'   interval that is to be estimated.
+#' @param probs Vector of scalars between 0 and 1, indicating the mass within
+#'   the credible interval that is to be estimated. See \code{\link{hdi}}.
 #' @param rope Vector of length two, indicating the lower and upper limit of a
 #'   range around zero, which indicates the region of practical equivalence.
 #'   Values of the posterior distribution within this range are considered as
@@ -59,6 +59,9 @@
 #'   fit <- stan_glm(mpg ~ wt + am, data = mtcars, chains = 1)
 #'   hdi(fit)
 #'
+#'   # return multiple intervals
+#'   hdi(fit, probs = c(.5, .7, .9))
+#'
 #'   # fit logistic regression model
 #'   fit <- stan_glm(
 #'     vs ~ wt + am,
@@ -80,17 +83,17 @@
 #' }}
 #'
 #' @export
-hdi <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi <- function(x, probs = .9, trans = NULL, type = c("fixed", "random", "all")) {
   UseMethod("hdi")
 }
 
 
 #' @export
-hdi.stanreg <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi.stanreg <- function(x, probs = .9, trans = NULL, type = c("fixed", "random", "all")) {
   # check arguments
   type <- match.arg(type)
 
-  dat <- hdi_worker(x = x, prob = prob, trans = trans, type = type)
+  dat <- hdi_worker(x = x, probs = probs, trans = trans)
 
   # check if we need to remove random or fixed effects
   remove_effects_from_stan(dat, type, is.brms = FALSE)
@@ -98,7 +101,7 @@ hdi.stanreg <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
 
 
 #' @export
-hdi.brmsfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi.brmsfit <- function(x, probs = .9, trans = NULL, type = c("fixed", "random", "all")) {
   # check arguments
   type <- match.arg(type)
 
@@ -106,7 +109,7 @@ hdi.brmsfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.")
 
-  dat <- hdi_worker(x = x, prob = prob, trans = trans, type = type)
+  dat <- hdi_worker(x = x, probs = probs, trans = trans)
 
   # check if we need to remove random or fixed effects
   remove_effects_from_stan(dat, type, is.brms = TRUE)
@@ -114,11 +117,11 @@ hdi.brmsfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
 
 
 #' @export
-hdi.stanfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi.stanfit <- function(x, probs = .9, trans = NULL, type = c("fixed", "random", "all")) {
   # check arguments
   type <- match.arg(type)
 
-  dat <- hdi_worker(x = x, prob = prob, trans = trans, type = type)
+  dat <- hdi_worker(x = x, probs = probs, trans = trans)
 
   # check if we need to remove random or fixed effects
   remove_effects_from_stan(dat, type, is.brms = FALSE)
@@ -126,32 +129,57 @@ hdi.stanfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
 
 
 #' @export
-hdi.data.frame <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi.data.frame <- function(x, probs = .9, trans = NULL, type = c("fixed", "random", "all")) {
   # check arguments
   type <- match.arg(type)
 
-  hdi_worker(x = x, prob = prob, trans = trans, type = type)
+  hdi_worker(x = x, probs = probs, trans = trans)
 }
 
 
 #' @export
-hdi.default <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
-  hdi_helper(x, prob, trans)
+hdi.default <- function(x, probs = .9, trans = NULL, type = c("fixed", "random", "all")) {
+  hdi_helper(x, probs, trans)
 }
 
 
 #' @importFrom tibble as_tibble rownames_to_column
 #' @importFrom purrr map_df
 #' @importFrom sjmisc rotate_df
-hdi_worker <- function(x, prob, trans, type) {
-  # get posterior data
-  dat <- x %>%
-    tibble::as_tibble() %>%
-    purrr::map_df(~ hdi_helper(.x, prob, trans)) %>%
-    sjmisc::rotate_df() %>%
-    tibble::rownames_to_column()
+hdi_worker <- function(x, probs, trans) {
+  dat <- purrr::map(
+    probs,
+    function(i) {
 
-  colnames(dat) <- c("term", "hdi.low", "hdi.high")
+      out <- x %>%
+        tibble::as_tibble() %>%
+        purrr::map_df(~ hdi_helper(.x, i, trans)) %>%
+        sjmisc::rotate_df() %>%
+        tibble::rownames_to_column()
+
+      colnames(out) <- c("term", "hdi.low", "hdi.high")
+      out
+
+    }) %>%
+    dplyr::bind_cols() %>%
+    dplyr::select(1, tidyselect::starts_with("hdi."))
+
+
+
+  # for multiple HDIs, fix column names
+
+  if (length(probs) > 1) {
+    suffix <- probs %>%
+      purrr::map(~ rep(.x, 2)) %>%
+      purrr::flatten_dbl()
+
+    colnames(dat)[2:ncol(dat)] <-
+      sprintf(
+        "%s_%s",
+        rep(c("hdi.low", "hdi.high"), length(probs)),
+        as.character(suffix)
+      )
+  }
 
   dat
 }
@@ -159,9 +187,9 @@ hdi_worker <- function(x, prob, trans, type) {
 
 # based on Kruschke 2015, pp727f
 #' @importFrom purrr map_dbl map_df
-hdi_helper <- function(x, prob, trans) {
+hdi_helper <- function(x, probs, trans) {
   x <- sort(x)
-  ci.index <- ceiling(prob * length(x))
+  ci.index <- ceiling(probs * length(x))
   nCIs <- length(x) - ci.index
   ci.width <- purrr::map_dbl(1:nCIs, ~ x[.x + ci.index] - x[.x])
   HDImin <- x[which.min(ci.width)]
