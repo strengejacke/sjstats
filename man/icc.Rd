@@ -108,6 +108,26 @@ icc2 <- icc(fit2)
 print(icc1, comp = "var")
 print(icc2, comp = "var")
 
+\dontrun{
+# compute ICC for Bayesian mixed model, with an ICC for each
+# sample of the posterior. The print()-method then shows
+# the median ICC as well as 89\% HDI for the ICC.
+# Change interval with print-method:
+# print(icc(m, posterior = TRUE), prob = .5)
+
+if (requireNamsespace("brms", quietly = TRUE)) {
+  sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
+  m <- brm(
+    Reaction ~ Days + (1 | mygrp) + (Days | Subject),
+    data = sleepstudy
+  )
+
+  # by default, 89\% interval
+  icc(m, posterior = TRUE)
+
+  # show 50\% interval
+  print(icc(m, posterior = TRUE), prob = .5)
+}}
 
 }
 \references{
