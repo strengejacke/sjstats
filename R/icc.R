@@ -10,6 +10,11 @@
 #'    \code{stanreg} or \code{brmsfit}).
 #' @param ... More fitted model objects, to compute multiple intraclass-correlation
 #'    coefficients at once.
+#' @param posterior Logical, if \code{TRUE} and \code{x} is a \code{brmsfit}
+#'    object, ICC values are computed for each sample of the posterior
+#'    distribution. In this case, a data frame is returned with the same
+#'    number of rows as samples in \code{x}, with one column per random
+#'    effect ICC.
 #'
 #' @return A numeric vector with all random intercept intraclass-correlation-coefficients,
 #'    or a list of numeric vectors, when more than one model were used
@@ -113,8 +118,18 @@
 #'
 #' @importFrom purrr map2
 #' @export
-icc <- function(x, ...) {
+icc <- function(x, ..., posterior = FALSE) {
+
+  if (isTRUE(posterior) && !inherits(x, "brmsfit")) {
+    warning("ICC from posterior samples only possible for `brmsfit`-objects.")
+    posterior <- FALSE
+  }
+
   # return value
+  if (posterior) {
+    return(icc.posterior(x, deparse(substitute(x))))
+  }
+
   icc_ <- icc.lme4(x, deparse(substitute(x)))
 
   # check if we have multiple parameters

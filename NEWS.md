@@ -6,6 +6,7 @@
 
 ## Changes to functions
 
+* `icc()` gets a `posterior`-argument, to compute ICC-values from `brmsfit`-objects, for the whole posterior distribution.
 * `r2()` now computes Bayesian version of R-squared for `stanreg` and `brmsfit` objects.
 * Argument `prob` in `hdi()` now accepts a vector of scalars to compute HDIs for multiple probability tresholds at once.
 * Argument `probs` in `tidy_stan()` was renamed into `prob`, to be consistent with `hdi()`.

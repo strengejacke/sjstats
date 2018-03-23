@@ -4,7 +4,7 @@
 \alias{icc}
 \title{Intraclass-Correlation Coefficient}
 \usage{
-icc(x, ...)
+icc(x, ..., posterior = FALSE)
 }
 \arguments{
 \item{x}{Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
@@ -12,6 +12,12 @@ icc(x, ...)
 
 \item{...}{More fitted model objects, to compute multiple intraclass-correlation
 coefficients at once.}
+
+\item{posterior}{Logical, if \code{TRUE} and \code{x} is a \code{brmsfit}
+object, ICC values are computed for each sample of the posterior
+distribution. In this case, a data frame is returned with the same
+number of rows as samples in \code{x}, with one column per random
+effect ICC.}
 }
 \value{
 A numeric vector with all random intercept intraclass-correlation-coefficients,

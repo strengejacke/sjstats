@@ -300,6 +300,113 @@ print.icc.lme4 <- function(x, comp, ...) {
 }
 
 
+#' @importFrom tidyselect starts_with
+#' @importFrom sjmisc remove_empty_cols
+#' @importFrom cli cat_line
+#' @importFrom crayon cyan blue red magenta green silver italic
+#' @importFrom dplyr case_when
+#' @export
+print.icc.posterior <- function(x, ..., prob = .89, digits = 3) {
+  # print model information
+  cli::cat_line(crayon::italic("\n# Random Effect Variances and ICC\n"))
+  cat(sprintf("Family: %s (%s)\nFormula: %s\n\n",
+              attr(x, "family", exact = T),
+              attr(x, "link", exact = T),
+              as.character(attr(x, "formula"))[1]))
+
+  x <- sjmisc::remove_empty_cols(x)
+
+  get_re_col <- function(i, st) {
+    dplyr::case_when(
+      i == 1 ~ crayon::blue(st),
+      i == 2 ~ crayon::cyan(st),
+      i == 3 ~ crayon::red(st),
+      i == 4 ~ crayon::magenta(st),
+      i == 5 ~ crayon::green(st),
+      TRUE ~ crayon::silver(st)
+    )
+  }
+
+  cn <- colnames(x)
+  cn.icc <- cn[tidyselect::starts_with("icc_", vars = cn)]
+  cn.tau00 <- cn[tidyselect::starts_with("tau.00_", vars = cn)]
+
+  # print icc
+
+  for (i in seq_len(length(cn.icc))) {
+    re.name <- substr(cn[i], 5, nchar(cn.icc[i]))
+
+    cli::cat_line(get_re_col(i, sprintf("## %s", re.name)))
+
+    # ICC
+    ci <- hdi(x[[cn.icc[i]]], prob = prob)
+    cli::cat_line(sprintf(
+      "                   ICC: %.*f (HDI %i%%: %.*f-%.*f)",
+      digits,
+      median(x[[cn.icc[i]]]),
+      as.integer(round(prob * 100)),
+      digits,
+      ci[1],
+      digits,
+      ci[2]
+    ))
+
+    # ICC
+    ci <- hdi(x[[cn.tau00[i]]], prob = prob)
+    cli::cat_line(sprintf(
+      "Between-group-variance: %.*f (HDI %i%%: %.*f-%.*f)\n",
+      digits,
+      median(x[[cn.tau00[i]]]),
+      as.integer(round(prob * 100)),
+      digits,
+      ci[1],
+      digits,
+      ci[2]
+    ))
+  }
+
+  # print sigma squared
+
+  ci <- hdi(x[["resid_var"]], prob = prob)
+  infs <- crayon::red("## Residuals")
+  cli::cat_line(sprintf(
+    "%s\nWithin-group-variance: %.*f (HDI %i%%: %.*f-%.*f)\n",
+    infs,
+    digits,
+    median(x[["resid_var"]]),
+    as.integer(round(prob * 100)),
+    digits,
+    ci[1],
+    digits,
+    ci[2]
+  ))
+
+
+  cn <- colnames(x)
+  cn <- cn[tidyselect::starts_with("tau.11_", vars = cn)]
+
+  if (!sjmisc::is_empty(cn)) cat(crayon::red("## Random-slope-variance\n"))
+
+  # print Random-slope-variance
+
+  for (i in seq_len(length(cn))) {
+    tau.name <- substr(cn[i], 8, nchar(cn[i]))
+    infs <- sprintf("%s", tau.name)
+    ci <- hdi(x[[cn[i]]], prob = prob)
+    cli::cat_line(sprintf(
+      "%s: %.*f (HDI %i%%: %.*f-%.*f)",
+      infs,
+      digits,
+      median(x[[cn[i]]]),
+      as.integer(round(prob * 100)),
+      digits,
+      ci[1],
+      digits,
+      ci[2]
+    ))
+  }
+}
+
 
 #' @export
 as.integer.sj_resample <- function(x, ...) {
