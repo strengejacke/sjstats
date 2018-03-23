@@ -122,7 +122,7 @@
 #' # Change interval with print-method:
 #' # print(icc(m, posterior = TRUE), prob = .5)
 #'
-#' if (requireNamsespace("brms", quietly = TRUE)) {
+#' if (requireNamespace("brms", quietly = TRUE)) {
 #'   sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
 #'   m <- brm(
 #'     Reaction ~ Days + (1 | mygrp) + (Days | Subject),
