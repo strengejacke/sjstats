@@ -210,6 +210,8 @@ print.sjstats_r2 <- function(x, ...) {
   } else {
     if (identical(names(x[[1]]), "D")) {
       s1 <- "Tjur's D"
+    } else if (identical(names(x[[1]]), "Bayes R2")) {
+      s1 <- "Bayes R2"
     } else {
       return(NULL)
     }

@@ -15,17 +15,16 @@ coefficients at once.}
 }
 \value{
 A numeric vector with all random intercept intraclass-correlation-coefficients,
-          or a list of numeric vectors, when more than one model were used
-          as arguments. Furthermore, between- and within-group variances as well
-          as random-slope variance are returned as attributes.
+   or a list of numeric vectors, when more than one model were used
+   as arguments. Furthermore, between- and within-group variances as well
+   as random-slope variance are returned as attributes.
 }
 \description{
 This function calculates the intraclass-correlation
-               (icc) - sometimes also called \emph{variance partition coefficient}
-               (vpc) - for random intercepts of mixed effects models.
-               Currently, \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}}
-               \code{stanreg} and \code{\link[brms]{brmsfit}}
-               objects are supported.
+   (icc) - sometimes also called \emph{variance partition coefficient}
+   (vpc) - for random intercepts of mixed effects models. Currently,
+   \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}},
+   \code{stanreg} and \code{\link[brms]{brmsfit}} objects are supported.
 }
 \details{
 The ICC is calculated by dividing the between-group-variance (random

@@ -68,21 +68,24 @@ cod <- function(x) {
 #' @name r2
 #'
 #' @description Compute R-squared values of linear (mixed) models, or
-#'                pseudo-R-squared values for generalized linear (mixed) models.
+#'    pseudo-R-squared values for generalized linear (mixed) models, or a
+#'    Bayesian version of R-squared for regression models for \code{stanreg}
+#'    and \code{brmsfit} objects.
 #'
-#' @param x Fitted model of class \code{lm}, \code{glm}, \code{lmerMod}/\code{lme}
-#'            or \code{glmerMod}.
+#' @param x Fitted model of class \code{lm}, \code{glm}, \code{lmerMod},
+#'    \code{lme}, \code{glmerMod}, \code{stanreg} or \code{brmsfit}.
 #' @param n Optional, a \code{lmerMod} object, representing the fitted null-model
-#'          (unconditional model) to \code{x}. If \code{n} is given, the pseudo-r-squared
-#'          for random intercept and random slope variances are computed
-#'          (\cite{Kwok et al. 2008}) as well as the Omega squared value
-#'          (\cite{Xu 2003}). See 'Examples' and 'Details'.
+#'    (unconditional model) to \code{x}. If \code{n} is given, the pseudo-r-squared
+#'    for random intercept and random slope variances are computed
+#'    (\cite{Kwok et al. 2008}) as well as the Omega squared value
+#'    (\cite{Xu 2003}). See 'Examples' and 'Details'.
 #'
 #' @return \itemize{
 #'           \item For linear models, the r-squared and adjusted r-squared values.
 #'           \item For linear mixed models, the r-squared and Omega-squared values.
 #'           \item For \code{glm} objects, Cox & Snell's and Nagelkerke's pseudo r-squared values.
 #'           \item For \code{glmerMod} objects, Tjur's coefficient of determination.
+#'           \item For \code{brmsfit} or \code{stanreg} objects, the Bayesian version of R-squared is computed, calling \code{\link[rstanarm]{bayes_R2}}.
 #'         }
 #'
 #' @note If \code{n} is given, the Pseudo-R2 statistic is the proportion of
@@ -179,14 +182,26 @@ r2 <- function(x, n = NULL) {
   osq <- NULL
   adjr2 <- NULL
 
-  # do we have a glm? if so, report pseudo_r2
-  if (inherits(x, "glm")) {
+  if (inherits(x, c("stanreg"))) {
+    if (!requireNamespace("rstanarm", quietly = TRUE))
+      stop("Package `rstanarm` needed for this function to work. Please install it.", call. = FALSE)
+    rsq <- mean(rstanarm::bayes_R2(x))
+    names(rsq) <- "Bayes R2"
+    return(structure(class = "sjstats_r2", list(r2 = rsq)))
+  } else if (inherits(x, c("brmsfit"))) {
+    if (!requireNamespace("brms", quietly = TRUE))
+      stop("Package `brms` needed for this function to work. Please install it.", call. = FALSE)
+    rsq <- brms::bayes_R2(x)[1]
+    names(rsq) <- "Bayes R2"
+    return(structure(class = "sjstats_r2", list(r2 = rsq)))
+  } else if (inherits(x, "glm")) {
+    # do we have a glm? if so, report pseudo_r2
     return(pseudo_ralt(x))
-    # do we have a glmer?
   } else if (inherits(x, "glmerMod")) {
+    # do we have a glmer?
     return(cod(x))
-    # do we have a simple linear model?
   } else if (inherits(x, "lm")) {
+    # do we have a simple linear model?
     rsq <- summary(x)$r.squared
     adjr2 <- summary(x)$adj.r.squared
 
@@ -255,7 +270,7 @@ r2 <- function(x, n = NULL) {
       return(structure(class = "sjstats_r2", list(r2 = rsq, o2 = osq)))
     }
   } else {
-    warning("`r2` only works on linear (mixed) models of class \"lm\", \"lme\" or \"lmerMod\".", call. = F)
+    warning("`r2` only works on linear (mixed) models of class \"lm\", \"lme\" or \"lmerMod\", or on \"stanreg\" and \"brmsfit\" objects.", call. = F)
     return(NULL)
   }
 }

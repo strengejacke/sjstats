@@ -22,6 +22,7 @@
 * Make sure that `model_frame()` does not return duplicated column names.
 * Fix issue in `tidy_stan()` with incorrect *n_eff* statistics for _sigma_ parameter in mixed models.
 * Fix issue in `tidy_stan()`, which did not work when `probs` was of length larger than 2.
+* Fix issue in `icc()` with _brmsfit_-models, which was broken probably due to internal changes in _brms_.
 
 # sjstats 0.14.1
 

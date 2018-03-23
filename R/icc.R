@@ -1,21 +1,20 @@
 #' @title Intraclass-Correlation Coefficient
 #' @name icc
 #' @description This function calculates the intraclass-correlation
-#'                (icc) - sometimes also called \emph{variance partition coefficient}
-#'                (vpc) - for random intercepts of mixed effects models.
-#'                Currently, \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}}
-#'                \code{stanreg} and \code{\link[brms]{brmsfit}}
-#'                objects are supported.
+#'    (icc) - sometimes also called \emph{variance partition coefficient}
+#'    (vpc) - for random intercepts of mixed effects models. Currently,
+#'    \code{\link[lme4]{merMod}}, \code{\link[glmmTMB]{glmmTMB}},
+#'    \code{stanreg} and \code{\link[brms]{brmsfit}} objects are supported.
 #'
 #' @param x Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
-#'          \code{stanreg} or \code{brmsfit}).
+#'    \code{stanreg} or \code{brmsfit}).
 #' @param ... More fitted model objects, to compute multiple intraclass-correlation
-#'              coefficients at once.
+#'    coefficients at once.
 #'
 #' @return A numeric vector with all random intercept intraclass-correlation-coefficients,
-#'           or a list of numeric vectors, when more than one model were used
-#'           as arguments. Furthermore, between- and within-group variances as well
-#'           as random-slope variance are returned as attributes.
+#'    or a list of numeric vectors, when more than one model were used
+#'    as arguments. Furthermore, between- and within-group variances as well
+#'    as random-slope variance are returned as attributes.
 #'
 #' @references \itemize{
 #'               \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
@@ -160,6 +159,7 @@ icc <- function(x, ...) {
 #' @importFrom stats family formula
 #' @importFrom purrr map map_dbl map_lgl
 #' @importFrom sjmisc str_contains
+#' @importFrom tibble has_name
 icc.lme4 <- function(fit, obj.name) {
   # check object class
   if (is_merMod(fit) || inherits(fit, c("glmmTMB", "brmsfit"))) {
@@ -198,23 +198,23 @@ icc.lme4 <- function(fit, obj.name) {
     if (inherits(fit, "glmmTMB")) {
       reva <- glmmTMB::VarCorr(fit)[[1]]
     } else if (inherits(fit, "brmsfit")) {
-      reva <- brms::VarCorr(fit, old = TRUE)
+      reva <- brms::VarCorr(fit)
     } else
       reva <- lme4::VarCorr(fit)
 
 
-    # for brmsfit-objects, remove "RESIDUAL" element from list
+    # for brmsfit-objects, remove "residual__" element from list
     # and save in separate object
     if (inherits(fit, "brmsfit")) {
-      reva.resid <- reva[names(reva) == "RESIDUAL"]
-      reva <- reva[!(names(reva) == "RESIDUAL")]
+      reva.resid <- reva[names(reva) == "residual__"]
+      reva <- reva[!(names(reva) == "residual__")]
     }
 
 
     # retrieve only intercepts
 
     if (inherits(fit, "brmsfit"))
-      vars <- purrr::map(reva, ~ .x$cov$mean[1])
+      vars <- purrr::map(reva, ~ .x$sd[1] ^ 2)
     else
       vars <- purrr::map(reva, ~ .x[1])
 
@@ -227,14 +227,14 @@ icc.lme4 <- function(fit, obj.name) {
 
     # random slope-variances (tau 11)
     if (inherits(fit, "brmsfit"))
-      tau.11 <- unlist(lapply(reva, function(x) diag(x$cov$mean)[-1]))
+      tau.11 <- unlist(lapply(reva, function(x) diag(x$cov[, 1, ])[-1]))
     else
       tau.11 <- unlist(lapply(reva, function(x) diag(x)[-1]))
 
 
     # get residual standard deviation sigma
     if (inherits(fit, "brmsfit"))
-      sig <- reva.resid$RESIDUAL$sd[1]
+      sig <- reva.resid[["residual__"]]$sd[1]
     else
       sig <- attr(reva, "sc")
 
@@ -256,7 +256,7 @@ icc.lme4 <- function(fit, obj.name) {
       # for logistic models, we use pi / 3
       resid_var <- (pi ^ 2) / 3
     } else if (inherits(fit, "glmerMod") && is_negbin) {
-      # for negative binomial models, we use 0
+      # for negative binomial models, we use 1
       resid_var <- 1
     } else {
       # for linear and poisson models, we have a clear residual variance
@@ -267,6 +267,8 @@ icc.lme4 <- function(fit, obj.name) {
     # total variance, sum of random intercept and residual variances
     total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid_var)
 
+
+    ## TODO negbin in brms needs special handling?
 
     # check whether we have negative binomial
 
@@ -300,7 +302,7 @@ icc.lme4 <- function(fit, obj.name) {
     # do we have any rnd slopes?
 
     if (inherits(fit, "brmsfit"))
-      has_rnd_slope <- purrr::map_lgl(reva, ~ dim(.x$cor$mean)[1] > 1)
+      has_rnd_slope <- purrr::map_lgl(reva, ~ tibble::has_name(.x, "cor"))
     else
       has_rnd_slope <- purrr::map_lgl(reva, ~ dim(attr(.x, "correlation"))[1] > 1)
 
@@ -315,9 +317,9 @@ icc.lme4 <- function(fit, obj.name) {
 
       if (inherits(fit, "brmsfit")) {
         # get slope-intercept-correlations
-        rho.01 <- purrr::map_dbl(rnd_slope, ~ .x$cor$mean[1, 2])
+        rho.01 <- purrr::map_dbl(rnd_slope, ~ .x$cor[1, 1, 2])
         # get standard deviations, multiplied
-        std_ <- purrr::map_dbl(rnd_slope, ~ prod(.x$sd))
+        std_ <- purrr::map_dbl(rnd_slope, ~ prod(.x$sd[, 1]))
       } else {
         # get slope-intercept-correlations
         rho.01 <- purrr::map_dbl(rnd_slope, ~ attr(.x, "correlation")[1, 2])
@@ -363,6 +365,115 @@ icc.lme4 <- function(fit, obj.name) {
   } else {
     warning("Function `icc` currently only supports `merMod` (package `lme4`), `glmmTMB` (package `glmmTMB`) or `brmsfit` (package brms) objects.", call. = TRUE)
   }
+}
+
+
+#' @importFrom purrr map_df map_if
+icc.posterior <- function(fit, obj.name) {
+  if (inherits(fit, "brmsfit") && !requireNamespace("brms", quietly = TRUE))
+    stop("Please install and load package `brms` first.", call. = F)
+
+  # get family
+  fitfam <- stats::family(fit)$family
+
+  # is neg. binomial?
+  is_negbin <-
+    sjmisc::str_contains(
+      fitfam,
+      c("Negative Binomial", "nbinom"),
+      ignore.case = TRUE,
+      logic = "OR"
+    )
+
+  # is logistic?
+  is_logistic <-
+    inherits(fit, c("glmerMod", "glmmTMB", "brmsfit")) &&
+    fitfam %in% c("bernoulli", "binomial")
+
+  # get random effect variances for each sample of posterior
+  reva <- brms::VarCorr(fit, summary = FALSE)
+
+  # remove "residual__" element from list
+  # and save in separate object
+  reva.resid <- reva[names(reva) == "residual__"]
+  reva <- reva[!(names(reva) == "residual__")]
+
+
+  # retrieve only intercepts
+  vars <- purrr::map(reva, ~ .x$sd[, 1] ^ 2)
+
+  # random intercept-variances, i.e.
+  # between-subject-variance (tau 00)
+  tau.00 <- purrr::map(vars, ~ .x)
+
+  # random slope-variances (tau 11)
+  tau.11 <- purrr::map(reva, ~ .x$cov[, 2, 2])
+
+  # get residual standard deviation sigma
+  sig <- reva.resid[["residual__"]]$sd[, 1]
+
+  # set default, if no residual variance is available
+  if (is.null(sig)) {
+    if (is_logistic)
+      sig <- sqrt((pi ^ 2) / 3)
+    else
+      sig <- 1
+  }
+
+
+  # residual variances, i.e.
+  # within-cluster-variance (sigma^2)
+
+  if (is_logistic) {
+    # for logistic models, we use pi / 3
+    resid_var <- (pi ^ 2) / 3
+  } else {
+    # for linear and poisson models, we have a clear residual variance
+    resid_var <- sig ^ 2
+  }
+
+
+  # total variance, sum of random intercept and residual variances
+  total_var <- apply(as.data.frame(vars), MARGIN = 1, FUN = sum) + resid_var
+
+
+  # check whether we have negative binomial
+
+  if (is_negbin) {
+
+    ## TODO negbin in brms needs special handling?
+
+    # make formula more readable
+
+    numerator <- (exp(tau.00) - 1)
+    denominator <- ((exp(total_var) - 1) + (exp(total_var) / r) + exp(-beta - (total_var / 2)))
+
+    ri.icc <- numerator / denominator
+  } else {
+    # random intercept icc
+    ri.icc <- purrr::map(tau.00, ~ .x / total_var)
+  }
+
+  tau.11 <- purrr::map_if(tau.11, is.null, ~ rep(NA, length(resid_var)))
+
+  names(ri.icc) <- sprintf("icc_%s", names(ri.icc))
+  names(tau.00) <- sprintf("tau.00_%s", names(tau.00))
+  names(tau.11) <- sprintf("tau.11_%s", names(tau.11))
+
+  icc_ <- dplyr::bind_cols(ri.icc, tau.00, tau.11, data.frame(resid_var = resid_var))
+
+  attr(icc_, "family") <- stats::family(fit)$family
+  attr(icc_, "link") <- stats::family(fit)$link
+  attr(icc_, "formula") <- stats::formula(fit)
+  attr(icc_, "model") <- "Bayesian mixed model"
+  attr(icc_, "tau.00") <- tau.00
+  attr(icc_, "tau.11") <- tau.11
+  attr(icc_, "sigma_2") <- resid_var
+
+  class(icc_) <- c("icc.posterior", class(icc_))
+
+  # return results
+  icc_
 }
 
 
@@ -426,7 +537,10 @@ re_var <- function(x) {
   # iterate all attributes and return them as vector
   rv <- c("sigma_2", "tau.00", "tau.11", "tau.01", "rho.01")
 
-  rv_ <- purrr::map(rv, ~ attr(icc(x), .x, exact = TRUE))
+  # compute icc
+  icc_ <- icc(x)
+
+  rv_ <- purrr::map(rv, ~ attr(icc_, .x, exact = TRUE))
   rn <- purrr::map2(1:length(rv_), rv, ~ sjmisc::trim(paste(names(rv_[[.x]]), .y, sep = "_")))
   rv_ <- purrr::flatten_dbl(rv_)
 

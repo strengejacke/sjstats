@@ -7,8 +7,8 @@
 r2(x, n = NULL)
 }
 \arguments{
-\item{x}{Fitted model of class \code{lm}, \code{glm}, \code{lmerMod}/\code{lme}
-or \code{glmerMod}.}
+\item{x}{Fitted model of class \code{lm}, \code{glm}, \code{lmerMod},
+\code{lme}, \code{glmerMod}, \code{stanreg} or \code{brmsfit}.}
 
 \item{n}{Optional, a \code{lmerMod} object, representing the fitted null-model
 (unconditional model) to \code{x}. If \code{n} is given, the pseudo-r-squared
@@ -22,11 +22,14 @@ for random intercept and random slope variances are computed
           \item For linear mixed models, the r-squared and Omega-squared values.
           \item For \code{glm} objects, Cox & Snell's and Nagelkerke's pseudo r-squared values.
           \item For \code{glmerMod} objects, Tjur's coefficient of determination.
+          \item For \code{brmsfit} or \code{stanreg} objects, the Bayesian version of R-squared is computed, calling \code{\link[rstanarm]{bayes_R2}}.
         }
 }
 \description{
 Compute R-squared values of linear (mixed) models, or
-               pseudo-R-squared values for generalized linear (mixed) models.
+   pseudo-R-squared values for generalized linear (mixed) models, or a
+   Bayesian version of R-squared for regression models for \code{stanreg}
+   and \code{brmsfit} objects.
 }
 \details{
 For linear models, the r-squared and adjusted r-squared value is returned,
