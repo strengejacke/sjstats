@@ -303,8 +303,6 @@ icc.lme4 <- function(fit, obj.name) {
     total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid_var)
 
 
-    ## TODO negbin in brms needs special handling?
-
     # check whether we have negative binomial
 
     if (is_negbin) {
@@ -313,6 +311,11 @@ icc.lme4 <- function(fit, obj.name) {
         beta <- as.numeric(lme4::fixef(fit)["(Intercept)"])
         # ... and the theta value to compute the ICC
         r <- lme4::getME(fit, "glmer.nb.theta")
+      } else if (inherits(fit, "brms")) {
+        # for negative binomial models, we also need the intercept...
+        beta <- as.numeric(brms::fixef(fit)[[1]])
+        # ... and the theta value to compute the ICC
+        r <- sig
       } else {
         # for negative binomial models, we also need the intercept...
         beta <- as.numeric(glmmTMB::fixef(fit)[[1]]["(Intercept)"])
@@ -476,7 +479,10 @@ icc.posterior <- function(fit, obj.name) {
 
   if (is_negbin) {
 
-    ## TODO negbin in brms needs special handling?
+    # for negative binomial models, we also need the intercept...
+    beta <- as.numeric(brms::fixef(fit)[[1]])
+    # ... and the theta value to compute the ICC
+    r <- sig
 
     # make formula more readable
 

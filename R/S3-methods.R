@@ -341,7 +341,7 @@ print.icc.posterior <- function(x, ..., prob = .89, digits = 3) {
     # ICC
     ci <- hdi(x[[cn.icc[i]]], prob = prob)
     cli::cat_line(sprintf(
-      "                   ICC: %.*f (HDI %i%%: %.*f-%.*f)",
+      "          ICC: %.*f (HDI %i%%: %.*f-%.*f)",
       digits,
       median(x[[cn.icc[i]]]),
       as.integer(round(prob * 100)),
@@ -354,7 +354,7 @@ print.icc.posterior <- function(x, ..., prob = .89, digits = 3) {
     # ICC
     ci <- hdi(x[[cn.tau00[i]]], prob = prob)
     cli::cat_line(sprintf(
-      "Between-group-variance: %.*f (HDI %i%%: %.*f-%.*f)\n",
+      "Between-group: %.*f (HDI %i%%: %.*f-%.*f)\n",
       digits,
       median(x[[cn.tau00[i]]]),
       as.integer(round(prob * 100)),
@@ -370,7 +370,7 @@ print.icc.posterior <- function(x, ..., prob = .89, digits = 3) {
   ci <- hdi(x[["resid_var"]], prob = prob)
   infs <- crayon::red("## Residuals")
   cli::cat_line(sprintf(
-    "%s\nWithin-group-variance: %.*f (HDI %i%%: %.*f-%.*f)\n",
+    "%s\nWithin-group: %.*f (HDI %i%%: %.*f-%.*f)\n",
     infs,
     digits,
     median(x[["resid_var"]]),
