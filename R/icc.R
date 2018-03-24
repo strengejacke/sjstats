@@ -211,7 +211,7 @@ icc.lme4 <- function(fit, obj.name) {
     is_negbin <-
       sjmisc::str_contains(
         fitfam,
-        c("Negative Binomial", "nbinom"),
+        c("Negative Binomial", "nbinom", "negbinomial"),
         ignore.case = TRUE,
         logic = "OR"
       )
@@ -418,15 +418,13 @@ icc.posterior <- function(fit, obj.name) {
   is_negbin <-
     sjmisc::str_contains(
       fitfam,
-      c("Negative Binomial", "nbinom"),
+      c("Negative Binomial", "nbinom", "negbinomial"),
       ignore.case = TRUE,
       logic = "OR"
     )
 
   # is logistic?
-  is_logistic <-
-    inherits(fit, c("glmerMod", "glmmTMB", "brmsfit")) &&
-    fitfam %in% c("bernoulli", "binomial")
+  is_logistic <- fitfam %in% c("bernoulli", "binomial")
 
   # get random effect variances for each sample of posterior
   reva <- brms::VarCorr(fit, summary = FALSE)
@@ -486,10 +484,10 @@ icc.posterior <- function(fit, obj.name) {
 
     # make formula more readable
 
-    numerator <- (exp(tau.00) - 1)
+    numerator <- purrr::map(tau.00, ~ exp(.x) - 1)
     denominator <- ((exp(total_var) - 1) + (exp(total_var) / r) + exp(-beta - (total_var / 2)))
 
-    ri.icc <- numerator / denominator
+    ri.icc <- purrr::map(numerator, ~ .x / denominator)
   } else {
     # random intercept icc
     ri.icc <- purrr::map(tau.00, ~ .x / total_var)
