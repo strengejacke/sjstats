@@ -408,6 +408,7 @@ icc.lme4 <- function(fit, obj.name) {
     attr(ri.icc, "rho.01") <- rho.01
     attr(ri.icc, "tau.11") <- tau.11
     attr(ri.icc, "sigma_2") <- resid_var
+    attr(ri.icc, "rnd.slope.model") <- any(has_rnd_slope)
 
 
     # finally, save name of fitted model object. May be needed for

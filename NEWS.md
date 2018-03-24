@@ -7,6 +7,7 @@
 ## Changes to functions
 
 * `icc()` gets a `posterior`-argument, to compute ICC-values from `brmsfit`-objects, for the whole posterior distribution.
+* `icc()` now gives a warning when computed for random-slope-intercept models, to warn user about probably inappropriate inference.
 * `r2()` now computes Bayesian version of R-squared for `stanreg` and `brmsfit` objects.
 * Argument `prob` in `hdi()` now accepts a vector of scalars to compute HDIs for multiple probability tresholds at once.
 * Argument `probs` in `tidy_stan()` was renamed into `prob`, to be consistent with `hdi()`.
@@ -23,7 +24,7 @@
 * Fix unnecessary warning for tibbles in `mic()`.
 * Make sure that `model_frame()` does not return duplicated column names.
 * Fix issue in `tidy_stan()` with incorrect *n_eff* statistics for _sigma_ parameter in mixed models.
-* Fix issue in `tidy_stan()`, which did not work when `probs` was of length larger than 2.
+* Fix issue in `tidy_stan()`, which did not work when `probs` was of length greater than 2.
 * Fix issue in `icc()` with _brmsfit_-models, which was broken probably due to internal changes in _brms_.
 
 # sjstats 0.14.1
