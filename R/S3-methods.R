@@ -320,9 +320,9 @@ print.icc.posterior <- function(x, ..., prob = .89, digits = 3) {
     dplyr::case_when(
       i == 1 ~ crayon::blue(st),
       i == 2 ~ crayon::cyan(st),
-      i == 3 ~ crayon::red(st),
-      i == 4 ~ crayon::magenta(st),
-      i == 5 ~ crayon::green(st),
+      i == 3 ~ crayon::magenta(st),
+      i == 4 ~ crayon::green(st),
+      i == 5 ~ crayon::red(st),
       TRUE ~ crayon::silver(st)
     )
   }

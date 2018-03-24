@@ -40,6 +40,14 @@ The ICC is calculated by dividing the between-group-variance (random
       \cite{Wu et al. (2012)}. For Poisson multilevel models, please refere to \cite{Stryhn et al. (2006)}.
       \cite{Aly et al. (2014)} describe computation of ICC for negative binomial models.
       \cr \cr
+      \strong{Caution:} For models with random slopes and random intercepts,
+      the ICC differs at each unit of the predictors. Hence, the ICC for these
+      kind of models cannot be understood simply as proportions of variance
+      (see \cite{Goldstein et al. 2010}). For convenience reasons, as the
+      \code{icc()} functions also extracts the different random effects
+      variances, the ICC for random-slope-intercept-models is reported,
+      but usually no meaningful summary of the proportions of variance.
+      \cr \cr
       There is a \code{print}-method that prints the variance parameters using
       the \code{comp}-argument set to \code{"var"}: \code{print(x, comp = "var")}
       (see 'Examples'). The \code{\link{re_var}}-function is a convenient wrapper.
@@ -92,11 +100,13 @@ library(lme4)
 fit0 <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
 icc(fit0)
 
+# note: ICC for random-slope-intercept model usually not
+# meaningful - see 'Note'.
 fit1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 icc(fit1)
 
 sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
-fit2 <- lmer(Reaction ~ Days + (1 | mygrp) + (Days | Subject), sleepstudy)
+fit2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 icc(fit2)
 
 # return icc for all models at once
@@ -116,9 +126,13 @@ print(icc2, comp = "var")
 # print(icc(m, posterior = TRUE), prob = .5)
 
 if (requireNamespace("brms", quietly = TRUE)) {
-  sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
+  library(dplyr)
+  sleepstudy$mygrp <- sample(1:5, size = 180, replace = TRUE)
+  sleepstudy <- sleepstudy \%>\%
+    group_by(mygrp) \%>\%
+    mutate(mysubgrp = sample(1:30, size = n(), replace = TRUE))
   m <- brm(
-    Reaction ~ Days + (1 | mygrp) + (Days | Subject),
+    Reaction ~ Days + (1 | mygrp / mysubgrp) + (1 | Subject),
     data = sleepstudy
   )
 
@@ -134,6 +148,7 @@ if (requireNamespace("brms", quietly = TRUE)) {
 \itemize{
               \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
               \item Aly SS, Zhao J, Li B, Jiang J. 2014. Reliability of environmental sampling culture results using the negative binomial intraclass correlation coefficient. Springerplus 14(3) (\doi{10.1186/2193-1801-3-40})
+              \item Goldstein H, Browne W, Rasbash J. 2010. Partitioning Variation in Multilevel Models. Understanding Statistics, 1:4, 223-231 (\doi{10.1207/S15328031US0104_02})
               \item Grace-Martion K. The Intraclass Correlation Coefficient in Mixed Models, \href{http://www.theanalysisfactor.com/the-intraclass-correlation-coefficient-in-mixed-models/}{web}
               \item Hox J. 2002. Multilevel analysis: techniques and applications. Mahwah, NJ: Erlbaum
               \item Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication
