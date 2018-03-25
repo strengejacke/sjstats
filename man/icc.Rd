@@ -20,10 +20,14 @@ number of rows as samples in \code{x}, with one column per random
 effect ICC.}
 }
 \value{
-A numeric vector with all random intercept intraclass-correlation-coefficients,
-   or a list of numeric vectors, when more than one model were used
-   as arguments. Furthermore, between- and within-group variances as well
-   as random-slope variance are returned as attributes.
+If \code{posterior = FALSE} (the default), a numeric vector with all
+   random intercept intraclass-correlation-coefficients, or a list of
+   numeric vectors, when more than one model were used as arguments.
+   Furthermore, between- and within-group variances as well as random-slope
+   variance are returned as attributes.
+   \cr \cr
+   If \code{posterior = TRUE}, \code{icc()} returns a data frame with ICC
+   and variance components for each sample of the posterior distribution.
 }
 \description{
 This function calculates the intraclass-correlation
@@ -37,20 +41,26 @@ The ICC is calculated by dividing the between-group-variance (random
          intercept variance) by the total variance (i.e. sum of between-group-variance
          and within-group (residual) variance). \cr \cr
       The calculation of the ICC for generalized linear mixed models with binary outcome is based on
-      \cite{Wu et al. (2012)}. For Poisson multilevel models, please refere to \cite{Stryhn et al. (2006)}.
+      \cite{Wu et al. (2012)}. For Poisson multilevel models, please refer to \cite{Stryhn et al. (2006)}.
       \cite{Aly et al. (2014)} describe computation of ICC for negative binomial models.
       \cr \cr
       \strong{Caution:} For models with random slopes and random intercepts,
-      the ICC differs at each unit of the predictors. Hence, the ICC for these
-      kind of models cannot be understood simply as proportions of variance
+      the ICC would differ at each unit of the predictors. Hence, the ICC for these
+      kind of models cannot be understood simply as proportion of variance
       (see \cite{Goldstein et al. 2010}). For convenience reasons, as the
-      \code{icc()} functions also extracts the different random effects
-      variances, the ICC for random-slope-intercept-models is reported,
-      but usually no meaningful summary of the proportions of variance.
+      \code{icc()} function also extracts the different random effects
+      variances, the ICC for random-slope-intercept-models is reported
+      nonetheless, but it is usually no meaningful summary of the
+      proportion of variances.
       \cr \cr
-      There is a \code{print}-method that prints the variance parameters using
-      the \code{comp}-argument set to \code{"var"}: \code{print(x, comp = "var")}
-      (see 'Examples'). The \code{\link{re_var}}-function is a convenient wrapper.
+      If \code{posterior = FALSE}, there is a \code{print()}-method that prints
+      the variance parameters using the \code{comp}-argument set to \code{"var"}:
+      \code{print(x, comp = "var")} (see 'Examples'). The
+      \code{\link{re_var}}-function is a convenient wrapper. If
+      \code{posterior = TRUE}, the \code{print()}-method accepts the arguments
+      \code{prob} and \code{digits}, which indicate the probability of the
+      uncertainty interval for the ICC and variance components, and the digits
+      in the output (see also 'Examples').
       \cr \cr
       The random effect variances indicate the between- and within-group
         variances as well as random-slope variance and random-slope-intercept
@@ -140,7 +150,7 @@ if (requireNamespace("brms", quietly = TRUE)) {
   icc(m, posterior = TRUE)
 
   # show 50\% interval
-  print(icc(m, posterior = TRUE), prob = .5)
+  print(icc(m, posterior = TRUE), prob = .5, digits = 2)
 }}
 
 }
