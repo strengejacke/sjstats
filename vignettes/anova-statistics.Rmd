@@ -115,10 +115,15 @@ For eta squared, i.e. `eta_sq()` with `partial = FALSE`, due to non-symmetry, co
 For partial eta-squared, confidence intervals are based on `get.ci.partial.eta.squared` (package *apaTables*) and for omega-squared, confidence intervals are based on `conf.limits.ncf` (package * MBESS*). 
 
 ```{r}
-eta_sq(fit, partial = TRUE, ci.lvl = .8)
+if (requireNamespace("apaTables", quietly = TRUE)) {
+  eta_sq(fit, partial = TRUE, ci.lvl = .8)
+}
 
 # uses bootstrapping - here, for speed, just 100 samples
-omega_sq(fit, partial = TRUE, ci.lvl = .9, n = 100)
+if (requireNamespace("MBESS", quietly = TRUE)) {
+  omega_sq(fit, partial = TRUE, ci.lvl = .9, n = 100)
+}
+
 ```
 # References
 
