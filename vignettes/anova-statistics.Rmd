@@ -11,7 +11,7 @@ vignette: >
 
 ```{r set-options, echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", dev = "png", fig.width = 7, fig.height = 3.5, message = FALSE, warning = FALSE)
-options(width = 800, tibble.width = Inf)
+options(width = 800, tibble.width = 600)
 ```
 
 # Effect Size Statistics for Anova Tables
@@ -75,6 +75,15 @@ Omega squared can be simply computed with:
 omega_sq(fit)
 ```
 
+## Partial Omega Squared
+
+`omega_sq()` also has a `partial`-argument to compute partial omefa squared values:
+
+
+```{r}
+omega_sq(fit, partial = TRUE)
+```
+
 ## Cohen's F
 
 Finally, `cohens_f()` computes Cohen's F effect size for all independent variables in the model:
@@ -97,6 +106,20 @@ Like the other functions, the input may also be an object of class `anova`, so y
 anova_stats(car::Anova(fit, type = 3))
 ```
 
+# Confidence Intervals
+
+`eta_sq()` and `omega_sq()` have a `ci.lvl`-argument, which - if not `NULL` - also computes a confidence interval.
+
+For eta squared, i.e. `eta_sq()` with `partial = FALSE`, due to non-symmetry, confidence intervals are based on bootstrap-methods. Confidence intervals for partial omega-squared, i.e. `omega_sq()` with `partial = TRUE` - is also based on bootstrapping. In these cases, `n` indicates the number of bootstrap samples to be drawn to compute the confidence intervals. 
+
+For partial eta-squared, confidence intervals are based on `get.ci.partial.eta.squared` (package *apaTables*) and for omega-squared, confidence intervals are based on `conf.limits.ncf` (package * MBESS*). 
+
+```{r}
+eta_sq(fit, partial = TRUE, ci.lvl = .8)
+
+# uses bootstrapping - here, for speed, just 100 samples
+omega_sq(fit, partial = TRUE, ci.lvl = .9, n = 100)
+```
 # References
 
 Levine TR, Hullet CR. Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research. Human Communication Research 28(4); 2002: 612-625

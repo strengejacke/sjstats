@@ -143,18 +143,18 @@ The components of the random effect variances are of interest when calculating t
 
 Usually, the ICC is calculated for the null model ("unconditional model"). However, according to Raudenbush and Bryk (2002) or Rabe-Hesketh and Skrondal (2012) it is also feasible to compute the ICC for full models with covariates ("conditional models") and compare how much a level-2 variable explains the portion of variation in the grouping structure (random intercept). 
 
-The ICC for mixed models can be computed with `icc()`:
+The ICC for mixed models can be computed with `icc()`. *Caution:* For random-slope-intercept models, the ICC would differ at each unit of the predictors. Hence, the ICC for these kind of models cannot be understood simply as proportion of variance (see Goldstein et al. 2010). For convenience reasons, as the `icc()` function is also used to extract the different random effects variances (see `re_var()` above), the ICC for random-slope-intercept-models is reported nonetheless, but it is usually no meaningful summary of the proportion of variances. 
 
-```{r}
+```{r message = TRUE}
 icc(m)
 ```
 
 You can also compute ICCs for multiple models at once:
 
-```{r}
+```{r message = TRUE}
 # fit 2nd model
 sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
-m2 <- lmer(Reaction ~ Days + (1 | mygrp) + (Days | Subject), sleepstudy)
+m2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 
 # calculate ICC for both models
 icc(m, m2)
@@ -165,6 +165,8 @@ icc(m, m2)
 Aaparouhov T. 2006. _General Multi-Level Modeling with Sampling Weights._ Communications in Statistics—Theory and Methods (35): 439–460
 
 Carle AC. 2009. _Fitting multilevel models in complex survey data with design weights: Recommendations._ BMC Medical Research Methodology 9(49): 1-13 
+
+Goldstein H, Browne W, Rasbash J. 2010. Partitioning Variation in Multilevel Models. Understanding Statistics, 1:4, 223-231, doi: [10.1207/S15328031US0104_02](http://doi.org/10.1207/S15328031US0104_02)
 
 Hox J. 2002. _Multilevel analysis: techniques and applications._ Mahwah, NJ: Erlbaum
 

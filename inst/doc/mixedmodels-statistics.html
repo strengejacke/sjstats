@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2018-02-04" />
+<meta name="date" content="2018-03-25" />
 
 <title>Statistics for Mixed Effects Models</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Statistics for Mixed Effects Models</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2018-02-04</em></h4>
+<h4 class="date"><em>2018-03-25</em></h4>
 
 
 
@@ -155,18 +155,18 @@ m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span clas
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(nhanes_sample)
 <span class="kw">scale_weights</span>(nhanes_sample, SDMVSTRA, WTINT2YR)
 <span class="co">#&gt; # A tibble: 2,992 x 9</span>
-<span class="co">#&gt;     total   age RIAGENDR RIDRETH1 SDMVPSU SDMVSTRA WTINT2YR svywght_a svywght_b</span>
-<span class="co">#&gt;     &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt;  1   1.00 2.20      1.00     3.00    2.00     31.0    97594     1.57      1.20 </span>
-<span class="co">#&gt;  2   7.00 2.08      2.00     3.00    1.00     29.0    39599     0.623     0.525</span>
-<span class="co">#&gt;  3   3.00 1.48      2.00     1.00    2.00     42.0    26620     0.898     0.544</span>
-<span class="co">#&gt;  4   4.00 1.32      2.00     4.00    2.00     33.0    34999     0.708     0.550</span>
-<span class="co">#&gt;  5   1.00 2.00      2.00     1.00    1.00     41.0    14746     0.422     0.312</span>
-<span class="co">#&gt;  6   6.00 2.20      2.00     4.00    1.00     38.0    28232     0.688     0.516</span>
-<span class="co">#&gt;  7 350    1.60      1.00     3.00    2.00     33.0    93162     1.89      1.46 </span>
-<span class="co">#&gt;  8  NA    1.48      2.00     3.00    1.00     29.0    82276     1.29      1.09 </span>
-<span class="co">#&gt;  9   3.00 2.28      2.00     4.00    1.00     41.0    24726     0.707     0.523</span>
-<span class="co">#&gt; 10  30.0  0.840     1.00     3.00    2.00     35.0    39895     0.760     0.594</span>
+<span class="co">#&gt;    total   age RIAGENDR RIDRETH1 SDMVPSU SDMVSTRA WTINT2YR svywght_a svywght_b</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt;  1    1. 2.20        1.       3.      2.      31.   97594.     1.57      1.20 </span>
+<span class="co">#&gt;  2    7. 2.08        2.       3.      1.      29.   39599.     0.623     0.525</span>
+<span class="co">#&gt;  3    3. 1.48        2.       1.      2.      42.   26620.     0.898     0.544</span>
+<span class="co">#&gt;  4    4. 1.32        2.       4.      2.      33.   34999.     0.708     0.550</span>
+<span class="co">#&gt;  5    1. 2.00        2.       1.      1.      41.   14746.     0.422     0.312</span>
+<span class="co">#&gt;  6    6. 2.20        2.       4.      1.      38.   28232.     0.688     0.516</span>
+<span class="co">#&gt;  7  350. 1.60        1.       3.      2.      33.   93162.     1.89      1.46 </span>
+<span class="co">#&gt;  8   NA  1.48        2.       3.      1.      29.   82276.     1.29      1.09 </span>
+<span class="co">#&gt;  9    3. 2.28        2.       4.      1.      41.   24726.     0.707     0.523</span>
+<span class="co">#&gt; 10   30. 0.840       1.       3.      2.      35.   39895.     0.760     0.594</span>
 <span class="co">#&gt; # ... with 2,982 more rows</span></code></pre></div>
 </div>
 <div id="p-values" class="section level2">
@@ -176,19 +176,19 @@ m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span clas
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using the t-statistics for calculating the p-value</span>
 <span class="kw">p_value</span>(m)
 <span class="co">#&gt; # A tibble: 2 x 3</span>
-<span class="co">#&gt;   term                                                                                                                                                                                                                                                                                                              p.value std.error</span>
-<span class="co">#&gt;   &lt;chr&gt;                                                                                                                                                                                                                                                                                                               &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 (Intercept) 0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000450      6.82</span>
-<span class="co">#&gt; 2 Days        0.0000000000127                                                                                                                                                                                                                                                                                                    1.55</span>
+<span class="co">#&gt;   term          p.value std.error</span>
+<span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 (Intercept) 4.50e-297      6.82</span>
+<span class="co">#&gt; 2 Days        1.27e- 11      1.55</span>
 
 <span class="co"># p-values based on conditional F-tests with </span>
 <span class="co"># Kenward-Roger approximation for the degrees of freedom</span>
 <span class="kw">p_value</span>(m, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; # A tibble: 2 x 3</span>
-<span class="co">#&gt;   term                      p.value std.error</span>
-<span class="co">#&gt;   &lt;chr&gt;                       &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 (Intercept) 0.0000000000000000117      6.82</span>
-<span class="co">#&gt; 2 Days        0.00000326                 1.55</span></code></pre></div>
+<span class="co">#&gt;   term         p.value std.error</span>
+<span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 (Intercept) 1.17e-17      6.82</span>
+<span class="co">#&gt; 2 Days        3.26e- 6      1.55</span></code></pre></div>
 </div>
 <div id="random-effect-variances" class="section level2">
 <h2>Random Effect Variances</h2>
@@ -217,8 +217,9 @@ m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span clas
 <h2>Intraclass-Correlation Coefficient</h2>
 <p>The components of the random effect variances are of interest when calculating the intraclass-correlation coefficient, ICC. The ICC is calculated by dividing the between-group-variance (random intercept variance) by the total variance (i.e. sum of between-group-variance and within-group (residual) variance). The ICC can be interpreted as “the proportion of the variance explained by the grouping structure in the population” (Hox 2002: 15).</p>
 <p>Usually, the ICC is calculated for the null model (“unconditional model”). However, according to Raudenbush and Bryk (2002) or Rabe-Hesketh and Skrondal (2012) it is also feasible to compute the ICC for full models with covariates (“conditional models”) and compare how much a level-2 variable explains the portion of variation in the grouping structure (random intercept).</p>
-<p>The ICC for mixed models can be computed with <code>icc()</code>:</p>
+<p>The ICC for mixed models can be computed with <code>icc()</code>. <em>Caution:</em> For random-slope-intercept models, the ICC would differ at each unit of the predictors. Hence, the ICC for these kind of models cannot be understood simply as proportion of variance (see Goldstein et al. 2010). For convenience reasons, as the <code>icc()</code> function is also used to extract the different random effects variances (see <code>re_var()</code> above), the ICC for random-slope-intercept-models is reported nonetheless, but it is usually no meaningful summary of the proportion of variances.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icc</span>(m)
+<span class="co">#&gt; Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Linear mixed model</span>
 <span class="co">#&gt;  Family: gaussian (identity)</span>
@@ -228,10 +229,11 @@ m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span clas
 <p>You can also compute ICCs for multiple models at once:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fit 2nd model</span>
 sleepstudy<span class="op">$</span>mygrp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">45</span>, <span class="dt">size =</span> <span class="dv">180</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
-m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>mygrp) <span class="op">+</span><span class="st"> </span>(Days <span class="op">|</span><span class="st"> </span>Subject), sleepstudy)
+m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>mygrp) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject), sleepstudy)
 
 <span class="co"># calculate ICC for both models</span>
 <span class="kw">icc</span>(m, m2)
+<span class="co">#&gt; Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Linear mixed model</span>
@@ -244,16 +246,17 @@ m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span cla
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Linear mixed model</span>
 <span class="co">#&gt;  Family: gaussian (identity)</span>
-<span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (Days | Subject)</span>
+<span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     ICC (mygrp): 0.000000</span>
-<span class="co">#&gt;   ICC (Subject): 0.483090</span></code></pre></div>
+<span class="co">#&gt;   ICC (Subject): 0.589309</span></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
 <p>Aaparouhov T. 2006. <em>General Multi-Level Modeling with Sampling Weights.</em> Communications in Statistics—Theory and Methods (35): 439–460</p>
 <p>Carle AC. 2009. <em>Fitting multilevel models in complex survey data with design weights: Recommendations.</em> BMC Medical Research Methodology 9(49): 1-13</p>
+<p>Goldstein H, Browne W, Rasbash J. 2010. Partitioning Variation in Multilevel Models. Understanding Statistics, 1:4, 223-231, doi: <a href="http://doi.org/10.1207/S15328031US0104_02">10.1207/S15328031US0104_02</a></p>
 <p>Hox J. 2002. <em>Multilevel analysis: techniques and applications.</em> Mahwah, NJ: Erlbaum</p>
 <p>Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. <em>An Overview of Variance Inflation Factors for Sample-Size Calculation.</em> Evaluation &amp; the Health Professions 26: 239–257. doi: <a href="http://doi.org/10.1177/0163278703255230">10.1177/0163278703255230</a></p>
 <p>Rabe-Hesketh S, Skrondal A. 2012. <em>Multilevel and longitudinal modeling using Stata.</em> 3rd ed. College Station, Tex: Stata Press Publication</p>

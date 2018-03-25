@@ -605,7 +605,7 @@ re_var <- function(x) {
   rv <- c("sigma_2", "tau.00", "tau.11", "tau.01", "rho.01")
 
   # compute icc
-  icc_ <- icc(x)
+  icc_ <- suppressMessages(icc(x))
 
   rv_ <- purrr::map(rv, ~ attr(icc_, .x, exact = TRUE))
   rn <- purrr::map2(1:length(rv_), rv, ~ sjmisc::trim(paste(names(rv_[[.x]]), .y, sep = "_")))
@@ -631,7 +631,7 @@ get_re_var <- function(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01", "sigm
   comp <- match.arg(comp)
 
   # do we have a merMod object? If yes, get ICC and var components
-  if (is_merMod(x) || inherits(x, c("glmmTMB", "brmsfit"))) x <- icc(x)
+  if (is_merMod(x) || inherits(x, c("glmmTMB", "brmsfit"))) x <- suppressMessages(icc(x))
 
   # return results
   attr(x, comp, exact = TRUE)

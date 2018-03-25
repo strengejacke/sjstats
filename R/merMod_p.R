@@ -96,11 +96,7 @@ p_value <- function(fit, p.kr = FALSE) {
 #' @importFrom stats coef pt pnorm
 merMod_p <- function(fit, p.kr) {
   # retrieve sigificance level of independent variables (p-values)
-  if (inherits(fit, "merModLmerTest") && requireNamespace("lmerTest", quietly = TRUE)) {
-    cs <- suppressWarnings(stats::coef(lmerTest::summary(fit)))
-  } else {
-    cs <- stats::coef(summary(fit))
-  }
+  cs <- stats::coef(summary(fit))
 
   # remeber coef-names
   coef_names <- rownames(cs)
