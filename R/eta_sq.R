@@ -281,8 +281,17 @@ aov_stat_core <- function(aov.sum, type) {
 #' @importFrom purrr map_df
 omega_sq_ci <- function(aov.sum, ci.lvl = .95) {
 
-  if (!requireNamespace("MBESS", quietly = TRUE))
-    stop("Package `MBESS` needed to compute confidence intervals. Pleas install that package first.")
+  if (!requireNamespace("MBESS", quietly = TRUE)) {
+    warning("Package `MBESS` needed to compute confidence intervals. Pleas install that package first.", call. = FALSE)
+
+    return(
+      tibble::tibble(
+        conf.low = NA,
+        conf.high = NA
+      )
+    )
+  }
+
 
   rows <- nrow(aov.sum) - 1
   df.den <- aov.sum[["df"]][rows + 1]
@@ -316,8 +325,16 @@ omega_sq_ci <- function(aov.sum, ci.lvl = .95) {
 #' @importFrom purrr map_df
 peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
 
-  if (!requireNamespace("apaTables", quietly = TRUE))
-    stop("Package `apaTables` needed to compute confidence intervals. Pleas install that package first.")
+  if (!requireNamespace("apaTables", quietly = TRUE)) {
+    warning("Package `apaTables` needed to compute confidence intervals. Pleas install that package first.", call. = FALSE)
+
+    return(
+      tibble::tibble(
+        conf.low = NA,
+        conf.high = NA
+      )
+    )
+  }
 
   rows <- nrow(aov.sum) - 1
   df.den <- aov.sum[["df"]][rows + 1]
