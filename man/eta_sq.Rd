@@ -65,9 +65,9 @@ eta_sq(fit)
 omega_sq(fit)
 eta_sq(fit, partial = TRUE)
 
-# CI for omega squared requires MBESS packages
-if (requireNamespace("MBESS", quietly = TRUE)) {
-  omega_sq(fit, ci.lvl = .95)
+# CI for eta-squared requires apaTables packages
+if (requireNamespace("apaTables", quietly = TRUE)) {
+  eta_sq(fit, partial = TRUE, ci.lvl = .8)
 }
 
 anova_stats(car::Anova(fit, type = 2))

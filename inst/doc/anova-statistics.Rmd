@@ -41,47 +41,47 @@ All functions accept objects of class `aov` or `anova`, so you can also use mode
 
 The following functions return the effect size statistic as named numeric vector, using the model's term names.
 
-## Eta Squared
+## Eta-Squared
 
-The eta squared is the proportion of the total variability in the dependent variable that is accounted for by the variation in the independent variable. It is the ratio of the sum of squares for each group level to the total sum of squares. It can be interpreted as percentage of variance accounted for by a variable.
+The eta-squared is the proportion of the total variability in the dependent variable that is accounted for by the variation in the independent variable. It is the ratio of the sum of squares for each group level to the total sum of squares. It can be interpreted as percentage of variance accounted for by a variable.
 
-For variables with 1 degree of freedeom (in the numerator), the square root of eta squared is equal to the correlation coefficient _r_. For variables with more than 1 degree of freedom, eta squared equals _R2_. This makes eta squared easily interpretable. Furthermore, these effect sizes can easily be converted into effect size measures that can be, for instance, further processed in meta-analyses.
+For variables with 1 degree of freedeom (in the numerator), the square root of eta-squared is equal to the correlation coefficient _r_. For variables with more than 1 degree of freedom, eta-squared equals _R2_. This makes eta-squared easily interpretable. Furthermore, these effect sizes can easily be converted into effect size measures that can be, for instance, further processed in meta-analyses.
 
-Eta squared can be computed simply with:
+Eta-squared can be computed simply with:
 
 ```{r}
 eta_sq(fit)
 ```
 
-## Partial Eta Squared
+## Partial Eta-Squared
 
-The partial eta squared value is the ratio of the sum of squares for each group level to the sum of squares for each group level plus the residual sum of squares. It is more difficult to interpret, because its value strongly depends on the variability of the residuals. Partial eta squared values should be reported with caution, and Levine and Hullett (2002) recommend reporting eta or omega squared rather than partial eta squared.
+The partial eta-squared value is the ratio of the sum of squares for each group level to the sum of squares for each group level plus the residual sum of squares. It is more difficult to interpret, because its value strongly depends on the variability of the residuals. Partial eta-squared values should be reported with caution, and Levine and Hullett (2002) recommend reporting eta- or omega-squared rather than partial eta-squared.
 
-Use the `partial`-argument to compute partial eta squared values:
+Use the `partial`-argument to compute partial eta-squared values:
 
 ```{r}
 eta_sq(fit, partial = TRUE)
 ```
 
 
-## Omega Squared
+## Omega-Squared
 
-While eta squared estimates tend to be biased in certain situations, e.g. when the sample size is small or the independent variables have many group levels, omega squared estimates are corrected for this bias.
+While eta-squared estimates tend to be biased in certain situations, e.g. when the sample size is small or the independent variables have many group levels, omega-squared estimates are corrected for this bias.
 
-Omega squared can be simply computed with:
+Omega-squared can be simply computed with:
 
 
 ```{r}
 omega_sq(fit)
 ```
 
-## Partial Omega Squared
+## Partial Omega-Squared
 
-`omega_sq()` also has a `partial`-argument to compute partial omefa squared values:
+`omega_sq()` also has a `partial`-argument to compute partial omega-squared values. Computing the partial omega-squared statistics is based on bootstrapping. In this case, use `n` to define the number of samples (1000 by default.)
 
 
 ```{r}
-omega_sq(fit, partial = TRUE)
+omega_sq(fit, partial = TRUE, n = 100)
 ```
 
 ## Cohen's F
@@ -110,20 +110,14 @@ anova_stats(car::Anova(fit, type = 3))
 
 `eta_sq()` and `omega_sq()` have a `ci.lvl`-argument, which - if not `NULL` - also computes a confidence interval.
 
-For eta squared, i.e. `eta_sq()` with `partial = FALSE`, due to non-symmetry, confidence intervals are based on bootstrap-methods. Confidence intervals for partial omega-squared, i.e. `omega_sq()` with `partial = TRUE` - is also based on bootstrapping. In these cases, `n` indicates the number of bootstrap samples to be drawn to compute the confidence intervals. 
+For eta-squared, i.e. `eta_sq()` with `partial = FALSE`, due to non-symmetry, confidence intervals are based on bootstrap-methods. Confidence intervals for partial omega-squared, i.e. `omega_sq()` with `partial = TRUE` - is also based on bootstrapping. In these cases, `n` indicates the number of bootstrap samples to be drawn to compute the confidence intervals. 
 
-For partial eta-squared, confidence intervals are based on `get.ci.partial.eta.squared` (package *apaTables*) and for omega-squared, confidence intervals are based on `conf.limits.ncf` (package * MBESS*). 
+For partial eta-squared, confidence intervals are based on `get.ci.partial.eta.squared` (package *apaTables*) and for omega-squared, confidence intervals are based on `conf.limits.ncf` (package *MBESS*). 
 
 ```{r}
 if (requireNamespace("apaTables", quietly = TRUE)) {
   eta_sq(fit, partial = TRUE, ci.lvl = .8)
 }
-
-# uses bootstrapping - here, for speed, just 100 samples
-if (requireNamespace("MBESS", quietly = TRUE)) {
-  omega_sq(fit, partial = TRUE, ci.lvl = .9, n = 100)
-}
-
 ```
 # References
 
