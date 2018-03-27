@@ -125,5 +125,10 @@ merMod_p <- function(fit, p.kr) {
     pv <- 2 * stats::pnorm(abs(cs[, 3]), lower.tail = FALSE)
   }
 
+
+  if (is.null(names(pv))) {
+    if (length(coef_names) == length(pv)) names(pv) <- coef_names
+  }
+
   pv
 }

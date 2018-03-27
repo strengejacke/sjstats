@@ -1,3 +1,9 @@
+# sjstats 0.14.3
+
+## Bug fixes
+
+* Fix issue with `p_value()` for unconditional mixed models.
+
 # sjstats 0.14.2
 
 # General
