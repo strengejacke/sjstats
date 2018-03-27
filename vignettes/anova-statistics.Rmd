@@ -114,11 +114,6 @@ For eta-squared, i.e. `eta_sq()` with `partial = FALSE`, due to non-symmetry, co
 
 For partial eta-squared, confidence intervals are based on `get.ci.partial.eta.squared` (package *apaTables*) and for omega-squared, confidence intervals are based on `conf.limits.ncf` (package *MBESS*). 
 
-```{r}
-if (requireNamespace("apaTables", quietly = TRUE)) {
-  eta_sq(fit, partial = TRUE, ci.lvl = .8)
-}
-```
 # References
 
 Levine TR, Hullet CR. Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research. Human Communication Research 28(4); 2002: 612-625

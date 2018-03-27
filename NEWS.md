@@ -1,5 +1,11 @@
 # sjstats 0.14.2
 
+# General
+
+* Revise examples, vignettes and package description to make sure all used packages are available for CRAN checks on operating systems.
+
+# sjstats 0.14.2
+
 ## New functions
 
 * `residuals.svyglm.nb()` as S3-generic `residuals()` method for objects fitted with `svyglm.nb()`.
