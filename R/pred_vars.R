@@ -2,7 +2,8 @@
 #' @name pred_vars
 #'
 #' @description Several functions to retrieve information from model objects,
-#'    like variable names, link-inverse function, model frame etc.
+#'    like variable names, link-inverse function, model frame,
+#'    model_family etc., in a tidy and consistent way.
 #'
 #' @param x A fitted model; for \code{var_names()}, \code{x} may also be a
 #'    character vector.
@@ -18,8 +19,22 @@
 #'    but should also work for model objects that don't have a S3-generic for
 #'    \code{model.frame()}. \code{var_names()} returns the "cleaned" variable
 #'    names, i.e. things like \code{s()} for splines or \code{log()} are
-#'    removed.
+#'    removed. \code{model_family()} returns a list with information about the
+#'    model family (see 'Details').
 #'
+#' @details \code{model_family()} returns a list with information about the
+#'    model family for many different model objects. Following information
+#'    is returned, where all values starting with \code{is_} are logicals.
+#'    \itemize{
+#'      \item \code{is_bin}: family is binomial (but not negative binomial)
+#'      \item \code{is_pois}: family is either poisson or negative binomial
+#'      \item \code{is_negbin}: family is negative binomial
+#'      \item \code{is_logit}: model has logit link
+#'      \item \code{is_linear}: family is gaussian
+#'      \item \code{is_linear}: family is gaussian
+#'      \item \code{link.fun}: the link-function
+#'      \item \code{family}: the family-object
+#'    }
 #'
 #' @examples
 #' data(efc)
@@ -203,6 +218,83 @@ model_frame <- function(x, fe.only = TRUE) {
   colnames(fitfram) <- cvn
   fitfram
 }
+
+
+#' @rdname pred_vars
+#' @importFrom sjmisc str_contains
+#' @importFrom stats family
+#' @export
+model_family <- function(x) {
+  zero.inf <- FALSE
+  # do we have glm? if so, get link family. make exceptions
+  # for specific models that don't have family function
+  if (inherits(x, c("lme", "plm", "gls", "truncreg"))) {
+    fitfam <- "gaussian"
+    logit_link <- FALSE
+    link.fun <- "identity"
+  } else if (inherits(x, c("vgam", "vglm"))) {
+    faminfo <- x@family
+    fitfam <- faminfo@vfamily
+    logit_link <- sjmisc::str_contains(faminfo@blurb, "logit")
+    link.fun <- faminfo@blurb[3]
+  } else if (inherits(x, c("zeroinfl", "hurdle"))) {
+    fitfam <- "negative binomial"
+    logit_link <- FALSE
+    link.fun <- NULL
+    zero.inf <- TRUE
+  } else if (inherits(x, "betareg")) {
+    fitfam <- "beta"
+    logit_link <- x$link$mean$name == "logit"
+    link.fun <- x$link$mean$linkfun
+  } else if (inherits(x, "coxph")) {
+    fitfam <- "survival"
+    logit_link <- TRUE
+    link.fun <- NULL
+  } else {
+    # "lrm"-object from pkg "rms" have no family method
+    # so we construct a logistic-regression-family-object
+    if (inherits(x, c("lrm", "polr", "logistf", "clm", "multinom", "Zelig-relogit")))
+      faminfo <- stats::binomial(link = "logit")
+    else
+      # get family info
+      faminfo <- stats::family(x)
+
+    fitfam <- faminfo$family
+    logit_link <- faminfo$link == "logit"
+    link.fun <- faminfo$link
+  }
+
+  # create logical for family
+  binom_fam <-
+    fitfam %in% c("binomial", "quasibinomial", "binomialff") |
+    sjmisc::str_contains(fitfam, "binomial", ignore.case = TRUE)
+
+  poisson_fam <-
+    fitfam %in% c("poisson", "quasipoisson") |
+    sjmisc::str_contains(fitfam, "poisson", ignore.case = TRUE)
+
+  neg_bin_fam <-
+    sjmisc::str_contains(fitfam, "negative binomial", ignore.case = T) |
+    sjmisc::str_contains(fitfam, "nbinom", ignore.case = TRUE) |
+    sjmisc::str_contains(fitfam, "negbinomial", ignore.case = TRUE) |
+    sjmisc::str_contains(fitfam, "neg_binomial", ignore.case = TRUE)
+
+  linear_model <- !binom_fam & !poisson_fam & !neg_bin_fam & !logit_link
+
+  zero.inf <- zero.inf | sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T)
+
+  list(
+    is_bin = binom_fam & !neg_bin_fam,
+    is_pois = poisson_fam | neg_bin_fam,
+    is_negbin = neg_bin_fam,
+    is_logit = logit_link,
+    is_linear = linear_model,
+    is_zeroinf = zero.inf,
+    link.fun = link.fun,
+    family = fitfam
+  )
+}
+
 
 #' @importFrom dplyr select
 get_zelig_relogit_frame <- function(x) {

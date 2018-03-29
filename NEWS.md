@@ -1,5 +1,9 @@
 # sjstats 0.14.3
 
+## New functions
+
+* `model_family()` to get model-information about family and link-functions. This function is intended to be "generic" and work with many different model objects, because not all packages provide a `family()` function.
+
 ## Bug fixes
 
 * Fix issue with `p_value()` for unconditional mixed models.

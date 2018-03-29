@@ -6,6 +6,7 @@
 \alias{resp_val}
 \alias{link_inverse}
 \alias{model_frame}
+\alias{model_family}
 \alias{var_names}
 \title{Access information from model objects}
 \usage{
@@ -18,6 +19,8 @@ resp_val(x)
 link_inverse(x)
 
 model_frame(x, fe.only = TRUE)
+
+model_family(x)
 
 var_names(x)
 }
@@ -38,11 +41,28 @@ For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
    but should also work for model objects that don't have a S3-generic for
    \code{model.frame()}. \code{var_names()} returns the "cleaned" variable
    names, i.e. things like \code{s()} for splines or \code{log()} are
-   removed.
+   removed. \code{model_family()} returns a list with information about the
+   model family (see 'Details').
 }
 \description{
 Several functions to retrieve information from model objects,
-   like variable names, link-inverse function, model frame etc.
+   like variable names, link-inverse function, model frame,
+   model_family etc., in a tidy and consistent way.
+}
+\details{
+\code{model_family()} returns a list with information about the
+   model family for many different model objects. Following information
+   is returned, where all values starting with \code{is_} are logicals.
+   \itemize{
+     \item \code{is_bin}: family is binomial (but not negative binomial)
+     \item \code{is_pois}: family is either poisson or negative binomial
+     \item \code{is_negbin}: family is negative binomial
+     \item \code{is_logit}: model has logit link
+     \item \code{is_linear}: family is gaussian
+     \item \code{is_linear}: family is gaussian
+     \item \code{link.fun}: the link-function
+     \item \code{family}: the family-object
+   }
 }
 \examples{
 data(efc)
