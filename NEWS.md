@@ -1,5 +1,9 @@
 # sjstats 0.14.3
 
+## General
+
+* Remove _tidyverse_ from suggested packages, as requested by maintainers.
+
 ## New functions
 
 * `model_family()` to get model-information about family and link-functions. This function is intended to be "generic" and work with many different model objects, because not all packages provide a `family()` function.
@@ -10,7 +14,7 @@
 
 # sjstats 0.14.2
 
-# General
+## General
 
 * Revise examples, vignettes and package description to make sure all used packages are available for CRAN checks on operating systems.
 
