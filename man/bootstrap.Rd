@@ -70,7 +70,8 @@ bs$c12hour <- unlist(lapply(bs$strap, function(x) {
 }))
 
 # or as tidyverse-approach
-library(tidyverse)
+library(dplyr)
+library(purrr)
 bs <- efc \%>\%
   bootstrap(100) \%>\%
   mutate(

@@ -53,7 +53,8 @@
 #' @seealso \code{\link{bootstrap}} to generate nonparametric bootstrap samples.
 #'
 #' @examples
-#' library(tidyverse)
+#' library(dplyr)
+#' library(purrr)
 #' data(efc)
 #' bs <- bootstrap(efc, 100)
 #'

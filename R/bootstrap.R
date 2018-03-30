@@ -62,7 +62,8 @@
 #' }))
 #'
 #' # or as tidyverse-approach
-#' library(tidyverse)
+#' library(dplyr)
+#' library(purrr)
 #' bs <- efc %>%
 #'   bootstrap(100) %>%
 #'   mutate(

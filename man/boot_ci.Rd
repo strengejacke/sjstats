@@ -69,7 +69,8 @@ The methods require one or more vectors of bootstrap replicate estimates
          }
 }
 \examples{
-library(tidyverse)
+library(dplyr)
+library(purrr)
 data(efc)
 bs <- bootstrap(efc, 100)
 

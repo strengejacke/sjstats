@@ -113,7 +113,8 @@ se(icc(fit))
 
 # the standard error for the ICC can be computed manually in this way,
 # taking the fitted model example from above
-library(tidyverse)
+library(dplyr)
+library(purrr)
 dummy <- sleepstudy \%>\%
   # generate 100 bootstrap replicates of dataset
   bootstrap(100) \%>\%

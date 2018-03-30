@@ -69,7 +69,6 @@ Suggests:
     survey,
     rstan,
     rstanarm,
-    tidyverse,
     Zelig
 URL: https://github.com/strengejacke/sjstats
 BugReports: https://github.com/strengejacke/sjstats/issues
