@@ -11,6 +11,7 @@
 ## Bug fixes
 
 * Fix issue with `p_value()` for unconditional mixed models.
+* Fix typo in `xtab_statistics()`.
 
 # sjstats 0.14.2
 

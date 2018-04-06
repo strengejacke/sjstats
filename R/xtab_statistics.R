@@ -189,7 +189,7 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
   method <- dplyr::case_when(
     statistics == "kendall" ~ "Kendall's tau",
     statistics == "spearman" ~ "Spearman's rho",
-    statistics == "pearson" ~ "Person's r",
+    statistics == "pearson" ~ "Pearson's r",
     statistics == "cramer" ~ "Cramer's V",
     statistics == "phi" ~ "Phi"
   )
@@ -198,7 +198,7 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
   method.html <- dplyr::case_when(
     statistics == "kendall" ~ "Kendall's &tau;",
     statistics == "spearman" ~ "Spearman's &rho;",
-    statistics == "pearson" ~ "Person's r",
+    statistics == "pearson" ~ "Pearson's r",
     statistics == "cramer" ~ "Cramer's V",
     statistics == "phi" ~ "&phi;"
   )
