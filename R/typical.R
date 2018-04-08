@@ -74,12 +74,12 @@ typical_value <- function(x, fun = "mean", weight.by = NULL, ...) {
       fun <- fun[which(fnames %in% c("numeric", "n"))]
     } else if (is.factor(x)) {
       fun <- fun[which(fnames %in% c("factor", "f"))]
-      x <- sjmisc::to_value(x, keep.labels = FALSE)
+      if (fun != "mode") x <- sjmisc::to_value(x, keep.labels = FALSE)
     }
   }
 
 
-  if (!fun %in% c("mean", "median", "mode", "weighted.mean", "zero"))
+  if (!(fun %in% c("mean", "median", "mode", "weighted.mean", "zero")))
     stop("`fun` must be one of \"mean\", \"median\", \"mode\", \"weighted.mean\" or \"zero\".", call. = F)
 
 
