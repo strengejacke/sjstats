@@ -276,14 +276,11 @@ r2 <- function(x, n = NULL) {
 }
 
 
-#' @importFrom stats logLik update nobs
+#' @importFrom stats nobs
 pseudo_ralt <- function(x) {
-  ll <- stats::logLik(x)
-  ll0 <- stats::logLik(stats::update(x, ~1))
   n <- stats::nobs(x)
-
-  CoxSnell <- 1 - exp(2 * (ll0 - ll) / n)
-  Nagelkerke <- CoxSnell / (1 - exp(ll0 * 2 / n))
+  CoxSnell <- (1 - exp((x$dev - x$null) / n))
+  Nagelkerke <- CoxSnell / (1 - exp(-x$null / n))
 
   names(CoxSnell) <- "CoxSnell"
   names(Nagelkerke) <- "Nagelkerke"

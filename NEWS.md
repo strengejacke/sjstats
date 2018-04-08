@@ -12,6 +12,7 @@
 
 * Fix issue with `p_value()` for unconditional mixed models.
 * Fix typo in `xtab_statistics()`.
+* Fix issue with wrong calculation of Nagelkerke's r-squared value in `r2()`.
 
 # sjstats 0.14.2
 
