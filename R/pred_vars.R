@@ -222,10 +222,16 @@ model_frame <- function(x, fe.only = TRUE) {
 
 #' @rdname pred_vars
 #' @importFrom sjmisc str_contains
-#' @importFrom stats family
+#' @importFrom stats family formula
 #' @export
 model_family <- function(x) {
   zero.inf <- FALSE
+
+  # for gam-components from gamm4, add class attributes, so family
+  # function works correctly
+  if (inherits(x, "gam") && !inherits(x, c("glm", "lm")))
+    class(x) <- c(class(x), "glm", "lm")
+
   # do we have glm? if so, get link family. make exceptions
   # for specific models that don't have family function
   if (inherits(x, c("lme", "plm", "gls", "truncreg"))) {
@@ -258,6 +264,13 @@ model_family <- function(x) {
     else
       # get family info
       faminfo <- stats::family(x)
+
+    ## TODO save different family types for brms multivariate reponse models
+
+    # in case of multivariate response models for brms, we just take the
+    # information from the first model
+    if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$response))
+      faminfo <- faminfo[[1]]
 
     fitfam <- faminfo$family
     logit_link <- faminfo$link == "logit"
