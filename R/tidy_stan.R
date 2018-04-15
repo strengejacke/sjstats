@@ -126,15 +126,17 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   # multivariate-response model?
 
-  if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$response)) {
+  if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$responses)) {
+
+    ## TODO maybe split in one df per response
 
     # get response variables
 
-    responses <- stats::formula(x)$response
+    responses <- stats::formula(x)$responses
 
     # also clean prepared data frame
-    resp.sigma1 <- tidyselect::starts_with("sigma_", vars = dat$term)
-    resp.sigma2 <- tidyselect::starts_with("b_sigma_", vars = dat$term)
+    resp.sigma1 <- tidyselect::starts_with("sigma_", vars = out$term)
+    resp.sigma2 <- tidyselect::starts_with("b_sigma_", vars = out$term)
 
     resp.sigma <- c(resp.sigma1, resp.sigma2)
 
@@ -151,7 +153,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
     for (i in responses) {
       m <- tidyselect::contains(i, vars = out$term)
-      out$response.level[m] <- i
+      out$response[m] <- i
       out$term <- gsub(sprintf("b_%s_", i), "", out$term, fixed = TRUE)
       out$term <- gsub(sprintf("s_%s_", i), "", out$term, fixed = TRUE)
     }

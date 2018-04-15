@@ -68,7 +68,7 @@ pred_vars <- function(x) {
   fm <- stats::formula(x)
 
   if (inherits(x, "brmsfit")) {
-    if (!is.null(fm$response)) {
+    if (!is.null(fm$responses)) {
       av <- fm$forms %>%
         purrr::map(~ all.vars(stats::formula(.x)[[3L]])) %>%
         purrr::flatten_chr() %>%
@@ -84,12 +84,16 @@ pred_vars <- function(x) {
   av
 }
 
+#' @importFrom stats formula
 #' @rdname pred_vars
 #' @export
 resp_var <- function(x) {
-  if (inherits(x, "brmsfit"))
-    deparse(stats::formula(x)$formula[[2L]])
-  else
+  if (inherits(x, "brmsfit")) {
+    if (is.null(stats::formula(x)$responses))
+      deparse(stats::formula(x)$formula[[2L]])
+    else
+      stats::formula(x)$responses
+  } else
     deparse(stats::formula(x)[[2L]])
 }
 
@@ -100,6 +104,8 @@ resp_var <- function(x) {
 resp_val <- function(x) {
   if (inherits(x, c("lme", "gls")))
     as.vector(nlme::getResponse(x))
+  else if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$responses))
+    as.vector(model_frame(x)[, var_names(resp_var(x))])
   else
     as.vector(model_frame(x)[[var_names(resp_var(x))]])
 }
