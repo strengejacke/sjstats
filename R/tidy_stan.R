@@ -55,11 +55,12 @@
 #' }}
 #'
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
-#' @importFrom dplyr bind_cols select mutate
-#' @importFrom tidyselect starts_with
+#' @importFrom dplyr bind_cols select mutate slice
+#' @importFrom tidyselect starts_with contains
 #' @importFrom tibble add_column
-#' @importFrom stats mad
+#' @importFrom stats mad formula
 #' @importFrom bayesplot rhat neff_ratio
+#' @importFrom sjmisc is_empty
 #' @export
 tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c("fixed", "random", "all"), digits = 3) {
 
@@ -121,6 +122,41 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   # check if we need to remove random or fixed effects
   out <- remove_effects_from_stan(out, type, is.brms = inherits(x, "brmsfit"))
+
+
+  # multivariate-response model?
+
+  if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$response)) {
+
+    # get response variables
+
+    responses <- stats::formula(x)$response
+
+    # also clean prepared data frame
+    resp.sigma1 <- tidyselect::starts_with("sigma_", vars = dat$term)
+    resp.sigma2 <- tidyselect::starts_with("b_sigma_", vars = dat$term)
+
+    resp.sigma <- c(resp.sigma1, resp.sigma2)
+
+    if (!sjmisc::is_empty(resp.sigma))
+      out <- dplyr::slice(out, !! -resp.sigma)
+
+
+    # create "response-level" variable
+
+    out <- tibble::add_column(out, response = "", .before = 1)
+
+    # copy name of response into new character variable
+    # and remove response name from term name
+
+    for (i in responses) {
+      m <- tidyselect::contains(i, vars = out$term)
+      out$response.level[m] <- i
+      out$term <- gsub(sprintf("b_%s_", i), "", out$term, fixed = TRUE)
+      out$term <- gsub(sprintf("s_%s_", i), "", out$term, fixed = TRUE)
+    }
+  }
+
 
   # round values
   purrr::modify_if(out, is.numeric, ~ round(.x, digits = digits))

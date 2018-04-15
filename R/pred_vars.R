@@ -60,13 +60,23 @@
 #' m <- glm(counts ~ log(outcome) + as.factor(treatment), family = poisson())
 #' var_names(m)
 #'
+#' @importFrom purrr flatten_chr map
 #' @importFrom stats formula terms
 #' @export
 pred_vars <- function(x) {
-  if (inherits(x, "brmsfit"))
-    av <- all.vars(stats::formula(x)$formula[[3L]])
-  else
-    av <- all.vars(stats::formula(x)[[3L]])
+
+  fm <- stats::formula(x)
+
+  if (inherits(x, "brmsfit")) {
+    if (!is.null(fm$response)) {
+      av <- fm$forms %>%
+        purrr::map(~ all.vars(stats::formula(.x)[[3L]])) %>%
+        purrr::flatten_chr() %>%
+        unique()
+    } else
+      av <- all.vars(fm$formula[[3L]])
+  } else
+    av <- all.vars(fm[[3L]])
 
   if (length(av) == 1 && av == ".")
     av <- all.vars(stats::terms(x))
@@ -133,6 +143,14 @@ link_inverse <- function(x) {
     il <- x@family@linkinv
   } else if (inherits(x, "brmsfit")) {
     fam <- stats::family(x)
+
+    ## TODO save different family types for brms multivariate reponse models
+
+    # in case of multivariate response models for brms, we just take the
+    # information from the first model
+    if (!is.null(stats::formula(x)$response))
+      fam <- fam[[1]]
+
     ff <- get(fam$family, asNamespace("stats"))
     il <- ff(fam$link)$linkinv
   } else if (inherits(x, c("lrm", "polr", "clm", "logistf", "multinom", "Zelig-relogit"))) {
