@@ -299,7 +299,7 @@ print.icc.lme4 <- function(x, comp, ...) {
 #' @importFrom rlang .data
 #' @importFrom dplyr filter slice select
 #' @importFrom tidyselect starts_with
-#' @importFrom crayon blue
+#' @importFrom crayon blue cyan
 #' @importFrom sjmisc var_rename
 #' @export
 print.tidy_stan_mresp <- function(x, ...) {
@@ -330,6 +330,33 @@ print.tidy_stan_mresp <- function(x, ...) {
   x.cor %>%
     dplyr::select(-1) %>%
     sjmisc::var_rename(term = "correlation") %>%
+    as.data.frame() %>%
+    print(..., row.names = FALSE)
+}
+
+
+#' @importFrom dplyr slice
+#' @importFrom tidyselect starts_with
+#' @importFrom crayon blue
+#' @export
+print.tidy_stan_zi <- function(x, ...) {
+
+  zi <- tidyselect::starts_with("b_zi_", vars = x$term)
+  x.zi <- dplyr::slice(x, !! zi)
+  x <- dplyr::slice(x, -!! zi)
+
+  x$term <- gsub("b_", "", x$term, fixed = TRUE)
+  x.zi$term <- gsub("b_zi_", "", x.zi$term, fixed = TRUE)
+
+  cat(crayon::blue("## Conditional Model:\n\n"))
+
+  x %>%
+    as.data.frame() %>%
+    print(..., row.names = FALSE)
+
+  cat(crayon::blue("\n## Zero-Inflated Model:\n\n"))
+
+  x.zi %>%
     as.data.frame() %>%
     print(..., row.names = FALSE)
 }

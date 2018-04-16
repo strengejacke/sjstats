@@ -128,8 +128,6 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$responses)) {
 
-    ## TODO maybe split in one df per response
-
     # get response variables
 
     responses <- stats::formula(x)$responses
@@ -161,6 +159,10 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     class(out) <- c("tidy_stan_mresp", class(out))
   }
 
+
+  # add class for extra print method for zero inflated models
+  zi <- tidyselect::starts_with("b_zi_", vars = out$term)
+  if (!sjmisc::is_empty(zi)) class(out) <- c("tidy_stan_zi", class(out))
 
   # round values
   purrr::modify_if(out, is.numeric, ~ round(.x, digits = digits))
