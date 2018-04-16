@@ -157,6 +157,8 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
       out$term <- gsub(sprintf("b_%s_", i), "", out$term, fixed = TRUE)
       out$term <- gsub(sprintf("s_%s_", i), "", out$term, fixed = TRUE)
     }
+
+    class(out) <- c("tidy_stan_mresp", class(out))
   }
 
 

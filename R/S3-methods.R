@@ -296,6 +296,45 @@ print.icc.lme4 <- function(x, comp, ...) {
 }
 
 
+#' @importFrom rlang .data
+#' @importFrom dplyr filter slice select
+#' @importFrom tidyselect starts_with
+#' @importFrom crayon blue
+#' @importFrom sjmisc var_rename
+#' @export
+print.tidy_stan_mresp <- function(x, ...) {
+
+  resp.cor <- tidyselect::starts_with("rescor__", vars = x$term)
+  x.cor <- dplyr::slice(x, !! resp.cor)
+  x <- dplyr::slice(x, -!! resp.cor)
+
+  responses <- unique(x$response)
+
+  for (resp in responses) {
+    cat(crayon::blue(sprintf("## Response: %s\n\n", resp)))
+
+    x %>%
+      dplyr::filter(.data$response == !! resp) %>%
+      dplyr::select(-1) %>%
+      as.data.frame() %>%
+      print(..., row.names = FALSE)
+
+    cat("\n")
+  }
+
+  x.cor$term <- gsub("rescor__", "", x = x.cor$term, fixed = TRUE)
+  x.cor$term <- gsub("__", "-", x = x.cor$term, fixed = TRUE)
+
+  cat(crayon::cyan(sprintf("## Response Correlations\n\n", resp)))
+
+  x.cor %>%
+    dplyr::select(-1) %>%
+    sjmisc::var_rename(term = "correlation") %>%
+    as.data.frame() %>%
+    print(..., row.names = FALSE)
+}
+
+
 #' @importFrom tidyselect starts_with
 #' @importFrom sjmisc remove_empty_cols
 #' @importFrom crayon cyan blue red magenta green silver italic
