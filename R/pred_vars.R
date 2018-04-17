@@ -303,7 +303,7 @@ model_family <- function(x) {
 
   # create logical for family
   binom_fam <-
-    fitfam %in% c("binomial", "quasibinomial", "binomialff") |
+    fitfam %in% c("bernoulli", "binomial", "quasibinomial", "binomialff") |
     sjmisc::str_contains(fitfam, "binomial", ignore.case = TRUE)
 
   poisson_fam <-

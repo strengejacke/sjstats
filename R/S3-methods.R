@@ -301,64 +301,102 @@ print.icc.lme4 <- function(x, comp, ...) {
 #' @importFrom tidyselect starts_with
 #' @importFrom crayon blue cyan
 #' @importFrom sjmisc var_rename
+#' @importFrom tibble has_name
 #' @export
-print.tidy_stan_mresp <- function(x, ...) {
+print.tidy_stan <- function(x, ...) {
 
+  # check if data has certain terms, so we know if we print
+  # zero inflated or multivariate response models
+
+  zi <- tidyselect::starts_with("b_zi_", vars = x$term)
   resp.cor <- tidyselect::starts_with("rescor__", vars = x$term)
-  x.cor <- dplyr::slice(x, !! resp.cor)
-  x <- dplyr::slice(x, -!! resp.cor)
+  ran.eff <- tibble::has_name(x, "random.effect")
 
-  responses <- unique(x$response)
+  x$term <- gsub("b_", "", x$term, fixed = TRUE)
 
-  for (resp in responses) {
-    cat(crayon::blue(sprintf("## Response: %s\n\n", resp)))
+
+  # print zero-inflated models
+
+  if (!sjmisc::is_empty(zi)) {
+    x.zi <- dplyr::slice(x, !! zi)
+    x <- dplyr::slice(x, -!! zi)
+
+    x.zi$term <- gsub("b_zi_", "", x.zi$term, fixed = TRUE)
+
+    cat(crayon::blue("## Conditional Model:\n\n"))
 
     x %>%
-      dplyr::filter(.data$response == !! resp) %>%
-      dplyr::select(-1) %>%
       as.data.frame() %>%
       print(..., row.names = FALSE)
 
-    cat("\n")
+    cat(crayon::blue("\n## Zero-Inflated Model:\n\n"))
+
+    x.zi %>%
+      as.data.frame() %>%
+      print(..., row.names = FALSE)
+
+  } else if (!sjmisc::is_empty(resp.cor)) {
+    x.cor <- dplyr::slice(x, !! resp.cor)
+    x <- dplyr::slice(x, -!! resp.cor)
+
+    responses <- unique(x$response)
+
+    for (resp in responses) {
+      cat(crayon::blue(sprintf("## Response: %s\n\n", resp)))
+
+      x %>%
+        dplyr::filter(.data$response == !! resp) %>%
+        dplyr::select(-1) %>%
+        as.data.frame() %>%
+        print(..., row.names = FALSE)
+
+      cat("\n")
+    }
+
+    x.cor$term <- gsub("rescor__", "", x = x.cor$term, fixed = TRUE)
+    x.cor$term <- gsub("__", "-", x = x.cor$term, fixed = TRUE)
+
+    cat(crayon::cyan(sprintf("## Residual Correlations\n\n", resp)))
+
+    x.cor %>%
+      dplyr::select(-1) %>%
+      sjmisc::var_rename(term = "correlation") %>%
+      as.data.frame() %>%
+      print(..., row.names = FALSE)
+  } else if (ran.eff) {
+      fe <- which(x$random.effect == "")
+
+      if (!sjmisc::is_empty(fe)) {
+        x.fe <- dplyr::slice(x, !! fe)
+        x <- dplyr::slice(x, -!! fe)
+
+        cat(crayon::blue("## Fixed effects:\n\n"))
+
+        x.fe %>%
+          as.data.frame() %>%
+          print(..., row.names = FALSE)
+
+        cat("\n")
+      }
+
+      re <- unique(x$random.effect)
+
+      for (r in re) {
+        cat(crayon::blue(sprintf("## Random effect %s\n\n", r)))
+
+        x %>%
+          dplyr::filter(.data$random.effect == !! r) %>%
+          dplyr::select(-1) %>%
+          as.data.frame() %>%
+          print(..., row.names = FALSE)
+
+        cat("\n")
+      }
+  } else {
+    x %>%
+      as.data.frame() %>%
+      print(..., row.names = FALSE)
   }
-
-  x.cor$term <- gsub("rescor__", "", x = x.cor$term, fixed = TRUE)
-  x.cor$term <- gsub("__", "-", x = x.cor$term, fixed = TRUE)
-
-  cat(crayon::cyan(sprintf("## Response Correlations\n\n", resp)))
-
-  x.cor %>%
-    dplyr::select(-1) %>%
-    sjmisc::var_rename(term = "correlation") %>%
-    as.data.frame() %>%
-    print(..., row.names = FALSE)
-}
-
-
-#' @importFrom dplyr slice
-#' @importFrom tidyselect starts_with
-#' @importFrom crayon blue
-#' @export
-print.tidy_stan_zi <- function(x, ...) {
-
-  zi <- tidyselect::starts_with("b_zi_", vars = x$term)
-  x.zi <- dplyr::slice(x, !! zi)
-  x <- dplyr::slice(x, -!! zi)
-
-  x$term <- gsub("b_", "", x$term, fixed = TRUE)
-  x.zi$term <- gsub("b_zi_", "", x.zi$term, fixed = TRUE)
-
-  cat(crayon::blue("## Conditional Model:\n\n"))
-
-  x %>%
-    as.data.frame() %>%
-    print(..., row.names = FALSE)
-
-  cat(crayon::blue("\n## Zero-Inflated Model:\n\n"))
-
-  x.zi %>%
-    as.data.frame() %>%
-    print(..., row.names = FALSE)
 }
 
 

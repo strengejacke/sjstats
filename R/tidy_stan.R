@@ -55,9 +55,9 @@
 #' }}
 #'
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
-#' @importFrom dplyr bind_cols select mutate slice
+#' @importFrom dplyr bind_cols select mutate slice inner_join
 #' @importFrom tidyselect starts_with contains
-#' @importFrom tibble add_column
+#' @importFrom tibble add_column tibble
 #' @importFrom stats mad formula
 #' @importFrom bayesplot rhat neff_ratio
 #' @importFrom sjmisc is_empty
@@ -79,7 +79,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   if (inherits(x, "brmsfit")) mod.dat <- brms_clean(mod.dat)
 
   # compute HDI
-  out <- hdi(x, prob = prob, trans = trans, type = "all")
+  out <- hdi(x, prob = prob, trans = trans, type = type)
 
   # we need names of elements, for correct removal
   nr <- bayesplot::neff_ratio(x)
@@ -96,14 +96,18 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   nr <- nr[keep]
   rh <- bayesplot::rhat(x)[keep]
-  se <- dplyr::pull(mcse(x, type = "all"), "mcse")[keep]
+  se <- dplyr::pull(mcse(x, type = type), "mcse")[keep]
 
+  est <- purrr::map_dbl(mod.dat, ~ sjstats::typical_value(.x, fun = typical))
 
-  out <- out %>%
-    tibble::add_column(
-      estimate = purrr::map_dbl(mod.dat, ~ typical_value(.x, fun = typical)),
-      std.error = purrr::map_dbl(mod.dat, stats::mad),
-      .after = 1
+  out <- tibble::tibble(
+    term = names(est),
+    estimate = est,
+    std.error = purrr::map_dbl(mod.dat, stats::mad)
+  ) %>%
+    dplyr::inner_join(
+      out,
+      by = "term"
     ) %>%
     dplyr::mutate(
       n_eff = nr,
@@ -122,6 +126,62 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   # check if we need to remove random or fixed effects
   out <- remove_effects_from_stan(out, type, is.brms = inherits(x, "brmsfit"))
+
+
+  # create variable to index random effects
+
+  if (type == "random" || type == "all") {
+
+    out <- tibble::add_column(out, random.effect = "", .before = 1)
+
+    # find random intercepts
+
+    ri <- grep("b\\[\\(Intercept\\) (.*)\\]", out$term)
+
+    if (!sjmisc::is_empty(ri)) {
+      out$random.effect[ri] <- "(Intercept)"
+      out$term[ri] <- gsub("b\\[\\(Intercept\\) (.*)\\]", "\\1", out$term[ri])
+    }
+
+
+    # find random intercepts
+
+    ri1 <- grep("r_(.*)\\.(.*)\\.", out$term)
+    ri2 <- which(gsub("r_(.*)\\.(.*)\\.", "\\2", out$term) == "Intercept")
+
+    if (!sjmisc::is_empty(ri1)) {
+      ri <- intersect(ri1, ri2)
+      out$random.effect[ri] <- "(Intercept)"
+      out$term[ri] <- gsub("r_(.*)\\.(.*)\\.", "\\1", out$term[ri])
+    }
+
+
+    # find random slopes
+
+    rs1 <- grep("b\\[(.*) (.*)\\]", out$term)
+    rs2 <- which(gsub("b\\[(.*) (.*)\\]", "\\1", out$term) != "(Intercept)")
+
+    if (!sjmisc::is_empty(rs1)) {
+      rs <- intersect(rs1, rs2)
+      rs.string <- gsub("b\\[(.*) (.*)\\]", "\\1", out$term[rs])
+      out$random.effect[rs] <- rs.string
+      out$term[rs] <- gsub("b\\[(.*) (.*)\\]", "\\2", out$term[rs])
+    }
+
+
+    # find random slopes
+
+    rs1 <- grep("r_(.*)\\.(.*)\\.", out$term)
+    rs2 <- which(gsub("r_(.*)\\.(.*)\\.", "\\2", out$term) != "Intercept")
+
+    if (!sjmisc::is_empty(rs1)) {
+      rs <- intersect(rs1, rs2)
+      rs.string <- gsub("r_(.*)\\.(.*)\\.", "\\2", out$term[rs])
+      out$random.effect[rs] <- rs.string
+      out$term[rs] <- gsub("r_(.*)\\.(.*)\\.", "\\1", out$term[rs])
+    }
+
+  }
 
 
   # multivariate-response model?
@@ -151,18 +211,15 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
     for (i in responses) {
       m <- tidyselect::contains(i, vars = out$term)
-      out$response[m] <- i
+      out$response[intersect(which(out$response == ""), m)] <- i
       out$term <- gsub(sprintf("b_%s_", i), "", out$term, fixed = TRUE)
       out$term <- gsub(sprintf("s_%s_", i), "", out$term, fixed = TRUE)
     }
 
-    class(out) <- c("tidy_stan_mresp", class(out))
   }
 
 
-  # add class for extra print method for zero inflated models
-  zi <- tidyselect::starts_with("b_zi_", vars = out$term)
-  if (!sjmisc::is_empty(zi)) class(out) <- c("tidy_stan_zi", class(out))
+  class(out) <- c("tidy_stan", class(out))
 
   # round values
   purrr::modify_if(out, is.numeric, ~ round(.x, digits = digits))
@@ -230,10 +287,11 @@ brms_clean <- function(out) {
   if (tibble::has_name(out, "term")) {
     re.sd <- tidyselect::starts_with("sd_", vars = out$term)
     re.cor <- tidyselect::starts_with("cor_", vars = out$term)
+    re.s <- tidyselect::starts_with("Sigma[", vars = out$term)
     lp <- tidyselect::starts_with("lp__", vars = out$term)
     priors <- tidyselect::starts_with("prior_", vars = out$term)
 
-    removers <- unique(c(re.sd, re.cor, lp, priors))
+    removers <- unique(c(re.sd, re.cor, re.s, lp, priors))
 
     if (!sjmisc::is_empty(removers))
       out <- dplyr::slice(out, !! -removers)
