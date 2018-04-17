@@ -299,11 +299,13 @@ print.icc.lme4 <- function(x, comp, ...) {
 #' @importFrom rlang .data
 #' @importFrom dplyr filter slice select
 #' @importFrom tidyselect starts_with
-#' @importFrom crayon blue cyan
+#' @importFrom crayon blue cyan red
 #' @importFrom sjmisc var_rename
 #' @importFrom tibble has_name
 #' @export
 print.tidy_stan <- function(x, ...) {
+
+  cat("\n")
 
   # check if data has certain terms, so we know if we print
   # zero inflated or multivariate response models
@@ -342,7 +344,7 @@ print.tidy_stan <- function(x, ...) {
     responses <- unique(x$response)
 
     for (resp in responses) {
-      cat(crayon::blue(sprintf("## Response: %s\n\n", resp)))
+      cat(crayon::blue(sprintf("## Response: %s\n\n", crayon::red(resp))))
 
       x %>%
         dplyr::filter(.data$response == !! resp) %>%
@@ -373,6 +375,7 @@ print.tidy_stan <- function(x, ...) {
         cat(crayon::blue("## Fixed effects:\n\n"))
 
         x.fe %>%
+          dplyr::select(-1) %>%
           as.data.frame() %>%
           print(..., row.names = FALSE)
 
@@ -382,7 +385,7 @@ print.tidy_stan <- function(x, ...) {
       re <- unique(x$random.effect)
 
       for (r in re) {
-        cat(crayon::blue(sprintf("## Random effect %s\n\n", r)))
+        cat(crayon::blue(sprintf("## Random effect %s\n\n", crayon::red(r))))
 
         x %>%
           dplyr::filter(.data$random.effect == !! r) %>%
