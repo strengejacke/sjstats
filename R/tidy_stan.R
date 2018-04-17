@@ -303,10 +303,11 @@ brms_clean <- function(out) {
 
   re.sd <- tidyselect::starts_with("sd_", vars = colnames(out))
   re.cor <- tidyselect::starts_with("cor_", vars = colnames(out))
+  re.s <- tidyselect::starts_with("Sigma[", vars = colnames(out))
   lp <- tidyselect::starts_with("lp__", vars = colnames(out))
   priors <- tidyselect::starts_with("prior_", vars = colnames(out))
 
-  removers <- unique(c(re.sd, re.cor, lp, priors))
+  removers <- unique(c(re.sd, re.cor, re.s, lp, priors))
 
   if (!sjmisc::is_empty(removers))
     out <- dplyr::select(out, !! -removers)

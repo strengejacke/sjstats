@@ -4,6 +4,11 @@
 
 * Remove _tidyverse_ from suggested packages, as requested by maintainers.
 
+## Changes to functions
+
+* Make `tidy_stan()` for large `brmsfit`-objects (esp. with random effects) more efficient.
+* Better `print()`-method for `tidy_stan()`.
+
 ## New functions
 
 * `model_family()` to get model-information about family and link-functions. This function is intended to be "generic" and work with many different model objects, because not all packages provide a `family()` function.
