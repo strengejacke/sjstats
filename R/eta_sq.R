@@ -372,7 +372,7 @@ es_boot_fun <- function(model, type, ci.lvl, n) {
   es <- aov_stat(model = model, type = type)
 
   x <- tibble::tibble(
-    term = names(es),
+    term = var_names(names(es)),
     es = es
   )
 

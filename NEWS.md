@@ -15,6 +15,7 @@
 
 ## Bug fixes
 
+* Fix issue with `omega_sq()`, `eta_sq()` etc. when confidence intervals were computed with bootstrapping and the model-formula contained function calls like `scale()` or `as.factor()`.
 * Fix issue with `p_value()` for unconditional mixed models.
 * Fix typo in `xtab_statistics()`.
 * Fix issue with wrong calculation of Nagelkerke's r-squared value in `r2()`.
