@@ -8,6 +8,7 @@
 
 * Make `tidy_stan()` for large `brmsfit`-objects (esp. with random effects) more efficient.
 * Better `print()`-method for `tidy_stan()`.
+* `link_inverse()` now also should return the link-inverse function for most (or some or all?) custom families of _brms_-models.
 
 ## New functions
 

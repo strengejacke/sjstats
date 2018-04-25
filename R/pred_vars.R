@@ -112,7 +112,7 @@ resp_val <- function(x) {
 
 
 #' @rdname pred_vars
-#' @importFrom stats family binomial gaussian
+#' @importFrom stats family binomial gaussian make.link
 #' @export
 link_inverse <- function(x) {
 
@@ -157,8 +157,13 @@ link_inverse <- function(x) {
     if (!is.null(stats::formula(x)$response))
       fam <- fam[[1]]
 
-    ff <- get(fam$family, asNamespace("stats"))
-    il <- ff(fam$link)$linkinv
+    # do we have custom families?
+    if (!is.null(fam$family) && (is.character(fam$family) && fam$family == "custom")) {
+      il <- stats::make.link(fam$link)$linkinv
+    } else {
+      ff <- get(fam$family, asNamespace("stats"))
+      il <- ff(fam$link)$linkinv
+    }
   } else if (inherits(x, c("lrm", "polr", "clm", "logistf", "multinom", "Zelig-relogit"))) {
     # "lrm"-object from pkg "rms" have no family method
     # so we construct a logistic-regression-family-object
