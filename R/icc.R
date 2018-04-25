@@ -470,6 +470,9 @@ icc.posterior <- function(fit, obj.name) {
   # total variance, sum of random intercept and residual variances
   total_var <- apply(as.data.frame(vars), MARGIN = 1, FUN = sum) + resid_var
 
+  # make sure residual variance has same length as other components
+  # if not, just repeat the current value to match number of samples
+  if (length(resid_var) == 1) resid_var <- rep(resid_var, length(total_var))
 
   # check whether we have negative binomial
 
