@@ -96,7 +96,8 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   nr <- nr[keep]
   rh <- bayesplot::rhat(x)[keep]
-  se <- dplyr::pull(mcse(x, type = type), "mcse")[keep]
+  se <- mcse(x, type = type)
+  se <- se$mcse[se$term %in% out$term]
 
   est <- purrr::map_dbl(mod.dat, ~ sjstats::typical_value(.x, fun = typical))
 
@@ -164,7 +165,20 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     if (!sjmisc::is_empty(rsig1) && !sjmisc::is_empty(rsig2)) {
       rs <- intersect(rsig1, rsig2)
       out$random.effect[rs] <- "(Intercept)"
-      out$term[rs] <- "sigma"
+
+      out$term[rs] <- gsub(
+        pattern = ":(Intercept)",
+        replacement = "",
+        sprintf("sigma (%s)", gsub("(Sigma)\\[(.*)\\,(.*)\\]", "\\2", out$term)[rs]),
+        fixed = TRUE
+      )
+
+      rs <- setdiff(rsig1, rsig2)
+
+      if (!sjmisc::is_empty(rs)) {
+        out$random.effect[rs] <- gsub("(Sigma)\\[(.*)\\,(.*)\\]", "\\3", out$term)[rs]
+        out$term[rs] <- "sigma"
+      }
     }
 
 
@@ -233,6 +247,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   class(out) <- c("tidy_stan", class(out))
 
+  attr(out, "digits") <- digits
   attr(out, "model_name") <- deparse(substitute(x))
 
   if (inherits(x, "brmsfit"))

@@ -303,11 +303,9 @@ print.icc.lme4 <- function(x, comp, ...) {
 #' @importFrom sjmisc var_rename
 #' @importFrom tibble has_name
 #' @export
-print.tidy_stan <- function(x, digits = 1, ...) {
+print.tidy_stan <- function(x, ...) {
 
   cat(crayon::blue("\n# Summary Statistics of Stan-Model\n\n"))
-
-  x <- get_hdi_data(x, digits)
 
   # check if data has certain terms, so we know if we print
   # zero inflated or multivariate response models
@@ -318,6 +316,7 @@ print.tidy_stan <- function(x, digits = 1, ...) {
 
   x$term <- gsub("b_", "", x$term, fixed = TRUE)
 
+  x <- get_hdi_data(x, digits = as.numeric(attr(x, "digits")))
 
   # print zero-inflated models
 
@@ -378,6 +377,7 @@ print.tidy_stan <- function(x, digits = 1, ...) {
         x <- dplyr::slice(x, -!! fe)
 
         cat(crayon::blue("## Fixed effects:\n\n"))
+        colnames(x.fe)[2] <- ""
 
         x.fe %>%
           dplyr::select(-1) %>%
