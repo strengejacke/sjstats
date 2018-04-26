@@ -303,11 +303,11 @@ print.icc.lme4 <- function(x, comp, ...) {
 #' @importFrom sjmisc var_rename
 #' @importFrom tibble has_name
 #' @export
-print.tidy_stan <- function(x, ...) {
+print.tidy_stan <- function(x, digits = 1, ...) {
 
   cat(crayon::blue("\n# Summary Statistics of Stan-Model\n\n"))
 
-  x <- get_hdi_data(x)
+  x <- get_hdi_data(x, digits)
 
   # check if data has certain terms, so we know if we print
   # zero inflated or multivariate response models
@@ -972,7 +972,7 @@ print.sj_rope <- function(x, digits = 1, ...) {
 print.sj_hdi <- function(x, digits = 2, ...) {
   cat(crayon::blue("\n# Highest Density Interval\n\n"))
 
-  dat <- get_hdi_data(x)
+  dat <- get_hdi_data(x, digits)
   colnames(dat)[1] <- ""
 
   print(as.data.frame(dat), ..., row.names = FALSE)
@@ -982,7 +982,7 @@ print.sj_hdi <- function(x, digits = 2, ...) {
 
 #' @importFrom purrr map_at map_df
 #' @importFrom dplyr bind_cols select
-get_hdi_data <- function(x) {
+get_hdi_data <- function(x, digits) {
   cn <- colnames(x)
   hdi.cols <- tidyselect::starts_with("hdi.", vars = cn)
 
