@@ -156,6 +156,18 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     }
 
 
+    # find residual variance for random intercept
+
+    rsig1 <- which(gsub("(Sigma)\\[(.*)\\,(.*)\\]", "\\1", out$term) == "Sigma")
+    rsig2 <- which(gsub("(Sigma)\\[(.*)\\,(.*)\\]", "\\3", out$term) == "(Intercept)")
+
+    if (!sjmisc::is_empty(rsig1) && !sjmisc::is_empty(rsig2)) {
+      rs <- intersect(rsig1, rsig2)
+      out$random.effect[rs] <- "(Intercept)"
+      out$term[rs] <- "sigma"
+    }
+
+
     # find random slopes
 
     rs1 <- grep("b\\[(.*) (.*)\\]", out$term)
@@ -220,6 +232,13 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
 
   class(out) <- c("tidy_stan", class(out))
+
+  attr(out, "model_name") <- deparse(substitute(x))
+
+  if (inherits(x, "brmsfit"))
+    attr(out, "formula") <- as.character(stats::formula(x))[1]
+  else
+    attr(out, "formula") <- deparse(stats::formula(x))
 
   # round values
   purrr::modify_if(out, is.numeric, ~ round(.x, digits = digits))

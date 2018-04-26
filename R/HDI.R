@@ -98,7 +98,10 @@ hdi.stanreg <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
   dat <- hdi_worker(x = x, prob = prob, trans = trans)
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type, is.brms = FALSE)
+  dat <- remove_effects_from_stan(dat, type, is.brms = FALSE)
+
+  class(dat) <- c("sj_hdi", class(dat))
+  dat
 }
 
 
@@ -114,7 +117,10 @@ hdi.brmsfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
   dat <- hdi_worker(x = x, prob = prob, trans = trans)
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type, is.brms = TRUE)
+  dat <- remove_effects_from_stan(dat, type, is.brms = TRUE)
+
+  class(dat) <- c("sj_hdi", class(dat))
+  dat
 }
 
 
@@ -126,7 +132,10 @@ hdi.stanfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
   dat <- hdi_worker(x = x, prob = prob, trans = trans)
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type, is.brms = FALSE)
+  dat <- remove_effects_from_stan(dat, type, is.brms = FALSE)
+
+  class(dat) <- c("sj_hdi", class(dat))
+  dat
 }
 
 
@@ -135,7 +144,10 @@ hdi.data.frame <- function(x, prob = .9, trans = NULL, type = c("fixed", "random
   # check arguments
   type <- match.arg(type)
 
-  hdi_worker(x = x, prob = prob, trans = trans)
+  dat <- hdi_worker(x = x, prob = prob, trans = trans)
+
+  class(dat) <- c("sj_hdi", class(dat))
+  dat
 }
 
 

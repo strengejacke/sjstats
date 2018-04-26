@@ -19,7 +19,10 @@ rope.stanreg <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
   dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type, is.brms = FALSE)
+  dat <- remove_effects_from_stan(dat, type, is.brms = FALSE)
+
+  class(dat) <- c("sj_rope", class(dat))
+  dat
 }
 
 
@@ -35,7 +38,10 @@ rope.brmsfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
   dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type, is.brms = TRUE)
+  dat <- remove_effects_from_stan(dat, type, is.brms = TRUE)
+
+  class(dat) <- c("sj_rope", class(dat))
+  dat
 }
 
 
@@ -47,7 +53,10 @@ rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
   dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type, is.brms = FALSE)
+  dat <- remove_effects_from_stan(dat, type, is.brms = FALSE)
+
+  class(dat) <- c("sj_rope", class(dat))
+  dat
 }
 
 
@@ -55,7 +64,10 @@ rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
 rope.data.frame <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
   # check arguments
   type <- match.arg(type)
-  rope_worker(x = x, rope = rope, trans = trans, type = type)
+  dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
+
+  class(dat) <- c("sj_rope", class(dat))
+  dat
 }
 
 
@@ -75,9 +87,7 @@ rope_worker <- function(x, rope, trans, type) {
   colnames(dat) <- c("term", "rope")
 
   # for convenience reasons, also add proportion of values outside rope
-  dat <- dplyr::mutate(dat, outside.rope = 100 - .data$rope)
-
-  dat
+  dplyr::mutate(dat, outside.rope = 100 - .data$rope)
 }
 
 
@@ -105,6 +115,6 @@ rope_helper <- function(x, rope, trans) {
   r <- dplyr::between(x, rope[1], rope[2])
 
   # compute proportion of values within boundaries
-  round(100 * sum(r) / length(x), 2)
+  round(100 * sum(r) / length(x), 3)
 }
 

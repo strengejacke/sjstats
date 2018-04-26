@@ -305,7 +305,9 @@ print.icc.lme4 <- function(x, comp, ...) {
 #' @export
 print.tidy_stan <- function(x, ...) {
 
-  cat("\n")
+  cat(crayon::blue("\n# Summary Statistics of Stan-Model\n\n"))
+
+  x <- get_hdi_data(x)
 
   # check if data has certain terms, so we know if we print
   # zero inflated or multivariate response models
@@ -326,6 +328,9 @@ print.tidy_stan <- function(x, ...) {
     x.zi$term <- gsub("b_zi_", "", x.zi$term, fixed = TRUE)
 
     cat(crayon::blue("## Conditional Model:\n\n"))
+
+    colnames(x)[1] <- ""
+    colnames(x.zi)[1] <- ""
 
     x %>%
       as.data.frame() %>%
@@ -396,6 +401,7 @@ print.tidy_stan <- function(x, ...) {
         cat("\n")
       }
   } else {
+    colnames(x)[1] <- ""
     x %>%
       as.data.frame() %>%
       print(..., row.names = FALSE)
@@ -405,12 +411,12 @@ print.tidy_stan <- function(x, ...) {
 
 #' @importFrom tidyselect starts_with
 #' @importFrom sjmisc remove_empty_cols
-#' @importFrom crayon cyan blue red magenta green silver italic
+#' @importFrom crayon cyan blue red magenta green silver
 #' @importFrom dplyr case_when
 #' @export
-print.icc.posterior <- function(x, ..., prob = .89, digits = 3) {
+print.icc.posterior <- function(x, ..., prob = .89, digits = 2) {
   # print model information
-  cat(crayon::italic("\n# Random Effect Variances and ICC\n\n"))
+  cat("\n# Random Effect Variances and ICC\n\n")
   cat(sprintf(
     "Family: %s (%s)\nFormula: %s\n\n",
     attr(x, "family", exact = T),
@@ -442,30 +448,40 @@ print.icc.posterior <- function(x, ..., prob = .89, digits = 3) {
 
     cat(get_re_col(i, sprintf("## %s\n", re.name)))
 
-    # ICC
-    ci <- hdi(x[[cn.icc[i]]], prob = prob)
-    cat(sprintf(
-      "          ICC: %.*f (HDI %i%%: %.*f-%.*f)\n",
-      digits,
-      median(x[[cn.icc[i]]]),
-      as.integer(round(prob * 100)),
-      digits,
-      ci[1],
-      digits,
-      ci[2]
-    ))
+    icc.val <- sprintf("%.*f", digits, median(x[[cn.icc[i]]]))
+    tau.val <- sprintf("%.*f", digits, median(x[[cn.tau00[i]]]))
+    ml <- max(nchar(icc.val), nchar(tau.val))
+
+    ci.icc <- hdi(x[[cn.icc[i]]], prob = prob)
+    ci.icc.lo <- sprintf("%.*f", digits, ci.icc[1])
+    ci.icc.hi <- sprintf("%.*f", digits, ci.icc[2])
+
+    ci.tau <- hdi(x[[cn.tau00[i]]], prob = prob)
+    ci.tau.lo <- sprintf("%.*f", digits, ci.tau[1])
+    ci.tau.hi <- sprintf("%.*f", digits, ci.tau[2])
+
+    ml.ci <- max(nchar(ci.icc.lo), nchar(ci.tau.lo))
 
     # ICC
-    ci <- hdi(x[[cn.tau00[i]]], prob = prob)
     cat(sprintf(
-      "Between-group: %.*f (HDI %i%%: %.*f-%.*f)\n\n",
-      digits,
-      median(x[[cn.tau00[i]]]),
+      "          ICC: %*s (HDI %i%%: %*s-%s)\n",
+      ml,
+      icc.val,
       as.integer(round(prob * 100)),
-      digits,
-      ci[1],
-      digits,
-      ci[2]
+      ml.ci,
+      ci.icc.lo,
+      ci.icc.hi
+    ))
+
+    # Tau00
+    cat(sprintf(
+      "Between-group: %*s (HDI %i%%: %*s-%s)\n\n",
+      ml,
+      tau.val,
+      as.integer(round(prob * 100)),
+      ml.ci,
+      ci.tau.lo,
+      ci.tau.hi
     ))
   }
 
@@ -606,11 +622,11 @@ plot.sj_inequ_trend <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue cyan italic
+#' @importFrom crayon blue
 #' @importFrom stats kruskal.test na.omit
 #' @export
 print.sj_mwu <- function(x, ...) {
-  cat(crayon::cyan(crayon::italic("\nMann-Whitney-U-Test\n")), "\n")
+  cat(crayon::blue("\n# Mann-Whitney-U-Test\n\n"))
   # get data
   .dat <- x$df
   # print to console
@@ -620,7 +636,7 @@ print.sj_mwu <- function(x, ...) {
     l2 <- .dat[i, "grp2.label"]
     # do we have value labels?
     if (!is.null(l1) && !is.na(l1) %% !is.null(l2) && !is.na(l2)) {
-      cat(crayon::blue(
+      cat(crayon::cyan(
         sprintf(
           "Groups %i = %s (n = %i) | %i = %s (n = %i):\n",
           .dat[i, "grp1"],
@@ -632,7 +648,7 @@ print.sj_mwu <- function(x, ...) {
         )
       ))
     } else {
-      cat(crayon::blue(
+      cat(crayon::cyan(
         sprintf("Groups (%i|%i), n = %i/%i:\n",
                 .dat[i, "grp1"], .dat[i, "grp2"],
                 .dat[i, "grp1.n"], .dat[i, "grp2.n"])
@@ -652,7 +668,7 @@ print.sj_mwu <- function(x, ...) {
 
   # if we have more than 2 groups, also perfom kruskal-wallis-test
   if (length(unique(stats::na.omit(x$data$grp))) > 2) {
-    cat(crayon::cyan(crayon::italic("Kruskal-Wallis-Test\n\n")))
+    cat(crayon::blue("# Kruskal-Wallis-Test\n\n"))
     kw <- stats::kruskal.test(x$data$x, x$data$grp)
     cat(sprintf("chi-squared = %.3f\n", kw$statistic))
     cat(sprintf("df = %i\n", kw$parameter))
@@ -669,16 +685,20 @@ print.sj_mwu <- function(x, ...) {
 
 
 
+#' @importFrom crayon blue
 #' @export
 print.sj_splithalf <- function(x, ...) {
-  cat(sprintf("\n   Split-Half Reliability: %.3f\n", x$splithalf))
+  cat(crayon::blue("\n# Internal Consistency\n\n"))
+  cat(sprintf("   Split-Half Reliability: %.3f\n", x$splithalf))
   cat(sprintf("Spearman-Brown Adjustment: %.3f\n", x$spearmanbrown))
 }
 
 
 
+#' @importFrom crayon blue
 #' @export
 print.sjstats_zcf <- function(x, ...) {
+  cat(crayon::blue("\n# Zero-Count overfitting\n\n"))
   cat(sprintf("   Observed zero-counts: %i\n", x$observed.zeros))
   cat(sprintf("  Predicted zero-counts: %i\n", x$predicted.zeros))
   cat(sprintf("                  Ratio: %.2f\n\n", x$ratio))
@@ -696,9 +716,10 @@ print.sjstats_zcf <- function(x, ...) {
 
 
 
+#' @importFrom crayon blue
 #' @export
 print.sjstats_ovderdisp <- function(x, ...) {
-  cat("Overdispersion test\n\n")
+  cat(crayon::blue("\n# Overdispersion test\n\n"))
   cat(sprintf("       dispersion ratio = %.4f\n", x$ratio))
   cat(sprintf("  Pearson's Chi-Squared = %.4f\n", x$chisq))
   cat(sprintf("                p-value = %.4f\n\n", x$p))
@@ -717,7 +738,7 @@ print.sjstats_outliers <- function(x, ...) {
 }
 
 
-#' @importFrom crayon cyan italic
+#' @importFrom crayon blue
 #' @export
 print.sj_xtab_stat <- function(x, ...) {
   # get length of method name, to align output
@@ -727,13 +748,11 @@ print.sj_xtab_stat <- function(x, ...) {
   if (l < 7) l <- 7
 
   # headline
-  cat(crayon::cyan(
-    crayon::italic("\nMeasure of Association for Contingency Tables\n")
-  ))
+  cat(crayon::blue("\n# Measure of Association for Contingency Tables\n"))
 
   # used fisher?
   if (x$fisher)
-    cat(crayon::cyan("                  (using Fisher's Exact Test)\n"))
+    cat(crayon::blue("                  (using Fisher's Exact Test)\n"))
 
   cat("\n")
 
@@ -750,11 +769,11 @@ print.sj_xtab_stat <- function(x, ...) {
 
 
 
-#' @importFrom crayon cyan italic
+#' @importFrom crayon blue
 #' @export
 print.sjstats_pred_accuracy <- function(x, ...) {
   # headline
-  cat(crayon::cyan(crayon::italic("\nAccuracy of Model Predictions\n\n")))
+  cat(crayon::blue("\n# Accuracy of Model Predictions\n\n"))
 
   # statistics
   cat(sprintf("Accuracy: %.2f%%\n", 100 * x$accuracy))
@@ -775,7 +794,7 @@ print.sj_grpmean <- function(x, ...) {
 print_grpmean <- function(x, ...) {
   # headline
   cat(crayon::blue(sprintf(
-    "Grouped Means for %s by %s\n\n",
+    "# Grouped Means for %s by %s\n\n",
     attr(x, "dv.label", exact = TRUE),
     attr(x, "grp.label", exact = TRUE)
   )))
@@ -794,7 +813,7 @@ print_grpmean <- function(x, ...) {
 }
 
 
-#' @importFrom crayon cyan italic
+#' @importFrom crayon cyan
 #' @importFrom purrr walk
 #' @export
 print.sj_grpmeans <- function(x, ...) {
@@ -805,7 +824,7 @@ print.sj_grpmeans <- function(x, ...) {
     grp <- attr(dat, "group", exact = T)
 
     # print title for grouping
-    cat(crayon::cyan(crayon::italic(sprintf("Grouped by:\n%s\n\n", grp))))
+    cat(crayon::cyan(sprintf("Grouped by:\n%s\n\n", grp)))
 
     # print grpmean-table
     print_grpmean(dat, ...)
@@ -920,9 +939,88 @@ print.sjstats.pca_rotate <- function(x, cutoff = .1, ...) {
 
 #' @export
 print.sjstats.pca <- function(x, ...) {
-
   x <- as.data.frame(round(x, 4))
   rownames(x) <- c("Standard deviation", "Eigenvalue", "Proportion variance", "Cumulative variance")
 
   print(x, ...)
+}
+
+
+#' @importFrom crayon blue
+#' @importFrom purrr map_if
+#' @export
+print.sj_rope <- function(x, digits = 1, ...) {
+  cat(crayon::blue("\n# Proportions of samples inside and outside the ROPE\n\n"))
+
+  # nicer column names for output
+  colnames(x) <- c("term", "inside", "outside")
+
+  # left-justify term column
+  x$term <- format(x$term, justify = "left")
+
+  x <- x %>%
+    purrr::map_if(is.numeric, ~ sprintf("%.*f%%", digits, .x)) %>%
+    as.data.frame()
+
+  colnames(x)[1] <- ""
+  print(x, ..., row.names = FALSE)
+}
+
+
+#' @importFrom crayon blue
+#' @export
+print.sj_hdi <- function(x, digits = 2, ...) {
+  cat(crayon::blue("\n# Highest Density Interval\n\n"))
+
+  dat <- get_hdi_data(x)
+  colnames(dat)[1] <- ""
+
+  print(as.data.frame(dat), ..., row.names = FALSE)
+}
+
+
+
+#' @importFrom purrr map_at map_df
+#' @importFrom dplyr bind_cols select
+get_hdi_data <- function(x) {
+  cn <- colnames(x)
+  hdi.cols <- tidyselect::starts_with("hdi.", vars = cn)
+
+  # convert all to character, with fixed fractional part
+  x <- x %>%
+    purrr::map_at(hdi.cols, ~ sprintf("%.*f", digits, .x)) %>%
+    as.data.frame(stringsAsFactors = FALSE)
+
+  # left-justify term column
+  x$term <- format(x$term, justify = "left")
+
+  ci_cols <- hdi.cols[seq(1, length(hdi.cols), by = 2)]
+  ci_pos <- as.vector(regexpr("_", cn))
+
+  dummy <- purrr::map(ci_cols, function(i) {
+    # get length of longest value, for proper formatting
+    ml1 <- max(nchar(x[[i]]))
+    ml2 <- max(nchar(x[[i + 1]]))
+
+    tmp <- data.frame(hdi = sprintf("[%*s %*s]", ml1, x[[i]], ml2, x[[i + 1]]))
+
+    if (ci_pos[i] < 0)
+      interv <- 89
+    else
+      interv <- round(100 * as.numeric(substr(cn[i], ci_pos[i] + 1, nchar(cn[i]))))
+
+    colnames(tmp) <- sprintf("HDI(%d%%)", interv)
+    tmp
+  }) %>%
+    dplyr::bind_cols()
+
+  # colnames(dummy) <- new_cn
+
+  x <- dplyr::select(x, !! -hdi.cols)
+  dat <- dplyr::bind_cols(x[, 1:(hdi.cols[1] - 1), drop = FALSE], dummy)
+
+  if (ncol(x) >= hdi.cols[1])
+    dat <- dplyr::bind_cols(dat, x[, hdi.cols[1]:ncol(x), drop = FALSE])
+
+  dat
 }

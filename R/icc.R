@@ -149,7 +149,7 @@
 #'   sleepstudy <- sleepstudy %>%
 #'     group_by(mygrp) %>%
 #'     mutate(mysubgrp = sample(1:30, size = n(), replace = TRUE))
-#'   m <- brm(
+#'   m <- brms::brm(
 #'     Reaction ~ Days + (1 | mygrp / mysubgrp) + (1 | Subject),
 #'     data = sleepstudy
 #'   )
@@ -158,7 +158,7 @@
 #'   icc(m, posterior = TRUE)
 #'
 #'   # show 50% interval
-#'   print(icc(m, posterior = TRUE), prob = .5, digits = 2)
+#'   print(icc(m, posterior = TRUE), prob = .5, digits = 3)
 #' }}
 #'
 #' @importFrom purrr map2
