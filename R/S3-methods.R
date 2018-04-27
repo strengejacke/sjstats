@@ -380,18 +380,23 @@ print.tidy_stan <- function(x, ...) {
     responses <- unique(x$response)
 
     for (resp in responses) {
-      cat(crayon::blue(sprintf("## Response: %s\n\n", crayon::red(resp))))
 
-      xr <- x %>%
-        dplyr::filter(.data$response == !! resp) %>%
-        dplyr::select(-1) %>%
-        dplyr::mutate(term = clean_term_name(.data$term)) %>%
-        as.data.frame()
+      if (ran.eff) {
+        print_stan_mv_re(x, resp)
+      } else {
+        cat(crayon::blue(sprintf("## Response: %s\n\n", crayon::red(resp))))
 
-      colnames(xr)[1] <- ""
-      print(xr, ..., row.names = FALSE)
+        xr <- x %>%
+          dplyr::filter(.data$response == !! resp) %>%
+          dplyr::select(-1) %>%
+          dplyr::mutate(term = clean_term_name(.data$term)) %>%
+          as.data.frame()
 
-      cat("\n")
+        colnames(xr)[1] <- ""
+        print(xr, ..., row.names = FALSE)
+
+        cat("\n")
+      }
     }
 
     # finally, if we had information on residual correlation,
@@ -485,6 +490,58 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
     print(xr, row.names = FALSE)
 
     cat("\n")
+  }
+}
+
+
+#' @importFrom sjmisc is_empty
+#' @importFrom crayon blue red
+#' @importFrom dplyr slice select filter mutate
+#' @importFrom tidyselect contains
+print_stan_mv_re <- function(x, resp) {
+  # find fixed effects - is type = "all"
+  fe <- which(x$random.effect == "")
+
+  if (!sjmisc::is_empty(fe)) {
+
+    cat(crayon::blue(sprintf("## Fixed effects for response: %s\n\n", crayon::red(resp))))
+
+    x.fe <- dplyr::slice(x, !! fe)
+    x <- dplyr::slice(x, -!! fe)
+
+    xr <- x.fe %>%
+      dplyr::filter(.data$response == !! resp) %>%
+      dplyr::select(-1:-2) %>%
+      dplyr::mutate(term = clean_term_name(.data$term)) %>%
+      as.data.frame()
+
+    colnames(xr)[1] <- ""
+    print(xr, row.names = FALSE)
+
+    cat("\n")
+  }
+
+  # iterate all random effects
+  re <- unique(x$random.effect)
+
+  for (r in re) {
+
+    find.re <- which(x$random.effect == r & x$response == resp)
+
+    if (!sjmisc::is_empty(find.re)) {
+      cat(crayon::blue(sprintf("## Random effect %s", crayon::red(r))))
+      cat(crayon::blue(sprintf(" for response %s\n\n", crayon::red(resp))))
+      xr <- x %>%
+        dplyr::filter(.data$random.effect == !! r, .data$response == !! resp) %>%
+        dplyr::select(-1:-2) %>%
+        dplyr::mutate(term = clean_term_name(.data$term)) %>%
+        as.data.frame()
+
+      colnames(xr)[1] <- ""
+      print(xr, row.names = FALSE)
+
+      cat("\n")
+    }
   }
 }
 

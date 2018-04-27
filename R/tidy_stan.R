@@ -57,10 +57,10 @@
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
 #' @importFrom dplyr bind_cols select mutate slice inner_join n_distinct
 #' @importFrom tidyselect starts_with contains
-#' @importFrom tibble add_column tibble
+#' @importFrom tibble add_column tibble has_name
 #' @importFrom stats mad formula
 #' @importFrom bayesplot rhat neff_ratio
-#' @importFrom sjmisc is_empty
+#' @importFrom sjmisc is_empty trim
 #' @export
 tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c("fixed", "random", "all"), digits = 3) {
 
@@ -255,6 +255,15 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
     out <- tibble::add_column(out, response = "", .before = 1)
 
+    # check if multivariate response model also has random effects
+    # we need to clean names for the random effects as well here
+
+    if (tibble::has_name(out, "random.effect")) {
+      re <- which(!sjmisc::is_empty(sjmisc::trim(out$random.effect), first.only = FALSE))
+    } else {
+      re <- NULL
+    }
+
     # copy name of response into new character variable
     # and remove response name from term name
 
@@ -263,6 +272,11 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
       out$response[intersect(which(out$response == ""), m)] <- i
       out$term <- gsub(sprintf("b_%s_", i), "", out$term, fixed = TRUE)
       out$term <- gsub(sprintf("s_%s_", i), "", out$term, fixed = TRUE)
+
+      if (!sjmisc::is_empty(re)) {
+        out$random.effect[re] <- gsub(sprintf("__%s", i), "", out$random.effect[re], fixed = TRUE)
+        out$term[re] <- gsub(sprintf("__%s", i), "", out$term[re], fixed = TRUE)
+      }
     }
 
   }
