@@ -55,7 +55,7 @@
 #' }}
 #'
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
-#' @importFrom dplyr bind_cols select mutate slice inner_join
+#' @importFrom dplyr bind_cols select mutate slice inner_join n_distinct
 #' @importFrom tidyselect starts_with contains
 #' @importFrom tibble add_column tibble
 #' @importFrom stats mad formula
@@ -142,6 +142,15 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     if (!sjmisc::is_empty(ri)) {
       out$random.effect[ri] <- "(Intercept)"
       out$term[ri] <- gsub("b\\[\\(Intercept\\) (.*)\\]", "\\1", out$term[ri])
+
+      # check if we have multiple intercepts or nested groups
+      # if yes, append group name to intercept label
+
+      multi.grps <- gsub(pattern = ":([^:]+)", "\\2", out$term[ri])
+
+      if (dplyr::n_distinct(multi.grps) > 1) {
+        out$random.effect[ri] <- sprintf("(Intercept: %s)", multi.grps)
+      }
     }
 
 
@@ -154,6 +163,15 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
       ri <- intersect(ri1, ri2)
       out$random.effect[ri] <- "(Intercept)"
       out$term[ri] <- gsub("r_(.*)\\.(.*)\\.", "\\1", out$term[ri])
+
+      # check if we have multiple intercepts or nested groups
+      # if yes, append group name to intercept label
+
+      multi.grps <- gsub(pattern = "\\.([^\\.]+)$", "\\2", out$term[ri])
+
+      if (dplyr::n_distinct(multi.grps) > 1) {
+        out$random.effect[ri] <- sprintf("(Intercept: %s)", multi.grps)
+      }
     }
 
 
@@ -207,6 +225,11 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
       out$term[rs] <- gsub("r_(.*)\\.(.*)\\.", "\\1", out$term[rs])
     }
 
+    # did we really had random effects?
+
+    if (tibble::has_name(out, "random.effect") &&
+        all(sjmisc::is_empty(out$random.effect, first.only = FALSE)))
+      out <- dplyr::select(out, -.data$random.effect)
   }
 
 

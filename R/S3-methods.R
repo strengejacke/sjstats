@@ -300,7 +300,7 @@ print.icc.lme4 <- function(x, comp, ...) {
 #' @importFrom dplyr filter slice select
 #' @importFrom tidyselect starts_with
 #' @importFrom crayon blue cyan red
-#' @importFrom sjmisc var_rename
+#' @importFrom sjmisc var_rename trim
 #' @importFrom tibble has_name
 #' @export
 print.tidy_stan <- function(x, ...) {
@@ -313,6 +313,7 @@ print.tidy_stan <- function(x, ...) {
   zi <- tidyselect::starts_with("b_zi_", vars = x$term)
   resp.cor <- tidyselect::starts_with("rescor__", vars = x$term)
   ran.eff <- tibble::has_name(x, "random.effect")
+  multi.resp <- tibble::has_name(x, "response")
 
   x$term <- gsub("b_", "", x$term, fixed = TRUE)
 
@@ -325,11 +326,12 @@ print.tidy_stan <- function(x, ...) {
     x <- dplyr::slice(x, -!! zi)
 
     x.zi$term <- gsub("b_zi_", "", x.zi$term, fixed = TRUE)
+    x.zi$term <- gsub("zi_", "", x.zi$term, fixed = TRUE)
+
+    # x$term <- sjmisc::trim(x$term)
+    # x.zi$term <- sjmisc::trim(x.zi$term)
 
     cat(crayon::blue("## Conditional Model:\n\n"))
-
-    colnames(x)[1] <- ""
-    colnames(x.zi)[1] <- ""
 
     x %>%
       as.data.frame() %>%
@@ -341,10 +343,16 @@ print.tidy_stan <- function(x, ...) {
       as.data.frame() %>%
       print(..., row.names = FALSE)
 
-  } else if (!sjmisc::is_empty(resp.cor)) {
-    x.cor <- dplyr::slice(x, !! resp.cor)
-    x <- dplyr::slice(x, -!! resp.cor)
+  } else if (!sjmisc::is_empty(resp.cor) || multi.resp) {
 
+    # get the residual correlation information from data
+    x.cor <- dplyr::slice(x, !! resp.cor)
+
+    # if we have any information, remove it from remaining summary
+    if (!sjmisc::is_empty(resp.cor))
+      x <- dplyr::slice(x, -!! resp.cor)
+
+    # first, print summary for each response model
     responses <- unique(x$response)
 
     for (resp in responses) {
@@ -353,31 +361,44 @@ print.tidy_stan <- function(x, ...) {
       x %>%
         dplyr::filter(.data$response == !! resp) %>%
         dplyr::select(-1) %>%
+        dplyr::mutate(term = clean_term_name(.data$term)) %>%
         as.data.frame() %>%
         print(..., row.names = FALSE)
 
       cat("\n")
     }
 
-    x.cor$term <- gsub("rescor__", "", x = x.cor$term, fixed = TRUE)
-    x.cor$term <- gsub("__", "-", x = x.cor$term, fixed = TRUE)
+    # finally, if we had information on residual correlation,
+    # print this as well. if "set_rescor"(FALSE)", this part
+    # would be missing
 
-    cat(crayon::cyan(sprintf("## Residual Correlations\n\n", resp)))
+    if (nrow(x.cor) > 0) {
+      x.cor$term <- clean_term_name(x.cor$term)
+      x.cor$term <- gsub("rescor__", "", x = x.cor$term, fixed = TRUE)
+      x.cor$term <- gsub("__", "-", x = x.cor$term, fixed = TRUE)
 
-    x.cor %>%
-      dplyr::select(-1) %>%
-      sjmisc::var_rename(term = "correlation") %>%
-      as.data.frame() %>%
-      print(..., row.names = FALSE)
+      cat(crayon::cyan(sprintf("## Residual Correlations\n\n", resp)))
+
+      x.cor %>%
+        dplyr::select(-1) %>%
+        sjmisc::var_rename(term = "correlation") %>%
+        as.data.frame() %>%
+        print(..., row.names = FALSE)
+    }
   } else if (ran.eff) {
+      # find fixed effects - is type = "all"
       fe <- which(x$random.effect == "")
 
       if (!sjmisc::is_empty(fe)) {
+        cat(crayon::blue("## Fixed effects:\n\n"))
+
+        # if we have fixed and random effects, get information for
+        # fixed effects, and then remove these summary lines from
+        # the data frame, so only random effects remain for later
+
         x.fe <- dplyr::slice(x, !! fe)
         x <- dplyr::slice(x, -!! fe)
-
-        cat(crayon::blue("## Fixed effects:\n\n"))
-        colnames(x.fe)[2] <- ""
+        x.fe$term <- clean_term_name(x.fe$term)
 
         x.fe %>%
           dplyr::select(-1) %>%
@@ -387,6 +408,7 @@ print.tidy_stan <- function(x, ...) {
         cat("\n")
       }
 
+      # iterate all random effects
       re <- unique(x$random.effect)
 
       for (r in re) {
@@ -395,6 +417,7 @@ print.tidy_stan <- function(x, ...) {
         x %>%
           dplyr::filter(.data$random.effect == !! r) %>%
           dplyr::select(-1) %>%
+          dplyr::mutate(term = clean_term_name(.data$term)) %>%
           as.data.frame() %>%
           print(..., row.names = FALSE)
 
@@ -406,6 +429,13 @@ print.tidy_stan <- function(x, ...) {
       as.data.frame() %>%
       print(..., row.names = FALSE)
   }
+}
+
+
+#' @importFrom sjmisc trim
+clean_term_name <- function(x) {
+  x <- sjmisc::trim(x)
+  format(x, width = max(nchar(x)))
 }
 
 
