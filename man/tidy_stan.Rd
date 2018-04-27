@@ -48,7 +48,7 @@ The returned data frame has an additonal class-attribute,
    \itemize{
      \item{The Bayesian point estimate (column \emph{estimate}, which is by
            default the posterior median; other statistics are also possible,
-           see \code{typical})-}
+           see argument \code{typical}).}
      \item{
        The standard error (which are actually \emph{median absolute
        deviations}).
