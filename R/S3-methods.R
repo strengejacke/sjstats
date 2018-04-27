@@ -344,7 +344,9 @@ print.tidy_stan <- function(x, ...) {
       print_stan_ranef(x, zeroinf = TRUE)
     } else {
       cat(crayon::blue("## Conditional Model:\n\n"))
+      x <- trim_hdi(x)
       colnames(x)[1] <- ""
+
       x %>%
         as.data.frame() %>%
         print(..., row.names = FALSE)
@@ -356,8 +358,9 @@ print.tidy_stan <- function(x, ...) {
       print_stan_zeroinf_ranef(x.zi)
     } else {
       cat(crayon::blue("## Zero-Inflated Model:\n\n"))
-
+      x.zi <- trim_hdi(x.zi)
       colnames(x.zi)[1] <- ""
+
       x.zi %>%
         as.data.frame() %>%
         print(..., row.names = FALSE)
@@ -390,6 +393,7 @@ print.tidy_stan <- function(x, ...) {
           dplyr::filter(.data$response == !! resp) %>%
           dplyr::select(-1) %>%
           dplyr::mutate(term = clean_term_name(.data$term)) %>%
+          trim_hdi() %>%
           as.data.frame()
 
         colnames(xr)[1] <- ""
@@ -413,6 +417,7 @@ print.tidy_stan <- function(x, ...) {
       x.cor <- x.cor %>%
         dplyr::select(-1) %>%
         sjmisc::var_rename(term = "correlation") %>%
+        trim_hdi() %>%
         as.data.frame()
 
       colnames(x.cor)[1] <- ""
@@ -499,7 +504,9 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
 #' @importFrom sjmisc is_empty
 #' @importFrom tidyselect starts_with
 trim_hdi <- function(x) {
-  hdi.cols <- tidyselect::starts_with("HDI", vars = colnames(x))
+  cn <- colnames(x)
+  hdi.cols <- tidyselect::starts_with("HDI", vars = cn)
+
   if (!sjmisc::is_empty(hdi.cols)) {
     x <- x %>%
       purrr::map_at(hdi.cols, function(i) {
@@ -514,6 +521,8 @@ trim_hdi <- function(x) {
         i
       }) %>%
       as.data.frame()
+
+    colnames(x) <- cn
   }
   x
 }
@@ -557,6 +566,7 @@ print_stan_mv_re <- function(x, resp) {
     if (!sjmisc::is_empty(find.re)) {
       cat(crayon::blue(sprintf("## Random effect %s", crayon::red(r))))
       cat(crayon::blue(sprintf(" for response %s\n\n", crayon::red(resp))))
+
       xr <- x %>%
         dplyr::filter(.data$random.effect == !! r, .data$response == !! resp) %>%
         dplyr::select(-1:-2) %>%
@@ -633,7 +643,6 @@ print_stan_zeroinf_ranef <- function(x) {
 
       cat("\n")
     }
-
   }
 }
 
