@@ -455,6 +455,7 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
     x.fe <- dplyr::slice(x, !! fe)
     x <- dplyr::slice(x, -!! fe)
     x.fe$term <- clean_term_name(x.fe$term)
+    x.fe <- trim_hdi(x.fe)
 
     colnames(x.fe)[2] <- ""
 
@@ -484,6 +485,7 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
       dplyr::filter(.data$random.effect == !! r) %>%
       dplyr::select(-1) %>%
       dplyr::mutate(term = clean_term_name(.data$term)) %>%
+      trim_hdi() %>%
       as.data.frame()
 
     colnames(xr)[1] <- ""
@@ -491,6 +493,29 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
 
     cat("\n")
   }
+}
+
+
+#' @importFrom sjmisc is_empty
+#' @importFrom tidyselect starts_with
+trim_hdi <- function(x) {
+  hdi.cols <- tidyselect::starts_with("HDI", vars = colnames(x))
+  if (!sjmisc::is_empty(hdi.cols)) {
+    x <- x %>%
+      purrr::map_at(hdi.cols, function(i) {
+        spaces <- grep(pattern = "[ ", i, fixed = TRUE)
+        if (length(spaces) == length(i))
+          i <- gsub("[ ", "[", i, fixed = TRUE)
+
+        spaces <- grep(pattern = " ]", i, fixed = TRUE)
+        if (length(spaces) == length(i))
+          i <- gsub(" ]", "]", i, fixed = TRUE)
+
+        i
+      }) %>%
+      as.data.frame()
+  }
+  x
 }
 
 
@@ -513,6 +538,7 @@ print_stan_mv_re <- function(x, resp) {
       dplyr::filter(.data$response == !! resp) %>%
       dplyr::select(-1:-2) %>%
       dplyr::mutate(term = clean_term_name(.data$term)) %>%
+      trim_hdi() %>%
       as.data.frame()
 
     colnames(xr)[1] <- ""
@@ -535,6 +561,7 @@ print_stan_mv_re <- function(x, resp) {
         dplyr::filter(.data$random.effect == !! r, .data$response == !! resp) %>%
         dplyr::select(-1:-2) %>%
         dplyr::mutate(term = clean_term_name(.data$term)) %>%
+        trim_hdi() %>%
         as.data.frame()
 
       colnames(xr)[1] <- ""
@@ -565,6 +592,7 @@ print_stan_zeroinf_ranef <- function(x) {
     x.fe <- dplyr::slice(x, !! fe)
     x <- dplyr::slice(x, -!! fe)
     x.fe$term <- clean_term_name(x.fe$term)
+    x.fe <- trim_hdi(x.fe)
 
     colnames(x.fe)[2] <- ""
 
@@ -597,6 +625,7 @@ print_stan_zeroinf_ranef <- function(x) {
         dplyr::filter(.data$random.effect == !! r) %>%
         dplyr::select(-1) %>%
         dplyr::mutate(term = clean_term_name(.data$term)) %>%
+        trim_hdi() %>%
         as.data.frame()
 
       colnames(xr)[1] <- ""
