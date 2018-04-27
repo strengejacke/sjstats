@@ -298,7 +298,7 @@ print.icc.lme4 <- function(x, comp, ...) {
 
 #' @importFrom rlang .data
 #' @importFrom dplyr filter slice select
-#' @importFrom tidyselect starts_with
+#' @importFrom tidyselect starts_with contains
 #' @importFrom crayon blue cyan red
 #' @importFrom sjmisc var_rename trim
 #' @importFrom tibble has_name
@@ -323,11 +323,19 @@ print.tidy_stan <- function(x, ...) {
   # print zero-inflated models ----
 
   if (!sjmisc::is_empty(zi)) {
+
+    # if we have random effects, make sure that any random effects
+    # from zero-inlfated model are correctly handled here
+
+    if (ran.eff) {
+      zi <- union(zi, tidyselect::contains("__zi", vars = x$term))
+    }
+
     x.zi <- dplyr::slice(x, !! zi)
     x <- dplyr::slice(x, -!! zi)
 
-    x.zi$term <- gsub("b_zi_", "", x.zi$term, fixed = TRUE)
-    x.zi$term <- gsub("zi_", "", x.zi$term, fixed = TRUE)
+    x.zi$term <- gsub("(^b_zi_)", "", x.zi$term)
+    x.zi$term <- gsub("(^zi_)", "", x.zi$term)
 
     x$term <- clean_term_name(x$term)
     x.zi$term <- clean_term_name(x.zi$term)
@@ -340,21 +348,21 @@ print.tidy_stan <- function(x, ...) {
       x %>%
         as.data.frame() %>%
         print(..., row.names = FALSE)
+      cat("\n")
     }
 
-    cat(crayon::blue("\n## Zero-Inflated Model:\n\n"))
 
-    # did we really had random effects?
+    if (ran.eff) {
+      print_stan_zeroinf_ranef(x.zi)
+    } else {
+      cat(crayon::blue("## Zero-Inflated Model:\n\n"))
 
-    if (tibble::has_name(x.zi, "random.effect") &&
-        all(sjmisc::is_empty(x.zi$random.effect, first.only = FALSE))) {
-      x.zi <- dplyr::select(x.zi, -.data$random.effect)
+      colnames(x.zi)[1] <- ""
+      x.zi %>%
+        as.data.frame() %>%
+        print(..., row.names = FALSE)
+      cat("\n")
     }
-
-    colnames(x.zi)[1] <- ""
-    x.zi %>%
-      as.data.frame() %>%
-      print(..., row.names = FALSE)
 
 
     # print multivariate response models ----
@@ -423,6 +431,7 @@ print.tidy_stan <- function(x, ...) {
 #' @importFrom sjmisc is_empty
 #' @importFrom crayon blue red
 #' @importFrom dplyr slice select filter mutate
+#' @importFrom tidyselect contains
 print_stan_ranef <- function(x, zeroinf = FALSE) {
   # find fixed effects - is type = "all"
   fe <- which(x$random.effect == "")
@@ -455,6 +464,10 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
   # iterate all random effects
   re <- unique(x$random.effect)
 
+  # remove random effects from zero inflated model
+  re.zi <- tidyselect::contains("__zi", vars = re)
+  if (!sjmisc::is_empty(re.zi)) re <- re[-re.zi]
+
   for (r in re) {
 
     if (!zeroinf)
@@ -474,6 +487,70 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
     cat("\n")
   }
 }
+
+
+#' @importFrom sjmisc is_empty
+#' @importFrom crayon blue red
+#' @importFrom dplyr slice select filter mutate
+#' @importFrom tidyselect contains
+print_stan_zeroinf_ranef <- function(x) {
+  # find fixed effects - is type = "all"
+  fe <- which(x$random.effect == "")
+
+  if (!sjmisc::is_empty(fe)) {
+
+    cat(crayon::blue("## Zero-Inflated Model: Fixed effects\n\n"))
+
+    # if we have fixed and random effects, get information for
+    # fixed effects, and then remove these summary lines from
+    # the data frame, so only random effects remain for later
+
+    x.fe <- dplyr::slice(x, !! fe)
+    x <- dplyr::slice(x, -!! fe)
+    x.fe$term <- clean_term_name(x.fe$term)
+
+    colnames(x.fe)[2] <- ""
+
+    x.fe %>%
+      dplyr::select(-1) %>%
+      as.data.frame() %>%
+      print(row.names = FALSE)
+
+    cat("\n")
+  }
+
+  # iterate all random effects
+  re <- unique(x$random.effect)
+
+  # remove random effects from zero inflated model
+  re.zi <- tidyselect::contains("__zi", vars = re)
+
+  if (!sjmisc::is_empty(re.zi)) {
+
+    re <- re[re.zi]
+
+    x$random.effect <- gsub("__zi", "", x$random.effect, fixed = TRUE)
+    x$term <- gsub("__zi", "", x$term, fixed = TRUE)
+    re <- gsub("__zi", "", re, fixed = TRUE)
+
+    for (r in re) {
+      cat(crayon::blue(sprintf("## Zero-Inflated Model: Random effect %s\n\n", crayon::red(r))))
+
+      xr <- x %>%
+        dplyr::filter(.data$random.effect == !! r) %>%
+        dplyr::select(-1) %>%
+        dplyr::mutate(term = clean_term_name(.data$term)) %>%
+        as.data.frame()
+
+      colnames(xr)[1] <- ""
+      print(xr, row.names = FALSE)
+
+      cat("\n")
+    }
+
+  }
+}
+
 
 #' @importFrom sjmisc trim
 clean_term_name <- function(x) {
