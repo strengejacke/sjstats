@@ -5,7 +5,7 @@
 \title{Tidy summary output for stan models}
 \usage{
 tidy_stan(x, prob = 0.89, typical = "median", trans = NULL,
-  type = c("fixed", "random", "all"), digits = 3)
+  type = c("fixed", "random", "all"), digits = 2)
 }
 \arguments{
 \item{x}{A \code{stanreg}, \code{stanfit} or \code{brmsfit} object.}

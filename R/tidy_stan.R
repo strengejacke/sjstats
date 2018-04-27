@@ -79,7 +79,7 @@
 #' @importFrom bayesplot rhat neff_ratio
 #' @importFrom sjmisc is_empty trim
 #' @export
-tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c("fixed", "random", "all"), digits = 3) {
+tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c("fixed", "random", "all"), digits = 2) {
 
   # only works for rstanarm- or brms-models
   if (!inherits(x, c("stanreg", "stanfit", "brmsfit")))
