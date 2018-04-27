@@ -18,23 +18,40 @@
 #'         To distinguish multiple HDI values, column names for the HDI get a suffix
 #'         when \code{prob} has more than one element.
 #'
-#' @details The returned data frame gives information on the Bayesian point
-#'          estimate (column \emph{estimate}, which is by default the posterior
-#'          median; other statistics are also possible, see \code{typical}), the
-#'          standard error (which are actually \emph{median absolute deviations}),
-#'          the HDI, the ratio of effective numbers of samples, \emph{n_eff},
-#'          (i.e. effective number of samples divided by total number of samples)
-#'          and Rhat statistics.
-#'          \cr \cr
-#'          The ratio of effective number of samples ranges from 0 to 1,
-#'          and should be close to 1. The closer this ratio comes to zero means
-#'          that the chains may be inefficient, but possibly still okay.
-#'          \cr \cr
-#'          When Rhat is above 1, it usually indicates that the chain has not
-#'          yet converged, indicating that the drawn samples might not be
-#'          trustworthy. Drawing more iteration may solve this issue.
-#'          \cr \cr
-#'          Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
+#' @details The returned data frame has an additonal class-attribute,
+#'    \code{tidy_stan}, to pass the result to its own \code{print()}-method.
+#'    The \code{print()}-method create a cleaner output, especially for multilevel,
+#'    zero-inflated or multivariate response models, where - for instance -
+#'    the conditional part of a model is printed separately from the zero-inflated
+#'    part, or random and fixed effects are printed separately.
+#'    \cr \cr
+#'    The returned data frame gives information on:
+#'    \itemize{
+#'      \item{The Bayesian point estimate (column \emph{estimate}, which is by
+#'            default the posterior median; other statistics are also possible,
+#'            see \code{typical})-}
+#'      \item{
+#'        The standard error (which are actually \emph{median absolute
+#'        deviations}).
+#'      }
+#'      \item{
+#'        The HDI (see \code{\link{hdi}}). Computation for HDI is based on the
+#'        code from Kruschke 2015, pp. 727f.
+#'      }
+#'      \item{
+#'        The ratio of effective numbers of samples, \emph{n_eff}, (i.e.
+#'        effective number of samples divided by total number of samples).
+#'        This ratio ranges from 0 to 1, and should be close to 1. The closer
+#'        this ratio comes to zero means that the chains may be inefficient,
+#'        but possibly still okay.
+#'      }
+#'      \item{
+#'        The Rhat statistics. When Rhat is above 1, it usually indicates that
+#'        the chain has not yet converged, indicating that the drawn samples
+#'        might not be trustworthy. Drawing more iteration may solve this issue.
+#'      }
+#'      \item{The Monte Carlo standard error (see \code{\link{mcse}}).}
+#'    }
 #'
 #' @seealso \code{\link{hdi}}
 #'
