@@ -328,8 +328,11 @@ print.tidy_stan <- function(x, ...) {
     x.zi$term <- gsub("b_zi_", "", x.zi$term, fixed = TRUE)
     x.zi$term <- gsub("zi_", "", x.zi$term, fixed = TRUE)
 
-    # x$term <- sjmisc::trim(x$term)
-    # x.zi$term <- sjmisc::trim(x.zi$term)
+    x$term <- clean_term_name(x$term)
+    x.zi$term <- clean_term_name(x.zi$term)
+
+    colnames(x)[1] <- ""
+    colnames(x.zi)[1] <- ""
 
     cat(crayon::blue("## Conditional Model:\n\n"))
 
@@ -358,12 +361,14 @@ print.tidy_stan <- function(x, ...) {
     for (resp in responses) {
       cat(crayon::blue(sprintf("## Response: %s\n\n", crayon::red(resp))))
 
-      x %>%
+      xr <- x %>%
         dplyr::filter(.data$response == !! resp) %>%
         dplyr::select(-1) %>%
         dplyr::mutate(term = clean_term_name(.data$term)) %>%
-        as.data.frame() %>%
-        print(..., row.names = FALSE)
+        as.data.frame()
+
+      colnames(xr)[1] <- ""
+      print(xr, ..., row.names = FALSE)
 
       cat("\n")
     }
@@ -379,11 +384,13 @@ print.tidy_stan <- function(x, ...) {
 
       cat(crayon::cyan(sprintf("## Residual Correlations\n\n", resp)))
 
-      x.cor %>%
+      x.cor <- x.cor %>%
         dplyr::select(-1) %>%
         sjmisc::var_rename(term = "correlation") %>%
-        as.data.frame() %>%
-        print(..., row.names = FALSE)
+        as.data.frame()
+
+      colnames(x.cor)[1] <- ""
+      print(x.cor, ..., row.names = FALSE)
     }
   } else if (ran.eff) {
       # find fixed effects - is type = "all"
@@ -400,6 +407,8 @@ print.tidy_stan <- function(x, ...) {
         x <- dplyr::slice(x, -!! fe)
         x.fe$term <- clean_term_name(x.fe$term)
 
+        colnames(x.fe)[2] <- ""
+
         x.fe %>%
           dplyr::select(-1) %>%
           as.data.frame() %>%
@@ -414,12 +423,14 @@ print.tidy_stan <- function(x, ...) {
       for (r in re) {
         cat(crayon::blue(sprintf("## Random effect %s\n\n", crayon::red(r))))
 
-        x %>%
+        xr <- x %>%
           dplyr::filter(.data$random.effect == !! r) %>%
           dplyr::select(-1) %>%
           dplyr::mutate(term = clean_term_name(.data$term)) %>%
-          as.data.frame() %>%
-          print(..., row.names = FALSE)
+          as.data.frame()
+
+        colnames(xr)[1] <- ""
+        print(xr, ..., row.names = FALSE)
 
         cat("\n")
       }
