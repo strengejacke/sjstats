@@ -22,8 +22,8 @@ vector to apply other different functions to numeric and categorical
 \code{x}, where factors are first converted to numeric vectors, e.g.
 \code{fun = c(numeric = "median", factor = "mean")}. See 'Examples'.}
 
-\item{weight.by}{Vector of weights that will be applied to weight all cases.
-Must be a vector of same length as the input vector. Default is
+\item{weight.by}{Name of variable in \code{x} that indicated the vector of
+weights that will be applied to weight all  observations. Default is
 \code{NULL}, so no weights are used.}
 
 \item{...}{Further arguments, passed down to \code{fun}.}

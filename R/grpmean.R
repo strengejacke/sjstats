@@ -6,28 +6,29 @@
 #'
 #' @param x A (grouped) data frame.
 #' @param dv Name of the dependent variable, for which the mean value, grouped
-#'        by \code{grp}, is computed.
+#'   by \code{grp}, is computed.
 #' @param grp Factor with the cross-classifying variable, where \code{dv} is
-#'        grouped into the categories represented by \code{grp}. Numeric vectors
-#'        are coerced to factors.
-#' @param weight.by Vector of weights that will be applied to weight all cases.
-#'        Must be a vector of same length as the input vector. Default is
-#'        \code{NULL}, so no weights are used.
-#' @param digits Numeric, amount of digits after decimal point when rounding estimates and values.
+#'   grouped into the categories represented by \code{grp}. Numeric vectors
+#'   are coerced to factors.
+#' @param weight.by Name of variable in \code{x} that indicated the vector of
+#'   weights that will be applied to weight all  observations. Default is
+#'   \code{NULL}, so no weights are used.
+#' @param digits Numeric, amount of digits after decimal point when rounding
+#'   estimates and values.
 #' @param out Character vector, indicating whether the results should be printed
-#'        to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
-#'        (\code{out = "viewer"}) or browser (\code{out = "browser"}).
+#'   to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
+#'   (\code{out = "viewer"}) or browser (\code{out = "browser"}).
 #'
 #' @return For non-grouped data frames, \code{grpmean()} returns a data frame with
-#'         following columns: \code{term}, \code{mean}, \code{N}, \code{std.dev},
-#'         \code{std.error} and \code{p.value}. For grouped data frames, returns
-#'         a list of such data frames.
+#'   following columns: \code{term}, \code{mean}, \code{N}, \code{std.dev},
+#'   \code{std.error} and \code{p.value}. For grouped data frames, returns
+#'   a list of such data frames.
 #'
 #' @details This function performs a One-Way-Anova with \code{dv} as dependent
-#'            and \code{grp} as independent variable, by calling
-#'            \code{lm(count ~ as.factor(grp))}. Then \code{\link[emmeans]{contrast}}
-#'            is called to get p-values for each sub-group. P-values indicate whether
-#'            each group-mean is significantly different from the total mean.
+#'   and \code{grp} as independent variable, by calling
+#'   \code{lm(count ~ as.factor(grp))}. Then \code{\link[emmeans]{contrast}}
+#'   is called to get p-values for each sub-group. P-values indicate whether
+#'   each group-mean is significantly different from the total mean.
 #'
 #' @examples
 #' data(efc)
@@ -64,8 +65,8 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
   dv.name <- rlang::quo_name(rlang::enquo(dv))
 
   # weights need extra checking, might be NULL
-  if (!is.null(weight.by))
-    weights <- gsub("\"", "", deparse(substitute(weight.by)), fixed = T)
+  if (!missing(weight.by))
+    weights <- rlang::quo_name(rlang::enquo(weight.by))
   else
     weights <- NULL
 

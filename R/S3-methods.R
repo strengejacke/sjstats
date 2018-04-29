@@ -914,7 +914,7 @@ print.sj_mwu <- function(x, ...) {
   # if we have more than 2 groups, also perfom kruskal-wallis-test
   if (length(unique(stats::na.omit(x$data$grp))) > 2) {
     cat(crayon::blue("# Kruskal-Wallis-Test\n\n"))
-    kw <- stats::kruskal.test(x$data$x, x$data$grp)
+    kw <- stats::kruskal.test(x$data$dv, x$data$grp)
     cat(sprintf("chi-squared = %.3f\n", kw$statistic))
     cat(sprintf("df = %i\n", kw$parameter))
     if (kw$p.value < 0.001) {

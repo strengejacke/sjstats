@@ -17,11 +17,12 @@ by \code{grp}, is computed.}
 grouped into the categories represented by \code{grp}. Numeric vectors
 are coerced to factors.}
 
-\item{weight.by}{Vector of weights that will be applied to weight all cases.
-Must be a vector of same length as the input vector. Default is
+\item{weight.by}{Name of variable in \code{x} that indicated the vector of
+weights that will be applied to weight all  observations. Default is
 \code{NULL}, so no weights are used.}
 
-\item{digits}{Numeric, amount of digits after decimal point when rounding estimates and values.}
+\item{digits}{Numeric, amount of digits after decimal point when rounding
+estimates and values.}
 
 \item{out}{Character vector, indicating whether the results should be printed
 to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
@@ -29,9 +30,9 @@ to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
 }
 \value{
 For non-grouped data frames, \code{grpmean()} returns a data frame with
-        following columns: \code{term}, \code{mean}, \code{N}, \code{std.dev},
-        \code{std.error} and \code{p.value}. For grouped data frames, returns
-        a list of such data frames.
+  following columns: \code{term}, \code{mean}, \code{N}, \code{std.dev},
+  \code{std.error} and \code{p.value}. For grouped data frames, returns
+  a list of such data frames.
 }
 \description{
 Computes mean, sd and se for each sub-group (indicated by \code{grp})
@@ -39,10 +40,10 @@ Computes mean, sd and se for each sub-group (indicated by \code{grp})
 }
 \details{
 This function performs a One-Way-Anova with \code{dv} as dependent
-           and \code{grp} as independent variable, by calling
-           \code{lm(count ~ as.factor(grp))}. Then \code{\link[emmeans]{contrast}}
-           is called to get p-values for each sub-group. P-values indicate whether
-           each group-mean is significantly different from the total mean.
+  and \code{grp} as independent variable, by calling
+  \code{lm(count ~ as.factor(grp))}. Then \code{\link[emmeans]{contrast}}
+  is called to get p-values for each sub-group. P-values indicate whether
+  each group-mean is significantly different from the total mean.
 }
 \examples{
 data(efc)

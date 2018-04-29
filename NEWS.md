@@ -4,12 +4,17 @@
 
 * Remove _tidyverse_ from suggested packages, as requested by maintainers.
 
+## Breaking Changes
+
+* `mwu()` now requires a data frame as first argument, followed by the names of the two variables to perform the Mann-Whitney-U-Test on.
+
 ## Changes to functions
 
 * `tidy_stan()` was improved especially for more complex multilevel models.
 * Make `tidy_stan()` for large `brmsfit`-objects (esp. with random effects) more efficient.
 * Better `print()`-method for `tidy_stan()`, `hdi()`, `rope()`, `icc()` and some other functions.
 * `link_inverse()` now also should return the link-inverse function for most (or some or all?) custom families of _brms_-models.
+* The `weight.by`-arguments in `grpmean()` and `mwu()` now should be a variable name from a variable in `x`, and no longer a separate vector.
 
 ## New functions
 

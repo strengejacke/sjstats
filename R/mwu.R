@@ -8,13 +8,10 @@
 #'                The function reports U, p and Z-values as well as effect size r
 #'                and group-rank-means.
 #'
-#' @param x Numeric vector or variable.
-#' @param grp Grouping variable indicating the groups that should be used for comparison.
 #' @param distribution Indicates how the null distribution of the test statistic should be computed.
 #'          May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
 #'          (default). See \code{\link[coin]{wilcox_test}} for details.
 #'
-#' @inheritParams prop
 #' @inheritParams grpmean
 #'
 #' @return (Invisibly) returns a data frame with U, p and Z-values for each group-comparison
@@ -34,14 +31,15 @@
 #' @examples
 #' data(efc)
 #' # Mann-Whitney-U-Tests for elder's age by elder's dependency.
-#' mwu(efc$e17age, efc$e42dep)
+#' mwu(efc, e17age, e42dep)
 #'
 #' @importFrom stats na.omit wilcox.test kruskal.test
 #' @importFrom coin wilcox_test pvalue statistic
 #' @importFrom sjmisc recode_to
 #' @importFrom sjlabelled get_labels as_numeric
+#' @importFrom rlang quo_name enquo
 #' @export
-mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL, out = c("txt", "viewer", "browser")) {
+mwu <- function(x, dv, grp, distribution = "asymptotic", weight.by = NULL, out = c("txt", "viewer", "browser")) {
 
   out <- match.arg(out)
 
@@ -50,6 +48,26 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL, out = c("
     out <- "txt"
   }
 
+
+  # create quosures
+  grp.name <- rlang::quo_name(rlang::enquo(grp))
+  dv.name <- rlang::quo_name(rlang::enquo(dv))
+
+  # weights need extra checking, might be NULL
+  if (!missing(weight.by))
+    weights <- rlang::quo_name(rlang::enquo(weight.by))
+  else
+    weights <- NULL
+
+  # create string with variable names
+  vars <- c(grp.name, dv.name, weights)
+
+  # get data
+  x <- suppressMessages(dplyr::select(x, !! vars))
+
+  grp <- x[[grp.name]]
+  dv <- x[[dv.name]]
+  if (!is.null(weights)) weight.by <- x[[weights]]
 
   # coerce factor and character to numeric
   if (is.factor(grp) || is.character(grp)) grp <- sjlabelled::as_numeric(grp)
@@ -71,7 +89,7 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL, out = c("
     for (j in i:cnt) {
       if (i != j) {
         # retrieve cases (rows) of subgroups
-        xsub <- x[which(grp == grp_values[i] | grp == grp_values[j])]
+        xsub <- dv[which(grp == grp_values[i] | grp == grp_values[j])]
         ysub <- grp[which(grp == grp_values[i] | grp == grp_values[j])]
         # only use rows with non-missings
         ysub <- ysub[which(!is.na(xsub))]
@@ -102,7 +120,7 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL, out = c("
         u <- as.numeric(coin::statistic(wt, type = "linear"))
         z <- as.numeric(coin::statistic(wt, type = "standardized"))
         p <- coin::pvalue(wt)
-        r <- abs(z / sqrt(length(x)))
+        r <- abs(z / sqrt(length(dv)))
         w <- stats::wilcox.test(xsub, ysub.n, paired = TRUE)$statistic
         rkm.i <- mean(rank(xsub)[which(ysub.n == grp_values[i])], na.rm = TRUE)
         rkm.j <- mean(rank(xsub)[which(ysub.n == grp_values[j])], na.rm = TRUE)
@@ -166,7 +184,7 @@ mwu <- function(x, grp, distribution = "asymptotic", weight.by = NULL, out = c("
   # replace 0.001 with <0.001
   levels(tab.df$p)[which(levels(tab.df$p) == "0.001")] <- "<0.001"
 
-  ret.df <- list(df = df, tab.df = tab.df, data = data.frame(x, grp))
+  ret.df <- list(df = df, tab.df = tab.df, data = data.frame(dv, grp))
 
   # save how to print output
   attr(ret.df, "print") <- out

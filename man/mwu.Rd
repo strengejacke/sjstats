@@ -4,20 +4,25 @@
 \alias{mwu}
 \title{Mann-Whitney-U-Test}
 \usage{
-mwu(x, grp, distribution = "asymptotic", weight.by = NULL, out = c("txt",
-  "viewer", "browser"))
+mwu(x, dv, grp, distribution = "asymptotic", weight.by = NULL,
+  out = c("txt", "viewer", "browser"))
 }
 \arguments{
-\item{x}{Numeric vector or variable.}
+\item{x}{A (grouped) data frame.}
 
-\item{grp}{Grouping variable indicating the groups that should be used for comparison.}
+\item{dv}{Name of the dependent variable, for which the mean value, grouped
+by \code{grp}, is computed.}
+
+\item{grp}{Factor with the cross-classifying variable, where \code{dv} is
+grouped into the categories represented by \code{grp}. Numeric vectors
+are coerced to factors.}
 
 \item{distribution}{Indicates how the null distribution of the test statistic should be computed.
 May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
 (default). See \code{\link[coin]{wilcox_test}} for details.}
 
-\item{weight.by}{Vector of weights that will be applied to weight all observations.
-Must be a vector of same length as the input vector. Default is
+\item{weight.by}{Name of variable in \code{x} that indicated the vector of
+weights that will be applied to weight all  observations. Default is
 \code{NULL}, so no weights are used.}
 
 \item{out}{Character vector, indicating whether the results should be printed
@@ -52,6 +57,6 @@ This function calls the \code{\link[coin]{wilcox_test}} with formula. If \code{g
 \examples{
 data(efc)
 # Mann-Whitney-U-Tests for elder's age by elder's dependency.
-mwu(efc$e17age, efc$e42dep)
+mwu(efc, e17age, e42dep)
 
 }
