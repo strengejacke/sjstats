@@ -51,7 +51,7 @@
 #' @importFrom stats lm na.omit sd weighted.mean
 #' @importFrom purrr map_chr map_df
 #' @importFrom tibble tibble add_row add_column
-#' @importFrom sjmisc to_value
+#' @importFrom sjmisc to_value is_empty
 #' @importFrom rlang enquo .data quo_name
 #' @export
 grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "viewer", "browser")) {
@@ -69,10 +69,12 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
   dv.name <- rlang::quo_name(rlang::enquo(dv))
 
   # weights need extra checking, might be NULL
-  if (!missing(weight.by))
+  if (!missing(weight.by)) {
     weights <- rlang::quo_name(rlang::enquo(weight.by))
-  else
+    if (sjmisc::is_empty(weights) || weights == "NULL") weights <- NULL
+  } else
     weights <- NULL
+
 
   # create string with variable names
   vars <- c(grp.name, dv.name, weights)

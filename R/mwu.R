@@ -35,7 +35,7 @@
 #'
 #' @importFrom stats na.omit wilcox.test kruskal.test
 #' @importFrom coin wilcox_test pvalue statistic
-#' @importFrom sjmisc recode_to
+#' @importFrom sjmisc recode_to is_empty
 #' @importFrom sjlabelled get_labels as_numeric
 #' @importFrom rlang quo_name enquo
 #' @export
@@ -54,9 +54,10 @@ mwu <- function(x, dv, grp, distribution = "asymptotic", weight.by = NULL, out =
   dv.name <- rlang::quo_name(rlang::enquo(dv))
 
   # weights need extra checking, might be NULL
-  if (!missing(weight.by))
+  if (!missing(weight.by)) {
     weights <- rlang::quo_name(rlang::enquo(weight.by))
-  else
+    if (sjmisc::is_empty(weights) || weights == "NULL") weights <- NULL
+  } else
     weights <- NULL
 
   # create string with variable names
