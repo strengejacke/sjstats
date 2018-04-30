@@ -59,7 +59,6 @@ Suggests:
     car,
     ggplot2,
     graphics,
-    Hmisc,
     knitr,
     MBESS,
     pbkrtest (>= 0.4-7),

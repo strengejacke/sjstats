@@ -140,18 +140,13 @@ weight2 <- function(x, weights) {
 #'
 #' @export
 wtd_sd <- function(x, weights = NULL) {
-  # check if suggested packages are available
-  if (!requireNamespace("Hmisc", quietly = TRUE)) {
-    stop("Package `Hmisc` needed for this function to work. Please install it.", call. = FALSE)
-  }
-
   UseMethod("wtd_sd")
 }
 
 
 #' @export
 wtd_sd.data.frame <- function(x, weights = NULL) {
-  sd_result <- purrr::map_dbl(x, ~ sqrt(Hmisc::wtd.var(.x, weights = weights, na.rm = TRUE)))
+  sd_result <- purrr::map_dbl(x, ~ sqrt(wtd_var(.x, weights)))
   names(sd_result) <- colnames(x)
 
   sd_result
@@ -159,7 +154,7 @@ wtd_sd.data.frame <- function(x, weights = NULL) {
 
 #' @export
 wtd_sd.matrix <- function(x, weights = NULL) {
-  sd_result <- purrr::map_dbl(x, ~ sqrt(Hmisc::wtd.var(.x, weights = weights, na.rm = TRUE)))
+  sd_result <- purrr::map_dbl(x, ~ sqrt(wtd_var(.x, weights)))
   names(sd_result) <- colnames(x)
 
   sd_result
@@ -167,7 +162,7 @@ wtd_sd.matrix <- function(x, weights = NULL) {
 
 #' @export
 wtd_sd.default <- function(x, weights = NULL) {
-  sqrt(Hmisc::wtd.var(x, weights = weights, na.rm = TRUE))
+  sqrt(wtd_var(x, weights))
 }
 
 
@@ -175,11 +170,6 @@ wtd_sd.default <- function(x, weights = NULL) {
 #' @rdname wtd_sd
 #' @export
 wtd_se <- function(x, weights = NULL) {
-  # check if suggested packages are available
-  if (!requireNamespace("Hmisc", quietly = TRUE)) {
-    stop("Package `Hmisc` needed for this function to work. Please install it.", call. = FALSE)
-  }
-
   UseMethod("wtd_se")
 }
 
@@ -206,7 +196,7 @@ wtd_se.default <- function(x, weights = NULL) {
 }
 
 wtd_se_helper <- function(x, weights) {
-  sqrt(Hmisc::wtd.var(x, weights = weights, na.rm = TRUE) / length(stats::na.omit(x)))
+  sqrt(wtd_var(x, weights) / length(stats::na.omit(x)))
 }
 
 
@@ -231,4 +221,18 @@ svy_md <- function(x, design) {
       na.rm = TRUE
     )
   )
+}
+
+
+wtd_var <- function(x, w) {
+  if (is.null(w)) w <- rep(1, length(x))
+
+  x[is.na(w)] <- NA
+  w[is.na(x)] <- NA
+
+  w <- na.omit(w)
+  x <- na.omit(x)
+
+  xbar <- sum(w * x) / sum(w)
+  sum(w * ((x - xbar)^2)) / (sum(w) - 1)
 }
