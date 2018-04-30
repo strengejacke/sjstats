@@ -122,6 +122,8 @@ link_inverse <- function(x) {
 
     if ("linkinv" %in% names(ff))
       return(ff$linkinv)
+    else if ("link" %in% names(ff) && is.character(ff$link))
+      return(stats::make.link(ff$link)$linkinv)
     else
       return(match.fun("exp"))
   }
