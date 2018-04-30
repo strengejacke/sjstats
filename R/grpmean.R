@@ -43,6 +43,10 @@
 #'   group_by(c172code) %>%
 #'   grpmean(c12hour, e42dep)
 #'
+#' # weighting
+#' efc$weight <- abs(rnorm(n = nrow(efc), mean = 1, sd = .5))
+#' grpmean(efc, c12hour, e42dep, weight.by = weight)
+#'
 #' @importFrom sjlabelled get_label drop_labels get_labels
 #' @importFrom stats lm na.omit sd weighted.mean
 #' @importFrom purrr map_chr map_df
