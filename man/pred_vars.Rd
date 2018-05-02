@@ -63,6 +63,12 @@ Several functions to retrieve information from model objects,
      \item \code{link.fun}: the link-function
      \item \code{family}: the family-object
    }
+   \code{model_frame()} slighty differs from \code{model.frame()}, especially
+   for spline terms. Where \code{model.frame()} returns a matrix for splines,
+   \code{model_frame()} returns the data of the original variable and uses
+   the same column name as in the \code{data}-argument from the model-function.
+   This makes it easier, for instance, to get data that should be used as new
+   data in \code{predict()}. See 'Examples'.
 }
 \examples{
 data(efc)
@@ -87,5 +93,11 @@ exp(.3)
 outcome <- as.numeric(outcome)
 m <- glm(counts ~ log(outcome) + as.factor(treatment), family = poisson())
 var_names(m)
+
+# model.frame and model_frame behave slightly different
+library(splines)
+m <- lm(neg_c_7 ~ e42dep + ns(c160age), data = efc)
+head(model.frame(m))
+head(model_frame(m))
 
 }

@@ -35,6 +35,12 @@
 #'      \item \code{link.fun}: the link-function
 #'      \item \code{family}: the family-object
 #'    }
+#'    \code{model_frame()} slighty differs from \code{model.frame()}, especially
+#'    for spline terms. Where \code{model.frame()} returns a matrix for splines,
+#'    \code{model_frame()} returns the data of the original variable and uses
+#'    the same column name as in the \code{data}-argument from the model-function.
+#'    This makes it easier, for instance, to get data that should be used as new
+#'    data in \code{predict()}. See 'Examples'.
 #'
 #' @examples
 #' data(efc)
@@ -59,6 +65,12 @@
 #' outcome <- as.numeric(outcome)
 #' m <- glm(counts ~ log(outcome) + as.factor(treatment), family = poisson())
 #' var_names(m)
+#'
+#' # model.frame and model_frame behave slightly different
+#' library(splines)
+#' m <- lm(neg_c_7 ~ e42dep + ns(c160age), data = efc)
+#' head(model.frame(m))
+#' head(model_frame(m))
 #'
 #' @importFrom purrr flatten_chr map
 #' @importFrom stats formula terms
@@ -163,8 +175,14 @@ link_inverse <- function(x) {
     if (!is.null(fam$family) && (is.character(fam$family) && fam$family == "custom")) {
       il <- stats::make.link(fam$link)$linkinv
     } else {
-      ff <- get(fam$family, asNamespace("stats"))
-      il <- ff(fam$link)$linkinv
+      if ("linkinv" %in% names(fam)) {
+        il <- fam$linkinv
+      } else if ("link" %in% names(fam) && is.character(fam$link)) {
+        il <- stats::make.link(fam$link)$linkinv
+      } else {
+        ff <- get(fam$family, asNamespace("stats"))
+        il <- ff(fam$link)$linkinv
+      }
     }
   } else if (inherits(x, c("lrm", "polr", "clm", "logistf", "multinom", "Zelig-relogit"))) {
     # "lrm"-object from pkg "rms" have no family method
@@ -180,12 +198,11 @@ link_inverse <- function(x) {
 
 
 #' @rdname pred_vars
-#' @importFrom stats model.frame formula getCall
+#' @importFrom stats model.frame formula getCall na.omit
 #' @importFrom prediction find_data
 #' @importFrom purrr map_lgl map
 #' @importFrom dplyr select bind_cols
 #' @importFrom tibble as_tibble
-#' @importFrom tidyselect one_of
 #' @export
 model_frame <- function(x, fe.only = TRUE) {
   if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
@@ -226,17 +243,39 @@ model_frame <- function(x, fe.only = TRUE) {
   # proper column names and bind them back to the original model frame
 
   if (any(mc)) {
-    fitfram_matrix <- dplyr::select(fitfram, -which(mc))
-    spline.term <- get_vn_helper(names(which(mc)))
-
     # try to get model data from environment
     md <- eval(stats::getCall(x)$data, environment(stats::formula(x)))
 
     # if data not found in environment, reduce matrix variables into regular vectors
-    if (is.null(md))
+    if (is.null(md)) {
       fitfram <- dplyr::bind_cols(purrr::map(fitfram, ~ tibble::as_tibble(.x)))
-    else
-      fitfram <- dplyr::bind_cols(fitfram_matrix, dplyr::select(md, tidyselect::one_of(spline.term)))
+    } else {
+
+      # get "matrix" terms and "normal" predictors, but exclude
+      # response variable(s)
+
+      fitfram_matrix <- dplyr::select(fitfram, -which(mc))
+      spline.term <- get_vn_helper(names(which(mc)))
+      other.terms <- get_vn_helper(colnames(fitfram_matrix))[-1]
+
+      # now we have all variable names that we need from the original
+      # data set
+
+      needed.vars <- c(other.terms, spline.term)
+
+      # if response is a matrix vector (e.g. multivariate response),
+      # we need to include all response names as well, because else
+      # rows may not match due to additional missings in the response variables
+
+      if (is.matrix(fitfram[[1]])) {
+        needed.vars <- c(dimnames(fitfram[[1]])[[2]], needed.vars)
+      } else {
+        needed.vars <- c(colnames(fitfram)[1], needed.vars)
+      }
+
+      fitfram <- stats::na.omit(dplyr::select(md, !! needed.vars))
+    }
+
   }
 
   # clean variable names

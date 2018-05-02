@@ -1,3 +1,9 @@
+# sjstats 0.14.4
+
+## Changes to functions
+
+* `link_inverse()` now also returns the link-inverse function for cumulative-family _brms_-models.
+
 # sjstats 0.14.3
 
 ## General
@@ -28,6 +34,7 @@
 * Fix issue with wrong calculation of Nagelkerke's r-squared value in `r2()`.
 * Fix issue for factors with character leves in `typical_value()`, when argument `fun` for factors was set to `mode`.
 * Don't show prior-samples in `hdi()`, `tidy_stan()` etc. for _brmsfit_-objects.
+* Fixed issues in `model_frame()`with spline-terms when missing values were removed due to casewise deletion.
 
 # sjstats 0.14.2
 
