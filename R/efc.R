@@ -17,15 +17,8 @@
 #'
 #' # show variables
 #' \dontrun{
-#' library(sjmisc)
 #' library(sjPlot)
 #' view_df(efc)
-#'
-#' # show variable labels
-#' get_label(efc)
-#'
-#' # plot efc-data frame summary
-#' sjt.df(efc, alternateRowColor = TRUE)}
 #'
 NULL
 

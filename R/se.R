@@ -264,7 +264,7 @@ std_e_icc <- function(x, nsim) {
 
   # get ICC, and compute bootstrapped SE, than return both
   bstr <-
-    bootstr_icc_se(model_frame(fitted.model),
+    bootstr_icc_se(model_frame(fitted.model, fe.only = FALSE),
                    nsim,
                    model.formula,
                    model.family)

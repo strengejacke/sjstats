@@ -3,6 +3,12 @@
 ## Changes to functions
 
 * `link_inverse()` now also returns the link-inverse function for cumulative-family _brms_-models.
+* `model_family()` now also returns an `is_ordinal`-element with information if the model is ordinal resp. a cumulative link model.
+* Functions that access model information (like `model_family()`) now better support `vglm`-models (package _VGAM_).
+
+## Bug fixes
+
+* Fixed issue in `se()` for `icc()`-objects, where random effect term could not be found.
 
 # sjstats 0.14.3
 

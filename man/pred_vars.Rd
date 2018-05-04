@@ -60,6 +60,8 @@ Several functions to retrieve information from model objects,
      \item \code{is_logit}: model has logit link
      \item \code{is_linear}: family is gaussian
      \item \code{is_linear}: family is gaussian
+     \item \code{is_ordinal}: family is ordinal or cumulative link
+     \item \code{is_zeroinf}: model has zero-inflation component
      \item \code{link.fun}: the link-function
      \item \code{family}: the family-object
    }
