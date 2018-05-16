@@ -33,8 +33,12 @@
 <meta property="og:description" content="hdi() computes the highest density interval for values from
   MCMC samples. rope() calculates the proportion of a posterior
   distribution that lies within a region of practical equivalence.
-  n_eff() calculates the number of effective samples (effective
-  sample size). mcse() returns the Monte Carlo standard error." />
+  equi_test() combines these two functions and performs a
+  "HDI+ROPE decision rule" (Test for Practical Equivalence) (Kruschke 2018)
+  to check whether parameter values should be accepted or rejected against
+  the background of a formulated null hypothesis. n_eff() calculates
+  the number of effective samples (effective sample size). mcse()
+  returns the Monte Carlo standard error." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -119,7 +123,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Compute statistics for MCMC samples</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/HDI.R'><code>R/HDI.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/mcse.R'><code>R/mcse.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/n_eff.R'><code>R/n_eff.R</code></a>, and 2 more</small>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/HDI.R'><code>R/HDI.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/equi_test.R'><code>R/equi_test.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/mcse.R'><code>R/mcse.R</code></a>, and 3 more</small>
     <div class="hidden name"><code>hdi.Rd</code></div>
     </div>
 
@@ -128,12 +132,18 @@
     <p><code>hdi()</code> computes the highest density interval for values from
   MCMC samples. <code>rope()</code> calculates the proportion of a posterior
   distribution that lies within a region of practical equivalence.
-  <code>n_eff()</code> calculates the number of effective samples (effective
-  sample size). <code>mcse()</code> returns the Monte Carlo standard error.</p>
+  <code>equi_test()</code> combines these two functions and performs a
+  "HDI+ROPE decision rule" (Test for Practical Equivalence) (<cite>Kruschke 2018</cite>)
+  to check whether parameter values should be accepted or rejected against
+  the background of a formulated null hypothesis. <code>n_eff()</code> calculates
+  the number of effective samples (effective sample size). <code>mcse()</code>
+  returns the Monte Carlo standard error.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>hdi</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
+
+<span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='no'>eff_size</span>)
 
 <span class='fu'>mcse</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
 
@@ -178,6 +188,14 @@ range around zero, which indicates the region of practical equivalence.
 Values of the posterior distribution within this range are considered as
 being "practically equivalent to zero".</p></td>
     </tr>
+    <tr>
+      <th>eff_size</th>
+      <td><p>A scalar indicating the effect size that is used
+to calculate the limits of the ROPE for the test of practical equivalence.
+If not specified, an effect size of .1 is used, as suggested by
+<cite>Kruschke 2018</cite> (see 'Details'). If <code>rope</code> is specified, this
+argument will be ignored.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -193,25 +211,73 @@ being "practically equivalent to zero".</p></td>
   values from <code>x</code> that are within and outside the boundaries of
   <code>rope</code>.
   <br /> <br />
+  <code>equi_test()</code> returns a tibble with a column <code>decision</code> that
+  indicates whether or not a parameter value is accepted/rejected;
+  <code>inside.rope</code>, which indicates the proportion of the whole posterior
+  distribution that lies inside the ROPE (<em>not</em> just the proportion of
+  values from the 95% HDI); and the lower and upper interval from the 95%-HDI.
+  <br /> <br />
   <code>mcse()</code> and <code>n_eff()</code> return a tibble with two columns: one
   with the term names and one with the related statistic.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
-  For default sampling in Stan (4000 samples), the 90% intervals for HDI are
-  more stable than, for instance, 95% intervals. An effective sample size
-  (see <code>n_eff()</code>) of at least 10.000 is recommended if 95% intervals
-  should be computed (see Kruschke 2015, p. 183ff). <br /> <br />
-  The formula for <code>mcse()</code> is from Kruschke 2015, p. 187.
-  <br /> <br />
-  For <code>n_eff()</code>, the ratio of effective number of samples ranges from 0
-  to 1, and should be close to 1. The closer this ratio comes to zero means
-  that the chains may be inefficient, but possibly still okay.</p>
+    <dl class='dl-horizontal'>
+    <dt><strong>HDI</strong></dt><dd><p>Computation for HDI is based on the code from Kruschke 2015, pp. 727f.
+      For default sampling in Stan (4000 samples), the 90% intervals for HDI are
+      more stable than, for instance, 95% intervals. An effective sample size
+      (see <code><a href='http://www.rdocumentation.org/packages/brms/topics/nsamples'>nsamples</a></code>) of at least 10.000 is recommended if
+      95% intervals should be computed (see Kruschke 2015, p. 183ff).</p></dd>
+    <dt><strong>MCSE</strong></dt><dd><p>The formula for <code>mcse()</code> is from Kruschke 2015, p. 187.</p></dd>
+    <dt><strong>Ratio of Number of Effective Samples</strong></dt><dd><p>For <code>n_eff()</code>, the ratio of effective number of samples ranges from 0
+      to 1, and should be close to 1. The closer this ratio comes to zero means
+      that the chains may be inefficient, but possibly still okay.</p></dd>
+    <dt><strong>ROPE</strong></dt><dd><p>There are no fixed rules to set the limits for the region of practical
+      equivalence. However, there are some conventions described by
+      <cite>Kruschke (2018)</cite> how to specify the limits of the rope. One
+      convention for linear models is to set the limits about .1 SD of the
+      dependent variable around zero (i.e. <code>0 +/- .1 * sd(y)</code>), where
+      .1 stands for half of a small effect size. Another, more conservative
+      convention to set the ROPE limits is a range of half a standard
+      deviation around zero (see <cite>Norman et al. 2003</cite>), which indicates
+      a clinical relevant effect (i.e. <code>0 +/- .25 * sd(y)</code> or even
+      <code>0 +/- .5 * sd(y)</code>)</p></dd>
+    <dt><strong>Test for Practical Equivalence</strong></dt><dd><p><code>equi_test()</code> computes the 95%-HDI for <code>x</code> and checks if a
+      model predictor's HDI lies completely outside, completely inside or
+      partially inside the ROPE. If the HDI is completely outside the ROPE,
+      the "null hypothesis" for this parameter is "rejected". If the ROPE
+      completely covers the HDI, i.e. all most credible values of a parameter
+      are inside the region of practical equivalence, the null hypothesis
+      is accepted. Else, it's undecided whether to accept or reject the
+      null hypothesis. In short, desirable results are low proportions inside
+      the ROPE (the closer to zero the better) and the H0 should be rejected.
+      <br /> <br />
+      If neither the <code>rope</code> nor <code>eff_size</code> argument are specified,
+      the effect size will be set to 0.1 and the ROPE is <code>0 +/- .1 * sd(y)</code>
+      for linear models and <code>0 +/- .1 * sd(intercept)</code> for all other
+      models. If <code>eff_size</code> is specified, but <code>rope</code> is not, then
+      the same formula applies, except that <code>.1</code> is replaced by the
+      value in <code>eff_size</code>. If <code>rope</code> is specified, <code>eff_size</code>
+      will be ignored. See also section <em>ROPE</em> in 'Details'. <br /> <br />
+      The advantage of Bayesian testing for practical equivalence over
+      classical frequentist null hypothesis significance testing is that
+      discrete decisions are avoided, &#8220;because such decisions encourage
+      people to ignore the magnitude of the parameter value and its uncertainty&#8221;
+      <cite>Kruschke (2018)</cite>.</p></dd>
+  </dl>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Since <code>equi_test()</code> computes 95% HDI, a number of 10.000 samples
+  produces more stable results (see Kruschke 2015, p. 183ff).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Kruschke JK. Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and Stan. 2nd edition. Academic Press, 2015</p>
+    <p>Kruschke JK. Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and Stan. 2nd edition. Academic Press, 2015
+  <br /> <br />
+  Kruschke JK. Rejecting or Accepting Parameter Values in Bayesian Estimation. Advances in Methods and Practices in Psychological Science. 2018; doi: <a href='http://doi.org/10.1177/2515245918771304'>10.1177/2515245918771304</a>
+    <br /> <br />
+  Norman GR, Sloan JA, Wyrwich KW. Interpretation of Changes in Health-related Quality of Life: The Remarkable Universality of Half a Standard Deviation. Medical Care. 2003;41: 582–592. doi: <a href='http://doi.org/10.1097/01.MLR.0000062554.74615.4C'>10.1097/01.MLR.0000062554.74615.4C</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -253,6 +319,8 @@ being "practically equivalent to zero".</p></td>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#note">Note</a></li>
 
       <li><a href="#references">References</a></li>
       
