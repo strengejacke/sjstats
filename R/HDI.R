@@ -108,7 +108,7 @@
 #'       classical frequentist null hypothesis significance testing is that
 #'       discrete decisions are avoided, \dQuote{because such decisions encourage
 #'       people to ignore the magnitude of the parameter value and its uncertainty}
-#'       \cite{Kruschke (2018)}.
+#'       (\cite{Kruschke (2018)}).
 #'     }
 #'   }
 #'
