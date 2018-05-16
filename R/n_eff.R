@@ -11,11 +11,23 @@ n_eff.default <- function(x, type = c("fixed", "random", "all")) {
 }
 
 
+#' @importFrom bayesplot neff_ratio
 #' @export
 n_eff.stanreg <- function(x, type = c("fixed", "random", "all")) {
   # check arguments
   type <- match.arg(type)
-  n_eff_helper(x, smry = summary(x)[, "n_eff"], type)
+
+  n_eff_helper(x, smry = bayesplot::neff_ratio(x), type)
+}
+
+
+#' @importFrom bayesplot neff_ratio
+#' @export
+n_eff.stanfit <- function(x, type = c("fixed", "random", "all")) {
+  # check arguments
+  type <- match.arg(type)
+
+  n_eff_helper(x, smry = bayesplot::neff_ratio(x), type)
 }
 
 
@@ -24,8 +36,11 @@ n_eff.brmsfit <- function(x, type = c("fixed", "random", "all")) {
   # check arguments
   type <- match.arg(type)
 
-  if (!requireNamespace("rstan")) stop("Package `rstan` required.", call. = F)
-  n_eff_helper(x, smry = rstan::summary(x$fit)$summary[, "n_eff"], type)
+  # check for pkg availability, else function might fail
+  if (!requireNamespace("brms", quietly = TRUE))
+    stop("Please install and load package `brms` first.")
+
+  n_eff_helper(x, smry = brms::neff_ratio(x), type)
 }
 
 

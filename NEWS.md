@@ -1,10 +1,16 @@
 # sjstats 0.14.4
 
+## New functions
+
+* `equi_test()` to test if parameter values in Bayesian estimation should be accepted or rejected.
+* Add S3-method `nsamples()` for _stanreg_ objects.
+
 ## Changes to functions
 
 * `link_inverse()` now also returns the link-inverse function for cumulative-family _brms_-models.
 * `model_family()` now also returns an `is_ordinal`-element with information if the model is ordinal resp. a cumulative link model.
 * Functions that access model information (like `model_family()`) now better support `vglm`-models (package _VGAM_).
+* Effect sizes (`anova_stats()`, `eta_sq()` etc.) are now also computed for mixed models.
 
 ## Bug fixes
 

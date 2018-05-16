@@ -1225,10 +1225,45 @@ print.sj_hdi <- function(x, digits = 2, ...) {
 
 
 
+#' @importFrom crayon blue cyan
+#' @export
+print.sj_equi_test <- function(x, ...) {
+  cat(crayon::blue("\n# Test for Practical Equivalence of Model Predictors\n\n"))
+  cat(crayon::cyan(sprintf(
+    "  Effect Size: %.2f\n         ROPE: [%.2f %.2f]\n",
+    attr(x, "eff_size", exact = TRUE),
+    attr(x, "rope", exact = TRUE)[1],
+    attr(x, "rope", exact = TRUE)[2]
+  )))
+
+  if (!is.null(attr(x, "nsamples", exact = TRUE))) {
+    cat(crayon::cyan(sprintf(
+      "    # Samples: %i\n",
+      attr(x, "nsamples", exact = TRUE)
+    )))
+  }
+
+  cat("\n")
+
+  dat <- get_hdi_data(x, digits = 2)
+  dat[["inside.rope"]] <- sprintf("%.2f", dat[["inside.rope"]])
+  colnames(dat) <- c("", "H0", "%inROPE", "HDI(95%)")
+
+  print(as.data.frame(dat), ..., row.names = FALSE)
+
+  if (isTRUE(attr(x, "critical"))) {
+    message("\nThe number of effective samples may be insufficient for some parameters (indicated with \"*\").")
+  }
+}
+
+
+
 #' @importFrom purrr map_at map_df
 #' @importFrom dplyr bind_cols select
 get_hdi_data <- function(x, digits) {
   cn <- colnames(x)
+  prob <- attr(x, "prob", exact = TRUE)
+
   hdi.cols <- tidyselect::starts_with("hdi.", vars = cn)
 
   # convert all to character, with fixed fractional part
@@ -1249,9 +1284,12 @@ get_hdi_data <- function(x, digits) {
 
     tmp <- data.frame(hdi = sprintf("[%*s %*s]", ml1, x[[i]], ml2, x[[i + 1]]))
 
-    if (ci_pos[i] < 0)
-      interv <- 89
-    else
+    if (ci_pos[i] < 0) {
+      if (!is.null(prob))
+        interv <- round(100 * prob[1])
+      else
+        interv <- 90
+    } else
       interv <- round(100 * as.numeric(substr(cn[i], ci_pos[i] + 1, nchar(cn[i]))))
 
     colnames(tmp) <- sprintf("HDI(%d%%)", interv)
@@ -1268,4 +1306,16 @@ get_hdi_data <- function(x, digits) {
     dat <- dplyr::bind_cols(dat, x[, hdi.cols[1]:ncol(x), drop = FALSE])
 
   dat
+}
+
+
+#' @importFrom purrr map_dbl
+#' @export
+nsamples.stanreg <- function(x, incl_warmup = FALSE, ...) {
+  if (incl_warmup)
+    x <- purrr::map_dbl(x$stanfit@stan_args, ~ .x$iter)
+  else
+    x <- purrr::map_dbl(x$stanfit@stan_args, ~ .x$iter - .x$warmup)
+
+  sum(x)
 }

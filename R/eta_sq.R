@@ -207,14 +207,34 @@ aov_stat <- function(model, type) {
 }
 
 
-
+#' @importFrom tibble add_row has_name add_column
+#' @importFrom stats anova residuals
+#' @importFrom broom tidy
 aov_stat_summary <- function(model) {
+  # check if we have a mixed model
+  mm <- is_merMod(model)
+  ori.model <- model
+
   # check that model inherits from correct class
   # else, try to coerce to anova table
   if (!inherits(model, c("aov", "anova", "anova.rms"))) model <- stats::anova(model)
 
   # get summary table
   aov.sum <- broom::tidy(model)
+
+  # for mixed models, add information on residuals
+  if (mm) {
+    res <- stats::residuals(ori.model)
+    aov.sum <- tibble::add_row(
+      aov.sum,
+      term = "Residuals",
+      df = length(res) - sum(aov.sum[["df"]]),
+      sumsq = sum(res ^ 2, na.rm = TRUE),
+      meansq = mse(ori.model),
+      statistic = NA
+    )
+  }
+
 
   # need special handling for rms-anova
   if (inherits(model, "anova.rms"))

@@ -19,6 +19,7 @@
 #' \dontrun{
 #' library(sjPlot)
 #' view_df(efc)
+#' }
 #'
 NULL
 
