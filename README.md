@@ -23,6 +23,9 @@ Other statistics:
 
 * Cramer's V, Cronbach's Alpha, Mean Inter-Item-Correlation, Mann-Whitney-U-Test, Item-scale reliability tests
 
+## Documentation
+
+Please visit [https://strengejacke.github.io/sjstats/](https://strengejacke.github.io/sjstats/) for documentation and vignettes.
 
 ## Installation
 
