@@ -1252,7 +1252,7 @@ print.sj_equi_test <- function(x, ...) {
   print(as.data.frame(dat), ..., row.names = FALSE)
 
   if (isTRUE(attr(x, "critical"))) {
-    message("\nThe number of effective samples may be insufficient for some parameters (indicated with \"*\").")
+    message("\n(*) the number of effective samples may be insufficient for some parameters")
   }
 }
 

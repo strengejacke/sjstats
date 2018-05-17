@@ -34,6 +34,7 @@
 #'      \item \code{is_linear}: family is gaussian
 #'      \item \code{is_ordinal}: family is ordinal or cumulative link
 #'      \item \code{is_zeroinf}: model has zero-inflation component
+#'      \item \code{is_multivariate}: model is a multivariate response model (currently only works for \emph{brmsfit} objects)
 #'      \item \code{link.fun}: the link-function
 #'      \item \code{family}: the family-object
 #'    }
@@ -395,6 +396,7 @@ model_family <- function(x) {
     is_linear = linear_model,
     is_zeroinf = zero.inf,
     is_ordinal = is.ordinal,
+    is_multivariate = multi.resp,
     link.fun = link.fun,
     family = fitfam
   )

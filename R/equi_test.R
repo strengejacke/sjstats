@@ -66,6 +66,10 @@ equi_test.data.frame <- function(x, rope, eff_size) {
 #' @importFrom stats sd
 equi_test_worker <- function(x, rope, eff_size, fm) {
 
+  if (fm$is_multivariate)
+    stop("Multivariate response models not supported yet.", call. = F)
+
+
   dat <- as.data.frame(x)
   if (missing(eff_size)) eff_size <- .1
 
