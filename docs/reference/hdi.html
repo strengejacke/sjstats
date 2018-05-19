@@ -205,15 +205,18 @@ instead of a data frame.</p></td>
       <th>...</th>
       <td><p>Further arguments passed down to <code>equi_test()</code> when
 <code>plot = TRUE</code>:</p><ul>
-<li><p><code>colors</code>
+<li><p><code>colors</code>: 
     Color of the density regions for the 95% distribution of the posterior
     samples.</p></li>
-<li><p><code>rope.color</code> and <code>rope.alpha</code>
+<li><p><code>rope.color</code> and <code>rope.alpha</code>: 
     Fill color and alpha-value of the ROPE (region of practical equivalence).</p></li>
-<li><p><code>x.title</code>
+<li><p><code>x.title</code>: 
     Title for the x-axis of the plot.</p></li>
-<li><p><code>legend.title</code>
+<li><p><code>legend.title</code>: 
     Title for the plot legend.</p></li>
+<li><p><code>labels</code>: 
+    Character vector of same length as terms plotted on the y-axis, to
+    give axis labels user-defined labels.</p></li>
 </ul></td>
     </tr>
     </table>
@@ -274,11 +277,21 @@ instead of a data frame.</p></td>
       <br /> <br />
       If neither the <code>rope</code> nor <code>eff_size</code> argument are specified,
       the effect size will be set to 0.1 and the ROPE is <code>0 +/- .1 * sd(y)</code>
-      for linear models and <code>0 +/- .1 * sd(intercept)</code> for all other
-      models. If <code>eff_size</code> is specified, but <code>rope</code> is not, then
-      the same formula applies, except that <code>.1</code> is replaced by the
+      for linear models. This is the suggested way to specify the ROPE limits
+      according to <cite>Krusche (2018)</cite>. For models with binary outcome, there
+      is no direct way to specify the effect size that defines the ROPE limits.
+      Two examples from Kruschke suggest that a negligible change is about
+      .05 on the logit-scale. In these cases, it is recommended to specify
+      the <code>rope</code> argument, however, if not specified, the ROPE limits
+      are calculated in this way: <code>0 +/- .1 * sd(intercept) / 4</code>. For
+      all other models, <code>0 +/- .1 * sd(intercept)</code> is used to determine
+      the ROPE limits.
+      <br /> <br />
+      If <code>eff_size</code> is specified, but <code>rope</code> is not, then
+      the same formulas apply, except that <code>.1</code> is replaced by the
       value in <code>eff_size</code>. If <code>rope</code> is specified, <code>eff_size</code>
-      will be ignored. See also section <em>ROPE</em> in 'Details'. <br /> <br />
+      will be ignored. See also section <em>ROPE</em> in 'Details'.
+      <br /> <br />
       The advantage of Bayesian testing for practical equivalence over
       classical frequentist null hypothesis significance testing is that
       discrete decisions are avoided, &#8220;because such decisions encourage
