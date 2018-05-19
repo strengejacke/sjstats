@@ -145,7 +145,8 @@ For \code{hdi()}, if \code{x} is a vector, returns a vector of length
       \cr \cr
       If neither the \code{rope} nor \code{eff_size} argument are specified,
       the effect size will be set to 0.1 and the ROPE is \code{0 +/- .1 * sd(y)}
-      for linear models and \code{0 +/- .1 * sd(intercept)} for all other
+      for linear models, \code{0 +/- .1 * sd(intercept) / 4} for models with
+      binary outcome and \code{0 +/- .1 * sd(intercept)} for all other
       models. If \code{eff_size} is specified, but \code{rope} is not, then
       the same formula applies, except that \code{.1} is replaced by the
       value in \code{eff_size}. If \code{rope} is specified, \code{eff_size}
