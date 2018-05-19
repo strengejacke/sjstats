@@ -143,7 +143,7 @@
 
     <pre class="usage"><span class='fu'>hdi</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
 
-<span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='no'>eff_size</span>)
+<span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='no'>eff_size</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>mcse</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
 
@@ -195,6 +195,26 @@ to calculate the limits of the ROPE for the test of practical equivalence.
 If not specified, an effect size of .1 is used, as suggested by
 <cite>Kruschke 2018</cite> (see 'Details'). If <code>rope</code> is specified, this
 argument will be ignored.</p></td>
+    </tr>
+    <tr>
+      <th>plot</th>
+      <td><p>Logical, if <code>TRUE</code>, <code>equi_test()</code> returns a plot
+instead of a data frame.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Further arguments passed down to <code>equi_test()</code> when
+<code>plot = TRUE</code>:</p><ul>
+<li><p><code>colors</code>
+    Color of the density regions for the 95% distribution of the posterior
+    samples.</p></li>
+<li><p><code>rope.color</code> and <code>rope.alpha</code>
+    Fill color and alpha-value of the ROPE (region of practical equivalence).</p></li>
+<li><p><code>x.title</code>
+    Title for the x-axis of the plot.</p></li>
+<li><p><code>legend.title</code>
+    Title for the plot legend.</p></li>
+</ul></td>
     </tr>
     </table>
     
@@ -307,6 +327,10 @@ argument will be ignored.</p></td>
   <span class='co'># posterior distribution values, which - after being exponentiated -</span>
   <span class='co'># are between .8 and 1.25 (about -.22 and .22 on linear scale)</span>
   <span class='fu'>rope</span>(<span class='no'>fit</span>, <span class='kw'>rope</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>.8</span>, <span class='fl'>1.25</span>), <span class='kw'>trans</span> <span class='kw'>=</span> <span class='no'>exp</span>)
+
+  <span class='co'># Test for Practical Equivalence</span>
+  <span class='fu'>equi_test</span>(<span class='no'>fit</span>)
+  <span class='fu'>equi_test</span>(<span class='no'>fit</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 }
 <span class='co'># }</span><div class='input'>
 </div></pre>
