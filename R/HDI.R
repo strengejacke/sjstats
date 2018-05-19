@@ -40,18 +40,22 @@
 #' @param ... Further arguments passed down to \code{equi_test()} when
 #'   \code{plot = TRUE}:
 #'   \itemize{
-#'     \item{\code{colors}}{
+#'     \item{\code{colors}: }{
 #'       Color of the density regions for the 95\% distribution of the posterior
 #'       samples.
 #'     }
-#'     \item{\code{rope.color} and \code{rope.alpha}}{
+#'     \item{\code{rope.color} and \code{rope.alpha}: }{
 #'       Fill color and alpha-value of the ROPE (region of practical equivalence).
 #'     }
-#'     \item{\code{x.title}}{
+#'     \item{\code{x.title}: }{
 #'       Title for the x-axis of the plot.
 #'     }
-#'     \item{\code{legend.title}}{
+#'     \item{\code{legend.title}: }{
 #'       Title for the plot legend.
+#'     }
+#'     \item{\code{labels}: }{
+#'       Character vector of same length as terms plotted on the y-axis, to
+#'       give axis labels user-defined labels.
 #'     }
 #'   }
 #'

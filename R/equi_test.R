@@ -125,24 +125,6 @@ plot_sj_equi_test <- function(x, model, ...) {
     return(x)
   }
 
-  # check for user defined arguments
-
-  fill.color <- c("#00b159", "#d11141", "#cccccc")
-  rope.color <- "#004D80"
-  rope.alpha <- 0.15
-  x.title <- "95% Highest Density Region of Posterior Samples"
-  legend.title <- "Decision on Parameters"
-
-  add.args <- lapply(match.call(expand.dots = F)$`...`, function(x) x)
-  if ("colors" %in% names(add.args)) fill.color <- eval(add.args[["colors"]])
-  if ("x.title" %in% names(add.args)) x.title <- eval(add.args[["x.title"]])
-  if ("rope.color" %in% names(add.args)) rope.color <- eval(add.args[["rope.color"]])
-  if ("rope.alpha" %in% names(add.args)) rope.alpha <- eval(add.args[["rope.alpha"]])
-  if ("legend.title" %in% names(add.args)) legend.title <- eval(add.args[["legend.title"]])
-
-  rope.line.alpha <- 1.25 * rope.alpha
-  if (rope.line.alpha > 1) rope.line.alpha <- 1
-
   remove <- c(1, tidyselect::contains("sigma", ignore.case = TRUE, vars = x$term))
   x <- dplyr::slice(x, -!! remove)
 
@@ -183,7 +165,33 @@ plot_sj_equi_test <- function(x, model, ...) {
 
   rope <- attr(x, "rope")
 
-  ## TODO reverse y-axis factor levels
+  tmp$predictor <- factor(tmp$predictor)
+  tmp$predictor <- factor(tmp$predictor, levels = rev(levels(tmp$predictor)))
+
+
+  # check for user defined arguments
+
+  fill.color <- c("#00b159", "#d11141", "#cccccc")
+  rope.color <- "#004D80"
+  rope.alpha <- 0.15
+  x.title <- "95% Highest Density Region of Posterior Samples"
+  legend.title <- "Decision on Parameters"
+  labels <- levels(tmp$predictor)
+  names(labels) <- labels
+
+  fill.color <- fill.color[sort(unique(match(x$decision, c("accept", "reject", "undecided"))))]
+
+  add.args <- lapply(match.call(expand.dots = F)$`...`, function(x) x)
+  if ("colors" %in% names(add.args)) fill.color <- eval(add.args[["colors"]])
+  if ("x.title" %in% names(add.args)) x.title <- eval(add.args[["x.title"]])
+  if ("rope.color" %in% names(add.args)) rope.color <- eval(add.args[["rope.color"]])
+  if ("rope.alpha" %in% names(add.args)) rope.alpha <- eval(add.args[["rope.alpha"]])
+  if ("legend.title" %in% names(add.args)) legend.title <- eval(add.args[["legend.title"]])
+  if ("labels" %in% names(add.args)) labels <- eval(add.args[["labels"]])
+
+  rope.line.alpha <- 1.25 * rope.alpha
+  if (rope.line.alpha > 1) rope.line.alpha <- 1
+
 
   ggplot2::ggplot(tmp, ggplot2::aes_string(x = "estimate", y = "predictor", fill = "grp")) +
     ggplot2::annotate("rect", xmin = rope[1], xmax = rope[2], ymin = 0, ymax = Inf, fill = rope.color, alpha = rope.alpha) +
@@ -191,6 +199,6 @@ plot_sj_equi_test <- function(x, model, ...) {
     ggridges::geom_density_ridges2(rel_min_height = 0.01, scale = 2, alpha = .5) +
     ggplot2::scale_fill_manual(values = fill.color) +
     ggplot2::labs(x = x.title, y = NULL, fill = legend.title) +
-    ggplot2::scale_y_discrete(labels = sjlabelled::get_term_labels(model)) +
+    ggplot2::scale_y_discrete(labels = labels) +
     ggplot2::theme(legend.position = "bottom")
 }
