@@ -14,9 +14,7 @@ n_eff.default <- function(x, type = c("fixed", "random", "all")) {
 #' @importFrom bayesplot neff_ratio
 #' @export
 n_eff.stanreg <- function(x, type = c("fixed", "random", "all")) {
-  # check arguments
   type <- match.arg(type)
-
   n_eff_helper(x, smry = bayesplot::neff_ratio(x), type)
 }
 
@@ -24,16 +22,13 @@ n_eff.stanreg <- function(x, type = c("fixed", "random", "all")) {
 #' @importFrom bayesplot neff_ratio
 #' @export
 n_eff.stanfit <- function(x, type = c("fixed", "random", "all")) {
-  # check arguments
   type <- match.arg(type)
-
   n_eff_helper(x, smry = bayesplot::neff_ratio(x), type)
 }
 
 
 #' @export
 n_eff.brmsfit <- function(x, type = c("fixed", "random", "all")) {
-  # check arguments
   type <- match.arg(type)
 
   # check for pkg availability, else function might fail
@@ -47,7 +42,6 @@ n_eff.brmsfit <- function(x, type = c("fixed", "random", "all")) {
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr slice
 n_eff_helper <- function(x, smry, type) {
-
   if (inherits(x, "brmsfit"))
     tn <- colnames(tibble::as_tibble(x))
   else

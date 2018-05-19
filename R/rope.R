@@ -13,16 +13,8 @@ rope.default <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
 
 #' @export
 rope.stanreg <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
-  # check arguments
   type <- match.arg(type)
-
-  dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
-
-  # check if we need to remove random or fixed effects
-  dat <- remove_effects_from_stan(dat, type, is.brms = FALSE)
-
-  class(dat) <- c("sj_rope", class(dat))
-  dat
+  rope_worker(x = x, rope = rope, trans = trans, type = type)
 }
 
 
@@ -35,13 +27,7 @@ rope.brmsfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.")
 
-  dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
-
-  # check if we need to remove random or fixed effects
-  dat <- remove_effects_from_stan(dat, type, is.brms = TRUE)
-
-  class(dat) <- c("sj_rope", class(dat))
-  dat
+  rope_worker(x = x, rope = rope, trans = trans, type = type)
 }
 
 
@@ -49,14 +35,7 @@ rope.brmsfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
 rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
   # check arguments
   type <- match.arg(type)
-
-  dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
-
-  # check if we need to remove random or fixed effects
-  dat <- remove_effects_from_stan(dat, type, is.brms = FALSE)
-
-  class(dat) <- c("sj_rope", class(dat))
-  dat
+  rope_worker(x = x, rope = rope, trans = trans, type = type)
 }
 
 
@@ -64,10 +43,7 @@ rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
 rope.data.frame <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
   # check arguments
   type <- match.arg(type)
-  dat <- rope_worker(x = x, rope = rope, trans = trans, type = type)
-
-  class(dat) <- c("sj_rope", class(dat))
-  dat
+  rope_worker(x = x, rope = rope, trans = trans, type = type)
 }
 
 
@@ -87,7 +63,15 @@ rope_worker <- function(x, rope, trans, type) {
   colnames(dat) <- c("term", "rope")
 
   # for convenience reasons, also add proportion of values outside rope
-  dplyr::mutate(dat, outside.rope = 100 - .data$rope)
+  dat <- dplyr::mutate(dat, outside.rope = 100 - .data$rope)
+
+  if (is_stan_model(x)) {
+    # check if we need to remove random or fixed effects
+    dat <- remove_effects_from_stan(dat, type, is.brms = inherits(x, "brmsfit"))
+  }
+
+  class(dat) <- c("sj_rope", class(dat))
+  dat
 }
 
 
