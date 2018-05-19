@@ -35,6 +35,25 @@
 #'   be returned. \code{type = "fixed"} returns fixed effects only,
 #'   \code{type = "random"} the random effects and \code{type = "all"} returns
 #'   both fixed and random effects.
+#' @param plot Logical, if \code{TRUE}, \code{equi_test()} returns a plot
+#'   instead of a data frame.
+#' @param ... Further arguments passed down to \code{equi_test()} when
+#'   \code{plot = TRUE}:
+#'   \itemize{
+#'     \item{\code{colors}}{
+#'       Color of the density regions for the 95\% distribution of the posterior
+#'       samples.
+#'     }
+#'     \item{\code{rope.color} and \code{rope.alpha}}{
+#'       Fill color and alpha-value of the ROPE (region of practical equivalence).
+#'     }
+#'     \item{\code{x.title}}{
+#'       Title for the x-axis of the plot.
+#'     }
+#'     \item{\code{legend.title}}{
+#'       Title for the plot legend.
+#'     }
+#'   }
 #'
 #'
 #' @return For \code{hdi()}, if \code{x} is a vector, returns a vector of length
@@ -149,6 +168,10 @@
 #'   # posterior distribution values, which - after being exponentiated -
 #'   # are between .8 and 1.25 (about -.22 and .22 on linear scale)
 #'   rope(fit, rope = c(.8, 1.25), trans = exp)
+#'
+#'   # Test for Practical Equivalence
+#'   equi_test(fit)
+#'   equi_test(fit, plot = TRUE)
 #' }}
 #'
 #' @export

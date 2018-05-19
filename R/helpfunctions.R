@@ -9,6 +9,12 @@ is_merMod <- function(fit) {
   inherits(fit, c("lmerMod", "glmerMod", "nlmerMod", "merModLmerTest"))
 }
 
+
+is_stan_model <- function(fit) {
+  inherits(fit, c("stanreg", "stanfit", "brmsfit"))
+}
+
+
 #' @importFrom sjmisc str_contains
 get_glm_family <- function(fit) {
   c.f <- class(fit)

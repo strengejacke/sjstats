@@ -11,7 +11,7 @@
 \usage{
 hdi(x, prob = 0.9, trans = NULL, type = c("fixed", "random", "all"))
 
-equi_test(x, rope, eff_size)
+equi_test(x, rope, eff_size, plot = FALSE, ...)
 
 mcse(x, type = c("fixed", "random", "all"))
 
@@ -49,6 +49,27 @@ to calculate the limits of the ROPE for the test of practical equivalence.
 If not specified, an effect size of .1 is used, as suggested by
 \cite{Kruschke 2018} (see 'Details'). If \code{rope} is specified, this
 argument will be ignored.}
+
+\item{plot}{Logical, if \code{TRUE}, \code{equi_test()} returns a plot
+instead of a data frame.}
+
+\item{...}{Further arguments passed down to \code{equi_test()} when
+\code{plot = TRUE}:
+\itemize{
+  \item{\code{colors}}{
+    Color of the density regions for the 95\% distribution of the posterior
+    samples.
+  }
+  \item{\code{rope.color} and \code{rope.alpha}}{
+    Fill color and alpha-value of the ROPE (region of practical equivalence).
+  }
+  \item{\code{x.title}}{
+    Title for the x-axis of the plot.
+  }
+  \item{\code{legend.title}}{
+    Title for the plot legend.
+  }
+}}
 }
 \value{
 For \code{hdi()}, if \code{x} is a vector, returns a vector of length
@@ -168,6 +189,10 @@ if (require("rstanarm")) {
   # posterior distribution values, which - after being exponentiated -
   # are between .8 and 1.25 (about -.22 and .22 on linear scale)
   rope(fit, rope = c(.8, 1.25), trans = exp)
+
+  # Test for Practical Equivalence
+  equi_test(fit)
+  equi_test(fit, plot = TRUE)
 }}
 
 }

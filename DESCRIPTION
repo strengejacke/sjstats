@@ -59,6 +59,7 @@ Suggests:
     brms,
     car,
     ggplot2,
+    ggridges,
     graphics,
     knitr,
     MBESS,

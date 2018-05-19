@@ -1224,7 +1224,6 @@ print.sj_hdi <- function(x, digits = 2, ...) {
 }
 
 
-
 #' @importFrom crayon blue cyan
 #' @export
 print.sj_equi_test <- function(x, ...) {

@@ -1,61 +1,41 @@
 #' @rdname hdi
 #' @export
-equi_test <- function(x, rope, eff_size) {
+equi_test <- function(x, rope, eff_size, plot = FALSE, ...) {
   UseMethod("equi_test")
 }
 
 
 #' @export
-equi_test.default <- function(x, rope, eff_size) {
-  equi_test_worker(x = x, rope = rope, eff_size = eff_size, fm = NULL)
+equi_test.default <- function(x, rope, eff_size, plot = FALSE, ...) {
+  equi_test_worker(x = x, rope = rope, eff_size = eff_size, plot = plot, fm = NULL, ...)
 }
 
 
 #' @export
-equi_test.stanreg <- function(x, rope, eff_size) {
-  dat <- equi_test_worker(x = x, rope = rope, eff_size = eff_size, fm = model_family(x))
-
-  # check if we need to remove random or fixed effects
-  dat <- remove_effects_from_stan(dat, type = "fixed", is.brms = FALSE)
-
-  class(dat) <- c("sj_equi_test", class(dat))
-  dat
+equi_test.stanreg <- function(x, rope, eff_size, plot = FALSE, ...) {
+  equi_test_worker(x = x, rope = rope, eff_size = eff_size, plot = plot, fm = model_family(x), ...)
 }
 
 
 #' @export
-equi_test.brmsfit <- function(x, rope, eff_size) {
+equi_test.brmsfit <- function(x, rope, eff_size, plot = FALSE, ...) {
   # check for pkg availability, else function might fail
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.")
 
-  dat <- equi_test_worker(x = x, rope = rope, eff_size = eff_size, fm = model_family(x))
-
-  # check if we need to remove random or fixed effects
-  dat <- remove_effects_from_stan(dat, type = "fixed", is.brms = TRUE)
-
-  class(dat) <- c("sj_equi_test", class(dat))
-  dat
+  equi_test_worker(x = x, rope = rope, eff_size = eff_size, plot = plot, fm = model_family(x), ...)
 }
 
 
 #' @export
-equi_test.stanfit <- function(x, rope, eff_size) {
-  dat <- equi_test_worker(x = x, rope = rope, eff_size = eff_size, fm = model_family(x))
-
-  # check if we need to remove random or fixed effects
-  dat <- remove_effects_from_stan(dat, type = "fixed", is.brms = FALSE)
-
-  class(dat) <- c("sj_equi_test", class(dat))
-  dat
+equi_test.stanfit <- function(x, rope, eff_size, plot = FALSE, ...) {
+  equi_test_worker(x = x, rope = rope, eff_size = eff_size, plot = plot, fm = model_family(x), ...)
 }
 
 
 #' @export
-equi_test.data.frame <- function(x, rope, eff_size) {
-  dat <- equi_test_worker(x = x, rope = rope, eff_size = eff_size, fm = NULL)
-  class(dat) <- c("sj_equi_test", class(dat))
-  dat
+equi_test.data.frame <- function(x, rope, eff_size, plot = FALSE, ...) {
+  equi_test_worker(x = x, rope = rope, eff_size = eff_size, plot = plot, fm = NULL, ...)
 }
 
 
@@ -64,7 +44,7 @@ equi_test.data.frame <- function(x, rope, eff_size) {
 #' @importFrom tibble add_column
 #' @importFrom dplyr case_when select pull
 #' @importFrom stats sd
-equi_test_worker <- function(x, rope, eff_size, fm) {
+equi_test_worker <- function(x, rope, eff_size, plot, fm, ...) {
 
   if (fm$is_multivariate)
     stop("Multivariate response models not supported yet.", call. = F)
@@ -77,6 +57,8 @@ equi_test_worker <- function(x, rope, eff_size, fm) {
     if (missing(rope)) {
       if (fm$is_linear)
         eff_range <- stats::sd(resp_val(x)) * eff_size
+      else if (fm$is_bin)
+        eff_range <- stats::sd(dat[[1]]) * eff_size / 4
       else
         eff_range <- stats::sd(dat[[1]]) * eff_size
 
@@ -117,5 +99,98 @@ equi_test_worker <- function(x, rope, eff_size, fm) {
   attr(dat, "nsamples") <- .neff
   attr(dat, "critical") <- !sjmisc::is_empty(critical)
 
-  dat
+  if (is_stan_model(x)) {
+    dat <- remove_effects_from_stan(dat, type = "fixed", is.brms = inherits(x, "brmsfit"))
+  }
+
+  class(dat) <- c("sj_equi_test", class(dat))
+
+  if (plot) {
+    plot_sj_equi_test(dat, x, ...)
+  } else {
+    dat
+  }
+}
+
+
+#' @importFrom dplyr slice select case_when
+#' @importFrom purrr map2_df
+#' @importFrom tidyr gather
+#' @importFrom sjlabelled as_factor get_dv_labels
+#' @importFrom tidyselect contains
+plot_sj_equi_test <- function(x, model, ...) {
+
+  if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("ggridges", quietly = TRUE)) {
+    warning("Packages 'ggplot2' and 'ggridges' required to plot test for practical equivalence.", call. = FALSE)
+    return(x)
+  }
+
+  # check for user defined arguments
+
+  fill.color <- c("#00b159", "#d11141", "#cccccc")
+  rope.color <- "#004D80"
+  rope.alpha <- 0.15
+  x.title <- "95% Highest Density Region of Posterior Samples"
+  legend.title <- "Decision on Parameters"
+
+  add.args <- lapply(match.call(expand.dots = F)$`...`, function(x) x)
+  if ("colors" %in% names(add.args)) fill.color <- eval(add.args[["colors"]])
+  if ("x.title" %in% names(add.args)) x.title <- eval(add.args[["x.title"]])
+  if ("rope.color" %in% names(add.args)) rope.color <- eval(add.args[["rope.color"]])
+  if ("rope.alpha" %in% names(add.args)) rope.alpha <- eval(add.args[["rope.alpha"]])
+  if ("legend.title" %in% names(add.args)) legend.title <- eval(add.args[["legend.title"]])
+
+  rope.line.alpha <- 1.25 * rope.alpha
+  if (rope.line.alpha > 1) rope.line.alpha <- 1
+
+  remove <- c(1, tidyselect::contains("sigma", ignore.case = TRUE, vars = x$term))
+  x <- dplyr::slice(x, -!! remove)
+
+  # remove indicator for insufficient sample chains
+  x$term <- gsub(" (*)", "", x = x$term, fixed = TRUE)
+
+  tmp <- model %>%
+    as.data.frame() %>%
+    dplyr::select(!! x$term) %>%
+    purrr::map2_df(
+      x$hdi.low,
+      function(.x, .y) {
+        .x[.x < .y] <- NA
+        .x
+      }) %>%
+    purrr::map2_df(
+      x$hdi.high,
+      function(.x, .y) {
+        .x[.x > .y] <- NA
+        .x
+      }) %>%
+    tidyr::gather(
+      key = "predictor",
+      value = "estimate"
+    ) %>%
+    sjlabelled::as_factor(.data$predictor)
+
+
+  x$decision <- dplyr::case_when(
+    x$decision == "accept" ~ "reject",
+    x$decision == "reject" ~ "accept",
+    TRUE ~ "undecided"
+  )
+
+  tmp$grp <- NA
+  for (i in 1:nrow(x))
+    tmp$grp[tmp$predictor == x$term[i]] <- x$decision[i]
+
+  rope <- attr(x, "rope")
+
+  ## TODO reverse y-axis factor levels
+
+  ggplot2::ggplot(tmp, ggplot2::aes_string(x = "estimate", y = "predictor", fill = "grp")) +
+    ggplot2::annotate("rect", xmin = rope[1], xmax = rope[2], ymin = 0, ymax = Inf, fill = rope.color, alpha = rope.alpha) +
+    ggplot2::geom_vline(xintercept = 0, colour = rope.color, size = .8, alpha = rope.line.alpha) +
+    ggridges::geom_density_ridges2(rel_min_height = 0.01, scale = 2, alpha = .5) +
+    ggplot2::scale_fill_manual(values = fill.color) +
+    ggplot2::labs(x = x.title, y = NULL, fill = legend.title) +
+    ggplot2::scale_y_discrete(labels = sjlabelled::get_term_labels(model)) +
+    ggplot2::theme(legend.position = "bottom")
 }
