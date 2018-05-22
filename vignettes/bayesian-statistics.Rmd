@@ -1,0 +1,131 @@
+---
+title: "Statistics for Bayesian Models"
+author: "Daniel Lüdecke"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+---
+
+<!--
+vignette: >
+  %\VignetteIndexEntry{Statistics for Bayesian Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+-->
+
+```{r set-options, echo = FALSE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE, 
+  comment = "#>", 
+  dev = "png", 
+  fig.width = 7, 
+  fig.height = 3.5, 
+  message = FALSE, 
+  warning = FALSE, 
+  eval = if (isTRUE(exists("params"))) params$EVAL else FALSE
+)
+
+options(width = 800, tibble.width = Inf)
+
+if (!requireNamespace("mediation", quietly = TRUE)) {
+  warning("Package 'mediation' required for this vignette.", call. = FALSE)
+}
+```
+
+This vignettes demontrates those functions of the *sjstats*-package that deal especially with Bayesian models. *sjstats* provides following functions:
+
+* `hdi()`
+* `rope()`
+* `mcse()`
+* `n_eff()`
+* `tidy_stan()`
+* `equi_test()`
+* `mediation()`
+* `icc()`
+
+Befor we start, we fit some models, including a mediation-object from the _mediation_-package, which we use for comparison with _brms_.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(sjstats)
+library(sjmisc)
+library(mediation)
+library(brms)
+
+# load sample data
+data(jobs)
+data(efc)
+efc <- to_factor(efc, e42dep, c172code, c161sex, e15relat)
+zinb <- read.csv("http://stats.idre.ucla.edu/stat/data/fish.csv")
+
+# linear models, for mediation analysis
+b1 <- lm(job_seek ~ treat + econ_hard + sex + age, data = jobs)
+b2 <- lm(depress2 ~ treat + job_seek + econ_hard + sex + age, data = jobs)
+
+# mediation analysis, for comparison with brms
+m1 <- mediate(b1, b2, sims = 1000, treat = "treat", mediator = "job_seek")
+
+# fit Bayesian models
+f1 <- bf(job_seek ~ treat + econ_hard + sex + age)
+f2 <- bf(depress2 ~ treat + job_seek + econ_hard + sex + age)
+
+m2 <- brm(f1 + f2 + set_rescor(FALSE), data = jobs, cores = 4)
+
+m3 <- brm(
+  bf(count ~ child + camper + (1 | persons), 
+     zi ~ child + camper + (1 | persons)),
+  data = zinb,
+  family = zero_inflated_poisson(),
+  cores = 4
+)
+
+m4 <- brm(
+  mpg ~ wt + hp + (1 | cyl) + (1 + wt | gear), 
+  data = mtcars, 
+  cores = 4
+)
+
+m5 <- brm(
+  neg_c_7 ~ e42dep + c12hour + c172code + (1 | e15relat),
+  data = efc,
+  cores = 4
+)
+
+```
+
+## Highest Density Interval
+
+`hdi()` computes the highest density interval for posterior samples. Unlike equal-tailed intervals that exclude 2.5% from each tail of the distribution, the HDI is _not_ equal-tailed and therefor always includes the mode(s) of posterior distributions.
+
+By default, `hdi()` prints the 90% intervals, however, the `prob`-argument can be used to calculate different or even multiple intervals.
+
+```{r}
+hdi(m2)
+
+hdi(m2, prob = c(-.5, .89))
+```
+
+For multilevel models, the `type`-argument defines whether the HDI of fixed, random or all effects are shown.
+
+```{r}
+hdi(m5, type = "random")
+```
+
+The computation for the HDI is based on the code from _Kruschke 2015, pp. 727f_. For default sampling in Stan (4000 samples), the 90% intervals for HDI are more stable than, for instance, 95% intervals. An effective sample size of at least 10.000 is recommended if 95% intervals should be computed (see _Kruschke 2015, p. 183ff_).
+
+## Region of Practical Equivalence (ROPE)
+
+
+
+```{r}
+rope(m5, rope = c(-1, 1))
+```
+
+
+## References
+
+Kruschke JK. Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and Stan. 2nd edition. Academic Press, 2015 
+
+Kruschke JK. Rejecting or Accepting Parameter Values in Bayesian Estimation. Advances in Methods and Practices in Psychological Science. 2018; doi: [10.1177/2515245918771304 ](https://doi.org/10.1177/2515245918771304)
+
+Norman GR, Sloan JA, Wyrwich KW. Interpretation of Changes in Health-related Quality of Life: The Remarkable Universality of Half a Standard Deviation. Medical Care. 2003;41: 582–592. doi: [10.1097/01.MLR.0000062554.74615.4C](https://doi.org/10.1097/01.MLR.0000062554.74615.4C)

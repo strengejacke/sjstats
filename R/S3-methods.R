@@ -1259,7 +1259,7 @@ print.sj_equi_test <- function(x, ...) {
 #' @importFrom crayon blue cyan
 #' @export
 print.sj_mediation <- function(x, digits = 2, ...) {
-  cat(crayon::blue("\n# Mediator-Analysis for Stan-Model\n\n"))
+  cat(crayon::blue("\n# Causal Mediation Analysis for Stan Model\n\n"))
   cat(crayon::cyan(sprintf(
     "  Treatment: %s\n   Mediator: %s\n   Response: %s\n",
     attr(x, "treatment", exact = TRUE),

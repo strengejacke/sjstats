@@ -63,6 +63,7 @@ Suggests:
     graphics,
     knitr,
     MBESS,
+    mediation,
     pbkrtest (>= 0.4-7),
     pROC,
     psych,
