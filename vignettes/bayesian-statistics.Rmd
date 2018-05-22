@@ -136,7 +136,7 @@ If neither the `rope` nor `eff_size` argument are specified, the effect size wil
 equi_test(m5)
 ```
 
-For models with binary outcome, there is no direct way to specify the effect size that defines the ROPE limits. Two examples from Kruschke suggest that a negligible change is about .05 on the logit-scale. In these cases, it is recommended to specify the `rope` argument, however, if not specified, the ROPE limits are calculated in this way: `0 +/- .1 * sd(intercept) / 4`. For all other models, `0 +/- .1 * sd(intercept)` is used to determine the ROPE limits. These formulas are based on experience that worked well in real-life situations, but are most likely not generally the best approach.
+For models with binary outcome, there is no concrete way to derive the effect size that defines the ROPE limits. Two examples from Kruschke suggest that a negligible change is about .05 on the logit-scale. In these cases, it is recommended to specify the `rope` argument, however, if not specified, the ROPE limits are calculated in this way: `0 +/- .1 * sd(intercept) / 4`. For all other models, `0 +/- .1 * sd(intercept)` is used to determine the ROPE limits. These formulas are based on experience that worked well in real-life situations, but are most likely not generally the best approach.
 
 Beside a numerical output, the results can also be plotted, using the `plot`-argument. In this case, the 95% distributions of the posterior samles are shown, the ROPE is a light-blue shaded region in the plot, and the distributions are colored depending on whether the parameter values are accepted, rejected or undecided.
 
@@ -149,7 +149,7 @@ equi_test(m5, plot = TRUE)
 `tidy_stan()` is no substitute, but rather a convenient alternative to `summary()`. The major differences are: `tidy_stan()`...
 
   * focusses on the parameter values (estimates) and gives no information on samples, data, or formula
-  * calculates the HDI rather thanb equi-tailed intervals
+  * calculates the HDI rather than equi-tailed intervals
   * separates different model parts, e.g. random from fixed effects, or conditional from zero-inflated models
   * and prints everything nicely
 
