@@ -4,7 +4,7 @@ author: "Daniel Lüdecke"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 params:
-  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+    EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 ---
 
 <!--

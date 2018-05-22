@@ -84,6 +84,9 @@
       <a href="../articles/anova-statistics.html">Statistics for Anova Tables</a>
     </li>
     <li>
+      <a href="../articles/bayesian-statistics.html">Statistics for Bayesian Models</a>
+    </li>
+    <li>
       <a href="../articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
     </li>
   </ul>
@@ -120,13 +123,21 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-4" class="anchor"></a>sjstats 0.14.4<small> Unreleased </small>
 </h1>
+<div id="general" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general" class="anchor"></a>General</h2>
+<ul>
+<li>Added new Vignette <em>Statistics for Bayesian Models</em>.</li>
+</ul>
+</div>
 <div id="new-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-functions" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/hdi.html">equi_test()</a></code> to test if parameter values in Bayesian estimation should be accepted or rejected.</li>
-<li>Add S3-method <code>nsamples()</code> for <em>stanreg</em> objects.</li>
+<li>
+<code><a href="../reference/hdi.html">mediation()</a></code> to print a summary of a mediation analysis from multivariate response models fitted with <em>brms</em>.</li>
 </ul>
 </div>
 <div id="changes-to-functions" class="section level2">
@@ -153,9 +164,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-3" class="anchor"></a>sjstats 0.14.3<small> 2018-05-02 </small>
 </h1>
-<div id="general" class="section level2">
+<div id="general-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general" class="anchor"></a>General</h2>
+<a href="#general-1" class="anchor"></a>General</h2>
 <ul>
 <li>Remove <em>tidyverse</em> from suggested packages, as requested by maintainers.</li>
 </ul>
@@ -207,9 +218,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-2" class="anchor"></a>sjstats 0.14.2<small> 2018-03-25 </small>
 </h1>
-<div id="general-1" class="section level2">
+<div id="general-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-1" class="anchor"></a>General</h2>
+<a href="#general-2" class="anchor"></a>General</h2>
 <ul>
 <li>Revise examples, vignettes and package description to make sure all used packages are available for CRAN checks on operating systems.</li>
 </ul>
@@ -271,12 +282,12 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-1" class="anchor"></a>sjstats 0.14.1<small> 2018-02-04 </small>
 </h1>
-<div id="general-2" class="section level2">
+<div id="general-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-2" class="anchor"></a>General</h2>
+<a href="#general-3" class="anchor"></a>General</h2>
 <ul>
 <li>Remove unused imports.</li>
-<li>Cross refences from <code><a href="http://dplyr.tidyverse.org/reference/select_helpers.html">dplyr::select_helpers</a></code> were updated to <code><a href="http://www.rdocumentation.org/packages/tidyselect/topics/select_helpers">tidyselect::select_helpers</a></code>.</li>
+<li>Cross refences from <code><a href="http://dplyr.tidyverse.org/reference/reexports.html">dplyr::select_helpers</a></code> were updated to <code><a href="http://www.rdocumentation.org/packages/tidyselect/topics/select_helpers">tidyselect::select_helpers</a></code>.</li>
 </ul>
 </div>
 <div id="changes-to-functions-3" class="section level2">
@@ -305,9 +316,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-0" class="anchor"></a>sjstats 0.14.0<small> 2018-01-14 </small>
 </h1>
-<div id="general-3" class="section level2">
+<div id="general-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-3" class="anchor"></a>General</h2>
+<a href="#general-4" class="anchor"></a>General</h2>
 <ul>
 <li>Beautiful colored output for <code><a href="../reference/grpmean.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code>.</li>
 </ul>
@@ -352,9 +363,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-13-0" class="anchor"></a>sjstats 0.13.0<small> 2017-11-22 </small>
 </h1>
-<div id="general-4" class="section level2">
+<div id="general-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-4" class="anchor"></a>General</h2>
+<a href="#general-5" class="anchor"></a>General</h2>
 <ul>
 <li>Remove deprecated <code>get_model_pval()</code>.</li>
 <li>Revised documentation for <code><a href="../reference/overdisp.html">overdisp()</a></code>.</li>
@@ -405,9 +416,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-12-0" class="anchor"></a>sjstats 0.12.0<small> 2017-10-16 </small>
 </h1>
-<div id="general-5" class="section level2">
+<div id="general-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-5" class="anchor"></a>General</h2>
+<a href="#general-6" class="anchor"></a>General</h2>
 <ul>
 <li>Fixed examples, to resolve issues with CRAN package checks.</li>
 <li>More model objects supported in <code><a href="../reference/p_value.html">p_value()</a></code>.</li>
@@ -499,9 +510,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-11-0" class="anchor"></a>sjstats 0.11.0<small> 2017-08-21 </small>
 </h1>
-<div id="general-6" class="section level2">
+<div id="general-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-6" class="anchor"></a>General</h2>
+<a href="#general-7" class="anchor"></a>General</h2>
 <ul>
 <li>Added vignettes for various functions.</li>
 <li>Fixed issue with latest tidyr-update on CRAN.</li>
@@ -593,9 +604,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-10-1" class="anchor"></a>sjstats 0.10.1<small> 2017-06-14 </small>
 </h1>
-<div id="general-7" class="section level2">
+<div id="general-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-7" class="anchor"></a>General</h2>
+<a href="#general-8" class="anchor"></a>General</h2>
 <ul>
 <li>Revised imports: Labelled data functions from package <em>sjmisc</em> have been moved to package <em>sjlabelled</em>.</li>
 </ul>
@@ -655,9 +666,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-9-0" class="anchor"></a>sjstats 0.9.0<small> 2017-03-06 </small>
 </h1>
-<div id="general-8" class="section level2">
+<div id="general-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-8" class="anchor"></a>General</h2>
+<a href="#general-9" class="anchor"></a>General</h2>
 <ul>
 <li>Functions <code>std()</code> and <code>center()</code> were removed and are now in the <a href="https://cran.r-project.org/package=sjmisc">sjmisc-package</a>.</li>
 </ul>
@@ -733,9 +744,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-7-1" class="anchor"></a>sjstats 0.7.1<small> 2016-12-18 </small>
 </h1>
-<div id="general-9" class="section level2">
+<div id="general-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-9" class="anchor"></a>General</h2>
+<a href="#general-10" class="anchor"></a>General</h2>
 <ul>
 <li>Package depends on R-version &gt;= 3.3.</li>
 </ul>
@@ -753,9 +764,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-7-0" class="anchor"></a>sjstats 0.7.0<small> 2016-12-08 </small>
 </h1>
-<div id="general-10" class="section level2">
+<div id="general-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-10" class="anchor"></a>General</h2>
+<a href="#general-11" class="anchor"></a>General</h2>
 <ul>
 <li>Largely revised the documentation.</li>
 </ul>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compute statistics for MCMC samples — hdi • sjstats</title>
+<title>Compute statistics for MCMC samples and Stan models — hdi • sjstats</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -28,7 +28,7 @@
 
 
 
-<meta property="og:title" content="Compute statistics for MCMC samples — hdi" />
+<meta property="og:title" content="Compute statistics for MCMC samples and Stan models — hdi" />
 
 <meta property="og:description" content="hdi() computes the highest density interval for values from
   MCMC samples. rope() calculates the proportion of a posterior
@@ -38,7 +38,8 @@
   to check whether parameter values should be accepted or rejected against
   the background of a formulated null hypothesis. n_eff() calculates
   the number of effective samples (effective sample size). mcse()
-  returns the Monte Carlo standard error." />
+  returns the Monte Carlo standard error. mediation() is a short
+  summary for multivariate-response mediation-models." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -94,6 +95,9 @@
       <a href="../articles/anova-statistics.html">Statistics for Anova Tables</a>
     </li>
     <li>
+      <a href="../articles/bayesian-statistics.html">Statistics for Bayesian Models</a>
+    </li>
+    <li>
       <a href="../articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
     </li>
   </ul>
@@ -122,8 +126,8 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compute statistics for MCMC samples</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/HDI.R'><code>R/HDI.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/equi_test.R'><code>R/equi_test.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/mcse.R'><code>R/mcse.R</code></a>, and 3 more</small>
+    <h1>Compute statistics for MCMC samples and Stan models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/HDI.R'><code>R/HDI.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/equi_test.R'><code>R/equi_test.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/mcse.R'><code>R/mcse.R</code></a>, and 4 more</small>
     <div class="hidden name"><code>hdi.Rd</code></div>
     </div>
 
@@ -137,7 +141,8 @@
   to check whether parameter values should be accepted or rejected against
   the background of a formulated null hypothesis. <code>n_eff()</code> calculates
   the number of effective samples (effective sample size). <code>mcse()</code>
-  returns the Monte Carlo standard error.</p>
+  returns the Monte Carlo standard error. <code>mediation()</code> is a short
+  summary for multivariate-response mediation-models.</p>
     
     </div>
 
@@ -146,6 +151,8 @@
 <span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='no'>eff_size</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>mcse</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
+
+<span class='fu'>mediation</span>(<span class='no'>x</span>, <span class='no'>treatment</span>, <span class='no'>mediator</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='no'>...</span>)
 
 <span class='fu'>n_eff</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
 
@@ -219,6 +226,18 @@ instead of a data frame.</p></td>
     give axis labels user-defined labels.</p></li>
 </ul></td>
     </tr>
+    <tr>
+      <th>treatment</th>
+      <td><p>Character, name of the treatment variable (or direct effect)
+in a (multivariate response) mediator-model. If missing, <code>mediation()</code>
+tries to find the treatment variable automatically, however, this may fail.</p></td>
+    </tr>
+    <tr>
+      <th>mediator</th>
+      <td><p>Character, name of the mediator variable in a (multivariate
+response) mediator-model. If missing, <code>mediation()</code> tries to find the
+treatment variable automatically, however, this may fail.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -241,7 +260,12 @@ instead of a data frame.</p></td>
   values from the 95% HDI); and the lower and upper interval from the 95%-HDI.
   <br /> <br />
   <code>mcse()</code> and <code>n_eff()</code> return a tibble with two columns: one
-  with the term names and one with the related statistic.</p>
+  with the term names and one with the related statistic.
+  <br /> <br />
+  <code>mediation()</code> returns a data frame with direct, indirect, mediator and
+  total effect of a multivariate-response mediation-model, as well as the
+  proportion mediated. The effect sizes are mean values of the posterior
+  samples.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -278,7 +302,7 @@ instead of a data frame.</p></td>
       If neither the <code>rope</code> nor <code>eff_size</code> argument are specified,
       the effect size will be set to 0.1 and the ROPE is <code>0 +/- .1 * sd(y)</code>
       for linear models. This is the suggested way to specify the ROPE limits
-      according to <cite>Krusche (2018)</cite>. For models with binary outcome, there
+      according to <cite>Kruschke (2018)</cite>. For models with binary outcome, there
       is no direct way to specify the effect size that defines the ROPE limits.
       Two examples from Kruschke suggest that a negligible change is about
       .05 on the logit-scale. In these cases, it is recommended to specify
@@ -297,6 +321,24 @@ instead of a data frame.</p></td>
       discrete decisions are avoided, &#8220;because such decisions encourage
       people to ignore the magnitude of the parameter value and its uncertainty&#8221;
       (<cite>Kruschke (2018)</cite>).</p></dd>
+    <dt><strong>Mediation Analysis</strong></dt><dd><p><code>mediation()</code> returns a data frame with information on the
+      <em>direct effect</em> (mean value of posterior samples from <code>treatment</code>
+      of the outcome model), <em>mediator effect</em> (mean value of posterior
+      samples from <code>mediator</code> of the outcome model), <em>indirect effect</em>
+      (mean value of the multiplication of the posterior samples from
+      <code>mediator</code> of the outcome model and the posterior samples from
+      <code>treatment</code> of the mediation model) and the total effect (mean
+      value of sums of posterior samples used for the direct and indirect
+      effect). The <em>proportion mediated</em> is the indirect effect divided
+      by the total effect.
+      <br /> <br />
+      For all values, the 90% HDIs are calculated by default. Use <code>prob</code>
+      to calculate a different interval.
+      <br /> <br />
+      The arguments <code>treatment</code> and <code>mediator</code> do not necessarily
+      need to be specified. If missing, <code>mediation()</code> tries to find the
+      treatment and mediator variable automatically. If this does not work,
+      specify these variables.</p></dd>
   </dl>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>

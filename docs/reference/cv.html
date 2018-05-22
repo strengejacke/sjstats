@@ -89,6 +89,9 @@
       <a href="../articles/anova-statistics.html">Statistics for Anova Tables</a>
     </li>
     <li>
+      <a href="../articles/bayesian-statistics.html">Statistics for Bayesian Models</a>
+    </li>
+    <li>
       <a href="../articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
     </li>
   </ul>
@@ -186,11 +189,11 @@ variation at once.</p></td>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
 <span class='fu'>cv</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.07851737</div><div class='input'>
 <span class='fu'>library</span>(<span class='no'>nlme</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘nlme’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:lme4’:</span>
+#&gt; <span class='message'>Attaching package: ‘nlme’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    lmList</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
+#&gt; <span class='message'>    collapse</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:lme4’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    collapse</span></div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/lme'>lme</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span>, <span class='kw'>random</span> <span class='kw'>=</span> ~ <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
+#&gt; <span class='message'>    lmList</span></div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/lme'>lme</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span>, <span class='kw'>random</span> <span class='kw'>=</span> ~ <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
 <span class='fu'>cv</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.07851744</div><div class='input'>
 </div></pre>
   </div>

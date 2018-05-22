@@ -70,6 +70,9 @@
       <a href="articles/anova-statistics.html">Statistics for Anova Tables</a>
     </li>
     <li>
+      <a href="articles/bayesian-statistics.html">Statistics for Bayesian Models</a>
+    </li>
+    <li>
       <a href="articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
     </li>
   </ul>
@@ -103,11 +106,12 @@
 <p>Collection of convenient functions for common statistical computations, which are not directly provided by R’s base or stats packages.</p>
 <p>This package aims at providing, <strong>first</strong>, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like standard errors or root mean squared errors).</p>
 <p><strong>Second</strong>, these shortcut functions are generic (if appropriate), and can be applied not only to vectors, but also to other objects as well (e.g., the Coefficient of Variation can be computed for vectors, linear models, or linear mixed models; the <code><a href="reference/r2.html">r2()</a></code>-function returns the r-squared value for <em>lm</em>, <em>glm</em>, <em>merMod</em> or <em>lme</em> objects).</p>
-<p>Most functions of this package are designed as <em>summary functions</em>, i.e. they do not transform the input vector; rather, they return a summary, which is sometimes a vector and sometimes a <a href="https://cran.r-project.org/package=broom/vignettes/broom.html">tidy data frame</a>. The focus of most functions lies on summary statistics or fit measures for regression models, including generalized linear models and mixed effects models. However, some of the functions deal with other statistical measures, like Cronbach’s Alpha, Cramer’s V, Phi etc.</p>
+<p>Most functions of this package are designed as <em>summary functions</em>, i.e. they do not transform the input vector; rather, they return a summary, which is sometimes a vector and sometimes a <a href="https://cran.r-project.org/package=broom/vignettes/broom.html">tidy data frame</a>. The focus of most functions lies on summary statistics or fit measures for regression models, including generalized linear models, mixed effects models or Bayesian models. However, some of the functions deal with other statistical measures, like Cronbach’s Alpha, Cramer’s V, Phi etc.</p>
 <p>The comprised tools include:</p>
 <ul>
 <li>For regression and mixed models: Coefficient of Variation, Root Mean Squared Error, Residual Standard Error, Coefficient of Discrimination, R-squared and pseudo-R-squared values, standardized beta values</li>
 <li>Especially for mixed models: Design effect, ICC, sample size calculation and convergence tests</li>
+<li>Especially for Bayesian models: Highest Density Interval, region of practical equivalence (rope), Monte Carlo Standard Errors, ratio of number of effective samples, mediation analysis, Test for Practical Equivalence</li>
 <li>Fit and accuracy measures for regression models: Overdispersion tests, accuracy of predictions, test/training-error comparisons</li>
 <li>For anova-tables: Eta-squared, Partial Eta-squared and Omega-squared statistics</li>
 </ul>

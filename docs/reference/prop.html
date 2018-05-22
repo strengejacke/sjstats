@@ -90,6 +90,9 @@
       <a href="../articles/anova-statistics.html">Statistics for Anova Tables</a>
     </li>
     <li>
+      <a href="../articles/bayesian-statistics.html">Statistics for Bayesian Models</a>
+    </li>
+    <li>
       <a href="../articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
     </li>
   </ul>
@@ -259,15 +262,22 @@ percentage.</p></td>
     <span class='no'>c12hour</span> <span class='kw'>&gt;</span> <span class='fl'>20</span> <span class='kw'>&amp;</span> <span class='no'>c12hour</span> <span class='kw'>&lt;</span> <span class='fl'>40</span>,
     <span class='no'>n4pstu</span> <span class='kw'>==</span> <span class='st'>'Care Level 1'</span> <span class='kw'>|</span> <span class='no'>n4pstu</span> <span class='kw'>==</span> <span class='st'>'Care Level 3'</span>
   )</div><div class='output co'>#&gt; # A tibble: 6 x 5
-#&gt;   `carer's gender` `carer's level of educatio~ `e42dep&gt;2` `c12hour&gt;20&amp;c12hour&lt;~
-#&gt;   &lt;chr&gt;            &lt;chr&gt;                            &lt;dbl&gt;                 &lt;dbl&gt;
-#&gt; 1 Male             low level of education           0.683                 0.244
-#&gt; 2 Male             intermediate level of educ~      0.659                 0.176
-#&gt; 3 Male             high level of education          0.787                 0.149
-#&gt; 4 Female           low level of education           0.710                 0.196
-#&gt; 5 Female           intermediate level of educ~      0.593                 0.150
-#&gt; 6 Female           high level of education          0.688                 0.202
-#&gt; # ... with 1 more variable: `n4pstu==CareLevel1|n4pstu==CareLevel3` &lt;dbl&gt;</div><div class='input'>
+#&gt;   `carer's gender` `carer's level of education`    `e42dep&gt;2`
+#&gt;   &lt;chr&gt;            &lt;chr&gt;                                &lt;dbl&gt;
+#&gt; 1 Male             low level of education               0.683
+#&gt; 2 Male             intermediate level of education      0.659
+#&gt; 3 Male             high level of education              0.787
+#&gt; 4 Female           low level of education               0.710
+#&gt; 5 Female           intermediate level of education      0.593
+#&gt; 6 Female           high level of education              0.688
+#&gt;   `c12hour&gt;20&amp;c12hour&lt;40` `n4pstu==CareLevel1|n4pstu==CareLevel3`
+#&gt;                     &lt;dbl&gt;                                   &lt;dbl&gt;
+#&gt; 1                   0.244                                   0.225
+#&gt; 2                   0.176                                   0.311
+#&gt; 3                   0.149                                   0.319
+#&gt; 4                   0.196                                   0.343
+#&gt; 5                   0.150                                   0.354
+#&gt; 6                   0.202                                   0.275</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

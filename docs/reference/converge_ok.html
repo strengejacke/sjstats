@@ -90,6 +90,9 @@
       <a href="../articles/anova-statistics.html">Statistics for Anova Tables</a>
     </li>
     <li>
+      <a href="../articles/bayesian-statistics.html">Statistics for Bayesian Models</a>
+    </li>
+    <li>
       <a href="../articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
     </li>
   </ul>
@@ -177,7 +180,8 @@ will be.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>sjmisc</span>)
-<span class='fu'>library</span>(<span class='no'>lme4</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='input'><span class='fu'>data</span>(<span class='no'>efc</span>)
+<span class='fu'>library</span>(<span class='no'>lme4</span>)
+<span class='fu'>data</span>(<span class='no'>efc</span>)
 <span class='co'># create binary response</span>
 <span class='no'>efc</span>$<span class='no'>hi_qol</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/sjmisc/topics/dicho'>dicho</a></span>(<span class='no'>efc</span>$<span class='no'>quol_5</span>)
 <span class='co'># prepare group variable</span>
