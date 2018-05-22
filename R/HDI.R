@@ -135,7 +135,7 @@
 #'       If neither the \code{rope} nor \code{eff_size} argument are specified,
 #'       the effect size will be set to 0.1 and the ROPE is \code{0 +/- .1 * sd(y)}
 #'       for linear models. This is the suggested way to specify the ROPE limits
-#'       according to \cite{Krusche (2018)}. For models with binary outcome, there
+#'       according to \cite{Kruschke (2018)}. For models with binary outcome, there
 #'       is no direct way to specify the effect size that defines the ROPE limits.
 #'       Two examples from Kruschke suggest that a negligible change is about
 #'       .05 on the logit-scale. In these cases, it is recommended to specify
