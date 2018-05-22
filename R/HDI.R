@@ -1,4 +1,4 @@
-#' @title Compute statistics for MCMC samples
+#' @title Compute statistics for MCMC samples and Stan models
 #' @name hdi
 #'
 #' @description \code{hdi()} computes the highest density interval for values from
@@ -9,7 +9,8 @@
 #'   to check whether parameter values should be accepted or rejected against
 #'   the background of a formulated null hypothesis. \code{n_eff()} calculates
 #'   the number of effective samples (effective sample size). \code{mcse()}
-#'   returns the Monte Carlo standard error.
+#'   returns the Monte Carlo standard error. \code{mediation()} is a short
+#'   summary for multivariate-response mediation-models.
 #'
 #' @param x A \code{stanreg}, \code{stanfit}, or \code{brmsfit} object. For
 #'   \code{hdi()} and \code{rope()}, may also be a data frame or a vector
@@ -37,6 +38,12 @@
 #'   both fixed and random effects.
 #' @param plot Logical, if \code{TRUE}, \code{equi_test()} returns a plot
 #'   instead of a data frame.
+#' @param treatment Character, name of the treatment variable (or direct effect)
+#'   in a (multivariate response) mediator-model. If missing, \code{mediation()}
+#'   tries to find the treatment variable automatically, however, this may fail.
+#' @param mediator Character, name of the mediator variable in a (multivariate
+#'   response) mediator-model. If missing, \code{mediation()} tries to find the
+#'   treatment variable automatically, however, this may fail.
 #' @param ... Further arguments passed down to \code{equi_test()} when
 #'   \code{plot = TRUE}:
 #'   \itemize{
@@ -79,6 +86,11 @@
 #'   \cr \cr
 #'   \code{mcse()} and \code{n_eff()} return a tibble with two columns: one
 #'   with the term names and one with the related statistic.
+#'   \cr \cr
+#'   \code{mediation()} returns a data frame with direct, indirect, mediator and
+#'   total effect of a multivariate-response mediation-model, as well as the
+#'   proportion mediated. The effect sizes are mean values of the posterior
+#'   samples.
 #'
 #' @details
 #'   \describe{
@@ -142,6 +154,26 @@
 #'       discrete decisions are avoided, \dQuote{because such decisions encourage
 #'       people to ignore the magnitude of the parameter value and its uncertainty}
 #'       (\cite{Kruschke (2018)}).
+#'     }
+#'     \item{\strong{Mediation Analysis}}{
+#'       \code{mediation()} returns a data frame with information on the
+#'       \emph{direct effect} (mean value of posterior samples from \code{treatment}
+#'       of the outcome model), \emph{mediator effect} (mean value of posterior
+#'       samples from \code{mediator} of the outcome model), \emph{indirect effect}
+#'       (mean value of the multiplication of the posterior samples from
+#'       \code{mediator} of the outcome model and the posterior samples from
+#'       \code{treatment} of the mediation model) and the total effect (mean
+#'       value of sums of posterior samples used for the direct and indirect
+#'       effect). The \emph{proportion mediated} is the indirect effect divided
+#'       by the total effect.
+#'       \cr \cr
+#'       For all values, the 90\% HDIs are calculated by default. Use \code{prob}
+#'       to calculate a different interval.
+#'       \cr \cr
+#'       The arguments \code{treatment} and \code{mediator} do not necessarily
+#'       need to be specified. If missing, \code{mediation()} tries to find the
+#'       treatment and mediator variable automatically. If this does not work,
+#'       specify these variables.
 #'     }
 #'   }
 #'

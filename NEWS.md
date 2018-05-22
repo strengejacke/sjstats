@@ -3,7 +3,7 @@
 ## New functions
 
 * `equi_test()` to test if parameter values in Bayesian estimation should be accepted or rejected.
-* Add S3-method `nsamples()` for _stanreg_ objects.
+* `mediation()` to print a summary of a mediation analysis from multivariate response models fitted with _brms_.
 
 ## Changes to functions
 

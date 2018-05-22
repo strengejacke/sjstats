@@ -104,10 +104,15 @@ pred_vars <- function(x) {
 #' @export
 resp_var <- function(x) {
   if (inherits(x, "brmsfit")) {
-    if (is.null(stats::formula(x)$responses))
+    if (is.null(stats::formula(x)$responses)) {
       deparse(stats::formula(x)$formula[[2L]])
-    else
-      stats::formula(x)$responses
+    } else {
+      purrr::map_chr(
+        x$formula$forms,
+        ~ stats::formula(.x)[[2L]] %>% all.vars()
+      )
+      # stats::formula(x)$responses
+    }
   } else
     deparse(stats::formula(x)[[2L]])
 }

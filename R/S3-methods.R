@@ -1256,6 +1256,53 @@ print.sj_equi_test <- function(x, ...) {
 }
 
 
+#' @importFrom crayon blue cyan
+#' @export
+print.sj_mediation <- function(x, digits = 2, ...) {
+  cat(crayon::blue("\n# Mediator-Analysis for Stan-Model\n\n"))
+  cat(crayon::cyan(sprintf(
+    "  Treatment: %s\n   Mediator: %s\n   Response: %s\n",
+    attr(x, "treatment", exact = TRUE),
+    attr(x, "mediator", exact = TRUE),
+    attr(x, "response", exact = TRUE)
+  )))
+
+  cat("\n")
+
+  prop.med <- 100 * x[5, 2:4]
+  x <- x[c(1, 2, 4), ]
+
+  x$value <- format(round(x$value, digits = digits))
+  x$hdi.low <- format(round(x$hdi.low, digits = digits))
+  x$hdi.high <- format(round(x$hdi.high, digits = digits))
+  prop.med <- format(round(prop.med, digits = digits))
+
+  # ensure minimum width for column header
+  if (max(nchar(x$value)) < 8) x$value <- format(x$value, width = 8, justify = "right")
+
+  indent.width1 <- max(nchar(x$value)) + 17
+  indent.width2 <- max(nchar(x$hdi.low)) + max(nchar(x$hdi.high)) + 5
+
+  cat(sprintf(
+    "%s%s\n",
+    format("Estimate", width = indent.width1, justify = "right"),
+    format(sprintf("HDI (%i%%)", as.integer(100 * attr(x, "prob", exact = TRUE))), width = indent.width2, justify = "right")
+  ))
+
+  cat(sprintf("  Direct effect: %s [%s %s]\n", x$value[1], x$hdi.low[1], x$hdi.high[1]))
+  cat(sprintf("Indirect effect: %s [%s %s]\n", x$value[2], x$hdi.low[2], x$hdi.high[2]))
+  cat(sprintf("   Total effect: %s [%s %s]\n", x$value[3], x$hdi.low[3], x$hdi.high[3]))
+
+  cat(crayon::red(
+    sprintf(
+      "\nProportion mediated: %s%% [%s%% %s%%]\n",
+      prop.med[1], prop.med[2], prop.med[3]))
+  )
+
+  if (prop.med[1] < 0)
+    message("\nDirect and indirect effects have opposite directions. The proportion mediated is not meaningful.")
+}
+
 
 #' @importFrom purrr map_at map_df
 #' @importFrom dplyr bind_cols select
@@ -1305,16 +1352,4 @@ get_hdi_data <- function(x, digits) {
     dat <- dplyr::bind_cols(dat, x[, hdi.cols[1]:ncol(x), drop = FALSE])
 
   dat
-}
-
-
-#' @importFrom purrr map_dbl
-#' @export
-nsamples.stanreg <- function(x, incl_warmup = FALSE, ...) {
-  if (incl_warmup)
-    x <- purrr::map_dbl(x$stanfit@stan_args, ~ .x$iter)
-  else
-    x <- purrr::map_dbl(x$stanfit@stan_args, ~ .x$iter - .x$warmup)
-
-  sum(x)
 }
