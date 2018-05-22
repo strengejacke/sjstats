@@ -1,5 +1,9 @@
 # sjstats 0.14.4
 
+## General
+
+* Added new Vignette _Statistics for Bayesian Models_.
+
 ## New functions
 
 * `equi_test()` to test if parameter values in Bayesian estimation should be accepted or rejected.

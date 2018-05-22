@@ -16,7 +16,7 @@ The comprised tools include:
 \itemize{
   \item For regression and mixed models: Coefficient of Variation, Root Mean Squared Error, Residual Standard Error, Coefficient of Discrimination, R-squared and pseudo-R-squared values, standardized beta values
   \item Especially for mixed models: Design effect, ICC, sample size calculation and convergence tests
-  \item Especially for Bayesian models: Highest Density Interval, region of practical equivalence (rope), Monte Carlo Standard Errors, ratio of number of effective samples
+  \item Especially for Bayesian models: Highest Density Interval, region of practical equivalence (rope), Monte Carlo Standard Errors, ratio of number of effective samples, mediation analysis, Test for Practical Equivalence
   \item Fit and accuracy measures for regression models: Overdispersion tests, accuracy of predictions, test/training-error comparisons
   \item For anova-tables: Eta-squared, Partial Eta-squared, Omega-squared and Partial Omega-squared statistics
 
