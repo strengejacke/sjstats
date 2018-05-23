@@ -1237,7 +1237,7 @@ print.sj_equi_test <- function(x, ...) {
 
   if (!is.null(attr(x, "nsamples", exact = TRUE))) {
     cat(crayon::cyan(sprintf(
-      "    # Samples: %i\n",
+      "      Samples: %i\n",
       attr(x, "nsamples", exact = TRUE)
     )))
   }
@@ -1281,7 +1281,7 @@ print.sj_mediation <- function(x, digits = 2, ...) {
   if (max(nchar(x$value)) < 8) x$value <- format(x$value, width = 8, justify = "right")
 
   indent.width1 <- max(nchar(x$value)) + 17
-  indent.width2 <- max(nchar(x$hdi.low)) + max(nchar(x$hdi.high)) + 5
+  indent.width2 <- max(nchar(x$hdi.low)) + max(nchar(x$hdi.high)) + 4
 
   cat(sprintf(
     "%s%s\n",

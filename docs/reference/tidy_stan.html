@@ -187,11 +187,10 @@ both fixed and random effects.</p></td>
 <li><p>The Bayesian point estimate (column <em>estimate</em>, which is by
            default the posterior median; other statistics are also possible,
            see argument <code>typical</code>).</p></li>
-<li><p>The standard error (which are actually <em>median absolute
-       deviations</em>).</p></li>
+<li><p>The standard error (which is actually <em>median absolute deviation</em>).</p></li>
 <li><p>The HDI (see <code><a href='hdi.html'>hdi</a></code>). Computation for HDI is based on the
        code from Kruschke 2015, pp. 727f.</p></li>
-<li><p>The ratio of effective numbers of samples, <em>n_eff</em>, (i.e.
+<li><p>The ratio of effective numbers of samples, <em>neff_ratio</em>, (i.e.
        effective number of samples divided by total number of samples).
        This ratio ranges from 0 to 1, and should be close to 1. The closer
        this ratio comes to zero means that the chains may be inefficient,
@@ -199,7 +198,10 @@ both fixed and random effects.</p></td>
 <li><p>The Rhat statistics. When Rhat is above 1, it usually indicates that
        the chain has not yet converged, indicating that the drawn samples
        might not be trustworthy. Drawing more iteration may solve this issue.</p></li>
-<li><p>The Monte Carlo standard error (see <code><a href='hdi.html'>mcse</a></code>).</p></li>
+<li><p>The Monte Carlo standard error (see <code><a href='hdi.html'>mcse</a></code>). It is defined
+       as standard deviation of the chains divided by their effective sample
+       size and &#8220;provides a quantitative suggestion of how big the
+       estimation noise is&#8221; (<em>Kruschke 2015, p.187</em>).</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>

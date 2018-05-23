@@ -50,15 +50,14 @@ The returned data frame has an additonal class-attribute,
            default the posterior median; other statistics are also possible,
            see argument \code{typical}).}
      \item{
-       The standard error (which are actually \emph{median absolute
-       deviations}).
+       The standard error (which is actually \emph{median absolute deviation}).
      }
      \item{
        The HDI (see \code{\link{hdi}}). Computation for HDI is based on the
        code from Kruschke 2015, pp. 727f.
      }
      \item{
-       The ratio of effective numbers of samples, \emph{n_eff}, (i.e.
+       The ratio of effective numbers of samples, \emph{neff_ratio}, (i.e.
        effective number of samples divided by total number of samples).
        This ratio ranges from 0 to 1, and should be close to 1. The closer
        this ratio comes to zero means that the chains may be inefficient,
@@ -69,7 +68,12 @@ The returned data frame has an additonal class-attribute,
        the chain has not yet converged, indicating that the drawn samples
        might not be trustworthy. Drawing more iteration may solve this issue.
      }
-     \item{The Monte Carlo standard error (see \code{\link{mcse}}).}
+     \item{
+       The Monte Carlo standard error (see \code{\link{mcse}}). It is defined
+       as standard deviation of the chains divided by their effective sample
+       size and \dQuote{provides a quantitative suggestion of how big the
+       estimation noise is} (\emph{Kruschke 2015, p.187}).
+     }
    }
 }
 \examples{

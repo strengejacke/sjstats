@@ -11,19 +11,19 @@ n_eff.default <- function(x, type = c("fixed", "random", "all")) {
 }
 
 
-#' @importFrom bayesplot neff_ratio
 #' @export
 n_eff.stanreg <- function(x, type = c("fixed", "random", "all")) {
   type <- match.arg(type)
-  n_eff_helper(x, smry = bayesplot::neff_ratio(x), type)
+  s <- summary(x)
+  n_eff_helper(rownames(s), s[, "n_eff"], type, FALSE)
 }
 
 
-#' @importFrom bayesplot neff_ratio
 #' @export
 n_eff.stanfit <- function(x, type = c("fixed", "random", "all")) {
   type <- match.arg(type)
-  n_eff_helper(x, smry = bayesplot::neff_ratio(x), type)
+  s <- summary(x)
+  n_eff_helper(rownames(s), s[, "n_eff"], type, FALSE)
 }
 
 
@@ -35,23 +35,22 @@ n_eff.brmsfit <- function(x, type = c("fixed", "random", "all")) {
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.")
 
-  n_eff_helper(x, smry = brms::neff_ratio(x), type)
+  if (!requireNamespace("rstan", quietly = TRUE))
+    stop("Please install and load package `rstan` first.")
+
+  s <- rstan::summary(x$fit)$summary
+  n_eff_helper(rownames(s), s[, "n_eff"], type = type, is.brms = TRUE)
 }
 
 
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr slice
-n_eff_helper <- function(x, smry, type) {
-  if (inherits(x, "brmsfit"))
-    tn <- colnames(tibble::as_tibble(x))
-  else
-    tn <- names(smry)
-
+n_eff_helper <- function(tn, effs, type, is.brms) {
   dat <- tibble::tibble(
     term = tn,
-    n_eff = as.vector(smry)
+    n_eff = effs
   )
 
   # check if we need to remove random or fixed effects
-  remove_effects_from_stan(dat, type, is.brms = inherits(x, "brmsfit"))
+  remove_effects_from_stan(dat, type, is.brms = is.brms)
 }

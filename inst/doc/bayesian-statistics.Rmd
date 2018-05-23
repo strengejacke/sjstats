@@ -4,7 +4,7 @@ author: "Daniel Lüdecke"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 params:
-  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+    EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 ---
 
 <!--
@@ -46,7 +46,7 @@ This vignettes demontrates those functions of the *sjstats*-package that deal es
 
 Befor we start, we fit some models, including a mediation-object from the _mediation_-package, which we use for comparison with _brms_. The functions work with `brmsfit`, `stanreg` and `stanfit`-objects.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r}
 library(sjstats)
 library(sjmisc)
 library(mediation)
@@ -132,11 +132,11 @@ rope(m5, rope = c(-1, 1))
 
 If neither the `rope` nor `eff_size` argument are specified, the effect size will be set to 0.1 (half of a small effect according to Cohen) and the ROPE is then `0 +/- .1 * sd(y)` for linear models. This is the suggested way to specify the ROPE limits according to _Kruschke_ (2018).
 
-```{r}
+```{r, message=TRUE}
 equi_test(m5)
 ```
 
-For models with binary outcome, there is no direct way to specify the effect size that defines the ROPE limits. Two examples from Kruschke suggest that a negligible change is about .05 on the logit-scale. In these cases, it is recommended to specify the `rope` argument, however, if not specified, the ROPE limits are calculated in this way: `0 +/- .1 * sd(intercept) / 4`. For all other models, `0 +/- .1 * sd(intercept)` is used to determine the ROPE limits. These formulas are based on experience that worked well in real-life situations, but are most likely not generally the best approach.
+For models with binary outcome, there is no concrete way to derive the effect size that defines the ROPE limits. Two examples from Kruschke suggest that a negligible change is about .05 on the logit-scale. In these cases, it is recommended to specify the `rope` argument, however, if not specified, the ROPE limits are calculated in this way: `0 +/- .1 * sd(intercept) / 4`. For all other models, `0 +/- .1 * sd(intercept)` is used to determine the ROPE limits. These formulas are based on experience that worked well in real-life situations, but are most likely not generally the best approach.
 
 Beside a numerical output, the results can also be plotted, using the `plot`-argument. In this case, the 95% distributions of the posterior samles are shown, the ROPE is a light-blue shaded region in the plot, and the distributions are colored depending on whether the parameter values are accepted, rejected or undecided.
 
@@ -149,7 +149,7 @@ equi_test(m5, plot = TRUE)
 `tidy_stan()` is no substitute, but rather a convenient alternative to `summary()`. The major differences are: `tidy_stan()`...
 
   * focusses on the parameter values (estimates) and gives no information on samples, data, or formula
-  * calculates the HDI rather thanb equi-tailed intervals
+  * calculates the HDI rather than equi-tailed intervals
   * separates different model parts, e.g. random from fixed effects, or conditional from zero-inflated models
   * and prints everything nicely
 
@@ -159,8 +159,10 @@ tidy_stan(m3)
 
 Additional statistics in the output are:
 
-  * the ratio of effective numbers of samples, _n_eff_, (i.e. effective number of samples divided by total number of samples); this ratio ranges from 0 to 1, and should be close to 1; the closer this ratio comes to zero means that the chains may be inefficient, but possibly still okay
-  * the Rhat statistics; when Rhat is above 1, it usually indicates that the chain has not yet converged, indicating that the drawn samples might not be trustworthy; drawing more iteration may solve this issue
+  * standard errors (which are actually median absolute deviations)
+  * ratio of effective numbers of samples, *neff_ratio*, (i.e. effective number of samples divided by total number of samples); this ratio ranges from 0 to 1, and should be close to 1; the closer this ratio comes to zero means that the chains may be inefficient, but possibly still okay
+  * Rhat statistics; when Rhat is above 1, it usually indicates that the chain has not yet converged, indicating that the drawn samples might not be trustworthy; drawing more iteration may solve this issue
+  * Monte Carlo Standard Error (_mcse_);
 
 By default, the "estimate" is the median of the posterior distribution, but this can be changed with the `typical`-argument.
 
@@ -201,7 +203,7 @@ Here, _treat_ is the treatment effect, *job_seek* is the moderator effect, _f1_ 
 
 The simplest call just needs the model-object.
 
-```{r}
+```{r, message=TRUE}
 mediation(m2)
 ```
 
@@ -217,7 +219,7 @@ mediation(m2, prob = .95)
 
 There is a `print()`-method, which allows to print more digits.
 
-```{r}
+```{r, message=TRUE}
 mediation(m2, prob = .95) %>% print(digits = 4)
 ```
 

@@ -1,4 +1,4 @@
-# sjstats 0.14.4
+# sjstats 0.15.0
 
 ## General
 
@@ -15,6 +15,8 @@
 * `model_family()` now also returns an `is_ordinal`-element with information if the model is ordinal resp. a cumulative link model.
 * Functions that access model information (like `model_family()`) now better support `vglm`-models (package _VGAM_).
 * Effect sizes (`anova_stats()`, `eta_sq()` etc.) are now also computed for mixed models.
+* To avoid confusion, `n_eff()` now computes the number of effective samples, and no longer its ratio in relation to the total number of samples.
+* The column name for the ratio of the number of effective samples in `tidy_stan()` is now named *neff_ratio*, to avoid confusion.
 
 ## Bug fixes
 

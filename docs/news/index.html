@@ -119,9 +119,9 @@
       <small>Source: <a href='https://github.com/strengejacke/sjstats/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="sjstats-0-14-4" class="section level1">
+    <div id="sjstats-0-15-0" class="section level1">
 <h1 class="page-header">
-<a href="#sjstats-0-14-4" class="anchor"></a>sjstats 0.14.4<small> Unreleased </small>
+<a href="#sjstats-0-15-0" class="anchor"></a>sjstats 0.15.0<small> Unreleased </small>
 </h1>
 <div id="general" class="section level2">
 <h2 class="hasAnchor">
@@ -150,6 +150,8 @@
 <code><a href="../reference/pred_vars.html">model_family()</a></code> now also returns an <code>is_ordinal</code>-element with information if the model is ordinal resp. a cumulative link model.</li>
 <li>Functions that access model information (like <code><a href="../reference/pred_vars.html">model_family()</a></code>) now better support <code>vglm</code>-models (package <em>VGAM</em>).</li>
 <li>Effect sizes (<code><a href="../reference/eta_sq.html">anova_stats()</a></code>, <code><a href="../reference/eta_sq.html">eta_sq()</a></code> etc.) are now also computed for mixed models.</li>
+<li>To avoid confusion, <code><a href="../reference/hdi.html">n_eff()</a></code> now computes the number of effective samples, and no longer its ratio in relation to the total number of samples.</li>
+<li>The column name for the ratio of the number of effective samples in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> is now named <em>neff_ratio</em>, to avoid confusion.</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level2">
@@ -185,7 +187,7 @@
 <ul>
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> was improved especially for more complex multilevel models.</li>
-<li>Make <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for large <code>brmsfit</code>-objects (esp. with random effects) more efficient.</li>
+<li>Make <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for large <code>brmsfit</code>-objects (esp. with random effects) more efficient.</li>
 <li>Better <code>print()</code>-method for <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, <code><a href="../reference/hdi.html">hdi()</a></code>, <code><a href="../reference/hdi.html">rope()</a></code>, <code><a href="../reference/icc.html">icc()</a></code> and some other functions.</li>
 <li>
 <code><a href="../reference/pred_vars.html">link_inverse()</a></code> now also should return the link-inverse function for most (or some or all?) custom families of <em>brms</em>-models.</li>
@@ -843,7 +845,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#sjstats-0-14-4">0.14.4</a></li>
+        <li><a href="#sjstats-0-15-0">0.15.0</a></li>
         <li><a href="#sjstats-0-14-3">0.14.3</a></li>
         <li><a href="#sjstats-0-14-2">0.14.2</a></li>
         <li><a href="#sjstats-0-14-2-1">0.14.2</a></li>

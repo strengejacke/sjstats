@@ -37,7 +37,7 @@
   "HDI+ROPE decision rule" (Test for Practical Equivalence) (Kruschke 2018)
   to check whether parameter values should be accepted or rejected against
   the background of a formulated null hypothesis. n_eff() calculates
-  the number of effective samples (effective sample size). mcse()
+  the the number of effective samples (effective sample size). mcse()
   returns the Monte Carlo standard error. mediation() is a short
   summary for multivariate-response mediation-models." />
 
@@ -140,7 +140,7 @@
   "HDI+ROPE decision rule" (Test for Practical Equivalence) (<cite>Kruschke 2018</cite>)
   to check whether parameter values should be accepted or rejected against
   the background of a formulated null hypothesis. <code>n_eff()</code> calculates
-  the number of effective samples (effective sample size). <code>mcse()</code>
+  the the number of effective samples (effective sample size). <code>mcse()</code>
   returns the Monte Carlo standard error. <code>mediation()</code> is a short
   summary for multivariate-response mediation-models.</p>
     
@@ -260,7 +260,8 @@ treatment variable automatically, however, this may fail.</p></td>
   values from the 95% HDI); and the lower and upper interval from the 95%-HDI.
   <br /> <br />
   <code>mcse()</code> and <code>n_eff()</code> return a tibble with two columns: one
-  with the term names and one with the related statistic.
+  with the term names and one with the related statistic resp. effective
+  sample size.
   <br /> <br />
   <code>mediation()</code> returns a data frame with direct, indirect, mediator and
   total effect of a multivariate-response mediation-model, as well as the
@@ -275,10 +276,20 @@ treatment variable automatically, however, this may fail.</p></td>
       more stable than, for instance, 95% intervals. An effective sample size
       (see <code><a href='http://www.rdocumentation.org/packages/brms/topics/nsamples'>nsamples</a></code>) of at least 10.000 is recommended if
       95% intervals should be computed (see Kruschke 2015, p. 183ff).</p></dd>
-    <dt><strong>MCSE</strong></dt><dd><p>The formula for <code>mcse()</code> is from Kruschke 2015, p. 187.</p></dd>
-    <dt><strong>Ratio of Number of Effective Samples</strong></dt><dd><p>For <code>n_eff()</code>, the ratio of effective number of samples ranges from 0
-      to 1, and should be close to 1. The closer this ratio comes to zero means
-      that the chains may be inefficient, but possibly still okay.</p></dd>
+    <dt><strong>MCSE</strong></dt><dd><p>The Monte Carlo Standard Error is another useful measure of accuracy of
+      the chains. It is defined as standard deviation of the chains divided by
+      their effective sample size (the formula for <code>mcse()</code> is from
+      Kruschke 2015, p. 187). The MCSE &#8220;provides a quantitative suggestion
+      of how big the estimation noise is&#8221;.</p></dd>
+    <dt><strong>Number of Effective Samples</strong></dt><dd><p>The effective sample size divides the actual sample size by the amount
+      of autocorrelation. The effective sample size is a measure of &#8220;how
+      much independent information there is in autocorrelated chains&#8221;, or:
+      &#8220;What would be the sample size of a completely non-autocorrelated chain
+      that yielded the same information?&#8221; (<em>Kruschke 2015, p182-3</em>).
+      The ratio of effective number of samples and total number of samples
+      (provided in <code><a href='tidy_stan.html'>tidy_stan()</a></code>) ranges from 0 to 1, and should be close
+      to 1. The closer this ratio comes to zero means that the chains may be
+      inefficient, but possibly still okay.</p></dd>
     <dt><strong>ROPE</strong></dt><dd><p>There are no fixed rules to set the limits for the region of practical
       equivalence. However, there are some conventions described by
       <cite>Kruschke (2018)</cite> how to specify the limits of the rope. One

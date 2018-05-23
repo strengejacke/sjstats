@@ -44,6 +44,7 @@ equi_test.data.frame <- function(x, rope, eff_size, plot = FALSE, ...) {
 #' @importFrom tibble add_column
 #' @importFrom dplyr case_when select pull
 #' @importFrom stats sd
+#' @importFrom bayesplot neff_ratio
 equi_test_worker <- function(x, rope, eff_size, plot, fm, ...) {
 
   if (fm$is_multivariate)
@@ -89,7 +90,9 @@ equi_test_worker <- function(x, rope, eff_size, plot, fm, ...) {
 
   critical <- NULL
   if (inherits(x, c("stanfit", "stanreg", "brmsfit"))) {
-    critical <- which(n_eff(x, type = "fixed") %>% dplyr::pull(-1) < .9)
+    nratio <- bayesplot::neff_ratio(x)
+    nratio <- nratio[names(nratio) %in% dat$term]
+    critical <- which(nratio < .7)
     if (!sjmisc::is_empty(critical))
       dat$term[critical] <- sprintf("%s (*)", dat$term[critical])
   }

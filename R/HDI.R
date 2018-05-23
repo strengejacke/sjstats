@@ -8,7 +8,7 @@
 #'   "HDI+ROPE decision rule" (Test for Practical Equivalence) (\cite{Kruschke 2018})
 #'   to check whether parameter values should be accepted or rejected against
 #'   the background of a formulated null hypothesis. \code{n_eff()} calculates
-#'   the number of effective samples (effective sample size). \code{mcse()}
+#'   the the number of effective samples (effective sample size). \code{mcse()}
 #'   returns the Monte Carlo standard error. \code{mediation()} is a short
 #'   summary for multivariate-response mediation-models.
 #'
@@ -85,7 +85,8 @@
 #'   values from the 95\% HDI); and the lower and upper interval from the 95\%-HDI.
 #'   \cr \cr
 #'   \code{mcse()} and \code{n_eff()} return a tibble with two columns: one
-#'   with the term names and one with the related statistic.
+#'   with the term names and one with the related statistic resp. effective
+#'   sample size.
 #'   \cr \cr
 #'   \code{mediation()} returns a data frame with direct, indirect, mediator and
 #'   total effect of a multivariate-response mediation-model, as well as the
@@ -102,12 +103,22 @@
 #'       95\% intervals should be computed (see Kruschke 2015, p. 183ff).
 #'     }
 #'     \item{\strong{MCSE}}{
-#'       The formula for \code{mcse()} is from Kruschke 2015, p. 187.
+#'       The Monte Carlo Standard Error is another useful measure of accuracy of
+#'       the chains. It is defined as standard deviation of the chains divided by
+#'       their effective sample size (the formula for \code{mcse()} is from
+#'       Kruschke 2015, p. 187). The MCSE \dQuote{provides a quantitative suggestion
+#'       of how big the estimation noise is}.
 #'     }
-#'     \item{\strong{Ratio of Number of Effective Samples}}{
-#'       For \code{n_eff()}, the ratio of effective number of samples ranges from 0
-#'       to 1, and should be close to 1. The closer this ratio comes to zero means
-#'       that the chains may be inefficient, but possibly still okay.
+#'     \item{\strong{Number of Effective Samples}}{
+#'       The effective sample size divides the actual sample size by the amount
+#'       of autocorrelation. The effective sample size is a measure of \dQuote{how
+#'       much independent information there is in autocorrelated chains}, or:
+#'       \dQuote{What would be the sample size of a completely non-autocorrelated chain
+#'       that yielded the same information?} (\emph{Kruschke 2015, p182-3}).
+#'       The ratio of effective number of samples and total number of samples
+#'       (provided in \code{tidy_stan()}) ranges from 0 to 1, and should be close
+#'       to 1. The closer this ratio comes to zero means that the chains may be
+#'       inefficient, but possibly still okay.
 #'     }
 #'     \item{\strong{ROPE}}{
 #'       There are no fixed rules to set the limits for the region of practical

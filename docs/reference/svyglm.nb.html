@@ -219,34 +219,20 @@ a specification of the survey design.</p></td>
 
 <span class='co'># print coefficients and standard errors</span>
 <span class='no'>fit</span></div><div class='output co'>#&gt; # A tibble: 12 x 6
-#&gt;    term                                  irr std.error conf.low conf.high
-#&gt;    &lt;chr&gt;                               &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-#&gt;  1 (Intercept)                         9.85      0.156    7.26     13.4  
-#&gt;  2 factor(RIAGENDR)2                   0.451     0.180    0.317     0.643
-#&gt;  3 log(age)                            2.92      0.233    1.85      4.61 
-#&gt;  4 factor(RIDRETH1)2                   1.09      0.148    0.813     1.45 
-#&gt;  5 factor(RIDRETH1)3                   1.10      0.178    0.775     1.56 
-#&gt;  6 factor(RIDRETH1)4                   2.27      0.297    1.27      4.06 
-#&gt;  7 factor(RIDRETH1)5                   1.06      0.379    0.504     2.22 
-#&gt;  8 factor(RIAGENDR)2:log(age)          0.295     0.265    0.175     0.496
-#&gt;  9 factor(RIAGENDR)2:factor(RIDRETH1)2 0.831     0.261    0.498     1.39 
-#&gt; 10 factor(RIAGENDR)2:factor(RIDRETH1)3 1.83      0.193    1.25      2.67 
-#&gt; 11 factor(RIAGENDR)2:factor(RIDRETH1)4 1.07      0.375    0.512     2.22 
-#&gt; 12 factor(RIAGENDR)2:factor(RIDRETH1)5 1.46      0.443    0.612     3.47 
-#&gt;    p.value     
-#&gt;    &lt;chr&gt;       
-#&gt;  1 &lt;0.001 ***  
-#&gt;  2 &lt;0.001 ***  
-#&gt;  3 &lt;0.001 ***  
-#&gt;  4 "0.5769    "
-#&gt;  5 "0.6002    "
-#&gt;  6 "0.0059 ** "
-#&gt;  7 "0.8800    "
-#&gt;  8 &lt;0.001 ***  
-#&gt;  9 "0.4796    "
-#&gt; 10 "0.0018 ** "
-#&gt; 11 "0.8631    "
-#&gt; 12 "0.3957    "
+#&gt;    term                            irr std.error conf.low conf.high p.value    
+#&gt;    &lt;chr&gt;                         &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      
+#&gt;  1 (Intercept)                   9.85      0.156    7.26     13.4   &lt;0.001 *** 
+#&gt;  2 factor(RIAGENDR)2             0.451     0.180    0.317     0.643 &lt;0.001 *** 
+#&gt;  3 log(age)                      2.92      0.233    1.85      4.61  &lt;0.001 *** 
+#&gt;  4 factor(RIDRETH1)2             1.09      0.148    0.813     1.45  "0.5769   ~
+#&gt;  5 factor(RIDRETH1)3             1.10      0.178    0.775     1.56  "0.6002   ~
+#&gt;  6 factor(RIDRETH1)4             2.27      0.297    1.27      4.06  "0.0059 **~
+#&gt;  7 factor(RIDRETH1)5             1.06      0.379    0.504     2.22  "0.8800   ~
+#&gt;  8 factor(RIAGENDR)2:log(age)    0.295     0.265    0.175     0.496 &lt;0.001 *** 
+#&gt;  9 factor(RIAGENDR)2:factor(RID~ 0.831     0.261    0.498     1.39  "0.4796   ~
+#&gt; 10 factor(RIAGENDR)2:factor(RID~ 1.83      0.193    1.25      2.67  "0.0018 **~
+#&gt; 11 factor(RIAGENDR)2:factor(RID~ 1.07      0.375    0.512     2.22  "0.8631   ~
+#&gt; 12 factor(RIAGENDR)2:factor(RID~ 1.46      0.443    0.612     3.47  "0.3957   ~
 #&gt; 
 #&gt; Dispersion parameter Theta: 0.8062
 #&gt;    Standard Error of Theta: 0.0216</div><div class='output co'>#&gt; <span class='message'></span>

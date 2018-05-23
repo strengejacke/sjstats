@@ -225,18 +225,13 @@ frame with effect sizes including lower and upper confidence intervals.</p></td>
 }
 <span class='co'># }</span><div class='input'>
 <span class='fu'>anova_stats</span>(<span class='kw pkg'>car</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/car/topics/Anova'>Anova</a></span>(<span class='no'>fit</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; # A tibble: 4 x 12
-#&gt;   term                   sumsq  meansq    df statistic p.value  etasq
-#&gt;   &lt;chr&gt;                  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
-#&gt; 1 as.factor(e42dep)    426462. 142154.     3     80.3    0      0.212
-#&gt; 2 as.factor(c172code)    7352.   3676.     2      2.08   0.126  0.004
-#&gt; 3 c160age              105170. 105170.     1     59.4    0      0.052
-#&gt; 4 Residuals           1476436.   1770.   834     NA     NA     NA    
-#&gt;   partial.etasq omegasq partial.omegasq cohens.f  power
-#&gt;           &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
-#&gt; 1         0.224   0.209           0.221    0.537  1    
-#&gt; 2         0.005   0.002           0.003    0.071  0.429
-#&gt; 3         0.066   0.051           0.065    0.267  1    
-#&gt; 4        NA      NA              NA       NA     NA    </div><div class='input'>
+#&gt;   term        sumsq meansq    df statistic p.value  etasq partial.etasq omegasq
+#&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;
+#&gt; 1 as.factor~ 4.26e5 1.42e5     3     80.3    0      0.212         0.224   0.209
+#&gt; 2 as.factor~ 7.35e3 3.68e3     2      2.08   0.126  0.004         0.005   0.002
+#&gt; 3 c160age    1.05e5 1.05e5     1     59.4    0      0.052         0.066   0.051
+#&gt; 4 Residuals  1.48e6 1.77e3   834     NA     NA     NA            NA      NA    
+#&gt; # ... with 3 more variables: partial.omegasq &lt;dbl&gt;, cohens.f &lt;dbl&gt;, power &lt;dbl&gt;</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
