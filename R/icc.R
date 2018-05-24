@@ -458,13 +458,7 @@ icc.posterior <- function(fit, obj.name) {
   # residual variances, i.e.
   # within-cluster-variance (sigma^2)
 
-  if (fitfam$is_bin) {
-    # for logistic models, we use pi / 3
-    resid_var <- (pi ^ 2) / 3
-  } else {
-    # for linear and poisson models, we have a clear residual variance
-    resid_var <- sig ^ 2
-  }
+  resid_var <- sig ^ 2
 
 
   # total variance, sum of random intercept and residual variances
@@ -502,6 +496,11 @@ icc.posterior <- function(fit, obj.name) {
 
   icc_ <- dplyr::bind_cols(ri.icc, tau.00, tau.11, data.frame(resid_var = resid_var))
 
+  has_rnd_slope <- any(isTRUE(purrr::map_lgl(brms::ranef(fit), ~ dim(.x)[3] > 1)))
+
+  if (has_rnd_slope)
+    message("Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.")
+
   attr(icc_, "family") <- stats::family(fit)$family
   attr(icc_, "link") <- stats::family(fit)$link
   attr(icc_, "formula") <- stats::formula(fit)
@@ -509,8 +508,10 @@ icc.posterior <- function(fit, obj.name) {
   attr(icc_, "tau.00") <- tau.00
   attr(icc_, "tau.11") <- tau.11
   attr(icc_, "sigma_2") <- resid_var
+  attr(ri.icc, "rnd.slope.model") <- any(has_rnd_slope)
 
   class(icc_) <- c("icc.posterior", class(icc_))
+
 
   # return results
   icc_
