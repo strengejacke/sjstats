@@ -134,7 +134,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>r2</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>r2</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>loo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,6 +152,13 @@ for random intercept and random slope variances are computed
 (<cite>Kwok et al. 2008</cite>) as well as the Omega squared value
 (<cite>Xu 2003</cite>). See 'Examples' and 'Details'.</p></td>
     </tr>
+    <tr>
+      <th>loo</th>
+      <td><p>Logical, if <code>TRUE</code> and <code>x</code> is a <code>stanreg</code> or
+<code>brmsfit</code> object, a LOO-adjusted r-squared is calculated. Else,
+a rather "unadjusted" r-squared will be returned by calling
+<code><a href='http://www.rdocumentation.org/packages/rstantools/topics/bayes_R2'>rstantools::bayes_R2()</a></code>.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -162,7 +169,8 @@ for random intercept and random slope variances are computed
 <li><p>For linear mixed models, the r-squared and Omega-squared values.</p></li>
 <li><p>For <code>glm</code> objects, Cox &amp; Snell's and Nagelkerke's pseudo r-squared values.</p></li>
 <li><p>For <code>glmerMod</code> objects, Tjur's coefficient of determination.</p></li>
-<li><p>For <code>brmsfit</code> or <code>stanreg</code> objects, the Bayesian version of R-squared is computed, calling <code><a href='http://www.rdocumentation.org/packages/rstanarm/topics/bayes_R2.stanreg'>bayes_R2</a></code>.</p></li>
+<li><p>For <code>brmsfit</code> or <code>stanreg</code> objects, the Bayesian version of r-squared is computed, calling <code><a href='http://www.rdocumentation.org/packages/rstantools/topics/bayes_R2'>rstantools::bayes_R2()</a></code>.</p></li>
+<li><p>If <code>loo = TRUE</code>, for <code>brmsfit</code> or <code>stanreg</code> objects a LOO-adjusted version of r-squared is returned.</p></li>
 </ul>
 
     
@@ -191,6 +199,13 @@ for random intercept and random slope variances are computed
          For generalized linear mixed models, the coefficient of determination
          as suggested by <cite>Tjur (2009)</cite> (see also <code><a href='cod.html'>cod</a></code>). Note
          that <em>Tjur's D</em> is restricted to models with binary response.
+         <br /> <br />
+         The ("unadjusted") r-squared value and its standard error for
+         <code>brmsfit</code> or <code>stanreg</code> objects are robust measures, i.e.
+         the median is used to compute r-squared, and the median absolute
+         deviation as the measure of variability. If <code>loo = TRUE</code>,
+         a LOO-adjusted r-squared is calculated, which comes conceptionally
+         closer to an adjusted r-squared measure.
          <br /> <br />
          More ways to compute coefficients of determination are shown
          in this great <a href='http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-summaries-goodness-of-fit-decomposition-of-variance-etc.'>GLMM faq</a>.
@@ -243,25 +258,25 @@ for random intercept and random slope variances are computed
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>sjmisc</span>)
 <span class='fu'>library</span>(<span class='no'>lme4</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
-<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;     R-squared: 0.8272
-#&gt; Omega-squared: 0.8259</div><div class='input'>
+<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;     R-squared: 0.827
+#&gt; Omega-squared: 0.826</div><div class='input'>
 <span class='fu'>data</span>(<span class='no'>efc</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>barthtot</span> ~ <span class='no'>c160age</span> + <span class='no'>c12hour</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
-<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;          R-squared: 0.2555
-#&gt; adjusted R-squared: 0.2538</div><div class='input'>
+<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;          R-squared: 0.256
+#&gt; adjusted R-squared: 0.254</div><div class='input'>
 <span class='co'># Pseudo-R-squared values</span>
 <span class='no'>efc</span>$<span class='no'>services</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='no'>efc</span>$<span class='no'>tot_sc_e</span> <span class='kw'>&gt;</span> <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
-<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Cox &amp; Snell's R-squared: 0.0226
-#&gt;  Nagelkerke's R-squared: 0.0303</div><div class='input'>
+<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Cox &amp; Snell's R-squared: 0.023
+#&gt;  Nagelkerke's R-squared: 0.030</div><div class='input'>
 <span class='co'># Pseudo-R-squared values for random effect variances</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
 <span class='no'>fit.null</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='fl'>1</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
-<span class='fu'>r2</span>(<span class='no'>fit</span>, <span class='no'>fit.null</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='output co'>#&gt; R-squared (tau-00): 0.0607
-#&gt; R-squared (tau-11): 0.7534
-#&gt;      Omega-squared: 0.0303
-#&gt;          R-squared: -0.0000</div><div class='input'>
+<span class='fu'>r2</span>(<span class='no'>fit</span>, <span class='no'>fit.null</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='output co'>#&gt; R-squared (tau-00): 0.061
+#&gt; R-squared (tau-11): 0.753
+#&gt;          R-squared: 0.030
+#&gt;      Omega-squared: -0.000</div><div class='input'>
 
 </div></pre>
   </div>

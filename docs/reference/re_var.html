@@ -203,12 +203,12 @@
 #&gt; 9.604334 </div><div class='input'>
 <span class='no'>sleepstudy</span>$<span class='no'>mygrp</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>45</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>180</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>mygrp</span>) + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
-<span class='fu'>re_var</span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt;       Within-group-variance:  625.925
-#&gt;      Between-group-variance:   29.385 (mygrp)
-#&gt;      Between-group-variance:  613.979 (Subject)
-#&gt;       Random-slope-variance:   35.257 (Subject.Days)
-#&gt;  Slope-Intercept-covariance:   10.218 (Subject)
-#&gt; Slope-Intercept-correlation:    0.069 (Subject)</div><div class='input'>
+<span class='fu'>re_var</span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt;       Within-group-variance:  654.941
+#&gt;      Between-group-variance:    0.000 (mygrp)
+#&gt;      Between-group-variance:  612.090 (Subject)
+#&gt;       Random-slope-variance:   35.072 (Subject.Days)
+#&gt;  Slope-Intercept-covariance:    9.604 (Subject)
+#&gt; Slope-Intercept-correlation:    0.066 (Subject)</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

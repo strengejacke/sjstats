@@ -264,8 +264,10 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'>library</span>(<span class='no'>purrr</span>)
-<span class='no'>bs</span> <span class='kw'>&lt;-</span> <span class='no'>efc</span> <span class='kw'>%&gt;%</span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'>library</span>(<span class='no'>purrr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘purrr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:sjmisc’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    is_empty</span></div><div class='input'><span class='no'>bs</span> <span class='kw'>&lt;-</span> <span class='no'>efc</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>bootstrap</span>(<span class='fl'>100</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(
     <span class='kw'>c12hour</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/purrr/topics/map'>map_dbl</a></span>(<span class='no'>strap</span>, ~<span class='fu'>mean</span>(<span class='fu'>as.data.frame</span>(<span class='no'>.x</span>)$<span class='no'>c12hour</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
