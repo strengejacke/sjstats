@@ -43,6 +43,7 @@ This vignettes demontrates those functions of the *sjstats*-package that deal es
 * `equi_test()`
 * `mediation()`
 * `icc()`
+* `r2()`
 
 Befor we start, we fit some models, including a mediation-object from the _mediation_-package, which we use for comparison with _brms_. The functions work with `brmsfit`, `stanreg` and `stanfit`-objects.
 
@@ -235,10 +236,28 @@ icc(m5)
 
 One advantage of the _brms_ package is that you can compute the ICC for each sample of the posterior distribution, which allows you to easily calculate uncertainty intervals.
 
-```{r}
+```{r, message=TRUE}
 icc(m4, posterior = TRUE)
 
 icc(m5, posterior = TRUE)
+```
+
+There's also a `print()`-method which allows you to specify the HDI-interval and digits:
+
+```{r}
+icc(m5, posterior = TRUE) %>% print(prob = .95, digits = 3)
+```
+
+## Bayes r-squared and LOO-adjusted r-squared
+
+`r2()` computes either the Bayes r-squared value, or - if `loo = TRUE` - a LOO-adjusted r-squared value (which comes conceptionally closer to an adjusted r-squared measure).
+
+For the Bayes r-squared, the standard error is also reported. Note that `r2()` uses the median as measure of central tendency and the median absolute deviation as measure for variability.
+
+```{r}
+r2(m5)
+
+r2(m5, loo = TRUE)
 ```
 
 ## References

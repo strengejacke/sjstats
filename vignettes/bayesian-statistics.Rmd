@@ -236,10 +236,16 @@ icc(m5)
 
 One advantage of the _brms_ package is that you can compute the ICC for each sample of the posterior distribution, which allows you to easily calculate uncertainty intervals.
 
-```{r}
+```{r, message=TRUE}
 icc(m4, posterior = TRUE)
 
 icc(m5, posterior = TRUE)
+```
+
+There's also a `print()`-method which allows you to specify the HDI-interval and digits:
+
+```{r}
+icc(m5, posterior = TRUE) %>% print(prob = .95, digits = 3)
 ```
 
 ## Bayes r-squared and LOO-adjusted r-squared
