@@ -50,7 +50,7 @@ The returned data frame has an additonal class-attribute,
            default the posterior median; other statistics are also possible,
            see argument \code{typical}).}
      \item{
-       The standard error (which is actually \emph{median absolute deviation}).
+       The standard error (which is actually the \emph{median absolute deviation}).
      }
      \item{
        The HDI (see \code{\link{hdi}}). Computation for HDI is based on the

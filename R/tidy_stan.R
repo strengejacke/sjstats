@@ -31,7 +31,7 @@
 #'            default the posterior median; other statistics are also possible,
 #'            see argument \code{typical}).}
 #'      \item{
-#'        The standard error (which is actually \emph{median absolute deviation}).
+#'        The standard error (which is actually the \emph{median absolute deviation}).
 #'      }
 #'      \item{
 #'        The HDI (see \code{\link{hdi}}). Computation for HDI is based on the
@@ -307,6 +307,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   attr(out, "digits") <- digits
   attr(out, "model_name") <- deparse(substitute(x))
+  attr(out, "prob") <- prob
 
   if (inherits(x, "brmsfit"))
     attr(out, "formula") <- as.character(stats::formula(x))[1]
