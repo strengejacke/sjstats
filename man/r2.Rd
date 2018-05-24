@@ -4,7 +4,7 @@
 \alias{r2}
 \title{Compute r-squared of (generalized) linear (mixed) models}
 \usage{
-r2(x, n = NULL)
+r2(x, n = NULL, loo = FALSE)
 }
 \arguments{
 \item{x}{Fitted model of class \code{lm}, \code{glm}, \code{lmerMod},
@@ -15,6 +15,11 @@ r2(x, n = NULL)
 for random intercept and random slope variances are computed
 (\cite{Kwok et al. 2008}) as well as the Omega squared value
 (\cite{Xu 2003}). See 'Examples' and 'Details'.}
+
+\item{loo}{Logical, if \code{TRUE} and \code{x} is a \code{stanreg} or
+\code{brmsfit} object, a LOO-adjusted r-squared is calculated. Else,
+a rather "unadjusted" r-squared will be returned by calling
+\code{rstantools::bayes_R2()}.}
 }
 \value{
 \itemize{
@@ -22,7 +27,8 @@ for random intercept and random slope variances are computed
           \item For linear mixed models, the r-squared and Omega-squared values.
           \item For \code{glm} objects, Cox & Snell's and Nagelkerke's pseudo r-squared values.
           \item For \code{glmerMod} objects, Tjur's coefficient of determination.
-          \item For \code{brmsfit} or \code{stanreg} objects, the Bayesian version of R-squared is computed, calling \code{\link[rstanarm]{bayes_R2}}.
+          \item For \code{brmsfit} or \code{stanreg} objects, the Bayesian version of r-squared is computed, calling \code{rstantools::bayes_R2()}.
+          \item If \code{loo = TRUE}, for \code{brmsfit} or \code{stanreg} objects a LOO-adjusted version of r-squared is returned.
         }
 }
 \description{
@@ -55,6 +61,13 @@ For linear models, the r-squared and adjusted r-squared value is returned,
          For generalized linear mixed models, the coefficient of determination
          as suggested by \cite{Tjur (2009)} (see also \code{\link{cod}}). Note
          that \emph{Tjur's D} is restricted to models with binary response.
+         \cr \cr
+         The ("unadjusted") r-squared value and its standard error for
+         \code{brmsfit} or \code{stanreg} objects are robust measures, i.e.
+         the median is used to compute r-squared, and the median absolute
+         deviation as the measure of variability. If \code{loo = TRUE},
+         a LOO-adjusted r-squared is calculated, which comes conceptionally
+         closer to an adjusted r-squared measure.
          \cr \cr
          More ways to compute coefficients of determination are shown
          in this great \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-summaries-goodness-of-fit-decomposition-of-variance-etc.}{GLMM faq}.

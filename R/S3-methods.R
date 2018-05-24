@@ -178,45 +178,19 @@ deviance.svyglm.nb <- function(object, ...) {
 }
 
 
+#' @importFrom purrr map_chr map2_chr
 #' @export
-print.sjstats_r2 <- function(x, ...) {
-  s3 <- NULL
-  s4 <- NULL
-  if (length(x) > 1) {
-    if (identical(names(x[[2]]), "Nagelkerke")) {
-      s1 <- "Cox & Snell's R-squared"
-      s2 <- " Nagelkerke's R-squared"
-    } else if (identical(names(x[[2]]), "Sums-of-Squares-r-squared")) {
-      s1 <- "       R-squared (deviance)"
-      s2 <- "R-squared (sums-of-squares)"
-    } else if (identical(names(x[[2]]), "adj.R2")) {
-      s1 <- "         R-squared"
-      s2 <- "adjusted R-squared"
-    } else if (identical(names(x[[2]]), "O2")) {
-      s1 <- "    R-squared"
-      s2 <- "Omega-squared"
-    } else if (identical(names(x[[2]]), "R2(tau-11)")) {
-      s1 <- "R-squared (tau-00)"
-      s2 <- "R-squared (tau-11)"
-      s3 <- "     Omega-squared"
-      s4 <- "         R-squared"
-    } else {
-      return(NULL)
-    }
-    cat(sprintf("%s: %.4f\n%s: %.4f\n", s1, x[[1]], s2, x[[2]]))
-    if (!is.null(s3)) {
-      cat(sprintf("%s: %.4f\n%s: %.4f\n", s3, x[[3]], s4, x[[4]]))
-    }
-  } else {
-    if (identical(names(x[[1]]), "D")) {
-      s1 <- "Tjur's D"
-    } else if (identical(names(x[[1]]), "Bayes R2")) {
-      s1 <- "Bayes R2"
-    } else {
-      return(NULL)
-    }
-    cat(sprintf("%s: %.4f\n", s1, x[[1]]))
-  }
+print.sjstats_r2 <- function(x, digits = 3, ...) {
+
+  labels <- purrr::map_chr(x, ~ names(.x))
+  width <- max(nchar(labels))
+
+  out <- purrr::map2_chr(
+    x, labels,
+    ~ sprintf("%*s: %.*f", width, .y, digits, .x)
+  )
+
+  cat(paste0(out, collapse = "\n"))
 }
 
 

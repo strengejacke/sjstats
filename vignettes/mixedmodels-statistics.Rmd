@@ -24,6 +24,7 @@ This vignettes demontrates those functions of the *sjstats*-package that deal es
 * `scale_weights()`
 * `get_re_var()` and `re_var()`
 * `icc()`
+* `r2()`
 
 
 Befor we start, we fit a simple linear mixed model:

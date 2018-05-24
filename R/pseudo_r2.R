@@ -57,7 +57,7 @@ cod <- function(x) {
   m2 <- mean(pred[which(y == categories[2])], na.rm = T)
 
   cod = abs(m2 - m1)
-  names(cod) <- "D"
+  names(cod) <- "Tjur's D"
 
   structure(class = "sjstats_r2", list(cod = cod))
 }
@@ -79,13 +79,18 @@ cod <- function(x) {
 #'    for random intercept and random slope variances are computed
 #'    (\cite{Kwok et al. 2008}) as well as the Omega squared value
 #'    (\cite{Xu 2003}). See 'Examples' and 'Details'.
+#' @param loo Logical, if \code{TRUE} and \code{x} is a \code{stanreg} or
+#'    \code{brmsfit} object, a LOO-adjusted r-squared is calculated. Else,
+#'    a rather "unadjusted" r-squared will be returned by calling
+#'    \code{rstantools::bayes_R2()}.
 #'
 #' @return \itemize{
 #'           \item For linear models, the r-squared and adjusted r-squared values.
 #'           \item For linear mixed models, the r-squared and Omega-squared values.
 #'           \item For \code{glm} objects, Cox & Snell's and Nagelkerke's pseudo r-squared values.
 #'           \item For \code{glmerMod} objects, Tjur's coefficient of determination.
-#'           \item For \code{brmsfit} or \code{stanreg} objects, the Bayesian version of R-squared is computed, calling \code{\link[rstanarm]{bayes_R2}}.
+#'           \item For \code{brmsfit} or \code{stanreg} objects, the Bayesian version of r-squared is computed, calling \code{rstantools::bayes_R2()}.
+#'           \item If \code{loo = TRUE}, for \code{brmsfit} or \code{stanreg} objects a LOO-adjusted version of r-squared is returned.
 #'         }
 #'
 #' @note If \code{n} is given, the Pseudo-R2 statistic is the proportion of
@@ -131,6 +136,13 @@ cod <- function(x) {
 #'          as suggested by \cite{Tjur (2009)} (see also \code{\link{cod}}). Note
 #'          that \emph{Tjur's D} is restricted to models with binary response.
 #'          \cr \cr
+#'          The ("unadjusted") r-squared value and its standard error for
+#'          \code{brmsfit} or \code{stanreg} objects are robust measures, i.e.
+#'          the median is used to compute r-squared, and the median absolute
+#'          deviation as the measure of variability. If \code{loo = TRUE},
+#'          a LOO-adjusted r-squared is calculated, which comes conceptionally
+#'          closer to an adjusted r-squared measure.
+#'          \cr \cr
 #'          More ways to compute coefficients of determination are shown
 #'          in this great \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-summaries-goodness-of-fit-decomposition-of-variance-etc.}{GLMM faq}.
 #'          Furthermore, see \code{\link[MuMIn]{r.squaredGLMM}} or
@@ -174,55 +186,88 @@ cod <- function(x) {
 #' r2(fit, fit.null)
 #'
 #'
-#' @importFrom stats model.response fitted var residuals
+#' @importFrom stats model.response fitted var residuals median mad
 #' @importFrom sjmisc is_empty
 #' @export
-r2 <- function(x, n = NULL) {
+r2 <- function(x, n = NULL, loo = FALSE) {
   rsq <- NULL
   osq <- NULL
   adjr2 <- NULL
 
-  if (inherits(x, c("stanreg"))) {
+  if (isTRUE(loo) && inherits(x, c("stanreg", "brmsfit"))) {
+
+    rsq <- looR2(x)
+    names(rsq) <- "LOO-adjusted R2"
+
+    return(structure(class = "sjstats_r2", list(r2 = rsq)))
+
+  } else if (inherits(x, "stanreg")) {
+
     if (!requireNamespace("rstanarm", quietly = TRUE))
       stop("Package `rstanarm` needed for this function to work. Please install it.", call. = FALSE)
-    rsq <- mean(rstanarm::bayes_R2(x))
+
+    brs <- rstanarm::bayes_R2(x)
+    rsq <- stats::median(brs)
+    rsq.se <- stats::mad(brs)
+
     names(rsq) <- "Bayes R2"
-    return(structure(class = "sjstats_r2", list(r2 = rsq)))
-  } else if (inherits(x, c("brmsfit"))) {
+    names(rsq.se) <- "Standard Error"
+
+    return(structure(class = "sjstats_r2", list(r2 = rsq, se = rsq.se)))
+
+  } else if (inherits(x, "brmsfit")) {
+
     if (!requireNamespace("brms", quietly = TRUE))
       stop("Package `brms` needed for this function to work. Please install it.", call. = FALSE)
-    rsq <- brms::bayes_R2(x)[1]
+
+    brs <- brms::bayes_R2(x, summary = TRUE, robust = TRUE)
+    rsq <- brs[1]
+    rsq.se <- brs[2]
+
     names(rsq) <- "Bayes R2"
-    return(structure(class = "sjstats_r2", list(r2 = rsq)))
+    names(rsq.se) <- "Standard Error"
+
+    return(structure(class = "sjstats_r2", list(r2 = rsq, se = rsq.se)))
+
   } else if (inherits(x, "glm")) {
+
     # do we have a glm? if so, report pseudo_r2
     return(pseudo_ralt(x))
+
   } else if (inherits(x, "glmerMod")) {
+
     # do we have a glmer?
     return(cod(x))
+
   } else if (inherits(x, "lm")) {
+
     # do we have a simple linear model?
     rsq <- summary(x)$r.squared
     adjr2 <- summary(x)$adj.r.squared
 
     # name vectors
-    names(rsq) <- "R2"
-    names(adjr2) <- "adj.R2"
+    names(rsq) <- "R-squared"
+    names(adjr2) <- "adjusted R-squared"
 
     # return results
     return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
-    # else do we have a mixed model?
+
+
   } else if (inherits(x, "plm")) {
+
+    # else do we have a mixed model?
     rsq <- summary(x)$r.squared[1]
     adjr2 <- summary(x)$r.squared[2]
 
     # name vectors
-    names(rsq) <- "R2"
-    names(adjr2) <- "adj.R2"
+    names(rsq) <- "R-squared"
+    names(adjr2) <- "adjusted R-squared"
 
     # return results
     return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
+
   } else if (inherits(x, c("lmerMod", "lme"))) {
+
     # do we have null model?
     if (!is.null(n)) {
       # compute tau for both models
@@ -249,30 +294,41 @@ r2 <- function(x, n = NULL) {
       if (is.null(rsq1) || sjmisc::is_empty(rsq1)) rsq1 <- NA
 
       # name vectors
-      names(rsq0) <- "R2(tau-00)"
-      names(rsq1) <- "R2(tau-11)"
-      names(rsq) <- "R2"
-      names(osq) <- "O2"
+      names(rsq0) <- "R-squared (tau-00)"
+      names(rsq1) <- "R-squared (tau-11)"
+      names(rsq) <- "R-squared"
+      names(osq) <- "Omega-squared"
 
       # return results
-      return(structure(class = "sjstats_r2", list(r2_tau00 = rsq0, r2_tau11 = rsq1, r2 = rsq, o2 = osq)))
+      return(structure(class = "sjstats_r2", list(
+        r2_tau00 = rsq0,
+        r2_tau11 = rsq1,
+        r2 = rsq,
+        o2 = osq
+      )))
+
     } else {
+
       # compute "correlation"
       lmfit <-  lm(resp_val(x) ~ stats::fitted(x))
       # get r-squared
       rsq <- summary(lmfit)$r.squared
       # get omega squared
       osq <- 1 - stats::var(stats::residuals(x)) / stats::var(resp_val(x))
+
       # name vectors
-      names(rsq) <- "R2"
-      names(osq) <- "O2"
+      names(rsq) <- "R-squared"
+      names(osq) <- "Omega-squared"
+
       # return results
       return(structure(class = "sjstats_r2", list(r2 = rsq, o2 = osq)))
+
     }
   } else {
     warning("`r2` only works on linear (mixed) models of class \"lm\", \"lme\" or \"lmerMod\", or on \"stanreg\" and \"brmsfit\" objects.", call. = F)
-    return(NULL)
   }
+
+  return(NULL)
 }
 
 
@@ -282,8 +338,35 @@ pseudo_ralt <- function(x) {
   CoxSnell <- (1 - exp((x$dev - x$null) / n))
   Nagelkerke <- CoxSnell / (1 - exp(-x$null / n))
 
-  names(CoxSnell) <- "CoxSnell"
-  names(Nagelkerke) <- "Nagelkerke"
+  names(CoxSnell) <- "Cox & Snell's R-squared"
+  names(Nagelkerke) <- "Nagelkerke's R-squared"
 
   structure(class = "sjstats_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke))
+}
+
+
+#' @importFrom stats var
+looR2 <- function(fit) {
+
+  if (!requireNamespace("rstantools", quietly = TRUE))
+    stop("Package `rstantools` required. Please install.", call. = FALSE)
+
+  if (!requireNamespace("loo", quietly = TRUE))
+    stop("Package `loo` required. Please install.", call. = FALSE)
+
+  y <- resp_val(fit)
+  ypred <- rstantools::posterior_linpred(fit)
+
+  ll <- rstantools::log_lik(fit)
+
+  r_eff <- loo::relative_eff(
+    exp(ll),
+    chain_id = rep(1:n_of_chains(fit), each = n_of_samples(fit) / n_of_chains(fit))
+  )
+
+  psis_object <- loo::psis(log_ratios = -ll, r_eff = r_eff)
+  ypredloo <- loo::E_loo(ypred, psis_object, log_ratios = -ll)$value
+  eloo <- ypredloo - y
+
+  1 - stats::var(eloo) / stats::var(y)
 }

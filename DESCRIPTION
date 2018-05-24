@@ -62,6 +62,7 @@ Suggests:
     ggridges,
     graphics,
     knitr,
+    loo,
     MBESS,
     mediation,
     pbkrtest (>= 0.4-7),
@@ -70,6 +71,7 @@ Suggests:
     sjPlot,
     survey,
     rstan,
+    rstantools,
     rstanarm,
     Zelig
 URL: https://github.com/strengejacke/sjstats, https://strengejacke.github.io/sjstats

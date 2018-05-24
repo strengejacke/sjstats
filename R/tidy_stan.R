@@ -417,8 +417,16 @@ brms_clean <- function(out) {
 #' @importFrom purrr map_dbl
 n_of_samples <- function(x) {
   if (inherits(x, "brmsfit") && requireNamespace("brms", quietly = TRUE)) {
-    brms::nsamples(x)
+    brms::nsamples(x, incl_warmup = FALSE)
   } else {
     purrr::map_dbl(x$stanfit@stan_args, ~ .x$iter - .x$warmup) %>% sum()
   }
+}
+
+
+n_of_chains <- function(x) {
+  if (inherits(x, "brmsfit"))
+    length(x$fit@stan_args)
+  else
+    length(x$stanfit@stan_args)
 }
