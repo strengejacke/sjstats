@@ -175,6 +175,9 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     }
 
 
+    ## TODO if random intercept variable has levels with "/" or ".", these are also dot-separated
+    ## and will be confused with nested groups
+
     # find random intercepts
 
     ri1 <- grep("r_(.*)\\.(.*)\\.", out$term)
