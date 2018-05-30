@@ -49,6 +49,12 @@ p_value(fit)
 # lme4-fit
 library(lme4)
 fit <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
-p_value(fit, p.kr = TRUE)
+pv <- p_value(fit, p.kr = TRUE)
+
+# normal output
+pv
+
+# add information on df and t-statistic
+print(pv, summary = TRUE)
 
 }

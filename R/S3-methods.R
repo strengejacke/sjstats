@@ -1330,7 +1330,16 @@ get_hdi_data <- function(x, digits) {
 
 
 #' @export
-print.sj_pval <- function(x, digits = 3, ...) {
+print.sj_pval <- function(x, digits = 3, summary = FALSE, ...) {
+
+  if (summary) {
+    df.kr <- attr(x, "df.kr", exact = TRUE)
+    t.kr <- attr(x, "t.kr", exact = TRUE)
+
+    if (!is.null(df.kr)) x$df <- df.kr
+    if (!is.null(t.kr)) x$statistic <- t.kr
+  }
+
   x <- purrr::map_if(x, is.numeric, round, digits = digits)
   print.data.frame(as.data.frame(x), ..., row.names = TRUE)
 }
