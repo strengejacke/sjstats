@@ -120,7 +120,7 @@ merMod_p <- function(fit, p.kr) {
     #first coefficients need to be data frame
     cs <- as.data.frame(cs)
     # get KR DF
-    df.kr <- suppressMessages(pbkrtest::get_Lb_ddf(fit, lme4::fixef(fit)))
+    df.kr <- get_kr_df(fit)
     # compute p-values, assuming an approximate t-dist
     pv <- 2 * stats::pt(abs(cs$`t value`), df = df.kr, lower.tail = FALSE)
     # name vector
@@ -137,4 +137,14 @@ merMod_p <- function(fit, p.kr) {
   }
 
   pv
+}
+
+
+#' @importFrom lme4 fixef
+get_kr_df <- function(x) {
+  L <- diag(rep(1, length(lme4::fixef(x))))
+  L <- as.data.frame(L)
+  out <- suppressMessages(purrr::map_dbl(L, pbkrtest::get_Lb_ddf, object = x))
+  names(out) <- names(lme4::fixef(x))
+  out
 }
