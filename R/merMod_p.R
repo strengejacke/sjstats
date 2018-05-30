@@ -61,7 +61,11 @@ p_value <- function(fit, p.kr = FALSE) {
     se <- unlist(Zelig::get_se(fit))
   } else if (is_merMod(fit)) {
     p <- merMod_p(fit, p.kr)
-    se <- stats::coef(summary(fit))[, 2]
+    sekr <- attr(p, "se.kr", exact = TRUE)
+    if (!is.null(sekr))
+      se <- sekr
+    else
+      se <- stats::coef(summary(fit))[, 2]
   } else if (inherits(fit, c("pglm", "maxLik"))) {
     p <- summary(fit)$estimate[, 4]
     se <- summary(fit)$estimate[, 2]
@@ -92,6 +96,9 @@ p_value <- function(fit, p.kr = FALSE) {
   )
 
   attr(res, "df.kr") <- attr(p, "df.kr", exact = TRUE)
+  attr(res, "se.kr") <- attr(p, "se.kr", exact = TRUE)
+  attr(res, "t.kr") <- attr(p, "t.kr", exact = TRUE)
+
   res
 }
 
@@ -121,11 +128,15 @@ merMod_p <- function(fit, p.kr) {
     cs <- as.data.frame(cs)
     # get KR DF
     df.kr <- get_kr_df(fit)
+    se.kr <- get_kr_se(fit)
+    t.kr <- lme4::fixef(fit) / se.kr
     # compute p-values, assuming an approximate t-dist
-    pv <- 2 * stats::pt(abs(cs$`t value`), df = df.kr, lower.tail = FALSE)
+    pv <- 2 * stats::pt(abs(t.kr), df = df.kr, lower.tail = FALSE)
     # name vector
     names(pv) <- coef_names
     attr(pv, "df.kr") <- df.kr
+    attr(pv, "se.kr") <- se.kr
+    attr(pv, "t.kr") <- t.kr
   } else {
     message("Computing p-values via Wald-statistics approximation (treating t as Wald z).")
     pv <- 2 * stats::pnorm(abs(cs[, 3]), lower.tail = FALSE)
@@ -142,9 +153,34 @@ merMod_p <- function(fit, p.kr) {
 
 #' @importFrom lme4 fixef
 get_kr_df <- function(x) {
+  if (!requireNamespace("pbkrtest", quietly = TRUE))
+    stop("Package `pbkrtest` required for Kenward-Rogers approximation.", call. = FALSE)
+
   L <- diag(rep(1, length(lme4::fixef(x))))
   L <- as.data.frame(L)
   out <- suppressMessages(purrr::map_dbl(L, pbkrtest::get_Lb_ddf, object = x))
   names(out) <- names(lme4::fixef(x))
   out
 }
+
+
+#' @importFrom lme4 fixef
+#' @importFrom purrr map_dbl
+get_kr_se <- function(x) {
+  if (!requireNamespace("pbkrtest", quietly = TRUE))
+    stop("Package `pbkrtest` required for Kenward-Roger approximation.", call. = FALSE)
+
+  vcov_adj <- pbkrtest::vcovAdj(x)
+
+  fe <- lme4::fixef(x)
+  le <- length(fe)
+  Lmat <- diag(le)
+
+  se <- purrr::map_dbl(1:le, ~ sqrt(qform(Lmat[.x, ], as.matrix(vcov_adj))))
+  names(se) <- names(fe)
+
+  se
+}
+
+
+qform <- function(x, A) sum(x * (A %*% x))
