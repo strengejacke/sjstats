@@ -85,9 +85,14 @@ p_value <- function(fit, p.kr = FALSE) {
     se <- stats::coef(summary(fit))[, 2]
   }
 
-  tibble::tibble(term = names(p),
-                 p.value = as.vector(p),
-                 std.error = as.vector(se))
+  res <- tibble::tibble(
+    term = names(p),
+    p.value = as.vector(p),
+    std.error = as.vector(se)
+  )
+
+  attr(res, "df.kr") <- attr(p, "df.kr", exact = TRUE)
+  res
 }
 
 
@@ -120,6 +125,7 @@ merMod_p <- function(fit, p.kr) {
     pv <- 2 * stats::pt(abs(cs$`t value`), df = df.kr, lower.tail = FALSE)
     # name vector
     names(pv) <- coef_names
+    attr(pv, "df.kr") <- df.kr
   } else {
     message("Computing p-values via Wald-statistics approximation (treating t as Wald z).")
     pv <- 2 * stats::pnorm(abs(cs[, 3]), lower.tail = FALSE)

@@ -4,9 +4,6 @@
 #' @description Returns a tidy summary output for stan models.
 #'
 #' @param x A \code{stanreg}, \code{stanfit} or \code{brmsfit} object.
-#' @param typical The typical value that will represent the Bayesian point estimate.
-#'        By default, the posterior median is returned. See \code{\link{typical_value}}
-#'        for possible values for this argument.
 #' @param trans Name of a function or character vector naming a function, used
 #'        to apply transformations on the estimate and HDI-values. The
 #'        values for standard errors are \emph{not} transformed!

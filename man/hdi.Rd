@@ -16,7 +16,7 @@ equi_test(x, rope, eff_size, plot = FALSE, ...)
 
 mcse(x, type = c("fixed", "random", "all"))
 
-mediation(x, treatment, mediator, prob = 0.9, ...)
+mediation(x, treatment, mediator, prob = 0.9, typical = "median", ...)
 
 n_eff(x, type = c("fixed", "random", "all"))
 
@@ -85,6 +85,10 @@ tries to find the treatment variable automatically, however, this may fail.}
 \item{mediator}{Character, name of the mediator variable in a (multivariate
 response) mediator-model. If missing, \code{mediation()} tries to find the
 treatment variable automatically, however, this may fail.}
+
+\item{typical}{The typical value that will represent the Bayesian point estimate.
+By default, the posterior median is returned. See \code{\link{typical_value}}
+for possible values for this argument.}
 }
 \value{
 For \code{hdi()}, if \code{x} is a vector, returns a vector of length

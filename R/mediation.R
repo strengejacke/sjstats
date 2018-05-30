@@ -1,6 +1,6 @@
 #' @rdname hdi
 #' @export
-mediation <- function(x, treatment, mediator, prob = .9, ...) {
+mediation <- function(x, treatment, mediator, prob = .9, typical = "median", ...) {
   UseMethod("mediation")
 }
 
@@ -10,7 +10,7 @@ mediation <- function(x, treatment, mediator, prob = .9, ...) {
 #' @importFrom stats formula
 #' @importFrom dplyr pull bind_cols
 #' @export
-mediation.brmsfit <- function(x, treatment, mediator, prob = .9, ...) {
+mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "median", ...) {
   # check for pkg availability, else function might fail
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.")
@@ -71,7 +71,6 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, ...) {
     dplyr::pull(1)
 
   # Indirect effect: coef(treament) from model_m_mediator * coef(mediator) from model_y_treatment
-  # coef(treatment) from model_m_mediator
   coef_indirect <- sprintf("b_%s_%s", dv[mediator.model], treatment)
   tmp.indirect <- brms::posterior_samples(x, pars = c(coef_indirect, coef_mediator), exact_match = TRUE)
   eff.indirect <- tmp.indirect[[coef_indirect]] * tmp.indirect[[coef_mediator]]
@@ -80,17 +79,17 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, ...) {
   eff.total <- eff.indirect + eff.direct
 
   # proportion mediated: indirect effect / total effect
-  prop.mediated <- mean(eff.indirect, na.rm = TRUE) / mean(eff.total, na.rm = TRUE)
+  prop.mediated <- typical_value(eff.indirect, fun = typical) / typical_value(eff.total, fun = typical)
   prop.se <- diff(hdi(eff.indirect / eff.total, prob = prob) / 2)
   prop.hdi <- prop.mediated + c(-1, 1) * prop.se
 
   res <- data.frame(
     effect = c("direct", "indirect", "mediator", "total", "proportion mediated"),
     value = c(
-      mean(eff.direct, na.rm = TRUE),
-      mean(eff.indirect, na.rm = TRUE),
-      mean(eff.mediator, na.rm = TRUE),
-      mean(eff.total, na.rm = TRUE),
+      typical_value(eff.direct, fun = typical),
+      typical_value(eff.indirect, fun = typical),
+      typical_value(eff.mediator, fun = typical),
+      typical_value(eff.total, fun = typical),
       prop.mediated
     )
   ) %>% dplyr::bind_cols(
