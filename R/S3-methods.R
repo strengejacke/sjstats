@@ -1327,3 +1327,10 @@ get_hdi_data <- function(x, digits) {
 
   dat
 }
+
+
+#' @export
+print.sj_pval <- function(x, digits = 3, ...) {
+  x <- purrr::map_if(x, is.numeric, round, digits = digits)
+  print.data.frame(as.data.frame(x), ..., row.names = TRUE)
+}

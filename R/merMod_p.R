@@ -42,7 +42,6 @@
 #' p_value(fit, p.kr = TRUE)
 #'
 #' @importFrom stats coef pnorm
-#' @importFrom tibble tibble
 #' @importFrom broom tidy
 #' @importFrom dplyr select
 #' @export
@@ -89,11 +88,13 @@ p_value <- function(fit, p.kr = FALSE) {
     se <- stats::coef(summary(fit))[, 2]
   }
 
-  res <- tibble::tibble(
+  res <- data.frame(
     term = names(p),
     p.value = as.vector(p),
     std.error = as.vector(se)
   )
+
+  class(res) <- c("sj_pval", class(res))
 
   attr(res, "df.kr") <- attr(p, "df.kr", exact = TRUE)
   attr(res, "se.kr") <- attr(p, "se.kr", exact = TRUE)
