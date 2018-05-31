@@ -209,10 +209,12 @@ se <- function(x, nsim = 100, type = c("fe", "re")) {
 std_e_helper <- function(x) sqrt(stats::var(x, na.rm = TRUE) / length(stats::na.omit(x)))
 
 
+#' @importFrom purrr map
 #' @importFrom stats coef setNames vcov
 #' @importFrom lme4 ranef
 std_merMod <- function(fit) {
-  se.merMod <- list()
+
+  # see https://stackoverflow.com/a/26206495/2094622
 
   # get coefficients
   cc <- stats::coef(fit)
@@ -227,14 +229,18 @@ std_merMod <- function(fit) {
   r1 <- lme4::ranef(fit, condVar = TRUE)
 
   # we may have multiple random intercepts, iterate all
-  for (i in seq_len(length(cc))) {
+  se.merMod <- purrr::map(1:length(cc), function(i) {
     cmode.vars <- t(apply(attr(r1[[i]], "postVar"), 3, diag))
-    seVals <- sqrt(sweep(cmode.vars, 2, fixed.vars, "+"))
+    seVals <- sqrt(sweep(cmode.vars, 2, fixed.vars, "+", check.margin = F))
 
-    # add results to return list
-    se.merMod[[length(se.merMod) + 1]] <-
-      stats::setNames(as.vector(seVals[1, ]), c("intercept_se", "slope_se"))
-  }
+    if (length(r1[[i]]) == 1) {
+      seVals <- as.vector(seVals[1, 1])
+      stats::setNames(seVals, "intercept_se")
+    } else {
+      seVals <- as.vector(seVals[1, 1:2])
+      stats::setNames(seVals, c("intercept_se", "slope_se"))
+    }
+  })
 
   # set names of list
   names(se.merMod) <- inames
