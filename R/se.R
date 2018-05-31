@@ -231,14 +231,14 @@ std_merMod <- function(fit) {
   # we may have multiple random intercepts, iterate all
   se.merMod <- purrr::map(1:length(cc), function(i) {
     cmode.vars <- t(apply(attr(r1[[i]], "postVar"), 3, diag))
-    seVals <- sqrt(sweep(cmode.vars, 2, fixed.vars, "+", check.margin = F))
+    seVals <- sqrt(sweep(cmode.vars, 2, fixed.vars[names(r1[[i]])], "+", check.margin = F))
 
     if (length(r1[[i]]) == 1) {
-      seVals <- as.vector(seVals[1, 1])
-      stats::setNames(seVals, "intercept_se")
+      seVals <- as.data.frame(t(seVals))
+      stats::setNames(seVals, names(r1[[i]]))
     } else {
-      seVals <- as.vector(seVals[1, 1:2])
-      stats::setNames(seVals, c("intercept_se", "slope_se"))
+      seVals <- seVals[, 1:2]
+      stats::setNames(as.data.frame(seVals), names(r1[[i]]))
     }
   })
 
