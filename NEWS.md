@@ -23,6 +23,7 @@
 ## Bug fixes
 
 * Fixed issue in `se()` for `icc()`-objects, where random effect term could not be found.
+* Fixed issue in `se()` for `merMod`-objects.
 * Fixed issue in `p_value()` for mixed models with KR-approximation, which is now more accurate.
 
 # sjstats 0.14.3

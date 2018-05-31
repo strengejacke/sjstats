@@ -391,7 +391,9 @@ model_family <- function(x) {
 
   zero.inf <- zero.inf | sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T)
 
-  is.ordinal <- inherits(x, c("polr", "clm", "multinom")) | fitfam == "cumulative"
+  is.ordinal <-
+    inherits(x, c("polr", "clm", "multinom")) |
+    fitfam %in% c("cumulative", "cratio", "sratio", "acat")
 
   list(
     is_bin = binom_fam & !neg_bin_fam,
