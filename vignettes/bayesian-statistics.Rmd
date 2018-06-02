@@ -198,9 +198,9 @@ f2 <- bf(depress2 ~ treat + job_seek + econ_hard + sex + age)
 m2 <- brm(f1 + f2 + set_rescor(FALSE), data = jobs, cores = 4)
 ```
 
-Here, _treat_ is the treatment effect, *job_seek* is the moderator effect, _f1_ describes the moderator model and _f2_ describes the outcome model.
+Here, _treat_ is the treatment effect, *job_seek* is the mediator effect, _f1_ describes the mediator model and _f2_ describes the outcome model.
 
-`mediation()` returns a data frame with information on the _direct effect_ (mean value of posterior samples from treatment of the outcome model), _mediator effect_ (mean value of posterior samples from mediator of the outcome model), _indirect effect_ (mean value of the multiplication of the posterior samples from mediator of the outcome model and the posterior samples from treatment of the mediation model) and the _total effect_ (mean value of sums of posterior samples used for the direct and indirect effect). The _proportion mediated_ is the indirect effect divided by the total effect. 
+`mediation()` returns a data frame with information on the _direct effect_ (median value of posterior samples from treatment of the outcome model), _mediator effect_ (median value of posterior samples from mediator of the outcome model), _indirect effect_ (median value of the multiplication of the posterior samples from mediator of the outcome model and the posterior samples from treatment of the mediation model) and the _total effect_ (median value of sums of posterior samples used for the direct and indirect effect). The _proportion mediated_ is the indirect effect divided by the total effect. 
 
 The simplest call just needs the model-object.
 
@@ -218,10 +218,10 @@ summary(m1)
 mediation(m2, prob = .95)
 ```
 
-There is a `print()`-method, which allows to print more digits.
+If you want to calculate mean instead of median values from the posterior samples, use the `typical`-argument. Furthermore, there is a `print()`-method, which allows to print more digits.
 
 ```{r, message=TRUE}
-mediation(m2, prob = .95) %>% print(digits = 4)
+mediation(m2, typical = "mean", prob = .95) %>% print(digits = 4)
 ```
 
 As you can see, the results are similar to what the _mediation_ package produces for non-Bayesian models.
