@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2018-05-24" />
+<meta name="date" content="2018-06-05" />
 
 <title>Statistics for Mixed Effects Models</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Statistics for Mixed Effects Models</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2018-05-24</em></h4>
+<h4 class="date"><em>2018-06-05</em></h4>
 
 
 
@@ -176,20 +176,16 @@ m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span clas
 <p>For linear mixed models, the approximation of p-values are more precise when <code>p.kr = TRUE</code>, based on conditional F-tests with Kenward-Roger approximation for the degrees of freedom (calling <code>pbkrtest::get_Lb_ddf()</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using the t-statistics for calculating the p-value</span>
 <span class="kw">p_value</span>(m)
-<span class="co">#&gt; # A tibble: 2 x 3</span>
-<span class="co">#&gt;   term          p.value std.error</span>
-<span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 (Intercept) 4.50e-297      6.82</span>
-<span class="co">#&gt; 2 Days        1.27e- 11      1.55</span>
+<span class="co">#&gt;          term p.value std.error</span>
+<span class="co">#&gt; 1 (Intercept)       0     6.825</span>
+<span class="co">#&gt; 2        Days       0     1.546</span>
 
 <span class="co"># p-values based on conditional F-tests with </span>
 <span class="co"># Kenward-Roger approximation for the degrees of freedom</span>
 <span class="kw">p_value</span>(m, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; # A tibble: 2 x 3</span>
-<span class="co">#&gt;   term         p.value std.error</span>
-<span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 (Intercept) 1.17e-17      6.82</span>
-<span class="co">#&gt; 2 Days        3.26e- 6      1.55</span></code></pre></div>
+<span class="co">#&gt;          term p.value std.error</span>
+<span class="co">#&gt; 1 (Intercept)       0     6.825</span>
+<span class="co">#&gt; 2        Days       0     1.546</span></code></pre></div>
 </div>
 <div id="random-effect-variances" class="section level2">
 <h2>Random Effect Variances</h2>
@@ -249,8 +245,8 @@ m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span cla
 <span class="co">#&gt;  Family: gaussian (identity)</span>
 <span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;     ICC (mygrp): 0.004888</span>
-<span class="co">#&gt;   ICC (Subject): 0.588430</span></code></pre></div>
+<span class="co">#&gt;     ICC (mygrp): 0.033205</span>
+<span class="co">#&gt;   ICC (Subject): 0.594161</span></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1">
