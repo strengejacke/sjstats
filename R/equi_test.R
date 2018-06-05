@@ -1,41 +1,46 @@
 #' @rdname hdi
 #' @export
-equi_test <- function(x, rope, eff_size, plot = FALSE, ...) {
+equi_test <- function(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...) {
   UseMethod("equi_test")
 }
 
 
 #' @export
-equi_test.default <- function(x, rope, eff_size, plot = FALSE, ...) {
-  equi_test_worker(x = x, rope = rope, eff_size = eff_size, plot = plot, fm = NULL, ...)
+equi_test.default <- function(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...) {
+  out <- match.arg(out)
+  equi_test_worker(x = x, rope = rope, eff_size = eff_size, out = out, fm = NULL, ...)
 }
 
 
 #' @export
-equi_test.stanreg <- function(x, rope, eff_size, plot = FALSE, ...) {
-  equi_test_worker(x = x, rope = rope, eff_size = eff_size, plot = plot, fm = model_family(x), ...)
+equi_test.stanreg <- function(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...) {
+  out <- match.arg(out)
+  equi_test_worker(x = x, rope = rope, eff_size = eff_size, out = out, fm = model_family(x), ...)
 }
 
 
 #' @export
-equi_test.brmsfit <- function(x, rope, eff_size, plot = FALSE, ...) {
+equi_test.brmsfit <- function(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...) {
   # check for pkg availability, else function might fail
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.")
 
-  equi_test_worker(x = x, rope = rope, eff_size = eff_size, plot = plot, fm = model_family(x), ...)
+  out <- match.arg(out)
+  equi_test_worker(x = x, rope = rope, eff_size = eff_size, out = out, fm = model_family(x), ...)
 }
 
 
 #' @export
-equi_test.stanfit <- function(x, rope, eff_size, plot = FALSE, ...) {
-  equi_test_worker(x = x, rope = rope, eff_size = eff_size, plot = plot, fm = model_family(x), ...)
+equi_test.stanfit <- function(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...) {
+  out <- match.arg(out)
+  equi_test_worker(x = x, rope = rope, eff_size = eff_size, out = out, fm = model_family(x), ...)
 }
 
 
 #' @export
-equi_test.data.frame <- function(x, rope, eff_size, plot = FALSE, ...) {
-  equi_test_worker(x = x, rope = rope, eff_size = eff_size, plot = plot, fm = NULL, ...)
+equi_test.data.frame <- function(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...) {
+  out <- match.arg(out)
+  equi_test_worker(x = x, rope = rope, eff_size = eff_size, out = out, fm = NULL, ...)
 }
 
 
@@ -45,10 +50,16 @@ equi_test.data.frame <- function(x, rope, eff_size, plot = FALSE, ...) {
 #' @importFrom dplyr case_when select pull
 #' @importFrom stats sd
 #' @importFrom bayesplot neff_ratio
-equi_test_worker <- function(x, rope, eff_size, plot, fm, ...) {
+equi_test_worker <- function(x, rope, eff_size, out, fm, ...) {
 
   if (fm$is_multivariate)
     stop("Multivariate response models not supported yet.", call. = F)
+
+
+  if (out != "txt" && !requireNamespace("sjPlot", quietly = TRUE)) {
+    message("Package `sjPlot` needs to be loaded to print HTML tables.")
+    out <- "txt"
+  }
 
 
   dat <- as.data.frame(x)
@@ -106,11 +117,16 @@ equi_test_worker <- function(x, rope, eff_size, plot, fm, ...) {
     dat <- remove_effects_from_stan(dat, type = "fixed", is.brms = inherits(x, "brmsfit"))
   }
 
-  class(dat) <- c("sj_equi_test", class(dat))
+  # save how to print output
+  attr(dat, "print") <- out
 
-  if (plot) {
+  if (out == "plot") {
     plot_sj_equi_test(dat, x, ...)
+  } else if (out == "txt") {
+    class(dat) <- c("sj_equi_test", class(dat))
+    dat
   } else {
+    class(dat) <- c("sjt_equi_test", class(dat))
     dat
   }
 }

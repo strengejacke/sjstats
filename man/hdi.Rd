@@ -12,7 +12,7 @@
 \usage{
 hdi(x, prob = 0.9, trans = NULL, type = c("fixed", "random", "all"))
 
-equi_test(x, rope, eff_size, plot = FALSE, ...)
+equi_test(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...)
 
 mcse(x, type = c("fixed", "random", "all"))
 
@@ -53,8 +53,11 @@ If not specified, an effect size of .1 is used, as suggested by
 \cite{Kruschke 2018} (see 'Details'). If \code{rope} is specified, this
 argument will be ignored.}
 
-\item{plot}{Logical, if \code{TRUE}, \code{equi_test()} returns a plot
-instead of a data frame.}
+\item{out}{Character vector, indicating whether the results should be printed
+to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
+(\code{out = "viewer"}) or browser (\code{out = "browser"}), of if the
+results should be plotted (\code{out = "plot"}, only applies to certain
+functions). May be abbreviated.}
 
 \item{...}{Further arguments passed down to \code{equi_test()} when
 \code{plot = TRUE}:
@@ -258,7 +261,7 @@ if (require("rstanarm")) {
 
   # Test for Practical Equivalence
   equi_test(fit)
-  equi_test(fit, plot = TRUE)
+  equi_test(fit, out = "plot")
 }}
 
 }

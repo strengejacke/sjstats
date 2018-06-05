@@ -36,8 +36,11 @@
 #'   be returned. \code{type = "fixed"} returns fixed effects only,
 #'   \code{type = "random"} the random effects and \code{type = "all"} returns
 #'   both fixed and random effects.
-#' @param plot Logical, if \code{TRUE}, \code{equi_test()} returns a plot
-#'   instead of a data frame.
+#' @param out Character vector, indicating whether the results should be printed
+#'    to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
+#'    (\code{out = "viewer"}) or browser (\code{out = "browser"}), of if the
+#'    results should be plotted (\code{out = "plot"}, only applies to certain
+#'    functions). May be abbreviated.
 #' @param treatment Character, name of the treatment variable (or direct effect)
 #'   in a (multivariate response) mediator-model. If missing, \code{mediation()}
 #'   tries to find the treatment variable automatically, however, this may fail.
@@ -231,7 +234,7 @@
 #'
 #'   # Test for Practical Equivalence
 #'   equi_test(fit)
-#'   equi_test(fit, plot = TRUE)
+#'   equi_test(fit, out = "plot")
 #' }}
 #'
 #' @export

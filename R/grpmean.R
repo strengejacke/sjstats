@@ -15,9 +15,8 @@
 #'   \code{NULL}, so no weights are used.
 #' @param digits Numeric, amount of digits after decimal point when rounding
 #'   estimates and values.
-#' @param out Character vector, indicating whether the results should be printed
-#'   to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
-#'   (\code{out = "viewer"}) or browser (\code{out = "browser"}).
+#'
+#' @inheritParams hdi
 #'
 #' @return For non-grouped data frames, \code{grpmean()} returns a data frame with
 #'   following columns: \code{term}, \code{mean}, \code{N}, \code{std.dev},

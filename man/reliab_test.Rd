@@ -28,7 +28,9 @@ when the variables have different measures / scales.}
 
 \item{out}{Character vector, indicating whether the results should be printed
 to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
-(\code{out = "viewer"}) or browser (\code{out = "browser"}).}
+(\code{out = "viewer"}) or browser (\code{out = "browser"}), of if the
+results should be plotted (\code{out = "plot"}, only applies to certain
+functions). May be abbreviated.}
 
 \item{cor.method}{Correlation computation method. May be one of
 \code{"spearman"} (default), \code{"pearson"} or \code{"kendall"}.

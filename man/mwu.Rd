@@ -27,7 +27,9 @@ weights that will be applied to weight all  observations. Default is
 
 \item{out}{Character vector, indicating whether the results should be printed
 to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
-(\code{out = "viewer"}) or browser (\code{out = "browser"}).}
+(\code{out = "viewer"}) or browser (\code{out = "browser"}), of if the
+results should be plotted (\code{out = "plot"}, only applies to certain
+functions). May be abbreviated.}
 }
 \value{
 (Invisibly) returns a data frame with U, p and Z-values for each group-comparison
