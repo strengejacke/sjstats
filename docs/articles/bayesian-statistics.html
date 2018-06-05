@@ -8,8 +8,8 @@
 <title>Statistics for Bayesian Models • sjstats</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="Statistics for Bayesian Models">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Statistics for Bayesian Models">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -89,7 +89,7 @@
       <h1>Statistics for Bayesian Models</h1>
                         <h4 class="author">Daniel Lüdecke</h4>
             
-            <h4 class="date">2018-05-24</h4>
+            <h4 class="date">2018-06-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/vignettes/bayesian-statistics.Rmd"><code>vignettes/bayesian-statistics.Rmd</code></a></small>
       <div class="hidden name"><code>bayesian-statistics.Rmd</code></div>
@@ -170,18 +170,18 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; # Highest Density Interval</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                            HDI(90%)</span>
-<span class="co">#&gt;  b_jobseek_Intercept  [ 3.47  3.88]</span>
-<span class="co">#&gt;  b_depress2_Intercept [ 1.96  2.45]</span>
-<span class="co">#&gt;  b_jobseek_treat      [-0.01  0.16]</span>
+<span class="co">#&gt;  b_jobseek_Intercept  [ 3.45  3.87]</span>
+<span class="co">#&gt;  b_depress2_Intercept [ 1.95  2.44]</span>
+<span class="co">#&gt;  b_jobseek_treat      [-0.02  0.15]</span>
 <span class="co">#&gt;  b_jobseek_econ_hard  [ 0.01  0.09]</span>
 <span class="co">#&gt;  b_jobseek_sex        [-0.09  0.07]</span>
 <span class="co">#&gt;  b_jobseek_age        [ 0.00  0.01]</span>
-<span class="co">#&gt;  b_depress2_treat     [-0.11  0.04]</span>
-<span class="co">#&gt;  b_depress2_job_seek  [-0.28 -0.19]</span>
+<span class="co">#&gt;  b_depress2_treat     [-0.11  0.03]</span>
+<span class="co">#&gt;  b_depress2_job_seek  [-0.29 -0.19]</span>
 <span class="co">#&gt;  b_depress2_econ_hard [ 0.12  0.18]</span>
 <span class="co">#&gt;  b_depress2_sex       [ 0.04  0.18]</span>
 <span class="co">#&gt;  b_depress2_age       [-0.00  0.00]</span>
-<span class="co">#&gt;  sigma_jobseek        [ 0.70  0.76]</span>
+<span class="co">#&gt;  sigma_jobseek        [ 0.70  0.75]</span>
 <span class="co">#&gt;  sigma_depress2       [ 0.59  0.64]</span>
 
 <span class="kw"><a href="../reference/hdi.html">hdi</a></span>(m2, <span class="dt">prob =</span> <span class="kw">c</span>(.<span class="dv">5</span>, .<span class="dv">89</span>))
@@ -189,33 +189,33 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; # Highest Density Interval</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                            HDI(50%)      HDI(89%)</span>
-<span class="co">#&gt;  b_jobseek_Intercept  [ 3.59  3.75] [ 3.48  3.87]</span>
-<span class="co">#&gt;  b_depress2_Intercept [ 2.11  2.32] [ 1.97  2.45]</span>
-<span class="co">#&gt;  b_jobseek_treat      [ 0.03  0.10] [-0.02  0.14]</span>
+<span class="co">#&gt;  b_jobseek_Intercept  [ 3.60  3.78] [ 3.47  3.88]</span>
+<span class="co">#&gt;  b_depress2_Intercept [ 2.10  2.30] [ 1.96  2.43]</span>
+<span class="co">#&gt;  b_jobseek_treat      [ 0.03  0.10] [-0.02  0.15]</span>
 <span class="co">#&gt;  b_jobseek_econ_hard  [ 0.03  0.07] [ 0.01  0.09]</span>
-<span class="co">#&gt;  b_jobseek_sex        [-0.04  0.03] [-0.09  0.07]</span>
+<span class="co">#&gt;  b_jobseek_sex        [-0.05  0.02] [-0.09  0.07]</span>
 <span class="co">#&gt;  b_jobseek_age        [ 0.00  0.01] [ 0.00  0.01]</span>
-<span class="co">#&gt;  b_depress2_treat     [-0.07 -0.01] [-0.11  0.04]</span>
-<span class="co">#&gt;  b_depress2_job_seek  [-0.26 -0.22] [-0.28 -0.20]</span>
-<span class="co">#&gt;  b_depress2_econ_hard [ 0.13  0.16] [ 0.12  0.18]</span>
-<span class="co">#&gt;  b_depress2_sex       [ 0.08  0.14] [ 0.04  0.17]</span>
+<span class="co">#&gt;  b_depress2_treat     [-0.06 -0.01] [-0.10  0.03]</span>
+<span class="co">#&gt;  b_depress2_job_seek  [-0.26 -0.22] [-0.29 -0.19]</span>
+<span class="co">#&gt;  b_depress2_econ_hard [ 0.14  0.16] [ 0.12  0.18]</span>
+<span class="co">#&gt;  b_depress2_sex       [ 0.08  0.14] [ 0.04  0.18]</span>
 <span class="co">#&gt;  b_depress2_age       [-0.00  0.00] [-0.00  0.00]</span>
 <span class="co">#&gt;  sigma_jobseek        [ 0.71  0.74] [ 0.70  0.75]</span>
-<span class="co">#&gt;  sigma_depress2       [ 0.60  0.62] [ 0.59  0.64]</span></code></pre></div>
+<span class="co">#&gt;  sigma_depress2       [ 0.61  0.62] [ 0.59  0.64]</span></code></pre></div>
 <p>For multilevel models, the <code>type</code>-argument defines whether the HDI of fixed, random or all effects are shown.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/hdi.html">hdi</a></span>(m5, <span class="dt">type =</span> <span class="st">"random"</span>)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; # Highest Density Interval</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                              HDI(90%)</span>
-<span class="co">#&gt;  r_e15relat.1.Intercept. [-0.11 1.24]</span>
-<span class="co">#&gt;  r_e15relat.2.Intercept. [-0.12 0.99]</span>
-<span class="co">#&gt;  r_e15relat.3.Intercept. [-0.81 0.74]</span>
-<span class="co">#&gt;  r_e15relat.4.Intercept. [-0.58 0.72]</span>
-<span class="co">#&gt;  r_e15relat.5.Intercept. [-0.98 0.71]</span>
-<span class="co">#&gt;  r_e15relat.6.Intercept. [-1.61 0.27]</span>
-<span class="co">#&gt;  r_e15relat.7.Intercept. [-1.20 0.90]</span>
-<span class="co">#&gt;  r_e15relat.8.Intercept. [-0.84 0.41]</span></code></pre></div>
+<span class="co">#&gt;  r_e15relat.1.Intercept. [-0.15 1.30]</span>
+<span class="co">#&gt;  r_e15relat.2.Intercept. [-0.15 1.02]</span>
+<span class="co">#&gt;  r_e15relat.3.Intercept. [-0.91 0.70]</span>
+<span class="co">#&gt;  r_e15relat.4.Intercept. [-0.61 0.75]</span>
+<span class="co">#&gt;  r_e15relat.5.Intercept. [-0.89 0.77]</span>
+<span class="co">#&gt;  r_e15relat.6.Intercept. [-1.66 0.23]</span>
+<span class="co">#&gt;  r_e15relat.7.Intercept. [-1.22 0.86]</span>
+<span class="co">#&gt;  r_e15relat.8.Intercept. [-0.89 0.43]</span></code></pre></div>
 <p>The computation for the HDI is based on the code from <em>Kruschke 2015, pp. 727f</em>. For default sampling in Stan (4000 samples), the 90% intervals for HDI are more stable than, for instance, 95% intervals. An effective sample size of at least 10.000 is recommended if 95% intervals should be computed (see <em>Kruschke 2015, p. 183ff</em>).</p>
 </div>
 <div id="region-of-practical-equivalence-rope" class="section level2">
@@ -229,12 +229,12 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; </span>
 <span class="co">#&gt;              inside outside</span>
 <span class="co">#&gt;  b_Intercept   0.0%  100.0%</span>
-<span class="co">#&gt;  b_e42dep2    43.6%   56.4%</span>
-<span class="co">#&gt;  b_e42dep3     0.3%   99.7%</span>
+<span class="co">#&gt;  b_e42dep2    42.9%   57.1%</span>
+<span class="co">#&gt;  b_e42dep3     0.5%   99.5%</span>
 <span class="co">#&gt;  b_e42dep4     0.0%  100.0%</span>
 <span class="co">#&gt;  b_c12hour   100.0%    0.0%</span>
 <span class="co">#&gt;  b_c172code2  99.5%    0.5%</span>
-<span class="co">#&gt;  b_c172code3  77.3%   22.7%</span>
+<span class="co">#&gt;  b_c172code3  78.3%   21.7%</span>
 <span class="co">#&gt;  sigma         0.0%  100.0%</span></code></pre></div>
 <p><code><a href="../reference/hdi.html">rope()</a></code> does not suggest limits for the region of practical equivalence and does not tell you how big is practically equivalent to the null value. However, there are suggestions how to choose reasonable limits (see <em>Kruschke 2018</em>), which are implemented in the <code><a href="../reference/hdi.html">equi_test()</a></code> functions.</p>
 </div>
@@ -253,19 +253,19 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt;       Samples: 4000</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                         H0 %inROPE     HDI(95%)</span>
-<span class="co">#&gt;  b_Intercept (*)    reject    0.00 [ 7.59 9.89]</span>
-<span class="co">#&gt;  b_e42dep2 (*)   undecided    8.60 [ 0.07 2.05]</span>
-<span class="co">#&gt;  b_e42dep3 (*)      reject    0.00 [ 1.31 3.23]</span>
-<span class="co">#&gt;  b_e42dep4 (*)      reject    0.00 [ 2.81 4.91]</span>
+<span class="co">#&gt;  b_Intercept (*)    reject    0.00 [ 7.51 9.89]</span>
+<span class="co">#&gt;  b_e42dep2 (*)   undecided    8.30 [ 0.09 2.12]</span>
+<span class="co">#&gt;  b_e42dep3 (*)      reject    0.02 [ 1.32 3.32]</span>
+<span class="co">#&gt;  b_e42dep4 (*)      reject    0.00 [ 2.79 4.91]</span>
 <span class="co">#&gt;  b_c12hour          accept  100.00 [ 0.00 0.01]</span>
-<span class="co">#&gt;  b_c172code2     undecided   70.97 [-0.48 0.77]</span>
-<span class="co">#&gt;  b_c172code3     undecided   21.45 [-0.10 1.42]</span>
-<span class="co">#&gt;  sigma              reject    0.00 [ 3.41 3.76]</span>
+<span class="co">#&gt;  b_c172code2     undecided   70.83 [-0.44 0.76]</span>
+<span class="co">#&gt;  b_c172code3     undecided   22.57 [-0.04 1.49]</span>
+<span class="co">#&gt;  sigma              reject    0.00 [ 3.40 3.76]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; (*) the number of effective samples may be insufficient for some parameters</span></code></pre></div>
 <p>For models with binary outcome, there is no concrete way to derive the effect size that defines the ROPE limits. Two examples from Kruschke suggest that a negligible change is about .05 on the logit-scale. In these cases, it is recommended to specify the <code>rope</code> argument, however, if not specified, the ROPE limits are calculated in this way: <code>0 +/- .1 * sd(intercept) / 4</code>. For all other models, <code>0 +/- .1 * sd(intercept)</code> is used to determine the ROPE limits. These formulas are based on experience that worked well in real-life situations, but are most likely not generally the best approach.</p>
-<p>Beside a numerical output, the results can also be plotted, using the <code>plot</code>-argument. In this case, the 95% distributions of the posterior samles are shown, the ROPE is a light-blue shaded region in the plot, and the distributions are colored depending on whether the parameter values are accepted, rejected or undecided.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/hdi.html">equi_test</a></span>(m5, <span class="dt">plot =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Beside a numerical output, the results can also be printed as HTML-table or plotted, using the <code>out</code>-argument. For plots, the 95% distributions of the posterior samles are shown, the ROPE is a light-blue shaded region in the plot, and the distributions are colored depending on whether the parameter values are accepted, rejected or undecided.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/hdi.html">equi_test</a></span>(m5, <span class="dt">out =</span> <span class="st">"plot"</span>)</code></pre></div>
 <p><img src="bayesian-statistics_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 </div>
 <div id="tidy-summary-of-bayesian-models" class="section level2">
@@ -285,16 +285,16 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; ## Conditional Model:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) neff_ratio Rhat mcse</span>
-<span class="co">#&gt;  Intercept     1.26      0.75 [-0.28  2.67]       0.17 1.01 0.04</span>
-<span class="co">#&gt;  child        -1.15      0.09 [-1.29 -0.99]       0.87 1.00 0.00</span>
-<span class="co">#&gt;  camper        0.73      0.09 [ 0.58  0.87]       1.00 1.00 0.00</span>
+<span class="co">#&gt;  Intercept     1.23      0.75 [-0.27  2.80]       0.17    1 0.04</span>
+<span class="co">#&gt;  child        -1.15      0.10 [-1.29 -1.00]       1.00    1 0.00</span>
+<span class="co">#&gt;  camper        0.73      0.10 [ 0.59  0.89]       1.00    1 0.00</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Zero-Inflated Model:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) neff_ratio Rhat mcse</span>
-<span class="co">#&gt;  Intercept    -0.69      0.68 [-2.00  0.47]       0.45    1 0.02</span>
-<span class="co">#&gt;  child         1.88      0.33 [ 1.36  2.42]       0.70    1 0.01</span>
-<span class="co">#&gt;  camper       -0.84      0.37 [-1.41 -0.23]       0.85    1 0.01</span></code></pre></div>
+<span class="co">#&gt;  Intercept    -0.68      0.74 [-1.88  0.55]       0.27    1 0.02</span>
+<span class="co">#&gt;  child         1.89      0.33 [ 1.36  2.43]       0.85    1 0.01</span>
+<span class="co">#&gt;  camper       -0.85      0.34 [-1.42 -0.30]       1.00    1 0.01</span></code></pre></div>
 <p>Additional statistics in the output are:</p>
 <ul>
 <li>standard errors (which are actually median absolute deviations)</li>
@@ -310,16 +310,16 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; ## Conditional Model:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) neff_ratio Rhat mcse</span>
-<span class="co">#&gt;  Intercept     1.20      0.75 [-0.28  2.67]       0.17 1.01 0.04</span>
-<span class="co">#&gt;  child        -1.15      0.09 [-1.29 -0.99]       0.87 1.00 0.00</span>
-<span class="co">#&gt;  camper        0.74      0.09 [ 0.58  0.87]       1.00 1.00 0.00</span>
+<span class="co">#&gt;  Intercept     1.18      0.75 [-0.27  2.80]       0.17    1 0.04</span>
+<span class="co">#&gt;  child        -1.15      0.10 [-1.29 -1.00]       1.00    1 0.00</span>
+<span class="co">#&gt;  camper        0.73      0.10 [ 0.59  0.89]       1.00    1 0.00</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Zero-Inflated Model:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) neff_ratio Rhat mcse</span>
-<span class="co">#&gt;  Intercept    -0.70      0.68 [-2.00  0.47]       0.45    1 0.02</span>
-<span class="co">#&gt;  child         1.88      0.33 [ 1.36  2.42]       0.70    1 0.01</span>
-<span class="co">#&gt;  camper       -0.84      0.37 [-1.41 -0.23]       0.85    1 0.01</span></code></pre></div>
+<span class="co">#&gt;  Intercept    -0.70      0.74 [-1.88  0.55]       0.27    1 0.02</span>
+<span class="co">#&gt;  child         1.89      0.33 [ 1.36  2.43]       0.85    1 0.01</span>
+<span class="co">#&gt;  camper       -0.85      0.34 [-1.42 -0.30]       1.00    1 0.01</span></code></pre></div>
 <p>To also show random effects of multilevel models, use the <code>type</code>-argument.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># printing fixed and random effects of multilevel model</span>
 <span class="kw"><a href="../reference/tidy_stan.html">tidy_stan</a></span>(m3, <span class="dt">type =</span> <span class="st">"all"</span>)
@@ -329,32 +329,32 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; ## Conditional Model: Fixed effects</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) neff_ratio Rhat mcse</span>
-<span class="co">#&gt;  Intercept     1.26      0.75 [-0.28  2.67]       0.17 1.01 0.04</span>
-<span class="co">#&gt;  child        -1.15      0.09 [-1.29 -0.99]       0.87 1.00 0.00</span>
-<span class="co">#&gt;  camper        0.73      0.09 [ 0.58  0.87]       1.00 1.00 0.00</span>
+<span class="co">#&gt;  Intercept     1.23      0.75 [-0.27  2.80]       0.17    1 0.04</span>
+<span class="co">#&gt;  child        -1.15      0.10 [-1.29 -1.00]       1.00    1 0.00</span>
+<span class="co">#&gt;  camper        0.73      0.10 [ 0.59  0.89]       1.00    1 0.00</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Conditional Model: Random effect (Intercept: persons)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) neff_ratio Rhat mcse</span>
-<span class="co">#&gt;  persons.1    -1.31      0.76 [-2.87  0.14]       0.17 1.00 0.04</span>
-<span class="co">#&gt;  persons.2    -0.34      0.75 [-1.82  1.12]       0.17 1.01 0.04</span>
-<span class="co">#&gt;  persons.3     0.36      0.75 [-1.09  1.88]       0.17 1.01 0.04</span>
-<span class="co">#&gt;  persons.4     1.26      0.75 [-0.22  2.71]       0.17 1.01 0.04</span>
+<span class="co">#&gt;  persons.1    -1.27      0.77 [-2.83  0.26]       0.17    1 0.04</span>
+<span class="co">#&gt;  persons.2    -0.31      0.75 [-1.90  1.18]       0.17    1 0.04</span>
+<span class="co">#&gt;  persons.3     0.40      0.75 [-1.07  1.97]       0.17    1 0.04</span>
+<span class="co">#&gt;  persons.4     1.28      0.73 [-0.27  2.77]       0.17    1 0.04</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Zero-Inflated Model: Fixed effects</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) neff_ratio Rhat mcse</span>
-<span class="co">#&gt;  Intercept    -0.69      0.68 [-2.00  0.47]       0.45    1 0.02</span>
-<span class="co">#&gt;  child         1.88      0.33 [ 1.36  2.42]       0.70    1 0.01</span>
-<span class="co">#&gt;  camper       -0.84      0.37 [-1.41 -0.23]       0.85    1 0.01</span>
+<span class="co">#&gt;  Intercept    -0.68      0.74 [-1.88  0.55]       0.27    1 0.02</span>
+<span class="co">#&gt;  child         1.89      0.33 [ 1.36  2.43]       0.85    1 0.01</span>
+<span class="co">#&gt;  camper       -0.85      0.34 [-1.42 -0.30]       1.00    1 0.01</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Zero-Inflated Model: Random effect (Intercept: persons)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) neff_ratio Rhat mcse</span>
-<span class="co">#&gt;  persons.1     1.25      0.78 [ 0.01  2.65]       0.46    1 0.02</span>
-<span class="co">#&gt;  persons.2     0.33      0.66 [-0.87  1.51]       0.44    1 0.02</span>
-<span class="co">#&gt;  persons.3    -0.17      0.70 [-1.46  1.00]       0.45    1 0.02</span>
-<span class="co">#&gt;  persons.4    -1.26      0.74 [-2.56 -0.04]       0.49    1 0.02</span></code></pre></div>
+<span class="co">#&gt;  persons.1     1.27      0.79 [ 0.07  2.68]       0.32    1 0.02</span>
+<span class="co">#&gt;  persons.2     0.32      0.70 [-0.86  1.57]       0.28    1 0.02</span>
+<span class="co">#&gt;  persons.3    -0.15      0.73 [-1.38  1.14]       0.28    1 0.02</span>
+<span class="co">#&gt;  persons.4    -1.30      0.77 [-2.66 -0.11]       0.30    1 0.02</span></code></pre></div>
 <p>By default, 89%-HDI are computed (a convention following <em>McElreath 2015</em>), but other or even multiple HDI can be computed using the <code>prob</code> argument.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># two different HDI for multivariate response model</span>
 <span class="kw"><a href="../reference/tidy_stan.html">tidy_stan</a></span>(m2, <span class="dt">prob =</span> <span class="kw">c</span>(.<span class="dv">5</span>, .<span class="dv">95</span>))
@@ -364,19 +364,19 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; ## Response: jobseek</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(50%)      HDI(95%) neff_ratio Rhat mcse</span>
-<span class="co">#&gt;  Intercept     3.67      0.12 [ 3.59  3.75] [ 3.43  3.92]          1    1    0</span>
-<span class="co">#&gt;  treat         0.07      0.05 [ 0.03  0.10] [-0.03  0.17]          1    1    0</span>
-<span class="co">#&gt;  econ_hard     0.05      0.02 [ 0.03  0.07] [ 0.00  0.10]          1    1    0</span>
-<span class="co">#&gt;  sex          -0.01      0.05 [-0.04  0.03] [-0.11  0.08]          1    1    0</span>
-<span class="co">#&gt;  age           0.00      0.00 [ 0.00  0.01] [ 0.00  0.01]          1    1    0</span>
+<span class="co">#&gt;  Intercept     3.67      0.13 [ 3.60  3.78] [ 3.43  3.93]          1    1    0</span>
+<span class="co">#&gt;  treat         0.07      0.05 [ 0.03  0.10] [-0.04  0.16]          1    1    0</span>
+<span class="co">#&gt;  econ_hard     0.05      0.03 [ 0.03  0.07] [ 0.00  0.10]          1    1    0</span>
+<span class="co">#&gt;  sex          -0.01      0.05 [-0.05  0.02] [-0.10  0.09]          1    1    0</span>
+<span class="co">#&gt;  age           0.00      0.00 [ 0.00  0.01] [-0.00  0.01]          1    1    0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Response: depress2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(50%)      HDI(95%) neff_ratio Rhat mcse</span>
-<span class="co">#&gt;  Intercept     2.21      0.15 [ 2.11  2.32] [ 1.92  2.50]          1    1    0</span>
-<span class="co">#&gt;  treat        -0.04      0.04 [-0.07 -0.01] [-0.13  0.04]          1    1    0</span>
-<span class="co">#&gt;  joseek       -0.24      0.03 [-0.26 -0.22] [-0.29 -0.19]          1    1    0</span>
-<span class="co">#&gt;  econ_hard     0.15      0.02 [ 0.13  0.16] [ 0.11  0.19]          1    1    0</span>
+<span class="co">#&gt;  Intercept     2.21      0.15 [ 2.10  2.30] [ 1.90  2.49]          1    1    0</span>
+<span class="co">#&gt;  treat        -0.04      0.04 [-0.06 -0.01] [-0.12  0.04]          1    1    0</span>
+<span class="co">#&gt;  joseek       -0.24      0.03 [-0.26 -0.22] [-0.30 -0.18]          1    1    0</span>
+<span class="co">#&gt;  econ_hard     0.15      0.02 [ 0.14  0.16] [ 0.11  0.19]          1    1    0</span>
 <span class="co">#&gt;  sex           0.11      0.04 [ 0.08  0.14] [ 0.02  0.18]          1    1    0</span>
 <span class="co">#&gt;  age           0.00      0.00 [-0.00  0.00] [-0.00  0.00]          1    1    0</span></code></pre></div>
 </div>
@@ -389,8 +389,8 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 f2 &lt;-<span class="st"> </span><span class="kw">bf</span>(depress2 <span class="op">~</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>job_seek <span class="op">+</span><span class="st"> </span>econ_hard <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age)
 
 m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op">+</span><span class="st"> </span>f2 <span class="op">+</span><span class="st"> </span><span class="kw">set_rescor</span>(<span class="ot">FALSE</span>), <span class="dt">data =</span> jobs, <span class="dt">cores =</span> <span class="dv">4</span>)</code></pre></div>
-<p>Here, <em>treat</em> is the treatment effect, <em>job_seek</em> is the moderator effect, <em>f1</em> describes the moderator model and <em>f2</em> describes the outcome model.</p>
-<p><code><a href="../reference/hdi.html">mediation()</a></code> returns a data frame with information on the <em>direct effect</em> (mean value of posterior samples from treatment of the outcome model), <em>mediator effect</em> (mean value of posterior samples from mediator of the outcome model), <em>indirect effect</em> (mean value of the multiplication of the posterior samples from mediator of the outcome model and the posterior samples from treatment of the mediation model) and the <em>total effect</em> (mean value of sums of posterior samples used for the direct and indirect effect). The <em>proportion mediated</em> is the indirect effect divided by the total effect.</p>
+<p>Here, <em>treat</em> is the treatment effect, <em>job_seek</em> is the mediator effect, <em>f1</em> describes the mediator model and <em>f2</em> describes the outcome model.</p>
+<p><code><a href="../reference/hdi.html">mediation()</a></code> returns a data frame with information on the <em>direct effect</em> (median value of posterior samples from treatment of the outcome model), <em>mediator effect</em> (median value of posterior samples from mediator of the outcome model), <em>indirect effect</em> (median value of the multiplication of the posterior samples from mediator of the outcome model and the posterior samples from treatment of the mediation model) and the <em>total effect</em> (median value of sums of posterior samples used for the direct and indirect effect). The <em>proportion mediated</em> is the indirect effect divided by the total effect.</p>
 <p>The simplest call just needs the model-object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/hdi.html">mediation</a></span>(m2)
 <span class="co">#&gt; </span>
@@ -401,11 +401,11 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt;    Response: depress2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                  Estimate    HDI (90%)</span>
-<span class="co">#&gt;   Direct effect:    -0.04 [-0.11 0.04]</span>
+<span class="co">#&gt;   Direct effect:    -0.04 [-0.11 0.03]</span>
 <span class="co">#&gt; Indirect effect:    -0.02 [-0.04 0.01]</span>
-<span class="co">#&gt;    Total effect:    -0.06 [-0.13 0.02]</span>
+<span class="co">#&gt;    Total effect:    -0.06 [-0.13 0.01]</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Proportion mediated: 27.58% [-87.44% 142.6%]</span></code></pre></div>
+<span class="co">#&gt; Proportion mediated: 27.91% [-74.77% 130.58%]</span></code></pre></div>
 <p>Typically, <code><a href="../reference/hdi.html">mediation()</a></code> finds the treatment and mediator variables automatically. If this does not work, use the <code>treatment</code> and <code>mediator</code> arguments to specify the related variable names. For all values, the 90% HDIs are calculated by default. Use <code>prob</code> to calculate a different interval.</p>
 <p>Here is a comparison with the <em>mediation</em> package. Note that the <code>summary()</code>-output of the <em>mediation</em> package shows the indirect effect first, followed by the direct effect.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)
@@ -415,10 +415,10 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Quasi-Bayesian Confidence Intervals</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                Estimate 95% CI Lower 95% CI Upper p-value</span>
-<span class="co">#&gt; ACME            -0.0154      -0.0392         0.01    0.21</span>
-<span class="co">#&gt; ADE             -0.0391      -0.1256         0.05    0.37</span>
-<span class="co">#&gt; Total Effect    -0.0544      -0.1422         0.03    0.23</span>
-<span class="co">#&gt; Prop. Mediated   0.2235      -1.9368         2.56    0.35</span>
+<span class="co">#&gt; ACME            -0.0158      -0.0394         0.01    0.19</span>
+<span class="co">#&gt; ADE             -0.0402      -0.1186         0.05    0.33</span>
+<span class="co">#&gt; Total Effect    -0.0560      -0.1371         0.03    0.19</span>
+<span class="co">#&gt; Prop. Mediated   0.2401      -1.5970         2.25    0.30</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Sample Size Used: 899 </span>
 <span class="co">#&gt; </span>
@@ -434,13 +434,13 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt;    Response: depress2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                  Estimate    HDI (95%)</span>
-<span class="co">#&gt;   Direct effect:    -0.04 [-0.13 0.04]</span>
+<span class="co">#&gt;   Direct effect:    -0.04 [-0.12 0.04]</span>
 <span class="co">#&gt; Indirect effect:    -0.02 [-0.04 0.01]</span>
-<span class="co">#&gt;    Total effect:    -0.06 [-0.15 0.03]</span>
+<span class="co">#&gt;    Total effect:    -0.06 [-0.14 0.03]</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Proportion mediated: 27.58% [-229.54% 284.69%]</span></code></pre></div>
-<p>There is a <code>print()</code>-method, which allows to print more digits.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/hdi.html">mediation</a></span>(m2, <span class="dt">prob =</span> .<span class="dv">95</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">digits =</span> <span class="dv">4</span>)
+<span class="co">#&gt; Proportion mediated: 27.91% [-176.9% 232.71%]</span></code></pre></div>
+<p>If you want to calculate mean instead of median values from the posterior samples, use the <code>typical</code>-argument. Furthermore, there is a <code>print()</code>-method, which allows to print more digits.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/hdi.html">mediation</a></span>(m2, <span class="dt">typical =</span> <span class="st">"mean"</span>, <span class="dt">prob =</span> .<span class="dv">95</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">digits =</span> <span class="dv">4</span>)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; # Causal Mediation Analysis for Stan Model</span>
 <span class="co">#&gt; </span>
@@ -449,11 +449,11 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt;    Response: depress2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                  Estimate        HDI (95%)</span>
-<span class="co">#&gt;   Direct effect:  -0.0413 [-0.1312 0.0436]</span>
-<span class="co">#&gt; Indirect effect:  -0.0157 [-0.0403 0.0094]</span>
-<span class="co">#&gt;    Total effect:  -0.0570 [-0.1465 0.0303]</span>
+<span class="co">#&gt;   Direct effect:  -0.0398 [-0.1239 0.0420]</span>
+<span class="co">#&gt; Indirect effect:  -0.0158 [-0.0422 0.0079]</span>
+<span class="co">#&gt;    Total effect:  -0.0556 [-0.1437 0.0308]</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Proportion mediated: 27.5792% [-229.5361% 284.6945%]</span></code></pre></div>
+<span class="co">#&gt; Proportion mediated: 28.4146% [-176.3884% 233.2176%]</span></code></pre></div>
 <p>As you can see, the results are similar to what the <em>mediation</em> package produces for non-Bayesian models.</p>
 </div>
 <div id="icc-for-multilevel-models" class="section level2">
@@ -466,7 +466,7 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt;  Family: gaussian (identity)</span>
 <span class="co">#&gt; Formula: list() neg_c_7 ~ e42dep + c12hour + c172code + (1 | e15relat) list()</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;   ICC (e15relat): 0.029759</span></code></pre></div>
+<span class="co">#&gt;   ICC (e15relat): 0.032210</span></code></pre></div>
 <p>One advantage of the <em>brms</em> package is that you can compute the ICC for each sample of the posterior distribution, which allows you to easily calculate uncertainty intervals.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m4, <span class="dt">posterior =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; </span>
@@ -476,18 +476,18 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Formula: mpg ~ wt + hp + (1 | cyl) + (1 + wt | gear)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## cyl</span>
-<span class="co">#&gt;           ICC: 0.18 (HDI 89%: 0.00-0.64)</span>
-<span class="co">#&gt; Between-group: 6.22 (HDI 89%: 0.00-33.53)</span>
+<span class="co">#&gt;           ICC: 0.14 (HDI 89%: 0.00-0.68)</span>
+<span class="co">#&gt; Between-group: 3.85 (HDI 89%: 0.00-34.50)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## gear</span>
-<span class="co">#&gt;           ICC:  0.54 (HDI 89%: 0.00-0.90)</span>
-<span class="co">#&gt; Between-group: 21.00 (HDI 89%: 0.00-90.27)</span>
+<span class="co">#&gt;           ICC:  0.53 (HDI 89%: 0.00-0.92)</span>
+<span class="co">#&gt; Between-group: 15.34 (HDI 89%: 0.00-103.63)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Residuals</span>
-<span class="co">#&gt; Within-group: 5.47 (HDI 89%: 3.39-8.68)</span>
+<span class="co">#&gt; Within-group: 6.01 (HDI 89%: 3.64-9.03)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Random-slope-variance</span>
-<span class="co">#&gt; gear: 3.21 (HDI 89%: 0.00-14.72)</span>
+<span class="co">#&gt; gear: 1.52 (HDI 89%: 0.00-10.38)</span>
 
 <span class="kw"><a href="../reference/icc.html">icc</a></span>(m5, <span class="dt">posterior =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; </span>
@@ -497,11 +497,11 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Formula: neg_c_7 ~ e42dep + c12hour + c172code + (1 | e15relat)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## e15relat</span>
-<span class="co">#&gt;           ICC: 0.03 (HDI 89%: 0.00-0.08)</span>
-<span class="co">#&gt; Between-group: 0.33 (HDI 89%: 0.00-1.16)</span>
+<span class="co">#&gt;           ICC: 0.03 (HDI 89%: 0.00-0.09)</span>
+<span class="co">#&gt; Between-group: 0.35 (HDI 89%: 0.00-1.30)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Residuals</span>
-<span class="co">#&gt; Within-group: 12.82 (HDI 89%: 11.81-13.86)</span></code></pre></div>
+<span class="co">#&gt; Within-group: 12.81 (HDI 89%: 11.77-13.86)</span></code></pre></div>
 <p>There’s also a <code>print()</code>-method which allows you to specify the HDI-interval and digits:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m5, <span class="dt">posterior =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">prob =</span> .<span class="dv">95</span>, <span class="dt">digits =</span> <span class="dv">3</span>)
 <span class="co">#&gt; </span>
@@ -511,11 +511,11 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Formula: neg_c_7 ~ e42dep + c12hour + c172code + (1 | e15relat)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## e15relat</span>
-<span class="co">#&gt;           ICC: 0.025 (HDI 95%: 0.000-0.123)</span>
-<span class="co">#&gt; Between-group: 0.328 (HDI 95%: 0.000-1.808)</span>
+<span class="co">#&gt;           ICC: 0.026 (HDI 95%: 0.000-0.133)</span>
+<span class="co">#&gt; Between-group: 0.345 (HDI 95%: 0.000-1.999)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Residuals</span>
-<span class="co">#&gt; Within-group: 12.824 (HDI 95%: 11.653-14.145)</span></code></pre></div>
+<span class="co">#&gt; Within-group: 12.810 (HDI 95%: 11.553-14.127)</span></code></pre></div>
 </div>
 <div id="bayes-r-squared-and-loo-adjusted-r-squared" class="section level2">
 <h2 class="hasAnchor">
@@ -524,7 +524,7 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <p>For the Bayes r-squared, the standard error is also reported. Note that <code><a href="../reference/r2.html">r2()</a></code> uses the median as measure of central tendency and the median absolute deviation as measure for variability.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/r2.html">r2</a></span>(m5)
 <span class="co">#&gt;       Bayes R2: 0.168</span>
-<span class="co">#&gt; Standard Error: 0.022</span>
+<span class="co">#&gt; Standard Error: 0.021</span>
 
 <span class="kw"><a href="../reference/r2.html">r2</a></span>(m5, <span class="dt">loo =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; LOO-adjusted R2: 0.145</span></code></pre></div>
