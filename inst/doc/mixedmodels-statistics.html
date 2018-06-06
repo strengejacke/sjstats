@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2018-06-05" />
+<meta name="date" content="2018-06-06" />
 
 <title>Statistics for Mixed Effects Models</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Statistics for Mixed Effects Models</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2018-06-05</em></h4>
+<h4 class="date"><em>2018-06-06</em></h4>
 
 
 
@@ -93,7 +93,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">data</span>(sleepstudy)
 
 <span class="co"># fit linear mixed model</span>
-m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data =</span> sleepstudy)</code></pre></div>
+m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data =</span> sleepstudy)
+
+sleepstudy<span class="op">$</span>mygrp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">45</span>, <span class="dt">size =</span> <span class="dv">180</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>mygrp) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject), sleepstudy)</code></pre></div>
 <div id="sample-size-calculation-for-mixed-models" class="section level2">
 <h2>Sample Size Calculation for Mixed Models</h2>
 <p>The first two functions, <code>deff()</code> and <code>smpsize_lmm()</code>, can be used to approximately calculate the sample size in the context of power calculation. Calculating the sample size for simple linear models is pretty straightforward, however, for (linear) mixed models, statistical power is affected through the change of the variance of test statistics. This is what Hsieh et al. (2003) call a <em>design effect</em> (or variance inflation factor, VIF). Once this design effect is calculated, the sample size calculated for a standard design can be adjusted accordingly.</p>
@@ -151,7 +154,7 @@ m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span clas
 <h2>Rescale model weights for complex samples</h2>
 <p>Most functions to fit multilevel and mixed effects models only allow to specify frequency weights, but not design (i.e. <em>sampling</em> or <em>probability</em>) weights, which should be used when analyzing complex samples and survey data.</p>
 <p><code>scale_weights()</code> implements an algorithm proposed by Aaparouhov (2006) and Carle (2009) to rescale design weights in survey data to account for the grouping structure of multilevel models, which then can be used for multilevel modelling.</p>
-<p>To calculate a weight-vector that can be used in multilevel models, <code>scale_weights()</code> needs that data frame with survey data as <code>x</code>-argument. This data frame should contain 1) a <em>cluster ID</em> (argument <code>cluster.id</code>), which represents the <em>strata</em> of the survey data (the level-2-cluster variable) and 2) the probability weights (argument <code>pweight</code>), which represents the design or sampling weights of the survey data (level-1-weight).</p>
+<p>To calculate a weight-vector that can be used in multilevel models, <code>scale_weights()</code> needs the data frame with survey data as <code>x</code>-argument. This data frame should contain 1) a <em>cluster ID</em> (argument <code>cluster.id</code>), which represents the <em>strata</em> of the survey data (the level-2-cluster variable) and 2) the probability weights (argument <code>pweight</code>), which represents the design or sampling weights of the survey data (level-1-weight).</p>
 <p><code>scale_weights()</code> then returns the original data frame, including two new variables: <code>svywght_a</code>, where the sample weights <code>pweight</code> are adjusted by a factor that represents the proportion of cluster size divided by the sum of sampling weights within each cluster. The adjustment factor for <code>svywght_b</code> is the sum of sample weights within each cluster devided by the sum of squared sample weights within each cluster (see Carle (2009), Appendix B, for details).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(nhanes_sample)
 <span class="kw">scale_weights</span>(nhanes_sample, SDMVSTRA, WTINT2YR)
@@ -172,20 +175,20 @@ m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span clas
 </div>
 <div id="p-values" class="section level2">
 <h2>P-Values</h2>
-<p>For linear mixed models, the <code>summary()</code> in <strong>lme4</strong> does not report p-values. Other objects from regression functions are not consistent in their output structure when reporting p-values. <code>p_value()</code> aims at returning a standardized (“tidy”) output for any regression model. The return value is always a data frame (a <em>tibble</em>) with three columns: <em>term</em>, <em>p.value</em> and <em>std.error</em>, which represent the name, p-value and standard error for each term.</p>
+<p>For linear mixed models, the <code>summary()</code> in <strong>lme4</strong> does not report p-values. Other objects from regression functions are not consistent in their output structure when reporting p-values. <code>p_value()</code> aims at returning a standardized (“tidy”) output for any regression model. The return value is always a data frame with three columns: <em>term</em>, <em>p.value</em> and <em>std.error</em>, which represent the name, p-value and standard error for each term.</p>
 <p>For linear mixed models, the approximation of p-values are more precise when <code>p.kr = TRUE</code>, based on conditional F-tests with Kenward-Roger approximation for the degrees of freedom (calling <code>pbkrtest::get_Lb_ddf()</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using the t-statistics for calculating the p-value</span>
-<span class="kw">p_value</span>(m)
+<span class="kw">p_value</span>(m2)
 <span class="co">#&gt;          term p.value std.error</span>
-<span class="co">#&gt; 1 (Intercept)       0     6.825</span>
-<span class="co">#&gt; 2        Days       0     1.546</span>
+<span class="co">#&gt; 1 (Intercept)       0     9.879</span>
+<span class="co">#&gt; 2        Days       0     0.796</span>
 
 <span class="co"># p-values based on conditional F-tests with </span>
 <span class="co"># Kenward-Roger approximation for the degrees of freedom</span>
-<span class="kw">p_value</span>(m, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)
+<span class="kw">p_value</span>(m2, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt;          term p.value std.error</span>
-<span class="co">#&gt; 1 (Intercept)       0     6.825</span>
-<span class="co">#&gt; 2        Days       0     1.546</span></code></pre></div>
+<span class="co">#&gt; 1 (Intercept)       0     9.893</span>
+<span class="co">#&gt; 2        Days       0     0.804</span></code></pre></div>
 </div>
 <div id="random-effect-variances" class="section level2">
 <h2>Random Effect Variances</h2>
@@ -224,11 +227,7 @@ m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span clas
 <span class="co">#&gt; </span>
 <span class="co">#&gt;   ICC (Subject): 0.483090</span></code></pre></div>
 <p>You can also compute ICCs for multiple models at once:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fit 2nd model</span>
-sleepstudy<span class="op">$</span>mygrp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">45</span>, <span class="dt">size =</span> <span class="dv">180</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
-m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>mygrp) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject), sleepstudy)
-
-<span class="co"># calculate ICC for both models</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculate ICC for both models</span>
 <span class="kw">icc</span>(m, m2)
 <span class="co">#&gt; Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span>
 <span class="co">#&gt; [[1]]</span>
@@ -245,8 +244,8 @@ m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span cla
 <span class="co">#&gt;  Family: gaussian (identity)</span>
 <span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;     ICC (mygrp): 0.033205</span>
-<span class="co">#&gt;   ICC (Subject): 0.594161</span></code></pre></div>
+<span class="co">#&gt;     ICC (mygrp): 0.032401</span>
+<span class="co">#&gt;   ICC (Subject): 0.594289</span></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1">

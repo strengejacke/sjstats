@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.14.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
       </span>
     </div>
 
@@ -292,8 +292,8 @@ effect ICC.</p></td>
 #&gt;  Family: gaussian (identity)
 #&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)
 #&gt; 
-#&gt;     ICC (mygrp): 0.002282
-#&gt;   ICC (Subject): 0.588989</div><div class='input'>
+#&gt;     ICC (mygrp): 0.006013
+#&gt;   ICC (Subject): 0.589883</div><div class='input'>
 <span class='co'># return icc for all models at once</span>
 <span class='fu'>icc</span>(<span class='no'>fit0</span>, <span class='no'>fit1</span>, <span class='no'>fit2</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='output co'>#&gt; [[1]]
 #&gt; 
@@ -317,8 +317,8 @@ effect ICC.</p></td>
 #&gt;  Family: gaussian (identity)
 #&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)
 #&gt; 
-#&gt;     ICC (mygrp): 0.002282
-#&gt;   ICC (Subject): 0.588989
+#&gt;     ICC (mygrp): 0.006013
+#&gt;   ICC (Subject): 0.589883
 #&gt; </div><div class='input'>
 <span class='no'>icc1</span> <span class='kw'>&lt;-</span> <span class='fu'>icc</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='input'><span class='no'>icc2</span> <span class='kw'>&lt;-</span> <span class='fu'>icc</span>(<span class='no'>fit2</span>)
 
@@ -336,9 +336,9 @@ effect ICC.</p></td>
 #&gt;  Family: gaussian (identity)
 #&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)
 #&gt; 
-#&gt;       Within-group-variance:  955.404
-#&gt;      Between-group-variance:    5.333 (mygrp)
-#&gt;      Between-group-variance: 1376.758 (Subject)</div><div class='input'>
+#&gt;       Within-group-variance:  946.474
+#&gt;      Between-group-variance:   14.082 (mygrp)
+#&gt;      Between-group-variance: 1381.596 (Subject)</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># compute ICC for Bayesian mixed model, with an ICC for each</span>
 <span class='co'># sample of the posterior. The print()-method then shows</span>

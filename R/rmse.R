@@ -3,8 +3,8 @@
 #' @description Compute root mean squared error, residual standard error or
 #'              mean square error of fitted linear (mixed effects) models.
 #'
-#' @param fit Fitted linear model of class \code{\link{lm}},
-#'          \code{\link[lme4]{merMod}} (\pkg{lme4}) or \code{\link[nlme]{lme}} (\pkg{nlme}).
+#' @param fit Fitted linear model of class \code{lm}, \code{merMod} (\pkg{lme4})
+#'   or \code{lme} (\pkg{nlme}).
 #' @param normalized Logical, use \code{TRUE} if normalized rmse should be returned.
 #'
 #' @seealso \code{\link{r2}} for R-squared or pseude-R-squared values, and

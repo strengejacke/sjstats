@@ -66,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.14.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
       </span>
     </div>
 
@@ -131,7 +131,7 @@
     <div class="ref-description">
     
     <p>This function performs a Mann-Whitney-U-Test (or Wilcoxon rank sum test,
-               see <code>wilcox.test</code> and <code><a href='http://www.rdocumentation.org/packages/coin/topics/LocationTests'>wilcox_test</a></code>)
+               see <code><a href='http://www.rdocumentation.org/packages/stats/topics/wilcox.test'>wilcox.test</a></code> and <code><a href='http://www.rdocumentation.org/packages/coin/topics/LocationTests'>wilcox_test</a></code>)
                for <code>x</code>, for each group indicated by <code>grp</code>. If <code>grp</code>
                has more than two categories, a comparison between each combination of
                two groups is performed. <br /> <br />
@@ -177,7 +177,9 @@ weights that will be applied to weight all  observations. Default is
       <th>out</th>
       <td><p>Character vector, indicating whether the results should be printed
 to console (<code>out = "txt"</code>) or as HTML-table in the viewer-pane
-(<code>out = "viewer"</code>) or browser (<code>out = "browser"</code>).</p></td>
+(<code>out = "viewer"</code>) or browser (<code>out = "browser"</code>), of if the
+results should be plotted (<code>out = "plot"</code>, only applies to certain
+functions). May be abbreviated.</p></td>
     </tr>
     </table>
     

@@ -15,7 +15,7 @@
 #'
 #' @details \code{weight2()} sums up all \code{weights} values of the associated
 #'            categories of \code{x}, whereas \code{weight()} uses a
-#'            \code{\link{xtabs}} formula to weight cases. Thus, \code{weight()}
+#'            \code{\link[stats]{xtabs}} formula to weight cases. Thus, \code{weight()}
 #'            may return a vector of different length than \code{x}.
 #'
 #' @note The values of the returned vector are in sorted order, whereas the values'

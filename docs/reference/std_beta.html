@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.14.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
       </span>
     </div>
 
@@ -137,8 +137,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fit</th>
-      <td><p>Fitted linear (mixed) model of class <code>lm</code> or
-<code><a href='http://www.rdocumentation.org/packages/lme4/topics/merMod-class'>merMod</a></code> (<a href='https://CRAN.R-project.org/package=lme4'><span class="pkg">lme4</span></a> package).</p></td>
+      <td><p>Fitted linear (mixed) model of class <code>lm</code> or <code>merMod</code>
+(<a href='https://CRAN.R-project.org/package=lme4'><span class="pkg">lme4</span></a> package).</p></td>
     </tr>
     <tr>
       <th>type</th>
@@ -179,7 +179,7 @@ untransformed binary predictors.</p></td>
         <br /> <br /> and <br /> <br />
         <code>head(model.matrix(nlme::gls(neg_c_7 ~ as.factor(e42dep), data = efc, na.action = na.omit)))</code>.
         <br /> <br />
-        In such cases, use <code>to_dummy</code> to create dummies from
+        In such cases, use <code><a href='http://www.rdocumentation.org/packages/sjmisc/topics/to_dummy'>to_dummy</a></code> to create dummies from
         factors.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>

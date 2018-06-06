@@ -7,8 +7,8 @@
 std_beta(fit, type = "std", ci.lvl = 0.95)
 }
 \arguments{
-\item{fit}{Fitted linear (mixed) model of class \code{lm} or
-\code{\link[lme4]{merMod}} (\CRANpkg{lme4} package).}
+\item{fit}{Fitted linear (mixed) model of class \code{lm} or \code{merMod}
+(\CRANpkg{lme4} package).}
 
 \item{type}{If \code{fit} is of class \code{lm}, normal standardized coefficients
 are computed by default. Use \code{type = "std2"} to follow
@@ -44,7 +44,7 @@ For \code{\link[nlme]{gls}}-objects, standardized beta coefficients may be wrong
         \cr \cr and \cr \cr
         \code{head(model.matrix(nlme::gls(neg_c_7 ~ as.factor(e42dep), data = efc, na.action = na.omit)))}.
         \cr \cr
-        In such cases, use \code{\link{to_dummy}} to create dummies from
+        In such cases, use \code{\link[sjmisc]{to_dummy}} to create dummies from
         factors.
 }
 \examples{

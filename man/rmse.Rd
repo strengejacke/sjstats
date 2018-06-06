@@ -13,8 +13,8 @@ rse(fit)
 mse(fit)
 }
 \arguments{
-\item{fit}{Fitted linear model of class \code{\link{lm}},
-\code{\link[lme4]{merMod}} (\pkg{lme4}) or \code{\link[nlme]{lme}} (\pkg{nlme}).}
+\item{fit}{Fitted linear model of class \code{lm}, \code{merMod} (\pkg{lme4})
+or \code{lme} (\pkg{nlme}).}
 
 \item{normalized}{Logical, use \code{TRUE} if normalized rmse should be returned.}
 }

@@ -7,9 +7,10 @@
 table_values(tab, digits = 2)
 }
 \arguments{
-\item{tab}{Simple \code{\link{table}} or \code{\link{ftable}} of which cell, row and column percentages
-as well as expected values are calculated. Tables of class \code{\link{xtabs}} and other will
-be coerced to \code{\link{ftable}} objects.}
+\item{tab}{Simple \code{\link{table}} or \code{\link[stats]{ftable}} of which
+cell, row and column percentages as well as expected values are calculated.
+Tables of class \code{\link[stats]{xtabs}} and other will be coerced to
+\code{ftable} objects.}
 
 \item{digits}{Amount of digits for the table percentage values.}
 }

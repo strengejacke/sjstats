@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.14.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
       </span>
     </div>
 
@@ -149,7 +149,7 @@ conditional F-tests with Kenward-Roger approximation for the df (see
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>tibble</code> with the model coefficients' names (<code>term</code>),
+    <p>A <code>data.frame</code> with the model coefficients' names (<code>term</code>),
         p-values (<code>p.value</code>) and standard errors (<code>std.error</code>).</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -163,37 +163,42 @@ conditional F-tests with Kenward-Roger approximation for the df (see
         treating the t-statistics as Wald z-statistics.
         <br /> <br />
         If p-values already have been computed (e.g. for <code>merModLmerTest</code>-objects
-        from the <a href='https://CRAN.R-project.org/package=lmerTest'><span class="pkg">lmerTest</span></a>-package), these will be returned.</p>
+        from the <a href='https://CRAN.R-project.org/package=lmerTest'><span class="pkg">lmerTest</span></a>-package), these will be returned.
+        <br /> <br />
+        The <code>print()</code>-method has a <code>summary</code>-argument, that - in
+        case <code>p.kr = TRUE</code> - also prints information on the approximated
+        degrees of freedom (see 'Examples').</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>efc</span>)
 <span class='co'># linear model fit</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>neg_c_7</span> ~ <span class='no'>e42dep</span> + <span class='no'>c172code</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
-<span class='fu'>p_value</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
-#&gt;   term         p.value std.error
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 (Intercept) 2.13e-30     0.566
-#&gt; 2 e42dep      4.91e-30     0.133
-#&gt; 3 c172code    2.07e- 1     0.198</div><div class='input'>
+<span class='fu'>p_value</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;          term p.value std.error
+#&gt; 1 (Intercept)   0.000     0.566
+#&gt; 2      e42dep   0.000     0.133
+#&gt; 3    c172code   0.207     0.198</div><div class='input'>
 <span class='co'># Generalized Least Squares fit</span>
 <span class='fu'>library</span>(<span class='no'>nlme</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>follicles</span> ~ <span class='fu'>sin</span>(<span class='fl'>2</span>*<span class='no'>pi</span>*<span class='no'>Time</span>) + <span class='fu'>cos</span>(<span class='fl'>2</span>*<span class='no'>pi</span>*<span class='no'>Time</span>), <span class='no'>Ovary</span>,
            <span class='kw'>correlation</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corAR1'>corAR1</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Mare</span>))
-<span class='fu'>p_value</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
-#&gt;   term                p.value std.error
-#&gt;   &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 (Intercept)        2.62e-51     0.665
-#&gt; 2 sin(2 * pi * Time) 2.29e- 5     0.645
-#&gt; 3 cos(2 * pi * Time) 1.98e- 1     0.698</div><div class='input'>
+<span class='fu'>p_value</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;                 term p.value std.error
+#&gt; 1        (Intercept)   0.000     0.665
+#&gt; 2 sin(2 * pi * Time)   0.000     0.645
+#&gt; 3 cos(2 * pi * Time)   0.198     0.698</div><div class='input'>
 <span class='co'># lme4-fit</span>
 <span class='fu'>library</span>(<span class='no'>lme4</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
-<span class='fu'>p_value</span>(<span class='no'>fit</span>, <span class='kw'>p.kr</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Computing p-values via Kenward-Roger approximation. Use `p.kr = FALSE` if computation takes too long.</span></div><div class='output co'>#&gt; # A tibble: 2 x 3
-#&gt;   term         p.value std.error
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 (Intercept) 1.17e-17      6.82
-#&gt; 2 Days        3.26e- 6      1.55</div><div class='input'>
+<span class='no'>sleepstudy</span>$<span class='no'>mygrp</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>45</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>180</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>mygrp</span>) + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
+<span class='no'>pv</span> <span class='kw'>&lt;-</span> <span class='fu'>p_value</span>(<span class='no'>fit</span>, <span class='kw'>p.kr</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Computing p-values via Kenward-Roger approximation. Use `p.kr = FALSE` if computation takes too long.</span></div><div class='input'>
+<span class='co'># normal output</span>
+<span class='no'>pv</span></div><div class='output co'>#&gt;          term p.value std.error
+#&gt; 1 (Intercept)       0     9.790
+#&gt; 2        Days       0     0.815</div><div class='input'>
+<span class='co'># add information on df and t-statistic</span>
+<span class='fu'>print</span>(<span class='no'>pv</span>, <span class='kw'>summary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;          term p.value std.error      df statistic
+#&gt; 1 (Intercept)       0     9.790  22.938    25.670
+#&gt; 2        Days       0     0.815 160.967    12.868</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

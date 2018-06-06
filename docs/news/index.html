@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.14.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@
 
     <div id="sjstats-0-15-0" class="section level1">
 <h1 class="page-header">
-<a href="#sjstats-0-15-0" class="anchor"></a>sjstats 0.15.0<small> Unreleased </small>
+<a href="#sjstats-0-15-0" class="anchor"></a>sjstats 0.15.0<small> 2018-06-06 </small>
 </h1>
 <div id="general" class="section level2">
 <h2 class="hasAnchor">
@@ -163,6 +163,8 @@
 <a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed issue in <code><a href="../reference/se.html">se()</a></code> for <code><a href="../reference/icc.html">icc()</a></code>-objects, where random effect term could not be found.</li>
+<li>Fixed issue in <code><a href="../reference/se.html">se()</a></code> for <code>merMod</code>-objects.</li>
+<li>Fixed issue in <code><a href="../reference/p_value.html">p_value()</a></code> for mixed models with KR-approximation, which is now more accurate.</li>
 </ul>
 </div>
 </div>
@@ -191,7 +193,7 @@
 <ul>
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> was improved especially for more complex multilevel models.</li>
-<li>Make <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for large <code>brmsfit</code>-objects (esp. with random effects) more efficient.</li>
+<li>Make <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for large <code>brmsfit</code>-objects (esp. with random effects) more efficient.</li>
 <li>Better <code>print()</code>-method for <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, <code><a href="../reference/hdi.html">hdi()</a></code>, <code><a href="../reference/hdi.html">rope()</a></code>, <code><a href="../reference/icc.html">icc()</a></code> and some other functions.</li>
 <li>
 <code><a href="../reference/pred_vars.html">link_inverse()</a></code> now also should return the link-inverse function for most (or some or all?) custom families of <em>brms</em>-models.</li>

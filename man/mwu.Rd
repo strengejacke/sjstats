@@ -38,7 +38,7 @@ functions). May be abbreviated.}
 }
 \description{
 This function performs a Mann-Whitney-U-Test (or Wilcoxon rank sum test,
-               see \code{\link{wilcox.test}} and \code{\link[coin]{wilcox_test}})
+               see \code{\link[stats]{wilcox.test}} and \code{\link[coin]{wilcox_test}})
                for \code{x}, for each group indicated by \code{grp}. If \code{grp}
                has more than two categories, a comparison between each combination of
                two groups is performed. \cr \cr

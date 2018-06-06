@@ -14,8 +14,8 @@ xtab_statistics(data, x1 = NULL, x2 = NULL, statistics = c("auto",
   "cramer", "phi", "spearman", "kendall", "pearson"), ...)
 }
 \arguments{
-\item{tab}{A \code{\link{table}} or \code{\link{ftable}}. Tables of class
-\code{\link{xtabs}} and other will be coerced to \code{\link{ftable}}
+\item{tab}{A \code{\link{table}} or \code{\link[stats]{ftable}}. Tables of class
+\code{\link[stats]{xtabs}} and other will be coerced to \code{ftable}
 objects.}
 
 \item{data}{A data frame or a table object. If a table object, \code{x1} and

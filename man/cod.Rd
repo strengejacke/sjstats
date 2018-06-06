@@ -7,7 +7,7 @@
 cod(x)
 }
 \arguments{
-\item{x}{Fitted \code{\link{glm}} or \code{\link[lme4]{glmer}} model.}
+\item{x}{Fitted \code{\link[stats]{glm}} or \code{\link[lme4]{glmer}} model.}
 }
 \value{
 The \code{D} Coefficient of Discrimination, also known as

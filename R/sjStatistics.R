@@ -3,9 +3,10 @@
 #' @description This function calculates a table's cell, row and column percentages as
 #'                well as expected values and returns all results as lists of tables.
 #'
-#' @param tab Simple \code{\link{table}} or \code{\link{ftable}} of which cell, row and column percentages
-#'          as well as expected values are calculated. Tables of class \code{\link{xtabs}} and other will
-#'          be coerced to \code{\link{ftable}} objects.
+#' @param tab Simple \code{\link{table}} or \code{\link[stats]{ftable}} of which
+#'   cell, row and column percentages as well as expected values are calculated.
+#'   Tables of class \code{\link[stats]{xtabs}} and other will be coerced to
+#'   \code{ftable} objects.
 #' @param digits Amount of digits for the table percentage values.
 #'
 #' @return (Invisibly) returns a list with four tables:

@@ -85,7 +85,8 @@ These functions are wrappers that compute various test statistics,
          < 0.05 indicates a significant deviation from normal distribution.
          Note that this formal test almost always yields significant results
          for the distribution of residuals and visual inspection (e.g. qqplots)
-         are preferable (see \code{\link[sjPlot]{sjp.lm}} with \code{type = "ma"}).
+         are preferable (see \code{\link[sjPlot]{plot_model}} with
+         \code{type = "diag"}).
          \cr \cr
          \code{multicollin()} wraps \code{\link[car]{vif}} and returns
          the logical result as tibble. \code{TRUE}, if multicollinearity
@@ -104,7 +105,7 @@ These functions are wrappers that compute various test statistics,
 These formal tests are very strict and in most cases violation of model
       assumptions are alerted, though the model is actually ok. It is
       preferable to check model assumptions based on visual inspection
-      (see \code{\link[sjPlot]{sjp.lm}} with \code{type = "ma"}).
+      (see \code{\link[sjPlot]{plot_model}} with \code{type = "diag"}).
 }
 \examples{
 data(efc)

@@ -37,6 +37,9 @@ data(sleepstudy)
 
 # fit linear mixed model
 m <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
+
+sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
+m2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 ```
 
 ## Sample Size Calculation for Mixed Models
@@ -94,7 +97,7 @@ Most functions to fit multilevel and mixed effects models only allow to specify 
 
 `scale_weights()` implements an algorithm proposed by Aaparouhov (2006) and Carle (2009) to rescale design weights in survey data to account for the grouping structure of multilevel models, which then can be used for multilevel modelling. 
 
-To calculate a weight-vector that can be used in multilevel models, `scale_weights()` needs that data frame with survey data as `x`-argument. This data frame should contain 1) a _cluster ID_ (argument `cluster.id`), which represents the _strata_ of the survey data (the level-2-cluster variable) and 2) the probability weights (argument `pweight`), which represents the design or sampling weights of the survey data (level-1-weight).
+To calculate a weight-vector that can be used in multilevel models, `scale_weights()` needs the data frame with survey data as `x`-argument. This data frame should contain 1) a _cluster ID_ (argument `cluster.id`), which represents the _strata_ of the survey data (the level-2-cluster variable) and 2) the probability weights (argument `pweight`), which represents the design or sampling weights of the survey data (level-1-weight).
 
 `scale_weights()` then returns the original data frame, including two new variables: `svywght_a`, where the sample weights `pweight` are adjusted by a factor that represents the proportion of cluster size divided by the sum of sampling weights within each cluster. The adjustment factor for `svywght_b` is the sum of sample weights within each cluster devided by the sum of squared sample weights within each cluster (see Carle (2009), Appendix B, for details).
 
@@ -105,17 +108,17 @@ scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
 
 ## P-Values
 
-For linear mixed models, the `summary()` in **lme4** does not report p-values. Other objects from regression functions are not consistent in their output structure when reporting p-values. `p_value()` aims at returning a standardized ("tidy") output for any regression model. The return value is always a data frame (a _tibble_) with three columns: _term_, _p.value_ and _std.error_, which represent the name, p-value and standard error for each term.
+For linear mixed models, the `summary()` in **lme4** does not report p-values. Other objects from regression functions are not consistent in their output structure when reporting p-values. `p_value()` aims at returning a standardized ("tidy") output for any regression model. The return value is always a data frame with three columns: _term_, _p.value_ and _std.error_, which represent the name, p-value and standard error for each term.
 
 For linear mixed models, the approximation of p-values are more precise when `p.kr = TRUE`, based on conditional F-tests with Kenward-Roger approximation for the degrees of freedom (calling `pbkrtest::get_Lb_ddf()`).
 
 ```{r}
 # Using the t-statistics for calculating the p-value
-p_value(m)
+p_value(m2)
 
 # p-values based on conditional F-tests with 
 # Kenward-Roger approximation for the degrees of freedom
-p_value(m, p.kr = TRUE)
+p_value(m2, p.kr = TRUE)
 ```
 
 ## Random Effect Variances
@@ -153,10 +156,6 @@ icc(m)
 You can also compute ICCs for multiple models at once:
 
 ```{r message = TRUE}
-# fit 2nd model
-sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
-m2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
-
 # calculate ICC for both models
 icc(m, m2)
 ```

@@ -14,19 +14,19 @@ mean_n(dat, n, digits = 2)
   \item a numeric value that indicates the amount of valid values per row to calculate the row mean;
   \item or a value between 0 and 1, indicating a proportion of valid values per row to calculate the row mean (see 'Details').
 }
-If a row's sum of valid values is less than \code{n}, \code{\link{NA}} will be returned as row mean value.}
+If a row's sum of valid values is less than \code{n}, \code{NA} will be returned as row mean value.}
 
 \item{digits}{Numeric value indicating the number of decimal places to be used for rounding mean
 value. Negative values are allowed (see ‘Details’).}
 }
 \value{
 A vector with row mean values of \code{df} for those rows with at least \code{n}
-          valid values. Else, \code{\link{NA}} is returned.
+          valid values. Else, \code{NA} is returned.
 }
 \description{
 This function is similar to the SPSS \code{MEAN.n} function and computes
-               row means from a \code{\link{data.frame}} or \code{\link{matrix}} if at least \code{n}
-               values of a row are valid (and not \code{\link{NA}}).
+               row means from a \code{data.frame} or \code{matrix} if at least \code{n}
+               values of a row are valid (and not \code{NA}).
 }
 \details{
 Rounding to a negative number of \code{digits} means rounding to a power of

@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.14.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
       </span>
     </div>
 
@@ -192,15 +192,15 @@ is used to compute the accuracy values.</p></td>
 <span class='fu'>pred_accuracy</span>(<span class='no'>efc</span>, <span class='no'>fit</span>)</div><div class='output co'>#&gt; 
 #&gt; # Accuracy of Model Predictions
 #&gt; 
-#&gt; Accuracy: 41.17%
-#&gt;       SE: 4.22%-points
+#&gt; Accuracy: 41.12%
+#&gt;       SE: 6.56%-points
 #&gt;   Method: Correlation between observed and predicted</div><div class='input'>
 <span class='co'># accuracy for linear model, with bootstrapping</span>
 <span class='fu'>pred_accuracy</span>(<span class='no'>efc</span>, <span class='no'>fit</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"boot"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; 
 #&gt; # Accuracy of Model Predictions
 #&gt; 
 #&gt; Accuracy: 41.30%
-#&gt;       SE: 2.76%-points
+#&gt;       SE: 2.78%-points
 #&gt;   Method: Correlation between observed and predicted</div><div class='input'>
 <span class='co'># accuracy for logistic regression, with crossvalidation</span>
 <span class='no'>efc</span>$<span class='no'>services</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>sjmisc</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/sjmisc/topics/dicho'>dicho</a></span>(<span class='no'>efc</span>$<span class='no'>tot_sc_e</span>, <span class='kw'>dich.by</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>as.num</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -209,8 +209,8 @@ is used to compute the accuracy values.</p></td>
 <span class='fu'>pred_accuracy</span>(<span class='no'>efc</span>, <span class='no'>fit</span>)</div><div class='output co'>#&gt; 
 #&gt; # Accuracy of Model Predictions
 #&gt; 
-#&gt; Accuracy: 58.64%
-#&gt;       SE: 2.21%-points
+#&gt; Accuracy: 58.38%
+#&gt;       SE: 3.92%-points
 #&gt;   Method: Area under Curve</div><div class='input'>
 </div></pre>
   </div>

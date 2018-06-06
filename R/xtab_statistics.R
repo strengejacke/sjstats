@@ -12,8 +12,8 @@
 #'          to be a data frame. If \code{x1} and \code{x2} are not specified,
 #'          the first two columns of the data frames are used as variables
 #'          to compute the crosstab.
-#' @param tab A \code{\link{table}} or \code{\link{ftable}}. Tables of class
-#'          \code{\link{xtabs}} and other will be coerced to \code{\link{ftable}}
+#' @param tab A \code{\link{table}} or \code{\link[stats]{ftable}}. Tables of class
+#'          \code{\link[stats]{xtabs}} and other will be coerced to \code{ftable}
 #'          objects.
 #' @param x1 Name of first variable that should be used to compute the
 #'           contingency table. If \code{data} is a table object, this argument

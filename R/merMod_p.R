@@ -10,7 +10,7 @@
 #'         conditional F-tests with Kenward-Roger approximation for the df (see
 #'         'Details').
 #'
-#' @return A \code{\link{tibble}} with the model coefficients' names (\code{term}),
+#' @return A \code{data.frame} with the model coefficients' names (\code{term}),
 #'         p-values (\code{p.value}) and standard errors (\code{std.error}).
 #'
 #' @details For linear mixed models (\code{lmerMod}-objects), the computation of
@@ -23,6 +23,10 @@
 #'         \cr \cr
 #'         If p-values already have been computed (e.g. for \code{merModLmerTest}-objects
 #'         from the \CRANpkg{lmerTest}-package), these will be returned.
+#'         \cr \cr
+#'         The \code{print()}-method has a \code{summary}-argument, that - in
+#'         case \code{p.kr = TRUE} - also prints information on the approximated
+#'         degrees of freedom (see 'Examples').
 #'
 #' @examples
 #' data(efc)
@@ -38,7 +42,8 @@
 #'
 #' # lme4-fit
 #' library(lme4)
-#' fit <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
+#' sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
+#' fit <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 #' pv <- p_value(fit, p.kr = TRUE)
 #'
 #' # normal output

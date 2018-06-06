@@ -1,8 +1,8 @@
 #' @title Row means with min amount of valid values
 #' @name mean_n
 #' @description This function is similar to the SPSS \code{MEAN.n} function and computes
-#'                row means from a \code{\link{data.frame}} or \code{\link{matrix}} if at least \code{n}
-#'                values of a row are valid (and not \code{\link{NA}}).
+#'                row means from a \code{data.frame} or \code{matrix} if at least \code{n}
+#'                values of a row are valid (and not \code{NA}).
 #'
 #' @param dat A data frame with at least two columns, where row means are applied.
 #' @param n May either be
@@ -10,12 +10,12 @@
 #'            \item a numeric value that indicates the amount of valid values per row to calculate the row mean;
 #'            \item or a value between 0 and 1, indicating a proportion of valid values per row to calculate the row mean (see 'Details').
 #'          }
-#'          If a row's sum of valid values is less than \code{n}, \code{\link{NA}} will be returned as row mean value.
+#'          If a row's sum of valid values is less than \code{n}, \code{NA} will be returned as row mean value.
 #' @param digits Numeric value indicating the number of decimal places to be used for rounding mean
 #'          value. Negative values are allowed (see ‘Details’).
 #'
 #' @return A vector with row mean values of \code{df} for those rows with at least \code{n}
-#'           valid values. Else, \code{\link{NA}} is returned.
+#'           valid values. Else, \code{NA} is returned.
 #'
 #' @details Rounding to a negative number of \code{digits} means rounding to a power of
 #'            ten, so for example mean_n(df, 3, digits = -2) rounds to the

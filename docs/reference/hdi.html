@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.14.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
       </span>
     </div>
 
@@ -148,11 +148,11 @@
 
     <pre class="usage"><span class='fu'>hdi</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
 
-<span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='no'>eff_size</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='no'>eff_size</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"txt"</span>, <span class='st'>"viewer"</span>, <span class='st'>"browser"</span>, <span class='st'>"plot"</span>), <span class='no'>...</span>)
 
 <span class='fu'>mcse</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
 
-<span class='fu'>mediation</span>(<span class='no'>x</span>, <span class='no'>treatment</span>, <span class='no'>mediator</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='no'>...</span>)
+<span class='fu'>mediation</span>(<span class='no'>x</span>, <span class='no'>treatment</span>, <span class='no'>mediator</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>typical</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='no'>...</span>)
 
 <span class='fu'>n_eff</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
 
@@ -204,9 +204,12 @@ If not specified, an effect size of .1 is used, as suggested by
 argument will be ignored.</p></td>
     </tr>
     <tr>
-      <th>plot</th>
-      <td><p>Logical, if <code>TRUE</code>, <code>equi_test()</code> returns a plot
-instead of a data frame.</p></td>
+      <th>out</th>
+      <td><p>Character vector, indicating whether the results should be printed
+to console (<code>out = "txt"</code>) or as HTML-table in the viewer-pane
+(<code>out = "viewer"</code>) or browser (<code>out = "browser"</code>), of if the
+results should be plotted (<code>out = "plot"</code>, only applies to certain
+functions). May be abbreviated.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -237,6 +240,12 @@ tries to find the treatment variable automatically, however, this may fail.</p><
       <td><p>Character, name of the mediator variable in a (multivariate
 response) mediator-model. If missing, <code>mediation()</code> tries to find the
 treatment variable automatically, however, this may fail.</p></td>
+    </tr>
+    <tr>
+      <th>typical</th>
+      <td><p>The typical value that will represent the Bayesian point estimate.
+By default, the posterior median is returned. See <code><a href='typical_value.html'>typical_value</a></code>
+for possible values for this argument.</p></td>
     </tr>
     </table>
     
@@ -396,7 +405,7 @@ treatment variable automatically, however, this may fail.</p></td>
 
   <span class='co'># Test for Practical Equivalence</span>
   <span class='fu'>equi_test</span>(<span class='no'>fit</span>)
-  <span class='fu'>equi_test</span>(<span class='no'>fit</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>equi_test</span>(<span class='no'>fit</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='st'>"plot"</span>)
 }
 <span class='co'># }</span><div class='input'>
 </div></pre>

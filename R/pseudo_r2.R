@@ -6,7 +6,7 @@
 #'                an alternative to other Pseudo-R-squared values
 #'                like Nakelkerke's R2 or Cox-Snell R2.
 #'
-#' @param x Fitted \code{\link{glm}} or \code{\link[lme4]{glmer}} model.
+#' @param x Fitted \code{\link[stats]{glm}} or \code{\link[lme4]{glmer}} model.
 #'
 #' @return The \code{D} Coefficient of Discrimination, also known as
 #'           Tjur's R-squared value.

@@ -21,11 +21,9 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
-
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -39,7 +37,6 @@
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
-
 
 
 <!-- mathjax -->
@@ -66,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.14.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
       </span>
     </div>
 
@@ -192,9 +189,9 @@ variation at once.</p></td>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
 <span class='fu'>cv</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.07851737</div><div class='input'>
 <span class='fu'>library</span>(<span class='no'>nlme</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'nlme'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:lme4':</span>
+#&gt; <span class='message'>Attaching package: ‘nlme’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:lme4’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    lmList</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:dplyr':</span>
+#&gt; <span class='message'>    lmList</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    collapse</span></div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/lme'>lme</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span>, <span class='kw'>random</span> <span class='kw'>=</span> ~ <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
 <span class='fu'>cv</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.07851744</div><div class='input'>
