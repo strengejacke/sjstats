@@ -1,9 +1,9 @@
 year <- sub("-.*", "", meta$Date)
-note <- sprintf("R package version %s", meta$Version)
+title <- sprintf("sjstats: Statistical Functions for Regression Models (Version %s)", meta$Version)
 
 bibentry(bibtype="manual",
-         title = "sjstats: Statistical Functions for Regression Models",
+         title = title,
          author = person("Daniel", "Lüdecke"),
          year = year,
-         note = note,
-         url = "https://CRAN.R-project.org/package=sjstats")
+         url = "https://CRAN.R-project.org/package=sjstats",
+         doi = "10.5281/zenodo.1284472")
