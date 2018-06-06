@@ -8,8 +8,8 @@
 <title>Collection of Convenient Functions for Common Statistical Computations • sjstats</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Collection of Convenient Functions for Common Statistical Computations">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script><meta property="og:title" content="Collection of Convenient Functions for Common Statistical Computations">
 <meta property="og:description" content="Collection of convenient functions for common statistical computations,
              which are not directly provided by R's base or stats packages.
              This package aims at providing, first, shortcuts for statistical
@@ -103,6 +103,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#sjstats---collection-of-convenient-functions-for-common-statistical-computations" class="anchor"></a>sjstats - Collection of Convenient Functions for Common Statistical Computations <img src="reference/figures/logo.png" align="right">
 </h1></div>
+
 <p>Collection of convenient functions for common statistical computations, which are not directly provided by R’s base or stats packages.</p>
 <p>This package aims at providing, <strong>first</strong>, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like standard errors or root mean squared errors).</p>
 <p><strong>Second</strong>, these shortcut functions are generic (if appropriate), and can be applied not only to vectors, but also to other objects as well (e.g., the Coefficient of Variation can be computed for vectors, linear models, or linear mixed models; the <code><a href="reference/r2.html">r2()</a></code>-function returns the r-squared value for <em>lm</em>, <em>glm</em>, <em>merMod</em> or <em>lme</em> objects).</p>
@@ -136,8 +137,8 @@
 <h3 class="hasAnchor">
 <a href="#latest-development-build" class="anchor"></a>Latest development build</h3>
 <p>To install the latest development snapshot (see latest changes below), type following commands into the R console:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(devtools)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"strengejacke/sjstats"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
+devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"strengejacke/sjstats"</span>)</code></pre></div>
 <p>Please note the package dependencies when installing from GitHub. The GitHub version of this package may depend on latest GitHub versions of my other packages, so you may need to install those first, if you encounter any problems. Here’s the order for installing packages from GitHub:</p>
 <p><a href="https://github.com/strengejacke/sjlabelled">sjlabelled</a> → <a href="https://github.com/strengejacke/sjmisc">sjmisc</a> → <a href="https://github.com/strengejacke/sjstats">sjstats</a> → <a href="https://github.com/strengejacke/ggeffects">ggeffects</a> → <a href="https://github.com/strengejacke/sjPlot">sjPlot</a></p>
 </div>
@@ -146,13 +147,14 @@
 <a href="#officiale-stable-release" class="anchor"></a>Officiale, stable release</h3>
 <p><a href="https://cran.r-project.org/package=sjstats"><img src="http://www.r-pkg.org/badges/version/sjstats" alt="CRAN_Status_Badge"></a>    <a href="http://cranlogs.r-pkg.org/"><img src="http://cranlogs.r-pkg.org/badges/sjstats" alt="downloads"></a>    <a href="http://cranlogs.r-pkg.org/"><img src="http://cranlogs.r-pkg.org/badges/grand-total/sjstats" alt="total"></a></p>
 <p>To install the latest stable release from CRAN, type following command into the R console:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"sjstats"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"sjstats"</span>)</code></pre></div>
 </div>
 </div>
 <div id="citation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
 <p>In case you want / have to cite my package, please use <code>citation('sjstats')</code> for citation information.</p>
+<p><a href="https://doi.org/10.5281/zenodo.1284473"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1284473.svg" alt="DOI"></a></p>
 </div>
 </div>
   </div>
@@ -188,7 +190,13 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://doi.org/10.5281/zenodo.1284473"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1284473.svg" alt="DOI"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
