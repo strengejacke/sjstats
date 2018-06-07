@@ -1,6 +1,6 @@
 # sjstats - Collection of Convenient Functions for Common Statistical Computations <img src="man/figures/logo.png" align="right" />
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1284473.svg)](https://doi.org/10.5281/zenodo.1284473)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1284472.svg)](https://doi.org/10.5281/zenodo.1284472)
 
 Collection of convenient functions for common statistical computations, which are not directly provided by R's base or stats packages. 
 
@@ -63,4 +63,4 @@ install.packages("sjstats")
 
 In case you want / have to cite my package, please use `citation('sjstats')` for citation information. 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1284473.svg)](https://doi.org/10.5281/zenodo.1284473)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1284472.svg)](https://doi.org/10.5281/zenodo.1284472)
