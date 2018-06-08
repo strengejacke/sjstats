@@ -3,3 +3,5 @@
 ^\.travis\.yml$
 ^revdep$
 ^docs$
+^paper.*$
+^LICENSE
