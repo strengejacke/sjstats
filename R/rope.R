@@ -1,25 +1,27 @@
 #' @rdname hdi
 #' @export
-rope <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
+rope <- function(x, rope, ...) {
   UseMethod("rope")
 }
 
 
 #' @export
-rope.default <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
+rope.default <- function(x, rope, trans = NULL, type = c("fixed", "random", "all"), ...) {
   rope_helper(x, rope, trans)
 }
 
 
+#' @rdname hdi
 #' @export
-rope.stanreg <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
+rope.stanreg <- function(x, rope, trans = NULL, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)
   rope_worker(x = x, rope = rope, trans = trans, type = type)
 }
 
 
+#' @rdname hdi
 #' @export
-rope.brmsfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
+rope.brmsfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all"), ...) {
   # check arguments
   type <- match.arg(type)
 
@@ -32,7 +34,7 @@ rope.brmsfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
 
 
 #' @export
-rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
+rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all"), ...) {
   # check arguments
   type <- match.arg(type)
   rope_worker(x = x, rope = rope, trans = trans, type = type)
@@ -40,7 +42,7 @@ rope.stanfit <- function(x, rope, trans = NULL, type = c("fixed", "random", "all
 
 
 #' @export
-rope.data.frame <- function(x, rope, trans = NULL, type = c("fixed", "random", "all")) {
+rope.data.frame <- function(x, rope, trans = NULL, type = c("fixed", "random", "all"), ...) {
   # check arguments
   type <- match.arg(type)
   rope_worker(x = x, rope = rope, trans = trans, type = type)

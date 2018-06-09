@@ -1,20 +1,22 @@
 #' @rdname hdi
 #' @export
-mcse <- function(x, type = c("fixed", "random", "all")) {
+mcse <- function(x, ...) {
   UseMethod("mcse")
 }
 
 
+#' @rdname hdi
 #' @export
-mcse.brmsfit <- function(x, type = c("fixed", "random", "all")) {
+mcse.brmsfit <- function(x, type = c("fixed", "random", "all"), ...) {
   # check arguments
   type <- match.arg(type)
   mcse_helper(x, type)
 }
 
 
+#' @rdname hdi
 #' @export
-mcse.stanreg <- function(x, type = c("fixed", "random", "all")) {
+mcse.stanreg <- function(x, type = c("fixed", "random", "all"), ...) {
   # check arguments
   type <- match.arg(type)
   mcse_helper(x, type)

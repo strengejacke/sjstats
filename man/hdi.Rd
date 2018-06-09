@@ -3,30 +3,92 @@
 %   R/n_eff.R, R/rope.R
 \name{hdi}
 \alias{hdi}
+\alias{hdi.stanreg}
+\alias{hdi.brmsfit}
 \alias{equi_test}
+\alias{equi_test.stanreg}
+\alias{equi_test.brmsfit}
 \alias{mcse}
+\alias{mcse.brmsfit}
+\alias{mcse.stanreg}
 \alias{mediation}
+\alias{mediation.brmsfit}
 \alias{n_eff}
+\alias{n_eff.stanreg}
+\alias{n_eff.brmsfit}
 \alias{rope}
+\alias{rope.stanreg}
+\alias{rope.brmsfit}
 \title{Compute statistics for MCMC samples and Stan models}
 \usage{
-hdi(x, prob = 0.9, trans = NULL, type = c("fixed", "random", "all"))
+hdi(x, ...)
 
-equi_test(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...)
+\method{hdi}{stanreg}(x, prob = 0.9, trans = NULL, type = c("fixed",
+  "random", "all"), ...)
 
-mcse(x, type = c("fixed", "random", "all"))
+\method{hdi}{brmsfit}(x, prob = 0.9, trans = NULL, type = c("fixed",
+  "random", "all"), ...)
 
-mediation(x, treatment, mediator, prob = 0.9, typical = "median", ...)
+equi_test(x, ...)
 
-n_eff(x, type = c("fixed", "random", "all"))
+\method{equi_test}{stanreg}(x, rope, eff_size, out = c("txt", "viewer",
+  "browser", "plot"), ...)
 
-rope(x, rope, trans = NULL, type = c("fixed", "random", "all"))
+\method{equi_test}{brmsfit}(x, rope, eff_size, out = c("txt", "viewer",
+  "browser", "plot"), ...)
+
+mcse(x, ...)
+
+\method{mcse}{brmsfit}(x, type = c("fixed", "random", "all"), ...)
+
+\method{mcse}{stanreg}(x, type = c("fixed", "random", "all"), ...)
+
+mediation(x, ...)
+
+\method{mediation}{brmsfit}(x, treatment, mediator, prob = 0.9,
+  typical = "median", ...)
+
+n_eff(x, ...)
+
+\method{n_eff}{stanreg}(x, type = c("fixed", "random", "all"), ...)
+
+\method{n_eff}{brmsfit}(x, type = c("fixed", "random", "all"), ...)
+
+rope(x, rope, ...)
+
+\method{rope}{stanreg}(x, rope, trans = NULL, type = c("fixed", "random",
+  "all"), ...)
+
+\method{rope}{brmsfit}(x, rope, trans = NULL, type = c("fixed", "random",
+  "all"), ...)
 }
 \arguments{
 \item{x}{A \code{stanreg}, \code{stanfit}, or \code{brmsfit} object. For
 \code{hdi()} and \code{rope()}, may also be a data frame or a vector
 of values from a probability distribution (e.g., posterior probabilities
 from MCMC sampling).}
+
+\item{...}{Further arguments passed down to \code{equi_test()} when
+\code{plot = TRUE}:
+\itemize{
+  \item{\code{colors}: }{
+    Color of the density regions for the 95\% distribution of the posterior
+    samples.
+  }
+  \item{\code{rope.color} and \code{rope.alpha}: }{
+    Fill color and alpha-value of the ROPE (region of practical equivalence).
+  }
+  \item{\code{x.title}: }{
+    Title for the x-axis of the plot.
+  }
+  \item{\code{legend.title}: }{
+    Title for the plot legend.
+  }
+  \item{\code{labels}: }{
+    Character vector of same length as terms plotted on the y-axis, to
+    give axis labels user-defined labels.
+  }
+}}
 
 \item{prob}{Vector of scalars between 0 and 1, indicating the mass within
 the credible interval that is to be estimated. See \code{\link{hdi}}.}
@@ -58,28 +120,6 @@ to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
 (\code{out = "viewer"}) or browser (\code{out = "browser"}), of if the
 results should be plotted (\code{out = "plot"}, only applies to certain
 functions). May be abbreviated.}
-
-\item{...}{Further arguments passed down to \code{equi_test()} when
-\code{plot = TRUE}:
-\itemize{
-  \item{\code{colors}: }{
-    Color of the density regions for the 95\% distribution of the posterior
-    samples.
-  }
-  \item{\code{rope.color} and \code{rope.alpha}: }{
-    Fill color and alpha-value of the ROPE (region of practical equivalence).
-  }
-  \item{\code{x.title}: }{
-    Title for the x-axis of the plot.
-  }
-  \item{\code{legend.title}: }{
-    Title for the plot legend.
-  }
-  \item{\code{labels}: }{
-    Character vector of same length as terms plotted on the y-axis, to
-    give axis labels user-defined labels.
-  }
-}}
 
 \item{treatment}{Character, name of the treatment variable (or direct effect)
 in a (multivariate response) mediator-model. If missing, \code{mediation()}

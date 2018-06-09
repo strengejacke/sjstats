@@ -238,20 +238,22 @@
 #' }}
 #'
 #' @export
-hdi <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi <- function(x, ...) {
   UseMethod("hdi")
 }
 
 
+#' @rdname hdi
 #' @export
-hdi.stanreg <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi.stanreg <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)
   hdi_worker(x = x, prob = prob, trans = trans, type = type)
 }
 
 
+#' @rdname hdi
 #' @export
-hdi.brmsfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi.brmsfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all"), ...) {
   # check arguments
   type <- match.arg(type)
 
@@ -264,21 +266,21 @@ hdi.brmsfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", 
 
 
 #' @export
-hdi.stanfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi.stanfit <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)
   hdi_worker(x = x, prob = prob, trans = trans, type = type)
 }
 
 
 #' @export
-hdi.data.frame <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi.data.frame <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)
   hdi_worker(x = x, prob = prob, trans = trans, type = type)
 }
 
 
 #' @export
-hdi.default <- function(x, prob = .9, trans = NULL, type = c("fixed", "random", "all")) {
+hdi.default <- function(x, prob = .9, trans = NULL, ...) {
   hdi_helper(x, prob, trans)
 }
 

@@ -1,10 +1,11 @@
 #' @rdname hdi
 #' @export
-mediation <- function(x, treatment, mediator, prob = .9, typical = "median", ...) {
+mediation <- function(x, ...) {
   UseMethod("mediation")
 }
 
 
+#' @rdname hdi
 #' @importFrom tibble has_name
 #' @importFrom purrr map
 #' @importFrom stats formula

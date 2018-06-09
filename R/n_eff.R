@@ -1,18 +1,19 @@
 #' @rdname hdi
 #' @export
-n_eff <- function(x, type = c("fixed", "random", "all")) {
+n_eff <- function(x, ...) {
   UseMethod("n_eff")
 }
 
 
 #' @export
-n_eff.default <- function(x, type = c("fixed", "random", "all")) {
+n_eff.default <- function(x, ...) {
   NextMethod()
 }
 
 
+#' @rdname hdi
 #' @export
-n_eff.stanreg <- function(x, type = c("fixed", "random", "all")) {
+n_eff.stanreg <- function(x, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)
   s <- summary(x)
   n_eff_helper(rownames(s), s[, "n_eff"], type, FALSE)
@@ -20,15 +21,16 @@ n_eff.stanreg <- function(x, type = c("fixed", "random", "all")) {
 
 
 #' @export
-n_eff.stanfit <- function(x, type = c("fixed", "random", "all")) {
+n_eff.stanfit <- function(x, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)
   s <- summary(x)
   n_eff_helper(rownames(s), s[, "n_eff"], type, FALSE)
 }
 
 
+#' @rdname hdi
 #' @export
-n_eff.brmsfit <- function(x, type = c("fixed", "random", "all")) {
+n_eff.brmsfit <- function(x, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)
 
   # check for pkg availability, else function might fail

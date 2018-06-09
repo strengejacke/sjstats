@@ -1,6 +1,6 @@
 #' @rdname hdi
 #' @export
-equi_test <- function(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...) {
+equi_test <- function(x, ...) {
   UseMethod("equi_test")
 }
 
@@ -12,6 +12,7 @@ equi_test.default <- function(x, rope, eff_size, out = c("txt", "viewer", "brows
 }
 
 
+#' @rdname hdi
 #' @export
 equi_test.stanreg <- function(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...) {
   out <- match.arg(out)
@@ -19,6 +20,7 @@ equi_test.stanreg <- function(x, rope, eff_size, out = c("txt", "viewer", "brows
 }
 
 
+#' @rdname hdi
 #' @export
 equi_test.brmsfit <- function(x, rope, eff_size, out = c("txt", "viewer", "browser", "plot"), ...) {
   # check for pkg availability, else function might fail
