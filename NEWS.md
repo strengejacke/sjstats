@@ -1,3 +1,9 @@
+# sjstats 0.15.1
+
+## General
+
+* The S3-generics for functions like `hdi()`, `rope()`, `equi_test()` etc. are now more generic, and function usage for each supported object is now included in the documentation.
+
 # sjstats 0.15.0
 
 ## General
