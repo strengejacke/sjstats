@@ -302,6 +302,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   }
 
+  ## TODO add support for multivariate response model for rstanarm
 
   class(out) <- c("tidy_stan", class(out))
 

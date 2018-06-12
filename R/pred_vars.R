@@ -359,12 +359,20 @@ model_family <- function(x) {
 
     ## TODO save different family types for brms multivariate reponse models
 
-    # in case of multivariate response models for brms, we just take the
-    # information from the first model
+    # in case of multivariate response models for brms or rstanarm,
+    # we just take the information from the first model
     if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$response)) {
       multi.resp <- TRUE
       faminfo <- faminfo[[1]]
     }
+
+    ## TODO save different family types for rstanarm multivariate reponse models
+
+    if (inherits(x, "stanmvreg")) {
+      multi.resp <- TRUE
+      faminfo <- faminfo[[1]]
+    }
+
 
     fitfam <- faminfo$family
     logit_link <- faminfo$link == "logit"
