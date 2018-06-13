@@ -633,7 +633,7 @@ clean_term_name <- function(x) {
 #' @importFrom crayon cyan blue red magenta green silver
 #' @importFrom dplyr case_when
 #' @export
-print.icc.posterior <- function(x, ..., prob = .89, digits = 2) {
+print.sj_icc_brms <- function(x, digits = 2, ...) {
   # print model information
   cat("\n# Random Effect Variances and ICC\n\n")
   cat(sprintf(
@@ -642,8 +642,6 @@ print.icc.posterior <- function(x, ..., prob = .89, digits = 2) {
     attr(x, "link", exact = T),
     as.character(attr(x, "formula"))[1]
   ))
-
-  x <- sjmisc::remove_empty_cols(x)
 
   get_re_col <- function(i, st) {
     dplyr::case_when(
@@ -656,26 +654,25 @@ print.icc.posterior <- function(x, ..., prob = .89, digits = 2) {
     )
   }
 
-  cn <- colnames(x)
-  cn.icc <- cn[tidyselect::starts_with("icc_", vars = cn)]
-  cn.tau00 <- cn[tidyselect::starts_with("tau.00_", vars = cn)]
+  prob <- attr(x, "prob", exact = TRUE)
+  cn <- names(x)
 
   # print icc
 
-  for (i in seq_len(length(cn.icc))) {
-    re.name <- substr(cn[i], 5, nchar(cn.icc[i]))
+  for (i in seq_len(length(cn))) {
+    re.name <- substr(cn[i], 5, nchar(cn[i]))
 
     cat(get_re_col(i, sprintf("## %s\n", re.name)))
 
-    icc.val <- sprintf("%.*f", digits, median(x[[cn.icc[i]]]))
-    tau.val <- sprintf("%.*f", digits, median(x[[cn.tau00[i]]]))
+    icc.val <- sprintf("%.*f", digits, x[i])
+    tau.val <- sprintf("%.*f", digits, attr(x, "tau.00", exact = TRUE)[i])
     ml <- max(nchar(icc.val), nchar(tau.val))
 
-    ci.icc <- hdi(x[[cn.icc[i]]], prob = prob)
+    ci.icc <- attr(x, "hdi.icc", exact = TRUE)[[i]]
     ci.icc.lo <- sprintf("%.*f", digits, ci.icc[1])
     ci.icc.hi <- sprintf("%.*f", digits, ci.icc[2])
 
-    ci.tau <- hdi(x[[cn.tau00[i]]], prob = prob)
+    ci.tau <- attr(x, "hdi.tau.00", exact = TRUE)[[i]]
     ci.tau.lo <- sprintf("%.*f", digits, ci.tau[1])
     ci.tau.hi <- sprintf("%.*f", digits, ci.tau[2])
 
@@ -706,13 +703,13 @@ print.icc.posterior <- function(x, ..., prob = .89, digits = 2) {
 
   # print sigma squared
 
-  ci <- hdi(x[["resid_var"]], prob = prob)
+  ci <- attr(x, "hdi.sigma_2", exact = TRUE)
   infs <- crayon::red("## Residuals")
   cat(sprintf(
     "%s\nWithin-group: %.*f (HDI %i%%: %.*f-%.*f)\n\n",
     infs,
     digits,
-    median(x[["resid_var"]]),
+    attr(x, "sigma_2", exact = TRUE),
     as.integer(round(prob * 100)),
     digits,
     ci[1],
@@ -721,22 +718,19 @@ print.icc.posterior <- function(x, ..., prob = .89, digits = 2) {
   ))
 
 
-  cn <- colnames(x)
-  cn <- cn[tidyselect::starts_with("tau.11_", vars = cn)]
-
-  if (!sjmisc::is_empty(cn)) cat(crayon::red("## Random-slope-variance\n"))
+  rsv <- attr(x, "tau.11", exact = TRUE)
+  if (!is.null(rsv)) cat(crayon::red("## Random-slope-variance\n"))
 
   # print Random-slope-variance
 
-  for (i in seq_len(length(cn))) {
-    tau.name <- substr(cn[i], 8, nchar(cn[i]))
-    infs <- sprintf("%s", tau.name)
-    ci <- hdi(x[[cn[i]]], prob = prob)
+  for (i in seq_len(length(rsv))) {
+    infs <- sprintf("%s", substr(names(rsv[i]), 8, nchar(names(rsv[i]))))
+    ci <- attr(x, "hdi.tau.11")[[i]]
     cat(sprintf(
       "%s: %.*f (HDI %i%%: %.*f-%.*f)\n",
       infs,
       digits,
-      median(x[[cn[i]]]),
+      rsv[i],
       as.integer(round(prob * 100)),
       digits,
       ci[1],
@@ -744,6 +738,75 @@ print.icc.posterior <- function(x, ..., prob = .89, digits = 2) {
       ci[2]
     ))
   }
+}
+
+
+#' @export
+print.icc_ppd <- function(x, digits = 2, ...) {
+  # print model information
+  cat("\n# Random Effect Variances and ICC\n\n")
+  cat(sprintf(
+    "Family: %s (%s)\nFormula: %s\n\n",
+    attr(x, "family", exact = T),
+    attr(x, "link", exact = T),
+    as.character(attr(x, "formula"))[1]
+  ))
+
+  prob <- attr(x, "prob", exact = TRUE)
+
+  cat(crayon::blue(sprintf("## %s\n", paste(attr(x, "ranef", exact = TRUE), collapse = " - "))))
+
+  icc.val <- sprintf("%.*f", digits, x["icc"])
+  tau.val <- sprintf("%.*f", digits, x["tau.00"])
+  ml <- max(nchar(icc.val), nchar(tau.val))
+
+  ci.icc <- attr(x, "hdi.icc", exact = TRUE)
+  ci.icc.lo <- sprintf("%.*f", digits, ci.icc[1])
+  ci.icc.hi <- sprintf("%.*f", digits, ci.icc[2])
+
+  ci.tau <- attr(x, "hdi.tau.00", exact = TRUE)
+  ci.tau.lo <- sprintf("%.*f", digits, ci.tau[1])
+  ci.tau.hi <- sprintf("%.*f", digits, ci.tau[2])
+
+  ml.ci <- max(nchar(ci.icc.lo), nchar(ci.tau.lo))
+
+  # ICC
+  cat(sprintf(
+    "          ICC: %*s (HDI %i%%: %*s-%s)\n",
+    ml,
+    icc.val,
+    as.integer(round(prob * 100)),
+    ml.ci,
+    ci.icc.lo,
+    ci.icc.hi
+  ))
+
+  # Tau00
+  cat(sprintf(
+    "Between-group: %*s (HDI %i%%: %*s-%s)\n\n",
+    ml,
+    tau.val,
+    as.integer(round(prob * 100)),
+    ml.ci,
+    ci.tau.lo,
+    ci.tau.hi
+  ))
+
+  # print sigma squared
+
+  ci <- attr(x, "hdi.resid", exact = TRUE)
+  infs <- crayon::red("## Residuals")
+  cat(sprintf(
+    "%s\nWithin-group: %.*f (HDI %i%%: %.*f-%.*f)\n\n",
+    infs,
+    digits,
+    x["resid.var"],
+    as.integer(round(prob * 100)),
+    digits,
+    ci[1],
+    digits,
+    ci[2]
+  ))
 }
 
 

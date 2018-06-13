@@ -2,25 +2,41 @@
 % Please edit documentation in R/icc.R
 \name{icc}
 \alias{icc}
+\alias{icc.merMod}
+\alias{icc.glmmTMB}
+\alias{icc.brmsfit}
 \title{Intraclass-Correlation Coefficient}
 \usage{
-icc(x, ..., posterior = FALSE)
+icc(x, ...)
+
+\method{icc}{merMod}(x, ...)
+
+\method{icc}{glmmTMB}(x, ...)
+
+\method{icc}{brmsfit}(x, re.form = NULL, typical = "mean", prob = 0.89,
+  ppd = FALSE, ...)
 }
 \arguments{
 \item{x}{Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
 \code{stanreg} or \code{brmsfit}).}
 
-\item{...}{More fitted model objects, to compute multiple intraclass-correlation
-coefficients at once.}
+\item{...}{Currently not used.}
 
-\item{posterior}{Logical, if \code{TRUE} and \code{x} is a \code{brmsfit}
-object, ICC values are computed for each sample of the posterior
-distribution. In this case, a data frame is returned with the same
-number of rows as samples in \code{x}, with one column per random
-effect ICC.}
+\item{re.form}{Formula containing group-level effects to be considered in
+the prediction. If \code{NULL} (default), include all group-level effects.
+Else, for instance for nested models, name a specific group-level effect
+to calculate the ICC for this group-level. Only applies if \code{ppd = TRUE}.}
+
+\item{typical}{Character vector, naming the function that will be used as
+measure of central tendency for the ICC. The default is "mean". See
+\code{typical_value} for options.}
+
+\item{ppd}{Logical, if \code{TRUE}, variance decomposition is based on the
+posterior predictive distribution, which is the correct way for Bayesian
+non-Gaussian models.}
 }
 \value{
-If \code{posterior = FALSE} (the default), a numeric vector with all
+If \code{ppd = FALSE} (the default), a numeric vector with all
    random intercept intraclass-correlation-coefficients, or a list of
    numeric vectors, when more than one model were used as arguments.
    Furthermore, between- and within-group variances as well as random-slope
