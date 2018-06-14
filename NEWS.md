@@ -3,6 +3,13 @@
 ## General
 
 * The S3-generics for functions like `hdi()`, `rope()`, `equi_test()` etc. are now more generic, and function usage for each supported object is now included in the documentation.
+* `icc()` is now a S3-generic.
+* `r2()` is now a S3-generic.
+
+## Changes to functions
+
+* `icc()` gets a `ppd`-argument for Stan-models (*brmsfit* and *stanreg*), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.
+* For Stan-models (*brmsfit* and *stanreg*), `icc()` now also computes the HDI for the ICC and random-effect variances. Use the `prob`-argument to specify the limits of this interval.
 
 # sjstats 0.15.0
 

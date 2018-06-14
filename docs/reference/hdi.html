@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
       </span>
     </div>
 
@@ -146,17 +146,57 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>hdi</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
+    <pre class="usage"><span class='fu'>hdi</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='no'>eff_size</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"txt"</span>, <span class='st'>"viewer"</span>, <span class='st'>"browser"</span>, <span class='st'>"plot"</span>), <span class='no'>...</span>)
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>hdi</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>,
+  <span class='st'>"random"</span>, <span class='st'>"all"</span>), <span class='no'>...</span>)
 
-<span class='fu'>mcse</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>hdi</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>,
+  <span class='st'>"random"</span>, <span class='st'>"all"</span>), <span class='no'>...</span>)
 
-<span class='fu'>mediation</span>(<span class='no'>x</span>, <span class='no'>treatment</span>, <span class='no'>mediator</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>typical</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='no'>...</span>)
+<span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='fu'>n_eff</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='no'>eff_size</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"txt"</span>, <span class='st'>"viewer"</span>,
+  <span class='st'>"browser"</span>, <span class='st'>"plot"</span>), <span class='no'>...</span>)
 
-<span class='fu'>rope</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>))</pre>
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='no'>eff_size</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"txt"</span>, <span class='st'>"viewer"</span>,
+  <span class='st'>"browser"</span>, <span class='st'>"plot"</span>), <span class='no'>...</span>)
+
+<span class='fu'>mcse</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>mcse</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>), <span class='no'>...</span>)
+
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>mcse</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>), <span class='no'>...</span>)
+
+<span class='fu'>mediation</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>mediation</span>(<span class='no'>x</span>, <span class='no'>treatment</span>, <span class='no'>mediator</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>typical</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='no'>...</span>)
+
+<span class='fu'>n_eff</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>n_eff</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>), <span class='no'>...</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>n_eff</span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>), <span class='no'>...</span>)
+
+<span class='fu'>rope</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>rope</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>,
+  <span class='st'>"all"</span>), <span class='no'>...</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>rope</span>(<span class='no'>x</span>, <span class='no'>rope</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>,
+  <span class='st'>"all"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,6 +207,24 @@
 <code>hdi()</code> and <code>rope()</code>, may also be a data frame or a vector
 of values from a probability distribution (e.g., posterior probabilities
 from MCMC sampling).</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Further arguments passed down to <code>equi_test()</code> when
+<code>plot = TRUE</code>:</p><ul>
+<li><p><code>colors</code>: 
+    Color of the density regions for the 95% distribution of the posterior
+    samples.</p></li>
+<li><p><code>rope.color</code> and <code>rope.alpha</code>: 
+    Fill color and alpha-value of the ROPE (region of practical equivalence).</p></li>
+<li><p><code>x.title</code>: 
+    Title for the x-axis of the plot.</p></li>
+<li><p><code>legend.title</code>: 
+    Title for the plot legend.</p></li>
+<li><p><code>labels</code>: 
+    Character vector of same length as terms plotted on the y-axis, to
+    give axis labels user-defined labels.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>prob</th>
@@ -210,24 +268,6 @@ to console (<code>out = "txt"</code>) or as HTML-table in the viewer-pane
 (<code>out = "viewer"</code>) or browser (<code>out = "browser"</code>), of if the
 results should be plotted (<code>out = "plot"</code>, only applies to certain
 functions). May be abbreviated.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Further arguments passed down to <code>equi_test()</code> when
-<code>plot = TRUE</code>:</p><ul>
-<li><p><code>colors</code>: 
-    Color of the density regions for the 95% distribution of the posterior
-    samples.</p></li>
-<li><p><code>rope.color</code> and <code>rope.alpha</code>: 
-    Fill color and alpha-value of the ROPE (region of practical equivalence).</p></li>
-<li><p><code>x.title</code>: 
-    Title for the x-axis of the plot.</p></li>
-<li><p><code>legend.title</code>: 
-    Title for the plot legend.</p></li>
-<li><p><code>labels</code>: 
-    Character vector of same length as terms plotted on the y-axis, to
-    give axis labels user-defined labels.</p></li>
-</ul></td>
     </tr>
     <tr>
       <th>treatment</th>

@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
       </span>
     </div>
 
@@ -119,13 +119,36 @@
       <small>Source: <a href='https://github.com/strengejacke/sjstats/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="sjstats-0-15-0" class="section level1">
+    <div id="sjstats-0-15-1" class="section level1">
 <h1 class="page-header">
-<a href="#sjstats-0-15-0" class="anchor"></a>sjstats 0.15.0<small> 2018-06-06 </small>
+<a href="#sjstats-0-15-1" class="anchor"></a>sjstats 0.15.1<small> Unreleased </small>
 </h1>
 <div id="general" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general" class="anchor"></a>General</h2>
+<ul>
+<li>The S3-generics for functions like <code><a href="../reference/hdi.html">hdi()</a></code>, <code><a href="../reference/hdi.html">rope()</a></code>, <code><a href="../reference/hdi.html">equi_test()</a></code> etc. are now more generic, and function usage for each supported object is now included in the documentation.</li>
+<li>
+<code><a href="../reference/icc.html">icc()</a></code> is now a S3-generic.</li>
+</ul>
+</div>
+<div id="changes-to-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-functions" class="anchor"></a>Changes to functions</h2>
+<ul>
+<li>
+<code><a href="../reference/icc.html">icc()</a></code> gets a <code>ppd</code>-argument for Stan-models (<em>brmsfit</em> and <em>stanreg</em>), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.</li>
+<li>For Stan-models (<em>brmsfit</em> and <em>stanreg</em>), <code><a href="../reference/icc.html">icc()</a></code> now also computes the HDI for the ICC and random-effect variances. Use the <code>prob</code>-argument to specify the limits of this interval.</li>
+</ul>
+</div>
+</div>
+    <div id="sjstats-0-15-0" class="section level1">
+<h1 class="page-header">
+<a href="#sjstats-0-15-0" class="anchor"></a>sjstats 0.15.0<small> 2018-06-06 </small>
+</h1>
+<div id="general-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general-1" class="anchor"></a>General</h2>
 <ul>
 <li>Added new Vignette <em>Statistics for Bayesian Models</em>.</li>
 </ul>
@@ -140,9 +163,9 @@
 <code><a href="../reference/hdi.html">mediation()</a></code> to print a summary of a mediation analysis from multivariate response models fitted with <em>brms</em>.</li>
 </ul>
 </div>
-<div id="changes-to-functions" class="section level2">
+<div id="changes-to-functions-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-1" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">link_inverse()</a></code> now also returns the link-inverse function for cumulative-family <em>brms</em>-models.</li>
@@ -172,9 +195,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-3" class="anchor"></a>sjstats 0.14.3<small> 2018-05-02 </small>
 </h1>
-<div id="general-1" class="section level2">
+<div id="general-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-1" class="anchor"></a>General</h2>
+<a href="#general-2" class="anchor"></a>General</h2>
 <ul>
 <li>Remove <em>tidyverse</em> from suggested packages, as requested by maintainers.</li>
 </ul>
@@ -187,9 +210,9 @@
 <code><a href="../reference/mwu.html">mwu()</a></code> now requires a data frame as first argument, followed by the names of the two variables to perform the Mann-Whitney-U-Test on.</li>
 </ul>
 </div>
-<div id="changes-to-functions-1" class="section level2">
+<div id="changes-to-functions-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-1" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-2" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> was improved especially for more complex multilevel models.</li>
@@ -226,9 +249,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-2" class="anchor"></a>sjstats 0.14.2<small> 2018-03-25 </small>
 </h1>
-<div id="general-2" class="section level2">
+<div id="general-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-2" class="anchor"></a>General</h2>
+<a href="#general-3" class="anchor"></a>General</h2>
 <ul>
 <li>Revise examples, vignettes and package description to make sure all used packages are available for CRAN checks on operating systems.</li>
 </ul>
@@ -246,9 +269,9 @@
 <code>residuals.svyglm.nb()</code> as S3-generic <code>residuals()</code> method for objects fitted with <code><a href="../reference/svyglm.nb.html">svyglm.nb()</a></code>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-2" class="section level2">
+<div id="changes-to-functions-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-2" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-3" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/icc.html">icc()</a></code> gets a <code>posterior</code>-argument, to compute ICC-values from <code>brmsfit</code>-objects, for the whole posterior distribution.</li>
@@ -290,17 +313,17 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-1" class="anchor"></a>sjstats 0.14.1<small> 2018-02-04 </small>
 </h1>
-<div id="general-3" class="section level2">
+<div id="general-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-3" class="anchor"></a>General</h2>
+<a href="#general-4" class="anchor"></a>General</h2>
 <ul>
 <li>Remove unused imports.</li>
 <li>Cross refences from <code><a href="http://dplyr.tidyverse.org/reference/reexports.html">dplyr::select_helpers</a></code> were updated to <code><a href="http://www.rdocumentation.org/packages/tidyselect/topics/select_helpers">tidyselect::select_helpers</a></code>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-3" class="section level2">
+<div id="changes-to-functions-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-3" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-4" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">var_names()</a></code> now also cleans variable names from variables modeled with the <code>mi()</code> function (multiple imputation on the fly in <em>brms</em>).</li>
@@ -324,9 +347,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-0" class="anchor"></a>sjstats 0.14.0<small> 2018-01-14 </small>
 </h1>
-<div id="general-4" class="section level2">
+<div id="general-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-4" class="anchor"></a>General</h2>
+<a href="#general-5" class="anchor"></a>General</h2>
 <ul>
 <li>Beautiful colored output for <code><a href="../reference/grpmean.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code>.</li>
 </ul>
@@ -341,9 +364,9 @@
 <code><a href="../reference/hdi.html">n_eff()</a></code> to compute the effective sample size for <code>stanreg</code>- and <code>brmsfit</code>-models.</li>
 </ul>
 </div>
-<div id="changes-to-functions-4" class="section level2">
+<div id="changes-to-functions-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-4" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-5" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/grpmean.html">grpmean()</a></code> now uses <code>contrasts()</code> from package <em>emmeans</em> to compute p-values, which correclty indicate whether the sub-group mean is significantly different from the total mean.</li>
@@ -371,9 +394,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-13-0" class="anchor"></a>sjstats 0.13.0<small> 2017-11-22 </small>
 </h1>
-<div id="general-5" class="section level2">
+<div id="general-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-5" class="anchor"></a>General</h2>
+<a href="#general-6" class="anchor"></a>General</h2>
 <ul>
 <li>Remove deprecated <code>get_model_pval()</code>.</li>
 <li>Revised documentation for <code><a href="../reference/overdisp.html">overdisp()</a></code>.</li>
@@ -393,9 +416,9 @@
 <code><a href="../reference/is_prime.html">is_prime()</a></code> to check whether a number is a prime number or not.</li>
 </ul>
 </div>
-<div id="changes-to-functions-5" class="section level2">
+<div id="changes-to-functions-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-5" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-6" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">link_inverse()</a></code> now supports <code>brmsfit</code>, <code>multinom</code> and <code>clm</code>-models.</li>
@@ -424,9 +447,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-12-0" class="anchor"></a>sjstats 0.12.0<small> 2017-10-16 </small>
 </h1>
-<div id="general-6" class="section level2">
+<div id="general-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-6" class="anchor"></a>General</h2>
+<a href="#general-7" class="anchor"></a>General</h2>
 <ul>
 <li>Fixed examples, to resolve issues with CRAN package checks.</li>
 <li>More model objects supported in <code><a href="../reference/p_value.html">p_value()</a></code>.</li>
@@ -444,9 +467,9 @@
 <code><a href="../reference/pred_vars.html">link_inverse()</a></code> to get the inverse link function from model objects.</li>
 </ul>
 </div>
-<div id="changes-to-functions-6" class="section level2">
+<div id="changes-to-functions-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-6" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-7" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>The <code>fun</code>-argument in <code><a href="../reference/typical_value.html">typical_value()</a></code> can now also be a named vector, to apply different functions for numeric and categorical variables.</li>
 </ul>
@@ -473,9 +496,9 @@
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> to return a tidy summary of Stan-models.</li>
 </ul>
 </div>
-<div id="changes-to-functions-7" class="section level2">
+<div id="changes-to-functions-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-7" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-8" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/hdi.html">hdi()</a></code> and <code><a href="../reference/hdi.html">rope()</a></code> now also work for <code>brmsfit</code>-models, from package <em>brms</em>.</li>
@@ -488,9 +511,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-11-1" class="anchor"></a>sjstats 0.11.1<small> 2017-09-16 </small>
 </h1>
-<div id="changes-to-functions-8" class="section level2">
+<div id="changes-to-functions-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-8" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-9" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/typical_value.html">typical_value()</a></code> gets a “zero”-option for the <code>fun</code>-argument.</li>
@@ -518,9 +541,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-11-0" class="anchor"></a>sjstats 0.11.0<small> 2017-08-21 </small>
 </h1>
-<div id="general-7" class="section level2">
+<div id="general-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-7" class="anchor"></a>General</h2>
+<a href="#general-8" class="anchor"></a>General</h2>
 <ul>
 <li>Added vignettes for various functions.</li>
 <li>Fixed issue with latest tidyr-update on CRAN.</li>
@@ -561,9 +584,9 @@
 <code><a href="../reference/converge_ok.html">is_singular()</a></code> to check a model fit for singularity in case of post-fitting convergence warnings.</li>
 </ul>
 </div>
-<div id="changes-to-functions-9" class="section level2">
+<div id="changes-to-functions-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-9" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-10" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>Computation of <code><a href="../reference/r2.html">r2()</a></code> for <code>glm</code>-objects is now based on log-Likelihood methods and also accounts for count models.</li>
 <li>Better <code>print()</code>-method for <code><a href="../reference/overdisp.html">overdisp()</a></code>.</li>
@@ -588,9 +611,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-10-2" class="anchor"></a>sjstats 0.10.2<small> 2017-06-27 </small>
 </h1>
-<div id="changes-to-functions-10" class="section level2">
+<div id="changes-to-functions-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-10" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-11" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/icc.html">icc()</a></code>, <code><a href="../reference/re_var.html">re_var()</a></code> and <code><a href="../reference/re_var.html">get_re_var()</a></code> now support <code>glmmTMB</code>-objects.</li>
@@ -612,9 +635,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-10-1" class="anchor"></a>sjstats 0.10.1<small> 2017-06-14 </small>
 </h1>
-<div id="general-8" class="section level2">
+<div id="general-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-8" class="anchor"></a>General</h2>
+<a href="#general-9" class="anchor"></a>General</h2>
 <ul>
 <li>Revised imports: Labelled data functions from package <em>sjmisc</em> have been moved to package <em>sjlabelled</em>.</li>
 </ul>
@@ -627,9 +650,9 @@
 <code><a href="../reference/boot_ci.html">boot_est()</a></code> to return the estimate from bootstrap replicates.</li>
 </ul>
 </div>
-<div id="changes-to-functions-11" class="section level2">
+<div id="changes-to-functions-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-11" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-12" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>The <code>print()</code>-method for <code><a href="../reference/svyglm.nb.html">svyglm.nb()</a></code>-objects now also prints confidence intervals.</li>
 </ul>
@@ -674,9 +697,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-9-0" class="anchor"></a>sjstats 0.9.0<small> 2017-03-06 </small>
 </h1>
-<div id="general-9" class="section level2">
+<div id="general-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-9" class="anchor"></a>General</h2>
+<a href="#general-10" class="anchor"></a>General</h2>
 <ul>
 <li>Functions <code>std()</code> and <code>center()</code> were removed and are now in the <a href="https://cran.r-project.org/package=sjmisc">sjmisc-package</a>.</li>
 </ul>
@@ -692,9 +715,9 @@
 <li>Added S3-<code>model.frame()</code>-function for <code>gee</code>-models.</li>
 </ul>
 </div>
-<div id="changes-to-functions-12" class="section level2">
+<div id="changes-to-functions-13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-12" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-13" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/se.html">se()</a></code> gets a <code>type</code>-argument, which applies to generalized linear mixed models. You can now choose to compute either standard errors with delta-method approximation for fixed effects only, or standard errors for joint random and fixed effects.</li>
@@ -737,9 +760,9 @@
 <code><a href="../reference/check_assumptions.html">check_assumptions()</a></code> to run a set of model assumption checks.</li>
 </ul>
 </div>
-<div id="changes-to-functions-13" class="section level2">
+<div id="changes-to-functions-14" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-13" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-14" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/prop.html">prop()</a></code> no longer works within dplyr’s <code>summarise()</code> function. Instead, when now used with grouped data frames, a summary of proportions is directly returned as tibble.</li>
@@ -752,16 +775,16 @@
 <h1 class="page-header">
 <a href="#sjstats-0-7-1" class="anchor"></a>sjstats 0.7.1<small> 2016-12-18 </small>
 </h1>
-<div id="general-10" class="section level2">
+<div id="general-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-10" class="anchor"></a>General</h2>
+<a href="#general-11" class="anchor"></a>General</h2>
 <ul>
 <li>Package depends on R-version &gt;= 3.3.</li>
 </ul>
 </div>
-<div id="changes-to-functions-14" class="section level2">
+<div id="changes-to-functions-15" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-14" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-15" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/prop.html">prop()</a></code> gets a <code>digits</code>-argument to round the return value to a specific number of decimal places.</li>
@@ -772,9 +795,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-7-0" class="anchor"></a>sjstats 0.7.0<small> 2016-12-08 </small>
 </h1>
-<div id="general-11" class="section level2">
+<div id="general-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-11" class="anchor"></a>General</h2>
+<a href="#general-12" class="anchor"></a>General</h2>
 <ul>
 <li>Largely revised the documentation.</li>
 </ul>
@@ -806,9 +829,9 @@
 <code><a href="../reference/var_pop.html">sd_pop()</a></code> and <code><a href="../reference/var_pop.html">var_pop()</a></code> to compute population variance and population standard deviation.</li>
 </ul>
 </div>
-<div id="changes-to-functions-15" class="section level2">
+<div id="changes-to-functions-16" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-15" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-16" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/se.html">se()</a></code> now also computes the standard error from estimates (regression coefficients) and p-values.</li>
@@ -832,9 +855,9 @@
 <code>std()</code> and <code>center()</code> to standardize and center variables, supporting the pipe-operator.</li>
 </ul>
 </div>
-<div id="changes-to-functions-16" class="section level2">
+<div id="changes-to-functions-17" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-16" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-17" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/se.html">se()</a></code> now also computes the standard error for intraclass correlation coefficients, as returned by the <code><a href="../reference/icc.html">icc()</a></code>-function.</li>
@@ -851,6 +874,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#sjstats-0-15-1">0.15.1</a></li>
         <li><a href="#sjstats-0-15-0">0.15.0</a></li>
         <li><a href="#sjstats-0-14-3">0.14.3</a></li>
         <li><a href="#sjstats-0-14-2">0.14.2</a></li>

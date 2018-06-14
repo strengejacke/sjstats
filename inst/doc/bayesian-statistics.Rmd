@@ -228,24 +228,34 @@ As you can see, the results are similar to what the _mediation_ package produces
 
 ## ICC for multilevel models
 
-Similar to [frequentist multilevel models](mixedmodels-statistics.html), `icc()` computes the intraclass correlation coefficient for Bayesian multilevel models.
+Similar to [frequentist multilevel models](mixedmodels-statistics.html), `icc()` computes the intraclass correlation coefficient for Bayesian multilevel models. One advantage of Bayesian regression models is that you can compute the ICC for each sample of the posterior distribution, which allows you to easily calculate uncertainty intervals.
 
 ```{r}
+icc(m4)
+
 icc(m5)
 ```
 
-One advantage of the _brms_ package is that you can compute the ICC for each sample of the posterior distribution, which allows you to easily calculate uncertainty intervals.
+For non-Gaussian models, there is no clean variance decomposition and hence the ICC can't be calculated exactly. The general Bayesian way to analyse the random-effect variances is then to draw samples from the posterior predictive distribution, calculate the variances and compare how the variance across models changes when group-specific term are included or dropped.
+
+You can achieve this with the `ppd`-argument. In this case, draws from the posterior predictive distribution _not conditioned_ on group-level terms (using `posterior_predict(..., re.form = NA)`) as well as draws from this distribution _conditioned_ on _all random effects_ (by default, unless specified else in the `re.form`-argument) are taken. Then, the variances for each of these draws are calculated. The "ICC" is then the ratio between these two variances.
 
 ```{r, message=TRUE}
-icc(m4, posterior = TRUE)
-
-icc(m5, posterior = TRUE)
+icc(m4, ppd = TRUE, re.form = ~(1 | cyl), prob = .5)
 ```
 
-There's also a `print()`-method which allows you to specify the HDI-interval and digits:
+Sometimes, when the variance of the posterior predictive distribution is very large, the variance ratio in the output makes no sense, e.g. because it is negative. In such cases, it might help to use a more robust measure to calculate the central tendency of the variances. This can be done with the `typical`-argument.
 
-```{r}
-icc(m5, posterior = TRUE) %>% print(prob = .95, digits = 3)
+```{r, message=TRUE}
+# the "classical" ICC, not recommended for non-Gaussian
+icc(m3)
+
+# variance ratio based on posterior predictive distributions,
+# which is obviously nonsense
+icc(m3, ppd = T)
+
+# use median instead of mean
+icc(m3, ppd = T, typical = "median")
 ```
 
 ## Bayes r-squared and LOO-adjusted r-squared

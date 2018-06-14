@@ -4,6 +4,7 @@
 \alias{icc}
 \alias{icc.merMod}
 \alias{icc.glmmTMB}
+\alias{icc.stanreg}
 \alias{icc.brmsfit}
 \title{Intraclass-Correlation Coefficient}
 \usage{
@@ -12,6 +13,9 @@ icc(x, ...)
 \method{icc}{merMod}(x, ...)
 
 \method{icc}{glmmTMB}(x, ...)
+
+\method{icc}{stanreg}(x, re.form = NULL, typical = "mean", prob = 0.89,
+  ppd = FALSE, ...)
 
 \method{icc}{brmsfit}(x, re.form = NULL, typical = "mean", prob = 0.89,
   ppd = FALSE, ...)
@@ -36,14 +40,12 @@ posterior predictive distribution, which is the correct way for Bayesian
 non-Gaussian models.}
 }
 \value{
-If \code{ppd = FALSE} (the default), a numeric vector with all
-   random intercept intraclass-correlation-coefficients, or a list of
-   numeric vectors, when more than one model were used as arguments.
+A numeric vector with all random intercept intraclass-correlation-coefficients.
    Furthermore, between- and within-group variances as well as random-slope
    variance are returned as attributes.
    \cr \cr
-   If \code{posterior = TRUE}, \code{icc()} returns a data frame with ICC
-   and variance components for each sample of the posterior distribution.
+   For \code{stanreg} or \code{brmsfit} objects, the HDI for each statistic
+   is also  included as attribute.
 }
 \description{
 This function calculates the intraclass-correlation
@@ -54,40 +56,49 @@ This function calculates the intraclass-correlation
 }
 \details{
 The ICC is calculated by dividing the between-group-variance (random
-         intercept variance) by the total variance (i.e. sum of between-group-variance
-         and within-group (residual) variance). \cr \cr
-      The calculation of the ICC for generalized linear mixed models with binary outcome is based on
-      \cite{Wu et al. (2012)}. For Poisson multilevel models, please refer to \cite{Stryhn et al. (2006)}.
-      \cite{Aly et al. (2014)} describe computation of ICC for negative binomial models.
-      \cr \cr
-      \strong{Caution:} For models with random slopes and random intercepts,
-      the ICC would differ at each unit of the predictors. Hence, the ICC for these
-      kind of models cannot be understood simply as proportion of variance
-      (see \cite{Goldstein et al. 2010}). For convenience reasons, as the
-      \code{icc()} function also extracts the different random effects
-      variances, the ICC for random-slope-intercept-models is reported
-      nonetheless, but it is usually no meaningful summary of the
-      proportion of variances.
-      \cr \cr
-      If \code{posterior = FALSE}, there is a \code{print()}-method that prints
-      the variance parameters using the \code{comp}-argument set to \code{"var"}:
-      \code{print(x, comp = "var")} (see 'Examples'). The
-      \code{\link{re_var}}-function is a convenient wrapper. If
-      \code{posterior = TRUE}, the \code{print()}-method accepts the arguments
-      \code{prob} and \code{digits}, which indicate the probability of the
-      uncertainty interval for the ICC and variance components, and the digits
-      in the output (see also 'Examples').
-      \cr \cr
-      The random effect variances indicate the between- and within-group
-        variances as well as random-slope variance and random-slope-intercept
-        correlation. The components are denoted as following:
-        \itemize{
-         \item Within-group (residual) variance: sigma_2
-         \item Between-group-variance: tau.00 (variation between individual intercepts and average intercept)
-         \item Random-slope-variance: tau.11 (variation between individual slopes and average slope)
-         \item Random-Intercept-Slope-covariance: tau.01
-         \item Random-Intercept-Slope-correlation: rho.01
-        }
+  intercept variance) by the total variance (i.e. sum of between-group-variance
+  and within-group (residual) variance). \cr \cr
+  The calculation of the ICC for generalized linear mixed models with binary outcome is based on
+  \cite{Wu et al. (2012)}. For Poisson multilevel models, please refer to \cite{Stryhn et al. (2006)}.
+  \cite{Aly et al. (2014)} describe computation of ICC for negative binomial models.
+  \cr \cr
+  \strong{Caution:} For models with random slopes and random intercepts,
+  the ICC would differ at each unit of the predictors. Hence, the ICC for these
+  kind of models cannot be understood simply as proportion of variance
+  (see \cite{Goldstein et al. 2010}). For convenience reasons, as the
+  \code{icc()} function also extracts the different random effects
+  variances, the ICC for random-slope-intercept-models is reported
+  nonetheless, but it is usually no meaningful summary of the
+  proportion of variances.
+  \cr \cr
+  The random effect variances indicate the between- and within-group
+  variances as well as random-slope variance and random-slope-intercept
+  correlation. The components are denoted as following:
+  \itemize{
+    \item Within-group (residual) variance: sigma_2
+    \item Between-group-variance: tau.00 (variation between individual intercepts and average intercept)
+    \item Random-slope-variance: tau.11 (variation between individual slopes and average slope)
+    \item Random-Intercept-Slope-covariance: tau.01
+    \item Random-Intercept-Slope-correlation: rho.01
+  }
+  \cr \cr
+  If \code{ppd = TRUE}, `icc()` calculates a variance decomposition based on
+  the posterior predictive distribution. In this case, first, the draws from
+  the posterior predictive distribution \emph{not conditioned} on group-level
+  terms (\code{posterior_predict(..., re.form = NA)}) are calculated as well
+  as draws from this distribution \emph{conditioned} on \emph{all random effects}
+  (by default, unless specified else in \code{re.form}) are taken. Then, second,
+  the variances for each of these draws are calculated. The "ICC" is then the
+  ratio between these two variances. This is the recommended way to
+  analyse random-effect-variances for non-Gaussian models. It is then possible
+  to compare variances accross models, also by specifying different group-level
+  terms via the \code{re.form}-argument.
+  \cr \cr
+  Sometimes, when the variance of the posterior predictive distribution is
+  very large, the variance ratio in the output makes no sense, e.g. because
+  it is negative. In such cases, it might help to use a more robust measure
+  to calculate the central tendency of the variances. For example, use
+  \code{typical = "median"}.
 }
 \note{
 Some notes on why the ICC is useful, based on \cite{Grace-Martin}:
@@ -135,9 +146,6 @@ sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
 fit2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 icc(fit2)
 
-# return icc for all models at once
-icc(fit0, fit1, fit2)
-
 icc1 <- icc(fit1)
 icc2 <- icc(fit2)
 
@@ -163,10 +171,13 @@ if (requireNamespace("brms", quietly = TRUE)) {
   )
 
   # by default, 89\% interval
-  icc(m, posterior = TRUE)
+  icc(m)
 
   # show 50\% interval
-  print(icc(m, posterior = TRUE), prob = .5, digits = 3)
+  icc(m, prob = .5)
+
+  # variances based on posterior predictive distribution
+  icc(m, ppd = TRUE)
 }}
 
 }

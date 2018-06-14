@@ -151,13 +151,8 @@ The ICC for mixed models can be computed with `icc()`. *Caution:* For random-slo
 
 ```{r message = TRUE}
 icc(m)
-```
 
-You can also compute ICCs for multiple models at once:
-
-```{r message = TRUE}
-# calculate ICC for both models
-icc(m, m2)
+icc(m2)
 ```
 
 # References

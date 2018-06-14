@@ -20,14 +20,12 @@
 #'   posterior predictive distribution, which is the correct way for Bayesian
 #'   non-Gaussian models.
 #'
-#' @return If \code{ppd = FALSE} (the default), a numeric vector with all
-#'    random intercept intraclass-correlation-coefficients, or a list of
-#'    numeric vectors, when more than one model were used as arguments.
+#' @return A numeric vector with all random intercept intraclass-correlation-coefficients.
 #'    Furthermore, between- and within-group variances as well as random-slope
 #'    variance are returned as attributes.
 #'    \cr \cr
-#'    If \code{posterior = TRUE}, \code{icc()} returns a data frame with ICC
-#'    and variance components for each sample of the posterior distribution.
+#'    For \code{stanreg} or \code{brmsfit} objects, the HDI for each statistic
+#'    is also  included as attribute.
 #'
 #' @references \itemize{
 #'               \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
@@ -80,40 +78,49 @@
 #'       \code{get_re_var(fit)[2] / sum(get_re_var(fit))}
 #'
 #' @details The ICC is calculated by dividing the between-group-variance (random
-#'          intercept variance) by the total variance (i.e. sum of between-group-variance
-#'          and within-group (residual) variance). \cr \cr
-#'       The calculation of the ICC for generalized linear mixed models with binary outcome is based on
-#'       \cite{Wu et al. (2012)}. For Poisson multilevel models, please refer to \cite{Stryhn et al. (2006)}.
-#'       \cite{Aly et al. (2014)} describe computation of ICC for negative binomial models.
-#'       \cr \cr
-#'       \strong{Caution:} For models with random slopes and random intercepts,
-#'       the ICC would differ at each unit of the predictors. Hence, the ICC for these
-#'       kind of models cannot be understood simply as proportion of variance
-#'       (see \cite{Goldstein et al. 2010}). For convenience reasons, as the
-#'       \code{icc()} function also extracts the different random effects
-#'       variances, the ICC for random-slope-intercept-models is reported
-#'       nonetheless, but it is usually no meaningful summary of the
-#'       proportion of variances.
-#'       \cr \cr
-#'       If \code{posterior = FALSE}, there is a \code{print()}-method that prints
-#'       the variance parameters using the \code{comp}-argument set to \code{"var"}:
-#'       \code{print(x, comp = "var")} (see 'Examples'). The
-#'       \code{\link{re_var}}-function is a convenient wrapper. If
-#'       \code{posterior = TRUE}, the \code{print()}-method accepts the arguments
-#'       \code{prob} and \code{digits}, which indicate the probability of the
-#'       uncertainty interval for the ICC and variance components, and the digits
-#'       in the output (see also 'Examples').
-#'       \cr \cr
-#'       The random effect variances indicate the between- and within-group
-#'         variances as well as random-slope variance and random-slope-intercept
-#'         correlation. The components are denoted as following:
-#'         \itemize{
-#'          \item Within-group (residual) variance: sigma_2
-#'          \item Between-group-variance: tau.00 (variation between individual intercepts and average intercept)
-#'          \item Random-slope-variance: tau.11 (variation between individual slopes and average slope)
-#'          \item Random-Intercept-Slope-covariance: tau.01
-#'          \item Random-Intercept-Slope-correlation: rho.01
-#'         }
+#'   intercept variance) by the total variance (i.e. sum of between-group-variance
+#'   and within-group (residual) variance). \cr \cr
+#'   The calculation of the ICC for generalized linear mixed models with binary outcome is based on
+#'   \cite{Wu et al. (2012)}. For Poisson multilevel models, please refer to \cite{Stryhn et al. (2006)}.
+#'   \cite{Aly et al. (2014)} describe computation of ICC for negative binomial models.
+#'   \cr \cr
+#'   \strong{Caution:} For models with random slopes and random intercepts,
+#'   the ICC would differ at each unit of the predictors. Hence, the ICC for these
+#'   kind of models cannot be understood simply as proportion of variance
+#'   (see \cite{Goldstein et al. 2010}). For convenience reasons, as the
+#'   \code{icc()} function also extracts the different random effects
+#'   variances, the ICC for random-slope-intercept-models is reported
+#'   nonetheless, but it is usually no meaningful summary of the
+#'   proportion of variances.
+#'   \cr \cr
+#'   The random effect variances indicate the between- and within-group
+#'   variances as well as random-slope variance and random-slope-intercept
+#'   correlation. The components are denoted as following:
+#'   \itemize{
+#'     \item Within-group (residual) variance: sigma_2
+#'     \item Between-group-variance: tau.00 (variation between individual intercepts and average intercept)
+#'     \item Random-slope-variance: tau.11 (variation between individual slopes and average slope)
+#'     \item Random-Intercept-Slope-covariance: tau.01
+#'     \item Random-Intercept-Slope-correlation: rho.01
+#'   }
+#'   \cr \cr
+#'   If \code{ppd = TRUE}, `icc()` calculates a variance decomposition based on
+#'   the posterior predictive distribution. In this case, first, the draws from
+#'   the posterior predictive distribution \emph{not conditioned} on group-level
+#'   terms (\code{posterior_predict(..., re.form = NA)}) are calculated as well
+#'   as draws from this distribution \emph{conditioned} on \emph{all random effects}
+#'   (by default, unless specified else in \code{re.form}) are taken. Then, second,
+#'   the variances for each of these draws are calculated. The "ICC" is then the
+#'   ratio between these two variances. This is the recommended way to
+#'   analyse random-effect-variances for non-Gaussian models. It is then possible
+#'   to compare variances accross models, also by specifying different group-level
+#'   terms via the \code{re.form}-argument.
+#'   \cr \cr
+#'   Sometimes, when the variance of the posterior predictive distribution is
+#'   very large, the variance ratio in the output makes no sense, e.g. because
+#'   it is negative. In such cases, it might help to use a more robust measure
+#'   to calculate the central tendency of the variances. For example, use
+#'   \code{typical = "median"}.
 #'
 #' @seealso \code{\link{re_var}}
 #'
@@ -130,9 +137,6 @@
 #' sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
 #' fit2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 #' icc(fit2)
-#'
-#' # return icc for all models at once
-#' icc(fit0, fit1, fit2)
 #'
 #' icc1 <- icc(fit1)
 #' icc2 <- icc(fit2)
@@ -159,10 +163,13 @@
 #'   )
 #'
 #'   # by default, 89% interval
-#'   icc(m, posterior = TRUE)
+#'   icc(m)
 #'
 #'   # show 50% interval
-#'   print(icc(m, posterior = TRUE), prob = .5, digits = 3)
+#'   icc(m, prob = .5)
+#'
+#'   # variances based on posterior predictive distribution
+#'   icc(m, ppd = TRUE)
 #' }}
 #'
 #' @importFrom purrr map2
@@ -175,8 +182,6 @@ icc <- function(x, ...) {
 #' @importFrom lme4 VarCorr fixef getME
 #' @importFrom stats formula
 #' @importFrom purrr map map_dbl map_lgl
-#' @importFrom sjmisc str_contains
-#' @importFrom tibble has_name
 #' @rdname icc
 #' @export
 icc.merMod <- function(x, ...) {
@@ -287,7 +292,7 @@ icc.merMod <- function(x, ...) {
     mt <- "Linear mixed model"
 
   # add attributes, for print method
-  class(ri.icc) <- c("icc.lme4", class(ri.icc))
+  class(ri.icc) <- c("sj_icc_merMod", class(ri.icc))
   attr(ri.icc, "family") <- fitfam$family
   attr(ri.icc, "link") <- fitfam$link.fun
   attr(ri.icc, "formula") <- stats::formula(x)
@@ -314,8 +319,6 @@ icc.merMod <- function(x, ...) {
 #' @importFrom glmmTMB VarCorr fixef getME
 #' @importFrom stats family formula
 #' @importFrom purrr map map_dbl map_lgl
-#' @importFrom sjmisc str_contains
-#' @importFrom tibble has_name
 #' @rdname icc
 #' @export
 icc.glmmTMB <- function(x, ...) {
@@ -421,7 +424,7 @@ icc.glmmTMB <- function(x, ...) {
   mt <- "Generalized linear mixed model"
 
   # add attributes, for print method
-  class(ri.icc) <- c("icc.lme4", class(ri.icc))
+  class(ri.icc) <- c("sj_icc_merMod", class(ri.icc))
   attr(ri.icc, "family") <- fitfam$family
   attr(ri.icc, "link") <- fitfam$link.fun
   attr(ri.icc, "formula") <- stats::formula(x)
@@ -444,6 +447,174 @@ icc.glmmTMB <- function(x, ...) {
 }
 
 
+#' @importFrom stats formula
+#' @importFrom purrr map map_dbl map_lgl
+#' @importFrom sjmisc row_sums is_empty
+#' @rdname icc
+#' @export
+icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = FALSE, ...) {
+
+  if (!requireNamespace("rstanarm", quietly = TRUE))
+    stop("Please install and load package `rstanarm` first.", call. = F)
+
+  # get family
+  fitfam <- model_family(x)
+  xdat <- as.data.frame(x)
+
+
+  if (ppd) {
+
+    ## TODO automatically calculate for multiple levels / nested models
+
+    PPD <- rstanarm::posterior_predict(x, re.form = re.form)
+    total_var <- apply(PPD, MARGIN = 1, FUN = stats::var)
+
+    PPD_0 <- rstanarm::posterior_predict(x, re.form = NA)
+    tau.00 <- apply(PPD_0, MARGIN = 1, FUN = stats::var)
+
+    ri.icc <- tau.00 / total_var
+    resid_var <- total_var - tau.00
+
+    icc_ <- c(
+      1 - typical_value(ri.icc, fun = typical),
+      typical_value(tau.00, fun = typical),
+      typical_value(resid_var, fun = typical),
+      typical_value(total_var, fun = typical)
+    )
+
+    attr(icc_, "hdi.icc") <- rev(1 - hdi(ri.icc, prob = prob))
+    attr(icc_, "hdi.tau.00") <- hdi(tau.00, prob = prob)
+    attr(icc_, "hdi.resid") <- hdi(resid_var, prob = prob)
+    attr(icc_, "hdi.total") <- hdi(total_var, prob = prob)
+    attr(icc_, "re.form") <- re.form
+    attr(icc_, "ranef") <- x$ranef$group[1]
+
+    has_rnd_slope <- FALSE
+    names(icc_) <- c("icc", "tau.00", "resid.var", "total.var")
+    class(icc_) <- c("icc_ppd", class(icc_))
+
+  } else {
+
+    # random intercept-variances, i.e.
+    # between-subject-variance (tau 00)
+    tau00s <- grep("^Sigma\\[(.*):\\(Intercept\\),\\(Intercept\\)", colnames(xdat))
+    tau.00 <- xdat[, tau00s, drop = FALSE]
+
+    names(tau.00) <- gsub(
+      "^Sigma\\[(.*):\\(Intercept\\),\\(Intercept\\)\\]",
+      "\\1",
+      colnames(xdat))[tau00s]
+
+
+    # random slope-variances (tau 11)
+    tau11s <- grep("^Sigma\\[(.*):[^\\(\\)](.*),[^\\(\\)](.*)\\]", colnames(xdat))
+
+    if (!sjmisc::is_empty(tau11s)) {
+      tau.11 <- xdat[, tau11s, drop = FALSE]
+      names(tau.11) <- gsub(
+        "^Sigma\\[(.*):[^\\(\\)](.*),[^\\(\\)](.*)\\]",
+        "\\1",
+        colnames(xdat))[tau11s]
+    } else {
+      tau.11 <- NULL
+    }
+
+
+    # get residual standard deviation sigma
+    sig <- xdat[["sigma"]]
+
+    # for linear and poisson models, we have a clear residual variance
+    resid_var <- sig ^ 2
+
+    # total variance, sum of random intercept and residual variances
+    total_var <- sjmisc::row_sums(
+      cbind(tau.00, data.frame(resid_var)),
+      var = "total_var",
+      append = FALSE
+    )
+
+    # random intercept icc
+    ri.icc <- tau.00 / total_var$total_var
+
+
+    # get random slope random intercept correlations
+    # do we have any rnd slopes?
+
+    has_rnd_slope <- !sjmisc::is_empty(tau11s)
+    tau.01 <- rho.01 <- NULL
+
+
+    # get rnd slopes
+
+    if (any(has_rnd_slope)) {
+
+      # get slope-intercept-covariance
+      tau01s <- grep("^Sigma\\[(.*):[^\\(\\)](.*),\\(Intercept\\)\\]", colnames(xdat))
+      tau.01 <- xdat[, tau01s, drop = FALSE]
+
+      tau.00.sums <- sjmisc::row_sums(tau.00, var = "t0sums")$t0sums
+      tau.11.sums <- sjmisc::row_sums(tau.11, var = "t1sums")$t1sums
+
+      # get slope-intercept-correlations
+      rho.01 <- tau.01 / sqrt(tau.00.sums * tau.11.sums)
+
+      message("Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.")
+
+    }
+
+    if (inherits(x, "glmerMod"))
+      mt <- "Generalized linear mixed model"
+    else
+      mt <- "Linear mixed model"
+
+
+    icc_ <- purrr::map_dbl(ri.icc, ~ typical_value(.x, fun = typical))
+    attr(icc_, "hdi.icc") <- purrr::map(ri.icc, ~ hdi(.x, prob = prob))
+
+    attr(icc_, "hdi.tau.00") <- purrr::map(tau.00, ~ hdi(.x, prob = prob))
+    tau.00 <- purrr::map_dbl(tau.00, ~ typical_value(.x, fun = typical))
+
+    attr(icc_, "hdi.sigma_2") <- hdi(resid_var, prob = prob)
+    resid_var <- typical_value(resid_var, fun = typical)
+
+    if (!is.null(tau.11)) {
+      attr(icc_, "hdi.tau.11") <- purrr::map(tau.11, ~ hdi(.x, prob = prob))
+      tau.11 <- purrr::map_dbl(tau.11, ~ typical_value(.x, fun = typical))
+    }
+
+    if (!is.null(rho.01)) {
+      attr(icc_, "hdi.rho.01") <- purrr::map(rho.01, ~ hdi(.x, prob = prob))
+      rho.01 <- purrr::map_dbl(rho.01, ~ typical_value(.x, fun = typical))
+    }
+
+    if (!is.null(tau.01)) {
+      attr(icc_, "hdi.tau.01") <- purrr::map(tau.01, ~ hdi(.x, prob = prob))
+      tau.01 <- purrr::map_dbl(tau.01, ~ typical_value(.x, fun = typical))
+    }
+
+    attr(icc_, "tau.00") <- tau.00
+    attr(icc_, "tau.01") <- tau.01
+    attr(icc_, "rho.01") <- rho.01
+    attr(icc_, "tau.11") <- tau.11
+    attr(icc_, "sigma_2") <- resid_var
+    attr(icc_, "rnd.slope.model") <- any(has_rnd_slope)
+    attr(icc_, "model") <- mt
+
+    class(icc_) <- c("sj_icc_stanreg", class(icc_))
+  }
+
+  # add attributes, for print method
+  attr(icc_, "family") <- fitfam$family
+  attr(icc_, "link") <- fitfam$link.fun
+  attr(icc_, "formula") <- stats::formula(x)
+  attr(icc_, "prob") <- prob
+
+
+  # return results
+  icc_
+}
+
+
 #' @importFrom purrr map_df map_if map_lgl map_dbl
 #' @importFrom dplyr bind_cols
 #' @importFrom sjmisc all_na
@@ -454,9 +625,6 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.", call. = F)
 
-  if (!requireNamespace("rstantools", quietly = TRUE))
-    stop("Please install and load package `rstantools` first.", call. = F)
-
   # get family
   fitfam <- model_family(x)
 
@@ -465,27 +633,28 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 
     ## TODO automatically calculate for multiple levels / nested models
 
-    PPD <- rstantools::posterior_predict(x, re.form = re.form, summary = FALSE)
+    PPD <- brms::posterior_predict(x, re.form = re.form, summary = FALSE)
     total_var <- apply(PPD, MARGIN = 1, FUN = stats::var)
 
-    PPD_0 <- rstantools::posterior_predict(x, re.form = NA, summary = FALSE)
+    PPD_0 <- brms::posterior_predict(x, re.form = NA, summary = FALSE)
     tau.00 <- apply(PPD_0, MARGIN = 1, FUN = stats::var)
 
     ri.icc <- tau.00 / total_var
     resid_var <- total_var - tau.00
 
     icc_ <- c(
-      typical_value(ri.icc, fun = typical),
+      1 - typical_value(ri.icc, fun = typical),
       typical_value(tau.00, fun = typical),
       typical_value(resid_var, fun = typical),
       typical_value(total_var, fun = typical)
     )
 
-    attr(icc_, "hdi.icc") <- hdi(ri.icc, prob = prob)
+    attr(icc_, "hdi.icc") <- rev(1 - hdi(ri.icc, prob = prob))
     attr(icc_, "hdi.tau.00") <- hdi(tau.00, prob = prob)
     attr(icc_, "hdi.resid") <- hdi(resid_var, prob = prob)
     attr(icc_, "hdi.total") <- hdi(total_var, prob = prob)
     attr(icc_, "prob") <- prob
+    attr(icc_, "re.form") <- re.form
     attr(icc_, "ranef") <- x$ranef$group[1]
 
     has_rnd_slope <- FALSE

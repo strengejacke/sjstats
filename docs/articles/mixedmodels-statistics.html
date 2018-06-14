@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@
       <h1>Statistics for Mixed Effects Models</h1>
                         <h4 class="author">Daniel Lüdecke</h4>
             
-            <h4 class="date">2018-06-06</h4>
+            <h4 class="date">2018-06-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/vignettes/mixedmodels-statistics.Rmd"><code>vignettes/mixedmodels-statistics.Rmd</code></a></small>
       <div class="hidden name"><code>mixedmodels-statistics.Rmd</code></div>
@@ -217,15 +217,15 @@
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Using the t-statistics for calculating the p-value</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/p_value.html">p_value</a></span>(m2)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;          term p.value std.error</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; 1 (Intercept)       0     9.919</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 2        Days       0     0.782</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; 1 (Intercept)       0     9.747</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 2        Days       0     0.804</span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co"># p-values based on conditional F-tests with </span></a>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># Kenward-Roger approximation for the degrees of freedom</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw"><a href="../reference/p_value.html">p_value</a></span>(m2, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;          term p.value std.error</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 1 (Intercept)       0     9.931</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 2        Days       0     0.787</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 1 (Intercept)       0     9.769</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 2        Days       0     0.816</span></a></code></pre></div>
 </div>
 <div id="random-effect-variances" class="section level2">
 <h2 class="hasAnchor">
@@ -269,27 +269,16 @@
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;  Family: gaussian (identity)</span></a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
 <a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;   ICC (Subject): 0.483090</span></a></code></pre></div>
-<p>You can also compute ICCs for multiple models at once:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># calculate ICC for both models</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m, m2)</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; Linear mixed model</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  Family: gaussian (identity)</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;   ICC (Subject): 0.483090</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; [[2]]</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; Linear mixed model</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  Family: gaussian (identity)</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;     ICC (mygrp): 0.047391</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt;   ICC (Subject): 0.594239</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;   ICC (Subject): 0.483090</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m2)</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; Linear mixed model</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  Family: gaussian (identity)</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;     ICC (mygrp): 0.000000</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;   ICC (Subject): 0.589309</span></a></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1">

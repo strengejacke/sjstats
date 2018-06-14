@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
       </span>
     </div>
 
@@ -136,7 +136,21 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>icc</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>posterior</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>icc</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for merMod</span>
+<span class='fu'>icc</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for glmmTMB</span>
+<span class='fu'>icc</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>icc</span>(<span class='no'>x</span>, <span class='kw'>re.form</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>typical</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.89</span>,
+  <span class='kw'>ppd</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>icc</span>(<span class='no'>x</span>, <span class='kw'>re.form</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>typical</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.89</span>,
+  <span class='kw'>ppd</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,66 +162,82 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>More fitted model objects, to compute multiple intraclass-correlation
-coefficients at once.</p></td>
+      <td><p>Currently not used.</p></td>
     </tr>
     <tr>
-      <th>posterior</th>
-      <td><p>Logical, if <code>TRUE</code> and <code>x</code> is a <code>brmsfit</code>
-object, ICC values are computed for each sample of the posterior
-distribution. In this case, a data frame is returned with the same
-number of rows as samples in <code>x</code>, with one column per random
-effect ICC.</p></td>
+      <th>re.form</th>
+      <td><p>Formula containing group-level effects to be considered in
+the prediction. If <code>NULL</code> (default), include all group-level effects.
+Else, for instance for nested models, name a specific group-level effect
+to calculate the ICC for this group-level. Only applies if <code>ppd = TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>typical</th>
+      <td><p>Character vector, naming the function that will be used as
+measure of central tendency for the ICC. The default is "mean". See
+<code>typical_value</code> for options.</p></td>
+    </tr>
+    <tr>
+      <th>ppd</th>
+      <td><p>Logical, if <code>TRUE</code>, variance decomposition is based on the
+posterior predictive distribution, which is the correct way for Bayesian
+non-Gaussian models.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>posterior = FALSE</code> (the default), a numeric vector with all
-   random intercept intraclass-correlation-coefficients, or a list of
-   numeric vectors, when more than one model were used as arguments.
+    <p>A numeric vector with all random intercept intraclass-correlation-coefficients.
    Furthermore, between- and within-group variances as well as random-slope
    variance are returned as attributes.
    <br /> <br />
-   If <code>posterior = TRUE</code>, <code>icc()</code> returns a data frame with ICC
-   and variance components for each sample of the posterior distribution.</p>
+   For <code>stanreg</code> or <code>brmsfit</code> objects, the HDI for each statistic
+   is also  included as attribute.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The ICC is calculated by dividing the between-group-variance (random
-         intercept variance) by the total variance (i.e. sum of between-group-variance
-         and within-group (residual) variance). <br /> <br />
-      The calculation of the ICC for generalized linear mixed models with binary outcome is based on
-      <cite>Wu et al. (2012)</cite>. For Poisson multilevel models, please refer to <cite>Stryhn et al. (2006)</cite>.
-      <cite>Aly et al. (2014)</cite> describe computation of ICC for negative binomial models.
-      <br /> <br />
-      <strong>Caution:</strong> For models with random slopes and random intercepts,
-      the ICC would differ at each unit of the predictors. Hence, the ICC for these
-      kind of models cannot be understood simply as proportion of variance
-      (see <cite>Goldstein et al. 2010</cite>). For convenience reasons, as the
-      <code>icc()</code> function also extracts the different random effects
-      variances, the ICC for random-slope-intercept-models is reported
-      nonetheless, but it is usually no meaningful summary of the
-      proportion of variances.
-      <br /> <br />
-      If <code>posterior = FALSE</code>, there is a <code>print()</code>-method that prints
-      the variance parameters using the <code>comp</code>-argument set to <code>"var"</code>:
-      <code>print(x, comp = "var")</code> (see 'Examples'). The
-      <code><a href='re_var.html'>re_var</a></code>-function is a convenient wrapper. If
-      <code>posterior = TRUE</code>, the <code>print()</code>-method accepts the arguments
-      <code>prob</code> and <code>digits</code>, which indicate the probability of the
-      uncertainty interval for the ICC and variance components, and the digits
-      in the output (see also 'Examples').
-      <br /> <br />
-      The random effect variances indicate the between- and within-group
-        variances as well as random-slope variance and random-slope-intercept
-        correlation. The components are denoted as following:</p><ul>
+  intercept variance) by the total variance (i.e. sum of between-group-variance
+  and within-group (residual) variance). <br /> <br />
+  The calculation of the ICC for generalized linear mixed models with binary outcome is based on
+  <cite>Wu et al. (2012)</cite>. For Poisson multilevel models, please refer to <cite>Stryhn et al. (2006)</cite>.
+  <cite>Aly et al. (2014)</cite> describe computation of ICC for negative binomial models.
+  <br /> <br />
+  <strong>Caution:</strong> For models with random slopes and random intercepts,
+  the ICC would differ at each unit of the predictors. Hence, the ICC for these
+  kind of models cannot be understood simply as proportion of variance
+  (see <cite>Goldstein et al. 2010</cite>). For convenience reasons, as the
+  <code>icc()</code> function also extracts the different random effects
+  variances, the ICC for random-slope-intercept-models is reported
+  nonetheless, but it is usually no meaningful summary of the
+  proportion of variances.
+  <br /> <br />
+  The random effect variances indicate the between- and within-group
+  variances as well as random-slope variance and random-slope-intercept
+  correlation. The components are denoted as following:</p><ul>
 <li><p>Within-group (residual) variance: sigma_2</p></li>
 <li><p>Between-group-variance: tau.00 (variation between individual intercepts and average intercept)</p></li>
 <li><p>Random-slope-variance: tau.11 (variation between individual slopes and average slope)</p></li>
 <li><p>Random-Intercept-Slope-covariance: tau.01</p></li>
 <li><p>Random-Intercept-Slope-correlation: rho.01</p></li>
-</ul>
+</ul><p><br /> <br />
+  If <code>ppd = TRUE</code>, `icc()` calculates a variance decomposition based on
+  the posterior predictive distribution. In this case, first, the draws from
+  the posterior predictive distribution <em>not conditioned</em> on group-level
+  terms (<code>posterior_predict(..., re.form = NA)</code>) are calculated as well
+  as draws from this distribution <em>conditioned</em> on <em>all random effects</em>
+  (by default, unless specified else in <code>re.form</code>) are taken. Then, second,
+  the variances for each of these draws are calculated. The "ICC" is then the
+  ratio between these two variances. This is the recommended way to
+  analyse random-effect-variances for non-Gaussian models. It is then possible
+  to compare variances accross models, also by specifying different group-level
+  terms via the <code>re.form</code>-argument.
+  <br /> <br />
+  Sometimes, when the variance of the posterior predictive distribution is
+  very large, the variance ratio in the output makes no sense, e.g. because
+  it is negative. In such cases, it might help to use a more robust measure
+  to calculate the central tendency of the variances. For example, use
+  <code>typical = "median"</code>.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -294,32 +324,6 @@ effect ICC.</p></td>
 #&gt; 
 #&gt;     ICC (mygrp): 0.006013
 #&gt;   ICC (Subject): 0.589883</div><div class='input'>
-<span class='co'># return icc for all models at once</span>
-<span class='fu'>icc</span>(<span class='no'>fit0</span>, <span class='no'>fit1</span>, <span class='no'>fit2</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='output co'>#&gt; [[1]]
-#&gt; 
-#&gt; Linear mixed model
-#&gt;  Family: gaussian (identity)
-#&gt; Formula: Reaction ~ 1 + (1 | Subject)
-#&gt; 
-#&gt;   ICC (Subject): 0.394890
-#&gt; 
-#&gt; [[2]]
-#&gt; 
-#&gt; Linear mixed model
-#&gt;  Family: gaussian (identity)
-#&gt; Formula: Reaction ~ Days + (Days | Subject)
-#&gt; 
-#&gt;   ICC (Subject): 0.483090
-#&gt; 
-#&gt; [[3]]
-#&gt; 
-#&gt; Linear mixed model
-#&gt;  Family: gaussian (identity)
-#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)
-#&gt; 
-#&gt;     ICC (mygrp): 0.006013
-#&gt;   ICC (Subject): 0.589883
-#&gt; </div><div class='input'>
 <span class='no'>icc1</span> <span class='kw'>&lt;-</span> <span class='fu'>icc</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='input'><span class='no'>icc2</span> <span class='kw'>&lt;-</span> <span class='fu'>icc</span>(<span class='no'>fit2</span>)
 
 <span class='fu'>print</span>(<span class='no'>icc1</span>, <span class='kw'>comp</span> <span class='kw'>=</span> <span class='st'>"var"</span>)</div><div class='output co'>#&gt; 
@@ -358,10 +362,13 @@ effect ICC.</p></td>
   )
 
   <span class='co'># by default, 89% interval</span>
-  <span class='fu'>icc</span>(<span class='no'>m</span>, <span class='kw'>posterior</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>icc</span>(<span class='no'>m</span>)
 
   <span class='co'># show 50% interval</span>
-  <span class='fu'>print</span>(<span class='fu'>icc</span>(<span class='no'>m</span>, <span class='kw'>posterior</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>.5</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+  <span class='fu'>icc</span>(<span class='no'>m</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>.5</span>)
+
+  <span class='co'># variances based on posterior predictive distribution</span>
+  <span class='fu'>icc</span>(<span class='no'>m</span>, <span class='kw'>ppd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 }
 <span class='co'># }</span><div class='input'>
 </div></pre>

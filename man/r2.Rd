@@ -2,9 +2,33 @@
 % Please edit documentation in R/pseudo_r2.R
 \name{r2}
 \alias{r2}
+\alias{r2.lmerMod}
+\alias{r2.lme}
+\alias{r2.stanreg}
+\alias{r2.brmsfit}
+\alias{r2.glm}
+\alias{r2.glmerMod}
+\alias{r2.lm}
+\alias{r2.plm}
 \title{Compute r-squared of (generalized) linear (mixed) models}
 \usage{
-r2(x, n = NULL, loo = FALSE)
+r2(x, ...)
+
+\method{r2}{lmerMod}(x, n = NULL, ...)
+
+\method{r2}{lme}(x, n = NULL, ...)
+
+\method{r2}{stanreg}(x, loo = FALSE, ...)
+
+\method{r2}{brmsfit}(x, loo = FALSE, ...)
+
+\method{r2}{glm}(x, ...)
+
+\method{r2}{glmerMod}(x, ...)
+
+\method{r2}{lm}(x, ...)
+
+\method{r2}{plm}(x, ...)
 }
 \arguments{
 \item{x}{Fitted model of class \code{lm}, \code{glm}, \code{lmerMod},

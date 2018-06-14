@@ -189,23 +189,35 @@ cod <- function(x) {
 #' @importFrom stats model.response fitted var residuals median mad
 #' @importFrom sjmisc is_empty
 #' @export
-r2 <- function(x, n = NULL, loo = FALSE) {
-  rsq <- NULL
-  osq <- NULL
-  adjr2 <- NULL
+r2 <- function(x, ...) {
+  UseMethod("r2")
+}
 
-  if (isTRUE(loo) && inherits(x, c("stanreg", "brmsfit"))) {
 
+#' @rdname r2
+#' @export
+r2.lmerMod <- function(x, n = NULL, ...) {
+  r2linmix(x, n)
+}
+
+
+#' @rdname r2
+#' @export
+r2.lme <- function(x, n = NULL, ...) {
+  r2linmix(x, n)
+}
+
+#' @rdname r2
+#' @export
+r2.stanreg <- function(x, loo = FALSE, ...) {
+  if (!requireNamespace("rstanarm", quietly = TRUE))
+    stop("Package `rstanarm` needed for this function to work. Please install it.", call. = FALSE)
+
+  if (isTRUE(loo)) {
     rsq <- looR2(x)
     names(rsq) <- "LOO-adjusted R2"
-
-    return(structure(class = "sjstats_r2", list(r2 = rsq)))
-
-  } else if (inherits(x, "stanreg")) {
-
-    if (!requireNamespace("rstanarm", quietly = TRUE))
-      stop("Package `rstanarm` needed for this function to work. Please install it.", call. = FALSE)
-
+    structure(class = "sjstats_r2", list(r2 = rsq))
+  } else {
     brs <- rstanarm::bayes_R2(x)
     rsq <- stats::median(brs)
     rsq.se <- stats::mad(brs)
@@ -213,13 +225,22 @@ r2 <- function(x, n = NULL, loo = FALSE) {
     names(rsq) <- "Bayes R2"
     names(rsq.se) <- "Standard Error"
 
-    return(structure(class = "sjstats_r2", list(r2 = rsq, se = rsq.se)))
+    structure(class = "sjstats_r2", list(r2 = rsq, se = rsq.se))
+  }
+}
 
-  } else if (inherits(x, "brmsfit")) {
 
-    if (!requireNamespace("brms", quietly = TRUE))
-      stop("Package `brms` needed for this function to work. Please install it.", call. = FALSE)
+#' @rdname r2
+#' @export
+r2.brmsfit <- function(x, loo = FALSE, ...) {
+  if (!requireNamespace("brms", quietly = TRUE))
+    stop("Package `brms` needed for this function to work. Please install it.", call. = FALSE)
 
+  if (isTRUE(loo)) {
+    rsq <- looR2(x)
+    names(rsq) <- "LOO-adjusted R2"
+    structure(class = "sjstats_r2", list(r2 = rsq))
+  } else {
     brs <- brms::bayes_R2(x, summary = TRUE, robust = TRUE)
     rsq <- brs[1]
     rsq.se <- brs[2]
@@ -227,113 +248,15 @@ r2 <- function(x, n = NULL, loo = FALSE) {
     names(rsq) <- "Bayes R2"
     names(rsq.se) <- "Standard Error"
 
-    return(structure(class = "sjstats_r2", list(r2 = rsq, se = rsq.se)))
-
-  } else if (inherits(x, "glm")) {
-
-    # do we have a glm? if so, report pseudo_r2
-    return(pseudo_ralt(x))
-
-  } else if (inherits(x, "glmerMod")) {
-
-    # do we have a glmer?
-    return(cod(x))
-
-  } else if (inherits(x, "lm")) {
-
-    # do we have a simple linear model?
-    rsq <- summary(x)$r.squared
-    adjr2 <- summary(x)$adj.r.squared
-
-    # name vectors
-    names(rsq) <- "R-squared"
-    names(adjr2) <- "adjusted R-squared"
-
-    # return results
-    return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
-
-
-  } else if (inherits(x, "plm")) {
-
-    # else do we have a mixed model?
-    rsq <- summary(x)$r.squared[1]
-    adjr2 <- summary(x)$r.squared[2]
-
-    # name vectors
-    names(rsq) <- "R-squared"
-    names(adjr2) <- "adjusted R-squared"
-
-    # return results
-    return(structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2)))
-
-  } else if (inherits(x, c("lmerMod", "lme"))) {
-
-    # do we have null model?
-    if (!is.null(n)) {
-      # compute tau for both models
-      tau_full <- icc(x)
-      tau_null <- icc(n)
-
-      # get taus. tau.00 is the random intercept variance, i.e. for growth models,
-      # the difference in the outcome's mean at first time point
-      rsq0 <- (attr(tau_null, "tau.00") - attr(tau_full, "tau.00")) / attr(tau_null, "tau.00")
-
-      # tau.11 is the variance of the random slopes, i.e. how model predictors
-      # affect the trajectory of subjects over time (for growth models)
-      rsq1 <- (attr(tau_null, "tau.11") - attr(tau_full, "tau.11")) / attr(tau_null, "tau.11")
-
-      # get r2
-      rsq <- ((attr(tau_null, "tau.00") + attr(tau_null, "sigma_2")) -
-        (attr(tau_full, "tau.00") + attr(tau_full, "sigma_2"))) /
-        (attr(tau_null, "tau.00") + attr(tau_null, "sigma_2"))
-
-      # get omega-squared
-      osq <- 1 - ((attr(tau_full, "sigma_2") / attr(tau_null, "sigma_2")))
-
-      # if model has no random slope, we need to set this value to NA
-      if (is.null(rsq1) || sjmisc::is_empty(rsq1)) rsq1 <- NA
-
-      # name vectors
-      names(rsq0) <- "R-squared (tau-00)"
-      names(rsq1) <- "R-squared (tau-11)"
-      names(rsq) <- "R-squared"
-      names(osq) <- "Omega-squared"
-
-      # return results
-      return(structure(class = "sjstats_r2", list(
-        r2_tau00 = rsq0,
-        r2_tau11 = rsq1,
-        r2 = rsq,
-        o2 = osq
-      )))
-
-    } else {
-
-      # compute "correlation"
-      lmfit <-  lm(resp_val(x) ~ stats::fitted(x))
-      # get r-squared
-      rsq <- summary(lmfit)$r.squared
-      # get omega squared
-      osq <- 1 - stats::var(stats::residuals(x)) / stats::var(resp_val(x))
-
-      # name vectors
-      names(rsq) <- "R-squared"
-      names(osq) <- "Omega-squared"
-
-      # return results
-      return(structure(class = "sjstats_r2", list(r2 = rsq, o2 = osq)))
-
-    }
-  } else {
-    warning("`r2` only works on linear (mixed) models of class \"lm\", \"lme\" or \"lmerMod\", or on \"stanreg\" and \"brmsfit\" objects.", call. = F)
+    structure(class = "sjstats_r2", list(r2 = rsq, se = rsq.se))
   }
-
-  return(NULL)
 }
 
 
 #' @importFrom stats nobs
-pseudo_ralt <- function(x) {
+#' @rdname r2
+#' @export
+r2.glm <- function(x, ...) {
   n <- stats::nobs(x)
   CoxSnell <- (1 - exp((x$dev - x$null) / n))
   Nagelkerke <- CoxSnell / (1 - exp(-x$null / n))
@@ -342,6 +265,45 @@ pseudo_ralt <- function(x) {
   names(Nagelkerke) <- "Nagelkerke's R-squared"
 
   structure(class = "sjstats_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke))
+}
+
+
+#' @rdname r2
+#' @export
+r2.glmerMod <- function(x, ...) {
+  cod(x)
+}
+
+
+#' @rdname r2
+#' @export
+r2.lm <- function(x, ...) {
+  # do we have a simple linear model?
+  rsq <- summary(x)$r.squared
+  adjr2 <- summary(x)$adj.r.squared
+
+  # name vectors
+  names(rsq) <- "R-squared"
+  names(adjr2) <- "adjusted R-squared"
+
+  # return results
+  structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2))
+}
+
+
+#' @rdname r2
+#' @export
+r2.plm <- function(x, ...) {
+  # else do we have a mixed model?
+  rsq <- summary(x)$r.squared[1]
+  adjr2 <- summary(x)$r.squared[2]
+
+  # name vectors
+  names(rsq) <- "R-squared"
+  names(adjr2) <- "adjusted R-squared"
+
+  # return results
+  structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2))
 }
 
 
@@ -369,4 +331,61 @@ looR2 <- function(fit) {
   eloo <- ypredloo - y
 
   1 - stats::var(eloo) / stats::var(y)
+}
+
+
+r2linmix <- function(x, n) {
+  # do we have null model?
+  if (!is.null(n)) {
+    # compute tau for both models
+    tau_full <- suppressMessages(icc(x))
+    tau_null <- suppressMessages(icc(n))
+
+    # get taus. tau.00 is the random intercept variance, i.e. for growth models,
+    # the difference in the outcome's mean at first time point
+    rsq0 <- (attr(tau_null, "tau.00") - attr(tau_full, "tau.00")) / attr(tau_null, "tau.00")
+
+    # tau.11 is the variance of the random slopes, i.e. how model predictors
+    # affect the trajectory of subjects over time (for growth models)
+    rsq1 <- (attr(tau_null, "tau.11") - attr(tau_full, "tau.11")) / attr(tau_null, "tau.11")
+
+    # get r2
+    rsq <- ((attr(tau_null, "tau.00") + attr(tau_null, "sigma_2")) -
+              (attr(tau_full, "tau.00") + attr(tau_full, "sigma_2"))) /
+      (attr(tau_null, "tau.00") + attr(tau_null, "sigma_2"))
+
+    # get omega-squared
+    osq <- 1 - ((attr(tau_full, "sigma_2") / attr(tau_null, "sigma_2")))
+
+    # if model has no random slope, we need to set this value to NA
+    if (is.null(rsq1) || sjmisc::is_empty(rsq1)) rsq1 <- NA
+
+    # name vectors
+    names(rsq0) <- "R-squared (tau-00)"
+    names(rsq1) <- "R-squared (tau-11)"
+    names(rsq) <- "R-squared"
+    names(osq) <- "Omega-squared"
+
+    # return results
+    structure(class = "sjstats_r2", list(
+      r2_tau00 = rsq0,
+      r2_tau11 = rsq1,
+      r2 = rsq,
+      o2 = osq
+    ))
+  } else {
+    # compute "correlation"
+    lmfit <-  lm(resp_val(x) ~ stats::fitted(x))
+    # get r-squared
+    rsq <- summary(lmfit)$r.squared
+    # get omega squared
+    osq <- 1 - stats::var(stats::residuals(x)) / stats::var(resp_val(x))
+
+    # name vectors
+    names(rsq) <- "R-squared"
+    names(osq) <- "Omega-squared"
+
+    # return results
+    structure(class = "sjstats_r2", list(r2 = rsq, o2 = osq))
+  }
 }

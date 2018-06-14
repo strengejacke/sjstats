@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
       </span>
     </div>
 
@@ -134,7 +134,31 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>r2</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>loo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>r2</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for lmerMod</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for lme</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='kw'>loo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='kw'>loo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for glm</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for glmerMod</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for lm</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for plm</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -273,7 +297,7 @@ a rather "unadjusted" r-squared will be returned by calling
 <span class='co'># Pseudo-R-squared values for random effect variances</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
 <span class='no'>fit.null</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='fl'>1</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
-<span class='fu'>r2</span>(<span class='no'>fit</span>, <span class='no'>fit.null</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='output co'>#&gt; R-squared (tau-00): 0.061
+<span class='fu'>r2</span>(<span class='no'>fit</span>, <span class='no'>fit.null</span>)</div><div class='output co'>#&gt; R-squared (tau-00): 0.061
 #&gt; R-squared (tau-11): 0.753
 #&gt;          R-squared: 0.030
 #&gt;      Omega-squared: -0.000</div><div class='input'>
