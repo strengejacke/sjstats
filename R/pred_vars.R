@@ -192,10 +192,16 @@ link_inverse <- function(x) {
         il <- ff(fam$link)$linkinv
       }
     }
-  } else if (inherits(x, c("lrm", "polr", "clm", "logistf", "multinom", "Zelig-relogit"))) {
+  } else if (inherits(x, "polr")) {
+    link <- x$method
+    if (link == "logistisc") link <- "logit"
+    il <- stats::make.link(link)$linkinv
+  } else if (inherits(x, c("clm", "clmm"))) {
+    il <- stats::make.link(x$link)$linkinv
+  } else if (inherits(x, c("lrm", "logistf", "multinom", "Zelig-relogit"))) {
     # "lrm"-object from pkg "rms" have no family method
     # so we construct a logistic-regression-family-object
-    il <- stats::binomial(link = "logit")$linkinv
+    il <- stats::make.link(link = "logit")$linkinv
   } else {
     # get family info
     il <- stats::family(x)$linkinv
@@ -351,7 +357,7 @@ model_family <- function(x) {
   } else {
     # "lrm"-object from pkg "rms" have no family method
     # so we construct a logistic-regression-family-object
-    if (inherits(x, c("lrm", "polr", "logistf", "clm", "multinom", "Zelig-relogit")))
+    if (inherits(x, c("lrm", "polr", "logistf", "clmm", "clm", "multinom", "Zelig-relogit")))
       faminfo <- stats::binomial(link = "logit")
     else
       # get family info
@@ -400,7 +406,7 @@ model_family <- function(x) {
   zero.inf <- zero.inf | sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T)
 
   is.ordinal <-
-    inherits(x, c("polr", "clm", "multinom")) |
+    inherits(x, c("polr", "clm", "clmm", "multinom")) |
     fitfam %in% c("cumulative", "cratio", "sratio", "acat")
 
   list(

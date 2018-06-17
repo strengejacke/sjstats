@@ -251,11 +251,11 @@ Sometimes, when the variance of the posterior predictive distribution is very la
 icc(m3)
 
 # variance ratio based on posterior predictive distributions,
-# which is obviously nonsense
-icc(m3, ppd = T)
+# which is negative and hence obviously nonsense
+icc(m3, ppd = TRUE)
 
 # use median instead of mean
-icc(m3, ppd = T, typical = "median")
+icc(m3, ppd = TRUE, typical = "median")
 ```
 
 ## Bayes r-squared and LOO-adjusted r-squared

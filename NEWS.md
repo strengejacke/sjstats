@@ -10,6 +10,7 @@
 
 * `icc()` gets a `ppd`-argument for Stan-models (*brmsfit* and *stanreg*), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.
 * For Stan-models (*brmsfit* and *stanreg*), `icc()` now also computes the HDI for the ICC and random-effect variances. Use the `prob`-argument to specify the limits of this interval.
+* `link_inverse()` and `model_family()` now support _clmm_-models (package *ordinal*).
 
 # sjstats 0.15.0
 
