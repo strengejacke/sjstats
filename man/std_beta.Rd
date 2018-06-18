@@ -2,13 +2,29 @@
 % Please edit documentation in R/std_b.R
 \name{std_beta}
 \alias{std_beta}
+\alias{std_beta.merMod}
+\alias{std_beta.lm}
+\alias{std_beta.gls}
+\alias{std_beta.stanreg}
 \title{Standardized beta coefficients and CI of linear and mixed models}
 \usage{
-std_beta(fit, type = "std", ci.lvl = 0.95)
+std_beta(fit, ...)
+
+\method{std_beta}{merMod}(fit, ci.lvl = 0.95, ...)
+
+\method{std_beta}{lm}(fit, type = "std", ci.lvl = 0.95, ...)
+
+\method{std_beta}{gls}(fit, type = "std", ci.lvl = 0.95, ...)
+
+\method{std_beta}{stanreg}(fit, ...)
 }
 \arguments{
-\item{fit}{Fitted linear (mixed) model of class \code{lm} or \code{merMod}
-(\CRANpkg{lme4} package).}
+\item{fit}{Fitted linear (mixed) model of class \code{lm}, \code{merMod}
+(\CRANpkg{lme4} package), \code{gls} or \code{stanreg}.}
+
+\item{...}{Currently not used.}
+
+\item{ci.lvl}{Numeric, the level of the confidence intervals.}
 
 \item{type}{If \code{fit} is of class \code{lm}, normal standardized coefficients
 are computed by default. Use \code{type = "std2"} to follow
@@ -16,8 +32,6 @@ are computed by default. Use \code{type = "std2"} to follow
 suggestion, rescaling the estimates by deviding them by two standard
 deviations, so resulting coefficients are directly comparable for
 untransformed binary predictors.}
-
-\item{ci.lvl}{Numeric, the level of the confidence intervals.}
 }
 \value{
 A \code{tibble} with term names, standardized beta coefficients,

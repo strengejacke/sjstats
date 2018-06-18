@@ -3,8 +3,8 @@
 #' @description Returns the standardized beta coefficients, std. error and confidence intervals
 #'                of a fitted linear (mixed) models.
 #'
-#' @param fit Fitted linear (mixed) model of class \code{lm} or \code{merMod}
-#'   (\CRANpkg{lme4} package).
+#' @param fit Fitted linear (mixed) model of class \code{lm}, \code{merMod}
+#'   (\CRANpkg{lme4} package), \code{gls} or \code{stanreg}.
 #' @param type If \code{fit} is of class \code{lm}, normal standardized coefficients
 #'          are computed by default. Use \code{type = "std2"} to follow
 #'          \href{http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf}{Gelman's (2008)}
@@ -12,6 +12,7 @@
 #'          deviations, so resulting coefficients are directly comparable for
 #'          untransformed binary predictors.
 #' @param ci.lvl Numeric, the level of the confidence intervals.
+#' @param ... Currently not used.
 #'
 #' @return A \code{tibble} with term names, standardized beta coefficients,
 #'           standard error and confidence intervals of \code{fit}.
@@ -53,25 +54,67 @@
 #' fit1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' std_beta(fit)
 #'
-#' @importFrom stats model.matrix coef terms qnorm sd
-#' @importFrom nlme getResponse
-#' @importFrom tibble tibble as_tibble
-#' @importFrom purrr map_if
 #' @export
-std_beta <- function(fit, type = "std", ci.lvl = .95) {
+std_beta <- function(fit, ...) {
+  UseMethod("std_beta")
+}
+
+
+#' @importFrom stats sd coef qnorm
+#' @importFrom lme4 fixef getME
+#' @importFrom tibble tibble
+#' @rdname std_beta
+#' @export
+std_beta.merMod <- function(fit, ci.lvl = .95, ...) {
   # compute ci, two-ways
   ci <- 1 - ((1 - ci.lvl) / 2)
 
-  # if we have merMod object (lme4), we need
-  # other function to compute std. beta
-  if (inherits(fit, c("lmerMod", "merModLmerTest")))
-    return(sjs.stdmm(fit, ci.lvl))
+  # code from Ben Bolker, see
+  # http://stackoverflow.com/a/26206119/2094622
+  sdy <- stats::sd(lme4::getME(fit, "y"))
+  sdx <- apply(lme4::getME(fit, "X"), 2, sd)
+  sc <- lme4::fixef(fit) * sdx / sdy
+  se.fixef <- stats::coef(summary(fit))[, "Std. Error"]
+  se <- se.fixef * sdx / sdy
+
+  tibble::tibble(
+    term = names(lme4::fixef(fit)),
+    std.estimate = sc,
+    std.error = se,
+    conf.low = sc - stats::qnorm(ci) * se,
+    conf.high = sc + stats::qnorm(ci) * se
+  )
+
+}
+
+
+#' @importFrom stats model.matrix coef terms qnorm sd
+#' @importFrom tibble tibble as_tibble
+#' @importFrom sjlabelled as_numeric
+#' @importFrom purrr map_if map_dbl
+#' @rdname std_beta
+#' @export
+std_beta.lm <- function(fit, type = "std", ci.lvl = .95, ...) {
+  std_beta_helper(fit = fit, type = type, ci.lvl = ci.lvl, se = summary(fit)$coef[, 2], ...)
+}
+
+
+#' @rdname std_beta
+#' @export
+std_beta.gls <- function(fit, type = "std", ci.lvl = .95, ...) {
+  std_beta_helper(fit = fit, type = type, ci.lvl = ci.lvl, se = summary(fit)$tTable[, 2], ...)
+}
+
+
+std_beta_helper <- function(fit, type, ci.lvl, se, ...) {
+  # compute ci, two-ways
+  ci <- 1 - ((1 - ci.lvl) / 2)
 
   # has model intercept?
   tmp_i <- attr(stats::terms(fit), "intercept")
   has_intercept <- !is.null(tmp_i) & tmp_i == 1
 
-  if (type == "std2" ) {
+  if (type == "std2") {
     # is package available?
     if (!requireNamespace("arm", quietly = TRUE)) {
       stop("Package `arm` needed for computing this type of standardized estimates. Please install it.", call. = FALSE)
@@ -110,11 +153,6 @@ std_beta <- function(fit, type = "std", ci.lvl = .95) {
 
     beta <- b * sx / sy
 
-    if (inherits(fit, "gls"))
-      se <- summary(fit)$tTable[, 2]
-    else
-      se <- summary(fit)$coef[, 2]
-
     # remove intercept?
     if (has_intercept) se <- se[-1]
 
@@ -133,26 +171,20 @@ std_beta <- function(fit, type = "std", ci.lvl = .95) {
 }
 
 
-#' @importFrom stats sd coef
-#' @importFrom lme4 fixef getME
-#' @importFrom tibble tibble
-sjs.stdmm <- function(fit, ci.lvl) {
-  # compute ci, two-ways
-  ci <- 1 - ((1 - ci.lvl) / 2)
+#' @importFrom stats model.matrix sd
+#' @rdname std_beta
+#' @export
+std_beta.stanreg <- function(fit, ...) {
+  if (!requireNamespace("rstanarm", quietly = TRUE))
+    stop("Please install and load package `rstanarm` first.", call. = F)
 
-  # code from Ben Bolker, see
-  # http://stackoverflow.com/a/26206119/2094622
-  sdy <- stats::sd(lme4::getME(fit, "y"))
-  sdx <- apply(lme4::getME(fit, "X"), 2, sd)
-  sc <- lme4::fixef(fit) * sdx / sdy
-  se.fixef <- stats::coef(summary(fit))[, "Std. Error"]
-  se <- se.fixef * sdx / sdy
-
-  tibble::tibble(
-    term = names(lme4::fixef(fit)),
-    std.estimate = sc,
-    std.error = se,
-    conf.low = sc - stats::qnorm(ci) * se,
-    conf.high = sc + stats::qnorm(ci) * se
+  X <- stats::model.matrix(fit)
+  sd_X <- apply(X, MARGIN = 2, FUN = stats::sd)[-1]
+  sd_Y <- apply(rstanarm::posterior_predict(fit), MARGIN = 1, FUN = stats::sd)
+  beta <- as.matrix(fit)[ , 2:ncol(X), drop = FALSE]
+  sweep(
+    sweep(beta, MARGIN = 2, STATS = sd_X, FUN = `*`),
+    MARGIN = 1, STATS = sd_Y, FUN = `/`
   )
 }
+

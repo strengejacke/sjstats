@@ -3,8 +3,7 @@
 ## General
 
 * The S3-generics for functions like `hdi()`, `rope()`, `equi_test()` etc. are now more generic, and function usage for each supported object is now included in the documentation.
-* `icc()` is now a S3-generic.
-* `r2()` is now a S3-generic.
+* Following functions are now S3-generic: `icc()`, `r2()` and `std_beta()`.
 
 ## Changes to functions
 
