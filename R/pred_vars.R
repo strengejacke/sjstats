@@ -194,7 +194,7 @@ link_inverse <- function(x) {
     }
   } else if (inherits(x, "polr")) {
     link <- x$method
-    if (link == "logistisc") link <- "logit"
+    if (link == "logistic") link <- "logit"
     il <- stats::make.link(link)$linkinv
   } else if (inherits(x, c("clm", "clmm"))) {
     il <- stats::make.link(x$link)$linkinv
