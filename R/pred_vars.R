@@ -441,7 +441,7 @@ var_names <- function(x) {
 }
 
 
-#' @importFrom sjmisc is_empty
+#' @importFrom sjmisc is_empty trim
 #' @importFrom purrr map_chr
 get_vn_helper <- function(x) {
 
@@ -451,16 +451,20 @@ get_vn_helper <- function(x) {
   # for gam-smoothers/loess, remove s()- and lo()-function in column name
   # for survival, remove strata(), and so on...
   pattern <- c(
-    "as.factor", "log", "lag", "diff", "lo", "bs", "ns", "t2", "te", "ti", "mi",
-    "pspline", "poly", "strata", "scale", "offset", "s"
+    "as.factor", "offset", "log", "lag", "diff", "lo", "bs", "ns", "t2", "te",
+    "ti", "mi", "pspline", "poly", "strata", "scale", "s"
   )
 
   # do we have a "log()" pattern here? if yes, get capture region
   # which matches the "cleaned" variable name
   purrr::map_chr(1:length(x), function(i) {
     for (j in 1:length(pattern)) {
-      p <- paste0("^", pattern[j], "\\(([^,)]*).*")
-      x[i] <- unique(sub(p, "\\1", x[i]))
+      if (pattern[j] == "offset") {
+        x[i] <- sjmisc::trim(unique(sub("^offset\\(([^-+ )]*).*", "\\1", x[i])))
+      } else {
+        p <- paste0("^", pattern[j], "\\(([^,)]*).*")
+        x[i] <- unique(sub(p, "\\1", x[i]))
+      }
     }
     x[i]
   })

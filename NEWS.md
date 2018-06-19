@@ -11,6 +11,10 @@
 * For Stan-models (*brmsfit* and *stanreg*), `icc()` now also computes the HDI for the ICC and random-effect variances. Use the `prob`-argument to specify the limits of this interval.
 * `link_inverse()` and `model_family()` now support _clmm_-models (package *ordinal*).
 
+## Bug fixes
+
+* `model_frame()` now correctly cleans nested patterns like `offset(log(x + 10))` from column names.
+
 # sjstats 0.15.0
 
 ## General
