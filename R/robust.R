@@ -64,7 +64,7 @@
 #' @importFrom stats qt
 #' @importFrom lmtest coeftest
 #' @importFrom sandwich vcovHC
-#' @importFrom tibble tibble add_column
+#' @importFrom tibble tibble add_column has_name
 #' @export
 robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4", "HC4m", "HC5"), conf.int = FALSE, exponentiate = FALSE) {
   # match arguments
@@ -97,8 +97,8 @@ robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4",
   # exponentiate results?
   if (exponentiate) {
     result$estimate <- exp(result$estimate)
-    result$conf.low <- exp(result$conf.low)
-    result$conf.high <- exp(result$conf.high)
+    if (tibble::has_name(result, "conf.low")) result$conf.low <- exp(result$conf.low)
+    if (tibble::has_name(result, "conf.high")) result$conf.high <- exp(result$conf.high)
   }
 
   result
