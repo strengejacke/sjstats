@@ -102,7 +102,7 @@ p_value.pglm <- function(fit, ...) {
 
 #' @export
 p_value.default <- function(fit, ...) {
-  if (grepl("^Zelig-", class(fit))) {
+  if (grepl("^Zelig-", class(fit)[1])) {
     if (!requireNamespace("Zelig", quietly = T))
       stop("Package `Zelig` required. Please install", call. = F)
     p <- unlist(Zelig::get_pvalue(fit))
