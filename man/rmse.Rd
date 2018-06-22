@@ -4,6 +4,7 @@
 \alias{rmse}
 \alias{rse}
 \alias{mse}
+\alias{error_rate}
 \title{Compute model quality}
 \usage{
 rmse(fit, normalized = FALSE)
@@ -11,16 +12,27 @@ rmse(fit, normalized = FALSE)
 rse(fit)
 
 mse(fit)
+
+error_rate(fit)
 }
 \arguments{
 \item{fit}{Fitted linear model of class \code{lm}, \code{merMod} (\pkg{lme4})
-or \code{lme} (\pkg{nlme}).}
+or \code{lme} (\pkg{nlme}). For \code{error_rate()} and \code{binned_resid()},
+a \code{glm}-object with binomial-family.}
 
 \item{normalized}{Logical, use \code{TRUE} if normalized rmse should be returned.}
+
+\item{term}{Name of independent variable from \code{fit}. If not \code{NULL},
+average residuals for the categories of \code{term} are plotted; else,
+average residuals for the estimated probabilities of the response are
+plotted.}
+
+\item{n.bins}{Numeric, the number of "bins".}
 }
 \description{
 Compute root mean squared error, residual standard error or
-             mean square error of fitted linear (mixed effects) models.
+             mean square error of fitted linear (mixed effects) models. Or
+             error rate and binned residuals for logistic regression models.
 }
 \note{
 \describe{
@@ -48,6 +60,19 @@ Compute root mean squared error, residual standard error or
         i.e. it measures the average of the squares of the errors. Lower
         values (closer to zero) indicate better fit.
         }
+        \item{\strong{Error Rate}}{
+        The error rate is a crude measure for model fit for logistic regression
+        models. It is defined as the proportion of cases for which the
+        deterministic prediction is wrong, i.e. the proportion where the the
+        predicted probability is above 0.5, although y = 0 (and vice versa).
+        In general, the error rate should be below 0.5 (i.e. 50\%), the
+        closer to zero, the better. Furthermore, the error rate of the full
+        model should be considerably below the null model's error rate
+        (cf. Gelman and Hill 2007, pp. 99).
+        }
+        \item{\strong{Binned Residuals}}{
+        (cf. Gelman and Hill 2007, pp. 97ff).
+        }
       }
 }
 \examples{
@@ -66,9 +91,24 @@ library(nlme)
 fit <- lme(distance ~ age, data = Orthodont)
 rmse(fit, normalized = TRUE)
 
+# Error Rate
+efc$neg_c_7d <- ifelse(efc$neg_c_7 < median(efc$neg_c_7, na.rm = TRUE), 0, 1)
+m <- glm(
+  neg_c_7d ~ c161sex + barthtot + c172code,
+  data = efc,
+  family = binomial(link = "logit")
+)
+error_rate(m)
+
+# Binned residuals
+binned_resid(m)
+binned_resid(m, "barthtot")#'
+
 }
 \references{
-\href{http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/}{Grace-Martin K: Assessing the Fit of Regression Models}
+Gelman A, Hill J (2007) Data Analysis Using Regression and Multilevel/Hierarchical Models. Cambridge, New York: Cambridge University Press
+  \cr \cr
+  \href{http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/}{Grace-Martin K: Assessing the Fit of Regression Models}
 }
 \seealso{
 \code{\link{r2}} for R-squared or pseude-R-squared values, and

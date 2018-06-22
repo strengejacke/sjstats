@@ -5,7 +5,6 @@
 \alias{std_beta.merMod}
 \alias{std_beta.lm}
 \alias{std_beta.gls}
-\alias{std_beta.stanreg}
 \title{Standardized beta coefficients and CI of linear and mixed models}
 \usage{
 std_beta(fit, ...)
@@ -15,8 +14,6 @@ std_beta(fit, ...)
 \method{std_beta}{lm}(fit, type = "std", ci.lvl = 0.95, ...)
 
 \method{std_beta}{gls}(fit, type = "std", ci.lvl = 0.95, ...)
-
-\method{std_beta}{stanreg}(fit, ...)
 }
 \arguments{
 \item{fit}{Fitted linear (mixed) model of class \code{lm}, \code{merMod}

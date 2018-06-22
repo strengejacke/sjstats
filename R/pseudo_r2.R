@@ -72,8 +72,8 @@ cod <- function(x) {
 #'    Bayesian version of R-squared for regression models for \code{stanreg}
 #'    and \code{brmsfit} objects.
 #'
-#' @param x Fitted model of class \code{lm}, \code{glm}, \code{lmerMod},
-#'    \code{lme}, \code{glmerMod}, \code{stanreg} or \code{brmsfit}.
+#' @param x Fitted model of class \code{lm}, \code{glm}, \code{merMod},
+#'    \code{lme}, \code{plm}, \code{stanreg} or \code{brmsfit}.
 #' @param n Optional, a \code{lmerMod} object, representing the fitted null-model
 #'    (unconditional model) to \code{x}. If \code{n} is given, the pseudo-r-squared
 #'    for random intercept and random slope variances are computed
@@ -254,7 +254,6 @@ r2.brmsfit <- function(x, loo = FALSE, ...) {
 
 
 #' @importFrom stats nobs
-#' @rdname r2
 #' @export
 r2.glm <- function(x, ...) {
   n <- stats::nobs(x)
@@ -268,14 +267,12 @@ r2.glm <- function(x, ...) {
 }
 
 
-#' @rdname r2
 #' @export
 r2.glmerMod <- function(x, ...) {
   cod(x)
 }
 
 
-#' @rdname r2
 #' @export
 r2.lm <- function(x, ...) {
   # do we have a simple linear model?
@@ -291,7 +288,20 @@ r2.lm <- function(x, ...) {
 }
 
 
-#' @rdname r2
+#' @export
+r2.default <- function(x, ...) {
+  # do we have a simple linear model?
+  rsq <- summary(x)$r.squared
+  adjr2 <- summary(x)$adj.r.squared
+
+  # name vectors
+  names(rsq) <- "R-squared"
+  names(adjr2) <- "adjusted R-squared"
+
+  # return results
+  structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2))
+}
+
 #' @export
 r2.plm <- function(x, ...) {
   # else do we have a mixed model?

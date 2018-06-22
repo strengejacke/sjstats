@@ -2,14 +2,17 @@
 % Please edit documentation in R/merMod_p.R
 \name{p_value}
 \alias{p_value}
+\alias{p_value.lmerMod}
 \title{Get p-values from regression model objects}
 \usage{
-p_value(fit, p.kr = FALSE)
+p_value(fit, ...)
+
+\method{p_value}{lmerMod}(fit, p.kr = FALSE, ...)
 }
 \arguments{
-\item{fit}{A fitted model object of class \code{lm}, \code{glm}, \code{merMod},
-\code{merModLmerTest}, \code{pggls} or \code{gls}. Other classes may
-work as well.}
+\item{fit}{A model object.}
+
+\item{...}{Currently not used.}
 
 \item{p.kr}{Logical, if \code{TRUE}, the computation of p-values is based on
 conditional F-tests with Kenward-Roger approximation for the df (see

@@ -182,7 +182,6 @@ icc <- function(x, ...) {
 #' @importFrom lme4 VarCorr fixef getME
 #' @importFrom stats formula
 #' @importFrom purrr map map_dbl map_lgl
-#' @rdname icc
 #' @export
 icc.merMod <- function(x, ...) {
   # get family
@@ -319,7 +318,6 @@ icc.merMod <- function(x, ...) {
 #' @importFrom glmmTMB VarCorr fixef getME
 #' @importFrom stats family formula
 #' @importFrom purrr map map_dbl map_lgl
-#' @rdname icc
 #' @export
 icc.glmmTMB <- function(x, ...) {
   # get family

@@ -6,10 +6,6 @@
 \alias{r2.lme}
 \alias{r2.stanreg}
 \alias{r2.brmsfit}
-\alias{r2.glm}
-\alias{r2.glmerMod}
-\alias{r2.lm}
-\alias{r2.plm}
 \title{Compute r-squared of (generalized) linear (mixed) models}
 \usage{
 r2(x, ...)
@@ -21,18 +17,10 @@ r2(x, ...)
 \method{r2}{stanreg}(x, loo = FALSE, ...)
 
 \method{r2}{brmsfit}(x, loo = FALSE, ...)
-
-\method{r2}{glm}(x, ...)
-
-\method{r2}{glmerMod}(x, ...)
-
-\method{r2}{lm}(x, ...)
-
-\method{r2}{plm}(x, ...)
 }
 \arguments{
-\item{x}{Fitted model of class \code{lm}, \code{glm}, \code{lmerMod},
-\code{lme}, \code{glmerMod}, \code{stanreg} or \code{brmsfit}.}
+\item{x}{Fitted model of class \code{lm}, \code{glm}, \code{merMod},
+\code{lme}, \code{plm}, \code{stanreg} or \code{brmsfit}.}
 
 \item{n}{Optional, a \code{lmerMod} object, representing the fitted null-model
 (unconditional model) to \code{x}. If \code{n} is given, the pseudo-r-squared

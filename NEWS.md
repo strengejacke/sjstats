@@ -3,13 +3,18 @@
 ## General
 
 * The S3-generics for functions like `hdi()`, `rope()`, `equi_test()` etc. are now more generic, and function usage for each supported object is now included in the documentation.
-* Following functions are now S3-generic: `icc()`, `r2()` and `std_beta()`.
+* Following functions are now S3-generic: `icc()`, `r2()`, `p_value()`, `se()`, and `std_beta()`.
+
+## New functions
+
+* `binned_resid()` to plot binned residuals for logistic regression models.
+* `error_rate()` to compute model quality for logistic regression models.
 
 ## Changes to functions
 
 * `icc()` gets a `ppd`-argument for Stan-models (*brmsfit* and *stanreg*), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.
 * For Stan-models (*brmsfit* and *stanreg*), `icc()` now also computes the HDI for the ICC and random-effect variances. Use the `prob`-argument to specify the limits of this interval.
-* `link_inverse()` and `model_family()` now support _clmm_-models (package *ordinal*).
+* `link_inverse()` and `model_family()` now support _clmm_-models (package *ordinal*) and _glmRob_ and _lmRob_-models (package *robust*).
 
 ## Bug fixes
 

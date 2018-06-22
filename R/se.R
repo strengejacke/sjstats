@@ -6,20 +6,16 @@
 #'                standard errors for generalized linear (mixed) models, or
 #'                for intraclass correlation coefficients (ICC).
 #'
-#' @param x (Numeric) vector, a data frame, an \code{lm} or \code{glm}-object,
-#'          a \code{merMod}-object as returned by the functions from the
-#'          \pkg{lme4}-package, an ICC object (as obtained by the
-#'          \code{\link{icc}}-function) or a list with estimate and p-value.
-#'          For the latter case, the list must contain elements named
-#'          \code{estimate} and \code{p.value} (see 'Examples' and 'Details').
+#' @param x (Numeric) vector, a data frame, an \code{lm}, \code{glm},
+#'          \code{merMod} (\pkg{lme4}), or \code{stanreg} model object,
+#'          an ICC object (as obtained by the \code{\link{icc}}-function)
+#'          or a list with estimate and p-value. For the latter case, the list
+#'          must contain elements named \code{estimate} and \code{p.value}
+#'          (see 'Examples' and 'Details').
 #' @param nsim Numeric, the number of simulations for calculating the
 #'          standard error for intraclass correlation coefficients, as
 #'          obtained by the \code{\link{icc}}-function.
-#' @param type Type of standard errors for generalized linear mixed models.
-#'          \code{type = "fe"} returns the standard errors for fixed effects,
-#'          based on the delta-method-approximation. \code{type = "re"} returns
-#'          the standard errors for joint random and fixed effects, which are
-#'          on the scale of the link function. See 'Details'.
+#' @param ... Currently not used.
 #'
 #' @return The standard error of \code{x}.
 #'
@@ -34,30 +30,22 @@
 #'         confidence interval has usual Bayesian interpretation only with flat prior.}
 #'         (Gelman 2017)
 #'
-#' @details For linear mixed models, and generalized linear mixed models \strong{with
-#'            \code{type = "re"}}, this function computes the standard errors
-#'            for joint (sums of) random and fixed effects coefficients (unlike
-#'            \code{\link[arm]{se.coef}}, which returns the standard error
-#'            for fixed and random effects separately). Hence, \code{se()}
-#'            returns the appropriate standard errors for \code{\link[lme4]{coef.merMod}}.
-#'            \cr \cr
-#'            For generalized linear models or generalized linear mixed models,
-#'            approximated standard errors, using the delta method for transformed
-#'            regression parameters are returned (Oehlert 1992). For generalized
-#'            linear mixed models, by default, the standard errors refer to the
-#'            fixed effects only. Use \code{type = "re"} to compute standard errors
-#'            for joint random and fixed effects coefficients. However,
-#'            computation for the latter \emph{is not} based on the delta method,
-#'            so standard errors from \code{type = "re"} are on the scale of the
-#'            link-function (and not back transformed).
-#'            \cr \cr
-#'            The standard error for the \code{\link{icc}} is based on bootstrapping,
-#'            thus, the \code{nsim}-argument is required. See 'Examples'.
-#'            \cr \cr
-#'            \code{se()} also returns the standard error of an estimate (regression
-#'            coefficient) and p-value, assuming a normal distribution to compute
-#'            the z-score from the p-value (formula in short: \code{b / qnorm(p / 2)}).
-#'            See 'Examples'.
+#' @details For linear mixed models, and generalized linear mixed models, this
+#'   function computes the standard errors for joint (sums of) random and fixed
+#'   effects coefficients (unlike \code{\link[arm]{se.coef}}, which returns the
+#'   standard error for fixed and random effects separately). Hence, \code{se()}
+#'   returns the appropriate standard errors for \code{\link[lme4]{coef.merMod}}.
+#'   \cr \cr
+#'   For generalized linear models, approximated standard errors, using the delta
+#'   method for transformed regression parameters are returned (Oehlert 1992).
+#'   \cr \cr
+#'   The standard error for the \code{\link{icc}} is based on bootstrapping,
+#'   thus, the \code{nsim}-argument is required. See 'Examples'.
+#'   \cr \cr
+#'   \code{se()} also returns the standard error of an estimate (regression
+#'   coefficient) and p-value, assuming a normal distribution to compute
+#'   the z-score from the p-value (formula in short: \code{b / qnorm(p / 2)}).
+#'   See 'Examples'.
 #'
 #' @references Oehlert GW. 1992. A note on the delta method. American Statistician 46(1).
 #'             \cr \cr
@@ -122,86 +110,137 @@
 #' boot_p(dummy, icc)}
 #'
 #'
+#' @export
+se <- function(x, ...) {
+  UseMethod("se")
+}
+
+
+#' @export
+se.default <- function(x, ...) {
+  std_e_helper(x)
+}
+
+
+#' @importFrom stats qnorm
+#' @export
+se.list <- function(x, ...) {
+  # compute standard error from regression coefficient and p-value
+  x$estimate / abs(stats::qnorm(x$p.value / 2))
+}
+
+
+#' @importFrom purrr map_dbl
+#' @export
+se.data.frame <- function(x, ...) {
+  # se for each column
+  se_result <- purrr::map_dbl(x, ~ std_e_helper(.x))
+  # set names to return vector
+  names(se_result) <- colnames(x)
+  se_result
+}
+
+
+#' @importFrom broom tidy
+#' @importFrom dplyr select
+#' @importFrom rlang .data
+#' @export
+se.lm <- function(x, ...) {
+  x %>%
+    broom::tidy(effects = "fixed") %>%
+    dplyr::select(.data$term, .data$estimate, .data$std.error)
+}
+
+
 #' @importFrom stats qnorm vcov
 #' @importFrom broom tidy
 #' @importFrom dplyr mutate select
 #' @importFrom rlang .data
-#' @importFrom purrr map_dbl
 #' @export
-se <- function(x, nsim = 100, type = c("fe", "re")) {
-  # match arguments
-  type <- match.arg(type)
+se.glm <- function(x, ...) {
+  # for glm, we want to exponentiate coefficients to get odds ratios, however
+  # 'exponentiate'-argument currently not works for lme4-tidiers
+  # so we need to do this manually for glmer's
 
-  if (inherits(x, c("stanreg", "stanfit"))) {
-    se_result <- x %>%
-      broom::tidy() %>%
-      dplyr::select(.data$term, .data$estimate, .data$std.error)
-  } else if (inherits(x, c("lmerMod", "nlmerMod", "merModLmerTest"))) {
-    # return standard error for (linear) mixed models
-    se_result <- std_merMod(x)
-  } else if (inherits(x, "icc.lme4")) {
-    # we have a ICC object, so do bootstrapping and compute SE for ICC
-    se_result <- std_e_icc(x, nsim)
-  } else if (inherits(x, c("svyglm.nb", "svymle"))) {
-    se_result <- x %>%
-      tidy_svyglm.nb() %>%
-      dplyr::select(.data$term, .data$estimate, .data$std.error)
-  } else if (inherits(x, c("glm", "glmerMod"))) {
-    # check type of se
-    if (type == "fe") {
-      # for glm, we want to exponentiate coefficients to get odds ratios, however
-      # 'exponentiate'-argument currently not works for lme4-tidiers
-      # so we need to do this manually for glmer's
-      tm <- broom::tidy(x, effects = "fixed")
-      tm$estimate <- exp(tm$estimate)
+  tm <- broom::tidy(x, effects = "fixed")
+  tm$estimate <- exp(tm$estimate)
 
-      # # for poisson family, we need a different delta method approach
-      # if (get_glm_family(x)$is_pois) {
-      #   # standard errors scaled using square root of Pearson
-      #   # chi-squared dispersion
-      #   pr <- sum(stats::residuals(x, type = "pearson") ^ 2)
-      #   dispersion <- pr / x$df.residual
-      #   sse <- sqrt(diag(as.matrix(stats::vcov(x)))) * sqrt(dispersion)
-      #
-      #   return(
-      #     tm %>%
-      #       # vcov for merMod returns a dpoMatrix-object, so we need
-      #       # to coerce to regular matrix here.
-      #       dplyr::mutate(std.error = sse) %>%
-      #       dplyr::select_("term", "estimate", "std.error")
-      #   )
-      # }
+  tm %>%
+    dplyr::mutate(std.error = sqrt(.data$estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
+    dplyr::select(.data$term, .data$estimate, .data$std.error)
+}
 
-      se_result <-
-        tm %>%
-          # vcov for merMod returns a dpoMatrix-object, so we need
-          # to coerce to regular matrix here.
-          dplyr::mutate(std.error = sqrt(.data$estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
-          dplyr::select(.data$term, .data$estimate, .data$std.error)
-    } else {
-      # return standard error for mixed models,
-      # joint random and fixed effects
-      se_result <- std_merMod(x)
-    }
-  } else if (inherits(x, "lm")) {
-    # for convenience reasons, also return se for simple linear models
-    se_result <- x %>%
-      broom::tidy(effects = "fixed") %>%
-      dplyr::select(.data$term, .data$estimate, .data$std.error)
-  } else if (is.matrix(x) || is.data.frame(x)) {
-    # se for each column
-    se_result <- purrr::map_dbl(x, ~ std_e_helper(.x))
-    # set names to return vector
-    names(se_result) <- colnames(x)
-  } else if (is.list(x)) {
-    # compute standard error from regression coefficient and p-value
-    se_result <- x$estimate / abs(stats::qnorm(x$p.value / 2))
-  } else {
-    # standard error for a variable
-    se_result <- std_e_helper(x)
-  }
 
-  se_result
+#' @importFrom dplyr select
+#' @importFrom rlang .data
+#' @export
+se.svymle <- function(x, ...) {
+  x %>%
+    tidy_svyglm.nb() %>%
+    dplyr::select(.data$term, .data$estimate, .data$std.error)
+}
+
+
+#' @importFrom dplyr select
+#' @importFrom rlang .data
+#' @export
+se.svyglm.nb <- function(x, ...) {
+  x %>%
+    tidy_svyglm.nb() %>%
+    dplyr::select(.data$term, .data$estimate, .data$std.error)
+}
+
+
+#' @rdname se
+#' @export
+se.icc.lme4 <- function(x, nsim = 100, ...) {
+  std_e_icc(x, nsim)
+}
+
+
+#' @export
+se.glmerMod <- function(x, ...) {
+  std_merMod(x)
+}
+
+
+#' @export
+se.lmerMod <- function(x, ...) {
+  std_merMod(x)
+}
+
+
+#' @export
+se.nlmerMod <- function(x, ...) {
+  std_merMod(x)
+}
+
+
+#' @export
+se.merModLmerTest <- function(x, ...) {
+  std_merMod(x)
+}
+
+
+#' @importFrom broom tidy
+#' @importFrom dplyr select
+#' @importFrom rlang .data
+#' @export
+se.stanreg <- function(x, ...) {
+  x %>%
+    broom::tidy() %>%
+    dplyr::select(.data$term, .data$estimate, .data$std.error)
+}
+
+
+#' @importFrom broom tidy
+#' @importFrom dplyr select
+#' @importFrom rlang .data
+#' @export
+se.stanfit <- function(x, ...) {
+  x %>%
+    broom::tidy() %>%
+    dplyr::select(.data$term, .data$estimate, .data$std.error)
 }
 
 
@@ -325,3 +364,22 @@ bootstr_icc_se <- function(dd, nsim, formula, model.family) {
 
   icc_data
 }
+
+## TODO se for poisson etc
+
+# # for poisson family, we need a different delta method approach
+# if (get_glm_family(x)$is_pois) {
+#   # standard errors scaled using square root of Pearson
+#   # chi-squared dispersion
+#   pr <- sum(stats::residuals(x, type = "pearson") ^ 2)
+#   dispersion <- pr / x$df.residual
+#   sse <- sqrt(diag(as.matrix(stats::vcov(x)))) * sqrt(dispersion)
+#
+#   return(
+#     tm %>%
+#       # vcov for merMod returns a dpoMatrix-object, so we need
+#       # to coerce to regular matrix here.
+#       dplyr::mutate(std.error = sse) %>%
+#       dplyr::select_("term", "estimate", "std.error")
+#   )
+# }

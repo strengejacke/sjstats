@@ -172,7 +172,6 @@ std_beta_helper <- function(fit, type, ci.lvl, se, ...) {
 
 
 #' @importFrom stats model.matrix sd
-#' @rdname std_beta
 #' @export
 std_beta.stanreg <- function(fit, ...) {
   if (!requireNamespace("rstanarm", quietly = TRUE))

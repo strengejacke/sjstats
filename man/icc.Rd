@@ -2,17 +2,11 @@
 % Please edit documentation in R/icc.R
 \name{icc}
 \alias{icc}
-\alias{icc.merMod}
-\alias{icc.glmmTMB}
 \alias{icc.stanreg}
 \alias{icc.brmsfit}
 \title{Intraclass-Correlation Coefficient}
 \usage{
 icc(x, ...)
-
-\method{icc}{merMod}(x, ...)
-
-\method{icc}{glmmTMB}(x, ...)
 
 \method{icc}{stanreg}(x, re.form = NULL, typical = "mean", prob = 0.89,
   ppd = FALSE, ...)
