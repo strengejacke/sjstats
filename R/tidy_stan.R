@@ -54,8 +54,6 @@
 #'      }
 #'    }
 #'
-#' @seealso \code{\link{hdi}}
-#'
 #' @references Kruschke JK. \emph{Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and Stan.} 2nd edition. Academic Press, 2015
 #' \cr \cr
 #' Gelman A, Carlin JB, Stern HS, Dunson DB, Vehtari A, Rubin DB. \emph{Bayesian data analysis.} 3rd ed. Boca Raton: Chapman & Hall/CRC, 2013

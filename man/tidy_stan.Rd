@@ -94,6 +94,3 @@ Gelman A, Rubin DB. \emph{Inference from iterative simulation using multiple seq
 \cr \cr
 McElreath R. \emph{Statistical Rethinking. A Bayesian Course with Examples in R and Stan.} Chapman and Hall, 2015
 }
-\seealso{
-\code{\link{hdi}}
-}
