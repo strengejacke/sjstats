@@ -67,6 +67,7 @@ Suggests:
     pbkrtest (>= 0.4-7),
     pROC,
     psych,
+    scales,
     sjPlot,
     survey,
     rstan,

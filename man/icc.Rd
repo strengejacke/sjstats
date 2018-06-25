@@ -29,6 +29,9 @@ to calculate the ICC for this group-level. Only applies if \code{ppd = TRUE}.}
 measure of central tendency for the ICC. The default is "mean". See
 \code{typical_value} for options.}
 
+\item{prob}{Vector of scalars between 0 and 1, indicating the mass within
+the credible interval that is to be estimated. See \code{\link{hdi}}.}
+
 \item{ppd}{Logical, if \code{TRUE}, variance decomposition is based on the
 posterior predictive distribution, which is the correct way for Bayesian
 non-Gaussian models.}

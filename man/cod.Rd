@@ -26,6 +26,8 @@ r2(x, ...)
 \code{lme}, \code{plm}, \code{stanreg} or \code{brmsfit}. For method
 \code{cod()}, only a \code{glm} or \code{glmer} with binrary response.}
 
+\item{...}{Currently not used.}
+
 \item{n}{Optional, a \code{lmerMod} object, representing the fitted null-model
 (unconditional model) to \code{x}. If \code{n} is given, the pseudo-r-squared
 for random intercept and random slope variances are computed

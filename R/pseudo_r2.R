@@ -16,6 +16,7 @@
 #'    \code{brmsfit} object, a LOO-adjusted r-squared is calculated. Else,
 #'    a rather "unadjusted" r-squared will be returned by calling
 #'    \code{rstantools::bayes_R2()}.
+#' @param ... Currently not used.
 #'
 #' @return For \code{r2()}, depending on the model, returns:
 #'         \itemize{

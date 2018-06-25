@@ -20,6 +20,8 @@
 #'   posterior predictive distribution, which is the correct way for Bayesian
 #'   non-Gaussian models.
 #'
+#' @inheritParams hdi
+#'
 #' @return A numeric vector with all random intercept intraclass-correlation-coefficients.
 #'    Furthermore, between- and within-group variances as well as random-slope
 #'    variance are returned as attributes.
