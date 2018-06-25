@@ -1,24 +1,40 @@
 #' @title Compute model quality
 #' @name rmse
-#' @description Compute root mean squared error, residual standard error or
-#'              mean square error of fitted linear (mixed effects) models. Or
-#'              error rate and binned residuals for logistic regression models.
+#'
+#' @description Compute various measures or tests to assess the model quality,
+#'   like root mean squared error, residual standard error or mean square error
+#'   of fitted linear (mixed effects) models. For logistic regression models,
+#'   or mixed models with binary outcome, the error rate, binned residuals,
+#'   Chi-square goodness-of-fit-test or the Hosmer-Lemeshow Goodness-of-fit-test
+#'   can be performed.
 #'
 #' @param fit Fitted linear model of class \code{lm}, \code{merMod} (\pkg{lme4})
 #'   or \code{lme} (\pkg{nlme}). For \code{error_rate()} and \code{binned_resid()},
-#'   a \code{glm}-object with binomial-family.
+#'   a \code{glm}-object with binomial-family. For \code{chisq_gof()}, a
+#'   numeric vector, or a \code{glm}-object.
 #' @param normalized Logical, use \code{TRUE} if normalized rmse should be returned.
 #' @param term Name of independent variable from \code{fit}. If not \code{NULL},
 #'   average residuals for the categories of \code{term} are plotted; else,
 #'   average residuals for the estimated probabilities of the response are
 #'   plotted.
-#' @param n.bins Numeric, the number of "bins".
+#' @param n.bins Numeric, the number of bins to divide the data. For
+#'   \code{hoslem_gof()}, the default is 10. For \code{binned_resid()}, if
+#'   \code{n.bins = NULL}, the square root of the number of observations is
+#'   taken.
+#' @param prob Vector of probabilities (indicating the population probabilities)
+#'   of the same length as \code{fit}'s amount of categories / factor levels.
+#'   Use \code{nrow(table(fit))} to determine the amount of necessary values
+#'   for \code{prob}. Only used, when \code{fit} is a vector, and not a
+#'   \code{glm}-object.
+#' @param weights Vector with weights, used to weight \code{fit}.
 #'
 #' @seealso \code{\link{r2}} for R-squared or pseude-R-squared values, and
 #'            \code{\link{cv}} for the coefficient of variation.
 #'
 #' @references
 #'   Gelman A, Hill J (2007) Data Analysis Using Regression and Multilevel/Hierarchical Models. Cambridge, New York: Cambridge University Press
+#'   \cr \cr
+#'   Hosmer, D. W., & Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley & Sons, Inc. \doi{10.1002/0471722146}
 #'   \cr \cr
 #'   \href{http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/}{Grace-Martin K: Assessing the Fit of Regression Models}
 #'
@@ -60,7 +76,47 @@
 #'         \item{\strong{Binned Residuals}}{
 #'         (cf. Gelman and Hill 2007, pp. 97ff).
 #'         }
+#'         \item{\strong{Chi-squared Goodness-of-Fit Test}}{
+#'         For vectors, this function is a convenient function for the
+#'         \code{chisq.test()}, performing goodness-of-fit test.
+#'         \cr \cr
+#'         For \code{glm}-objects, this function performs a goodness-of-fit test
+#'         based on the \code{X2GOFtest()} function of the \CRANpkg{binomTools}
+#'         package. A well-fitting model shows no significant difference between
+#'         the model and the observed data, i.e. the reported p-values should be
+#'         greater than 0.05.
+#'         }
+#'         \item{\strong{Hosmer-Lemeshow Goodness-of-Fit Test}}{
+#'         A well-fitting model shows no significant difference between
+#'         the model and the observed data, i.e. the reported p-value should be
+#'         greater than 0.05.
+#'         }
 #'       }
+#'
+#' @return \describe{
+#'   \item{\code{chisq_gof()}}{
+#'     For vectors, returns the object of the computed \code{\link[stats]{chisq.test}}.
+#'     \cr \cr
+#'     For \code{glm}-objects, an object of class \code{chisq_gof} with
+#'     following values:
+#'     \itemize{
+#'       \item \code{p.value} the p-value for the goodness-of-fit test
+#'       \item \code{z.score} the standardized z-score for the goodness-of-fit test
+#'       \item \code{RSS} the residual sums of squares term
+#'       \item \code{X2} the pearson chi-squared statistic
+#'     }
+#'   }
+#'   \item{\code{hoslem_gof()}}{
+#'     An object of class \code{hoslem_test} with
+#'     following values:
+#'     \itemize{
+#'       \item \code{chisq} the Hosmer-Lemeshow chi-squared statistic
+#'       \item \code{df} degrees of freedom
+#'       \item \code{p.value} the p-value for the goodness-of-fit test
+#'     }
+#'   }
+#' }
+#'
 #'
 #' @examples
 #' data(efc)
@@ -90,6 +146,19 @@
 #' # Binned residuals
 #' binned_resid(m)
 #' binned_resid(m, "barthtot")#'
+#'
+#' # goodness-of-fit test for logistic regression
+#' chisq_gof(m)
+#'
+#' # goodness-of-fit test for logistic regression
+#' hoslem_gof(m)
+#'
+#' # goodness-of-fit test for vectors against probabilities
+#' # differing from population
+#' chisq_gof(efc$e42dep, c(0.3,0.2,0.22,0.28))
+#' # equal to population
+#' chisq_gof(efc$e42dep, prop.table(table(efc$e42dep)))#'
+#'
 #'
 #' @importFrom stats residuals df.residual
 #' @export
@@ -153,6 +222,7 @@ error_rate <- function(fit) {
 }
 
 
+#' @rdname rmse
 #' @importFrom sjmisc recode_to to_value
 #' @importFrom stats fitted
 #' @importFrom purrr map_df

@@ -1,79 +1,12 @@
-#' @title Tjur's Coefficient of Discrimination
+#' @title Goodness-of-fit measures for regression models
 #' @name cod
 #'
-#' @description This method calculates the Coefficient of Discrimination \code{D}
-#'                for generalized linear (mixed) models for binary data. It is
-#'                an alternative to other Pseudo-R-squared values
-#'                like Nakelkerke's R2 or Cox-Snell R2.
-#'
-#' @param x Fitted \code{\link[stats]{glm}} or \code{\link[lme4]{glmer}} model.
-#'
-#' @return The \code{D} Coefficient of Discrimination, also known as
-#'           Tjur's R-squared value.
-#'
-#' @note The Coefficient of Discrimination \code{D} can be read like any
-#'         other (Pseudo-)R-squared value.
-#'
-#' @references Tjur T (2009) Coefficients of determination in logistic regression models -
-#'               a new proposal: The coefficient of discrimination. The American Statistician,
-#'               63(4): 366-372
-#'
-#' @seealso \code{\link{r2}} for Nagelkerke's and Cox and Snell's pseudo
-#'            r-squared coefficients.
-#'
-#' @examples
-#' library(sjmisc)
-#' data(efc)
-#'
-#' # Tjur's R-squared value
-#' efc$services <- ifelse(efc$tot_sc_e > 0, 1, 0)
-#' fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
-#'            data = efc, family = binomial(link = "logit"))
-#' cod(fit)
-#'
-#' @importFrom stats predict predict.glm residuals
-#' @export
-cod <- function(x) {
-  # check for valid object class
-  if (!inherits(x, c("glmerMod", "glm"))) {
-    stop("`x` must be an object of class `glm` or `glmerMod`.", call. = F)
-  }
-
-  # mixed models (lme4)
-  if (inherits(x, "glmerMod")) {
-    # check for package availability
-    y <- lme4::getME(x, "y")
-    pred <- stats::predict(x, type = "response", re.form = NULL)
-  } else {
-    y <- x$y
-    pred <- stats::predict.glm(x, type = "response")
-  }
-
-  # delete pred for cases with missing residuals
-  if (anyNA(stats::residuals(x))) pred <- pred[!is.na(stats::residuals(x))]
-
-  categories <- unique(y)
-  m1 <- mean(pred[which(y == categories[1])], na.rm = T)
-  m2 <- mean(pred[which(y == categories[2])], na.rm = T)
-
-  cod = abs(m2 - m1)
-  names(cod) <- "Tjur's D"
-
-  structure(class = "sjstats_r2", list(cod = cod))
-}
-
-
-
-#' @title Compute r-squared of (generalized) linear (mixed) models
-#' @name r2
-#'
-#' @description Compute R-squared values of linear (mixed) models, or
-#'    pseudo-R-squared values for generalized linear (mixed) models, or a
-#'    Bayesian version of R-squared for regression models for \code{stanreg}
-#'    and \code{brmsfit} objects.
+#' @description Compute Goodness-of-fit measures for various regression models,
+#'   including mixed and Bayesian regression models.
 #'
 #' @param x Fitted model of class \code{lm}, \code{glm}, \code{merMod},
-#'    \code{lme}, \code{plm}, \code{stanreg} or \code{brmsfit}.
+#'    \code{lme}, \code{plm}, \code{stanreg} or \code{brmsfit}. For method
+#'    \code{cod()}, only a \code{glm} or \code{glmer} with binrary response.
 #' @param n Optional, a \code{lmerMod} object, representing the fitted null-model
 #'    (unconditional model) to \code{x}. If \code{n} is given, the pseudo-r-squared
 #'    for random intercept and random slope variances are computed
@@ -84,7 +17,8 @@ cod <- function(x) {
 #'    a rather "unadjusted" r-squared will be returned by calling
 #'    \code{rstantools::bayes_R2()}.
 #'
-#' @return \itemize{
+#' @return For \code{r2()}, depending on the model, returns:
+#'         \itemize{
 #'           \item For linear models, the r-squared and adjusted r-squared values.
 #'           \item For linear mixed models, the r-squared and Omega-squared values.
 #'           \item For \code{glm} objects, Cox & Snell's and Nagelkerke's pseudo r-squared values.
@@ -92,25 +26,21 @@ cod <- function(x) {
 #'           \item For \code{brmsfit} or \code{stanreg} objects, the Bayesian version of r-squared is computed, calling \code{rstantools::bayes_R2()}.
 #'           \item If \code{loo = TRUE}, for \code{brmsfit} or \code{stanreg} objects a LOO-adjusted version of r-squared is returned.
 #'         }
+#'         For \code{cod()}, returns the \code{D} Coefficient of Discrimination,
+#'         also known as Tjur's R-squared value.
 #'
-#' @note If \code{n} is given, the Pseudo-R2 statistic is the proportion of
-#'          explained variance in the random effect after adding co-variates or
-#'          predictors to the model, or in short: the proportion of the explained
-#'          variance in the random effect of the full (conditional) model \code{x}
-#'          compared to the null (unconditional) model \code{n}.
-#'          \cr \cr
-#'          The Omega-squared statistics, if \code{n} is given, is 1 - the proportion
-#'          of the residual variance of the full model compared to the null model's
-#'          residual variance, or in short: the the proportion of the residual
-#'          variation explained by the covariates.
-#'          \cr \cr
-#'          The r-squared statistics for linear mixed models, if the unconditional
-#'          model is also specified (see \code{n}), is the difference of the total
-#'          variance of the null and full model divided by the total variance of
-#'          the null model.
-#'          \cr \cr
-#'          Alternative ways to assess the "goodness-of-fit" is to compare the ICC
-#'          of the null model with the ICC of the full model (see \code{\link{icc}}).
+#' @references \itemize{
+#'               \item \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ}
+#'               \item Bolker B et al. (2017): \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html}{GLMM FAQ.}
+#'               \item Byrnes, J. 2008. Re: Coefficient of determination (R^2) when using lme() (\url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q2/000713.html})
+#'               \item Kwok OM, Underhill AT, Berry JW, Luo W, Elliott TR, Yoon M. 2008. Analyzing Longitudinal Data with Multilevel Models: An Example with Individuals Living with Lower Extremity Intra-Articular Fractures. Rehabilitation Psychology 53(3): 370–86. \doi{10.1037/a0012765}
+#'               \item Nakagawa S, Schielzeth H. 2013. A general and simple method for obtaining R2 from generalized linear mixed-effects models. Methods in Ecology and Evolution, 4(2):133–142. \doi{10.1111/j.2041-210x.2012.00261.x}
+#'               \item Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication
+#'               \item Raudenbush SW, Bryk AS. 2002. Hierarchical linear models: applications and data analysis methods. 2nd ed. Thousand Oaks: Sage Publications
+#'               \item Snijders TAB, Bosker RJ. 2012. Multilevel analysis: an introduction to basic and advanced multilevel modeling. 2nd ed. Los Angeles: Sage
+#'               \item Xu, R. 2003. Measuring explained variation in linear mixed effects models. Statist. Med. 22:3527-3541. \doi{10.1002/sim.1572}
+#'               \item Tjur T. 2009. Coefficients of determination in logistic regression models - a new proposal: The coefficient of discrimination. The American Statistician, 63(4): 366-372
+#'             }
 #'
 #' @details For linear models, the r-squared and adjusted r-squared value is returned,
 #'          as provided by the \code{summary}-function.
@@ -149,33 +79,55 @@ cod <- function(x) {
 #'          \code{\link[piecewiseSEM]{rsquared}} for conditional and marginal
 #'          r-squared values for GLMM's.
 #'
-#' @seealso \code{\link{rmse}} for more methods to assess model quality.
+#' @note \describe{
+#'         \item{\strong{cod()}}{
+#'          This method calculates the Coefficient of Discrimination \code{D}
+#'          for generalized linear (mixed) models for binary data. It is
+#'          an alternative to other Pseudo-R-squared values like Nakelkerke's
+#'          R2 or Cox-Snell R2. The Coefficient of Discrimination \code{D}
+#'          can be read like any other (Pseudo-)R-squared value.
+#'         }
+#'         \item{\strong{r2()}}{
+#'          If \code{n} is given, the Pseudo-R2 statistic is the proportion of
+#'          explained variance in the random effect after adding co-variates or
+#'          predictors to the model, or in short: the proportion of the explained
+#'          variance in the random effect of the full (conditional) model \code{x}
+#'          compared to the null (unconditional) model \code{n}.
+#'          \cr \cr
+#'          The Omega-squared statistics, if \code{n} is given, is 1 - the proportion
+#'          of the residual variance of the full model compared to the null model's
+#'          residual variance, or in short: the the proportion of the residual
+#'          variation explained by the covariates.
+#'          \cr \cr
+#'          The r-squared statistics for linear mixed models, if the unconditional
+#'          model is also specified (see \code{n}), is the difference of the total
+#'          variance of the null and full model divided by the total variance of
+#'          the null model.
+#'          \cr \cr
+#'          Alternative ways to assess the "goodness-of-fit" is to compare the ICC
+#'          of the null model with the ICC of the full model (see \code{\link{icc}}).
+#'         }
+#'       }
 #'
-#' @references \itemize{
-#'               \item \href{http://glmm.wikidot.com/faq}{DRAFT r-sig-mixed-models FAQ}
-#'               \item Bolker B et al. (2017): \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html}{GLMM FAQ.}
-#'               \item Byrnes, J. 2008. Re: Coefficient of determination (R^2) when using lme() (\url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q2/000713.html})
-#'               \item Kwok OM, Underhill AT, Berry JW, Luo W, Elliott TR, Yoon M. 2008. Analyzing Longitudinal Data with Multilevel Models: An Example with Individuals Living with Lower Extremity Intra-Articular Fractures. Rehabilitation Psychology 53(3): 370–86. \doi{10.1037/a0012765}
-#'               \item Nakagawa S, Schielzeth H. 2013. A general and simple method for obtaining R2 from generalized linear mixed-effects models. Methods in Ecology and Evolution, 4(2):133–142. \doi{10.1111/j.2041-210x.2012.00261.x}
-#'               \item Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication
-#'               \item Raudenbush SW, Bryk AS. 2002. Hierarchical linear models: applications and data analysis methods. 2nd ed. Thousand Oaks: Sage Publications
-#'               \item Snijders TAB, Bosker RJ. 2012. Multilevel analysis: an introduction to basic and advanced multilevel modeling. 2nd ed. Los Angeles: Sage
-#'               \item Xu, R. 2003. Measuring explained variation in linear mixed effects models. Statist. Med. 22:3527-3541. \doi{10.1002/sim.1572}
-#'               \item Tjur T. 2009. Coefficients of determination in logistic regression models - a new proposal: The coefficient of discrimination. The American Statistician, 63(4): 366-372
-#'             }
 #'
 #' @examples
 #' library(sjmisc)
+#' data(efc)
+#'
+#' # Tjur's R-squared value
+#' efc$services <- ifelse(efc$tot_sc_e > 0, 1, 0)
+#' fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
+#'            data = efc, family = binomial(link = "logit"))
+#' cod(fit)
+#'
 #' library(lme4)
 #' fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' r2(fit)
 #'
-#' data(efc)
 #' fit <- lm(barthtot ~ c160age + c12hour, data = efc)
 #' r2(fit)
 #'
 #' # Pseudo-R-squared values
-#' efc$services <- ifelse(efc$tot_sc_e > 0, 1, 0)
 #' fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
 #'            data = efc, family = binomial(link = "logit"))
 #' r2(fit)
@@ -185,7 +137,39 @@ cod <- function(x) {
 #' fit.null <- lmer(Reaction ~ 1 + (Days | Subject), sleepstudy)
 #' r2(fit, fit.null)
 #'
-#'
+#' @importFrom stats predict predict.glm residuals
+#' @export
+cod <- function(x) {
+  # check for valid object class
+  if (!inherits(x, c("glmerMod", "glm"))) {
+    stop("`x` must be an object of class `glm` or `glmerMod`.", call. = F)
+  }
+
+  # mixed models (lme4)
+  if (inherits(x, "glmerMod")) {
+    # check for package availability
+    y <- lme4::getME(x, "y")
+    pred <- stats::predict(x, type = "response", re.form = NULL)
+  } else {
+    y <- x$y
+    pred <- stats::predict.glm(x, type = "response")
+  }
+
+  # delete pred for cases with missing residuals
+  if (anyNA(stats::residuals(x))) pred <- pred[!is.na(stats::residuals(x))]
+
+  categories <- unique(y)
+  m1 <- mean(pred[which(y == categories[1])], na.rm = T)
+  m2 <- mean(pred[which(y == categories[2])], na.rm = T)
+
+  cod = abs(m2 - m1)
+  names(cod) <- "Tjur's D"
+
+  structure(class = "sjstats_r2", list(cod = cod))
+}
+
+
+#' @rdname cod
 #' @importFrom stats model.response fitted var residuals median mad
 #' @importFrom sjmisc is_empty
 #' @export
@@ -194,20 +178,20 @@ r2 <- function(x, ...) {
 }
 
 
-#' @rdname r2
+#' @rdname cod
 #' @export
 r2.lmerMod <- function(x, n = NULL, ...) {
   r2linmix(x, n)
 }
 
 
-#' @rdname r2
+#' @rdname cod
 #' @export
 r2.lme <- function(x, n = NULL, ...) {
   r2linmix(x, n)
 }
 
-#' @rdname r2
+#' @rdname cod
 #' @export
 r2.stanreg <- function(x, loo = FALSE, ...) {
   if (!requireNamespace("rstanarm", quietly = TRUE))
@@ -230,7 +214,7 @@ r2.stanreg <- function(x, loo = FALSE, ...) {
 }
 
 
-#' @rdname r2
+#' @rdname cod
 #' @export
 r2.brmsfit <- function(x, loo = FALSE, ...) {
   if (!requireNamespace("brms", quietly = TRUE))
