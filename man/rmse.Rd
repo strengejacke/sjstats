@@ -37,12 +37,12 @@ and \code{binned_resid()}, a \code{glm}-object with binomial-family. For
 variation at once.}
 
 \item{prob}{Vector of probabilities (indicating the population probabilities)
-of the same length as \code{fit}'s amount of categories / factor levels.
-Use \code{nrow(table(fit))} to determine the amount of necessary values
-for \code{prob}. Only used, when \code{fit} is a vector, and not a
+of the same length as \code{x}'s amount of categories / factor levels.
+Use \code{nrow(table(x))} to determine the amount of necessary values
+for \code{prob}. Only used, when \code{x} is a vector, and not a
 \code{glm}-object.}
 
-\item{weights}{Vector with weights, used to weight \code{fit}.}
+\item{weights}{Vector with weights, used to weight \code{x}.}
 
 \item{n.bins}{Numeric, the number of bins to divide the data. For
 \code{hoslem_gof()}, the default is 10. For \code{binned_resid()}, if
@@ -51,13 +51,27 @@ taken.}
 
 \item{normalized}{Logical, use \code{TRUE} if normalized rmse should be returned.}
 
-\item{term}{Name of independent variable from \code{fit}. If not \code{NULL},
+\item{term}{Name of independent variable from \code{x}. If not \code{NULL},
 average residuals for the categories of \code{term} are plotted; else,
 average residuals for the estimated probabilities of the response are
 plotted.}
 }
 \value{
 \describe{
+  \item{\code{rmse(), rse(), mse(), cv()}}{
+    These functions return a number, the requested statistic.
+  }
+  \item{\code{error_rate()}}{
+    A list with two numbers: the error rate of the full and the null model.
+  }
+  \item{\code{binned_resid()}}{
+    A data frame representing the data that is mapped to the plot, which is
+    automatically plotted. In case all residuals are inside the error bounds,
+    points are black. If some of the residuals are outside the error bounds
+    (indicates by the grey-shaded area), blue points indicate residuals that
+    are OK, while red points indicate model under- or overfitting for the
+    related range of estimated probabilities.
+  }
   \item{\code{chisq_gof()}}{
     For vectors, returns the object of the computed \code{\link[stats]{chisq.test}}.
     For \code{glm}-objects, an object of class \code{chisq_gof} with
@@ -132,7 +146,18 @@ Compute various measures or tests to assess the model quality,
         (cf. Gelman and Hill 2007, pp. 99).
         }
         \item{\strong{Binned Residuals}}{
-        (cf. Gelman and Hill 2007, pp. 97ff).
+        Binned residual plots are achieved by \dQuote{dividing the data into
+        categories (bins) based on their fitted values, and then plotting
+        the average residual versus the average fitted value for each bin.}
+        \emph{(Gelman, Hill 2007: 97)}. If the model were true, one would
+        expect about 95\% of the residuals to fall inside the error bounds.
+        \cr \cr
+        If \code{term} is not \code{NULL}, one can compare the residuals in
+        relation to a specific model predictor. This may be helpful to check
+        if a term should be better transformed, e.g. a rising and falling
+        pattern of residuals along the x-axis (the pattern is indicated by
+        a green line) is a signal to consider taking the logarithm of the
+        predictor (cf. Gelman and Hill 2007, pp. 97ff).
         }
         \item{\strong{Chi-squared Goodness-of-Fit Test}}{
         For vectors, this function is a convenient function for the
@@ -183,7 +208,7 @@ error_rate(m)
 
 # Binned residuals
 binned_resid(m)
-binned_resid(m, "barthtot")#'
+binned_resid(m, "barthtot")
 
 # goodness-of-fit test for logistic regression
 chisq_gof(m)

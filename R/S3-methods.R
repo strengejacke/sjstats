@@ -1642,19 +1642,31 @@ print.sj_binres <- function(x, ...) {
     xtitle = term.label
 
   p <- ggplot2::ggplot(data = x, ggplot2::aes_string(x = "xbar")) +
+    ggplot2::geom_abline(slope = 0, intercept = 0, colour = "grey80")
+
+  if (!is.null(term)) {
+    p <- p +
+      ggplot2::stat_smooth(
+        ggplot2::aes_string(y = "ybar"),
+        method = "loess",
+        se = FALSE,
+        colour = "#00b159",
+        size = .5
+      )
+  }
+
+  p <- p +
     ggplot2::geom_ribbon(ggplot2::aes_string(ymin = -Inf, ymax = "se.lo"), alpha = .1 , fill = "grey70") +
     ggplot2::geom_ribbon(ggplot2::aes_string(ymin = "se", ymax = Inf), alpha = .1 , fill = "grey70") +
     ggplot2::geom_line(ggplot2::aes_string(y = "se"), colour = "grey70") +
     ggplot2::geom_line(ggplot2::aes_string(y = "se.lo"), colour = "grey70") +
-    ggplot2::geom_abline(slope = 0, intercept = 0, colour = "grey80") +
     ggplot2::theme_bw() +
     ggplot2::scale_color_manual(values = c("#d11141", "#00aedb")) +
     ggplot2::labs(
       y = "Average residual",
       x = xtitle,
       colour = ltitle
-    ) +
-    ggplot2::coord_flip()
+    )
 
   if (is.null(term)) {
     p <- p + ggplot2::scale_x_continuous(labels = scales::percent)
