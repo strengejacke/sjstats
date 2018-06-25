@@ -93,7 +93,7 @@ overdisp.lme4 <- function(x) {
   prat <- Pearson.chisq / rdf
   pval <- stats::pchisq(Pearson.chisq, df = rdf, lower.tail = FALSE)
 
-  structure(class = "sjstats_ovderdisp",
+  structure(class = "sj_ovderdisp",
             list(
               chisq = Pearson.chisq,
               ratio = prat,
@@ -121,7 +121,7 @@ zero_count <- function(x, tolerance = .05) {
   obs.zero <- sum(resp_val(x) == 0)
 
   # proportion
-  structure(class = "sjstats_zcf", list(
+  structure(class = "sj_zcf", list(
     predicted.zeros = pred.zero,
     observed.zeros = obs.zero,
     ratio = pred.zero / obs.zero,

@@ -66,7 +66,7 @@ pca <- function(x) {
   tmp <- sjmisc::rotate_df(tmp, cn = T)
 
   # add class-attribute for printing
-  class(tmp) <- c("sjstats.pca", class(tmp))
+  class(tmp) <- c("sj_pca", class(tmp))
 
   tmp
 }
@@ -95,7 +95,7 @@ pca_rotate <- function(x, nf = NULL, rotation = c("varimax", "oblimin")) {
   if (rotation == "oblimin")
     tmp <- psych::principal(r = x, nfactors = nf, rotate = "oblimin")
   else {
-    if (!inherits(x, "sjstats.pca")) x <- pca(x)
+    if (!inherits(x, "sj_pca")) x <- pca(x)
 
     loadings <- attr(x, "loadings", exact = TRUE)
     if (is.null(nf)) nf <- attr(x, "kaiser", exact = TRUE)
@@ -108,7 +108,7 @@ pca_rotate <- function(x, nf = NULL, rotation = c("varimax", "oblimin")) {
 
   tmp <- as.data.frame(unclass(tmp$loadings))
   colnames(tmp) <- sprintf("PC%i", 1:ncol(tmp))
-  class(tmp) <- c("sjstats.pca_rotate", "data.frame")
+  class(tmp) <- c("sj_pca_rotate", "data.frame")
 
 
   # add explained proportions and proportional and cumulative variance

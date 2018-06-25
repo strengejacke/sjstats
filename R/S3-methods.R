@@ -180,7 +180,7 @@ deviance.svyglm.nb <- function(object, ...) {
 
 #' @importFrom purrr map_chr map2_chr
 #' @export
-print.sjstats_r2 <- function(x, digits = 3, ...) {
+print.sj_r2 <- function(x, digits = 3, ...) {
 
   labels <- purrr::map_chr(x, ~ names(.x))
   width <- max(nchar(labels))
@@ -1040,7 +1040,7 @@ print.sj_resample <- function(x, ...) {
 
 
 #' @export
-print.se.icc.lme4 <- function(x, ...) {
+print.sj_se_icc <- function(x, ...) {
   cat("Standard Error of ICC\n")
   cat(sprintf("      Model: %s\n", x$result$model[[1]]))
 
@@ -1179,7 +1179,7 @@ print.sj_splithalf <- function(x, ...) {
 
 #' @importFrom crayon blue
 #' @export
-print.sjstats_zcf <- function(x, ...) {
+print.sj_zcf <- function(x, ...) {
   cat(crayon::blue("\n# Zero-Count overfitting\n\n"))
   cat(sprintf("   Observed zero-counts: %i\n", x$observed.zeros))
   cat(sprintf("  Predicted zero-counts: %i\n", x$predicted.zeros))
@@ -1200,7 +1200,7 @@ print.sjstats_zcf <- function(x, ...) {
 
 #' @importFrom crayon blue
 #' @export
-print.sjstats_ovderdisp <- function(x, ...) {
+print.sj_ovderdisp <- function(x, ...) {
   cat(crayon::blue("\n# Overdispersion test\n\n"))
   cat(sprintf("       dispersion ratio = %.4f\n", x$ratio))
   cat(sprintf("  Pearson's Chi-Squared = %.4f\n", x$chisq))
@@ -1215,7 +1215,7 @@ print.sjstats_ovderdisp <- function(x, ...) {
 
 
 #' @export
-print.sjstats_outliers <- function(x, ...) {
+print.sj_outliers <- function(x, ...) {
   print(x$result, ...)
 }
 
@@ -1253,7 +1253,7 @@ print.sj_xtab_stat <- function(x, ...) {
 
 #' @importFrom crayon blue
 #' @export
-print.sjstats_pred_accuracy <- function(x, ...) {
+print.sj_pred_accuracy <- function(x, ...) {
   # headline
   cat(crayon::blue("\n# Accuracy of Model Predictions\n\n"))
 
@@ -1390,7 +1390,7 @@ print.sj_revar <- function(x, ...) {
 #' @importFrom purrr map_df
 #' @importFrom tibble add_column
 #' @export
-print.sjstats.pca_rotate <- function(x, cutoff = .1, ...) {
+print.sj_pca_rotate <- function(x, cutoff = .1, ...) {
 
   xs <- attr(x, "variance", exact = TRUE)
 
@@ -1420,7 +1420,7 @@ print.sjstats.pca_rotate <- function(x, cutoff = .1, ...) {
 
 
 #' @export
-print.sjstats.pca <- function(x, ...) {
+print.sj_pca <- function(x, ...) {
   x <- as.data.frame(round(x, 4))
   rownames(x) <- c("Standard deviation", "Eigenvalue", "Proportion variance", "Cumulative variance")
 

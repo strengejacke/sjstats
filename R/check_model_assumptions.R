@@ -253,7 +253,7 @@ outliers <- function(x, iterations = 5) {
     message(sprintf("%i outliers removed in updated model.", removedcases))
 
     structure(
-      class = "sjstats_outliers",
+      class = "sj_outliers",
       list(
         result = rv,
         updated.model = model,

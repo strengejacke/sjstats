@@ -322,7 +322,7 @@ std_e_icc <- function(x, nsim) {
     p.value = boot_p(bstr)[["p.value"]]
   )
 
-  structure(class = "se.icc.lme4", list(result = res, bootstrap_data = bstr))
+  structure(class = "sj_se_icc", list(result = res, bootstrap_data = bstr))
 }
 
 

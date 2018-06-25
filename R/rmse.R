@@ -8,10 +8,10 @@
 #'   Chi-square goodness-of-fit-test or the Hosmer-Lemeshow Goodness-of-fit-test
 #'   can be performed.
 #'
-#' @param fit Fitted linear model of class \code{lm}, \code{merMod} (\pkg{lme4})
-#'   or \code{lme} (\pkg{nlme}). For \code{error_rate()} and \code{binned_resid()},
-#'   a \code{glm}-object with binomial-family. For \code{chisq_gof()}, a
-#'   numeric vector, or a \code{glm}-object.
+#' @param x Fitted linear model of class \code{lm}, \code{merMod} (\pkg{lme4})
+#'   or \code{lme} (\pkg{nlme}). For \code{error_rate()}, \code{hoslem_gof()}
+#'   and \code{binned_resid()}, a \code{glm}-object with binomial-family. For
+#'   \code{chisq_gof()}, a numeric vector or a \code{glm}-object.
 #' @param normalized Logical, use \code{TRUE} if normalized rmse should be returned.
 #' @param term Name of independent variable from \code{fit}. If not \code{NULL},
 #'   average residuals for the categories of \code{term} are plotted; else,
@@ -27,18 +27,21 @@
 #'   for \code{prob}. Only used, when \code{fit} is a vector, and not a
 #'   \code{glm}-object.
 #' @param weights Vector with weights, used to weight \code{fit}.
+#' @param ... More fitted model objects, to compute multiple coefficients of
+#'   variation at once.
 #'
-#' @seealso \code{\link{r2}} for R-squared or pseude-R-squared values, and
-#'            \code{\link{cv}} for the coefficient of variation.
+#' @seealso \code{\link{r2}} for R-squared or pseudo-R-squared values.
 #'
 #' @references
 #'   Gelman A, Hill J (2007) Data Analysis Using Regression and Multilevel/Hierarchical Models. Cambridge, New York: Cambridge University Press
+#'   \cr \cr
+#'   Everitt, Brian (1998). The Cambridge Dictionary of Statistics. Cambridge, UK New York: Cambridge University Press
 #'   \cr \cr
 #'   Hosmer, D. W., & Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley & Sons, Inc. \doi{10.1002/0471722146}
 #'   \cr \cr
 #'   \href{http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/}{Grace-Martin K: Assessing the Fit of Regression Models}
 #'
-#' @note \describe{
+#' @details \describe{
 #'         \item{\strong{Root Mean Square Error}}{
 #'         The RMSE is the square root of the variance of the residuals and indicates
 #'         the absolute fit of the model to the data (difference between observed data
@@ -62,6 +65,20 @@
 #'         The mean square error is the mean of the sum of squared residuals,
 #'         i.e. it measures the average of the squares of the errors. Lower
 #'         values (closer to zero) indicate better fit.
+#'         }
+#'         \item{\strong{Coefficient of Variation}}{
+#'         The advantage of the cv is that it is unitless. This allows
+#'         coefficient of variation to be compared to each other in ways
+#'         that other measures, like standard deviations or root mean
+#'         squared residuals, cannot be.
+#'         \cr \cr
+#'         \dQuote{It is interesting to note the differences between a model's CV
+#'         and R-squared values. Both are unitless measures that are indicative
+#'         of model fit, but they define model fit in two different ways: CV
+#'         evaluates the relative closeness of the predictions to the actual
+#'         values while R-squared evaluates how much of the variability in the
+#'         actual values is explained by the model.}
+#'         \cite{(\href{http://www.ats.ucla.edu/stat/mult_pkg/faq/general/coefficient_of_variation.htm}{source: UCLA-FAQ})}
 #'         }
 #'         \item{\strong{Error Rate}}{
 #'         The error rate is a crude measure for model fit for logistic regression
@@ -87,7 +104,7 @@
 #'         greater than 0.05.
 #'         }
 #'         \item{\strong{Hosmer-Lemeshow Goodness-of-Fit Test}}{
-#'         A well-fitting model shows no significant difference between
+#'         A well-fitting model shows \emph{no} significant difference between
 #'         the model and the observed data, i.e. the reported p-value should be
 #'         greater than 0.05.
 #'         }
@@ -96,24 +113,16 @@
 #' @return \describe{
 #'   \item{\code{chisq_gof()}}{
 #'     For vectors, returns the object of the computed \code{\link[stats]{chisq.test}}.
-#'     \cr \cr
 #'     For \code{glm}-objects, an object of class \code{chisq_gof} with
-#'     following values:
-#'     \itemize{
-#'       \item \code{p.value} the p-value for the goodness-of-fit test
-#'       \item \code{z.score} the standardized z-score for the goodness-of-fit test
-#'       \item \code{RSS} the residual sums of squares term
-#'       \item \code{X2} the pearson chi-squared statistic
-#'     }
+#'     following values: \code{p.value}, the p-value for the goodness-of-fit test;
+#'     \code{z.score}, the standardized z-score for the goodness-of-fit test;
+#'     \code{rss}, the residual sums of squares term and \code{chisq}, the pearson
+#'     chi-squared statistic.
 #'   }
 #'   \item{\code{hoslem_gof()}}{
-#'     An object of class \code{hoslem_test} with
-#'     following values:
-#'     \itemize{
-#'       \item \code{chisq} the Hosmer-Lemeshow chi-squared statistic
-#'       \item \code{df} degrees of freedom
-#'       \item \code{p.value} the p-value for the goodness-of-fit test
-#'     }
+#'     An object of class \code{hoslem_test} with following values: \code{chisq},
+#'      the Hosmer-Lemeshow chi-squared statistic; \code{df}, degrees of freedom
+#'      and \code{p.value} the p-value for the goodness-of-fit test.
 #'   }
 #' }
 #'
@@ -123,16 +132,21 @@
 #' fit <- lm(barthtot ~ c160age + c12hour, data = efc)
 #' rmse(fit)
 #' rse(fit)
+#' cv(fit)
 #'
 #' library(lme4)
 #' fit <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 #' rmse(fit)
 #' mse(fit)
+#' cv(fit)
 #'
 #' # normalized RMSE
 #' library(nlme)
 #' fit <- lme(distance ~ age, data = Orthodont)
 #' rmse(fit, normalized = TRUE)
+#'
+#' #coefficient of variation for variable
+#' cv(efc$e17age)
 #'
 #' # Error Rate
 #' efc$neg_c_7d <- ifelse(efc$neg_c_7 < median(efc$neg_c_7, na.rm = TRUE), 0, 1)
@@ -157,19 +171,19 @@
 #' # differing from population
 #' chisq_gof(efc$e42dep, c(0.3,0.2,0.22,0.28))
 #' # equal to population
-#' chisq_gof(efc$e42dep, prop.table(table(efc$e42dep)))#'
+#' chisq_gof(efc$e42dep, prop.table(table(efc$e42dep)))
 #'
 #'
 #' @importFrom stats residuals df.residual
 #' @export
-rmse <- function(fit, normalized = FALSE) {
+rmse <- function(x, normalized = FALSE) {
   # compute rmse
-  rmse_val <- sqrt(mse(fit))
+  rmse_val <- sqrt(mse(x))
 
   # if normalized, divide by range of response
   if (normalized) {
     # get response
-    resp <- resp_val(fit)
+    resp <- resp_val(x)
     # cpmpute rmse, normalized
     rmse_val <- rmse_val / (max(resp, na.rm = T) - min(resp, na.rm = T))
   }
@@ -181,35 +195,35 @@ rmse <- function(fit, normalized = FALSE) {
 #' @rdname rmse
 #' @name rse
 #' @export
-rse <- function(fit) {
+rse <- function(x) {
   # Residual standard error
-  sqrt(sum(stats::residuals(fit) ^ 2, na.rm = T) / stats::df.residual(fit))
+  sqrt(sum(stats::residuals(x) ^ 2, na.rm = T) / stats::df.residual(x))
 }
 
 
 #' @rdname rmse
 #' @name mse
 #' @export
-mse <- function(fit) {
+mse <- function(x) {
   # Mean square error
-  mean(stats::residuals(fit) ^ 2, na.rm = T)
+  mean(stats::residuals(x) ^ 2, na.rm = T)
 }
 
 
 #' @rdname rmse
 #' @name error_rate
 #' @export
-error_rate <- function(fit) {
+error_rate <- function(x) {
   m0 <- glm(
-    formula = as.formula(sprintf("%s ~ 1", resp_var(fit))),
+    formula = as.formula(sprintf("%s ~ 1", resp_var(x))),
     family = stats::binomial(link = "logit"),
-    data = model_frame(fit)
+    data = model_frame(x)
   )
 
-  y1 <- resp_val(fit)
+  y1 <- resp_val(x)
   y0 <- resp_val(m0)
 
-  p1 <- stats::predict.glm(fit, type = "response")
+  p1 <- stats::predict.glm(x, type = "response")
   error1 <- mean((p1 > .5 & y1 == 0) | (p1 <= .5 & y1 == 1))
 
   p0 <- stats::predict.glm(m0, type = "response")
@@ -228,29 +242,29 @@ error_rate <- function(fit) {
 #' @importFrom purrr map_df
 #' @importFrom sjlabelled get_label
 #' @export
-binned_resid <- function(fit, term = NULL, n.bins = NULL) {
-  fv <- stats::fitted(fit)
-  mf <- model_frame(fit)
+binned_resid <- function(x, term = NULL, n.bins = NULL) {
+  fv <- stats::fitted(x)
+  mf <- model_frame(x)
 
   if (is.null(term))
-    x <- fv
+    pred <- fv
   else
-    x <- mf[[term]]
+    pred <- mf[[term]]
 
-  y <- sjmisc::recode_to(sjmisc::to_value(resp_val(fit))) - fv
+  y <- sjmisc::recode_to(sjmisc::to_value(resp_val(x))) - fv
 
-  if (is.null(n.bins)) n.bins <- round(sqrt(length(x)))
+  if (is.null(n.bins)) n.bins <- round(sqrt(length(pred)))
 
-  breaks.index <- floor(length(x) * (1:(n.bins - 1)) / n.bins)
-  breaks <- unique(c(-Inf, sort(x)[breaks.index], Inf))
+  breaks.index <- floor(length(pred) * (1:(n.bins - 1)) / n.bins)
+  breaks <- unique(c(-Inf, sort(pred)[breaks.index], Inf))
 
-  x.binned <- as.numeric(cut(x, breaks))
+  x.binned <- as.numeric(cut(pred, breaks))
 
   d <- suppressWarnings(
     purrr::map_df(1:n.bins, function(.x) {
-      items <- (1:length(x))[x.binned == .x]
-      x.range <- range(x[items], na.rm = TRUE)
-      xbar <- mean(x[items], na.rm = TRUE)
+      items <- (1:length(pred))[x.binned == .x]
+      x.range <- range(pred[items], na.rm = TRUE)
+      xbar <- mean(pred[items], na.rm = TRUE)
       ybar <- mean(y[items], na.rm = TRUE)
       n <- length(items)
       sdev <- sd(y[items], na.rm = TRUE)
@@ -265,7 +279,7 @@ binned_resid <- function(fit, term = NULL, n.bins = NULL) {
   d$group[gr] <- "no"
 
   class(d) <- c("sj_binres", class(d))
-  attr(d, "resp_var") <- resp_var(fit)
+  attr(d, "resp_var") <- resp_var(x)
   attr(d, "term") <- term
   if (!is.null(term))
     attr(d, "term.label") <- sjlabelled::get_label(mf[[term]], def.value = term)

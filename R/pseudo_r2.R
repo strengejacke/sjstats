@@ -165,7 +165,7 @@ cod <- function(x) {
   cod = abs(m2 - m1)
   names(cod) <- "Tjur's D"
 
-  structure(class = "sjstats_r2", list(cod = cod))
+  structure(class = "sj_r2", list(cod = cod))
 }
 
 
@@ -200,7 +200,7 @@ r2.stanreg <- function(x, loo = FALSE, ...) {
   if (isTRUE(loo)) {
     rsq <- looR2(x)
     names(rsq) <- "LOO-adjusted R2"
-    structure(class = "sjstats_r2", list(r2 = rsq))
+    structure(class = "sj_r2", list(r2 = rsq))
   } else {
     brs <- rstanarm::bayes_R2(x)
     rsq <- stats::median(brs)
@@ -209,7 +209,7 @@ r2.stanreg <- function(x, loo = FALSE, ...) {
     names(rsq) <- "Bayes R2"
     names(rsq.se) <- "Standard Error"
 
-    structure(class = "sjstats_r2", list(r2 = rsq, se = rsq.se))
+    structure(class = "sj_r2", list(r2 = rsq, se = rsq.se))
   }
 }
 
@@ -223,7 +223,7 @@ r2.brmsfit <- function(x, loo = FALSE, ...) {
   if (isTRUE(loo)) {
     rsq <- looR2(x)
     names(rsq) <- "LOO-adjusted R2"
-    structure(class = "sjstats_r2", list(r2 = rsq))
+    structure(class = "sj_r2", list(r2 = rsq))
   } else {
     brs <- brms::bayes_R2(x, summary = TRUE, robust = TRUE)
     rsq <- brs[1]
@@ -232,7 +232,7 @@ r2.brmsfit <- function(x, loo = FALSE, ...) {
     names(rsq) <- "Bayes R2"
     names(rsq.se) <- "Standard Error"
 
-    structure(class = "sjstats_r2", list(r2 = rsq, se = rsq.se))
+    structure(class = "sj_r2", list(r2 = rsq, se = rsq.se))
   }
 }
 
@@ -247,7 +247,7 @@ r2.glm <- function(x, ...) {
   names(CoxSnell) <- "Cox & Snell's R-squared"
   names(Nagelkerke) <- "Nagelkerke's R-squared"
 
-  structure(class = "sjstats_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke))
+  structure(class = "sj_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke))
 }
 
 
@@ -268,7 +268,7 @@ r2.lm <- function(x, ...) {
   names(adjr2) <- "adjusted R-squared"
 
   # return results
-  structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2))
+  structure(class = "sj_r2", list(r2 = rsq, adjr2 = adjr2))
 }
 
 
@@ -283,7 +283,7 @@ r2.default <- function(x, ...) {
   names(adjr2) <- "adjusted R-squared"
 
   # return results
-  structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2))
+  structure(class = "sj_r2", list(r2 = rsq, adjr2 = adjr2))
 }
 
 #' @export
@@ -297,7 +297,7 @@ r2.plm <- function(x, ...) {
   names(adjr2) <- "adjusted R-squared"
 
   # return results
-  structure(class = "sjstats_r2", list(r2 = rsq, adjr2 = adjr2))
+  structure(class = "sj_r2", list(r2 = rsq, adjr2 = adjr2))
 }
 
 
@@ -361,7 +361,7 @@ r2linmix <- function(x, n) {
     names(osq) <- "Omega-squared"
 
     # return results
-    structure(class = "sjstats_r2", list(
+    structure(class = "sj_r2", list(
       r2_tau00 = rsq0,
       r2_tau11 = rsq1,
       r2 = rsq,
@@ -380,6 +380,6 @@ r2linmix <- function(x, n) {
     names(osq) <- "Omega-squared"
 
     # return results
-    structure(class = "sjstats_r2", list(r2 = rsq, o2 = osq))
+    structure(class = "sj_r2", list(r2 = rsq, o2 = osq))
   }
 }

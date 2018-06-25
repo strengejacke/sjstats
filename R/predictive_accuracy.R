@@ -125,7 +125,7 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
 
   # return mean value of accuracy
   structure(
-    class = c("sjstats_pred_accuracy", "list"),
+    class = c("sj_pred_accuracy", "list"),
     list(
       accuracy = mean(cv$accuracy),
       std.error = sd(cv$accuracy),
