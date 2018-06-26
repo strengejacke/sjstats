@@ -88,7 +88,9 @@
 #'         In general, the error rate should be below 0.5 (i.e. 50\%), the
 #'         closer to zero, the better. Furthermore, the error rate of the full
 #'         model should be considerably below the null model's error rate
-#'         (cf. Gelman and Hill 2007, pp. 99).
+#'         (cf. Gelman and Hill 2007, pp. 99). The \code{print()}-method also
+#'         prints the results from the Likelihood-Ratio-Test, comparing the full
+#'         to the null model.
 #'         }
 #'         \item{\strong{Binned Residuals}}{
 #'         Binned residual plots are achieved by \dQuote{dividing the data into
@@ -99,19 +101,17 @@
 #'         \cr \cr
 #'         If \code{term} is not \code{NULL}, one can compare the residuals in
 #'         relation to a specific model predictor. This may be helpful to check
-#'         if a term should be better transformed, e.g. a rising and falling
+#'         if a term would fit better when transformed, e.g. a rising and falling
 #'         pattern of residuals along the x-axis (the pattern is indicated by
 #'         a green line) is a signal to consider taking the logarithm of the
 #'         predictor (cf. Gelman and Hill 2007, pp. 97ff).
 #'         }
 #'         \item{\strong{Chi-squared Goodness-of-Fit Test}}{
 #'         For vectors, this function is a convenient function for the
-#'         \code{chisq.test()}, performing goodness-of-fit test.
-#'         \cr \cr
-#'         For \code{glm}-objects, this function performs a goodness-of-fit test
-#'         based on the \code{X2GOFtest()} function of the \CRANpkg{binomTools}
-#'         package. A well-fitting model shows no significant difference between
-#'         the model and the observed data, i.e. the reported p-values should be
+#'         \code{chisq.test()}, performing goodness-of-fit test. For
+#'         \code{glm}-objects, this function performs a goodness-of-fit test.
+#'         A well-fitting model shows \emph{no} significant difference between the
+#'         model and the observed data, i.e. the reported p-values should be
 #'         greater than 0.05.
 #'         }
 #'         \item{\strong{Hosmer-Lemeshow Goodness-of-Fit Test}}{
@@ -126,7 +126,9 @@
 #'     These functions return a number, the requested statistic.
 #'   }
 #'   \item{\code{error_rate()}}{
-#'     A list with two numbers: the error rate of the full and the null model.
+#'     A list with four values: the error rate of the full and the null model,
+#'     as well as the chi-squared and p-value from the Likelihood-Ratio-Test
+#'     between the full and null model.
 #'   }
 #'   \item{\code{binned_resid()}}{
 #'     A data frame representing the data that is mapped to the plot, which is
@@ -236,14 +238,16 @@ mse <- function(x) {
 
 
 #' @rdname rmse
+#' @importFrom stats binomial predict.glm pchisq logLik weights
 #' @name error_rate
 #' @export
 error_rate <- function(x) {
-  m0 <- glm(
+  m0 <- suppressWarnings(glm(
     formula = as.formula(sprintf("%s ~ 1", resp_var(x))),
     family = stats::binomial(link = "logit"),
-    data = model_frame(x)
-  )
+    data = model_frame(x),
+    weights = stats::weights(x)
+  ))
 
   y1 <- resp_val(x)
   y0 <- resp_val(m0)
@@ -254,7 +258,21 @@ error_rate <- function(x) {
   p0 <- stats::predict.glm(m0, type = "response")
   error0 <- mean((p0 > .5 & y0 == 0) | (p0 <= .5 & y0 == 1))
 
-  er <- list(error.model = error1, error.null = error0)
+  lrt.p <- 1 - stats::pchisq(
+    q = x$null.deviance - x$deviance,
+    df = x$df.null - x$df.residual,
+    lower.tail = TRUE
+  )
+
+  lrt.chisq <- 2 * abs(stats::logLik(x) - stats::logLik(m0))
+
+  er <- list(
+    error.model = error1,
+    error.null = error0,
+    lrt.chisq = as.vector(lrt.chisq),
+    lrt.p = lrt.p
+  )
+
   class(er) <- c("sj_error_rate", class(er))
 
   er

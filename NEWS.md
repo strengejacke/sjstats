@@ -19,6 +19,7 @@
 ## Bug fixes
 
 * `model_frame()` and `var_names()` now correctly cleans nested patterns like `offset(log(x + 10))` from column names.
+* `model_frame()` did not work when the model frame had spline-terms and weights.
 * Fix issue in `robust()` when `exponentiate = TRUE` and `conf.int = FALSE`.
 
 # sjstats 0.15.0

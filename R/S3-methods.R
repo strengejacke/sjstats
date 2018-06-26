@@ -1609,10 +1609,20 @@ print.sj_pval <- function(x, digits = 3, summary = FALSE, ...) {
 
 
 #' @export
-print.sj_error_rate <- function(x, digits = 2, ...) {
-  cat(crayon::blue("# Error Rate of Logistic Regression Model\n\n"))
+print.sj_error_rate <- function(x, ...) {
+  cat(crayon::blue("\n# Error Rate of Logistic Regression Model\n\n"))
   cat(sprintf("  Full model: %.2f%%\n", 100 * x$error.model))
   cat(sprintf("  Null model: %.2f%%\n", 100 * x$error.null))
+
+  cat(crayon::blue("\n# Likelihood-Ratio-Test\n\n"))
+
+  v1 <- sprintf("%.3f", x$lrt.chisq)
+  v2 <- sprintf("%.3f", x$lrt.p)
+
+  space <- max(nchar(c(v1, v2)))
+
+  cat(sprintf("  Chi-squared: %*s\n", space, v1))
+  cat(sprintf("      p-value: %*s\n\n", space, v2))
 }
 
 
@@ -1678,5 +1688,49 @@ print.sj_binres <- function(x, ...) {
     p <- p + ggplot2::geom_point(ggplot2::aes_string(y = "ybar", colour = "group"))
   }
 
-  graphics::plot(p)
+  suppressWarnings(graphics::plot(p))
 }
+
+
+#' @export
+print.sj_chi2gof <- function(x, ...) {
+  cat(crayon::blue("\n# Chi-squared Goodness-of-Fit Test\n\n"))
+
+  v1 <- sprintf("%.3f", x$chisq)
+  v2 <- sprintf("%.3f", x$z.score)
+  v3 <- sprintf("%.3f", x$p.value)
+
+  space <- max(nchar(c(v1, v2, v3)))
+
+  cat(sprintf("  Chi-squared: %*s\n", space, v1))
+  cat(sprintf("      z-score: %*s\n", space, v2))
+  cat(sprintf("      p-value: %*s\n\n", space, v3))
+
+  if (x$p.value >= 0.05)
+    message("Summary: model seems to fit well.")
+  else
+    message("Summary: model does not fit well.")
+}
+
+
+#' @importFrom crayon blue
+#' @export
+print.sj_hoslem <- function(x, ...) {
+  cat(crayon::blue("\n# Hosmer-Lemeshow Goodness-of-Fit Test\n\n"))
+
+  v1 <- sprintf("%.3f", x$chisq)
+  v2 <- sprintf("%i    ", x$df)
+  v3 <- sprintf("%.3f", x$p.value)
+
+  space <- max(nchar(c(v1, v2, v3)))
+
+  cat(sprintf("  Chi-squared: %*s\n", space, v1))
+  cat(sprintf("           df: %*s\n", space, v2))
+  cat(sprintf("      p-value: %*s\n\n", space, v3))
+
+  if (x$p.value >= 0.05)
+    message("Summary: model seems to fit well.")
+  else
+    message("Summary: model does not fit well.")
+}
+

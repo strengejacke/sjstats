@@ -219,6 +219,9 @@ link_inverse <- function(x) {
 #' @importFrom tibble as_tibble
 #' @export
 model_frame <- function(x, fe.only = TRUE) {
+  # we may store model weights here later
+  mw <- NULL
+
   if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
     fitfram <- stats::model.frame(x, fixed.only = fe.only)
   else if (inherits(x, "lme"))
@@ -298,7 +301,18 @@ model_frame <- function(x, fe.only = TRUE) {
         needed.vars <- c(colnames(fitfram)[1], needed.vars)
       }
 
+      # check model weights
+
+      if ("(weights)" %in% needed.vars && !tibble::has_name(md, "(weights)")) {
+        needed.vars <- needed.vars[-which(needed.vars == "(weights)")]
+        mw <- fitfram[["(weights)"]]
+      }
+
+
       fitfram <- stats::na.omit(dplyr::select(md, !! needed.vars))
+
+      # add back model weights, if any
+      if (!is.null(mw)) fitfram$`(weights)` <- mw
     }
 
   }

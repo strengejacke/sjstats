@@ -36,7 +36,7 @@ chisq_gof <- function(x, prob = NULL, weights = NULL) {
       rss = RSS,
       chisq = X2
     )
-    class(chi2gof) <- "chi2gof"
+    class(chi2gof) <- c("sj_chi2gof", "list")
   } else {
     # check if we have probs
     if (is.null(prob)) {
@@ -92,6 +92,6 @@ hoslem_gof <- function(x, n.bins = 10) {
     p.value = p.value
   )
 
-  class(hoslem) <- c("hoslem_test", "list")
+  class(hoslem) <- c("sj_hoslem", "list")
   hoslem
 }
