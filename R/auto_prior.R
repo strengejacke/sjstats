@@ -44,6 +44,9 @@
 #' # ps$prior_intercept$adjusted_scale
 #' # ps$prior$adjusted_scale
 #'
+#' ## usage
+#' # ap <- auto_prior(mf, efc, TRUE)
+#' # brm(mf, data = efc, priors = ap)
 #'
 #' efc$neg_c_7d <- ifelse(efc$neg_c_7 < median(efc$neg_c_7, na.rm = TRUE), 0, 1)
 #' mf <- formula(neg_c_7d ~ c161sex + c160age + c172code + e17age)
