@@ -49,6 +49,14 @@ mf <- formula(neg_c_7 ~ c161sex + c160age + c172code)
 if (requireNamespace("brms", quietly = TRUE))
   auto_prior(mf, efc, TRUE)
 
+## compare to
+# library(rstanarm)
+# m <- stan_glm(mf, data = efc, chains = 2, iter = 200)
+# ps <- prior_summary(m)
+# ps$prior_intercept$adjusted_scale
+# ps$prior$adjusted_scale
+
+
 efc$neg_c_7d <- ifelse(efc$neg_c_7 < median(efc$neg_c_7, na.rm = TRUE), 0, 1)
 mf <- formula(neg_c_7d ~ c161sex + c160age + c172code + e17age)
 
