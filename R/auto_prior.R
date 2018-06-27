@@ -5,7 +5,8 @@
 #'   models, based on the same automatic prior-scale adjustment as in
 #'   \pkg{rstanarm}.
 #'
-#' @param formula A formula describing the model.
+#' @param formula A formula describing the model, which just needs to contain
+#'   the model terms, but no notation of interaction, splines etc.
 #' @param data The data that will be used to fit the model.
 #' @param gaussian Logical, if the outcome is gaussian or not.
 #' @param locations A numeric vector with location values for the priors. If

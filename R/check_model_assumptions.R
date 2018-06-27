@@ -60,8 +60,9 @@
 #'          \code{type = "diag"}).
 #'          \cr \cr
 #'          \code{multicollin()} wraps \code{\link[car]{vif}} and returns
-#'          the logical result as tibble. \code{TRUE}, if multicollinearity
-#'          exists, else not. In case of multicollinearity, the names of independent
+#'          the maximum vif-value from a model as tibble. If this value is
+#'          larger than about 4, multicollinearity exists, else not.
+#'          In case of multicollinearity, the names of independent
 #'          variables that vioalte contribute to multicollinearity are printed
 #'          to the console.
 #'          \cr \cr
@@ -112,11 +113,12 @@
 #' tmp %>% check_assumptions("models", as.logical = TRUE, reps = 100)}
 #'
 #' @importFrom tibble tibble
+#' @importFrom stats formula
 #' @export
 check_assumptions <- function(x, model.column = NULL, as.logical = FALSE, ...) {
   # check assumptions for original
   hn <- suppressMessages(heteroskedastic(x, model.column)$heteroskedastic)
-  mn <- suppressMessages(multicollin(x, model.column)$multicollin)
+  mn <- suppressMessages(multicollin(x, model.column)$max.vif)
   nn <- suppressMessages(normality(x, model.column)$non.normality)
   an <- suppressMessages(autocorrelation(x, model.column, ...)$autocorrelation)
 
@@ -125,14 +127,22 @@ check_assumptions <- function(x, model.column = NULL, as.logical = FALSE, ...) {
     hn <- hn < 0.05
     nn <- nn < 0.05
     an <- an < 0.05
+    mn <- sqrt(mn) > 2
   }
 
-  tibble::tibble(
+  rv <- tibble::tibble(
     heteroskedasticity = hn,
     multicollinearity = mn,
     non.normal.resid = nn,
     autocorrelation = an
   )
+
+  if (is.null(model.column) && !as.logical) {
+    class(rv) <- c("sj_check_assump", class(rv))
+    attr(rv, "formula") <- deparse(stats::formula(x))
+  }
+
+  rv
 }
 
 
@@ -374,22 +384,22 @@ multicollin <- function(x, model.column = NULL) {
       # iterate all model columns in nested data frame
       purrr::map(x[[model.column]], ~ .x) %>%
       # call vif for each model, and just get p-value
-      purrr::map_lgl(~ any(sqrt(car::vif(.x)) > 2))
+      purrr::map_dbl(~ max(car::vif(.x)))
   } else {
     # check for autocorrelation
-    ts <- sqrt(car::vif(x)) > 2
+    ts <- car::vif(x)
 
-    if (any(ts)) {
+    if (any(sqrt(ts) > 2)) {
       mp <- paste(sprintf("%s", names(ts)), collapse = ", ")
       message(paste0("Multicollinearity detected for following predictors: ", mp))
     } else {
       message("No multicollinearity detected.")
     }
 
-    ts <- any(ts)
+    ts <- max(ts)
   }
 
-  tibble::tibble(multicollin = ts)
+  tibble::tibble(max.vif = ts)
 }
 
 

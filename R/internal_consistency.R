@@ -18,10 +18,10 @@
 #'
 #' @return \describe{
 #'            \item{\code{reliab_test()}}{
-#'              A data frame with the corrected item-total correlations (item discrimination,
-#'              column \code{item.discr}) and Cronbach's alpha (if item deleted, column
-#'              \code{alpha.if.deleted}) for each item of the scale, or \code{NULL}
-#'              if data frame had too less columns.
+#'              A data frame with the corrected item-total correlations (\emph{item
+#'              discrimination}, column \code{item.discr}) and Cronbach's alpha
+#'              (if item deleted, column \code{alpha.if.deleted}) for each item
+#'              of the scale, or \code{NULL} if data frame had too less columns.
 #'            }
 #'            \item{\code{split_half()}}{
 #'              A list with two values: the split-half reliability \code{splithalf} and
@@ -33,6 +33,9 @@
 #'            \item{\code{mic()}}{
 #'              The mean inter-item-correlation value for \code{x}.
 #'            }
+#'            \item{\code{difficulty()}}{
+#'              The item difficulty value for \code{x}.
+#'            }
 #'          }
 #'
 #' @details \describe{
@@ -40,14 +43,23 @@
 #'              This function calculates the item discriminations (corrected item-total
 #'              correlations for each item of \code{x} with the remaining items) and
 #'              the Cronbach's alpha for each item, if it was deleted from the scale.
+#'              The absolute value of the item discrimination indices should be
+#'              above 0.1. An index between 0.1 and 0.3 is considered as "fair",
+#'              while an index above 0.3 (or below -0.3) is "good". Items with
+#'              low discrimination indices are often ambiguously worded and
+#'              should be examined. Items with negative indices should be
+#'              examined to determine why a negative value was obtained (e.g.
+#'              reversed answer categories regarding positive and negative poles).
 #'            }
 #'            \item{\code{split_half()}}{
 #'              This function calculates the split-half reliability for items in
 #'              the data frame \code{x}, including the Spearman-Brown adjustment.
 #'              Splitting is done by selecting odd versus even columns in \code{x}.
+#'              A value closer to 1 indicates greater internal consistency.
 #'            }
 #'            \item{\code{cronb()}}{
 #'              The Cronbach's Alpha value for \code{x}.
+#'              A value closer to 1 indicates greater internal consistency.
 #'            }
 #'            \item{\code{mic()}}{
 #'              This function calculates a mean inter-item-correlation, i.e.
@@ -56,26 +68,25 @@
 #'              \code{\link{cor}}-function) and the mean
 #'              of the sum of all item's correlation values is returned.
 #'              Requires either a data frame or a computed \code{\link{cor}}-object.
+#'              \cr \cr
+#'              \dQuote{Ideally, the average inter-item correlation for a set of
+#'              items should be between .20 and .40, suggesting that while the
+#'              items are reasonably homogenous, they do contain sufficiently
+#'              unique variance so as to not be isomorphic with each other.
+#'              When values are lower than .20, then the items may not be
+#'              representative of the same content domain. If values are higher than
+#'              .40, the items may be only capturing a small bandwidth of the construct.}
+#'              \cite{(Piedmont 2014)}
+#'            }
+#'            \item{\code{difficulty()}}{
+#'              This function calculates the irem difficutly, which should
+#'              range between 0.2 and 0.8. Lower values are a signal for
+#'              more difficult items, while higher values close to one
+#'              are a sign for easier items. The ideal value for item difficulty
+#'              is \code{p + (1 - p) / 2}, where \code{p = 1 / max(x)}. In most
+#'              cases, the ideal item difficulty lies between 0.5 and 0.8.
 #'            }
 #'          }
-#'
-#' @note \code{reliab_test()} is similar to a basic reliability test
-#'         in SPSS. The correlations in the Item-Total-Statistic are a computed
-#'         correlation of each item against the sum of the remaining items
-#'         (which are thus treated as one item).
-#'         \cr \cr
-#'         For \code{split_half()} and \code{cronb()}, a value closer  to 1 indicates
-#'         greater internal consistency.
-#'         \cr \cr
-#'         For the mean inter-item-correlation:
-#'         \dQuote{Ideally, the average inter-item correlation for a set of
-#'          items should be between .20 and .40, suggesting that while the
-#'          items are reasonably homogenous, they do contain sufficiently
-#'          unique variance so as to not be isomorphic with each other.
-#'          When values are lower than .20, then the items may not be
-#'          representative of the same content domain. If values are higher than
-#'          .40, the items may be only capturing a small bandwidth of the construct.}
-#'          \cite{(Piedmont 2014)}
 #'
 #' @references Spearman C. 1910. Correlation calculated from faulty data. British Journal of Psychology (3): 271–295. \doi{10.1111/j.2044-8295.1910.tb00206.x}
 #'             \cr \cr
@@ -111,6 +122,9 @@
 #'
 #' # mean inter-item-correlation
 #' mic(x)
+#'
+#' # item difficulty
+#' difficulty(x)
 #'
 #' \dontrun{
 #' library(sjPlot)
@@ -195,7 +209,7 @@ reliab_test <- function(x, scale.items = FALSE, digits = 3, out = c("txt", "view
     )
   } else {
     warning("Data frame needs at least three columns for reliability-test.", call. = F)
-    ret.df <- NULL
+    return(NULL)
   }
 
   # save how to print output
@@ -247,6 +261,30 @@ cronb <- function(x) {
   dim(.data)[2] / (dim(.data)[2] - 1) * (1 - sum(apply(.data, 2, var)) / stats::var(rowSums(.data)))
 }
 
+
+#' @rdname reliab_test
+#' @importFrom stats na.omit
+#' @export
+difficulty <- function(x) {
+  d <- apply(x, 2, function(.x) {
+    .x <- stats::na.omit(.x)
+    round(sum(.x) / (max(.x) * length(.x)), 2)
+  })
+
+  # ideal item difficulty
+  fun.diff.ideal <- function(.x) {
+    p <- 1 / max(.x, na.rm = T)
+    round(p + (1 - p) / 2, 2)
+  }
+
+  di <- apply(x, 2, fun.diff.ideal)
+
+  attr(d, "ideal.difficulty") <- di
+  attr(d, "items") <- colnames(x)
+  class(d) <- c("sj_item_diff", "numeric")
+
+  d
+}
 
 
 #' @rdname reliab_test

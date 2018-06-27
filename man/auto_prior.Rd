@@ -7,7 +7,8 @@
 auto_prior(formula, data, gaussian, locations = NULL)
 }
 \arguments{
-\item{formula}{A formula describing the model.}
+\item{formula}{A formula describing the model, which just needs to contain
+the model terms, but no notation of interaction, splines etc.}
 
 \item{data}{The data that will be used to fit the model.}
 

@@ -89,8 +89,9 @@ These functions are wrappers that compute various test statistics,
          \code{type = "diag"}).
          \cr \cr
          \code{multicollin()} wraps \code{\link[car]{vif}} and returns
-         the logical result as tibble. \code{TRUE}, if multicollinearity
-         exists, else not. In case of multicollinearity, the names of independent
+         the maximum vif-value from a model as tibble. If this value is
+         larger than about 4, multicollinearity exists, else not.
+         In case of multicollinearity, the names of independent
          variables that vioalte contribute to multicollinearity are printed
          to the console.
          \cr \cr

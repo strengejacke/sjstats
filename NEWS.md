@@ -1,4 +1,4 @@
-# sjstats 0.15.1
+# sjstats 0.16.0
 
 ## General
 
@@ -9,18 +9,22 @@
 
 * `binned_resid()` to plot binned residuals for logistic regression models.
 * `error_rate()` to compute model quality for logistic regression models.
+* `auto_prior()` to quickly create automatically adjusted priors for brms-models.
+* `difficulty()` to compute the item difficulty.
 
 ## Changes to functions
 
 * `icc()` gets a `ppd`-argument for Stan-models (*brmsfit* and *stanreg*), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.
 * For Stan-models (*brmsfit* and *stanreg*), `icc()` now also computes the HDI for the ICC and random-effect variances. Use the `prob`-argument to specify the limits of this interval.
 * `link_inverse()` and `model_family()` now support _clmm_-models (package *ordinal*) and _glmRob_ and _lmRob_-models (package *robust*).
+* `check_assumptions()` for single models with `as.logical = FALSE` now has a nice print-method.
 
 ## Bug fixes
 
 * `model_frame()` and `var_names()` now correctly cleans nested patterns like `offset(log(x + 10))` from column names.
 * `model_frame()` did not work when the model frame had spline-terms and weights.
 * Fix issue in `robust()` when `exponentiate = TRUE` and `conf.int = FALSE`.
+* `reliab_test()` returned an error when the provided data frame has less than three columns, instead of returning `NULL`.
 
 # sjstats 0.15.0
 

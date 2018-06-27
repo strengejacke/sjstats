@@ -1734,3 +1734,43 @@ print.sj_hoslem <- function(x, ...) {
     message("Summary: model does not fit well.")
 }
 
+
+#' @importFrom crayon blue
+#' @export
+print.sj_check_assump <- function(x, ...) {
+  cat(crayon::blue("\n# Checking Model-Assumptions\n\n"))
+  cat(sprintf("  Model: %s", attr(x, "formula", exact = TRUE)))
+
+  cat(crayon::red("\n\n                          violated    statistic\n"))
+
+  v1 <- ifelse(x$heteroskedasticity < 0.05, "yes", "no")
+  v2 <- ifelse(x$multicollinearity > 4, "yes", "no")
+  v3 <- ifelse(x$non.normal.resid < 0.05, "yes", "no")
+  v4 <- ifelse(x$autocorrelation < 0.05, "yes", "no")
+
+  s1 <- sprintf("p = %.3f", x$heteroskedasticity)
+  s2 <- sprintf("vif = %.3f", x$multicollinearity)
+  s3 <- sprintf("p = %.3f", x$non.normal.resid)
+  s4 <- sprintf("p = %.3f", x$autocorrelation)
+
+  cat(sprintf("  Heteroskedasticity      %8s  %11s\n", v1, s1))
+  cat(sprintf("  Non-normal residuals    %8s  %11s\n", v3, s3))
+  cat(sprintf("  Autocorrelated residuals%8s  %11s\n", v4, s4))
+  cat(sprintf("  Multicollinearity       %8s  %11s\n", v2, s2))
+}
+
+
+#' @importFrom crayon blue
+#' @export
+print.sj_item_diff <- function(x, ...) {
+  cat(crayon::blue("\n# Item Difficulty\n\n"))
+
+  items <- attr(x, "items", exact = TRUE)
+  ideal <- attr(x, "ideal.difficulty", exact = TRUE)
+  spaces <- max(nchar(items))
+
+  cat(crayon::red(sprintf("  %*s  ideal\n", spaces + 10, "difficulty")))
+
+  for (i in 1:length(items))
+    cat(sprintf("  %*s      %.2f   %.2f\n", spaces, items[i], x[i], ideal[i]))
+}
