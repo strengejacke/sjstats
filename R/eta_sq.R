@@ -72,7 +72,6 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
     es = es
   )
 
-
   if (partial) {
     if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
       x <- dplyr::bind_cols(x, peta_sq_ci(aov.sum = aov_stat_summary(model), ci.lvl = ci.lvl))
@@ -94,6 +93,8 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
     type == "peta" ~ "partial.etasq",
     TRUE ~ "effect.size"
   )
+
+  if (!is.null(attr(es, "stratum"))) x$stratum <- attr(es, "stratum")[1:nrow(x)]
 
   x
 }
@@ -141,6 +142,8 @@ omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
     type == "pomega" ~ "partial.omegasq",
     TRUE ~ "effect.size"
   )
+
+  if (!is.null(attr(es, "stratum"))) x$stratum <- attr(es, "stratum")[1:nrow(x)]
 
   x
 }
@@ -205,7 +208,12 @@ anova_stats <- function(model, digits = 3) {
 #' @importFrom rlang .data
 aov_stat <- function(model, type) {
   aov.sum <- aov_stat_summary(model)
-  aov_stat_core(aov.sum, type)
+  aov.res <- aov_stat_core(aov.sum, type)
+
+  if (tibble::has_name(aov.sum, "stratum"))
+    attr(aov.res, "stratum") <- aov.sum[["stratum"]]
+
+  aov.res
 }
 
 
@@ -219,10 +227,10 @@ aov_stat_summary <- function(model) {
 
   # check that model inherits from correct class
   # else, try to coerce to anova table
-  if (!inherits(model, c("aov", "anova", "anova.rms"))) model <- stats::anova(model)
+  if (!inherits(model, c("aov", "anova", "anova.rms", "aovlist"))) model <- stats::anova(model)
 
   # get summary table
-  aov.sum <- broom::tidy(model)
+  aov.sum <- as.data.frame(broom::tidy(model))
 
   # for mixed models, add information on residuals
   if (mm) {
@@ -324,16 +332,21 @@ omega_sq_ci <- function(aov.sum, ci.lvl = .95) {
     1:rows,
     function(.x) {
       df.num = aov.sum[.x, "df"]
+      test.stat <- aov.sum[.x, "statistic"]
 
-      ci <- MBESS::conf.limits.ncf(
-        F.value = aov.sum[.x, "statistic"],
-        conf.level = ci.lvl,
-        df.1 = df.num,
-        df.2 = df.den
-      )
+      if (!is.na(test.stat)) {
+        ci <- MBESS::conf.limits.ncf(
+          F.value = test.stat,
+          conf.level = ci.lvl,
+          df.1 = df.num,
+          df.2 = df.den
+        )
 
-      ci.low <- ci$Lower.Limit / (ci$Lower.Limit + N)
-      ci.high <- ci$Upper.Limit / (ci$Upper.Limit + N)
+        ci.low <- ci$Lower.Limit / (ci$Lower.Limit + N)
+        ci.high <- ci$Upper.Limit / (ci$Upper.Limit + N)
+      } else {
+        ci.low <- ci.high <- NA
+      }
 
       tibble::tibble(
         conf.low = ci.low,
@@ -366,18 +379,26 @@ peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
     1:rows,
     function(.x) {
       df.num = aov.sum[.x, "df"]
+      test.stat <- aov.sum[.x, "statistic"]
 
-      ci <- apaTables::get.ci.partial.eta.squared(
-        F.value = aov.sum[.x, "statistic"],
-        df1 = df.num,
-        df2 = df.den,
-        conf.level = ci.lvl
-      )
+      if (!is.na(test.stat)) {
+        ci <- apaTables::get.ci.partial.eta.squared(
+          F.value = test.stat,
+          df1 = df.num,
+          df2 = df.den,
+          conf.level = ci.lvl
+        )
 
-      tibble::tibble(
-        conf.low = ci$LL,
-        conf.high = ci$UL
-      )
+        tibble::tibble(
+          conf.low = ci$LL,
+          conf.high = ci$UL
+        )
+      } else {
+        tibble::tibble(
+          conf.low = NA,
+          conf.high = NA
+        )
+      }
     }
   )
 }
