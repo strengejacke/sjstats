@@ -78,8 +78,7 @@ The ICC is calculated by dividing the between-group-variance (random
     \item Random-Intercept-Slope-covariance: tau.01
     \item Random-Intercept-Slope-correlation: rho.01
   }
-  \cr \cr
-  If \code{ppd = TRUE}, `icc()` calculates a variance decomposition based on
+  If \code{ppd = TRUE}, \code{icc()} calculates a variance decomposition based on
   the posterior predictive distribution. In this case, first, the draws from
   the posterior predictive distribution \emph{not conditioned} on group-level
   terms (\code{posterior_predict(..., re.form = NA)}) are calculated as well

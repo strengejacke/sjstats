@@ -114,6 +114,17 @@ p_value.default <- function(fit, ...) {
   make_it_so(p, se)
 }
 
+
+#' @export
+p_value.rlm <- function(fit, ...) {
+  cs <- stats::coef(summary(fit))
+  p <- 2 * stats::pnorm(abs(cs[, 3]), lower.tail = FALSE)
+  se <- cs[, 2]
+
+  make_it_so(p, se)
+}
+
+
 #' @rdname p_value
 #' @export
 p_value.lmerMod <- function(fit, p.kr = FALSE, ...) {

@@ -15,7 +15,7 @@ The comprised tools include:
 * For regression and mixed models: Coefficient of Variation, Root Mean Squared Error, Residual Standard Error, Coefficient of Discrimination, R-squared and pseudo-R-squared values, standardized beta values
 * Especially for mixed models: Design effect, ICC, sample size calculation and convergence tests
 * Especially for Bayesian models: Highest Density Interval, region of practical equivalence (rope), Monte Carlo Standard Errors, ratio of number of effective samples, mediation analysis, Test for Practical Equivalence
-* Fit and accuracy measures for regression models: Overdispersion tests, accuracy of predictions, test/training-error comparisons
+* Fit and accuracy measures for regression models: Overdispersion tests, accuracy of predictions, test/training-error comparisons, error rate and binned residual plots for logistic regression models
 * For anova-tables: Eta-squared, Partial Eta-squared and Omega-squared statistics
 
 Furthermore, *sjstats* has functions to access information from model objects, which either support more model objects than their *stats* counterparts, or provide easy access to model attributes, like:
