@@ -28,7 +28,7 @@ Depends:
     utils
 Imports:
     bayesplot,
-    broom,
+    broom (>= 0.4.5),
     coin,
     crayon,
     dplyr (>= 0.7.1),
@@ -46,8 +46,8 @@ Imports:
     pwr,
     rlang,
     sandwich (>= 2.3-4),
-    sjlabelled (>= 1.0.8),
-    sjmisc (>= 2.7.0),
+    sjlabelled (>= 1.0.11),
+    sjmisc (>= 2.7.3),
     tidyr (>= 0.7.0),
     tidyselect,
     tibble (>= 1.3.3)
