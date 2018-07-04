@@ -106,7 +106,6 @@
 #'
 #'
 #' @examples
-#' library(sjmisc)
 #' data(efc)
 #'
 #' # Tjur's R-squared value

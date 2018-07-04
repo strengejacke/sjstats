@@ -116,7 +116,6 @@ For linear models, the r-squared and adjusted r-squared value is returned,
       }
 }
 \examples{
-library(sjmisc)
 data(efc)
 
 # Tjur's R-squared value
