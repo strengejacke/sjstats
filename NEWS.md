@@ -5,6 +5,7 @@
 * The S3-generics for functions like `hdi()`, `rope()`, `equi_test()` etc. are now more generic, and function usage for each supported object is now included in the documentation.
 * Following functions are now S3-generic: `icc()`, `r2()`, `p_value()`, `se()`, and `std_beta()`.
 * Added `print()`-methods for some more functions, for a clearer output.
+* Revised `r2()` for mixed models (packages **lme4**, **glmmTMB**). The r-squared value should be much more precise now, and reports the marginal and conditional r-squared values.
 
 ## New functions
 
