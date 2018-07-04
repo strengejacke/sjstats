@@ -20,7 +20,7 @@
 * `link_inverse()` and `model_family()` now support _clmm_-models (package *ordinal*) and _glmRob_ and _lmRob_-models (package *robust*).
 * `p_value()` now supports _rlm_-models (package *MASS*).
 * `check_assumptions()` for single models with `as.logical = FALSE` now has a nice print-method.
-* `eta_sq()` and `omega_sq()` now also work for repeated-measure Anovas, i.e. Anova with error term (requires broom >= 0.4.5).
+* `eta_sq()` and `omega_sq()` now also work for repeated-measure Anovas, i.e. Anova with error term (requires broom > 0.4.5).
 
 ## Bug fixes
 

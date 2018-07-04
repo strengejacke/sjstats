@@ -60,12 +60,39 @@ p_value <- function(fit, ...) {
   UseMethod("p_value")
 }
 
+
 #' @export
 p_value.multinom <- function(fit, ...) {
   fit %>%
     broom::tidy() %>%
     dplyr::select(.data$term, .data$p.value, .data$std.error)
 }
+
+
+#' @importFrom stats coef vcov pnorm
+#' @export
+p_value.svyglm.nb <- function(fit, ...) {
+  if (!isNamespaceLoaded("survey"))
+    requireNamespace("survey", quietly = TRUE)
+
+  est <- stats::coef(fit)
+  se <- sqrt(diag(stats::vcov(fit, stderr = "robust")))
+  p <- 2 * stats::pnorm(abs(est / se), lower.tail = FALSE)
+
+  names(p) <- gsub("\\beta\\.", "", names(p), fixed = FALSE)
+  make_it_so(p, se)
+}
+
+
+#' @export
+p_value.svyglm <- function(fit, ...) {
+  cs <- stats::coef(summary(fit))
+  p <- cs[, 4]
+  se <- cs[, 2]
+
+  make_it_so(p, se)
+}
+
 
 #' @export
 p_value.polr <- function(fit, ...) {
@@ -77,6 +104,7 @@ p_value.polr <- function(fit, ...) {
   make_it_so(p, se)
 }
 
+
 #' @export
 p_value.gam <- function(fit, ...) {
   sm <- summary(fit)
@@ -86,6 +114,7 @@ p_value.gam <- function(fit, ...) {
   make_it_so(p, se)
 }
 
+
 #' @export
 p_value.maxLik <- function(fit, ...) {
   p <- summary(fit)$estimate[, 4]
@@ -93,12 +122,14 @@ p_value.maxLik <- function(fit, ...) {
   make_it_so(p, se)
 }
 
+
 #' @export
 p_value.pglm <- function(fit, ...) {
   p <- summary(fit)$estimate[, 4]
   se <- summary(fit)$estimate[, 2]
   make_it_so(p, se)
 }
+
 
 #' @export
 p_value.default <- function(fit, ...) {
@@ -169,6 +200,7 @@ p_value.lmerMod <- function(fit, p.kr = FALSE, ...) {
   make_it_so(p, se)
 }
 
+
 #' @export
 p_value.glmerMod <- function(fit, ...) {
   cs <- stats::coef(summary(fit))
@@ -177,6 +209,7 @@ p_value.glmerMod <- function(fit, ...) {
 
   make_it_so(x$p, x$se)
 }
+
 
 #' @importFrom purrr compact map flatten_chr map_df
 #' @importFrom dplyr bind_cols
@@ -195,6 +228,7 @@ p_value.glmmTMB <- function(fit, ...) {
   make_it_so(p, se, rep(model_names, each = nrow(x) / model_lengths))
 }
 
+
 #' @export
 p_value.nlmerMod <- function(fit, ...) {
   cs <- stats::coef(summary(fit))
@@ -203,6 +237,7 @@ p_value.nlmerMod <- function(fit, ...) {
 
   make_it_so(x$p, x$se)
 }
+
 
 #' @export
 p_value.lmerModLmerTest <- function(fit, ...) {
@@ -213,12 +248,14 @@ p_value.lmerModLmerTest <- function(fit, ...) {
   make_it_so(x$p, x$se)
 }
 
+
 #' @export
 p_value.gls <- function(fit, ...) {
   p <- summary(fit)$tTable[, 4]
   se <- summary(fit)$tTable[, 2]
   make_it_so(p, se)
 }
+
 
 #' @export
 p_value.pggls <- function(fit, ...) {

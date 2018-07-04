@@ -419,28 +419,60 @@ es_boot_fun <- function(model, type, ci.lvl, n) {
     es = es
   )
 
-  mdata <- sjstats::model_frame(model)
-  mformula <- stats::formula(model)
 
-  # this is a bit sloppy, but I need to catch all exceptions here
-  # if we have a 1-way-anova, map() could return a column with
-  # one value per row (a vector). However, if the model has more
-  # covariates/factors, map() returns a list-colum with 3 values
-  # per row, which need to be spread into a 3 columns data frame.
+  # need special handling for repeated measure anova here
 
-  es <- mdata %>%
-    bootstrap(n = n) %>%
-    dplyr::mutate(es = purrr::map(
-      .data$strap,
-      function(i) {
-        m <- lm(mformula, data = i)
-        dat <- aov_stat(m, type = type)
-        sjmisc::rotate_df(as.data.frame(dat))
-      }
-    )) %>%
-    dplyr::pull(2) %>%
-    purrr::map_df(~ .x) %>%
-    boot_ci()
+  if (inherits(model, "aovlist")) {
+
+    mdata <- sjstats::model_frame(model)
+    mformula <- stats::formula(attr(model, "terms"))
+
+    # this is a bit sloppy, but I need to catch all exceptions here
+    # if we have a 1-way-anova, map() could return a column with
+    # one value per row (a vector). However, if the model has more
+    # covariates/factors, map() returns a list-colum with 3 values
+    # per row, which need to be spread into a 3 columns data frame.
+
+    es <- mdata %>%
+      bootstrap(n = n) %>%
+      dplyr::mutate(es = purrr::map(
+        .data$strap,
+        function(i) {
+          m <- aov(mformula, data = i)
+          dat <- aov_stat(m, type = type)
+          sjmisc::rotate_df(as.data.frame(dat))
+        }
+      )) %>%
+      dplyr::pull(2) %>%
+      purrr::map_df(~ .x) %>%
+      boot_ci()
+
+  } else {
+
+    mdata <- sjstats::model_frame(model)
+    mformula <- stats::formula(model)
+
+    # this is a bit sloppy, but I need to catch all exceptions here
+    # if we have a 1-way-anova, map() could return a column with
+    # one value per row (a vector). However, if the model has more
+    # covariates/factors, map() returns a list-colum with 3 values
+    # per row, which need to be spread into a 3 columns data frame.
+
+    es <- mdata %>%
+      bootstrap(n = n) %>%
+      dplyr::mutate(es = purrr::map(
+        .data$strap,
+        function(i) {
+          m <- lm(mformula, data = i)
+          dat <- aov_stat(m, type = type)
+          sjmisc::rotate_df(as.data.frame(dat))
+        }
+      )) %>%
+      dplyr::pull(2) %>%
+      purrr::map_df(~ .x) %>%
+      boot_ci()
+  }
+
 
   x <- dplyr::bind_cols(x, es[, -1])
 
