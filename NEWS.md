@@ -6,6 +6,7 @@
 * Following functions are now S3-generic: `icc()`, `r2()`, `p_value()`, `se()`, and `std_beta()`.
 * Added `print()`-methods for some more functions, for a clearer output.
 * Revised `r2()` for mixed models (packages **lme4**, **glmmTMB**). The r-squared value should be much more precise now, and reports the marginal and conditional r-squared values.
+* Reduced package dependencies and removed _apaTables_ and _MBESS_ from suggested packages
 
 ## New functions
 

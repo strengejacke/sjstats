@@ -39,7 +39,8 @@ For linear mixed models (\code{lmerMod}-objects), the computation of
         \cr \cr
         The \code{print()}-method has a \code{summary}-argument, that - in
         case \code{p.kr = TRUE} - also prints information on the approximated
-        degrees of freedom (see 'Examples').
+        degrees of freedom (see 'Examples'). A shortcut is the
+        \code{summary()}-method, which simply calls \code{print(..., summary = TRUE)}.
 }
 \examples{
 data(efc)
@@ -64,5 +65,7 @@ pv
 
 # add information on df and t-statistic
 print(pv, summary = TRUE)
+# or
+summary(pv)
 
 }

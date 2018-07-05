@@ -168,12 +168,6 @@ r2 <- function(x, ...) {
 
 
 #' @export
-r2.lmerMod <- function(x, ...) {
-  r2_mixedmodel(x)
-}
-
-
-#' @export
 r2.glmmTMB <- function(x, ...) {
   r2_mixedmodel(x)
 }
@@ -246,8 +240,7 @@ r2.glm <- function(x, ...) {
 
 
 #' @export
-r2.glmerMod <- function(x, ...) {
-  # cod(x)
+r2.merMod <- function(x, ...) {
   r2_mixedmodel(x)
 }
 
@@ -404,7 +397,7 @@ r2_mixedmodel <- function(x) {
     re = lme4::ranef(x)
   )
 
-  if (is(x,"glmmTMB")) {
+  if (inherits(x,"glmmTMB")) {
     vals <- lapply(vals, collapse_cond)
 
     nullEnv <- function(x) {
@@ -508,7 +501,7 @@ r2_mixedmodel <- function(x) {
           nbinom1 = ,
           nbinom2 = stats::family(x)$variance(mu, sig),
 
-          if (is(x,"merMod"))
+          if (inherits(x,"merMod"))
             mu * (1 + mu / lme4::getME(x, "glmer.nb.theta"))
           else
             mu * (1 + mu / x$theta)

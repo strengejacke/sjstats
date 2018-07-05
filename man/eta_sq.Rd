@@ -43,12 +43,7 @@ Returns the (partial) eta-squared, (partial) omega-squared statistic
 For \code{eta_sq()} (with \code{partial = FALSE}), due to
   non-symmetry, confidence intervals are based on bootstrap-methods. In this
   case, \code{n} indicates the number of bootstrap samples to be drawn to
-  compute the confidence intervals.
-  \cr \cr
-  For partial eta-squared (\code{eta_sq()} with \code{partial = TRUE}),
-  confidence intervals are based on \code{\link[apaTables]{get.ci.partial.eta.squared}}
-  and for omega-squared, confidence intervals are based on
-  \code{\link[MBESS]{conf.limits.ncf}}. Confidence intervals for partial
+  compute the confidence intervals. Confidence intervals for partial
   omega-squared is also based on bootstrapping.
 }
 \examples{
@@ -64,12 +59,7 @@ fit <- aov(
 eta_sq(fit)
 omega_sq(fit)
 eta_sq(fit, partial = TRUE)
-
-# CI for eta-squared requires apaTables packages
-\dontrun{
-if (requireNamespace("apaTables", quietly = TRUE)) {
-  eta_sq(fit, partial = TRUE, ci.lvl = .8)
-}}
+eta_sq(fit, partial = TRUE, ci.lvl = .8)
 
 anova_stats(car::Anova(fit, type = 2))
 

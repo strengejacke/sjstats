@@ -141,7 +141,7 @@ equi_test_worker <- function(x, rope, eff_size, out, fm, ...) {
 #' @importFrom tidyselect contains
 plot_sj_equi_test <- function(x, model, ...) {
 
-  if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("ggridges", quietly = TRUE)) {
+  if (!requireNamespace("ggplot2", quietly = TRUE) && !requireNamespace("ggridges", quietly = TRUE)) {
     warning("Packages 'ggplot2' and 'ggridges' required to plot test for practical equivalence.", call. = FALSE)
     return(x)
   }

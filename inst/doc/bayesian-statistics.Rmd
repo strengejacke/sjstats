@@ -246,16 +246,16 @@ icc(m4, ppd = TRUE, re.form = ~(1 | cyl), prob = .5)
 
 Sometimes, when the variance of the posterior predictive distribution is very large, the variance ratio in the output makes no sense, e.g. because it is negative. In such cases, it might help to use a more robust measure to calculate the central tendency of the variances. This can be done with the `typical`-argument.
 
-```{r, message=TRUE}
+```{r}
 # the "classical" ICC, not recommended for non-Gaussian
 icc(m3)
 
 # variance ratio based on posterior predictive distributions,
-# which is obviously nonsense
-icc(m3, ppd = T)
+# which is negative and hence obviously nonsense
+icc(m3, ppd = TRUE)
 
 # use median instead of mean
-icc(m3, ppd = T, typical = "median")
+icc(m3, ppd = TRUE, typical = "median")
 ```
 
 ## Bayes r-squared and LOO-adjusted r-squared

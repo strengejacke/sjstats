@@ -6,7 +6,7 @@ Collection of convenient functions for common statistical computations, which ar
 
 This package aims at providing, **first**, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like standard errors or root mean squared errors).
 
-**Second**, these shortcut functions are generic (if appropriate), and can be applied not only to vectors, but also to other objects as well (e.g., the Coefficient of Variation can be computed for vectors, linear models, or linear mixed models; the `r2()`-function returns the r-squared value for _lm_, _glm_, _merMod_ or _lme_ objects).
+**Second**, these shortcut functions are generic (if appropriate), and can be applied not only to vectors, but also to other objects as well (e.g., the Coefficient of Variation can be computed for vectors, linear models, or linear mixed models; the `r2()`-function returns the r-squared value for _lm_, _glm_, _merMod_, _glmmTMB_, or _lme_ and other objects).
 
 Most functions of this package are designed as _summary functions_, i.e. they do not transform the input vector; rather, they return a summary, which is sometimes a vector and sometimes a [tidy data frame](https://cran.r-project.org/package=broom/vignettes/broom.html). The focus of most functions lies on summary statistics or fit measures for regression models, including generalized linear models, mixed effects models or Bayesian models. However, some of the functions deal with other statistical measures, like Cronbach's Alpha, Cramer's V, Phi etc.
 
@@ -16,11 +16,15 @@ The comprised tools include:
 * Especially for mixed models: Design effect, ICC, sample size calculation and convergence tests
 * Especially for Bayesian models: Highest Density Interval, region of practical equivalence (rope), Monte Carlo Standard Errors, ratio of number of effective samples, mediation analysis, Test for Practical Equivalence
 * Fit and accuracy measures for regression models: Overdispersion tests, accuracy of predictions, test/training-error comparisons, error rate and binned residual plots for logistic regression models
-* For anova-tables: Eta-squared, Partial Eta-squared and Omega-squared statistics
+* For anova-tables: Eta-squared, Partial Eta-squared, Omega-squared and Partial Omega-squared statistics
 
 Furthermore, *sjstats* has functions to access information from model objects, which either support more model objects than their *stats* counterparts, or provide easy access to model attributes, like:
 
-* `model_frame()` to get the model frame, `link_inverse()` to get the link-inverse function, `pred_vars()` and `resp_var()` to get the names of either the dependent or independent variables, or `var_names()` to get the "cleaned" variables names from a model object (cleaned means, things like `s()` or `log()` are removed from the returned character vector with variable names.)
+* `model_frame()` to get the model frame, 
+* `model_family()` to get information about the model family, link functions etc.,
+* `link_inverse()` to get the link-inverse function, 
+* `pred_vars()` and `resp_var()` to get the names of either the dependent or independent variables, or
+* `var_names()` to get the "cleaned" variables names from a model object (cleaned means, things like `s()` or `log()` are removed from the returned character vector with variable names.)
 
 Other statistics:
 

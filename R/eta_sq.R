@@ -21,12 +21,7 @@
 #' @details For \code{eta_sq()} (with \code{partial = FALSE}), due to
 #'   non-symmetry, confidence intervals are based on bootstrap-methods. In this
 #'   case, \code{n} indicates the number of bootstrap samples to be drawn to
-#'   compute the confidence intervals.
-#'   \cr \cr
-#'   For partial eta-squared (\code{eta_sq()} with \code{partial = TRUE}),
-#'   confidence intervals are based on \code{\link[apaTables]{get.ci.partial.eta.squared}}
-#'   and for omega-squared, confidence intervals are based on
-#'   \code{\link[MBESS]{conf.limits.ncf}}. Confidence intervals for partial
+#'   compute the confidence intervals. Confidence intervals for partial
 #'   omega-squared is also based on bootstrapping.
 #'
 #' @references Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
@@ -46,12 +41,7 @@
 #' eta_sq(fit)
 #' omega_sq(fit)
 #' eta_sq(fit, partial = TRUE)
-#'
-#' # CI for eta-squared requires apaTables packages
-#' \dontrun{
-#' if (requireNamespace("apaTables", quietly = TRUE)) {
-#'   eta_sq(fit, partial = TRUE, ci.lvl = .8)
-#' }}
+#' eta_sq(fit, partial = TRUE, ci.lvl = .8)
 #'
 #' anova_stats(car::Anova(fit, type = 2))
 #'
@@ -311,19 +301,6 @@ aov_stat_core <- function(aov.sum, type) {
 #' @importFrom tibble tibble
 #' @importFrom purrr map_df
 omega_sq_ci <- function(aov.sum, ci.lvl = .95) {
-
-  if (!requireNamespace("MBESS", quietly = TRUE)) {
-    warning("Package `MBESS` needed to compute confidence intervals. Pleas install that package first.", call. = FALSE)
-
-    return(
-      tibble::tibble(
-        conf.low = NA,
-        conf.high = NA
-      )
-    )
-  }
-
-
   rows <- nrow(aov.sum) - 1
   df.den <- aov.sum[["df"]][rows + 1]
   N <- sum(aov.sum[["df"]]) + 1
@@ -335,7 +312,7 @@ omega_sq_ci <- function(aov.sum, ci.lvl = .95) {
       test.stat <- aov.sum[.x, "statistic"]
 
       if (!is.na(test.stat)) {
-        ci <- MBESS::conf.limits.ncf(
+        ci <- confint_ncg(
           F.value = test.stat,
           conf.level = ci.lvl,
           df.1 = df.num,
@@ -360,18 +337,6 @@ omega_sq_ci <- function(aov.sum, ci.lvl = .95) {
 #' @importFrom tibble tibble
 #' @importFrom purrr map_df
 peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
-
-  if (!requireNamespace("apaTables", quietly = TRUE)) {
-    warning("Package `apaTables` needed to compute confidence intervals. Pleas install that package first.", call. = FALSE)
-
-    return(
-      tibble::tibble(
-        conf.low = NA,
-        conf.high = NA
-      )
-    )
-  }
-
   rows <- nrow(aov.sum) - 1
   df.den <- aov.sum[["df"]][rows + 1]
 
@@ -382,7 +347,7 @@ peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
       test.stat <- aov.sum[.x, "statistic"]
 
       if (!is.na(test.stat)) {
-        ci <- apaTables::get.ci.partial.eta.squared(
+        ci <- partial_eta_sq_ci(
           F.value = test.stat,
           df1 = df.num,
           df2 = df.den,
@@ -408,7 +373,7 @@ peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
 #' @importFrom purrr map map_df
 #' @importFrom dplyr bind_cols mutate case_when pull
 #' @importFrom tibble tibble
-#' @importFrom stats anova formula
+#' @importFrom stats anova formula aov
 #' @importFrom sjmisc rotate_df
 es_boot_fun <- function(model, type, ci.lvl, n) {
 
@@ -438,7 +403,7 @@ es_boot_fun <- function(model, type, ci.lvl, n) {
       dplyr::mutate(es = purrr::map(
         .data$strap,
         function(i) {
-          m <- aov(mformula, data = i)
+          m <- stats::aov(mformula, data = i)
           dat <- aov_stat(m, type = type)
           sjmisc::rotate_df(as.data.frame(dat))
         }

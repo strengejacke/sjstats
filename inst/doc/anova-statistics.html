@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2018-06-14" />
+<meta name="date" content="2018-07-05" />
 
 <title>Statistics for Anova Tables</title>
 
@@ -280,7 +280,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Statistics for Anova Tables</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2018-06-14</em></h4>
+<h4 class="date"><em>2018-07-05</em></h4>
 
 
 
@@ -391,7 +391,22 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h1>Confidence Intervals</h1>
 <p><code>eta_sq()</code> and <code>omega_sq()</code> have a <code>ci.lvl</code>-argument, which - if not <code>NULL</code> - also computes a confidence interval.</p>
 <p>For eta-squared, i.e. <code>eta_sq()</code> with <code>partial = FALSE</code>, due to non-symmetry, confidence intervals are based on bootstrap-methods. Confidence intervals for partial omega-squared, i.e. <code>omega_sq()</code> with <code>partial = TRUE</code> - is also based on bootstrapping. In these cases, <code>n</code> indicates the number of bootstrap samples to be drawn to compute the confidence intervals.</p>
-<p>For partial eta-squared, confidence intervals are based on <code>get.ci.partial.eta.squared</code> (package <em>apaTables</em>) and for omega-squared, confidence intervals are based on <code>conf.limits.ncf</code> (package <em>MBESS</em>).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">eta_sq</span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">ci.lvl =</span> <span class="fl">.8</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 4</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;   term                partial.etasq conf.low conf.high</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;                       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; 1 as.factor(e42dep)         0.281    0.247      0.310 </span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; 2 as.factor(c172code)       0.00788  0.00109    0.0160</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; 3 c160age                   0.0665   0.0467     0.0885</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co"># uses bootstrapping - here, for speed, just 100 samples</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="kw">omega_sq</span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">ci.lvl =</span> <span class="fl">.9</span>, <span class="dt">n =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; # A tibble: 3 x 4</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;   term     partial.omegasq conf.low conf.high</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;   &lt;chr&gt;              &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 1 e42dep           0.278    0.223      0.336 </span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; 2 c172code         0.00547 -0.00502    0.0229</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; 3 c160age          0.0649   0.0308     0.101</span></a></code></pre></div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

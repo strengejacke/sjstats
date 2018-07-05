@@ -59,7 +59,6 @@ Several functions to retrieve information from model objects,
      \item \code{is_negbin}: family is negative binomial
      \item \code{is_logit}: model has logit link
      \item \code{is_linear}: family is gaussian
-     \item \code{is_linear}: family is gaussian
      \item \code{is_ordinal}: family is ordinal or cumulative link
      \item \code{is_zeroinf}: model has zero-inflation component
      \item \code{is_multivariate}: model is a multivariate response model (currently only works for \emph{brmsfit} objects)

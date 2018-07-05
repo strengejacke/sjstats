@@ -53,7 +53,6 @@ Imports:
     tibble (>= 1.3.3)
 Suggests:
     AER,
-    apaTables,
     arm,
     brms,
     car,
@@ -62,7 +61,6 @@ Suggests:
     graphics,
     knitr,
     loo,
-    MBESS,
     mediation,
     pbkrtest (>= 0.4-7),
     pROC,

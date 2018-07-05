@@ -1609,6 +1609,12 @@ print.sj_pval <- function(x, digits = 3, summary = FALSE, ...) {
 
 
 #' @export
+summary.sj_pval <- function(object, digits = 3, summary = FALSE, ...) {
+  print(x, digits, summary = TRUE)
+}
+
+
+#' @export
 print.sj_error_rate <- function(x, ...) {
   cat(crayon::blue("\n# Error Rate of Logistic Regression Model\n\n"))
   cat(sprintf("  Full model: %.2f%%\n", 100 * x$error.model))

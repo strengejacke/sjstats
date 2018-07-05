@@ -112,7 +112,12 @@ anova_stats(car::Anova(fit, type = 3))
 
 For eta-squared, i.e. `eta_sq()` with `partial = FALSE`, due to non-symmetry, confidence intervals are based on bootstrap-methods. Confidence intervals for partial omega-squared, i.e. `omega_sq()` with `partial = TRUE` - is also based on bootstrapping. In these cases, `n` indicates the number of bootstrap samples to be drawn to compute the confidence intervals. 
 
-For partial eta-squared, confidence intervals are based on `get.ci.partial.eta.squared` (package *apaTables*) and for omega-squared, confidence intervals are based on `conf.limits.ncf` (package *MBESS*). 
+```{r}
+eta_sq(fit, partial = TRUE, ci.lvl = .8)
+
+# uses bootstrapping - here, for speed, just 100 samples
+omega_sq(fit, partial = TRUE, ci.lvl = .9, n = 100)
+```
 
 # References
 

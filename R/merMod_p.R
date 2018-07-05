@@ -25,7 +25,8 @@
 #'         \cr \cr
 #'         The \code{print()}-method has a \code{summary}-argument, that - in
 #'         case \code{p.kr = TRUE} - also prints information on the approximated
-#'         degrees of freedom (see 'Examples').
+#'         degrees of freedom (see 'Examples'). A shortcut is the
+#'         \code{summary()}-method, which simply calls \code{print(..., summary = TRUE)}.
 #'
 #' @examples
 #' data(efc)
@@ -50,6 +51,8 @@
 #'
 #' # add information on df and t-statistic
 #' print(pv, summary = TRUE)
+#' # or
+#' summary(pv)
 #'
 #' @importFrom stats coef pnorm
 #' @importFrom broom tidy
@@ -292,7 +295,7 @@ check_pval_from_summary <- function(fit, cs) {
     se <- cs[, 2]
   }
 
-  list(p, se)
+  list(p = p, se = se)
 }
 
 
@@ -308,7 +311,7 @@ wald_pval <- function(fit, cs) {
     if (length(coef_names) == length(p)) names(p) <- coef_names
   }
 
-  list(p, se)
+  list(p = p, se = se)
 }
 
 
