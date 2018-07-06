@@ -72,6 +72,19 @@ p_value.multinom <- function(fit, ...) {
 }
 
 
+#' @export
+p_value.vglm <- function(fit, ...) {
+  if (!requireNamespace("VGAM", quietly = TRUE))
+    stop("Package `VGAM` required.", call. = FALSE)
+
+  cs <- VGAM::summary(fit)@coef3
+  p <- cs[, 4]
+  se <- cs[, 2]
+
+  make_it_so(p, se)
+}
+
+
 #' @importFrom stats coef vcov pnorm
 #' @export
 p_value.svyglm.nb <- function(fit, ...) {

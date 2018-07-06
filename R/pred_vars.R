@@ -329,7 +329,7 @@ model_frame <- function(x, fe.only = TRUE) {
 
 
 #' @rdname pred_vars
-#' @importFrom sjmisc str_contains
+#' @importFrom sjmisc str_contains is_empty
 #' @importFrom stats family formula
 #' @importFrom tidyselect starts_with
 #' @export
@@ -353,7 +353,8 @@ model_family <- function(x) {
     fitfam <- faminfo@vfamily[1]
     logit_link <- sjmisc::str_contains(faminfo@blurb, "logit")
     link.fun <- faminfo@blurb[3]
-    if (tidyselect::starts_with("logit(", vars = link.fun)) link.fun <- "logit"
+    if (!sjmisc::is_empty(tidyselect::starts_with("logit(", vars = link.fun)))
+      link.fun <- "logit"
   } else if (inherits(x, c("zeroinfl", "hurdle"))) {
     fitfam <- "negative binomial"
     logit_link <- FALSE

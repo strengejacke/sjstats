@@ -179,6 +179,7 @@ r2.lme <- function(x, n = NULL, ...) {
   r2linmix(x, n)
 }
 
+
 #' @rdname cod
 #' @export
 r2.stanreg <- function(x, loo = FALSE, ...) {
@@ -273,6 +274,34 @@ r2.default <- function(x, ...) {
   # return results
   structure(class = "sj_r2", list(r2 = rsq, adjr2 = adjr2))
 }
+
+
+#' @importFrom stats logLik
+#' @export
+r2.polr <- function(x, ...) {
+  L.base <- stats::logLik(update(x, ~ 1))
+  r2glm(x, L.base)
+}
+
+
+#' @importFrom stats logLik
+#' @export
+r2.vglm <- function(x, ...) {
+  if (!(is.null(x@call$summ) && !identical(x@call$summ, 0)))
+    stop("Can't get log-likelihood when `summ` is not zero.", call. = FALSE)
+
+  L.base <- stats::logLik(update(x, ~ 1))
+  r2glm(x, L.base)
+}
+
+
+#' @importFrom stats logLik update
+#' @export
+r2.multinom <- function(x, ...) {
+  L.base <- stats::logLik(stats::update(x, ~ 1, trace = FALSE))
+  r2glm(x, L.base)
+}
+
 
 #' @export
 r2.plm <- function(x, ...) {
@@ -498,6 +527,7 @@ r2_mixedmodel <- function(x) {
         vv <- switch(
           faminfo$family,
           poisson = mu,
+          truncated_poisson = mu,
           nbinom1 = ,
           nbinom2 = stats::family(x)$variance(mu, sig),
 
@@ -528,4 +558,28 @@ r2_mixedmodel <- function(x) {
   names(rsq.conditional) <- "Conditional R2"
 
   structure(class = "sj_r2", list(rsq.marginal = rsq.marginal, rsq.conditional = rsq.conditional))
+}
+
+
+#' @importFrom stats nobs
+r2glm <- function(x, L.base) {
+  L.full <- stats::logLik(x)
+  D.full <- -2 * L.full
+
+  D.base <- -2 * L.base
+  G2 <- -2 * (L.base - L.full)
+
+  if (inherits(x, "vglm"))
+    n <- stats::nobs(x)
+  else
+    n <- attr(L.full, "nobs")
+
+  Nagelkerke <- (1 - exp((D.full - D.base) / n)) / (1 - exp(-D.base / n))
+  CoxSnell <- 1 - exp(-G2 / n)
+
+  names(CoxSnell) <- "Cox & Snell's R-squared"
+  names(Nagelkerke) <- "Nagelkerke's R-squared"
+
+  # return results
+  structure(class = "sj_r2", list(CoxSnell = CoxSnell, Nagelkerke = Nagelkerke))
 }
