@@ -20,7 +20,7 @@ link_inverse(x)
 
 model_frame(x, fe.only = TRUE)
 
-model_family(x)
+model_family(x, multi.resp = FALSE)
 
 var_names(x)
 }
@@ -30,6 +30,10 @@ character vector.}
 
 \item{fe.only}{Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
 model, returns the model frame for fixed effects only.}
+
+\item{multi.resp}{Logical, if \code{TRUE} and model is a multivariate response
+model from a \code{brmsfit} object, then a list of family-information
+for each regression is returned.}
 }
 \value{
 For \code{pred_vars()} and \code{resp_var()}, the name(s) of the

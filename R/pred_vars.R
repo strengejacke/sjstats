@@ -9,6 +9,9 @@
 #'    character vector.
 #' @param fe.only Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
 #'    model, returns the model frame for fixed effects only.
+#' @param multi.resp Logical, if \code{TRUE} and model is a multivariate response
+#'    model from a \code{brmsfit} object, then a list of family-information
+#'    for each regression is returned.
 #'
 #' @return For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
 #'    response or predictor variables from \code{x} as character vector.
@@ -168,6 +171,10 @@ link_inverse <- function(x) {
     il <- x$link$mean$linkinv
   } else if (inherits(x, c("vgam", "vglm"))) {
     il <- x@family@linkinv
+  } else if (inherits(x, "stanmvreg")) {
+    ## TODO save different family types for stan multivariate reponse models
+    fam <- stats::family(x)
+    fam <- fam[[1]]
   } else if (inherits(x, "brmsfit")) {
     fam <- stats::family(x)
 
@@ -333,9 +340,9 @@ model_frame <- function(x, fe.only = TRUE) {
 #' @importFrom stats family formula
 #' @importFrom tidyselect starts_with
 #' @export
-model_family <- function(x) {
+model_family <- function(x, multi.resp = FALSE) {
   zero.inf <- FALSE
-  multi.resp <- FALSE
+  multi.var <- FALSE
 
   # for gam-components from gamm4, add class attributes, so family
   # function works correctly
@@ -346,27 +353,27 @@ model_family <- function(x) {
   # for specific models that don't have family function
   if (inherits(x, c("lme", "plm", "gls", "truncreg", "lmRob"))) {
     fitfam <- "gaussian"
-    logit_link <- FALSE
+    logit.link <- FALSE
     link.fun <- "identity"
   } else if (inherits(x, c("vgam", "vglm"))) {
     faminfo <- x@family
     fitfam <- faminfo@vfamily[1]
-    logit_link <- sjmisc::str_contains(faminfo@blurb, "logit")
+    logit.link <- sjmisc::str_contains(faminfo@blurb, "logit")
     link.fun <- faminfo@blurb[3]
     if (!sjmisc::is_empty(tidyselect::starts_with("logit(", vars = link.fun)))
       link.fun <- "logit"
   } else if (inherits(x, c("zeroinfl", "hurdle"))) {
     fitfam <- "negative binomial"
-    logit_link <- FALSE
+    logit.link <- FALSE
     link.fun <- NULL
     zero.inf <- TRUE
   } else if (inherits(x, "betareg")) {
     fitfam <- "beta"
-    logit_link <- x$link$mean$name == "logit"
+    logit.link <- x$link$mean$name == "logit"
     link.fun <- x$link$mean$linkfun
   } else if (inherits(x, "coxph")) {
     fitfam <- "survival"
-    logit_link <- TRUE
+    logit.link <- TRUE
     link.fun <- NULL
   } else {
     # "lrm"-object from pkg "rms" have no family method
@@ -377,29 +384,41 @@ model_family <- function(x) {
       # get family info
       faminfo <- stats::family(x)
 
-    ## TODO save different family types for brms multivariate reponse models
-
     # in case of multivariate response models for brms or rstanarm,
     # we just take the information from the first model
     if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$response)) {
-      multi.resp <- TRUE
-      faminfo <- faminfo[[1]]
+      multi.var <- TRUE
+      if (!multi.resp) faminfo <- faminfo[[1]]
     }
 
-    ## TODO save different family types for rstanarm multivariate reponse models
-
     if (inherits(x, "stanmvreg")) {
-      multi.resp <- TRUE
-      faminfo <- faminfo[[1]]
+      multi.var <- TRUE
+      if (!multi.resp) faminfo <- faminfo[[1]]
+    }
+
+
+    if (multi.resp && multi.var) {
+      return(purrr::map(faminfo, ~ make_family(
+        x,
+        .x$family,
+        zero.inf,
+        .x$link == "logit",
+        TRUE,
+        .x$link
+      )))
     }
 
 
     fitfam <- faminfo$family
-    logit_link <- faminfo$link == "logit"
+    logit.link <- faminfo$link == "logit"
     link.fun <- faminfo$link
   }
 
+  make_family(x, fitfam, zero.inf, logit.link, multi.var, link.fun)
+}
 
+
+make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
   # create logical for family
   binom_fam <-
     fitfam %in% c("bernoulli", "binomial", "quasibinomial", "binomialff") |
@@ -415,7 +434,7 @@ model_family <- function(x) {
     sjmisc::str_contains(fitfam, "negbinomial", ignore.case = TRUE) |
     sjmisc::str_contains(fitfam, "neg_binomial", ignore.case = TRUE)
 
-  linear_model <- !binom_fam & !poisson_fam & !neg_bin_fam & !logit_link
+  linear_model <- !binom_fam & !poisson_fam & !neg_bin_fam & !logit.link
 
   zero.inf <- zero.inf | sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T)
 
@@ -427,11 +446,11 @@ model_family <- function(x) {
     is_bin = binom_fam & !neg_bin_fam,
     is_pois = poisson_fam | neg_bin_fam,
     is_negbin = neg_bin_fam,
-    is_logit = logit_link,
+    is_logit = logit.link,
     is_linear = linear_model,
     is_zeroinf = zero.inf,
     is_ordinal = is.ordinal,
-    is_multivariate = multi.resp,
+    is_multivariate = multi.var,
     link.fun = link.fun,
     family = fitfam
   )

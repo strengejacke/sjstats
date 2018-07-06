@@ -20,6 +20,7 @@
 * `icc()` gets a `ppd`-argument for Stan-models (*brmsfit* and *stanreg*), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.
 * For Stan-models (*brmsfit* and *stanreg*), `icc()` now also computes the HDI for the ICC and random-effect variances. Use the `prob`-argument to specify the limits of this interval.
 * `link_inverse()` and `model_family()` now support _clmm_-models (package *ordinal*) and _glmRob_ and _lmRob_-models (package *robust*).
+* `model_family()` gets a `multi.resp`-argument, to return a list of family-informations for multivariate-response models (of class `brmsfit` or `stanmvreg`).
 * `p_value()` now supports _rlm_-models (package *MASS*).
 * `check_assumptions()` for single models with `as.logical = FALSE` now has a nice print-method.
 * `eta_sq()` and `omega_sq()` now also work for repeated-measure Anovas, i.e. Anova with error term (requires broom > 0.4.5).

@@ -1610,7 +1610,7 @@ print.sj_pval <- function(x, digits = 3, summary = FALSE, ...) {
 
 #' @export
 summary.sj_pval <- function(object, digits = 3, summary = FALSE, ...) {
-  print(x, digits, summary = TRUE)
+  print(object, digits, summary = TRUE)
 }
 
 
