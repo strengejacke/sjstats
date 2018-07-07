@@ -637,10 +637,9 @@ print.sj_icc_brms <- function(x, digits = 2, ...) {
   # print model information
   cat("\n# Random Effect Variances and ICC\n\n")
   cat(sprintf(
-    "Family: %s (%s)\nFormula: %s\n\n",
+    "Family: %s (%s)\n\n",
     attr(x, "family", exact = T),
-    attr(x, "link", exact = T),
-    as.character(attr(x, "formula"))[1]
+    attr(x, "link", exact = T)
   ))
 
   get_re_col <- function(i, st) {
@@ -753,10 +752,9 @@ print.sj_icc_stanreg <- function(x, digits = 2, ...) {
   # print model information
   cat("\n# Random Effect Variances and ICC\n\n")
   cat(sprintf(
-    "Family: %s (%s)\nFormula: %s\n\n",
+    "Family: %s (%s)\n\n",
     attr(x, "family", exact = T),
-    attr(x, "link", exact = T),
-    deparse(attr(x, "formula"))
+    attr(x, "link", exact = T)
   ))
 
   get_re_col <- function(i, st) {
