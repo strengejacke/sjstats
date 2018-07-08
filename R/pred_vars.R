@@ -282,7 +282,13 @@ model_frame <- function(x, fe.only = TRUE) {
 
     # if data not found in environment, reduce matrix variables into regular vectors
     if (is.null(md)) {
-      fitfram <- dplyr::bind_cols(purrr::map(fitfram, ~ tibble::as_tibble(.x)))
+      # first, we select the non-matrix variables. calling "as_tibble" would
+      # remove their column name, so we us as_tibble to convert matrix
+      # to vectors only for the matrix-columns
+      fitfram_matrix <- dplyr::select(fitfram, which(mc))
+      fitfram_nonmatrix <- dplyr::select(fitfram, -which(mc))
+      fitfram_matrix <- dplyr::bind_cols(purrr::map(fitfram_matrix, ~ tibble::as_tibble(.x)))
+      fitfram <- dplyr::bind_cols(fitfram_nonmatrix, fitfram_matrix)
     } else {
 
       # get "matrix" terms and "normal" predictors, but exclude
@@ -485,7 +491,7 @@ get_vn_helper <- function(x) {
   # for survival, remove strata(), and so on...
   pattern <- c(
     "as.factor", "offset", "log", "lag", "diff", "lo", "bs", "ns", "t2", "te",
-    "ti", "mi", "pspline", "poly", "strata", "scale", "s"
+    "ti", "mi", "gp", "pspline", "poly", "strata", "scale", "s"
   )
 
   # do we have a "log()" pattern here? if yes, get capture region

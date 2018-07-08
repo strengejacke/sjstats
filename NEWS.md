@@ -28,6 +28,7 @@
 ## Bug fixes
 
 * `model_frame()` and `var_names()` now correctly cleans nested patterns like `offset(log(x + 10))` from column names.
+* `model_frame()` now returns proper column names from _gamm4_ models.
 * `model_frame()` did not work when the model frame had spline-terms and weights.
 * Fix issue in `robust()` when `exponentiate = TRUE` and `conf.int = FALSE`.
 * `reliab_test()` returned an error when the provided data frame has less than three columns, instead of returning `NULL`.
