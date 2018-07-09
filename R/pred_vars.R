@@ -10,8 +10,8 @@
 #' @param fe.only Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
 #'    model, returns the model frame for fixed effects only.
 #' @param multi.resp Logical, if \code{TRUE} and model is a multivariate response
-#'    model from a \code{brmsfit} object, then a list of family-information
-#'    for each regression is returned.
+#'    model from a \code{brmsfit} object or of class \code{stanmvreg}, then a
+#'    list of values for each regression is returned.
 #'
 #' @return For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
 #'    response or predictor variables from \code{x} as character vector.
@@ -92,6 +92,11 @@ pred_vars <- function(x) {
         unique()
     } else
       av <- all.vars(fm$formula[[3L]])
+  } else if (inherits(x, "stanmvreg")) {
+    av <- fm %>%
+      purrr::map(~ all.vars(.x[[3L]])) %>%
+      purrr::flatten_chr() %>%
+      unique()
   } else
     av <- all.vars(fm[[3L]])
 
@@ -101,6 +106,8 @@ pred_vars <- function(x) {
   av
 }
 
+
+#' @importFrom purrr map_chr
 #' @importFrom stats formula
 #' @rdname pred_vars
 #' @export
@@ -115,6 +122,8 @@ resp_var <- function(x) {
       )
       # stats::formula(x)$responses
     }
+  } else if (inherits(x, "stanmvreg")) {
+    purrr::map_chr(stats::formula(x), ~ deparse(.x[[2L]]))
   } else
     deparse(stats::formula(x)[[2L]])
 }
@@ -128,6 +137,8 @@ resp_val <- function(x) {
     as.vector(nlme::getResponse(x))
   else if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$responses))
     as.vector(model_frame(x)[, var_names(resp_var(x))])
+  else if (inherits(x, "stanmvreg"))
+    as.vector(model_frame(x)[, var_names(resp_var(x))])
   else
     as.vector(model_frame(x)[[var_names(resp_var(x))]])
 }
@@ -136,7 +147,7 @@ resp_val <- function(x) {
 #' @rdname pred_vars
 #' @importFrom stats family binomial gaussian make.link
 #' @export
-link_inverse <- function(x) {
+link_inverse <- function(x, multi.resp = FALSE) {
 
   # handle glmmTMB models
   if (inherits(x, "glmmTMB")) {
@@ -172,31 +183,24 @@ link_inverse <- function(x) {
   } else if (inherits(x, c("vgam", "vglm"))) {
     il <- x@family@linkinv
   } else if (inherits(x, "stanmvreg")) {
-    ## TODO save different family types for stan multivariate reponse models
     fam <- stats::family(x)
-    fam <- fam[[1]]
+    if (multi.resp) {
+      il <- purrr::map(fam, ~ .x$linkinv)
+    } else {
+      fam <- fam[[1]]
+      il <- fam$linkinv
+    }
   } else if (inherits(x, "brmsfit")) {
     fam <- stats::family(x)
-
-    ## TODO save different family types for brms multivariate reponse models
-
-    # in case of multivariate response models for brms, we just take the
-    # information from the first model
-    if (!is.null(stats::formula(x)$response))
-      fam <- fam[[1]]
-
-    # do we have custom families?
-    if (!is.null(fam$family) && (is.character(fam$family) && fam$family == "custom")) {
-      il <- stats::make.link(fam$link)$linkinv
-    } else {
-      if ("linkinv" %in% names(fam)) {
-        il <- fam$linkinv
-      } else if ("link" %in% names(fam) && is.character(fam$link)) {
-        il <- stats::make.link(fam$link)$linkinv
+    if (!is.null(stats::formula(x)$response)) {
+      if (multi.resp) {
+        il <- purrr::map(fam, ~ brms_link_inverse(.x))
       } else {
-        ff <- get(fam$family, asNamespace("stats"))
-        il <- ff(fam$link)$linkinv
+        fam <- fam[[1]]
+        il <- brms_link_inverse(fam)
       }
+    } else {
+      il <- brms_link_inverse(fam)
     }
   } else if (inherits(x, "polr")) {
     link <- x$method
@@ -216,19 +220,40 @@ link_inverse <- function(x) {
   il
 }
 
+brms_link_inverse <- function(fam) {
+  # do we have custom families?
+  if (!is.null(fam$family) && (is.character(fam$family) && fam$family == "custom")) {
+    il <- stats::make.link(fam$link)$linkinv
+  } else {
+    if ("linkinv" %in% names(fam)) {
+      il <- fam$linkinv
+    } else if ("link" %in% names(fam) && is.character(fam$link)) {
+      il <- stats::make.link(fam$link)$linkinv
+    } else {
+      ff <- get(fam$family, asNamespace("stats"))
+      il <- ff(fam$link)$linkinv
+    }
+  }
+  il
+}
+
 
 #' @rdname pred_vars
 #' @importFrom stats model.frame formula getCall na.omit
 #' @importFrom prediction find_data
-#' @importFrom purrr map_lgl map
-#' @importFrom dplyr select bind_cols
+#' @importFrom purrr map_lgl map reduce
+#' @importFrom dplyr select bind_cols full_join
 #' @importFrom tibble as_tibble
 #' @export
 model_frame <- function(x, fe.only = TRUE) {
   # we may store model weights here later
   mw <- NULL
 
-  if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
+  if (inherits(x, "stanmvreg"))
+    fitfram <- suppressMessages(
+      purrr::reduce(stats::model.frame(x), ~ dplyr::full_join(.x, .y))
+    )
+  else if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
     fitfram <- stats::model.frame(x, fixed.only = fe.only)
   else if (inherits(x, "lme"))
     fitfram <- x$data

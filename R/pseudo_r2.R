@@ -186,6 +186,9 @@ r2.stanreg <- function(x, loo = FALSE, ...) {
   if (!requireNamespace("rstanarm", quietly = TRUE))
     stop("Package `rstanarm` needed for this function to work. Please install it.", call. = FALSE)
 
+  if (inherits(x, "stanmvreg"))
+    return(r2.stanmvreg(x = x, loo = loo, ...))
+
   if (isTRUE(loo)) {
     rsq <- looR2(x)
     names(rsq) <- "LOO-adjusted R2"
@@ -200,6 +203,12 @@ r2.stanreg <- function(x, loo = FALSE, ...) {
 
     structure(class = "sj_r2", list(r2 = rsq, se = rsq.se))
   }
+}
+
+
+#' @export
+r2.stanmvreg <- function(x, loo = FALSE, ...) {
+  NULL
 }
 
 

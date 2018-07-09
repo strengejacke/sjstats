@@ -14,11 +14,28 @@ mcse.brmsfit <- function(x, type = c("fixed", "random", "all"), ...) {
 }
 
 
+#' @export
+mcse.stanmvreg <- function(x, type = c("fixed", "random", "all"), ...) {
+  s <- summary(x)
+  dat <- tibble::tibble(
+    term = rownames(s),
+    mcse = s[, "mcse"]
+  )
+
+  # check if we need to remove random or fixed effects
+  remove_effects_from_stan(dat, type, is.brms = FALSE)
+}
+
+
 #' @rdname hdi
 #' @export
 mcse.stanreg <- function(x, type = c("fixed", "random", "all"), ...) {
   # check arguments
   type <- match.arg(type)
+
+  if (inherits(x, "stanmvreg"))
+    return(mcse.stanmvreg(x = x, type = type, ...))
+
   mcse_helper(x, type)
 }
 

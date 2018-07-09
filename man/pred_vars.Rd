@@ -16,7 +16,7 @@ resp_var(x)
 
 resp_val(x)
 
-link_inverse(x)
+link_inverse(x, multi.resp = FALSE)
 
 model_frame(x, fe.only = TRUE)
 
@@ -28,12 +28,12 @@ var_names(x)
 \item{x}{A fitted model; for \code{var_names()}, \code{x} may also be a
 character vector.}
 
+\item{multi.resp}{Logical, if \code{TRUE} and model is a multivariate response
+model from a \code{brmsfit} object or of class \code{stanmvreg}, then a
+list of values for each regression is returned.}
+
 \item{fe.only}{Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
 model, returns the model frame for fixed effects only.}
-
-\item{multi.resp}{Logical, if \code{TRUE} and model is a multivariate response
-model from a \code{brmsfit} object, then a list of family-information
-for each regression is returned.}
 }
 \value{
 For \code{pred_vars()} and \code{resp_var()}, the name(s) of the

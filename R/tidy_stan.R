@@ -95,25 +95,42 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   if (inherits(x, "brmsfit")) mod.dat <- brms_clean(mod.dat)
 
   # compute HDI
-  out <- hdi(x, prob = prob, trans = trans, type = type)
+  out.hdi <- hdi(x, prob = prob, trans = trans, type = type)
 
   # we need names of elements, for correct removal
   nr <- bayesplot::neff_ratio(x)
 
   if (inherits(x, "brmsfit")) {
     cnames <- make.names(names(nr))
-    keep <- cnames %in% out$term
+    keep <- cnames %in% out.hdi$term
   } else {
-    keep <- 1:nrow(out)
+    keep <- 1:nrow(out.hdi)
   }
 
 
   # compute additional statistics, like point estimate, standard errors etc.
 
   nr <- nr[keep]
+  ratio <- data.frame(
+    term = names(nr),
+    ratio = nr,
+    stringsAsFactors = FALSE
+  )
+
   rh <- bayesplot::rhat(x)[keep]
+  rhat <- data.frame(
+    term = names(rh),
+    rhat = rh,
+    stringsAsFactors = FALSE
+  )
+
+  if (inherits(x, "brmsfit")) {
+    ratio$term <- make.names(ratio$term)
+    rhat$term <- make.names(rhat$term)
+  }
+
   se <- mcse(x, type = type)
-  se <- se$mcse[se$term %in% out$term]
+  se <- se[se$term %in% out.hdi$term, ]
 
   est <- purrr::map_dbl(mod.dat, ~ sjstats::typical_value(.x, fun = typical))
 
@@ -123,13 +140,20 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     std.error = purrr::map_dbl(mod.dat, stats::mad)
   ) %>%
     dplyr::inner_join(
-      out,
+      out.hdi,
       by = "term"
     ) %>%
-    dplyr::mutate(
-      neff_ratio = nr,
-      Rhat = rh,
-      mcse = se
+    dplyr::inner_join(
+      ratio,
+      by = "term"
+    ) %>%
+    dplyr::inner_join(
+      rhat,
+      by = "term"
+    ) %>%
+    dplyr::inner_join(
+      se,
+      by = "term"
     )
 
 
