@@ -16,6 +16,9 @@ mcse.brmsfit <- function(x, type = c("fixed", "random", "all"), ...) {
 
 #' @export
 mcse.stanmvreg <- function(x, type = c("fixed", "random", "all"), ...) {
+  # check arguments
+  type <- match.arg(type)
+
   s <- summary(x)
   dat <- tibble::tibble(
     term = rownames(s),

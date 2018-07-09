@@ -30,7 +30,7 @@ character vector.}
 
 \item{multi.resp}{Logical, if \code{TRUE} and model is a multivariate response
 model from a \code{brmsfit} object or of class \code{stanmvreg}, then a
-list of values for each regression is returned.}
+list of values (one for each regression) is returned.}
 
 \item{fe.only}{Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
 model, returns the model frame for fixed effects only.}

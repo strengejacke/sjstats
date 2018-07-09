@@ -97,18 +97,17 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   # compute HDI
   out.hdi <- hdi(x, prob = prob, trans = trans, type = type)
 
-  # we need names of elements, for correct removal
+  # get statistics
   nr <- bayesplot::neff_ratio(x)
+
+  # we need names of elements, for correct removal
 
   if (inherits(x, "brmsfit")) {
     cnames <- make.names(names(nr))
     keep <- cnames %in% out.hdi$term
   } else {
-    keep <- 1:nrow(out.hdi)
+    keep <- names(nr) %in% out.hdi$term
   }
-
-
-  # compute additional statistics, like point estimate, standard errors etc.
 
   nr <- nr[keep]
   ratio <- data.frame(
@@ -117,7 +116,17 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     stringsAsFactors = FALSE
   )
 
-  rh <- bayesplot::rhat(x)[keep]
+
+  rh <- bayesplot::rhat(x)
+
+  if (inherits(x, "brmsfit")) {
+    cnames <- make.names(names(rh))
+    keep <- cnames %in% out.hdi$term
+  } else {
+    keep <- names(rh) %in% out.hdi$term
+  }
+
+  rh <- rh[keep]
   rhat <- data.frame(
     term = names(rh),
     rhat = rh,
@@ -243,6 +252,9 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     }
 
 
+    ## TODO extract Sigma for stanmvreg random effects
+
+
     # find random slopes
 
     rs1 <- grep("b\\[(.*) (.*)\\]", out$term)
@@ -324,7 +336,32 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   }
 
-  ## TODO add support for multivariate response model for rstanarm
+
+  if (inherits(x, "stanmvreg")) {
+
+    # get response variables
+
+    responses <- resp_var(x)
+    resp.names <- names(responses)
+
+
+    # create "response-level" variable
+
+    out <- tibble::add_column(out, response = "", .before = 1)
+
+
+    # copy name of response into new character variable
+    # and remove response name from term name
+
+    for (i in 1:length(responses)) {
+      pattern <- paste0(resp.names[i], "|")
+      m <- tidyselect::starts_with(pattern, vars = out$term)
+      out$response[intersect(which(out$response == ""), m)] <- responses[i]
+      out$term <- gsub(pattern, "", out$term, fixed = TRUE)
+    }
+
+  }
+
 
   class(out) <- c("tidy_stan", class(out))
 

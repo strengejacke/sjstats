@@ -11,7 +11,7 @@
 #'    model, returns the model frame for fixed effects only.
 #' @param multi.resp Logical, if \code{TRUE} and model is a multivariate response
 #'    model from a \code{brmsfit} object or of class \code{stanmvreg}, then a
-#'    list of values for each regression is returned.
+#'    list of values (one for each regression) is returned.
 #'
 #' @return For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
 #'    response or predictor variables from \code{x} as character vector.

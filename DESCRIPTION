@@ -66,6 +66,7 @@ Suggests:
     pROC,
     psych,
     scales,
+    splines,
     sjPlot,
     survey,
     rstan,
