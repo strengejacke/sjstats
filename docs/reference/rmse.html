@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compute model quality — rmse • sjstats</title>
+<title>Compute model quality — cv • sjstats</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,20 +21,27 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="Compute model quality — rmse" />
+<meta property="og:title" content="Compute model quality — cv" />
 
-<meta property="og:description" content="Compute root mean squared error, residual standard error or
-             mean square error of fitted linear (mixed effects) models." />
+<meta property="og:description" content="Compute various measures or tests to assess the model quality,
+  like root mean squared error, residual standard error or mean square error
+  of fitted linear (mixed effects) models. For logistic regression models,
+  or mixed models with binary outcome, the error rate, binned residuals,
+  Chi-square goodness-of-fit-test or the Hosmer-Lemeshow Goodness-of-fit-test
+  can be performed." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -61,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
       </span>
     </div>
 
@@ -119,38 +126,111 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Compute model quality</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/rmse.R'><code>R/rmse.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/cv.R'><code>R/cv.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/gof.R'><code>R/gof.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/rmse.R'><code>R/rmse.R</code></a></small>
     <div class="hidden name"><code>rmse.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Compute root mean squared error, residual standard error or
-             mean square error of fitted linear (mixed effects) models.</p>
+    <p>Compute various measures or tests to assess the model quality,
+  like root mean squared error, residual standard error or mean square error
+  of fitted linear (mixed effects) models. For logistic regression models,
+  or mixed models with binary outcome, the error rate, binned residuals,
+  Chi-square goodness-of-fit-test or the Hosmer-Lemeshow Goodness-of-fit-test
+  can be performed.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rmse</span>(<span class='no'>fit</span>, <span class='kw'>normalized</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>cv</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='fu'>rse</span>(<span class='no'>fit</span>)
+<span class='fu'>chisq_gof</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>mse</span>(<span class='no'>fit</span>)</pre>
+<span class='fu'>hoslem_gof</span>(<span class='no'>x</span>, <span class='kw'>n.bins</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+
+<span class='fu'>rmse</span>(<span class='no'>x</span>, <span class='kw'>normalized</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>rse</span>(<span class='no'>x</span>)
+
+<span class='fu'>mse</span>(<span class='no'>x</span>)
+
+<span class='fu'>error_rate</span>(<span class='no'>x</span>)
+
+<span class='fu'>binned_resid</span>(<span class='no'>x</span>, <span class='kw'>term</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n.bins</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>fit</th>
+      <th>x</th>
       <td><p>Fitted linear model of class <code>lm</code>, <code>merMod</code> (<span class="pkg">lme4</span>)
-or <code>lme</code> (<span class="pkg">nlme</span>).</p></td>
+or <code>lme</code> (<span class="pkg">nlme</span>). For <code>error_rate()</code>, <code>hoslem_gof()</code>
+and <code>binned_resid()</code>, a <code>glm</code>-object with binomial-family. For
+<code>chisq_gof()</code>, a numeric vector or a <code>glm</code>-object.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>More fitted model objects, to compute multiple coefficients of
+variation at once.</p></td>
+    </tr>
+    <tr>
+      <th>prob</th>
+      <td><p>Vector of probabilities (indicating the population probabilities)
+of the same length as <code>x</code>'s amount of categories / factor levels.
+Use <code>nrow(table(x))</code> to determine the amount of necessary values
+for <code>prob</code>. Only used, when <code>x</code> is a vector, and not a
+<code>glm</code>-object.</p></td>
+    </tr>
+    <tr>
+      <th>weights</th>
+      <td><p>Vector with weights, used to weight <code>x</code>.</p></td>
+    </tr>
+    <tr>
+      <th>n.bins</th>
+      <td><p>Numeric, the number of bins to divide the data. For
+<code>hoslem_gof()</code>, the default is 10. For <code>binned_resid()</code>, if
+<code>n.bins = NULL</code>, the square root of the number of observations is
+taken.</p></td>
     </tr>
     <tr>
       <th>normalized</th>
       <td><p>Logical, use <code>TRUE</code> if normalized rmse should be returned.</p></td>
     </tr>
+    <tr>
+      <th>term</th>
+      <td><p>Name of independent variable from <code>x</code>. If not <code>NULL</code>,
+average residuals for the categories of <code>term</code> are plotted; else,
+average residuals for the estimated probabilities of the response are
+plotted.</p></td>
+    </tr>
     </table>
     
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    
+<dl class='dl-horizontal'>
+  <dt><code>rmse(), rse(), mse(), cv()</code></dt><dd><p>These functions return a number, the requested statistic.</p></dd>
+  <dt><code>error_rate()</code></dt><dd><p>A list with four values: the error rate of the full and the null model,
+    as well as the chi-squared and p-value from the Likelihood-Ratio-Test
+    between the full and null model.</p></dd>
+  <dt><code>binned_resid()</code></dt><dd><p>A data frame representing the data that is mapped to the plot, which is
+    automatically plotted. In case all residuals are inside the error bounds,
+    points are black. If some of the residuals are outside the error bounds
+    (indicates by the grey-shaded area), blue points indicate residuals that
+    are OK, while red points indicate model under- or overfitting for the
+    related range of estimated probabilities.</p></dd>
+  <dt><code>chisq_gof()</code></dt><dd><p>For vectors, returns the object of the computed <code><a href='http://www.rdocumentation.org/packages/stats/topics/chisq.test'>chisq.test</a></code>.
+    For <code>glm</code>-objects, an object of class <code>chisq_gof</code> with
+    following values: <code>p.value</code>, the p-value for the goodness-of-fit test;
+    <code>z.score</code>, the standardized z-score for the goodness-of-fit test;
+    <code>rss</code>, the residual sums of squares term and <code>chisq</code>, the pearson
+    chi-squared statistic.</p></dd>
+  <dt><code>hoslem_gof()</code></dt><dd><p>An object of class <code>hoslem_test</code> with following values: <code>chisq</code>,
+     the Hosmer-Lemeshow chi-squared statistic; <code>df</code>, degrees of freedom
+     and <code>p.value</code> the p-value for the goodness-of-fit test.</p></dd>
+</dl>
+
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <dl class='dl-horizontal'>
         <dt><strong>Root Mean Square Error</strong></dt><dd><p>The RMSE is the square root of the variance of the residuals and indicates
@@ -171,29 +251,130 @@ or <code>lme</code> (<span class="pkg">nlme</span>).</p></td>
         <dt><strong>Mean Square Error</strong></dt><dd><p>The mean square error is the mean of the sum of squared residuals,
         i.e. it measures the average of the squares of the errors. Lower
         values (closer to zero) indicate better fit.</p></dd>
+        <dt><strong>Coefficient of Variation</strong></dt><dd><p>The advantage of the cv is that it is unitless. This allows
+        coefficient of variation to be compared to each other in ways
+        that other measures, like standard deviations or root mean
+        squared residuals, cannot be.
+        <br /> <br />
+        &#8220;It is interesting to note the differences between a model's CV
+        and R-squared values. Both are unitless measures that are indicative
+        of model fit, but they define model fit in two different ways: CV
+        evaluates the relative closeness of the predictions to the actual
+        values while R-squared evaluates how much of the variability in the
+        actual values is explained by the model.&#8221;
+        <cite>(<a href='http://www.ats.ucla.edu/stat/mult_pkg/faq/general/coefficient_of_variation.htm'>source: UCLA-FAQ</a>)</cite></p></dd>
+        <dt><strong>Error Rate</strong></dt><dd><p>The error rate is a crude measure for model fit for logistic regression
+        models. It is defined as the proportion of cases for which the
+        deterministic prediction is wrong, i.e. the proportion where the the
+        predicted probability is above 0.5, although y = 0 (and vice versa).
+        In general, the error rate should be below 0.5 (i.e. 50%), the
+        closer to zero, the better. Furthermore, the error rate of the full
+        model should be considerably below the null model's error rate
+        (cf. Gelman and Hill 2007, pp. 99). The <code>print()</code>-method also
+        prints the results from the Likelihood-Ratio-Test, comparing the full
+        to the null model.</p></dd>
+        <dt><strong>Binned Residuals</strong></dt><dd><p>Binned residual plots are achieved by &#8220;dividing the data into
+        categories (bins) based on their fitted values, and then plotting
+        the average residual versus the average fitted value for each bin.&#8221;
+        <em>(Gelman, Hill 2007: 97)</em>. If the model were true, one would
+        expect about 95% of the residuals to fall inside the error bounds.
+        <br /> <br />
+        If <code>term</code> is not <code>NULL</code>, one can compare the residuals in
+        relation to a specific model predictor. This may be helpful to check
+        if a term would fit better when transformed, e.g. a rising and falling
+        pattern of residuals along the x-axis (the pattern is indicated by
+        a green line) is a signal to consider taking the logarithm of the
+        predictor (cf. Gelman and Hill 2007, pp. 97ff).</p></dd>
+        <dt><strong>Chi-squared Goodness-of-Fit Test</strong></dt><dd><p>For vectors, this function is a convenient function for the
+        <code>chisq.test()</code>, performing goodness-of-fit test. For
+        <code>glm</code>-objects, this function performs a goodness-of-fit test.
+        A well-fitting model shows <em>no</em> significant difference between the
+        model and the observed data, i.e. the reported p-values should be
+        greater than 0.05.</p></dd>
+        <dt><strong>Hosmer-Lemeshow Goodness-of-Fit Test</strong></dt><dd><p>A well-fitting model shows <em>no</em> significant difference between
+        the model and the observed data, i.e. the reported p-value should be
+        greater than 0.05.</p></dd>
       </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href='http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/'>Grace-Martin K: Assessing the Fit of Regression Models</a></p>
+    <p>Gelman A, Hill J (2007) Data Analysis Using Regression and Multilevel/Hierarchical Models. Cambridge, New York: Cambridge University Press
+  <br /> <br />
+  Everitt, Brian (1998). The Cambridge Dictionary of Statistics. Cambridge, UK New York: Cambridge University Press
+  <br /> <br />
+  Hosmer, D. W., &amp; Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley &amp; Sons, Inc. doi: <a href='http://doi.org/10.1002/0471722146'>10.1002/0471722146</a>
+    <br /> <br />
+  <a href='http://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/'>Grace-Martin K: Assessing the Fit of Regression Models</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='r2.html'>r2</a></code> for R-squared or pseude-R-squared values, and
-           <code><a href='cv.html'>cv</a></code> for the coefficient of variation.</p></div>
+    <div class='dont-index'><p><code><a href='cod.html'>r2</a></code> for R-squared or pseudo-R-squared values.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>efc</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>barthtot</span> ~ <span class='no'>c160age</span> + <span class='no'>c12hour</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
-<span class='fu'>rmse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 25.46792</div><div class='input'><span class='fu'>rse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 25.51134</div><div class='input'>
+<span class='fu'>rmse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 25.46792</div><div class='input'><span class='fu'>rse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 25.51134</div><div class='input'><span class='fu'>cv</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.3948098</div><div class='input'>
 <span class='fu'>library</span>(<span class='no'>lme4</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
-<span class='fu'>rmse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 23.43806</div><div class='input'><span class='fu'>mse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 549.3425</div><div class='input'>
+<span class='fu'>rmse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 23.43806</div><div class='input'><span class='fu'>mse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 549.3425</div><div class='input'><span class='fu'>cv</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.07851737</div><div class='input'>
 <span class='co'># normalized RMSE</span>
 <span class='fu'>library</span>(<span class='no'>nlme</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/lme'>lme</a></span>(<span class='no'>distance</span> ~ <span class='no'>age</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Orthodont</span>)
 <span class='fu'>rmse</span>(<span class='no'>fit</span>, <span class='kw'>normalized</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] 0.07242178</div><div class='input'>
+<span class='co'>#coefficient of variation for variable</span>
+<span class='fu'>cv</span>(<span class='no'>efc</span>$<span class='no'>e17age</span>)</div><div class='output co'>#&gt; [1] 0.1023027</div><div class='input'>
+<span class='co'># Error Rate</span>
+<span class='no'>efc</span>$<span class='no'>neg_c_7d</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='no'>efc</span>$<span class='no'>neg_c_7</span> <span class='kw'>&lt;</span> <span class='fu'>median</span>(<span class='no'>efc</span>$<span class='no'>neg_c_7</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fl'>0</span>, <span class='fl'>1</span>)
+<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(
+  <span class='no'>neg_c_7d</span> ~ <span class='no'>c161sex</span> + <span class='no'>barthtot</span> + <span class='no'>c172code</span>,
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>,
+  <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>)
+)
+<span class='fu'>error_rate</span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; 
+#&gt; # Error Rate of Logistic Regression Model
+#&gt; 
+#&gt;   Full model: 29.45%
+#&gt;   Null model: 45.15%
+#&gt; 
+#&gt; # Likelihood-Ratio-Test
+#&gt; 
+#&gt;   Chi-squared: 166.050
+#&gt;       p-value:   0.000
+#&gt; </div><div class='input'>
+<span class='co'># Binned residuals</span>
+<span class='fu'>binned_resid</span>(<span class='no'>m</span>)</div><div class='img'><img src='rmse-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>binned_resid</span>(<span class='no'>m</span>, <span class='st'>"barthtot"</span>)</div><div class='img'><img src='rmse-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># goodness-of-fit test for logistic regression</span>
+<span class='fu'>chisq_gof</span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; 
+#&gt; # Chi-squared Goodness-of-Fit Test
+#&gt; 
+#&gt;   Chi-squared: 852.765
+#&gt;       z-score:   1.025
+#&gt;       p-value:   0.305
+#&gt; </div><div class='output co'>#&gt; <span class='message'>Summary: model seems to fit well.</span></div><div class='input'>
+<span class='co'># goodness-of-fit test for logistic regression</span>
+<span class='fu'>hoslem_gof</span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; 
+#&gt; # Hosmer-Lemeshow Goodness-of-Fit Test
+#&gt; 
+#&gt;   Chi-squared: 18.707
+#&gt;            df:  8    
+#&gt;       p-value:  0.017
+#&gt; </div><div class='output co'>#&gt; <span class='message'>Summary: model does not fit well.</span></div><div class='input'>
+<span class='co'># goodness-of-fit test for vectors against probabilities</span>
+<span class='co'># differing from population</span>
+<span class='fu'>chisq_gof</span>(<span class='no'>efc</span>$<span class='no'>e42dep</span>, <span class='fu'>c</span>(<span class='fl'>0.3</span>,<span class='fl'>0.2</span>,<span class='fl'>0.22</span>,<span class='fl'>0.28</span>))</div><div class='output co'>#&gt; 
+#&gt; 	Chi-squared test for given probabilities
+#&gt; 
+#&gt; data:  dummy
+#&gt; X-squared = 234.76, df = 3, p-value &lt; 2.2e-16
+#&gt; </div><div class='input'><span class='co'># equal to population</span>
+<span class='fu'>chisq_gof</span>(<span class='no'>efc</span>$<span class='no'>e42dep</span>, <span class='fu'>prop.table</span>(<span class='fu'>table</span>(<span class='no'>efc</span>$<span class='no'>e42dep</span>)))</div><div class='output co'>#&gt; 
+#&gt; 	Chi-squared test for given probabilities
+#&gt; 
+#&gt; data:  dummy
+#&gt; X-squared = 0, df = 3, p-value = 1
+#&gt; </div><div class='input'>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -201,7 +382,9 @@ or <code>lme</code> (<span class="pkg">nlme</span>).</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#note">Note</a></li>
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
 

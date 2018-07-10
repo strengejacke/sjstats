@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -41,6 +43,7 @@ check_assumptions() checks all of the above assumptions.
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -67,7 +70,7 @@ check_assumptions() checks all of the above assumptions.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
       </span>
     </div>
 
@@ -228,8 +231,9 @@ outliers.</p></td>
          <code>type = "diag"</code>).
          <br /> <br />
          <code>multicollin()</code> wraps <code><a href='http://www.rdocumentation.org/packages/car/topics/vif'>vif</a></code> and returns
-         the logical result as tibble. <code>TRUE</code>, if multicollinearity
-         exists, else not. In case of multicollinearity, the names of independent
+         the maximum vif-value from a model as tibble. If this value is
+         larger than about 4, multicollinearity exists, else not.
+         In case of multicollinearity, the names of independent
          variables that vioalte contribute to multicollinearity are printed
          to the console.
          <br /> <br />
@@ -261,10 +265,16 @@ outliers.</p></td>
 #&gt; 1               0</div><div class='input'><span class='fu'>normality</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>Non-normality of residuals detected: p = 0.000</span></div><div class='output co'>#&gt; # A tibble: 1 x 1
 #&gt;   non.normality
 #&gt;           &lt;dbl&gt;
-#&gt; 1      1.54e-13</div><div class='input'><span class='fu'>check_assumptions</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
-#&gt;   heteroskedasticity multicollinearity non.normal.resid autocorrelation
-#&gt;                &lt;dbl&gt; &lt;lgl&gt;                        &lt;dbl&gt;           &lt;dbl&gt;
-#&gt; 1        0.000000389 FALSE                     1.54e-13               0</div><div class='input'>
+#&gt; 1      1.54e-13</div><div class='input'><span class='fu'>check_assumptions</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
+#&gt; # Checking Model-Assumptions
+#&gt; 
+#&gt;   Model: barthtot ~ c160age + c12hour + c161sex + c172code
+#&gt; 
+#&gt;                           violated    statistic
+#&gt;   Heteroskedasticity           yes    p = 0.000
+#&gt;   Non-normal residuals         yes    p = 0.000
+#&gt;   Autocorrelated residuals     yes    p = 0.000
+#&gt;   Multicollinearity             no  vif = 1.153</div><div class='input'>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>barthtot</span> ~ <span class='no'>c160age</span> + <span class='no'>c12hour</span> + <span class='no'>c161sex</span> + <span class='no'>c172code</span> + <span class='no'>neg_c_7</span>,
           <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
 <span class='fu'>outliers</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>2 outliers removed in updated model.</span></div><div class='output co'>#&gt; # A tibble: 2 x 3
@@ -289,29 +299,29 @@ outliers.</p></td>
 <span class='no'>tmp</span> <span class='kw'>%&gt;%</span> <span class='fu'>normality</span>(<span class='st'>"models"</span>)</div><div class='output co'>#&gt; # A tibble: 50 x 1
 #&gt;    non.normality
 #&gt;            &lt;dbl&gt;
-#&gt;  1      3.58e-19
-#&gt;  2      4.13e-16
-#&gt;  3      8.16e-22
-#&gt;  4      9.24e-19
-#&gt;  5      6.11e-18
-#&gt;  6      3.62e-20
-#&gt;  7      2.33e-19
-#&gt;  8      9.11e-17
-#&gt;  9      2.30e-19
-#&gt; 10      1.01e-20
+#&gt;  1      3.23e-19
+#&gt;  2      3.83e-16
+#&gt;  3      9.10e-22
+#&gt;  4      9.98e-19
+#&gt;  5      6.43e-18
+#&gt;  6      3.22e-20
+#&gt;  7      2.12e-19
+#&gt;  8      1.29e-16
+#&gt;  9      2.33e-19
+#&gt; 10      9.00e-21
 #&gt; # ... with 40 more rows</div><div class='input'><span class='no'>tmp</span> <span class='kw'>%&gt;%</span> <span class='fu'>heteroskedastic</span>(<span class='st'>"models"</span>)</div><div class='output co'>#&gt; # A tibble: 50 x 1
 #&gt;    heteroskedastic
 #&gt;              &lt;dbl&gt;
-#&gt;  1        9.37e- 7
-#&gt;  2        2.96e-16
-#&gt;  3        2.20e-11
-#&gt;  4        2.07e-13
-#&gt;  5        3.61e- 9
-#&gt;  6        2.07e- 6
-#&gt;  7        2.34e- 6
-#&gt;  8        6.22e-11
-#&gt;  9        2.08e- 5
-#&gt; 10        8.68e-12
+#&gt;  1        1.12e- 6
+#&gt;  2        4.14e-16
+#&gt;  3        2.30e-11
+#&gt;  4        2.30e-13
+#&gt;  5        2.99e- 9
+#&gt;  6        1.62e- 6
+#&gt;  7        2.46e- 6
+#&gt;  8        5.65e-11
+#&gt;  9        1.95e- 5
+#&gt; 10        9.49e-12
 #&gt; # ... with 40 more rows</div><div class='input'>
 # Durbin-Watson-Test from package 'car' takes a little bit longer due
 # to simulation of p-values...

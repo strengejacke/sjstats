@@ -455,7 +455,8 @@ r2_mixedmodel <- function(x) {
   ## Test for non-zero random effects
   if (any(sapply(vals$vc, function(x) any(diag(x) == 0)))) {
     ## TODO test more generally for singularity, via theta?
-    stop("Some variance components equal zero. Respecify random structure!")
+    message("Some variance components equal zero. Respecify random structure!")
+    return(NULL)
   }
 
   ## Get variance of fixed effects: multiply coefs by design matrix

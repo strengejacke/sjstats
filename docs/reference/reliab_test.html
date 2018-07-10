@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -35,6 +37,7 @@
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -61,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
       </span>
     </div>
 
@@ -137,6 +140,8 @@
 
 <span class='fu'>cronb</span>(<span class='no'>x</span>)
 
+<span class='fu'>difficulty</span>(<span class='no'>x</span>)
+
 <span class='fu'>mic</span>(<span class='no'>x</span>, <span class='kw'>cor.method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"pearson"</span>, <span class='st'>"spearman"</span>, <span class='st'>"kendall"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -177,14 +182,15 @@ You may use initial letter only.</p></td>
 
     
 <dl class='dl-horizontal'>
-           <dt><code>reliab_test()</code></dt><dd><p>A data frame with the corrected item-total correlations (item discrimination,
-             column <code>item.discr</code>) and Cronbach's alpha (if item deleted, column
-             <code>alpha.if.deleted</code>) for each item of the scale, or <code>NULL</code>
-             if data frame had too less columns.</p></dd>
+           <dt><code>reliab_test()</code></dt><dd><p>A data frame with the corrected item-total correlations (<em>item
+             discrimination</em>, column <code>item.discr</code>) and Cronbach's alpha
+             (if item deleted, column <code>alpha.if.deleted</code>) for each item
+             of the scale, or <code>NULL</code> if data frame had too less columns.</p></dd>
            <dt><code>split_half()</code></dt><dd><p>A list with two values: the split-half reliability <code>splithalf</code> and
              the Spearman-Brown corrected split-half reliability <code>spearmanbrown</code>.</p></dd>
            <dt><code>cronb()</code></dt><dd><p>The Cronbach's Alpha value for <code>x</code>.</p></dd>
            <dt><code>mic()</code></dt><dd><p>The mean inter-item-correlation value for <code>x</code>.</p></dd>
+           <dt><code>difficulty()</code></dt><dd><p>The item difficulty value for <code>x</code>.</p></dd>
          </dl>
 
     
@@ -193,38 +199,42 @@ You may use initial letter only.</p></td>
     <dl class='dl-horizontal'>
            <dt><code>reliab_test()</code></dt><dd><p>This function calculates the item discriminations (corrected item-total
              correlations for each item of <code>x</code> with the remaining items) and
-             the Cronbach's alpha for each item, if it was deleted from the scale.</p></dd>
+             the Cronbach's alpha for each item, if it was deleted from the scale.
+             The absolute value of the item discrimination indices should be
+             above 0.1. An index between 0.1 and 0.3 is considered as "fair",
+             while an index above 0.3 (or below -0.3) is "good". Items with
+             low discrimination indices are often ambiguously worded and
+             should be examined. Items with negative indices should be
+             examined to determine why a negative value was obtained (e.g.
+             reversed answer categories regarding positive and negative poles).</p></dd>
            <dt><code>split_half()</code></dt><dd><p>This function calculates the split-half reliability for items in
              the data frame <code>x</code>, including the Spearman-Brown adjustment.
-             Splitting is done by selecting odd versus even columns in <code>x</code>.</p></dd>
-           <dt><code>cronb()</code></dt><dd><p>The Cronbach's Alpha value for <code>x</code>.</p></dd>
+             Splitting is done by selecting odd versus even columns in <code>x</code>.
+             A value closer to 1 indicates greater internal consistency.</p></dd>
+           <dt><code>cronb()</code></dt><dd><p>The Cronbach's Alpha value for <code>x</code>.
+             A value closer to 1 indicates greater internal consistency.</p></dd>
            <dt><code>mic()</code></dt><dd><p>This function calculates a mean inter-item-correlation, i.e.
              a correlation matrix of <code>x</code> will be computed (unless
              <code>x</code> is already a matrix as returned by the
              <code>cor</code>-function) and the mean
              of the sum of all item's correlation values is returned.
-             Requires either a data frame or a computed <code>cor</code>-object.</p></dd>
+             Requires either a data frame or a computed <code>cor</code>-object.
+             <br /> <br />
+             &#8220;Ideally, the average inter-item correlation for a set of
+             items should be between .20 and .40, suggesting that while the
+             items are reasonably homogenous, they do contain sufficiently
+             unique variance so as to not be isomorphic with each other.
+             When values are lower than .20, then the items may not be
+             representative of the same content domain. If values are higher than
+             .40, the items may be only capturing a small bandwidth of the construct.&#8221;
+             <cite>(Piedmont 2014)</cite></p></dd>
+           <dt><code>difficulty()</code></dt><dd><p>This function calculates the irem difficutly, which should
+             range between 0.2 and 0.8. Lower values are a signal for
+             more difficult items, while higher values close to one
+             are a sign for easier items. The ideal value for item difficulty
+             is <code>p + (1 - p) / 2</code>, where <code>p = 1 / max(x)</code>. In most
+             cases, the ideal item difficulty lies between 0.5 and 0.8.</p></dd>
          </dl>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p><code>reliab_test()</code> is similar to a basic reliability test
-        in SPSS. The correlations in the Item-Total-Statistic are a computed
-        correlation of each item against the sum of the remaining items
-        (which are thus treated as one item).
-        <br /> <br />
-        For <code>split_half()</code> and <code>cronb()</code>, a value closer  to 1 indicates
-        greater internal consistency.
-        <br /> <br />
-        For the mean inter-item-correlation:
-        &#8220;Ideally, the average inter-item correlation for a set of
-         items should be between .20 and .40, suggesting that while the
-         items are reasonably homogenous, they do contain sufficiently
-         unique variance so as to not be isomorphic with each other.
-         When values are lower than .20, then the items may not be
-         representative of the same content domain. If values are higher than
-         .40, the items may be only capturing a small bandwidth of the construct.&#8221;
-         <cite>(Piedmont 2014)</cite></p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -275,6 +285,20 @@ You may use initial letter only.</p></td>
 <span class='fu'>cronb</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 0.459369</div><div class='input'>
 <span class='co'># mean inter-item-correlation</span>
 <span class='fu'>mic</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] 0.09176831</div><div class='input'>
+<span class='co'># item difficulty</span>
+<span class='fu'>difficulty</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; 
+#&gt; # Item Difficulty
+#&gt; 
+#&gt;                                                                             difficulty  ideal
+#&gt;                                      do you feel you cope well as caregiver?      0.78   0.62
+#&gt;                                        do you find caregiving too demanding?      0.51   0.62
+#&gt;   does caregiving cause difficulties in your relationship with your friends?      0.41   0.62
+#&gt;                does caregiving have negative effect on your physical health?      0.44   0.62
+#&gt;    does caregiving cause difficulties in your relationship with your family?      0.35   0.62
+#&gt;                                does caregiving cause financial difficulties?      0.32   0.62
+#&gt;                               do you feel trapped in your role as caregiver?      0.48   0.62
+#&gt;                                 do you feel supported by friends/neighbours?      0.54   0.62
+#&gt;                                           do you feel caregiving worthwhile?      0.73   0.62</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>sjPlot</span>)
 <span class='fu'><a href='http://www.rdocumentation.org/packages/sjPlot/topics/sjt.grpmean'>sjt.df</a></span>(<span class='fu'>reliab_test</span>(<span class='no'>x</span>), <span class='kw'>describe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.cmmn.row</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -305,8 +329,6 @@ You may use initial letter only.</p></td>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
-
-      <li><a href="#note">Note</a></li>
 
       <li><a href="#references">References</a></li>
       

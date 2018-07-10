@@ -2,8 +2,8 @@ Package: sjstats
 Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
-Version: 0.15.0.9000
-Date: 2018-07-07
+Version: 0.16.0
+Date: 2018-07-09
 Authors@R: person("Daniel", "Lüdecke", role = c("aut", "cre"), email = "d.luedecke@uke.de", comment = c(ORCID = "0000-0002-8895-3206"))
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -35,7 +35,7 @@ Imports:
     emmeans,
     lme4 (>= 1.1-12),
     lmtest (>= 0.9-34),
-    glmmTMB (>= 0.2.2),
+    glmmTMB (>= 0.2.2.0),
     magrittr,
     MASS,
     Matrix,

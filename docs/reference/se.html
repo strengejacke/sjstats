@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -38,6 +40,7 @@
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -64,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
       </span>
     </div>
 
@@ -136,33 +139,32 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>se</span>(<span class='no'>x</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"fe"</span>, <span class='st'>"re"</span>))</pre>
+    <pre class="usage"><span class='fu'>se</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for icc.lme4</span>
+<span class='fu'>se</span>(<span class='no'>x</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>(Numeric) vector, a data frame, an <code>lm</code> or <code>glm</code>-object,
-a <code>merMod</code>-object as returned by the functions from the
-<span class="pkg">lme4</span>-package, an ICC object (as obtained by the
-<code><a href='icc.html'>icc</a></code>-function) or a list with estimate and p-value.
-For the latter case, the list must contain elements named
-<code>estimate</code> and <code>p.value</code> (see 'Examples' and 'Details').</p></td>
+      <td><p>(Numeric) vector, a data frame, an <code>lm</code>, <code>glm</code>,
+<code>merMod</code> (<span class="pkg">lme4</span>), or <code>stanreg</code> model object,
+an ICC object (as obtained by the <code><a href='icc.html'>icc</a></code>-function)
+or a list with estimate and p-value. For the latter case, the list
+must contain elements named <code>estimate</code> and <code>p.value</code>
+(see 'Examples' and 'Details').</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Currently not used.</p></td>
     </tr>
     <tr>
       <th>nsim</th>
       <td><p>Numeric, the number of simulations for calculating the
 standard error for intraclass correlation coefficients, as
 obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
-    </tr>
-    <tr>
-      <th>type</th>
-      <td><p>Type of standard errors for generalized linear mixed models.
-<code>type = "fe"</code> returns the standard errors for fixed effects,
-based on the delta-method-approximation. <code>type = "re"</code> returns
-the standard errors for joint random and fixed effects, which are
-on the scale of the link function. See 'Details'.</p></td>
     </tr>
     </table>
     
@@ -172,30 +174,22 @@ on the scale of the link function. See 'Details'.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For linear mixed models, and generalized linear mixed models <strong>with
-           <code>type = "re"</code></strong>, this function computes the standard errors
-           for joint (sums of) random and fixed effects coefficients (unlike
-           <code><a href='http://www.rdocumentation.org/packages/arm/topics/se.coef'>se.coef</a></code>, which returns the standard error
-           for fixed and random effects separately). Hence, <code>se()</code>
-           returns the appropriate standard errors for <code><a href='http://www.rdocumentation.org/packages/lme4/topics/merMod-class'>coef.merMod</a></code>.
-           <br /> <br />
-           For generalized linear models or generalized linear mixed models,
-           approximated standard errors, using the delta method for transformed
-           regression parameters are returned (Oehlert 1992). For generalized
-           linear mixed models, by default, the standard errors refer to the
-           fixed effects only. Use <code>type = "re"</code> to compute standard errors
-           for joint random and fixed effects coefficients. However,
-           computation for the latter <em>is not</em> based on the delta method,
-           so standard errors from <code>type = "re"</code> are on the scale of the
-           link-function (and not back transformed).
-           <br /> <br />
-           The standard error for the <code><a href='icc.html'>icc</a></code> is based on bootstrapping,
-           thus, the <code>nsim</code>-argument is required. See 'Examples'.
-           <br /> <br />
-           <code>se()</code> also returns the standard error of an estimate (regression
-           coefficient) and p-value, assuming a normal distribution to compute
-           the z-score from the p-value (formula in short: <code>b / qnorm(p / 2)</code>).
-           See 'Examples'.</p>
+    <p>For linear mixed models, and generalized linear mixed models, this
+  function computes the standard errors for joint (sums of) random and fixed
+  effects coefficients (unlike <code><a href='http://www.rdocumentation.org/packages/arm/topics/se.coef'>se.coef</a></code>, which returns the
+  standard error for fixed and random effects separately). Hence, <code>se()</code>
+  returns the appropriate standard errors for <code><a href='http://www.rdocumentation.org/packages/lme4/topics/merMod-class'>coef.merMod</a></code>.
+  <br /> <br />
+  For generalized linear models, approximated standard errors, using the delta
+  method for transformed regression parameters are returned (Oehlert 1992).
+  <br /> <br />
+  The standard error for the <code><a href='icc.html'>icc</a></code> is based on bootstrapping,
+  thus, the <code>nsim</code>-argument is required. See 'Examples'.
+  <br /> <br />
+  <code>se()</code> also returns the standard error of an estimate (regression
+  coefficient) and p-value, assuming a normal distribution to compute
+  the z-score from the p-value (formula in short: <code>b / qnorm(p / 2)</code>).
+  See 'Examples'.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -254,11 +248,13 @@ on the scale of the link function. See 'Details'.</p></td>
 <span class='no'>efc</span>$<span class='no'>services</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>sjmisc</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/sjmisc/topics/dicho'>dicho</a></span>(<span class='no'>efc</span>$<span class='no'>tot_sc_e</span>, <span class='kw'>dich.by</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
-<span class='fu'>se</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;          term  estimate  std.error
-#&gt; 1 (Intercept) 0.5946382 0.22373756
-#&gt; 2     neg_c_7 1.0427929 0.02035406
-#&gt; 3     c161sex 0.8033751 0.12974572
-#&gt; 4      e42dep 1.2379767 0.09724651</div><div class='input'>
+<span class='fu'>se</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
+#&gt;   term        estimate std.error
+#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1 (Intercept)    0.595    0.224 
+#&gt; 2 neg_c_7        1.04     0.0204
+#&gt; 3 c161sex        0.803    0.130 
+#&gt; 4 e42dep         1.24     0.0972</div><div class='input'>
 <span class='co'># compute odds-ratio adjusted standard errors for generalized</span>
 <span class='co'># linear mixed model, also based on delta method</span>
 <span class='fu'>library</span>(<span class='no'>lme4</span>)
@@ -267,9 +263,27 @@ on the scale of the link function. See 'Details'.</p></td>
 <span class='no'>sleepstudy</span>$<span class='no'>Reaction.dicho</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/sjmisc/topics/dicho'>dicho</a></span>(<span class='no'>sleepstudy</span>$<span class='no'>Reaction</span>, <span class='kw'>dich.by</span> <span class='kw'>=</span> <span class='st'>"median"</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/glmer'>glmer</a></span>(<span class='no'>Reaction.dicho</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
              <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='st'>"logit"</span>))
-<span class='fu'>se</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;          term   estimate  std.error
-#&gt; 1 (Intercept) 0.02201714 0.02582094
-#&gt; 2        Days 2.43719045 0.57200380</div><div class='input'>
+<span class='fu'>se</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; $Subject
+#&gt;    (Intercept)      Days
+#&gt; 1     1.859251 0.4700877
+#&gt; 2     2.622321 0.4115004
+#&gt; 3     2.622321 0.4115004
+#&gt; 4     1.633616 0.3289753
+#&gt; 5     1.745522 0.4826391
+#&gt; 6     1.714059 0.3560052
+#&gt; 7     1.715195 0.4646524
+#&gt; 8     2.219966 0.4133501
+#&gt; 9     2.622321 0.4115004
+#&gt; 10    1.806673 0.5077360
+#&gt; 11    2.314690 0.3959941
+#&gt; 12    2.111495 0.4335945
+#&gt; 13    1.830037 0.3388438
+#&gt; 14    1.686571 0.4933028
+#&gt; 15    1.988285 0.4534415
+#&gt; 16    2.167228 0.4013762
+#&gt; 17    2.314690 0.3959941
+#&gt; 18    1.778644 0.4321839
+#&gt; </div><div class='input'>
 <span class='co'># compute standard error from regression coefficient and p-value</span>
 <span class='fu'>se</span>(<span class='fu'>list</span>(<span class='kw'>estimate</span> <span class='kw'>=</span> <span class='fl'>.3</span>, <span class='kw'>p.value</span> <span class='kw'>=</span> <span class='fl'>.002</span>))</div><div class='output co'>#&gt; [1] 0.09708008</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>

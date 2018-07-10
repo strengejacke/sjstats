@@ -8,8 +8,8 @@
 <title>Statistics for Mixed Effects Models • sjstats</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="Statistics for Mixed Effects Models">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Statistics for Mixed Effects Models">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@
       <h1>Statistics for Mixed Effects Models</h1>
                         <h4 class="author">Daniel Lüdecke</h4>
             
-            <h4 class="date">2018-06-14</h4>
+            <h4 class="date">2018-07-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/vignettes/mixedmodels-statistics.Rmd"><code>vignettes/mixedmodels-statistics.Rmd</code></a></small>
       <div class="hidden name"><code>mixedmodels-statistics.Rmd</code></div>
@@ -115,7 +115,7 @@
 <code><a href="../reference/re_var.html">get_re_var()</a></code> and <code><a href="../reference/re_var.html">re_var()</a></code>
 </li>
 <li><code><a href="../reference/icc.html">icc()</a></code></li>
-<li><code><a href="../reference/r2.html">r2()</a></code></li>
+<li><code><a href="../reference/cod.html">r2()</a></code></li>
 </ul>
 <p>Befor we start, we fit a simple linear mixed model:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(sjstats)</a>
@@ -224,8 +224,14 @@
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># Kenward-Roger approximation for the degrees of freedom</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw"><a href="../reference/p_value.html">p_value</a></span>(m2, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;          term p.value std.error</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 1 (Intercept)       0     9.769</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 2        Days       0     0.816</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 1 (Intercept)       0     9.773</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 2        Days       0     0.814</span></a></code></pre></div>
+<p>To see more details on the degrees of freedom when using Kenward-Roger approximation, use the <code>summary()</code>-method:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">pv &lt;-<span class="st"> </span><span class="kw"><a href="../reference/p_value.html">p_value</a></span>(m2, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">summary</span>(pv)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;          term p.value std.error      df statistic</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 1 (Intercept)       0     9.773  22.765    25.724</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 2        Days       0     0.814 160.989    12.865</span></a></code></pre></div>
 </div>
 <div id="random-effect-variances" class="section level2">
 <h2 class="hasAnchor">
@@ -244,17 +250,25 @@
 <code>rho.01</code>: Random-Intercept-Slope-correlation</li>
 </ul>
 <p>You can access on of these values with <code><a href="../reference/re_var.html">get_re_var()</a></code>, or all of them with <code><a href="../reference/re_var.html">re_var()</a></code>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># get residual variance</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="../reference/re_var.html">get_re_var</a></span>(m, <span class="st">"sigma_2"</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; [1] 654.941</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co"># get all random effect variances</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw"><a href="../reference/re_var.html">re_var</a></span>(m)</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;       Within-group-variance:  654.941</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;      Between-group-variance:  612.090 (Subject)</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;       Random-slope-variance:   35.072 (Subject.Days)</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  Slope-Intercept-covariance:    9.604 (Subject)</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; Slope-Intercept-correlation:    0.066 (Subject)</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># get residual variance</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="../reference/re_var.html">get_re_var</a></span>(m, <span class="st">"sigma_2"</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; [1] 654.941</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co"># get all random effect variances</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="kw"><a href="../reference/re_var.html">re_var</a></span>(m)</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;       Within-group-variance:  654.941</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;      Between-group-variance:  612.090 (Subject)</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;       Random-slope-variance:   35.072 (Subject.Days)</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  Slope-Intercept-covariance:    9.604 (Subject)</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; Slope-Intercept-correlation:    0.066 (Subject)</span></a></code></pre></div>
+</div>
+<div id="r-squared" class="section level2">
+<h2 class="hasAnchor">
+<a href="#r-squared" class="anchor"></a>R-squared</h2>
+<p>Nakagawa et al. (2017) proposed a method to compute marginal and conditional r-squared values, which is implemented in the <code><a href="../reference/cod.html">r2()</a></code>-function. For mixed models, the marginal r-squared considers only the variance of the fixed effects, while the conditional r-squared takes both the fixed and random effects into account. <code><a href="../reference/cod.html">r2()</a></code> can be used with models fitted with the functions of the <strong>lme4</strong> and <strong>glmmTMB</strong> packages.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/cod.html">r2</a></span>(m)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt;    Marginal R2: 0.279</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; Conditional R2: 0.799</span></a></code></pre></div>
 </div>
 <div id="intraclass-correlation-coefficient" class="section level2">
 <h2 class="hasAnchor">
@@ -262,23 +276,23 @@
 <p>The components of the random effect variances are of interest when calculating the intraclass-correlation coefficient, ICC. The ICC is calculated by dividing the between-group-variance (random intercept variance) by the total variance (i.e. sum of between-group-variance and within-group (residual) variance). The ICC can be interpreted as “the proportion of the variance explained by the grouping structure in the population” (Hox 2002: 15).</p>
 <p>Usually, the ICC is calculated for the null model (“unconditional model”). However, according to Raudenbush and Bryk (2002) or Rabe-Hesketh and Skrondal (2012) it is also feasible to compute the ICC for full models with covariates (“conditional models”) and compare how much a level-2 variable explains the portion of variation in the grouping structure (random intercept).</p>
 <p>The ICC for mixed models can be computed with <code><a href="../reference/icc.html">icc()</a></code>. <em>Caution:</em> For random-slope-intercept models, the ICC would differ at each unit of the predictors. Hence, the ICC for these kind of models cannot be understood simply as proportion of variance (see Goldstein et al. 2010). For convenience reasons, as the <code><a href="../reference/icc.html">icc()</a></code> function is also used to extract the different random effects variances (see <code><a href="../reference/re_var.html">re_var()</a></code> above), the ICC for random-slope-intercept-models is reported nonetheless, but it is usually no meaningful summary of the proportion of variances.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; Linear mixed model</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;  Family: gaussian (identity)</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;   ICC (Subject): 0.483090</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m2)</a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; Linear mixed model</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  Family: gaussian (identity)</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;     ICC (mygrp): 0.000000</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;   ICC (Subject): 0.589309</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Linear mixed model</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;  Family: gaussian (identity)</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;   ICC (Subject): 0.483090</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m2)</a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt; Linear mixed model</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  Family: gaussian (identity)</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt;     ICC (mygrp): 0.000000</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt;   ICC (Subject): 0.589309</span></a></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1">
@@ -289,6 +303,7 @@
 <p>Goldstein H, Browne W, Rasbash J. 2010. Partitioning Variation in Multilevel Models. Understanding Statistics, 1:4, 223-231, doi: <a href="http://doi.org/10.1207/S15328031US0104_02">10.1207/S15328031US0104_02</a></p>
 <p>Hox J. 2002. <em>Multilevel analysis: techniques and applications.</em> Mahwah, NJ: Erlbaum</p>
 <p>Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. <em>An Overview of Variance Inflation Factors for Sample-Size Calculation.</em> Evaluation &amp; the Health Professions 26: 239–257. doi: <a href="http://doi.org/10.1177/0163278703255230">10.1177/0163278703255230</a></p>
+<p>Nakagawa S, Johnson P, Schielzeth H. 2017. The coefficient of determination R2 and intra-class correlation coefficient from generalized linear mixed-effects models revisted and expanded. J. R. Soc. Interface 14. doi: <a href="http://doi.org/10.1098/rsif.2017.0213">10.1098/rsif.2017.0213</a></p>
 <p>Rabe-Hesketh S, Skrondal A. 2012. <em>Multilevel and longitudinal modeling using Stata.</em> 3rd ed. College Station, Tex: Stata Press Publication</p>
 <p>Raudenbush SW, Bryk AS. 2002. <em>Hierarchical linear models: applications and data analysis methods.</em> 2nd ed. Thousand Oaks: Sage Publications</p>
 </div>
@@ -306,6 +321,7 @@
       <li><a href="#rescale-model-weights-for-complex-samples">Rescale model weights for complex samples</a></li>
       <li><a href="#p-values">P-Values</a></li>
       <li><a href="#random-effect-variances">Random Effect Variances</a></li>
+      <li><a href="#r-squared">R-squared</a></li>
       <li><a href="#intraclass-correlation-coefficient">Intraclass-Correlation Coefficient</a></li>
       </ul>
 </li>

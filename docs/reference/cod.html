@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tjur's Coefficient of Discrimination — cod • sjstats</title>
+<title>Goodness-of-fit measures for regression models — cod • sjstats</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,22 +21,23 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="Tjur's Coefficient of Discrimination — cod" />
+<meta property="og:title" content="Goodness-of-fit measures for regression models — cod" />
 
-<meta property="og:description" content="This method calculates the Coefficient of Discrimination D
-               for generalized linear (mixed) models for binary data. It is
-               an alternative to other Pseudo-R-squared values
-               like Nakelkerke's R2 or Cox-Snell R2." />
+<meta property="og:description" content="Compute Goodness-of-fit measures for various regression models,
+  including mixed and Bayesian regression models." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -63,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
       </span>
     </div>
 
@@ -120,64 +121,169 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Tjur's Coefficient of Discrimination</h1>
+    <h1>Goodness-of-fit measures for regression models</h1>
     <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/pseudo_r2.R'><code>R/pseudo_r2.R</code></a></small>
     <div class="hidden name"><code>cod.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This method calculates the Coefficient of Discrimination <code>D</code>
-               for generalized linear (mixed) models for binary data. It is
-               an alternative to other Pseudo-R-squared values
-               like Nakelkerke's R2 or Cox-Snell R2.</p>
+    <p>Compute Goodness-of-fit measures for various regression models,
+  including mixed and Bayesian regression models.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cod</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>cod</span>(<span class='no'>x</span>)
+
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for lme</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='kw'>loo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>r2</span>(<span class='no'>x</span>, <span class='kw'>loo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Fitted <code><a href='http://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></code> or <code><a href='http://www.rdocumentation.org/packages/lme4/topics/glmer'>glmer</a></code> model.</p></td>
+      <td><p>Fitted model of class <code>lm</code>, <code>glm</code>, <code>merMod</code>,
+<code>glmmTMB</code>, <code>lme</code>, <code>plm</code>, <code>stanreg</code> or <code>brmsfit</code>.
+For method <code>cod()</code>, only a <code>glm</code> with binrary response.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Currently not used.</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>Optional, an <code>lme</code> object, representing the fitted null-model
+(unconditional model) to <code>x</code>. If <code>n</code> is given, the pseudo-r-squared
+for random intercept and random slope variances are computed
+(<cite>Kwok et al. 2008</cite>) as well as the Omega squared value
+(<cite>Xu 2003</cite>). See 'Examples' and 'Details'.</p></td>
+    </tr>
+    <tr>
+      <th>loo</th>
+      <td><p>Logical, if <code>TRUE</code> and <code>x</code> is a <code>stanreg</code> or
+<code>brmsfit</code> object, a LOO-adjusted r-squared is calculated. Else,
+a rather "unadjusted" r-squared will be returned by calling
+<code><a href='http://www.rdocumentation.org/packages/rstantools/topics/bayes_R2'>rstantools::bayes_R2()</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The <code>D</code> Coefficient of Discrimination, also known as
-          Tjur's R-squared value.</p>
+    <p>For <code>r2()</code>, depending on the model, returns:</p><ul>
+<li><p>For linear models, the r-squared and adjusted r-squared values.</p></li>
+<li><p>For mixed models, the marginal and conditional r-squared values.</p></li>
+<li><p>For <code>glm</code> objects, Cox &amp; Snell's and Nagelkerke's pseudo r-squared values.</p></li>
+<li><p>For <code>brmsfit</code> or <code>stanreg</code> objects, the Bayesian version of r-squared is computed, calling <code><a href='http://www.rdocumentation.org/packages/rstantools/topics/bayes_R2'>rstantools::bayes_R2()</a></code>.</p></li>
+<li><p>If <code>loo = TRUE</code>, for <code>brmsfit</code> or <code>stanreg</code> objects a LOO-adjusted version of r-squared is returned.</p></li>
+</ul><p>For <code>cod()</code>, returns the <code>D</code> Coefficient of Discrimination,
+        also known as Tjur's R-squared value.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>For linear models, the r-squared and adjusted r-squared value is returned,
+         as provided by the <code>summary</code>-function.
+         <br /> <br />
+         For mixed models (from <span class="pkg">lme4</span> or <span class="pkg">glmmTMB</span>) marginal and
+         conditional r-squared values are calculated, based on
+         <cite>Nakagawa et al. 2017</cite>.
+         <br /> <br />
+         For <code>lme</code>-models, an r-squared approximation by computing the
+         correlation between the fitted and observed values, as suggested by
+         <cite>Byrnes (2008)</cite>, is returned as well as a simplified version of
+         the Omega-squared value (1 - (residual variance / response variance),
+         <cite>Xu (2003)</cite>, <cite>Nakagawa, Schielzeth 2013</cite>), unless <code>n</code>
+         is specified.
+         <br /> <br />
+         If <code>n</code> is given, for <code>lme</code>-models pseudo r-squared measures based
+         on the variances of random intercept (tau 00, between-group-variance)
+         and random slope (tau 11, random-slope-variance), as well as the
+         r-squared statistics as proposed by <cite>Snijders and Bosker 2012</cite> and
+         the Omega-squared value (1 - (residual variance full model / residual
+         variance null model)) as suggested by <cite>Xu (2003)</cite> are returned.
+         <br /> <br />
+         For generalized linear models, Cox &amp; Snell's and Nagelkerke's
+         pseudo r-squared values are returned.
+         <br /> <br />
+         The ("unadjusted") r-squared value and its standard error for
+         <code>brmsfit</code> or <code>stanreg</code> objects are robust measures, i.e.
+         the median is used to compute r-squared, and the median absolute
+         deviation as the measure of variability. If <code>loo = TRUE</code>,
+         a LOO-adjusted r-squared is calculated, which comes conceptionally
+         closer to an adjusted r-squared measure.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>The Coefficient of Discrimination <code>D</code> can be read like any
-        other (Pseudo-)R-squared value.</p>
+    <dl class='dl-horizontal'>
+        <dt><strong>cod()</strong></dt><dd><p>This method calculates the Coefficient of Discrimination <code>D</code>
+         for generalized linear (mixed) models for binary data. It is
+         an alternative to other Pseudo-R-squared values like Nakelkerke's
+         R2 or Cox-Snell R2. The Coefficient of Discrimination <code>D</code>
+         can be read like any other (Pseudo-)R-squared value.</p></dd>
+        <dt><strong>r2()</strong></dt><dd><p>For mixed models, the marginal r-squared considers only the variance
+         of the fixed effects, while the conditional r-squared takes both
+         the fixed and random effects into account.
+         <br /> <br />
+         For <code>lme</code>-objects, if <code>n</code> is given, the Pseudo-R2 statistic
+         is the proportion of explained variance in the random effect after
+         adding co-variates or predictors to the model, or in short: the
+         proportion of the explained variance in the random effect of the
+         full (conditional) model <code>x</code> compared to the null (unconditional)
+         model <code>n</code>.
+         <br /> <br />
+         The Omega-squared statistics, if <code>n</code> is given, is 1 - the proportion
+         of the residual variance of the full model compared to the null model's
+         residual variance, or in short: the the proportion of the residual
+         variation explained by the covariates.
+         <br /> <br />
+         Alternative ways to assess the "goodness-of-fit" is to compare the ICC
+         of the null model with the ICC of the full model (see <code><a href='icc.html'>icc</a></code>).</p></dd>
+      </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Tjur T (2009) Coefficients of determination in logistic regression models -
-              a new proposal: The coefficient of discrimination. The American Statistician,
-              63(4): 366-372</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='r2.html'>r2</a></code> for Nagelkerke's and Cox and Snell's pseudo
-           r-squared coefficients.</p></div>
+    <ul>
+<li><p><a href='http://glmm.wikidot.com/faq'>DRAFT r-sig-mixed-models FAQ</a></p></li>
+<li><p>Bolker B et al. (2017): <a href='http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html'>GLMM FAQ.</a></p></li>
+<li><p>Byrnes, J. 2008. Re: Coefficient of determination (R^2) when using lme() (<a href='https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q2/000713.html'>https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q2/000713.html</a>)</p></li>
+<li><p>Kwok OM, Underhill AT, Berry JW, Luo W, Elliott TR, Yoon M. 2008. Analyzing Longitudinal Data with Multilevel Models: An Example with Individuals Living with Lower Extremity Intra-Articular Fractures. Rehabilitation Psychology 53(3): 370–86. doi: <a href='http://doi.org/10.1037/a0012765'>10.1037/a0012765</a></p></li>
+<li><p>Nakagawa S, Schielzeth H. 2013. A general and simple method for obtaining R2 from generalized linear mixed-effects models. Methods in Ecology and Evolution, 4(2):133–142. doi: <a href='http://doi.org/10.1111/j.2041-210x.2012.00261.x'>10.1111/j.2041-210x.2012.00261.x</a></p></li>
+<li><p>Nakagawa S, Johnson P, Schielzeth H (2017) The coefficient of determination R2 and intra-class correlation coefficient from generalized linear mixed-effects models revisted and expanded. J. R. Soc. Interface 14. doi: <a href='http://doi.org/10.1098/rsif.2017.0213'>10.1098/rsif.2017.0213</a></p></li>
+<li><p>Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication</p></li>
+<li><p>Raudenbush SW, Bryk AS. 2002. Hierarchical linear models: applications and data analysis methods. 2nd ed. Thousand Oaks: Sage Publications</p></li>
+<li><p>Snijders TAB, Bosker RJ. 2012. Multilevel analysis: an introduction to basic and advanced multilevel modeling. 2nd ed. Los Angeles: Sage</p></li>
+<li><p>Xu, R. 2003. Measuring explained variation in linear mixed effects models. Statist. Med. 22:3527-3541. doi: <a href='http://doi.org/10.1002/sim.1572'>10.1002/sim.1572</a></p></li>
+<li><p>Tjur T. 2009. Coefficients of determination in logistic regression models - a new proposal: The coefficient of discrimination. The American Statistician, 63(4): 366-372</p></li>
+</ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>sjmisc</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘sjmisc’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:purrr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    is_empty</span></div><div class='input'><span class='fu'>data</span>(<span class='no'>efc</span>)
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>efc</span>)
 
 <span class='co'># Tjur's R-squared value</span>
 <span class='no'>efc</span>$<span class='no'>services</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='no'>efc</span>$<span class='no'>tot_sc_e</span> <span class='kw'>&gt;</span> <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
 <span class='fu'>cod</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Tjur's D: 0.023</div><div class='input'>
+<span class='fu'>library</span>(<span class='no'>lme4</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
+<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;    Marginal R2: 0.279
+#&gt; Conditional R2: 0.799</div><div class='input'>
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>barthtot</span> ~ <span class='no'>c160age</span> + <span class='no'>c12hour</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
+<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;          R-squared: 0.256
+#&gt; adjusted R-squared: 0.254</div><div class='input'>
+<span class='co'># Pseudo-R-squared values</span>
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
+           <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
+<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Cox &amp; Snell's R-squared: 0.023
+#&gt;  Nagelkerke's R-squared: 0.030</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -187,11 +293,11 @@
       
       <li><a href="#value">Value</a></li>
 
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#note">Note</a></li>
 
       <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
