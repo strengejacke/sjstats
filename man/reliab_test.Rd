@@ -8,8 +8,8 @@
 \alias{mic}
 \title{Check internal consistency of a test or questionnaire}
 \usage{
-reliab_test(x, scale.items = FALSE, digits = 3, out = c("txt", "viewer",
-  "browser"))
+reliab_test(x, scale.items = FALSE, digits = 3, out = c("txt",
+  "viewer", "browser"))
 
 split_half(x, digits = 3)
 

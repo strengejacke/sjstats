@@ -4,8 +4,8 @@
 \alias{grpmean}
 \title{Summary of mean values by group}
 \usage{
-grpmean(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "viewer",
-  "browser"))
+grpmean(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt",
+  "viewer", "browser"))
 }
 \arguments{
 \item{x}{A (grouped) data frame.}

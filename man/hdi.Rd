@@ -56,11 +56,11 @@ n_eff(x, ...)
 
 rope(x, rope, ...)
 
-\method{rope}{stanreg}(x, rope, trans = NULL, type = c("fixed", "random",
-  "all"), ...)
+\method{rope}{stanreg}(x, rope, trans = NULL, type = c("fixed",
+  "random", "all"), ...)
 
-\method{rope}{brmsfit}(x, rope, trans = NULL, type = c("fixed", "random",
-  "all"), ...)
+\method{rope}{brmsfit}(x, rope, trans = NULL, type = c("fixed",
+  "random", "all"), ...)
 }
 \arguments{
 \item{x}{A \code{stanreg}, \code{stanfit}, or \code{brmsfit} object. For

@@ -7,7 +7,8 @@
 \usage{
 re_var(x)
 
-get_re_var(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01", "sigma_2"))
+get_re_var(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01",
+  "sigma_2"))
 }
 \arguments{
 \item{x}{Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},

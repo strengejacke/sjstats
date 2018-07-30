@@ -4,8 +4,8 @@
 \alias{smpsize_lmm}
 \title{Sample size for linear mixed models}
 \usage{
-smpsize_lmm(eff.size, df.n = NULL, power = 0.8, sig.level = 0.05, k, n,
-  icc = 0.05)
+smpsize_lmm(eff.size, df.n = NULL, power = 0.8, sig.level = 0.05, k,
+  n, icc = 0.05)
 }
 \arguments{
 \item{eff.size}{Effect size.}

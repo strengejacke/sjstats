@@ -8,11 +8,11 @@
 \usage{
 icc(x, ...)
 
-\method{icc}{stanreg}(x, re.form = NULL, typical = "mean", prob = 0.89,
-  ppd = FALSE, ...)
+\method{icc}{stanreg}(x, re.form = NULL, typical = "mean",
+  prob = 0.89, ppd = FALSE, ...)
 
-\method{icc}{brmsfit}(x, re.form = NULL, typical = "mean", prob = 0.89,
-  ppd = FALSE, ...)
+\method{icc}{brmsfit}(x, re.form = NULL, typical = "mean",
+  prob = 0.89, ppd = FALSE, ...)
 }
 \arguments{
 \item{x}{Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},

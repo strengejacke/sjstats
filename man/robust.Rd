@@ -5,8 +5,8 @@
 \alias{svy}
 \title{Robust standard errors for regression models}
 \usage{
-robust(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4", "HC4m",
-  "HC5"), conf.int = FALSE, exponentiate = FALSE)
+robust(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4",
+  "HC4m", "HC5"), conf.int = FALSE, exponentiate = FALSE)
 
 svy(x, vcov = c("HC1", "const", "HC", "HC0", "HC2", "HC3", "HC4", "HC4m",
   "HC5"), conf.int = FALSE, exponentiate = FALSE)
