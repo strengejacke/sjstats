@@ -288,6 +288,9 @@ print.tidy_stan <- function(x, ...) {
   resp.cor <- tidyselect::starts_with("rescor__", vars = x$term)
   ran.eff <- tibble::has_name(x, "random.effect")
   multi.resp <- tibble::has_name(x, "response")
+  cumulative <- tibble::has_name(x, "response.level")
+
+  if (cumulative) x <- sjmisc::var_rename(x, response.level = "response")
 
   x$term <- gsub("b_", "", x$term, fixed = TRUE)
 
@@ -344,7 +347,7 @@ print.tidy_stan <- function(x, ...) {
 
     # print multivariate response models ----
 
-  } else if (!sjmisc::is_empty(resp.cor) || multi.resp) {
+  } else if (!sjmisc::is_empty(resp.cor) || multi.resp || cumulative) {
 
     # get the residual correlation information from data
     x.cor <- dplyr::slice(x, !! resp.cor)
@@ -355,13 +358,15 @@ print.tidy_stan <- function(x, ...) {
 
     # first, print summary for each response model
     responses <- unique(x$response)
+    resp.string <- ""
+    if (cumulative) resp.string <- "-level"
 
     for (resp in responses) {
 
       if (ran.eff) {
         print_stan_mv_re(x, resp)
       } else {
-        cat(crayon::blue(sprintf("## Response: %s\n\n", crayon::red(resp))))
+        cat(crayon::blue(sprintf("## Response%s: %s\n\n", resp.string, crayon::red(resp))))
 
         xr <- x %>%
           dplyr::filter(.data$response == !! resp) %>%

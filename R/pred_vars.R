@@ -35,6 +35,7 @@
 #'      \item \code{is_logit}: model has logit link
 #'      \item \code{is_linear}: family is gaussian
 #'      \item \code{is_ordinal}: family is ordinal or cumulative link
+#'      \item \code{is_categorical}: family is categorical link
 #'      \item \code{is_zeroinf}: model has zero-inflation component
 #'      \item \code{is_multivariate}: model is a multivariate response model (currently only works for \emph{brmsfit} objects)
 #'      \item \code{link.fun}: the link-function
@@ -473,6 +474,8 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
     inherits(x, c("polr", "clm", "clmm", "multinom")) |
     fitfam %in% c("cumulative", "cratio", "sratio", "acat")
 
+  is.categorical <- fitfam == "categorical"
+
   list(
     is_bin = binom_fam & !neg_bin_fam,
     is_pois = poisson_fam | neg_bin_fam,
@@ -481,6 +484,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
     is_linear = linear_model,
     is_zeroinf = zero.inf,
     is_ordinal = is.ordinal,
+    is_categorical = is.categorical,
     is_multivariate = multi.var,
     link.fun = link.fun,
     family = fitfam

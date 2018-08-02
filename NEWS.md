@@ -1,3 +1,13 @@
+# sjstats 0.16.1
+
+## Changes to functions
+
+* Improved `print()`-method for `tidy_stan()` for _brmsfit_-objects with categorical-families.
+
+## Bug fixes
+
+* Fix issues with effect size computation for repeated-measure Anova when using bootstrapping to compute confidence intervals.
+
 # sjstats 0.16.0
 
 ## General

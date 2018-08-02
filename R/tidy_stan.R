@@ -87,8 +87,9 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   # check arguments
   type <- match.arg(type)
 
-  # get data frame
+  # get data frame and family info
   mod.dat <- as.data.frame(x)
+  faminfo <- model_family(x)
 
   # for brmsfit models, we need to remove some columns here to
   # match data rows later
@@ -288,9 +289,25 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   }
 
 
+  # categorical model?
+
+  if (inherits(x, "brmsfit") && faminfo$is_categorical) {
+
+    # terms of categorical models are prefixed with "mu"
+
+    if (length(tidyselect::starts_with("b_mu", vars = out$term)) == nrow(out)) {
+      out$term <- substr(out$term, 5, max(nchar(out$term)))
+      # create "response-level" variable
+      out <- tibble::add_column(out, response.level = "", .before = 1)
+      out$response.level <- gsub("(.*)\\_(.*)", "\\1", out$term)
+      out$term <- gsub("(.*)\\_(.*)", "\\2", out$term)
+    }
+  }
+
+
   # multivariate-response model?
 
-  if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$responses)) {
+  if (inherits(x, "brmsfit") && faminfo$is_multivariate) {
 
     # get response variables
 
