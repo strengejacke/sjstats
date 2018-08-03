@@ -7,6 +7,7 @@
 ## Bug fixes
 
 * Fix issues with effect size computation for repeated-measure Anova when using bootstrapping to compute confidence intervals.
+* `grpmean()` now also adjusts the `n`-columm for weighted data.
 
 # sjstats 0.16.0
 

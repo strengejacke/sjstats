@@ -70,6 +70,17 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
   # weights need extra checking, might be NULL
   if (!missing(weight.by)) {
     weights <- rlang::quo_name(rlang::enquo(weight.by))
+
+    w.string <- tryCatch(
+      {
+        eval(weight.by)
+      },
+      error = function(x) { NULL },
+      warning = function(x) { NULL },
+      finally = function(x) { NULL }
+    )
+
+    if (!is.null(w.string) && is.character(w.string)) weights <- w.string
     if (sjmisc::is_empty(weights) || weights == "NULL") weights <- NULL
   } else
     weights <- NULL
@@ -227,9 +238,9 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
     dplyr::group_by(.data$grp) %>%
     summarise(
       mean = sprintf("%.*f", digits, stats::weighted.mean(.data$dv, w = .data$weight.by, na.rm = TRUE)),
-      N = n(),
-      std.dev = sprintf("%.*f", digits, stats::sd(.data$dv, na.rm = TRUE)),
-      std.error = sprintf("%.*f", digits, se(.data$dv))
+      N = round(sum(.data$weight.by)),
+      std.dev = sprintf("%.*f", digits, wtd_sd(.data$dv, .data$weight.by)),
+      std.error = sprintf("%.*f", digits, wtd_se(.data$dv, .data$weight.by))
     ) %>%
     mutate(p.value = pval) %>%
     dplyr::select(-.data$grp)
@@ -239,8 +250,8 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
     dat,
     mean = sprintf("%.*f", digits, stats::weighted.mean(mydf$dv, w = mydf$weight.by, na.rm = TRUE)),
     N = nrow(mydf),
-    std.dev = sprintf("%.*f", digits, stats::sd(mydf$dv, na.rm = TRUE)),
-    std.error = sprintf("%.*f", digits, se(mydf$dv)),
+    std.dev = sprintf("%.*f", digits, wtd_sd(mydf$dv, mydf$weight.by)),
+    std.error = sprintf("%.*f", digits, wtd_se(mydf$dv, mydf$weight.by)),
     p.value = ""
   )
 

@@ -56,6 +56,17 @@ mwu <- function(x, dv, grp, distribution = "asymptotic", weight.by = NULL, out =
   # weights need extra checking, might be NULL
   if (!missing(weight.by)) {
     weights <- rlang::quo_name(rlang::enquo(weight.by))
+
+    w.string <- tryCatch(
+      {
+        eval(weight.by)
+      },
+      error = function(x) { NULL },
+      warning = function(x) { NULL },
+      finally = function(x) { NULL }
+    )
+
+    if (!is.null(w.string) && is.character(w.string)) weights <- w.string
     if (sjmisc::is_empty(weights) || weights == "NULL") weights <- NULL
   } else
     weights <- NULL
@@ -97,7 +108,9 @@ mwu <- function(x, dv, grp, distribution = "asymptotic", weight.by = NULL, out =
 
         # adjust weights, pick rows from subgroups (see above)
         if (!is.null(weight.by))
-          wsub <- as.integer(stats::na.omit(weight.by[which(!is.na(xsub))]))
+          wsub <- stats::na.omit(weight.by[which(!is.na(xsub))])
+        else
+          wsub <- 1
 
         # remove missings
         xsub <- as.numeric(stats::na.omit(xsub))
@@ -106,14 +119,21 @@ mwu <- function(x, dv, grp, distribution = "asymptotic", weight.by = NULL, out =
         # grouping variable is a factor
         ysub <- as.factor(ysub.n)
 
+        wcdat <- data.frame(
+          x = xsub,
+          y = ysub,
+          w = wsub
+        )
+
         # perfom wilcox test
         if (is.null(weight.by)) {
-          wt <- coin::wilcox_test(xsub ~ ysub, distribution = distribution)
+          wt <- coin::wilcox_test(x ~ y, data = wcdat, distribution = distribution)
         } else {
           wt <- coin::wilcox_test(
-            xsub ~ ysub,
+            formula = x ~ y,
+            data = wcdat,
             distribution = distribution,
-            weight.by = as.formula("~wsub")
+            weights = ~ w
           )
         }
 
