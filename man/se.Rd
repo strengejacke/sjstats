@@ -11,11 +11,11 @@ se(x, ...)
 }
 \arguments{
 \item{x}{(Numeric) vector, a data frame, an \code{lm}, \code{glm},
-\code{merMod} (\pkg{lme4}), or \code{stanreg} model object,
-an ICC object (as obtained by the \code{\link{icc}}-function)
-or a list with estimate and p-value. For the latter case, the list
-must contain elements named \code{estimate} and \code{p.value}
-(see 'Examples' and 'Details').}
+\code{merMod} (\pkg{lme4}), or \code{stanreg} model object, an ICC object
+(as obtained by the \code{\link{icc}}-function), a \code{table} or
+\code{xtabs} object, or a list with estimate and p-value. For the latter
+case, the list must contain elements named \code{estimate} and
+\code{p.value} (see 'Examples' and 'Details').}
 
 \item{...}{Currently not used.}
 
@@ -28,23 +28,46 @@ The standard error of \code{x}.
 }
 \description{
 Compute standard error for a variable, for all variables
-               of a data frame, for joint random and fixed effects
-               coefficients of (non-/linear) mixed models, the adjusted
-               standard errors for generalized linear (mixed) models, or
-               for intraclass correlation coefficients (ICC).
+    of a data frame, for joint random and fixed effects
+    coefficients of (non-/linear) mixed models, the adjusted
+    standard errors for generalized linear (mixed) models, or
+    for intraclass correlation coefficients (ICC).
 }
 \details{
-For linear mixed models, and generalized linear mixed models, this
+\strong{Standard error for variables}
+  \cr \cr
+  For variables and data frames, the standard error is the square root of the
+  variance divided by the number of observations (length of vector).
+  \cr \cr
+  \strong{Standard error for mixed models}
+  \cr \cr
+  For linear mixed models, and generalized linear mixed models, this
   function computes the standard errors for joint (sums of) random and fixed
   effects coefficients (unlike \code{\link[arm]{se.coef}}, which returns the
   standard error for fixed and random effects separately). Hence, \code{se()}
   returns the appropriate standard errors for \code{\link[lme4]{coef.merMod}}.
   \cr \cr
+  \strong{Standard error for generalized linear models}
+  \cr \cr
   For generalized linear models, approximated standard errors, using the delta
   method for transformed regression parameters are returned (Oehlert 1992).
   \cr \cr
+  \strong{Standard error for Intraclass Correlation Coefficient (ICC)}
+  \cr \cr
   The standard error for the \code{\link{icc}} is based on bootstrapping,
   thus, the \code{nsim}-argument is required. See 'Examples'.
+  \cr \cr
+  \strong{Standard error for proportions and mean value}
+  \cr \cr
+  To compute the standard error for relative frequencies (i.e. proportions, or
+  mean value if \code{x} has only two categories), this vector must be supplied
+  as table, e.g. \code{se(table(iris$Species))}. \code{se()} than computes the
+  relative frequencies (proportions) for each value and the related standard
+  error for each value. This might be useful to add standard errors or confidence
+  intervals to descriptive statistics. If standard errors for weighted variables
+  are required, use \code{xtabs()}, e.g. \code{se(xtabs(weights ~ variable))}.
+  \cr \cr
+  \strong{Standard error for regression coefficient and p-value}
   \cr \cr
   \code{se()} also returns the standard error of an estimate (regression
   coefficient) and p-value, assuming a normal distribution to compute
@@ -53,17 +76,20 @@ For linear mixed models, and generalized linear mixed models, this
 }
 \note{
 Computation of standard errors for coefficients of mixed models
-        is based \href{http://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{on this code}.
-        Standard errors for generalized linear (mixed) models, if
-        \code{type = "re"}, are approximations based on the delta
-        method (Oehlert 1992).
-        \cr \cr
-        A remark on standard errors:
-        \dQuote{Standard error represents variation in the point estimate, but
-        confidence interval has usual Bayesian interpretation only with flat prior.}
-        (Gelman 2017)
+   is based \href{http://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{on this code}.
+   Standard errors for generalized linear (mixed) models, if
+   \code{type = "re"}, are approximations based on the delta
+   method (Oehlert 1992).
+   \cr \cr
+   A remark on standard errors:
+   \dQuote{Standard error represents variation in the point estimate, but
+   confidence interval has usual Bayesian interpretation only with flat prior.}
+   (Gelman 2017)
 }
 \examples{
+library(lme4)
+library(sjmisc)
+
 # compute standard error for vector
 se(rnorm(n = 100, mean = 3))
 
@@ -80,19 +106,32 @@ se(fit)
 # with first-order Taylor approximation.
 data(efc)
 efc$services <- sjmisc::dicho(efc$tot_sc_e, dich.by = 0)
-fit <- glm(services ~ neg_c_7 + c161sex + e42dep,
-           data = efc, family = binomial(link = "logit"))
+fit <- glm(
+  services ~ neg_c_7 + c161sex + e42dep,
+  data = efc,
+  family = binomial(link = "logit")
+)
 se(fit)
 
 # compute odds-ratio adjusted standard errors for generalized
 # linear mixed model, also based on delta method
-library(lme4)
-library(sjmisc)
+
 # create binary response
 sleepstudy$Reaction.dicho <- dicho(sleepstudy$Reaction, dich.by = "median")
-fit <- glmer(Reaction.dicho ~ Days + (Days | Subject),
-             data = sleepstudy, family = binomial("logit"))
+fit <- glmer(
+  Reaction.dicho ~ Days + (Days | Subject),
+  data = sleepstudy,
+  family = binomial("logit")
+)
 se(fit)
+
+# compute standard error for proportions
+efc$e42dep <- to_label(efc$e42dep)
+se(table(efc$e42dep))
+
+# including weights
+efc$weights <- rnorm(nrow(efc), 1, .25)
+se(xtabs(efc$weights ~ efc$e42dep))
 
 # compute standard error from regression coefficient and p-value
 se(list(estimate = .3, p.value = .002))

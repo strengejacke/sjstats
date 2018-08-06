@@ -3,6 +3,7 @@
 ## Changes to functions
 
 * Improved `print()`-method for `tidy_stan()` for _brmsfit_-objects with categorical-families.
+* `se()` now also computes standard errors for relative frequencies (proportions) of a vector.
 
 ## Bug fixes
 
