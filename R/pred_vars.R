@@ -457,12 +457,13 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
     sjmisc::str_contains(fitfam, "binomial", ignore.case = TRUE)
 
   poisson_fam <-
-    fitfam %in% c("poisson", "quasipoisson") |
+    fitfam %in% c("poisson", "quasipoisson", "genpois") |
     sjmisc::str_contains(fitfam, "poisson", ignore.case = TRUE)
 
   neg_bin_fam <-
     sjmisc::str_contains(fitfam, "negative binomial", ignore.case = T) |
     sjmisc::str_contains(fitfam, "nbinom", ignore.case = TRUE) |
+    sjmisc::str_contains(fitfam, "genpois", ignore.case = TRUE) |
     sjmisc::str_contains(fitfam, "negbinomial", ignore.case = TRUE) |
     sjmisc::str_contains(fitfam, "neg_binomial", ignore.case = TRUE)
 

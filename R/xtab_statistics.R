@@ -23,10 +23,12 @@
 #'           will be irgnored.
 #' @param statistics Name of measure of association that should be computed. May
 #'          be one of \code{"auto"}, \code{"cramer"}, \code{"phi"}, \code{"spearman"},
-#'          \code{"kendall"} or \code{"pearson"}. See 'Details'.
+#'          \code{"kendall"}, \code{"pearson"} or \code{"fisher"}. See 'Details'.
 #' @param ... Other arguments, passed down to the statistic functions
 #'          \code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
 #'          \code{\link[stats]{cor.test}}.
+#'
+#' @inheritParams grpmean
 #'
 #' @return For \code{phi()}, the table's Phi value. For \code{cramer()}, the
 #'         table's Cramer's V.
@@ -48,8 +50,10 @@
 #' @details The p-value for Cramer's V and the Phi coefficient are based
 #'          on \code{chisq.test()}. If any expected value of a table cell is
 #'          smaller than 5, or smaller than 10 and the df is 1, then \code{fisher.test()}
-#'          is used to compute the p-value. The test statistic is calculated
-#'          with \code{cramer()} resp. \code{phi()}.
+#'          is used to compute the p-value, unless \code{statistics = "fisher"}; in
+#'          this case, the use of \code{fisher.test()} is forced to compute the
+#'          p-value. The test statistic is calculated with \code{cramer()} resp.
+#'          \code{phi()}.
 #'          \cr \cr
 #'          Both test statistic and p-value for Spearman's rho, Kendall's tau
 #'          and Pearson's r are calculated with \code{cor.test()}.
@@ -89,8 +93,9 @@
 #' @importFrom stats fisher.test chisq.test cor.test ftable
 #' @importFrom dplyr case_when
 #' @importFrom MASS loglm
+#' @importFrom rlang quo_name enquo
 #' @export
-xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson"), ...) {
+xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson", "fisher"), weight.by = NULL, ...) {
   # match arguments
   statistics <- match.arg(statistics)
 
@@ -102,10 +107,18 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     # evaluate unquoted names
     x1 <- deparse(substitute(x1))
     x2 <- deparse(substitute(x2))
+    weights <- deparse(substitute(weight.by))
 
     # if names were quotes, remove quotes
     x1 <- gsub("\"", "", x1, fixed = T)
     x2 <- gsub("\"", "", x2, fixed = T)
+    weights <- gsub("\"", "", weights, fixed = T)
+
+    if (sjmisc::is_empty(weights) || weights == "NULL")
+      weights <- NULL
+    else
+      weights <- data[[weights]]
+
 
     # check for "NULL" and get data
     if (x1 != "NULL" && x2 != "NULL")
@@ -113,8 +126,14 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     else
       data <- data[, 1:2]
 
-    # make simple table
-    tab <- table(data)
+    if (!is.null(weights)) data <- cbind(data, weights)
+
+    # make table
+    if (!is.null(weights)) {
+      tab <- as.table(round(stats::xtabs(data[[3]] ~ data[[1]] + data[[2]])))
+      class(tab) <- "table"
+    } else
+      tab <- table(data)
   } else {
     # 'data' is a table - copy to table object
     tab <- data
@@ -137,7 +156,7 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
   use.fisher <- FALSE
 
   # select statistics automatically, based on number of rows/columns
-  if (statistics %in% c("auto", "cramer", "phi")) {
+  if (statistics %in% c("auto", "cramer", "phi", "fisher")) {
     # get chisq-statistics, for df and p-value
     chsq <- suppressWarnings(stats::chisq.test(tab, ...))
     pv <- chsq$p.value
@@ -147,13 +166,14 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     names(test) <- "Chi-squared"
     stat.html <- "&chi;<sup>2</sup>"
 
-    # check row/column
-    if ((nrow(tab) > 2 || ncol(tab) > 2 || statistics == "cramer") && statistics != "phi") {
+    # check row/columns
+    if ((nrow(tab) > 2 || ncol(tab) > 2 || statistics %in% c("cramer", "fisher")) && statistics != "phi") {
       # get cramer's V
       s <- cramer(tab)
 
       # if minimum expected values below 5, compute fisher's exact test
-      if (min(tab.val$expected) < 5 ||
+      if (statistics == "fisher" ||
+          min(tab.val$expected) < 5 ||
           (min(tab.val$expected) < 10 && chsq$parameter == 1)) {
         pv <- stats::fisher.test(tab, simulate.p.value = TRUE, ...)$p.value
         use.fisher <- TRUE

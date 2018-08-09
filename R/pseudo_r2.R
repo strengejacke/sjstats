@@ -428,6 +428,11 @@ r2_mixedmodel <- function(x) {
 
   faminfo <- model_family(x)
 
+  if (faminfo$family %in% c("truncated_nbinom1", "truncated_nbinom2", "tweedie")) {
+    warning("Truncated negative binomial and tweedie families are currently not supported by `r2()`.", call. = F)
+    return(NULL)
+  }
+
   vals <- list(
     beta = lme4::fixef(x),
     X = lme4::getME(x, "X"),
@@ -536,8 +541,9 @@ r2_mixedmodel <- function(x) {
 
         vv <- switch(
           faminfo$family,
-          poisson = mu,
-          truncated_poisson = mu,
+          poisson = ,
+          truncated_poisson = ,
+          genpois = ,
           nbinom1 = ,
           nbinom2 = stats::family(x)$variance(mu, sig),
 

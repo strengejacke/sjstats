@@ -11,7 +11,8 @@ phi(tab)
 cramer(tab)
 
 xtab_statistics(data, x1 = NULL, x2 = NULL, statistics = c("auto",
-  "cramer", "phi", "spearman", "kendall", "pearson"), ...)
+  "cramer", "phi", "spearman", "kendall", "pearson", "fisher"),
+  weight.by = NULL, ...)
 }
 \arguments{
 \item{tab}{A \code{\link{table}} or \code{\link[stats]{ftable}}. Tables of class
@@ -35,7 +36,11 @@ will be irgnored.}
 
 \item{statistics}{Name of measure of association that should be computed. May
 be one of \code{"auto"}, \code{"cramer"}, \code{"phi"}, \code{"spearman"},
-\code{"kendall"} or \code{"pearson"}. See 'Details'.}
+\code{"kendall"}, \code{"pearson"} or \code{"fisher"}. See 'Details'.}
+
+\item{weight.by}{Name of variable in \code{x} that indicated the vector of
+weights that will be applied to weight all  observations. Default is
+\code{NULL}, so no weights are used.}
 
 \item{...}{Other arguments, passed down to the statistic functions
 \code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
@@ -69,8 +74,10 @@ This function calculates various measure of association for
 The p-value for Cramer's V and the Phi coefficient are based
          on \code{chisq.test()}. If any expected value of a table cell is
          smaller than 5, or smaller than 10 and the df is 1, then \code{fisher.test()}
-         is used to compute the p-value. The test statistic is calculated
-         with \code{cramer()} resp. \code{phi()}.
+         is used to compute the p-value, unless \code{statistics = "fisher"}; in
+         this case, the use of \code{fisher.test()} is forced to compute the
+         p-value. The test statistic is calculated with \code{cramer()} resp.
+         \code{phi()}.
          \cr \cr
          Both test statistic and p-value for Spearman's rho, Kendall's tau
          and Pearson's r are calculated with \code{cor.test()}.

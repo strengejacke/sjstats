@@ -4,6 +4,10 @@
 
 * Improved `print()`-method for `tidy_stan()` for _brmsfit_-objects with categorical-families.
 * `se()` now also computes standard errors for relative frequencies (proportions) of a vector.
+* `r2()` now also computes r-squared values for _glmmTMB_-models from `genpois`-families.
+* `r2()` gives more precise warnings for non-supported model-families.
+* `xtab_statistics()` gets a `weight.by`-argument, to compute measures of association for contingency tables for weighted data.
+* The `statistics`-argument in `xtab_statistics()` gets a `"fisher"`-option, to force Fisher's Exact Test to be used.
 
 ## Bug fixes
 
