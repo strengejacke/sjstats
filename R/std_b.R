@@ -63,6 +63,7 @@ std_beta <- function(fit, ...) {
 #' @importFrom stats sd coef qnorm
 #' @importFrom lme4 fixef getME
 #' @importFrom tibble tibble
+#' @importFrom dplyr slice
 #' @rdname std_beta
 #' @export
 std_beta.merMod <- function(fit, ci.lvl = .95, ...) {
@@ -83,7 +84,8 @@ std_beta.merMod <- function(fit, ci.lvl = .95, ...) {
     std.error = se,
     conf.low = sc - stats::qnorm(ci) * se,
     conf.high = sc + stats::qnorm(ci) * se
-  )
+  ) %>%
+    dplyr::slice(-1)
 
 }
 
