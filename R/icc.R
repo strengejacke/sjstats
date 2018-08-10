@@ -182,7 +182,7 @@ icc <- function(x, ...) {
 
 #' @importFrom lme4 VarCorr fixef getME
 #' @importFrom stats formula
-#' @importFrom purrr map map_dbl map_lgl
+#' @importFrom purrr map map_dbl map_lgl map2
 #' @export
 icc.merMod <- function(x, ...) {
   # get family
@@ -272,12 +272,20 @@ icc.merMod <- function(x, ...) {
     rnd_slope <- reva[has_rnd_slope]
 
     # get slope-intercept-correlations
-    rho.01 <- purrr::map_dbl(rnd_slope, ~ attr(.x, "correlation")[1, 2])
+    rho.01 <- purrr::map(rnd_slope, ~ attr(.x, "correlation")[-1, 1])
+
     # get standard deviations, multiplied
-    std_ <- purrr::map_dbl(rnd_slope, ~ prod(attr(.x, "stddev")))
+    std_ <- purrr::map(rnd_slope, function(.x) {
+      .sd <- attr(.x, "stddev")
+      .sd[1] * .sd[2:length(.sd)]
+    })
 
     # bind to matrix
-    tau.01 <- apply(cbind(rho.01, std_), MARGIN = 1, FUN = prod)
+    std.matrix <- purrr::map2(std_, rho.01, ~ cbind(.y, .x))
+    tau.01 <- purrr::map(std.matrix, ~ apply(.x, MARGIN = 1, FUN = prod))
+
+    rho.01 <- unlist(rho.01)
+    tau.01 <- unlist(tau.01)
 
     message("Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.")
   }
@@ -406,12 +414,20 @@ icc.glmmTMB <- function(x, ...) {
     rnd_slope <- reva[has_rnd_slope]
 
     # get slope-intercept-correlations
-    rho.01 <- purrr::map_dbl(rnd_slope, ~ attr(.x, "correlation")[1, 2])
+    rho.01 <- purrr::map(rnd_slope, ~ attr(.x, "correlation")[-1, 1])
+
     # get standard deviations, multiplied
-    std_ <- purrr::map_dbl(rnd_slope, ~ prod(attr(.x, "stddev")))
+    std_ <- purrr::map(rnd_slope, function(.x) {
+      .sd <- attr(.x, "stddev")
+      .sd[1] * .sd[2:length(.sd)]
+    })
 
     # bind to matrix
-    tau.01 <- apply(cbind(rho.01, std_), MARGIN = 1, FUN = prod)
+    std.matrix <- purrr::map2(std_, rho.01, ~ cbind(.y, .x))
+    tau.01 <- purrr::map(std.matrix, ~ apply(.x, MARGIN = 1, FUN = prod))
+
+    rho.01 <- unlist(rho.01)
+    tau.01 <- unlist(tau.01)
 
     message("Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.")
   }
