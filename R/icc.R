@@ -564,7 +564,7 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     # get residual standard deviation sigma
     sig <- xdat[["sigma"]]
 
-    # for linear and poisson models, we have a clear residual variance
+    # residual variance
     resid_var <- sig ^ 2
 
     # total variance, sum of random intercept and residual variances
@@ -748,26 +748,10 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     # if not, just repeat the current value to match number of samples
     if (length(resid_var) == 1) resid_var <- rep(resid_var, length(total_var))
 
-    # check whether we have negative binomial
+    # random intercept icc
+    ri.icc <- purrr::map(tau.00, ~ .x / total_var)
 
-    if (fitfam$is_negbin) {
-
-      # for negative binomial models, we also need the intercept...
-      beta <- as.numeric(brms::fixef(x)[[1]])
-      # ... and the theta value to compute the ICC
-      r <- sig
-
-      # make formula more readable
-
-      numerator <- purrr::map(tau.00, ~ exp(.x) - 1)
-      denominator <- ((exp(total_var) - 1) + (exp(total_var) / r) + exp(-beta - (total_var / 2)))
-
-      ri.icc <- purrr::map(numerator, ~ .x / denominator)
-    } else {
-      # random intercept icc
-      ri.icc <- purrr::map(tau.00, ~ .x / total_var)
-    }
-
+    # random slope-variances (tau 11)
     tau.11 <- purrr::map_if(tau.11, is.null, ~ rep(NA, length(resid_var)))
 
     names(ri.icc) <- sprintf("icc_%s", names(ri.icc))
