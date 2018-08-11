@@ -114,8 +114,8 @@
 #'    into account to report an "adjusted" ICC, as well as the conditional ICC.
 #'    The latter also takes the fixed effects variances into account (see
 #'    \cite{Nakagawa et al. 2017}). If random effects are not nested and not
-#'    cross-classified, the adjusted (\code{adjust = TRUE}) and unadjusted
-#'    (\code{adjust = FALSE}) ICC are identical.
+#'    cross-classified, the adjusted (\code{adjusted = TRUE}) and unadjusted
+#'    (\code{adjusted = FALSE}) ICC are identical.
 #'    \cr \cr
 #'    \strong{ICC for specific group-levels}
 #'    \cr \cr
