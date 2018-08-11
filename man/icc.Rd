@@ -28,7 +28,8 @@ icc(x, ...)
 
 \item{adjusted}{Logical, if \code{TRUE}, the adjusted (and conditional) ICC
 is calculated, which reflects the uncertainty of all random effects (see
-'Details').}
+'Details'). \strong{Note} that if \code{adjusted = TRUE}, \strong{no}
+additional information on the variance components is returned.}
 
 \item{re.form}{Formula containing group-level effects to be considered in
 the prediction. If \code{NULL} (default), include all group-level effects.
@@ -48,8 +49,8 @@ non-Gaussian models.}
 }
 \value{
 A numeric vector with all random intercept intraclass-correlation-coefficients.
-   Furthermore, between- and within-group variances as well as random-slope
-   variance are returned as attributes.
+   Furthermore, if \code{adjusted = FALSE}, between- and within-group variances
+   as well as random-slope variance are returned as attributes.
    \cr \cr
    For \code{stanreg} or \code{brmsfit} objects, the HDI for each statistic
    is also  included as attribute.
@@ -176,6 +177,7 @@ icc(fit1)
 sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
 fit2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 icc(fit2)
+icc(fit2, adjusted = TRUE)
 
 icc1 <- icc(fit1)
 icc2 <- icc(fit2)
