@@ -2,11 +2,17 @@
 % Please edit documentation in R/icc.R
 \name{icc}
 \alias{icc}
+\alias{icc.merMod}
+\alias{icc.glmmTMB}
 \alias{icc.stanreg}
 \alias{icc.brmsfit}
 \title{Intraclass-Correlation Coefficient}
 \usage{
 icc(x, ...)
+
+\method{icc}{merMod}(x, adjusted = FALSE, ...)
+
+\method{icc}{glmmTMB}(x, adjusted = FALSE, ...)
 
 \method{icc}{stanreg}(x, re.form = NULL, typical = "mean",
   prob = 0.89, ppd = FALSE, ...)
@@ -19,6 +25,10 @@ icc(x, ...)
 \code{stanreg} or \code{brmsfit}).}
 
 \item{...}{Currently not used.}
+
+\item{adjusted}{Logical, if \code{TRUE}, the adjusted (and conditional) ICC
+is calculated, which reflects the uncertainty of all random effects (see
+'Details').}
 
 \item{re.form}{Formula containing group-level effects to be considered in
 the prediction. If \code{NULL} (default), include all group-level effects.
@@ -53,20 +63,94 @@ This function calculates the intraclass-correlation
 }
 \details{
 The ICC is calculated by dividing the between-group-variance (random
-  intercept variance) by the total variance (i.e. sum of between-group-variance
-  and within-group (residual) variance). \cr \cr
-  The calculation of the ICC for generalized linear mixed models with binary outcome is based on
-  \cite{Wu et al. (2012)}. For Poisson multilevel models, please refer to \cite{Stryhn et al. (2006)}.
-  \cite{Aly et al. (2014)} describe computation of ICC for negative binomial models.
-  \cr \cr
-  \strong{Caution:} For models with random slopes and random intercepts,
-  the ICC would differ at each unit of the predictors. Hence, the ICC for these
-  kind of models cannot be understood simply as proportion of variance
-  (see \cite{Goldstein et al. 2010}). For convenience reasons, as the
-  \code{icc()} function also extracts the different random effects
-  variances, the ICC for random-slope-intercept-models is reported
-  nonetheless, but it is usually no meaningful summary of the
-  proportion of variances.
+   intercept variance) by the total variance (i.e. sum of between-group-variance
+   and within-group (residual) variance). \cr \cr
+   The calculation of the ICC for generalized linear mixed models with binary outcome is based on
+   \cite{Wu et al. (2012)}. For other distributions (negative binomial, poisson, ...),
+   calculation is based on \cite{Nakagawa et al. 2017}.
+   \cr \cr
+   \strong{ICC for unconditional and conditional models}
+   \cr \cr
+   Usually, the ICC is calculated for the null model ("unconditional model").
+   However, according to \cite{Raudenbush and Bryk (2002)} or
+   \cite{Rabe-Hesketh and Skrondal (2012)} it is also feasible to compute the ICC
+   for full models with covariates ("conditional models") and compare how
+   much a level-2 variable explains the portion of variation in the grouping
+   structure (random intercept).
+   \cr \cr
+   \strong{ICC for random-slope models}
+   \cr \cr
+   \strong{Caution:} For models with random slopes and random intercepts,
+   the ICC would differ at each unit of the predictors. Hence, the ICC for these
+   kind of models cannot be understood simply as proportion of variance
+   (see \cite{Goldstein et al. 2010}). For convenience reasons, as the
+   \code{icc()} function also extracts the different random effects
+   variances, the ICC for random-slope-intercept-models is reported
+   nonetheless, but it is usually no meaningful summary of the
+   proportion of variances.
+   \cr \cr
+   \strong{ICC for models with multiple or nested random effects}
+   \cr \cr
+   \strong{Caution:} By default, for three-level-models, depending on the
+   nested structure of the model, or for models with multiple random effects,
+   \code{icc()} only reports the proportion of variance explained for each
+   grouping level. Use \code{adjusted = TRUE} to calculate the adjusted and
+   conditional ICC.
+   \cr \cr
+   \strong{Adjusted and conditional ICC}
+   \cr \cr
+   If \code{adjusted = TRUE}, an adjusted and conditional ICC are calculated,
+   which take all sources of uncertainty (of \emph{all random effects})
+   into account to report an "adjusted" ICC, as well as the conditional ICC.
+   The latter also takes the fixed effects variances into account (see
+   \cite{Nakagawa et al. 2017}). If random effects are not nested and not
+   cross-classified, the adjusted (\code{adjust = TRUE}) and unadjusted
+   (\code{adjust = FALSE}) ICC are identical.
+   \cr \cr
+   \strong{ICC for specific group-levels}
+   \cr \cr
+   To calculate the proportion of variance for specific levels related to each
+   other (e.g., similarity of level-1-units within
+   level-2-units or level-2-units within level-3-units) must be computed
+   manually. Use \code{\link{get_re_var}} to get the between-group-variances
+   and residual variance of the model, and calculate the ICC for the various level
+   correlations.
+   \cr \cr
+   For example, for the ICC between level 1 and 2: \cr
+   \code{sum(get_re_var(fit)) / (sum(get_re_var(fit)) + get_re_var(fit, "sigma_2"))}
+   \cr \cr
+   or for the ICC between level 2 and 3: \cr
+   \code{get_re_var(fit)[2] / sum(get_re_var(fit))}
+   \cr \cr
+   \strong{ICC for Bayesian models}
+   \cr \cr
+   If \code{ppd = TRUE}, \code{icc()} calculates a variance decomposition based on
+   the posterior predictive distribution. In this case, first, the draws from
+   the posterior predictive distribution \emph{not conditioned} on group-level
+   terms (\code{posterior_predict(..., re.form = NA)}) are calculated as well
+   as draws from this distribution \emph{conditioned} on \emph{all random effects}
+   (by default, unless specified else in \code{re.form}) are taken. Then, second,
+   the variances for each of these draws are calculated. The "ICC" is then the
+   ratio between these two variances. This is the recommended way to
+   analyse random-effect-variances for non-Gaussian models. It is then possible
+   to compare variances accross models, also by specifying different group-level
+   terms via the \code{re.form}-argument.
+   \cr \cr
+   Sometimes, when the variance of the posterior predictive distribution is
+   very large, the variance ratio in the output makes no sense, e.g. because
+   it is negative. In such cases, it might help to use a more robust measure
+   to calculate the central tendency of the variances. For example, use
+   \code{typical = "median"}.
+}
+\note{
+Some notes on why the ICC is useful, based on \cite{Grace-Martin}:
+   \itemize{
+     \item It can help you determine whether or not a linear mixed model is even necessary. If you find that the correlation is zero, that means the observations within clusters are no more similar than observations from different clusters. Go ahead and use a simpler analysis technique.
+     \item It can be theoretically meaningful to understand how much of the overall variation in the response is explained simply by clustering. For example, in a repeated measures psychological study you can tell to what extent mood is a trait (varies among people, but not within a person on different occasions) or state (varies little on average among people, but varies a lot across occasions).
+     \item It can also be meaningful to see how the ICC (as well as the between and within cluster variances) changes as variable are added to the model.
+   }
+   In short, the ICC can be interpreted as \dQuote{the proportion of the variance
+   explained by the grouping structure in the population} \cite{(Hox 2002: 15)}.
   \cr \cr
   The random effect variances indicate the between- and within-group
   variances as well as random-slope variance and random-slope-intercept
@@ -78,55 +162,6 @@ The ICC is calculated by dividing the between-group-variance (random
     \item Random-Intercept-Slope-covariance: tau.01
     \item Random-Intercept-Slope-correlation: rho.01
   }
-  If \code{ppd = TRUE}, \code{icc()} calculates a variance decomposition based on
-  the posterior predictive distribution. In this case, first, the draws from
-  the posterior predictive distribution \emph{not conditioned} on group-level
-  terms (\code{posterior_predict(..., re.form = NA)}) are calculated as well
-  as draws from this distribution \emph{conditioned} on \emph{all random effects}
-  (by default, unless specified else in \code{re.form}) are taken. Then, second,
-  the variances for each of these draws are calculated. The "ICC" is then the
-  ratio between these two variances. This is the recommended way to
-  analyse random-effect-variances for non-Gaussian models. It is then possible
-  to compare variances accross models, also by specifying different group-level
-  terms via the \code{re.form}-argument.
-  \cr \cr
-  Sometimes, when the variance of the posterior predictive distribution is
-  very large, the variance ratio in the output makes no sense, e.g. because
-  it is negative. In such cases, it might help to use a more robust measure
-  to calculate the central tendency of the variances. For example, use
-  \code{typical = "median"}.
-}
-\note{
-Some notes on why the ICC is useful, based on \cite{Grace-Martin}:
-      \itemize{
-       \item It can help you determine whether or not a linear mixed model is even necessary. If you find that the correlation is zero, that means the observations within clusters are no more similar than observations from different clusters. Go ahead and use a simpler analysis technique.
-       \item It can be theoretically meaningful to understand how much of the overall variation in the response is explained simply by clustering. For example, in a repeated measures psychological study you can tell to what extent mood is a trait (varies among people, but not within a person on different occasions) or state (varies little on average among people, but varies a lot across occasions).
-       \item It can also be meaningful to see how the ICC (as well as the between and within cluster variances) changes as variable are added to the model.
-      }
-      In short, the ICC can be interpreted as \dQuote{the proportion of the variance
-      explained by the grouping structure in the population} \cite{(Hox 2002: 15)}.
-      \cr \cr
-      Usually, the ICC is calculated for the null model ("unconditional model").
-      However, according to \cite{Raudenbush and Bryk (2002)} or
-      \cite{Rabe-Hesketh and Skrondal (2012)} it is also feasible to compute the ICC
-      for full models with covariates ("conditional models") and compare how
-      much a level-2 variable explains the portion of variation in the grouping
-      structure (random intercept).
-      \cr \cr
-      \strong{Caution:} For three-level-models, depending on the nested structure
-      of the model, the ICC only reports the proportion of variance explained
-      for each grouping level. However, the proportion of variance for specific
-      levels related to each other (e.g., similarity of level-1-units within
-      level-2-units or level-2-units within level-3-units) must be computed
-      manually. Use \code{\link{get_re_var}} to get the between-group-variances
-      and residual variance of the model, and calculate the ICC for the various level
-      correlations.
-      \cr \cr
-      For example, for the ICC between level 1 and 2: \cr
-      \code{sum(get_re_var(fit)) / (sum(get_re_var(fit)) + get_re_var(fit, "sigma_2"))}
-      \cr \cr
-      or for the ICC between level 2 and 3: \cr
-      \code{get_re_var(fit)[2] / sum(get_re_var(fit))}
 }
 \examples{
 library(lme4)
@@ -179,22 +214,21 @@ if (requireNamespace("brms", quietly = TRUE)) {
 }
 \references{
 \itemize{
-              \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
-              \item Aly SS, Zhao J, Li B, Jiang J. 2014. Reliability of environmental sampling culture results using the negative binomial intraclass correlation coefficient. Springerplus 14(3) (\doi{10.1186/2193-1801-3-40})
-              \item Goldstein H, Browne W, Rasbash J. 2010. Partitioning Variation in Multilevel Models. Understanding Statistics, 1:4, 223-231 (\doi{10.1207/S15328031US0104_02})
-              \item Grace-Martion K. The Intraclass Correlation Coefficient in Mixed Models, \href{http://www.theanalysisfactor.com/the-intraclass-correlation-coefficient-in-mixed-models/}{web}
-              \item Hox J. 2002. Multilevel analysis: techniques and applications. Mahwah, NJ: Erlbaum
-              \item Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication
-              \item Raudenbush SW, Bryk AS. 2002. Hierarchical linear models: applications and data analysis methods. 2nd ed. Thousand Oaks: Sage Publications
-              \item Stryhn H, Sanchez J, Morley P, Booker C, Dohoo IR. 2006. Interpretation of variance parameters in multilevel Poisson regression models. Proceedings of the 11th International Symposium on Veterinary Epidemiology and Economics, 2006 Available at \url{http://www.sciquest.org.nz/node/64294}
-              \item Wu S, Crespi CM, Wong WK. 2012. Comparison of methods for estimating the intraclass correlation coefficient for binary responses in cancer prevention cluster randomized trials. Contempory Clinical Trials 33: 869-880 (\doi{10.1016/j.cct.2012.05.004})
-            }
-            Further helpful online-ressources:
-            \itemize{
-              \item \href{http://stats.stackexchange.com/questions/18088/intraclass-correlation-icc-for-an-interaction/28100#28100}{CrossValidated (2012) \emph{Intraclass correlation (ICC) for an interaction?}}
-              \item \href{http://stats.stackexchange.com/questions/113577/interpreting-the-random-effect-in-a-mixed-effect-model/113825#113825}{CrossValidated (2014) \emph{Interpreting the random effect in a mixed-effect model}}
-              \item \href{http://stats.stackexchange.com/questions/67247/how-to-partition-the-variance-explained-at-group-level-and-individual-level/67356#67356}{CrossValidated (2014) \emph{how to partition the variance explained at group level and individual level}}
-            }
+   \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
+   \item Goldstein H, Browne W, Rasbash J. 2010. Partitioning Variation in Multilevel Models. Understanding Statistics, 1:4, 223-231 (\doi{10.1207/S15328031US0104_02})
+   \item Grace-Martion K. The Intraclass Correlation Coefficient in Mixed Models, \href{http://www.theanalysisfactor.com/the-intraclass-correlation-coefficient-in-mixed-models/}{web}
+   \item Hox J. 2002. Multilevel analysis: techniques and applications. Mahwah, NJ: Erlbaum
+   \item Nakagawa S, Johnson P, Schielzeth H (2017) The coefficient of determination R2 and intra-class correlation coefficient from generalized linear mixed-effects models revisted and expanded. J. R. Soc. Interface 14. \doi{10.1098/rsif.2017.0213}
+   \item Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication
+   \item Raudenbush SW, Bryk AS. 2002. Hierarchical linear models: applications and data analysis methods. 2nd ed. Thousand Oaks: Sage Publications
+   \item Wu S, Crespi CM, Wong WK. 2012. Comparison of methods for estimating the intraclass correlation coefficient for binary responses in cancer prevention cluster randomized trials. Contempory Clinical Trials 33: 869-880 (\doi{10.1016/j.cct.2012.05.004})
+ }
+ Further helpful online-ressources:
+ \itemize{
+   \item \href{http://stats.stackexchange.com/questions/18088/intraclass-correlation-icc-for-an-interaction/28100#28100}{CrossValidated (2012) \emph{Intraclass correlation (ICC) for an interaction?}}
+   \item \href{http://stats.stackexchange.com/questions/113577/interpreting-the-random-effect-in-a-mixed-effect-model/113825#113825}{CrossValidated (2014) \emph{Interpreting the random effect in a mixed-effect model}}
+   \item \href{http://stats.stackexchange.com/questions/67247/how-to-partition-the-variance-explained-at-group-level-and-individual-level/67356#67356}{CrossValidated (2014) \emph{how to partition the variance explained at group level and individual level}}
+ }
 }
 \seealso{
 \code{\link{re_var}}

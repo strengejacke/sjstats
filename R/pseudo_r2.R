@@ -169,7 +169,7 @@ r2 <- function(x, ...) {
 
 #' @export
 r2.glmmTMB <- function(x, ...) {
-  r2_mixedmodel(x)
+  r2_mixedmodel(x, type = "r2")
 }
 
 
@@ -251,7 +251,7 @@ r2.glm <- function(x, ...) {
 
 #' @export
 r2.merMod <- function(x, ...) {
-  r2_mixedmodel(x)
+  r2_mixedmodel(x, type = "r2")
 }
 
 
@@ -413,18 +413,11 @@ r2linmix <- function(x, n) {
 
 #' @importFrom lme4 fixef getME VarCorr ranef findbars
 #' @importFrom stats family nobs var formula reformulate
-r2_mixedmodel <- function(x) {
+r2_mixedmodel <- function(x, type = NULL) {
 
   ## Code taken from GitGub-Repo of package glmmTMB
   ## Author: Ben Bolker, who used an
   ## cleaned-up/adapted version of Jon Lefcheck's code from SEMfit
-
-  collapse_cond <- function(fit) {
-    if (is.list(fit) && "cond" %in% names(fit))
-      fit[["cond"]]
-    else
-      fit
-  }
 
   faminfo <- model_family(x)
 
@@ -448,13 +441,18 @@ r2_mixedmodel <- function(x) {
       return(x)
     }
 
+    if (is.null(type) || type == "r2")
+      ws <- 'r2()'
+    else
+      ws <- 'icc()'
+
     if (!identical(nullEnv(x$modelInfo$allForm$ziformula), nullEnv(~0)))
-      warning("'r2()' ignores effects of zero-inflation.", call. = FALSE)
+      warning(sprintf("%s ignores effects of zero-inflation.", ws), call. = FALSE)
 
     dform <- nullEnv(x$modelInfo$allForm$dispformula)
 
     if (!identical(dform,nullEnv(~1)) && (!identical(dform,nullEnv(~0))))
-      warning("'r2()' ignores effects of dispersion model.", call. = FALSE)
+      warning(sprintf("%s ignores effects of dispersion model.", ws), call. = FALSE)
   }
 
   ## Test for non-zero random effects
@@ -507,11 +505,6 @@ r2_mixedmodel <- function(x) {
   } else {
     varDisp <- if (length(obs.terms) == 0 ) 0 else getVarRand(obs.terms)
 
-    badlink <- function(link, family) {
-      warning(sprintf("Model link '%s' is not yet supported for the %s distribution.", link, family), call. = FALSE)
-      return(NA)
-    }
-
     if (faminfo$is_bin) {
       varDist <- switch(
         faminfo$link.fun,
@@ -520,61 +513,97 @@ r2_mixedmodel <- function(x) {
         badlink(faminfo$link.fun, faminfo$family)
       )
     } else if (faminfo$is_pois) {
-      ## Generate null model (intercept and random effects only, no fixed effects)
-
-      ## https://stat.ethz.ch/pipermail/r-sig-mixed-models/2014q4/023013.html
-      ## FIXME: deparse is a *little* dangerous
-      rterms <- paste0("(", sapply(lme4::findbars(stats::formula(x)), deparse), ")")
-      nullform <- stats::reformulate(rterms, response = ".")
-      null.model <- stats::update(x, nullform)
-
-      ## from MuMIn::rsquaredGLMM
-
-      ## Get the fixed effects of the null model
-      null.fixef <- unname(collapse_cond(lme4::fixef(null.model)))
-
-      ## in general want log(1+var(x)/mu^2)
-      logVarDist <- function(null.fixef) {
-        mu <- exp(null.fixef)
-        if (mu < 6)
-          warning(sprintf("mu of %0.1f is too close to zero, estimate may be unreliable \n", mu), call. = FALSE)
-
-        vv <- switch(
-          faminfo$family,
-          poisson = ,
-          truncated_poisson = ,
-          genpois = ,
-          nbinom1 = ,
-          nbinom2 = stats::family(x)$variance(mu, sig),
-
-          if (inherits(x,"merMod"))
-            mu * (1 + mu / lme4::getME(x, "glmer.nb.theta"))
-          else
-            mu * (1 + mu / x$theta)
-        )
-
-        cvsquared <- vv / mu^2
-        return(log1p(cvsquared))
-      }
-
       varDist <- switch(
         faminfo$link.fun,
-        log = logVarDist(null.fixef),
+        log = logVarDist(x, null_model(x), faminfo, sig),
         sqrt = 0.25,
         badlink(faminfo$link.fun, faminfo$family)
       )
     }
   }
 
-  ## Calculate R2 values
-  rsq.marginal <- varF / (varF + varRand + varDisp + varDist)
-  rsq.conditional <- (varF + varRand) / (varF + varRand + varDisp + varDist)
+  if (is.null(type) || type == "r2") {
+    ## Calculate R2 values
+    rsq.marginal <- varF / (varF + varRand + varDisp + varDist)
+    rsq.conditional <- (varF + varRand) / (varF + varRand + varDisp + varDist)
 
-  names(rsq.marginal) <- "Marginal R2"
-  names(rsq.conditional) <- "Conditional R2"
+    names(rsq.marginal) <- "Marginal R2"
+    names(rsq.conditional) <- "Conditional R2"
 
-  structure(class = "sj_r2", list(rsq.marginal = rsq.marginal, rsq.conditional = rsq.conditional))
+    var.measure <- structure(class = "sj_r2", list(rsq.marginal = rsq.marginal, rsq.conditional = rsq.conditional))
+  } else {
+    ## Calculate R2 values
+    icc.adjusted <- varRand / (varRand + varDisp + varDist)
+    icc.conditional <- varRand / (varF + varRand + varDisp + varDist)
+
+    names(icc.adjusted) <-    "Adjusted ICC"
+    names(icc.conditional) <- "Conditional ICC"
+
+    var.measure <- structure(class = "sj_icc", list(icc.adjusted = icc.adjusted, icc.conditional = icc.conditional))
+  }
+
+  attr(var.measure, "family") <- faminfo$family
+  attr(var.measure, "link") <- faminfo$link.fun
+  attr(var.measure, "formula") <- stats::formula(x)
+
+  var.measure
 }
+
+
+badlink <- function(link, family) {
+  warning(sprintf("Model link '%s' is not yet supported for the %s distribution.", link, family), call. = FALSE)
+  return(NA)
+}
+
+
+collapse_cond <- function(fit) {
+  if (is.list(fit) && "cond" %in% names(fit))
+    fit[["cond"]]
+  else
+    fit
+}
+
+
+null_model <- function(x) {
+  ## Generate null model (intercept and random effects only, no fixed effects)
+
+  ## https://stat.ethz.ch/pipermail/r-sig-mixed-models/2014q4/023013.html
+  ## FIXME: deparse is a *little* dangerous
+  rterms <- paste0("(", sapply(lme4::findbars(stats::formula(x)), deparse), ")")
+  nullform <- stats::reformulate(rterms, response = ".")
+  null.model <- stats::update(x, nullform)
+
+  ## from MuMIn::rsquaredGLMM
+
+  ## Get the fixed effects of the null model
+  unname(collapse_cond(lme4::fixef(null.model)))
+}
+
+
+logVarDist <- function(x, null.fixef, faminfo, sig) {
+  ## in general want log(1+var(x)/mu^2)
+  mu <- exp(null.fixef)
+  if (mu < 6)
+    warning(sprintf("mu of %0.1f is too close to zero, estimate may be unreliable.\n", mu), call. = FALSE)
+
+  vv <- switch(
+    faminfo$family,
+    poisson = stats::family(x)$variance(mu),
+    truncated_poisson = stats::family(x)$variance(sig),
+    genpois = ,
+    nbinom1 = ,
+    nbinom2 = stats::family(x)$variance(mu, sig),
+
+    if (inherits(x,"merMod"))
+      mu * (1 + mu / lme4::getME(x, "glmer.nb.theta"))
+    else
+      mu * (1 + mu / x$theta)
+  )
+
+  cvsquared <- vv / mu^2
+  log1p(cvsquared)
+}
+
 
 
 #' @importFrom stats nobs

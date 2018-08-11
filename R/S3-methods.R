@@ -181,6 +181,27 @@ deviance.svyglm.nb <- function(object, ...) {
 #' @importFrom purrr map_chr map2_chr
 #' @export
 print.sj_r2 <- function(x, digits = 3, ...) {
+  cat("\nR-Squared for Generalized Linear Mixed Model\n\n")
+  print_icc_and_r2(x, digits, ...)
+}
+
+
+#' @importFrom purrr map_chr map2_chr
+#' @export
+print.sj_icc <- function(x, digits = 4, ...) {
+  cat("\nIntra-Class Correlation Coefficient for Generalized Linear Mixed Model\n\n")
+  print_icc_and_r2(x, digits, ...)
+}
+
+
+print_icc_and_r2 <- function(x, digits, ...) {
+  # print model information
+  cat(crayon::blue(
+    sprintf("Family : %s (%s)\nFormula: %s\n\n",
+            attr(x, "family", exact = T),
+            attr(x, "link", exact = T),
+            paste(as.character(attr(x, "formula"))[c(2, 1, 3)], collapse = " ")
+    )))
 
   labels <- purrr::map_chr(x, ~ names(.x))
   width <- max(nchar(labels))
@@ -191,19 +212,21 @@ print.sj_r2 <- function(x, digits = 3, ...) {
   )
 
   cat(paste0(out, collapse = "\n"))
+  cat("\n\n")
 }
-
 
 
 #' @export
 print.sj_icc_merMod <- function(x, comp, ...) {
   # print model information
-  cat(sprintf("\n%s\n Family: %s (%s)\nFormula: %s\n\n",
-              attr(x, "model", exact = T),
-              attr(x, "family", exact = T),
-              attr(x, "link", exact = T),
-              paste(as.character(attr(x, "formula"))[c(2, 1, 3)], collapse = " ")))
+  cat(sprintf("\n%s\n\n", attr(x, "model", exact = T)))
 
+  cat(crayon::blue(
+    sprintf("Family : %s (%s)\nFormula: %s\n\n",
+            attr(x, "family", exact = T),
+            attr(x, "link", exact = T),
+            paste(as.character(attr(x, "formula"))[c(2, 1, 3)], collapse = " ")
+    )))
 
   if (!missing(comp) && !is.null(comp) && comp == "var") {
     # get parameters
@@ -261,7 +284,7 @@ print.sj_icc_merMod <- function(x, comp, ...) {
       infs <- sprintf("ICC (%s)", names(x[i]))
       # print info line, formatting all ICC values so they're
       # aligned properly
-      cat(sprintf("%*s: %f\n",
+      cat(sprintf("%*s: %.4f\n",
                   len + 8,
                   infs,
                   as.vector(x[i])))
