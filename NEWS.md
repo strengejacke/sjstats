@@ -9,6 +9,7 @@
 * `xtab_statistics()` gets a `weight.by`-argument, to compute measures of association for contingency tables for weighted data.
 * The `statistics`-argument in `xtab_statistics()` gets a `"fisher"`-option, to force Fisher's Exact Test to be used.
 * Improved variance calculation in `icc()` for generalized linear mixed models with Poisson or negative binomial families.
+* `icc()` gets an `adjusted`-argument, to calculate the adjusted and conditional ICC for mixed models.
 
 ## Bug fixes
 
