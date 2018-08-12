@@ -93,7 +93,7 @@ mwu <- function(x, dv, grp, distribution = "asymptotic", weight.by = NULL, out =
   # length of value range
   cnt <- length(grp_values)
   labels <- sjlabelled::get_labels(
-    grp, attr.only = F, include.values = NULL, include.non.labelled = T
+    grp, attr.only = F, values = NULL, non.labelled = T
   )
 
   df <- data.frame()

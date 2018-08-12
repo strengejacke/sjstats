@@ -101,7 +101,7 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
 
   # now get valid value labels
   value.labels <- sjlabelled::get_labels(
-    x[[grp.name]], attr.only = F, include.values = "n", include.non.labelled = TRUE
+    x[[grp.name]], attr.only = F, values = "n", non.labelled = TRUE
   )
 
   # return values
