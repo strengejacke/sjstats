@@ -4,15 +4,15 @@
 
 Collection of convenient functions for common statistical computations, which are not directly provided by R's base or stats packages. 
 
-This package aims at providing, **first**, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like standard errors or root mean squared errors).
+This package aims at providing, **first**, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like standard errors, Cronbach's Alpha or root mean squared errors), or for which currently no functions available.
 
 **Second**, these shortcut functions are generic (if appropriate), and can be applied not only to vectors, but also to other objects as well (e.g., the Coefficient of Variation can be computed for vectors, linear models, or linear mixed models; the `r2()`-function returns the r-squared value for _lm_, _glm_, _merMod_, _glmmTMB_, or _lme_ and other objects).
 
-Most functions of this package are designed as _summary functions_, i.e. they do not transform the input vector; rather, they return a summary, which is sometimes a vector and sometimes a [tidy data frame](https://cran.r-project.org/package=broom/vignettes/broom.html). The focus of most functions lies on summary statistics or fit measures for regression models, including generalized linear models, mixed effects models or Bayesian models. However, some of the functions deal with other statistical measures, like Cronbach's Alpha, Cramer's V, Phi etc.
+Most functions of this package are designed as _summary functions_, i.e. they do not transform the input vector; rather, they return a summary, which is sometimes a vector and sometimes a tidy data frame (where column names follow a common convention). The focus of most functions lies on summary statistics or fit measures for regression models, including generalized linear models, mixed effects models or Bayesian models. However, some of the functions deal with other statistical measures, like Cronbach's Alpha, Cramer's V, Phi etc.
 
 The comprised tools include:
 
-* For regression and mixed models: Coefficient of Variation, Root Mean Squared Error, Residual Standard Error, Coefficient of Discrimination, R-squared and pseudo-R-squared values, standardized beta values
+* For regression and mixed models: Coefficient of Variation, Root Mean Squared Error, Residual Standard Error, Coefficient of Discrimination, R-squared and pseudo-R-squared values, standardized beta values, p-values
 * Especially for mixed models: Design effect, ICC, sample size calculation and convergence tests
 * Especially for Bayesian models: Highest Density Interval, region of practical equivalence (rope), Monte Carlo Standard Errors, ratio of number of effective samples, mediation analysis, Test for Practical Equivalence
 * Fit and accuracy measures for regression models: Overdispersion tests, accuracy of predictions, test/training-error comparisons, error rate and binned residual plots for logistic regression models
