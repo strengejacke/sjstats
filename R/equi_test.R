@@ -147,6 +147,10 @@ plot_sj_equi_test <- function(x, model, ...) {
   }
 
   remove <- c(1, tidyselect::contains("sigma", ignore.case = TRUE, vars = x$term))
+
+  # if we have intercept-only models, keep at least the intercept
+  if (length(remove) == nrow(x)) remove <- remove[-1]
+
   x <- dplyr::slice(x, -!! remove)
 
   # remove indicator for insufficient sample chains
