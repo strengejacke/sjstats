@@ -52,7 +52,7 @@ pca <- function(x) {
   tmp <- tibble::tibble(
     comp = sprintf("PC%i", seq_len(length(x$sdev))),
     std.dev = x$sdev,
-    eigen = .data$std.dev ^ 2,
+    eigen = .data$std.dev^2,
     prop.var = .data$eigen / sum(.data$eigen),
     cum.var = cumsum(.data$prop.var)
   )
@@ -114,7 +114,7 @@ pca_rotate <- function(x, nf = NULL, rotation = c("varimax", "oblimin")) {
   # add explained proportions and proportional and cumulative variance
 
   attr(tmp, "variance") <- tibble::tibble(
-    prop.var = colSums(tmp ^ 2) / nrow(tmp),
+    prop.var = colSums(tmp^2) / nrow(tmp),
     cum.var = cumsum(.data$prop.var),
     prop.exp = .data$prop.var / sum(.data$prop.var),
     cum.exp = cumsum(.data$prop.exp)

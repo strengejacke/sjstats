@@ -16,11 +16,11 @@ resp_var(x)
 
 resp_val(x)
 
-link_inverse(x, multi.resp = FALSE)
+link_inverse(x, multi.resp = FALSE, mv = FALSE)
 
 model_frame(x, fe.only = TRUE)
 
-model_family(x, multi.resp = FALSE)
+model_family(x, multi.resp = FALSE, mv = FALSE)
 
 var_names(x)
 }
@@ -28,7 +28,7 @@ var_names(x)
 \item{x}{A fitted model; for \code{var_names()}, \code{x} may also be a
 character vector.}
 
-\item{multi.resp}{Logical, if \code{TRUE} and model is a multivariate response
+\item{mv, multi.resp}{Logical, if \code{TRUE} and model is a multivariate response
 model from a \code{brmsfit} object or of class \code{stanmvreg}, then a
 list of values (one for each regression) is returned.}
 

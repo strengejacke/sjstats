@@ -12,7 +12,7 @@ chisq_gof <- function(x, prob = NULL, weights = NULL) {
     wt <- x$prior.weight
     vJ <- wt * y_hat * (1 - y_hat)
     cJ <- (1 - 2 * y_hat) / vJ
-    X2 <- sum(stats::resid(x, type = "pearson") ^ 2)
+    X2 <- sum(stats::resid(x, type = "pearson")^2)
     form <- stats::as.formula(x$formula)
     form[[2]] <- as.name("cJ")
 
@@ -24,7 +24,7 @@ chisq_gof <- function(x, prob = NULL, weights = NULL) {
     dat$cJ <- cJ
     dat$vJ <- vJ
 
-    RSS <- sum(stats::resid(stats::lm(form, data = dat, weights = vJ)) ^ 2)
+    RSS <- sum(stats::resid(stats::lm(form, data = dat, weights = vJ))^2)
     A <- 2 * (length(y_hat) - sum(1 / wt))
     z <- (X2 - x$df.residual) / sqrt(A + RSS)
 

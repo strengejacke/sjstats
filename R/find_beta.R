@@ -136,7 +136,7 @@ find_beta2 <- function(x, se, ci, n) {
       stop("If `n` is given, x` must be an integer value greater than 0.", call. = F)
 
     # compute 2 SD from beta variance
-    bvar <- 2 * sqrt((x * n) / ((x + n) ^ 2 * (x + n + 1)))
+    bvar <- 2 * sqrt((x * n) / ((x + n)^2 * (x + n + 1)))
 
     # need to compute proportion
     x <- x / n

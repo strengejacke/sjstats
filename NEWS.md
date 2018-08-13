@@ -16,6 +16,7 @@
 * Fix issues with effect size computation for repeated-measure Anova when using bootstrapping to compute confidence intervals.
 * `grpmean()` now also adjusts the `n`-columm for weighted data.
 * `icc()`, `re_var()` and  `get_re_var()` now correctly compute the random-effect-variances for models with multiple random slopes per random effect term (e.g., `(1 + rs1 + rs2 | grp)`).
+* Fix issues in `tidy_stan()`, `mcse()`, `hdi()` and `n_eff()` for `stan_polr()`-models.
 
 # sjstats 0.16.0
 

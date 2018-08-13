@@ -235,7 +235,7 @@ se.glm <- function(x, ...) {
   tm$estimate <- exp(tm$estimate)
 
   tm %>%
-    dplyr::mutate(std.error = sqrt(.data$estimate ^ 2 * diag(as.matrix(stats::vcov(x))))) %>%
+    dplyr::mutate(std.error = sqrt(.data$estimate^2 * diag(as.matrix(stats::vcov(x))))) %>%
     dplyr::select(.data$term, .data$estimate, .data$std.error)
 }
 
@@ -440,7 +440,7 @@ bootstr_icc_se <- function(dd, nsim, formula, model.family) {
 # if (get_glm_family(x)$is_pois) {
 #   # standard errors scaled using square root of Pearson
 #   # chi-squared dispersion
-#   pr <- sum(stats::residuals(x, type = "pearson") ^ 2)
+#   pr <- sum(stats::residuals(x, type = "pearson")^2)
 #   dispersion <- pr / x$df.residual
 #   sse <- sqrt(diag(as.matrix(stats::vcov(x)))) * sqrt(dispersion)
 #

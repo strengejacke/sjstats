@@ -396,6 +396,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 }
 
 
+#' @importFrom purrr map_dbl
 #' @importFrom tidyselect starts_with ends_with
 #' @importFrom dplyr slice
 #' @importFrom tibble as_tibble
@@ -410,7 +411,12 @@ remove_effects_from_stan <- function(out, type, is.brms) {
 
   # remove certain terms like log-posterior etc. from output
 
-  keep <-  which(!(out$term %in% c("lp__", "log-posterior", "mean_PPD")))
+  keep <- seq_len(length(out$term))
+
+  for (.x in c("^(?!lp__)", "^(?!log-posterior)", "^(?!mean_PPD)")) {
+    keep <- intersect(keep, grep(.x, out$term, perl = TRUE))
+  }
+
   out <- dplyr::slice(out, !! keep)
 
 

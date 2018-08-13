@@ -54,8 +54,14 @@ mcse_helper <- function(x, type) {
   stddev <- purrr::map_dbl(dat, sd)
 
   # remove certain terms
-  keep <-  which(!(names(stddev) %in% c("lp__", "log-posterior", "mean_PPD")))
+  keep <- seq_len(length(names(stddev)))
+
+  for (.x in c("^(?!lp__)", "^(?!log-posterior)", "^(?!mean_PPD)")) {
+    keep <- intersect(keep, grep(.x, names(stddev), perl = TRUE))
+  }
+
   stddev <- stddev[keep]
+
 
   # get effective sample sizes
   ess <- dplyr::pull(n_eff(x, type = "all"), "n_eff")

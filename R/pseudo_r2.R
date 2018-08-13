@@ -519,6 +519,12 @@ r2_mixedmodel <- function(x, type = NULL) {
         sqrt = 0.25,
         badlink(faminfo$link.fun, faminfo$family)
       )
+    } else if (faminfo$family == "beta") {
+      varDist <- switch(
+        faminfo$link.fun,
+        logit = logVarDist(x, null_model(x), faminfo, sig),
+        badlink(faminfo$link.fun, faminfo$family)
+      )
     }
   }
 
@@ -573,10 +579,13 @@ null_model <- function(x) {
   nullform <- stats::reformulate(rterms, response = ".")
   null.model <- stats::update(x, nullform)
 
-  ## from MuMIn::rsquaredGLMM
-
   ## Get the fixed effects of the null model
   unname(collapse_cond(lme4::fixef(null.model)))
+}
+
+
+beta_variance <- function(mu, phi) {
+  mu * (1 - mu) / (1 + phi)
 }
 
 
@@ -590,6 +599,7 @@ logVarDist <- function(x, null.fixef, faminfo, sig) {
     faminfo$family,
     poisson = stats::family(x)$variance(mu),
     truncated_poisson = stats::family(x)$variance(sig),
+    beta = beta_variance(mu, sig),
     genpois = ,
     nbinom1 = ,
     nbinom2 = stats::family(x)$variance(mu, sig),

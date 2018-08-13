@@ -248,7 +248,7 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
 
   if (is.null(sig)) {
     if (fitfam$is_bin)
-      sig <- sqrt((pi ^ 2) / 3)
+      sig <- sqrt((p^2) / 3)
     else
       sig <- 1
   }
@@ -390,7 +390,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
 
   if (is.null(sig)) {
     if (fitfam$is_bin)
-      sig <- sqrt((pi ^ 2) / 3)
+      sig <- sqrt((p^2) / 3)
     else
       sig <- 1
   }
@@ -565,7 +565,7 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     sig <- xdat[["sigma"]]
 
     # residual variance
-    resid_var <- sig ^ 2
+    resid_var <- sig^2
 
     # total variance, sum of random intercept and residual variances
     total_var <- sjmisc::row_sums(
@@ -714,7 +714,7 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 
 
     # retrieve only intercepts
-    vars <- purrr::map(reva, ~ .x$sd[, 1] ^ 2)
+    vars <- purrr::map(reva, ~ .x$sd[, 1]^2)
 
     # random intercept-variances, i.e.
     # between-subject-variance (tau 00)
@@ -729,7 +729,7 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     # set default, if no residual variance is available
     if (is.null(sig)) {
       if (fitfam$is_bin)
-        sig <- sqrt((pi ^ 2) / 3)
+        sig <- sqrt((p^2) / 3)
       else
         sig <- 1
     }
@@ -738,7 +738,7 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     # residual variances, i.e.
     # within-cluster-variance (sigma^2)
 
-    resid_var <- sig ^ 2
+    resid_var <- sig^2
 
 
     # total variance, sum of random intercept and residual variances

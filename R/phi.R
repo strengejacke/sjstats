@@ -14,5 +14,5 @@ phi <- function(tab) {
 cramer <- function(tab) {
   # convert to flat table
   if (!inherits(tab, "ftable")) tab <- stats::ftable(tab)
-  sqrt(phi(tab) ^ 2 / min(dim(tab) - 1))
+  sqrt(phi(tab)^2 / min(dim(tab) - 1))
 }

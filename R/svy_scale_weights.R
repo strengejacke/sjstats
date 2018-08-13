@@ -84,7 +84,7 @@ scale_weights <- function(x, cluster.id, pweight) {
   # copy data set, so we only append the two new weights
 
   tmp <- dummy_x
-  tmp$s_q_w <- dummy_x[[pw.name]] ^ 2
+  tmp$s_q_w <- dummy_x[[pw.name]]^2
 
 
   # compute sum of weights per cluster

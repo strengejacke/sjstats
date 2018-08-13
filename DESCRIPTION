@@ -73,7 +73,8 @@ Suggests:
     rstantools,
     rstanarm,
     VGAM,
-    Zelig
+    Zelig,
+    testthat
 URL: https://github.com/strengejacke/sjstats, https://strengejacke.github.io/sjstats
 BugReports: https://github.com/strengejacke/sjstats/issues
 RoxygenNote: 6.1.0

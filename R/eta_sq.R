@@ -182,13 +182,13 @@ anova_stats <- function(model, digits = 3) {
 
   # finally, compute power
   power <- c(
-    pwr::pwr.f2.test(u = as$df[1:nt], v = as$df[nrow(as)], f2 = as$cohens.f[1:nt] ^ 2)[["power"]],
+    pwr::pwr.f2.test(u = as$df[1:nt], v = as$df[nrow(as)], f2 = as$cohens.f[1:nt]^2)[["power"]],
     NA
   )
 
   tibble::add_column(as, power = power) %>%
     purrr::map_if(is.numeric, ~ round(.x, digits = digits)) %>%
-    tibble::as_tibble()
+    as.data.frame()
 }
 
 
@@ -229,7 +229,7 @@ aov_stat_summary <- function(model) {
       aov.sum,
       term = "Residuals",
       df = length(res) - sum(aov.sum[["df"]]),
-      sumsq = sum(res ^ 2, na.rm = TRUE),
+      sumsq = sum(res^2, na.rm = TRUE),
       meansq = mse(ori.model),
       statistic = NA
     )

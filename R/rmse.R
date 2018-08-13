@@ -224,7 +224,7 @@ rmse <- function(x, normalized = FALSE) {
 #' @export
 rse <- function(x) {
   # Residual standard error
-  sqrt(sum(stats::residuals(x) ^ 2, na.rm = T) / stats::df.residual(x))
+  sqrt(sum(stats::residuals(x)^2, na.rm = T) / stats::df.residual(x))
 }
 
 
@@ -233,7 +233,7 @@ rse <- function(x) {
 #' @export
 mse <- function(x) {
   # Mean square error
-  mean(stats::residuals(x) ^ 2, na.rm = T)
+  mean(stats::residuals(x)^2, na.rm = T)
 }
 
 

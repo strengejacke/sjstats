@@ -408,9 +408,9 @@ nonconstvar <- function(model) {
   sumry <- summary(model)
 
   residuals <- stats::residuals(model, type = "pearson")
-  S.sq <- stats::df.residual(model) * (sumry$sigma) ^ 2 / sum(!is.na(residuals))
+  S.sq <- stats::df.residual(model) * (sumry$sigma)^2 / sum(!is.na(residuals))
 
-  .U <- (residuals ^ 2) / S.sq
+  .U <- (residuals^2) / S.sq
   mod <- lm(.U ~ fitted.values(model))
 
   SS <- stats::anova(mod)$"Sum Sq"

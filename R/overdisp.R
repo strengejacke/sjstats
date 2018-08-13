@@ -89,7 +89,7 @@ overdisp.default <- function(x, trafo) {
 overdisp.lme4 <- function(x) {
   rdf <- stats::df.residual(x)
   rp <- stats::residuals(x, type = "pearson")
-  Pearson.chisq <- sum(rp ^ 2)
+  Pearson.chisq <- sum(rp^2)
   prat <- Pearson.chisq / rdf
   pval <- stats::pchisq(Pearson.chisq, df = rdf, lower.tail = FALSE)
 

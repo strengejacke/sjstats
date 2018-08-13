@@ -62,7 +62,7 @@ cv_error <- function(data, formula, k = 5) {
   # Test error
   test.error <- cv_data %>%
     tidyr::unnest(.data$predicted, .data$residuals) %>%
-    dplyr::summarise(test.error = sqrt(mean(.data$residuals ^ 2, na.rm = TRUE)))
+    dplyr::summarise(test.error = sqrt(mean(.data$residuals^2, na.rm = TRUE)))
 
   tibble::tibble(
     model = deparse(formula),

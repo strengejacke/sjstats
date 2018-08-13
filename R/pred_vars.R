@@ -9,7 +9,7 @@
 #'    character vector.
 #' @param fe.only Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
 #'    model, returns the model frame for fixed effects only.
-#' @param multi.resp Logical, if \code{TRUE} and model is a multivariate response
+#' @param mv,multi.resp Logical, if \code{TRUE} and model is a multivariate response
 #'    model from a \code{brmsfit} object or of class \code{stanmvreg}, then a
 #'    list of values (one for each regression) is returned.
 #'
@@ -148,7 +148,9 @@ resp_val <- function(x) {
 #' @rdname pred_vars
 #' @importFrom stats family binomial gaussian make.link
 #' @export
-link_inverse <- function(x, multi.resp = FALSE) {
+link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
+
+  if (!missing(multi.resp)) mv <- multi.resp
 
   # handle glmmTMB models
   if (inherits(x, "glmmTMB")) {
@@ -185,7 +187,7 @@ link_inverse <- function(x, multi.resp = FALSE) {
     il <- x@family@linkinv
   } else if (inherits(x, "stanmvreg")) {
     fam <- stats::family(x)
-    if (multi.resp) {
+    if (mv) {
       il <- purrr::map(fam, ~ .x$linkinv)
     } else {
       fam <- fam[[1]]
@@ -194,7 +196,7 @@ link_inverse <- function(x, multi.resp = FALSE) {
   } else if (inherits(x, "brmsfit")) {
     fam <- stats::family(x)
     if (!is.null(stats::formula(x)$response)) {
-      if (multi.resp) {
+      if (mv) {
         il <- purrr::map(fam, ~ brms_link_inverse(.x))
       } else {
         fam <- fam[[1]]
@@ -372,9 +374,11 @@ model_frame <- function(x, fe.only = TRUE) {
 #' @importFrom stats family formula
 #' @importFrom tidyselect starts_with
 #' @export
-model_family <- function(x, multi.resp = FALSE) {
+model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
   zero.inf <- FALSE
   multi.var <- FALSE
+
+  if (!missing(multi.resp)) mv <- multi.resp
 
   # for gam-components from gamm4, add class attributes, so family
   # function works correctly
@@ -420,16 +424,16 @@ model_family <- function(x, multi.resp = FALSE) {
     # we just take the information from the first model
     if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$response)) {
       multi.var <- TRUE
-      if (!multi.resp) faminfo <- faminfo[[1]]
+      if (!mv) faminfo <- faminfo[[1]]
     }
 
     if (inherits(x, "stanmvreg")) {
       multi.var <- TRUE
-      if (!multi.resp) faminfo <- faminfo[[1]]
+      if (!mv) faminfo <- faminfo[[1]]
     }
 
 
-    if (multi.resp && multi.var) {
+    if (mv && multi.var) {
       return(purrr::map(faminfo, ~ make_family(
         x,
         .x$family,
