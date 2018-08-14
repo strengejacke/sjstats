@@ -72,7 +72,6 @@
 #'
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
 #' @importFrom dplyr bind_cols select mutate slice inner_join n_distinct
-#' @importFrom tidyselect starts_with contains
 #' @importFrom tibble add_column tibble has_name
 #' @importFrom stats mad formula
 #' @importFrom bayesplot rhat neff_ratio
@@ -295,7 +294,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
     # terms of categorical models are prefixed with "mu"
 
-    if (length(tidyselect::starts_with("b_mu", vars = out$term)) == nrow(out)) {
+    if (length(string_starts_with(pattern = "b_mu", x = out$term)) == nrow(out)) {
       out$term <- substr(out$term, 5, max(nchar(out$term)))
       # create "response-level" variable
       out <- tibble::add_column(out, response.level = "", .before = 1)
@@ -314,8 +313,8 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     responses <- stats::formula(x)$responses
 
     # also clean prepared data frame
-    resp.sigma1 <- tidyselect::starts_with("sigma_", vars = out$term)
-    resp.sigma2 <- tidyselect::starts_with("b_sigma_", vars = out$term)
+    resp.sigma1 <- string_starts_with(pattern = "sigma_", x = out$term)
+    resp.sigma2 <- string_starts_with(pattern = "b_sigma_", x = out$term)
 
     resp.sigma <- c(resp.sigma1, resp.sigma2)
 
@@ -340,7 +339,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     # and remove response name from term name
 
     for (i in responses) {
-      m <- tidyselect::contains(i, vars = out$term)
+      m <- string_contains(pattern = i, x = out$term)
       out$response[intersect(which(out$response == ""), m)] <- i
       out$term <- gsub(sprintf("b_%s_", i), "", out$term, fixed = TRUE)
       out$term <- gsub(sprintf("s_%s_", i), "", out$term, fixed = TRUE)
@@ -372,7 +371,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
     for (i in 1:length(responses)) {
       pattern <- paste0(resp.names[i], "|")
-      m <- tidyselect::starts_with(pattern, vars = out$term)
+      m <- string_starts_with(pattern = pattern, x = out$term)
       out$response[intersect(which(out$response == ""), m)] <- responses[i]
       out$term <- gsub(pattern, "", out$term, fixed = TRUE)
     }
@@ -397,7 +396,6 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
 
 #' @importFrom purrr map_dbl
-#' @importFrom tidyselect starts_with ends_with
 #' @importFrom dplyr slice
 #' @importFrom tibble as_tibble
 #' @importFrom sjmisc is_empty
@@ -430,15 +428,15 @@ remove_effects_from_stan <- function(out, type, is.brms) {
 
   alt.term.names <- make.names(out$term)
 
-  re <- tidyselect::starts_with("b[", vars = out$term)
-  re.s <- tidyselect::starts_with("Sigma[", vars = out$term)
+  re <- string_starts_with(pattern = "b[", x = out$term)
+  re.s <- string_starts_with(pattern = "Sigma[", x = out$term)
   re.i1 <- intersect(
-    tidyselect::starts_with("r_", vars = out$term),
-    tidyselect::ends_with(".", vars = out$term)
+    string_starts_with(pattern = "r_", x = out$term),
+    string_ends_with(pattern = ".", x = out$term)
   )
   re.i2 <- intersect(
-    tidyselect::starts_with("r_", vars = alt.term.names),
-    tidyselect::ends_with(".", vars = alt.term.names)
+    string_starts_with(pattern = "r_", x = alt.term.names),
+    string_ends_with(pattern = ".", x = alt.term.names)
   )
 
   removers <- unique(c(re, re.s, re.i1, re.i2))
@@ -458,7 +456,6 @@ remove_effects_from_stan <- function(out, type, is.brms) {
 }
 
 
-#' @importFrom tidyselect starts_with ends_with
 #' @importFrom dplyr slice
 #' @importFrom sjmisc is_empty
 brms_clean <- function(out) {
@@ -467,11 +464,11 @@ brms_clean <- function(out) {
   # effecs models, so remove these here
 
   if (tibble::has_name(out, "term")) {
-    re.sd <- tidyselect::starts_with("sd_", vars = out$term)
-    re.cor <- tidyselect::starts_with("cor_", vars = out$term)
-    re.s <- tidyselect::starts_with("Sigma[", vars = out$term)
-    lp <- tidyselect::starts_with("lp__", vars = out$term)
-    priors <- tidyselect::starts_with("prior_", vars = out$term)
+    re.sd <- string_starts_with(pattern = "sd_", x = out$term)
+    re.cor <- string_starts_with(pattern = "cor_", x = out$term)
+    re.s <- string_starts_with(pattern = "Sigma[", x = out$term)
+    lp <- string_starts_with(pattern = "lp__", x = out$term)
+    priors <- string_starts_with(pattern = "prior_", x = out$term)
 
     removers <- unique(c(re.sd, re.cor, re.s, lp, priors))
 
@@ -483,11 +480,11 @@ brms_clean <- function(out) {
   # we may have transformed data frame, where columns
   # need to be removed
 
-  re.sd <- tidyselect::starts_with("sd_", vars = colnames(out))
-  re.cor <- tidyselect::starts_with("cor_", vars = colnames(out))
-  re.s <- tidyselect::starts_with("Sigma[", vars = colnames(out))
-  lp <- tidyselect::starts_with("lp__", vars = colnames(out))
-  priors <- tidyselect::starts_with("prior_", vars = colnames(out))
+  re.sd <- string_starts_with(pattern = "sd_", x = colnames(out))
+  re.cor <- string_starts_with(pattern = "cor_", x = colnames(out))
+  re.s <- string_starts_with(pattern = "Sigma[", x = colnames(out))
+  lp <- string_starts_with(pattern = "lp__", x = colnames(out))
+  priors <- string_starts_with(pattern = "prior_", x = colnames(out))
 
   removers <- unique(c(re.sd, re.cor, re.s, lp, priors))
 

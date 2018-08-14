@@ -66,11 +66,3 @@ get_grouped_data <- function(x) {
 
   grps
 }
-
-
-str_ends_with <- function(x, .match) {
-  l <- nchar(x)
-  n <- nchar(.match)
-  m <- substr(x, pmax(1, l - n + 1), l)
-  which(m == .match)
-}

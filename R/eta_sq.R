@@ -45,7 +45,6 @@
 #'
 #' anova_stats(car::Anova(fit, type = 2))
 #'
-#' @importFrom tibble tibble
 #' @export
 eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 
@@ -57,7 +56,7 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 
   es <- aov_stat(model, type = type)
 
-  x <- tibble::tibble(
+  x <- data.frame(
     term = names(es),
     es = es
   )
@@ -105,7 +104,7 @@ omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 
   es <- aov_stat(model, type = type)
 
-  x <- tibble::tibble(
+  x <- data.frame(
     term = names(es),
     es = es
   )
@@ -144,7 +143,7 @@ omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 cohens_f <- function(model) {
   es <- aov_stat(model, type = "cohens.f")
 
-  tibble::tibble(
+  data.frame(
     term = names(es),
     cohens.f = es
   )
@@ -152,7 +151,7 @@ cohens_f <- function(model) {
 
 
 
-#' @importFrom tibble tibble add_row add_column
+#' @importFrom tibble add_row add_column
 #' @importFrom sjmisc add_columns
 #' @importFrom broom tidy
 #' @importFrom stats anova
@@ -173,7 +172,7 @@ anova_stats <- function(model, digits = 3) {
   cohens.f <- sqrt(partial.etasq / (1 - partial.etasq))
 
   # bind as data frame
-  as <- tibble::tibble(etasq, partial.etasq, omegasq, partial.omegasq, cohens.f) %>%
+  as <- data.frame(etasq, partial.etasq, omegasq, partial.omegasq, cohens.f) %>%
     tibble::add_row(etasq = NA, partial.etasq = NA, omegasq = NA, partial.omegasq = NA, cohens.f = NA) %>%
     sjmisc::add_columns(aov.sum)
 
@@ -325,7 +324,7 @@ omega_sq_ci <- function(aov.sum, ci.lvl = .95) {
         ci.low <- ci.high <- NA
       }
 
-      tibble::tibble(
+      data.frame(
         conf.low = ci.low,
         conf.high = ci.high
       )
@@ -334,7 +333,6 @@ omega_sq_ci <- function(aov.sum, ci.lvl = .95) {
 }
 
 
-#' @importFrom tibble tibble
 #' @importFrom purrr map_df
 peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
   rows <- nrow(aov.sum) - 1
@@ -354,12 +352,12 @@ peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
           conf.level = ci.lvl
         )
 
-        tibble::tibble(
+        data.frame(
           conf.low = ci$LL,
           conf.high = ci$UL
         )
       } else {
-        tibble::tibble(
+        data.frame(
           conf.low = NA,
           conf.high = NA
         )
@@ -372,14 +370,13 @@ peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
 #' @importFrom broom tidy
 #' @importFrom purrr map map_df
 #' @importFrom dplyr bind_cols mutate case_when pull
-#' @importFrom tibble tibble
 #' @importFrom stats anova formula aov
 #' @importFrom sjmisc rotate_df
 es_boot_fun <- function(model, type, ci.lvl, n) {
 
   es <- aov_stat(model = model, type = type)
 
-  x <- tibble::tibble(
+  x <- data.frame(
     term = var_names(names(es)),
     es = es
   )

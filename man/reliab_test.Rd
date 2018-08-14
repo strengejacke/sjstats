@@ -114,7 +114,7 @@ These function compute various measures of internal consistencies
              \cite{(Piedmont 2014)}
            }
            \item{\code{difficulty()}}{
-             This function calculates the irem difficutly, which should
+             This function calculates the item difficutly, which should
              range between 0.2 and 0.8. Lower values are a signal for
              more difficult items, while higher values close to one
              are a sign for easier items. The ideal value for item difficulty

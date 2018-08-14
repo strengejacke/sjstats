@@ -285,7 +285,7 @@ hdi.default <- function(x, prob = .9, trans = NULL, ...) {
 }
 
 
-#' @importFrom tibble as_tibble rownames_to_column
+#' @importFrom tibble as_tibble
 #' @importFrom purrr map_df
 #' @importFrom sjmisc rotate_df
 hdi_worker <- function(x, prob, trans, type) {
@@ -297,14 +297,14 @@ hdi_worker <- function(x, prob, trans, type) {
         tibble::as_tibble() %>%
         purrr::map_df(~ hdi_helper(.x, i, trans)) %>%
         sjmisc::rotate_df() %>%
-        tibble::rownames_to_column()
+        rownames_as_column()
 
       colnames(out) <- c("term", "hdi.low", "hdi.high")
       out
 
     }) %>%
     dplyr::bind_cols() %>%
-    dplyr::select(1, tidyselect::starts_with("hdi."))
+    dplyr::select(1, string_starts_with(pattern = "hdi.", x = colnames(.)))
 
 
 

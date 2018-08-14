@@ -45,10 +45,9 @@ n_eff.brmsfit <- function(x, type = c("fixed", "random", "all"), ...) {
 }
 
 
-#' @importFrom tibble as_tibble
 #' @importFrom dplyr slice
 n_eff_helper <- function(tn, effs, type, is.brms) {
-  dat <- tibble::tibble(
+  dat <- data.frame(
     term = tn,
     n_eff = effs
   )

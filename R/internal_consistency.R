@@ -85,7 +85,7 @@
 #'              \cite{(Piedmont 2014)}
 #'            }
 #'            \item{\code{difficulty()}}{
-#'              This function calculates the irem difficutly, which should
+#'              This function calculates the item difficutly, which should
 #'              range between 0.2 and 0.8. Lower values are a signal for
 #'              more difficult items, while higher values close to one
 #'              are a sign for easier items. The ideal value for item difficulty
@@ -153,7 +153,6 @@
 #'  }}
 #'
 #' @importFrom stats cor
-#' @importFrom tibble tibble
 #' @importFrom sjmisc std
 #' @export
 reliab_test <- function(x, scale.items = FALSE, digits = 3, out = c("txt", "viewer", "browser")) {
@@ -208,7 +207,7 @@ reliab_test <- function(x, scale.items = FALSE, digits = 3, out = c("txt", "view
     }
 
     # create return value
-    ret.df <- tibble::tibble(
+    ret.df <- data.frame(
       term = df.names,
       alpha.if.deleted = round(cronbachDeleted, digits),
       item.discr = round(totalCorr, digits)

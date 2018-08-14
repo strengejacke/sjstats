@@ -63,11 +63,10 @@ tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
 
 #' @importFrom dplyr select
 #' @importFrom tibble as_tibble
-#' @importFrom tidyselect one_of
 #' @export
 model.frame.svyglm.nb <- function(formula, ...) {
   pred <- attr(formula, "nb.terms", exact = T)
-  tibble::as_tibble(dplyr::select(formula$design$variables, tidyselect::one_of(pred)))
+  tibble::as_tibble(dplyr::select(formula$design$variables, string_one_of(pattern = pred, x = colnames(.))))
 }
 
 
@@ -295,7 +294,6 @@ print.sj_icc_merMod <- function(x, comp, ...) {
 
 #' @importFrom rlang .data
 #' @importFrom dplyr filter slice select
-#' @importFrom tidyselect starts_with contains
 #' @importFrom crayon blue cyan red
 #' @importFrom sjmisc var_rename trim
 #' @importFrom tibble has_name
@@ -307,8 +305,8 @@ print.tidy_stan <- function(x, ...) {
   # check if data has certain terms, so we know if we print
   # zero inflated or multivariate response models
 
-  zi <- tidyselect::starts_with("b_zi_", vars = x$term)
-  resp.cor <- tidyselect::starts_with("rescor__", vars = x$term)
+  zi <- string_starts_with(pattern = "b_zi_", x = x$term)
+  resp.cor <- string_starts_with(pattern = "rescor__", x = x$term)
   ran.eff <- tibble::has_name(x, "random.effect")
   multi.resp <- tibble::has_name(x, "response")
   cumulative <- tibble::has_name(x, "response.level")
@@ -328,7 +326,7 @@ print.tidy_stan <- function(x, ...) {
     # from zero-inlfated model are correctly handled here
 
     if (ran.eff) {
-      zi <- union(zi, tidyselect::contains("__zi", vars = x$term))
+      zi <- union(zi, string_contains(pattern = "__zi", x = x$term))
     }
 
     x.zi <- dplyr::slice(x, !! zi)
@@ -443,7 +441,6 @@ print.tidy_stan <- function(x, ...) {
 #' @importFrom sjmisc is_empty
 #' @importFrom crayon blue red
 #' @importFrom dplyr slice select filter mutate
-#' @importFrom tidyselect contains
 print_stan_ranef <- function(x, zeroinf = FALSE) {
   # find fixed effects - is type = "all"
   fe <- which(x$random.effect == "")
@@ -478,7 +475,7 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
   re <- unique(x$random.effect)
 
   # remove random effects from zero inflated model
-  re.zi <- tidyselect::contains("__zi", vars = re)
+  re.zi <- string_contains(pattern = "__zi", x = re)
   if (!sjmisc::is_empty(re.zi)) re <- re[-re.zi]
 
   for (r in re) {
@@ -504,10 +501,9 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
 
 
 #' @importFrom sjmisc is_empty
-#' @importFrom tidyselect starts_with
 trim_hdi <- function(x) {
   cn <- colnames(x)
-  hdi.cols <- tidyselect::starts_with("HDI", vars = cn)
+  hdi.cols <- string_starts_with(pattern = "HDI", x = cn)
 
   if (!sjmisc::is_empty(hdi.cols)) {
     x <- x %>%
@@ -533,7 +529,6 @@ trim_hdi <- function(x) {
 #' @importFrom sjmisc is_empty
 #' @importFrom crayon blue red
 #' @importFrom dplyr slice select filter mutate
-#' @importFrom tidyselect contains
 print_stan_mv_re <- function(x, resp) {
   # find fixed effects - is type = "all"
   fe <- which(x$random.effect == "")
@@ -588,7 +583,6 @@ print_stan_mv_re <- function(x, resp) {
 #' @importFrom sjmisc is_empty
 #' @importFrom crayon blue red
 #' @importFrom dplyr slice select filter mutate
-#' @importFrom tidyselect contains
 print_stan_zeroinf_ranef <- function(x) {
   # find fixed effects - is type = "all"
   fe <- which(x$random.effect == "")
@@ -620,7 +614,7 @@ print_stan_zeroinf_ranef <- function(x) {
   re <- unique(x$random.effect)
 
   # remove random effects from zero inflated model
-  re.zi <- tidyselect::contains("__zi", vars = re)
+  re.zi <- string_contains(pattern = "__zi", x = re)
 
   if (!sjmisc::is_empty(re.zi)) {
 
@@ -656,7 +650,6 @@ clean_term_name <- function(x) {
 }
 
 
-#' @importFrom tidyselect starts_with
 #' @importFrom sjmisc remove_empty_cols
 #' @importFrom crayon cyan blue red magenta green silver
 #' @importFrom dplyr case_when
@@ -771,7 +764,6 @@ print.sj_icc_brms <- function(x, digits = 2, ...) {
 }
 
 
-#' @importFrom tidyselect starts_with
 #' @importFrom sjmisc remove_empty_cols
 #' @importFrom crayon cyan blue red magenta green silver
 #' @importFrom dplyr case_when
@@ -1346,11 +1338,11 @@ print.sj_grpmeans <- function(x, ...) {
 print.sj_revar <- function(x, ...) {
   # get parameters
   xn <- names(x)
-  tau.00 <- x[str_ends_with(xn, "tau.00")]
-  tau.01 <- x[str_ends_with(xn, "tau.01")]
-  tau.11 <- x[str_ends_with(xn, "tau.11")]
-  rho.01 <- x[str_ends_with(xn, "rho.01")]
-  sigma_2 <- x[str_ends_with(xn, "sigma_2")]
+  tau.00 <- x[ends_with("tau.00", xn)]
+  tau.01 <- x[ends_with("tau.01", xn)]
+  tau.11 <- x[ends_with("tau.11", xn)]
+  rho.01 <- x[ends_with("rho.01", xn)]
+  sigma_2 <- x[ends_with("sigma_2", xn)]
 
   # print within-group-variance sigma^2
   tmp <- sprintf("%.3f", sigma_2)
@@ -1573,7 +1565,7 @@ get_hdi_data <- function(x, digits) {
   cn <- colnames(x)
   prob <- attr(x, "prob", exact = TRUE)
 
-  hdi.cols <- tidyselect::starts_with("hdi.", vars = cn)
+  hdi.cols <- string_starts_with(pattern = "hdi.", x = cn)
 
   # convert all to character, with fixed fractional part
   x <- x %>%

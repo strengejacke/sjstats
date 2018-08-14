@@ -19,7 +19,7 @@ cv_compare(data, formulas, k = 5)
 \item{formulas}{A list of formulas, to fit linear models for the test and training data.}
 }
 \value{
-A tibble with the root mean squared errors for the training and test data.
+A data frame with the root mean squared errors for the training and test data.
 }
 \description{
 \code{cv_error()} computes the root mean squared error from a model fitted

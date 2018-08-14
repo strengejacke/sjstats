@@ -22,7 +22,6 @@
 #' data(efc)
 #' gmd(efc$e17age)
 #' gmd(efc, e17age, c160age, c12hour)
-#' gmd(efc, tidyselect::contains("cop"))
 #'
 #' @importFrom dplyr quos select
 #' @importFrom purrr map_df

@@ -14,7 +14,7 @@
 #'
 #' @inheritParams pred_accuracy
 #'
-#' @return A tibble with the root mean squared errors for the training and test data.
+#' @return A data frame with the root mean squared errors for the training and test data.
 #'
 #' @details \code{cv_error()} first generates cross-validated test-training pairs, using
 #'          \code{\link[modelr]{crossv_kfold}} and then fits a linear model, which
@@ -39,7 +39,6 @@
 #' @importFrom purrr map map2 map_dbl map_df
 #' @importFrom broom augment
 #' @importFrom tidyr unnest
-#' @importFrom tibble tibble
 #' @importFrom rlang .data
 #' @export
 cv_error <- function(data, formula, k = 5) {
@@ -64,7 +63,7 @@ cv_error <- function(data, formula, k = 5) {
     tidyr::unnest(.data$predicted, .data$residuals) %>%
     dplyr::summarise(test.error = sqrt(mean(.data$residuals^2, na.rm = TRUE)))
 
-  tibble::tibble(
+  data.frame(
     model = deparse(formula),
     train.error = round(train.error[[1]], 4),
     test.error = round(test.error[[1]], 4)

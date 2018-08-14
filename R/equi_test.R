@@ -138,7 +138,6 @@ equi_test_worker <- function(x, rope, eff_size, out, fm, ...) {
 #' @importFrom purrr map2_df
 #' @importFrom tidyr gather
 #' @importFrom sjlabelled as_factor get_dv_labels
-#' @importFrom tidyselect contains
 plot_sj_equi_test <- function(x, model, ...) {
 
   if (!requireNamespace("ggplot2", quietly = TRUE) && !requireNamespace("ggridges", quietly = TRUE)) {
@@ -146,7 +145,7 @@ plot_sj_equi_test <- function(x, model, ...) {
     return(x)
   }
 
-  remove <- c(1, tidyselect::contains("sigma", ignore.case = TRUE, vars = x$term))
+  remove <- c(1, contains("sigma", x$term))
 
   # if we have intercept-only models, keep at least the intercept
   if (length(remove) == nrow(x)) remove <- remove[-1]

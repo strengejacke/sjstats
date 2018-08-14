@@ -20,7 +20,7 @@ mcse.stanmvreg <- function(x, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)
 
   s <- summary(x)
-  dat <- tibble::tibble(
+  dat <- data.frame(
     term = rownames(s),
     mcse = s[, "mcse"]
   )
@@ -44,7 +44,6 @@ mcse.stanreg <- function(x, type = c("fixed", "random", "all"), ...) {
 
 
 #' @importFrom purrr map_dbl
-#' @importFrom tibble as_tibble
 #' @importFrom dplyr pull
 mcse_helper <- function(x, type) {
   dat <- tibble::as_tibble(x)
@@ -67,7 +66,7 @@ mcse_helper <- function(x, type) {
   ess <- dplyr::pull(n_eff(x, type = "all"), "n_eff")
 
   # compute mcse
-  dat <- tibble::tibble(
+  dat <- data.frame(
     term = colnames(dat),
     mcse = stddev / sqrt(ess)
   )

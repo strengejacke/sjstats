@@ -24,7 +24,7 @@
 #'        is returned.
 #' @param ... Other arguments, passed down to \code{\link[car]{durbinWatsonTest}}.
 #'
-#' @return A tibble with the respective statistics.
+#' @return A data frame with the respective statistics.
 #'
 #' @details These functions are wrappers that compute various test statistics,
 #'          however, each of them returns a tibble instead of a list of values.
@@ -112,7 +112,6 @@
 #' \dontrun{
 #' tmp %>% check_assumptions("models", as.logical = TRUE, reps = 100)}
 #'
-#' @importFrom tibble tibble
 #' @importFrom stats formula
 #' @export
 check_assumptions <- function(x, model.column = NULL, as.logical = FALSE, ...) {
@@ -130,7 +129,7 @@ check_assumptions <- function(x, model.column = NULL, as.logical = FALSE, ...) {
     mn <- sqrt(mn) > 2
   }
 
-  rv <- tibble::tibble(
+  rv <- data.frame(
     heteroskedasticity = hn,
     multicollinearity = mn,
     non.normal.resid = nn,
@@ -149,7 +148,6 @@ check_assumptions <- function(x, model.column = NULL, as.logical = FALSE, ...) {
 #' @rdname check_assumptions
 #' @importFrom sjmisc is_empty
 #' @importFrom stats update
-#' @importFrom tibble tibble
 #' @export
 outliers <- function(x, iterations = 5) {
   # check package availability
@@ -200,7 +198,7 @@ outliers <- function(x, iterations = 5) {
     }
 
     # create return tibble
-    rv <- tibble::tibble(
+    rv <- data.frame(
       models = c("original", "updated"),
       aic = c(stats::AIC(x), stats::AIC(model))
     )
@@ -242,7 +240,7 @@ outliers <- function(x, iterations = 5) {
     }
 
     # create return tibble
-    rv <- tibble::tibble(
+    rv <- data.frame(
       models = c("original", "updated"),
       adjusted.r2 = c(summary(x)$adj.r.squared,
                       summary(model)$adj.r.squared),
@@ -305,7 +303,7 @@ heteroskedastic <- function(x, model.column = NULL) {
     }
   }
 
-  tibble::tibble(heteroskedastic = p.val)
+  data.frame(heteroskedastic = p.val)
 }
 
 
@@ -337,7 +335,7 @@ autocorrelation <- function(x, model.column = NULL, ...) {
     }
   }
 
-  tibble::tibble(autocorrelation = p.val)
+  data.frame(autocorrelation = p.val)
 }
 
 
@@ -365,7 +363,7 @@ normality <- function(x, model.column = NULL) {
     }
   }
 
-  tibble::tibble(non.normality = p.val)
+  data.frame(non.normality = p.val)
 }
 
 
@@ -399,7 +397,7 @@ multicollin <- function(x, model.column = NULL) {
     ts <- max(ts)
   }
 
-  tibble::tibble(max.vif = ts)
+  data.frame(max.vif = ts)
 }
 
 

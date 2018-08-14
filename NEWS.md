@@ -1,5 +1,9 @@
 # sjstats 0.16.1
 
+## General
+
+* Reduce package dependencies.
+
 ## Changes to functions
 
 * Improved `print()`-method for `tidy_stan()` for _brmsfit_-objects with categorical-families.

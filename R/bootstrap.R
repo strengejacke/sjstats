@@ -10,7 +10,7 @@
 #'          between 1 and \code{nrow(data)} or a value between 0 and 1 to sample
 #'          a proportion of observations from \code{data} (see 'Examples').
 #'
-#' @return A \code{\link[tibble]{tibble}} with one column: a list-variable
+#' @return A data frame with one column: a list-variable
 #'           \code{strap}, which contains resample-objects of class \code{sj_resample}.
 #'           These resample-objects are lists with three elements:
 #'           \enumerate{
@@ -75,7 +75,6 @@
 #' # standard error of original variable
 #' se(efc$c12hour)
 #'
-#' @importFrom tibble tibble
 #' @export
 bootstrap <- function(data, n, size) {
   if (!missing(size) && !is.null(size)) {
@@ -102,7 +101,7 @@ bootstrap <- function(data, n, size) {
   for (i in seq_len(length(strap))) strap[[i]]$resample.id <- i
 
   # return tibble
-  tibble::tibble(strap)
+  data.frame(strap = I(strap))
 }
 
 

@@ -51,7 +51,7 @@ rope.data.frame <- function(x, rope, trans = NULL, type = c("fixed", "random", "
 
 #' @importFrom purrr map_df
 #' @importFrom sjmisc rotate_df
-#' @importFrom tibble rownames_to_column as_tibble
+#' @importFrom tibble as_tibble
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
 rope_worker <- function(x, rope, trans, type) {
@@ -60,7 +60,7 @@ rope_worker <- function(x, rope, trans, type) {
     as.data.frame() %>%
     purrr::map_df(~ rope_helper(.x, rope, trans)) %>%
     sjmisc::rotate_df() %>%
-    tibble::rownames_to_column()
+    rownames_as_column()
 
   colnames(dat) <- c("term", "rope")
 

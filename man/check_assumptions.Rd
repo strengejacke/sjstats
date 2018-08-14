@@ -42,7 +42,7 @@ is returned.}
 outliers.}
 }
 \value{
-A tibble with the respective statistics.
+A data frame with the respective statistics.
 }
 \description{
 \itemize{

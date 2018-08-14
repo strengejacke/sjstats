@@ -16,7 +16,7 @@ between 1 and \code{nrow(data)} or a value between 0 and 1 to sample
 a proportion of observations from \code{data} (see 'Examples').}
 }
 \value{
-A \code{\link[tibble]{tibble}} with one column: a list-variable
+A data frame with one column: a list-variable
           \code{strap}, which contains resample-objects of class \code{sj_resample}.
           These resample-objects are lists with three elements:
           \enumerate{

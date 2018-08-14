@@ -31,7 +31,6 @@ Gini's mean difference is defined as the mean absolute difference between
 data(efc)
 gmd(efc$e17age)
 gmd(efc, e17age, c160age, c12hour)
-gmd(efc, tidyselect::contains("cop"))
 
 }
 \references{

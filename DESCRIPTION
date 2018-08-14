@@ -49,11 +49,9 @@ Imports:
     sjlabelled (>= 1.0.13),
     sjmisc (>= 2.7.3),
     tidyr,
-    tidyselect,
     tibble
 Suggests:
     AER,
-    arm,
     brms,
     car,
     ggplot2,

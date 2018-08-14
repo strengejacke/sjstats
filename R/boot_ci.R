@@ -211,22 +211,20 @@ boot_est <- function(data, ...) {
 
 
 
-#' @importFrom tibble rownames_to_column
 transform_boot_result <- function(res) {
   # transform a bit, so we have each estimate in a row, and ci's as columns...
   res %>%
     as.data.frame() %>%
     t() %>%
     as.data.frame() %>%
-    tibble::rownames_to_column(var = "term")
+    rownames_as_column(var = "term")
 }
 
 
-#' @importFrom tibble as_tibble
 #' @importFrom dplyr select
 get_dot_data <- function(x, qs) {
   if (sjmisc::is_empty(qs))
-    tibble::as_tibble(x)
+    as.data.frame(x)
   else
     suppressWarnings(dplyr::select(x, !!!qs))
 }
