@@ -4,26 +4,21 @@
 \alias{mwu}
 \title{Mann-Whitney-U-Test}
 \usage{
-mwu(x, dv, grp, distribution = "asymptotic", weight.by = NULL,
-  out = c("txt", "viewer", "browser"))
+mwu(data, x, grp, distribution = "asymptotic", out = c("txt", "viewer",
+  "browser"))
 }
 \arguments{
-\item{x}{A (grouped) data frame.}
+\item{data}{A data frame.}
 
-\item{dv}{Name of the dependent variable, for which the mean value, grouped
-by \code{grp}, is computed.}
+\item{x}{Bare (unquoted) variable name, or a character vector with the variable name.}
 
-\item{grp}{Factor with the cross-classifying variable, where \code{dv} is
-grouped into the categories represented by \code{grp}. Numeric vectors
-are coerced to factors.}
+\item{grp}{Bare (unquoted) name of the cross-classifying variable, where
+\code{x} is grouped into the categories represented by \code{grp},
+or a character vector with the variable name.}
 
 \item{distribution}{Indicates how the null distribution of the test statistic should be computed.
 May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
 (default). See \code{\link[coin]{wilcox_test}} for details.}
-
-\item{weight.by}{Name of variable in \code{x} that indicated the vector of
-weights that will be applied to weight all  observations. Default is
-\code{NULL}, so no weights are used.}
 
 \item{out}{Character vector, indicating whether the results should be printed
 to console (\code{out = "txt"}) or as HTML-table in the viewer-pane

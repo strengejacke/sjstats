@@ -4,6 +4,11 @@
 
 * Reduce package dependencies.
 
+## New functions
+
+* `wtd_ttest()` to compute a weighted t-test.
+* `wtd_mwu()` to compute a weighted Mann-Whitney-U or Kruskal-Wallis test.
+
 ## Changes to functions
 
 * Improved `print()`-method for `tidy_stan()` for _brmsfit_-objects with categorical-families.

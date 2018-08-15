@@ -8,10 +8,12 @@
 #'                The function reports U, p and Z-values as well as effect size r
 #'                and group-rank-means.
 #'
+#' @param x Bare (unquoted) variable name, or a character vector with the variable name.
 #' @param distribution Indicates how the null distribution of the test statistic should be computed.
 #'          May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
 #'          (default). See \code{\link[coin]{wilcox_test}} for details.
 #'
+#' @inheritParams wtd_se
 #' @inheritParams grpmean
 #'
 #' @return (Invisibly) returns a data frame with U, p and Z-values for each group-comparison
@@ -39,7 +41,7 @@
 #' @importFrom sjlabelled get_labels as_numeric
 #' @importFrom rlang quo_name enquo
 #' @export
-mwu <- function(x, dv, grp, distribution = "asymptotic", weight.by = NULL, out = c("txt", "viewer", "browser")) {
+mwu <- function(data, x, grp, distribution = "asymptotic", out = c("txt", "viewer", "browser")) {
 
   out <- match.arg(out)
 
@@ -51,35 +53,16 @@ mwu <- function(x, dv, grp, distribution = "asymptotic", weight.by = NULL, out =
 
   # create quosures
   grp.name <- rlang::quo_name(rlang::enquo(grp))
-  dv.name <- rlang::quo_name(rlang::enquo(dv))
-
-  # weights need extra checking, might be NULL
-  if (!missing(weight.by)) {
-    weights <- rlang::quo_name(rlang::enquo(weight.by))
-
-    w.string <- tryCatch(
-      {
-        eval(weight.by)
-      },
-      error = function(x) { NULL },
-      warning = function(x) { NULL },
-      finally = function(x) { NULL }
-    )
-
-    if (!is.null(w.string) && is.character(w.string)) weights <- w.string
-    if (sjmisc::is_empty(weights) || weights == "NULL") weights <- NULL
-  } else
-    weights <- NULL
+  dv.name <- rlang::quo_name(rlang::enquo(x))
 
   # create string with variable names
-  vars <- c(grp.name, dv.name, weights)
+  vars <- c(grp.name, dv.name)
 
   # get data
-  x <- suppressMessages(dplyr::select(x, !! vars))
+  data <- suppressMessages(dplyr::select(data, !! vars))
 
-  grp <- x[[grp.name]]
-  dv <- x[[dv.name]]
-  if (!is.null(weights)) weight.by <- x[[weights]]
+  grp <- data[[grp.name]]
+  dv <- data[[dv.name]]
 
   # coerce factor and character to numeric
   if (is.factor(grp) || is.character(grp)) grp <- sjlabelled::as_numeric(grp)
@@ -106,12 +89,6 @@ mwu <- function(x, dv, grp, distribution = "asymptotic", weight.by = NULL, out =
         # only use rows with non-missings
         ysub <- ysub[which(!is.na(xsub))]
 
-        # adjust weights, pick rows from subgroups (see above)
-        if (!is.null(weight.by))
-          wsub <- stats::na.omit(weight.by[which(!is.na(xsub))])
-        else
-          wsub <- 1
-
         # remove missings
         xsub <- as.numeric(stats::na.omit(xsub))
         ysub.n <- stats::na.omit(ysub)
@@ -121,21 +98,11 @@ mwu <- function(x, dv, grp, distribution = "asymptotic", weight.by = NULL, out =
 
         wcdat <- data.frame(
           x = xsub,
-          y = ysub,
-          w = wsub
+          y = ysub
         )
 
         # perfom wilcox test
-        if (is.null(weight.by)) {
-          wt <- coin::wilcox_test(x ~ y, data = wcdat, distribution = distribution)
-        } else {
-          wt <- coin::wilcox_test(
-            formula = x ~ y,
-            data = wcdat,
-            distribution = distribution,
-            weights = ~ w
-          )
-        }
+        wt <- coin::wilcox_test(x ~ y, data = wcdat, distribution = distribution)
 
         # compute statistics
         u <- as.numeric(coin::statistic(wt, type = "linear"))

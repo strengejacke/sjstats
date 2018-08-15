@@ -10,7 +10,7 @@ weight(x, weights, digits = 0)
 weight2(x, weights)
 }
 \arguments{
-\item{x}{(Unweighted) variable}
+\item{x}{(Unweighted) variable.}
 
 \item{weights}{Vector with same length as \code{x}, which
 contains weight factors. Each value of \code{x} has a

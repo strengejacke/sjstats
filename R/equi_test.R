@@ -145,7 +145,7 @@ plot_sj_equi_test <- function(x, model, ...) {
     return(x)
   }
 
-  remove <- c(1, contains("sigma", x$term))
+  remove <- c(1, string_contains("sigma", x$term))
 
   # if we have intercept-only models, keep at least the intercept
   if (length(remove) == nrow(x)) remove <- remove[-1]

@@ -1798,3 +1798,64 @@ print.sj_item_diff <- function(x, ...) {
   for (i in 1:length(items))
     cat(sprintf("  %*s      %.2f   %.2f\n", spaces, items[i], x[i], ideal[i]))
 }
+
+
+#' @importFrom crayon blue cyan
+#' @export
+print.sj_ttest <- function(x, ...) {
+  cat(crayon::blue(sprintf("\n%s (%s)\n", x$method, x$alternative)))
+
+  group <- attr(x, "group.name", exact = TRUE)
+  xn <- attr(x, "x.name", exact = TRUE)
+  yn <- attr(x, "y.name", exact = TRUE)
+
+  if (!is.null(group))
+    verbs <- c("of", "by")
+  else
+    verbs <- c("between", "and")
+
+  st <- sprintf("# t=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$df), x$p.value)
+
+  if (!is.null(yn)) {
+    cat(crayon::cyan(sprintf("\n# comparison %s %s %s %s\n", verbs[1], xn, verbs[2], yn)))
+  }
+
+  cat(crayon::cyan(st))
+
+
+  if (!is.null(yn)) {
+      if (!is.null(group)) {
+      l1 <- sprintf("mean in group %s", group[1])
+      l2 <- sprintf("mean in group %s", group[2])
+    } else {
+      l1 <- sprintf("mean of %s", xn)
+      l2 <- sprintf("mean of %s", yn)
+    }
+
+    l3 <- "difference of mean"
+
+    slen <- max(nchar(c(l1, l2, l3)))
+
+    cat(sprintf("  %s: %.3f\n", format(l1, width = slen), x$estimate[1]))
+    cat(sprintf("  %s: %.3f\n", format(l2, width = slen), x$estimate[2]))
+    cat(sprintf("  %s: %.3f [%.3f  %.3f]\n", format(l3, width = slen), x$estimate[1] - x$estimate[2], x$ci[1], x$ci[2]))
+  } else {
+    cat(sprintf("  mean of %s: %.3f [%.3f  %.3f]\n", xn, x$estimate[1], x$ci[1], x$ci[2]))
+  }
+
+  cat("\n")
+}
+
+
+#' @importFrom crayon blue cyan
+#' @export
+print.sj_wmwu <- function(x, ...) {
+  cat(crayon::blue(sprintf("\n%s (%s)\n", x$method, x$alternative)))
+
+  group <- attr(x, "group.name", exact = TRUE)
+  xn <- attr(x, "x.name", exact = TRUE)
+
+  cat(crayon::cyan(sprintf("\n# comparison of %s by %s\n", xn, group)))
+  cat(crayon::cyan(sprintf("# Chisq=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$parameter), x$p.value)))
+  cat(sprintf("  difference in mean rank score: %.3f\n\n", x$estimate))
+}

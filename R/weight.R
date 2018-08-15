@@ -3,7 +3,7 @@
 #' @description These functions weight the variable \code{x} by
 #'                a specific vector of \code{weights}.
 #'
-#' @param x (Unweighted) variable
+#' @param x (Unweighted) variable.
 #' @param weights Vector with same length as \code{x}, which
 #'          contains weight factors. Each value of \code{x} has a
 #'          specific assigned weight in \code{weights}.
@@ -102,26 +102,48 @@ weight2 <- function(x, weights) {
 #' @description \code{wtd_sd()} and \code{wtd_se()} compute weighted standard
 #'   deviation or standard error for a variable or for all variables of a data
 #'   frame. \code{svy_md()} computes the median for a variable in a survey-design
-#'   (see \code{\link[survey]{svydesign}}).
+#'   (see \code{\link[survey]{svydesign}}). \code{wtd_ttest()} computes a
+#'   weighted t-test, while \code{wtd_mwu()} computes a weighted Mann-Whitney-U
+#'   test or a Kruskal-Wallis test (for more than two groups).
 #'
-#' @param x (Numeric) vector or a data frame. For \code{svy_md()}, the bare
-#'          (unquoted) variable name, or a character vector with the variable
-#'          name.
-#' @param weights Numeric vector of weights.
+#' @param x (Numeric) vector or a data frame. For \code{svy_md()}, \code{wtd_ttest()}
+#'    and \code{wtd_mwu()} the bare (unquoted) variable name, or a character
+#'    vector with the variable name.
+#' @param weights Bare (unquoted) variable name, or a character vector with
+#'    the variable name of the numeric vector of weights. If \code{weights = NULL},
+#'    unweighted statistic is reported.
+#' @param data A data frame.
+#' @param formula A formula of the form \code{lhs ~ rhs1 + rhs2} where \code{lhs} is a
+#'    numeric variable giving the data values and \code{rhs1} a factor with two
+#'    levels giving the corresponding groups and \code{rhs2} a variable with weights.
+#' @param y Optional, bare (unquoted) variable name, or a character vector with
+#'    the variable name.
+#' @param grp Bare (unquoted) name of the cross-classifying variable, where
+#'    \code{x} is grouped into the categories represented by \code{grp},
+#'    or a character vector with the variable name.
+#' @param mu A number indicating the true value of the mean (or difference in
+#'   means if you are performing a two sample test).
+#' @param ci.lvl Confidence level of the interval.
+#' @param alternative A character string specifying the alternative hypothesis,
+#'   must be one of \code{"two.sided"} (default), \code{"greater"} or
+#'   \code{"less"}. You can specify just the initial letter.
 #'
 #' @inheritParams svyglm.nb
+#' @inheritParams grpmean
 #'
 #' @return The weighted standard deviation or standard error of \code{x},
 #'           or for each variable if \code{x} is a data frame.
 #'
 #' @examples
-#' wtd_sd(rnorm(n = 100, mean = 3),
-#'        runif(n = 100))
+#' # weighted sd and se ----
+#'
+#' wtd_sd(rnorm(n = 100, mean = 3), runif(n = 100))
 #'
 #' data(efc)
 #' wtd_sd(efc[, 1:3], runif(n = nrow(efc)))
 #' wtd_se(efc[, 1:3], runif(n = nrow(efc)))
 #'
+#' # svy_md ----
 #'
 #' # median for variables from weighted survey designs
 #' library(survey)
@@ -137,6 +159,17 @@ weight2 <- function(x, weights) {
 #'
 #' svy_md(total, des)
 #' svy_md("total", des)
+#'
+#' # weighted t-test ----
+#'
+#' efc$weight <- abs(rnorm(nrow(efc), 1, .3))
+#' wtd_ttest(efc, e17age, weights = weight)
+#' wtd_ttest(efc, e17age, c160age, weights = weight)
+#' wtd_ttest(e17age ~ e16sex + weight, efc)
+#'
+#' # weighted mwu-test ----
+#'
+#' wtd_mwu(c12hour ~ c161sex + weight, efc)
 #'
 #' @export
 wtd_sd <- function(x, weights = NULL) {
@@ -165,6 +198,27 @@ wtd_sd.default <- function(x, weights = NULL) {
   sqrt(wtd_var(x, weights))
 }
 
+
+#' @rdname wtd_sd
+#' @export
+wtd_mean <- function(x, weights = NULL) {
+  UseMethod("wtd_mean")
+}
+
+#' @importFrom stats weighted.mean
+#' @export
+wtd_mean.default <- function(x, weights = NULL) {
+  stats::weighted.mean(x, w = weights, na.rm = TRUE)
+}
+
+#' @importFrom stats weighted.mean
+#' @importFrom purrr map_dbl
+#' @importFrom dplyr select_if
+#' @export
+wtd_mean.data.frame <- function(x, weights = NULL) {
+  dplyr::select_if(x, is.numeric) %>%
+    purrr::map_dbl(~ weighted.mean(.x, w))
+}
 
 
 #' @rdname wtd_sd
