@@ -8,7 +8,7 @@ wtd_ttest <- function(data, ...) {
 
 #' @rdname wtd_sd
 #' @export
-wtd_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater")) {
+wtd_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...) {
 
   if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
     stop("'ci.lvl' must be a single number between 0 and 1")
@@ -54,7 +54,7 @@ wtd_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = FALSE
 
 #' @rdname wtd_sd
 #' @export
-wtd_ttest.formula <- function(formula, data, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater")) {
+wtd_ttest.formula <- function(formula, data, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...) {
 
   if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
     stop("'ci.lvl' must be a single number between 0 and 1")
@@ -194,7 +194,7 @@ wtd_mwu <- function(data, ...) {
 #' @importFrom dplyr select
 #' @rdname wtd_sd
 #' @export
-wtd_mwu.default <- function(data, x, grp, weights) {
+wtd_mwu.default <- function(data, x, grp, weights, ...) {
   x.name <- deparse(substitute(x))
   g.name <- deparse(substitute(grp))
   w.name <- deparse(substitute(weights))
@@ -213,7 +213,7 @@ wtd_mwu.default <- function(data, x, grp, weights) {
 #' @importFrom dplyr select
 #' @rdname wtd_sd
 #' @export
-wtd_mwu.formula <- function(formula, data) {
+wtd_mwu.formula <- function(formula, data, ...) {
   vars <- all.vars(formula)
 
   # get data

@@ -9,7 +9,6 @@ model.matrix.gls <- function(object, ...) {
 }
 
 
-#' @importFrom tibble tibble
 #' @importFrom stats coef vcov pnorm
 #' @importFrom dplyr case_when
 #' @export
@@ -48,7 +47,7 @@ tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
   est <- stats::coef(x)
   se <- sqrt(diag(stats::vcov(x, stderr = v_se)))
 
-  tibble::tibble(
+  data_frame(
     term = substring(names(stats::coef(x)), 5),
     estimate = round(est, digits),
     irr = round(exp(est), digits),
@@ -62,11 +61,10 @@ tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
 
 
 #' @importFrom dplyr select
-#' @importFrom tibble as_tibble
 #' @export
 model.frame.svyglm.nb <- function(formula, ...) {
   pred <- attr(formula, "nb.terms", exact = T)
-  tibble::as_tibble(dplyr::select(formula$design$variables, string_one_of(pattern = pred, x = colnames(.))))
+  dplyr::select(formula$design$variables, string_one_of(pattern = pred, x = colnames(formula$design$variables)))
 }
 
 
@@ -296,7 +294,6 @@ print.sj_icc_merMod <- function(x, comp, ...) {
 #' @importFrom dplyr filter slice select
 #' @importFrom crayon blue cyan red
 #' @importFrom sjmisc var_rename trim
-#' @importFrom tibble has_name
 #' @export
 print.tidy_stan <- function(x, ...) {
 
@@ -307,9 +304,9 @@ print.tidy_stan <- function(x, ...) {
 
   zi <- string_starts_with(pattern = "b_zi_", x = x$term)
   resp.cor <- string_starts_with(pattern = "rescor__", x = x$term)
-  ran.eff <- tibble::has_name(x, "random.effect")
-  multi.resp <- tibble::has_name(x, "response")
-  cumulative <- tibble::has_name(x, "response.level")
+  ran.eff <- obj_has_name(x, "random.effect")
+  multi.resp <- obj_has_name(x, "response")
+  cumulative <- obj_has_name(x, "response.level")
 
   if (cumulative) x <- sjmisc::var_rename(x, response.level = "response")
 
@@ -1338,11 +1335,11 @@ print.sj_grpmeans <- function(x, ...) {
 print.sj_revar <- function(x, ...) {
   # get parameters
   xn <- names(x)
-  tau.00 <- x[ends_with("tau.00", xn)]
-  tau.01 <- x[ends_with("tau.01", xn)]
-  tau.11 <- x[ends_with("tau.11", xn)]
-  rho.01 <- x[ends_with("rho.01", xn)]
-  sigma_2 <- x[ends_with("sigma_2", xn)]
+  tau.00 <- x[string_ends_with("tau.00", xn)]
+  tau.01 <- x[string_ends_with("tau.01", xn)]
+  tau.11 <- x[string_ends_with("tau.11", xn)]
+  rho.01 <- x[string_ends_with("rho.01", xn)]
+  sigma_2 <- x[string_ends_with("sigma_2", xn)]
 
   # print within-group-variance sigma^2
   tmp <- sprintf("%.3f", sigma_2)
@@ -1406,7 +1403,6 @@ print.sj_revar <- function(x, ...) {
 #' @importFrom sjmisc rotate_df
 #' @importFrom dplyr case_when
 #' @importFrom purrr map_df
-#' @importFrom tibble add_column
 #' @export
 print.sj_pca_rotate <- function(x, cutoff = .1, ...) {
 
@@ -1421,7 +1417,7 @@ print.sj_pca_rotate <- function(x, cutoff = .1, ...) {
       TRUE ~ as.character(.x)
     )) %>%
     as.data.frame() %>%
-    tibble::add_column(variable = rn, .before = 1)
+    add_cols(variable = rn, .after = -1)
 
   xs <- xs %>%
     round(3) %>%

@@ -95,7 +95,7 @@
 #' @importFrom MASS loglm
 #' @importFrom rlang quo_name enquo
 #' @export
-xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson", "fisher"), weight.by = NULL, ...) {
+xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson", "fisher"), weights = NULL, ...) {
   # match arguments
   statistics <- match.arg(statistics)
 
@@ -107,7 +107,7 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     # evaluate unquoted names
     x1 <- deparse(substitute(x1))
     x2 <- deparse(substitute(x2))
-    weights <- deparse(substitute(weight.by))
+    weights <- deparse(substitute(weights))
 
     # if names were quotes, remove quotes
     x1 <- gsub("\"", "", x1, fixed = T)

@@ -129,7 +129,7 @@ check_assumptions <- function(x, model.column = NULL, as.logical = FALSE, ...) {
     mn <- sqrt(mn) > 2
   }
 
-  rv <- data.frame(
+  rv <- data_frame(
     heteroskedasticity = hn,
     multicollinearity = mn,
     non.normal.resid = nn,
@@ -198,7 +198,7 @@ outliers <- function(x, iterations = 5) {
     }
 
     # create return tibble
-    rv <- data.frame(
+    rv <- data_frame(
       models = c("original", "updated"),
       aic = c(stats::AIC(x), stats::AIC(model))
     )
@@ -240,7 +240,7 @@ outliers <- function(x, iterations = 5) {
     }
 
     # create return tibble
-    rv <- data.frame(
+    rv <- data_frame(
       models = c("original", "updated"),
       adjusted.r2 = c(summary(x)$adj.r.squared,
                       summary(model)$adj.r.squared),

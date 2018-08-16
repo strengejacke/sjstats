@@ -77,7 +77,7 @@ std_beta.merMod <- function(fit, ci.lvl = .95, ...) {
   se.fixef <- stats::coef(summary(fit))[, "Std. Error"]
   se <- se.fixef * sdx / sdy
 
-  data.frame(
+  data_frame(
     term = names(lme4::fixef(fit)),
     std.estimate = sc,
     std.error = se,
@@ -90,7 +90,6 @@ std_beta.merMod <- function(fit, ci.lvl = .95, ...) {
 
 
 #' @importFrom stats model.matrix coef terms qnorm sd
-#' @importFrom tibble tibble as_tibble
 #' @importFrom sjlabelled as_numeric
 #' @importFrom purrr map_if map_dbl
 #' @rdname std_beta
@@ -140,7 +139,7 @@ std_beta_helper <- function(fit, type, ci.lvl, se, ...) {
     # convert factor to numeric, else sd throws a warning
     fit.data <- fit.data %>%
       purrr::map_if(is.factor, ~sjlabelled::as_numeric(.x, keep.labels = F)) %>%
-      tibble::as_tibble()
+      as.data.frame()
 
     # get standard deviations for predictors
     sx <- purrr::map_dbl(fit.data, ~ stats::sd(.x, na.rm = TRUE))
@@ -156,7 +155,7 @@ std_beta_helper <- function(fit, type, ci.lvl, se, ...) {
   }
 
   # return result
-  data.frame(
+  data_frame(
     term = names(b),
     std.estimate = beta,
     std.error = beta.se,

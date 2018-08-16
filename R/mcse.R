@@ -20,7 +20,7 @@ mcse.stanmvreg <- function(x, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)
 
   s <- summary(x)
-  dat <- data.frame(
+  dat <- data_frame(
     term = rownames(s),
     mcse = s[, "mcse"]
   )
@@ -46,7 +46,7 @@ mcse.stanreg <- function(x, type = c("fixed", "random", "all"), ...) {
 #' @importFrom purrr map_dbl
 #' @importFrom dplyr pull
 mcse_helper <- function(x, type) {
-  dat <- tibble::as_tibble(x)
+  dat <- as.data.frame(x)
   if (inherits(x, "brmsfit")) dat <- brms_clean(dat)
 
   # get standard deviations from posterior samples
@@ -66,7 +66,7 @@ mcse_helper <- function(x, type) {
   ess <- dplyr::pull(n_eff(x, type = "all"), "n_eff")
 
   # compute mcse
-  dat <- data.frame(
+  dat <- data_frame(
     term = colnames(dat),
     mcse = stddev / sqrt(ess)
   )

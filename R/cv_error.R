@@ -63,7 +63,7 @@ cv_error <- function(data, formula, k = 5) {
     tidyr::unnest(.data$predicted, .data$residuals) %>%
     dplyr::summarise(test.error = sqrt(mean(.data$residuals^2, na.rm = TRUE)))
 
-  data.frame(
+  data_frame(
     model = deparse(formula),
     train.error = round(train.error[[1]], 4),
     test.error = round(test.error[[1]], 4)

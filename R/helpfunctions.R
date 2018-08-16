@@ -5,6 +5,13 @@
 magrittr::`%>%`
 
 
+data_frame <- function(...) {
+  x <- data.frame(..., stringsAsFactors = FALSE)
+  rownames(x) <- NULL
+  x
+}
+
+
 is_merMod <- function(fit) {
   inherits(fit, c("lmerMod", "glmerMod", "nlmerMod", "merModLmerTest"))
 }

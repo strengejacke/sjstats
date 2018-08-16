@@ -12,7 +12,7 @@
 #'              variable names the left-hand-side and values to match on the
 #'              right hand side. Expressions may be quoted or unquoted. See
 #'              'Examples'.
-#' @param weight.by Vector of weights that will be applied to weight all observations.
+#' @param weights Vector of weights that will be applied to weight all observations.
 #'          Must be a vector of same length as the input vector. Default is
 #'          \code{NULL}, so no weights are used.
 #' @param na.rm Logical, whether to remove NA values from the vector when the
@@ -94,18 +94,17 @@
 #'     n4pstu == 'Care Level 1' | n4pstu == 'Care Level 3'
 #'   )
 #'
-#' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr bind_cols bind_rows
 #' @importFrom sjlabelled get_label get_labels as_numeric
 #' @export
-prop <- function(data, ..., weight.by = NULL, na.rm = TRUE, digits = 4) {
+prop <- function(data, ..., weights = NULL, na.rm = TRUE, digits = 4) {
   # check argument
   if (!is.data.frame(data)) stop("`data` needs to be a data frame.", call. = F)
 
   # get dots
   dots <- match.call(expand.dots = FALSE)$`...`
 
-  proportions(data, dots, weight.by, na.rm, digits, multi_logical = FALSE)
+  proportions(data, dots, weight.by = weights, na.rm, digits, multi_logical = FALSE)
 }
 
 
@@ -122,6 +121,7 @@ props <- function(data, ..., na.rm = TRUE, digits = 4) {
 }
 
 
+#' @importFrom purrr map_df
 proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
   # remember comparisons
   comparisons <- lapply(dots, function(x) {
@@ -140,24 +140,23 @@ proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
     # get grouped data
     grps <- get_grouped_data(data)
 
-    # create a tibble for final results
-    fr <- tibble::as_tibble()
-
     # now get proportions for each subset
-    for (i in seq_len(nrow(grps))) {
-      # get data from grouped data frame
-      .d <- grps$data[[i]]
+    fr <- purrr::map_df(
+      seq_len(nrow(grps)),
+      function(i) {
+        # get data from grouped data frame
+        .d <- grps$data[[i]]
 
-      # iterate dots (comparing conditions)
-      if (multi_logical)
-        result <- lapply(dots, get_multiple_proportion, .d, na.rm, digits)
-      else
-        result <- lapply(dots, get_proportion, .d, weight.by, na.rm, digits)
+        # iterate dots (comparing conditions)
+        if (multi_logical)
+          result <- lapply(dots, get_multiple_proportion, .d, na.rm, digits)
+        else
+          result <- lapply(dots, get_proportion, .d, weight.by, na.rm, digits)
 
-      # bind all proportion values to data frame. we need to
-      # transform here to get each value in a new colummn
-      fr <- dplyr::bind_rows(fr, tibble::as_tibble(t(unlist(result))))
-    }
+        as.data.frame(t(unlist(result)))
+      }
+    )
+
 
     # now we need the values from the groups of the grouped data frame
     for (i in (ncol(grps) - 1):1) {
@@ -175,11 +174,11 @@ proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
 
       # add row order, based on values of grouping variables
       reihenfolge <- rep(sort(unique(sjlabelled::as_numeric(data[[var.name]]))), length.out = nrow(fr)) %>%
-        tibble::as_tibble() %>%
+        as.data.frame() %>%
         dplyr::bind_cols(reihenfolge)
 
       # bind values as column
-      fr <- dplyr::bind_cols(tibble::as_tibble(val.labels), fr)
+      fr <- dplyr::bind_cols(data.frame(val.labels, stringsAsFactors = FALSE), fr)
     }
 
     # get column names. we need variable labels as column names
@@ -204,7 +203,10 @@ proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
     # if we have more than one proportion, return a tibble. this allows us
     # to save more information, the condition and the proportion value
     if (length(comparisons) > 1) {
-      return(tibble::tibble(condition = as.character(unlist(comparisons)), prop = unlist(result)))
+      return(data_frame(
+        condition = as.character(unlist(comparisons)),
+        prop = unlist(result)
+      ))
     }
 
     return(unlist(result))

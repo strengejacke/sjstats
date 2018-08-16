@@ -248,7 +248,7 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
 
   if (is.null(sig)) {
     if (fitfam$is_bin)
-      sig <- sqrt((p^2) / 3)
+      sig <- sqrt((pi^2) / 3)
     else
       sig <- 1
   }
@@ -390,7 +390,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
 
   if (is.null(sig)) {
     if (fitfam$is_bin)
-      sig <- sqrt((p^2) / 3)
+      sig <- sqrt((pi^2) / 3)
     else
       sig <- 1
   }
@@ -729,7 +729,7 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     # set default, if no residual variance is available
     if (is.null(sig)) {
       if (fitfam$is_bin)
-        sig <- sqrt((p^2) / 3)
+        sig <- sqrt((pi^2) / 3)
       else
         sig <- 1
     }

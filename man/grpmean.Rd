@@ -4,8 +4,8 @@
 \alias{grpmean}
 \title{Summary of mean values by group}
 \usage{
-grpmean(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt",
-  "viewer", "browser"))
+grpmean(x, dv, grp, weights = NULL, digits = 2, out = c("txt",
+  "viewer", "browser"), weight.by)
 }
 \arguments{
 \item{x}{A (grouped) data frame.}
@@ -17,7 +17,7 @@ by \code{grp}, is computed.}
 grouped into the categories represented by \code{grp}. Numeric vectors
 are coerced to factors.}
 
-\item{weight.by}{Name of variable in \code{x} that indicated the vector of
+\item{weights}{Name of variable in \code{x} that indicated the vector of
 weights that will be applied to weight all  observations. Default is
 \code{NULL}, so no weights are used.}
 
@@ -29,6 +29,8 @@ to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
 (\code{out = "viewer"}) or browser (\code{out = "browser"}), of if the
 results should be plotted (\code{out = "plot"}, only applies to certain
 functions). May be abbreviated.}
+
+\item{weight.by}{Deprecated.}
 }
 \value{
 For non-grouped data frames, \code{grpmean()} returns a data frame with
@@ -62,6 +64,6 @@ efc \%>\%
 
 # weighting
 efc$weight <- abs(rnorm(n = nrow(efc), mean = 1, sd = .5))
-grpmean(efc, c12hour, e42dep, weight.by = weight)
+grpmean(efc, c12hour, e42dep, weights = weight)
 
 }

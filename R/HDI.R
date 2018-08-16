@@ -285,7 +285,6 @@ hdi.default <- function(x, prob = .9, trans = NULL, ...) {
 }
 
 
-#' @importFrom tibble as_tibble
 #' @importFrom purrr map_df
 #' @importFrom sjmisc rotate_df
 hdi_worker <- function(x, prob, trans, type) {
@@ -294,7 +293,7 @@ hdi_worker <- function(x, prob, trans, type) {
     function(i) {
 
       out <- x %>%
-        tibble::as_tibble() %>%
+        as.data.frame() %>%
         purrr::map_df(~ hdi_helper(.x, i, trans)) %>%
         sjmisc::rotate_df() %>%
         rownames_as_column()
@@ -303,8 +302,9 @@ hdi_worker <- function(x, prob, trans, type) {
       out
 
     }) %>%
-    dplyr::bind_cols() %>%
-    dplyr::select(1, string_starts_with(pattern = "hdi.", x = colnames(.)))
+    dplyr::bind_cols()
+
+  dat <- dplyr::select(dat, 1, string_starts_with(pattern = "hdi.", x = colnames(dat)))
 
 
 

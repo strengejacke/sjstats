@@ -6,7 +6,6 @@ mediation <- function(x, ...) {
 
 
 #' @rdname hdi
-#' @importFrom tibble has_name
 #' @importFrom purrr map
 #' @importFrom stats formula
 #' @importFrom dplyr pull bind_cols
@@ -41,7 +40,7 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
     # fix the variable name
 
     mf <- model_frame(x)
-    if (tibble::has_name(mf, treatment)) {
+    if (obj_has_name(mf, treatment)) {
       check_fac <- mf[[treatment]]
       if (is.factor(check_fac)) {
         treatment <- sprintf("%s%s", treatment, levels(check_fac)[nlevels(check_fac)])
@@ -84,7 +83,7 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
   prop.se <- diff(hdi(eff.indirect / eff.total, prob = prob) / 2)
   prop.hdi <- prop.mediated + c(-1, 1) * prop.se
 
-  res <- data.frame(
+  res <- data_frame(
     effect = c("direct", "indirect", "mediator", "total", "proportion mediated"),
     value = c(
       typical_value(eff.direct, fun = typical),

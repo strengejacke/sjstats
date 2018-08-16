@@ -49,7 +49,7 @@
 #' x <- c(3.7, 3.3, 3.5, 2.8)
 #'
 #' typical_value(x, "weighted.mean")
-#' typical_value(x, "weighted.mean", weight.by = wt)
+#' typical_value(x, "weighted.mean", weights = wt)
 #'
 #' # for factors, return either reference level or mode value
 #' set.seed(123)
@@ -62,7 +62,13 @@
 #'
 #'
 #' @export
-typical_value <- function(x, fun = "mean", weight.by = NULL, ...) {
+typical_value <- function(x, fun = "mean", weights = NULL, weight.by, ...) {
+
+  if (!missing(weight.by)) {
+    ## TODO activate later
+    # message("Argument `weight.by` is deprecated. Please use `weights`.")
+    weights <- weight.by
+  }
 
   # check if we have named vectors and find the requested function
   # for special functions for factors, convert to numeric first
@@ -85,11 +91,11 @@ typical_value <- function(x, fun = "mean", weight.by = NULL, ...) {
 
   # for weighted mean, check that weights are of same length as x
 
-  if (fun == "weighted.mean" && !is.null(weight.by)) {
+  if (fun == "weighted.mean" && !is.null(weights)) {
 
     # make sure weights and x have same length
 
-    if (length(weight.by) != length(x)) {
+    if (length(weights) != length(x)) {
       # if not, tell user and change function to mean
       warning("Vector of weights is of different length than `x`. Using `mean` as function for typical value.", call. = F)
       fun <- "mean"
@@ -98,7 +104,7 @@ typical_value <- function(x, fun = "mean", weight.by = NULL, ...) {
 
     # make sure weights are differen from 1
 
-    if (all(weight.by == 1)) {
+    if (all(weights == 1)) {
       # if not, tell user and change function to mean
       warning("All weight values are `1`. Using `mean` as function for typical value.", call. = F)
       fun <- "mean"
@@ -108,7 +114,7 @@ typical_value <- function(x, fun = "mean", weight.by = NULL, ...) {
 
   # no weights, than use normal mean function
 
-  if (fun == "weighted.mean" && is.null(weight.by)) fun <- "mean"
+  if (fun == "weighted.mean" && is.null(weights)) fun <- "mean"
 
 
   if (fun == "median")
@@ -124,7 +130,7 @@ typical_value <- function(x, fun = "mean", weight.by = NULL, ...) {
 
   if (is.numeric(x)) {
     if (fun == "weighted.mean")
-      do.call(myfun, args = list(x = x, na.rm = TRUE, w = weight.by, ...))
+      do.call(myfun, args = list(x = x, na.rm = TRUE, w = weights, ...))
     else
       do.call(myfun, args = list(x = x, na.rm = TRUE, ...))
   } else if (is.factor(x)) {

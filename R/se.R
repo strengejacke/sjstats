@@ -179,13 +179,12 @@ se.xtabs <- function(x, ...) {
   se_tab(x)
 }
 
-#' @importFrom tibble tibble
 se_tab <- function(x, ...) {
   # compute standard error of proportions
   if (length(dim(x)) == 1) {
     total.n <- as.vector(sum(x))
     rel.frq <- as.vector(x) / total.n
-    sev <- tibble::tibble(
+    sev <- data_frame(
       value = names(x),
       proportion = rel.frq,
       std.error = suppressWarnings(sqrt(rel.frq * (1 - rel.frq) / total.n))
@@ -384,7 +383,7 @@ std_e_icc <- function(x, nsim) {
                    model.family)
 
   # now compute SE and p-values for the bootstrapped ICC
-  res <- data.frame(
+  res <- data_frame(
     model = obj.name,
     icc = as.vector(x),
     std.err = boot_se(bstr)[["std.err"]],
@@ -426,7 +425,7 @@ bootstr_icc_se <- function(dd, nsim, formula, model.family) {
   # multiple ICC values. In this case, we need to split the multiple icc-values
   # into multiple columns, i.e. one column per ICC value
   icc_data <-
-    tibble::as_tibble(matrix(unlist(purrr::map(dummy$icc, ~ .x)), nrow = nrow(dummy)))
+    as.data.frame(matrix(unlist(purrr::map(dummy$icc, ~ .x)), nrow = nrow(dummy)))
 
   # close progresss bar
   close(pb)

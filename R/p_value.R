@@ -329,7 +329,7 @@ wald_pval <- function(fit, cs) {
 
 
 make_it_so <- function(p, se, model = NULL) {
-  res <- data.frame(
+  res <- data_frame(
     term = names(p),
     p.value = as.vector(p),
     std.error = as.vector(se)

@@ -246,7 +246,6 @@ brms_link_inverse <- function(fam) {
 #' @importFrom prediction find_data
 #' @importFrom purrr map_lgl map reduce
 #' @importFrom dplyr select bind_cols full_join
-#' @importFrom tibble as_tibble
 #' @export
 model_frame <- function(x, fe.only = TRUE) {
   # we may store model weights here later
@@ -315,7 +314,7 @@ model_frame <- function(x, fe.only = TRUE) {
       # to vectors only for the matrix-columns
       fitfram_matrix <- dplyr::select(fitfram, which(mc))
       fitfram_nonmatrix <- dplyr::select(fitfram, -which(mc))
-      fitfram_matrix <- dplyr::bind_cols(purrr::map(fitfram_matrix, ~ tibble::as_tibble(.x)))
+      fitfram_matrix <- dplyr::bind_cols(purrr::map(fitfram_matrix, ~ as.data.frame(.x, stringsAsFactors = FALSE)))
       fitfram <- dplyr::bind_cols(fitfram_nonmatrix, fitfram_matrix)
     } else {
 
@@ -343,7 +342,7 @@ model_frame <- function(x, fe.only = TRUE) {
 
       # check model weights
 
-      if ("(weights)" %in% needed.vars && !tibble::has_name(md, "(weights)")) {
+      if ("(weights)" %in% needed.vars && !obj_has_name(md, "(weights)")) {
         needed.vars <- needed.vars[-which(needed.vars == "(weights)")]
         mw <- fitfram[["(weights)"]]
       }

@@ -64,7 +64,6 @@
 #' @importFrom stats qt
 #' @importFrom lmtest coeftest
 #' @importFrom sandwich vcovHC
-#' @importFrom tibble tibble add_column has_name
 #' @export
 robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4", "HC4m", "HC5"), conf.int = FALSE, exponentiate = FALSE) {
   # match arguments
@@ -73,8 +72,8 @@ robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4",
   # compute robust standard errors
   tmp <- lmtest::coeftest(x, vcov. = sandwich::vcovHC(x, type = vcov))
 
-  # create tidy tibble
-  result <- tibble::tibble(
+  # create tidy data frame
+  result <- data_frame(
     term = rownames(tmp),
     estimate = tmp[, 1],
     std.error = tmp[, 2],
@@ -87,7 +86,7 @@ robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4",
     # denominator df
     dendf <- summary(x)$df[2]
     # add columns with CI
-    result <- tibble::add_column(
+    result <- add_cols(
       result,
       conf.low = result$estimate - (stats::qt(.975, df = dendf) * result$std.error),
       conf.high = result$estimate + (stats::qt(.975, df = dendf) * result$std.error)
@@ -97,8 +96,8 @@ robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4",
   # exponentiate results?
   if (exponentiate) {
     result$estimate <- exp(result$estimate)
-    if (tibble::has_name(result, "conf.low")) result$conf.low <- exp(result$conf.low)
-    if (tibble::has_name(result, "conf.high")) result$conf.high <- exp(result$conf.high)
+    if (obj_has_name(result, "conf.low")) result$conf.low <- exp(result$conf.low)
+    if (obj_has_name(result, "conf.high")) result$conf.high <- exp(result$conf.high)
   }
 
   result

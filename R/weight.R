@@ -127,6 +127,7 @@ weight2 <- function(x, weights) {
 #' @param alternative A character string specifying the alternative hypothesis,
 #'   must be one of \code{"two.sided"} (default), \code{"greater"} or
 #'   \code{"less"}. You can specify just the initial letter.
+#' @param paired Logical, whether to compute a paired t-test.
 #'
 #' @inheritParams svyglm.nb
 #' @inheritParams grpmean

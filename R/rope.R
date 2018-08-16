@@ -51,7 +51,6 @@ rope.data.frame <- function(x, rope, trans = NULL, type = c("fixed", "random", "
 
 #' @importFrom purrr map_df
 #' @importFrom sjmisc rotate_df
-#' @importFrom tibble as_tibble
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
 rope_worker <- function(x, rope, trans, type) {

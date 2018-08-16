@@ -72,7 +72,6 @@
 #'
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
 #' @importFrom dplyr bind_cols select mutate slice inner_join n_distinct
-#' @importFrom tibble add_column tibble has_name
 #' @importFrom stats mad formula
 #' @importFrom bayesplot rhat neff_ratio
 #' @importFrom sjmisc is_empty trim
@@ -110,10 +109,9 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   }
 
   nr <- nr[keep]
-  ratio <- data.frame(
+  ratio <- data_frame(
     term = names(nr),
-    ratio = nr,
-    stringsAsFactors = FALSE
+    ratio = nr
   )
 
 
@@ -127,10 +125,9 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   }
 
   rh <- rh[keep]
-  rhat <- data.frame(
+  rhat <- data_frame(
     term = names(rh),
-    rhat = rh,
-    stringsAsFactors = FALSE
+    rhat = rh
   )
 
   if (inherits(x, "brmsfit")) {
@@ -143,7 +140,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   est <- purrr::map_dbl(mod.dat, ~ sjstats::typical_value(.x, fun = typical))
 
-  out <- tibble::tibble(
+  out <- data_frame(
     term = names(est),
     estimate = est,
     std.error = purrr::map_dbl(mod.dat, stats::mad)
@@ -182,7 +179,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   if (type == "random" || type == "all") {
 
-    out <- tibble::add_column(out, random.effect = "", .before = 1)
+    out <- add_cols(out, random.effect = "", .after = -1)
 
     # find random intercepts
 
@@ -282,7 +279,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
     # did we really had random effects?
 
-    if (tibble::has_name(out, "random.effect") &&
+    if (obj_has_name(out, "random.effect") &&
         all(sjmisc::is_empty(out$random.effect, first.only = FALSE)))
       out <- dplyr::select(out, -.data$random.effect)
   }
@@ -297,7 +294,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     if (length(string_starts_with(pattern = "b_mu", x = out$term)) == nrow(out)) {
       out$term <- substr(out$term, 5, max(nchar(out$term)))
       # create "response-level" variable
-      out <- tibble::add_column(out, response.level = "", .before = 1)
+      out <- add_cols(out, response.level = "", .after = -1)
       out$response.level <- gsub("(.*)\\_(.*)", "\\1", out$term)
       out$term <- gsub("(.*)\\_(.*)", "\\2", out$term)
     }
@@ -324,12 +321,12 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
     # create "response-level" variable
 
-    out <- tibble::add_column(out, response = "", .before = 1)
+    out <- add_cols(out, response = "", .after = -1)
 
     # check if multivariate response model also has random effects
     # we need to clean names for the random effects as well here
 
-    if (tibble::has_name(out, "random.effect")) {
+    if (obj_has_name(out, "random.effect")) {
       re <- which(!sjmisc::is_empty(sjmisc::trim(out$random.effect), first.only = FALSE))
     } else {
       re <- NULL
@@ -363,7 +360,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
     # create "response-level" variable
 
-    out <- tibble::add_column(out, response = "", .before = 1)
+    out <- add_cols(out, response = "", .after = -1)
 
 
     # copy name of response into new character variable
@@ -397,7 +394,6 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
 #' @importFrom purrr map_dbl
 #' @importFrom dplyr slice
-#' @importFrom tibble as_tibble
 #' @importFrom sjmisc is_empty
 remove_effects_from_stan <- function(out, type, is.brms) {
 
@@ -420,7 +416,7 @@ remove_effects_from_stan <- function(out, type, is.brms) {
 
   # if user wants all terms, return data here
 
-  if (type == "all") return(tibble::as_tibble(out))
+  if (type == "all") return(out)
 
 
   # check if we need to remove random or fixed effects
@@ -452,7 +448,7 @@ remove_effects_from_stan <- function(out, type, is.brms) {
   }
 
 
-  tibble::as_tibble(out)
+  out
 }
 
 
@@ -463,7 +459,7 @@ brms_clean <- function(out) {
   # brmsfit-objects also include sd and cor for mixed
   # effecs models, so remove these here
 
-  if (tibble::has_name(out, "term")) {
+  if (obj_has_name(out, "term")) {
     re.sd <- string_starts_with(pattern = "sd_", x = out$term)
     re.cor <- string_starts_with(pattern = "cor_", x = out$term)
     re.s <- string_starts_with(pattern = "Sigma[", x = out$term)

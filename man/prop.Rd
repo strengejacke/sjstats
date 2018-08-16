@@ -5,7 +5,7 @@
 \alias{props}
 \title{Proportions of values in a vector}
 \usage{
-prop(data, ..., weight.by = NULL, na.rm = TRUE, digits = 4)
+prop(data, ..., weights = NULL, na.rm = TRUE, digits = 4)
 
 props(data, ..., na.rm = TRUE, digits = 4)
 }
@@ -17,7 +17,7 @@ variable names the left-hand-side and values to match on the
 right hand side. Expressions may be quoted or unquoted. See
 'Examples'.}
 
-\item{weight.by}{Vector of weights that will be applied to weight all observations.
+\item{weights}{Vector of weights that will be applied to weight all observations.
 Must be a vector of same length as the input vector. Default is
 \code{NULL}, so no weights are used.}
 

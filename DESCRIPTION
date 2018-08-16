@@ -18,7 +18,7 @@ Description: Collection of convenient functions for common statistical computati
              the r-squared value for 'lm', 'glm', 'merMod' and other model objects).
              The focus of most functions lies on summary statistics or fit
              measures for regression models, including generalized linear
-             models, mixed effects models and Bayesian modls. However, some 
+             models, mixed effects models and Bayesian models. However, some 
              of the functions also deal with other statistical measures, 
              like Cronbach's Alpha, Cramer's V, Phi etc.
 License: GPL-3
@@ -48,8 +48,7 @@ Imports:
     sandwich,
     sjlabelled (>= 1.0.13),
     sjmisc (>= 2.7.3),
-    tidyr,
-    tibble
+    tidyr
 Suggests:
     AER,
     brms,

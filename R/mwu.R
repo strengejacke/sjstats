@@ -158,7 +158,7 @@ mwu <- function(data, x, grp, distribution = "asymptotic", out = c("txt", "viewe
 
   # prepare a data frame that can be used for 'sjt.df'.
   tab.df <-
-    data.frame(
+    data_frame(
       Groups = sprintf("%s<br>%s", df$grp1.label, df$grp2.label),
       N = sprintf("%s<br>%s", df$grp1.n, df$grp2.n),
       'Mean Rank' = sprintf("%.2f<br>%.2f", df$rank.mean.grp1, df$rank.mean.grp2),
@@ -170,7 +170,7 @@ mwu <- function(data, x, grp, distribution = "asymptotic", out = c("txt", "viewe
     )
 
   # replace 0.001 with <0.001
-  levels(tab.df$p)[which(levels(tab.df$p) == "0.001")] <- "<0.001"
+  tab.df$p[which(tab.df$p == "0.001")] <- "<0.001"
 
   ret.df <- list(df = df, tab.df = tab.df, data = data.frame(dv, grp))
 

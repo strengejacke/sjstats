@@ -207,7 +207,7 @@ reliab_test <- function(x, scale.items = FALSE, digits = 3, out = c("txt", "view
     }
 
     # create return value
-    ret.df <- data.frame(
+    ret.df <- data_frame(
       term = df.names,
       alpha.if.deleted = round(cronbachDeleted, digits),
       item.discr = round(totalCorr, digits)

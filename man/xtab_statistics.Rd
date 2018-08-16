@@ -12,7 +12,7 @@ cramer(tab)
 
 xtab_statistics(data, x1 = NULL, x2 = NULL, statistics = c("auto",
   "cramer", "phi", "spearman", "kendall", "pearson", "fisher"),
-  weight.by = NULL, ...)
+  weights = NULL, ...)
 }
 \arguments{
 \item{tab}{A \code{\link{table}} or \code{\link[stats]{ftable}}. Tables of class
@@ -38,7 +38,7 @@ will be irgnored.}
 be one of \code{"auto"}, \code{"cramer"}, \code{"phi"}, \code{"spearman"},
 \code{"kendall"}, \code{"pearson"} or \code{"fisher"}. See 'Details'.}
 
-\item{weight.by}{Name of variable in \code{x} that indicated the vector of
+\item{weights}{Name of variable in \code{x} that indicated the vector of
 weights that will be applied to weight all  observations. Default is
 \code{NULL}, so no weights are used.}
 

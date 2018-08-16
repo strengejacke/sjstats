@@ -31,7 +31,6 @@
 #' pca_rotate(efc[, start:end])
 #'
 #' @importFrom stats prcomp na.omit
-#' @importFrom tibble tibble
 #' @importFrom sjmisc rotate_df
 #' @importFrom rlang .data
 #' @export
@@ -49,12 +48,18 @@ pca <- function(x) {
 
   # get tidy summary of prcomp object
 
-  tmp <- tibble::tibble(
-    comp = sprintf("PC%i", seq_len(length(x$sdev))),
-    std.dev = x$sdev,
-    eigen = .data$std.dev^2,
-    prop.var = .data$eigen / sum(.data$eigen),
-    cum.var = cumsum(.data$prop.var)
+  .comp <- sprintf("PC%i", seq_len(length(x$sdev)))
+  .std.dev <- x$sdev
+  .eigen <- .std.dev^2
+  .prop.var <- .eigen / sum(.eigen)
+  .cum.var <- cumsum(.prop.var)
+
+  tmp <- data_frame(
+    comp = .comp,
+    std.dev = .std.dev,
+    eigen = .eigen,
+    prop.var = .prop.var,
+    cum.var = .cum.var
   )
 
   # add information on Kaiser criteria and loadings
@@ -73,7 +78,6 @@ pca <- function(x) {
 
 
 #' @rdname pca
-#' @importFrom tibble tibble
 #' @importFrom rlang .data
 #' @export
 pca_rotate <- function(x, nf = NULL, rotation = c("varimax", "oblimin")) {
@@ -113,11 +117,16 @@ pca_rotate <- function(x, nf = NULL, rotation = c("varimax", "oblimin")) {
 
   # add explained proportions and proportional and cumulative variance
 
-  attr(tmp, "variance") <- tibble::tibble(
-    prop.var = colSums(tmp^2) / nrow(tmp),
-    cum.var = cumsum(.data$prop.var),
-    prop.exp = .data$prop.var / sum(.data$prop.var),
-    cum.exp = cumsum(.data$prop.exp)
+  .prop.var <- colSums(tmp^2) / nrow(tmp)
+  .cum.var <- cumsum(.prop.var)
+  .prop.exp <- .prop.var / sum(.prop.var)
+  .cum.exp <- cumsum(.prop.exp)
+
+  attr(tmp, "variance") <- data.frame(
+    prop.var = .prop.var,
+    cum.var = .cum.var,
+    prop.exp = .prop.exp,
+    cum.exp = .cum.exp
   )
 
   tmp

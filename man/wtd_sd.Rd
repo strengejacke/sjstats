@@ -25,16 +25,16 @@ wtd_ttest(data, ...)
 
 \method{wtd_ttest}{default}(data, x, y = NULL, weights, mu = 0,
   paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less",
-  "greater"))
+  "greater"), ...)
 
 \method{wtd_ttest}{formula}(formula, data, mu = 0, paired = FALSE,
-  ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"))
+  ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...)
 
 wtd_mwu(data, ...)
 
-\method{wtd_mwu}{default}(data, x, grp, weights)
+\method{wtd_mwu}{default}(data, x, grp, weights, ...)
 
-\method{wtd_mwu}{formula}(formula, data)
+\method{wtd_mwu}{formula}(formula, data, ...)
 }
 \arguments{
 \item{x}{(Numeric) vector or a data frame. For \code{svy_md()}, \code{wtd_ttest()}
@@ -57,6 +57,8 @@ the variable name.}
 
 \item{mu}{A number indicating the true value of the mean (or difference in
 means if you are performing a two sample test).}
+
+\item{paired}{Logical, whether to compute a paired t-test.}
 
 \item{ci.lvl}{Confidence level of the interval.}
 

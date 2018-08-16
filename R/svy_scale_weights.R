@@ -50,7 +50,6 @@
 #' scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
 #'
 #' @importFrom dplyr group_by summarise n right_join enquo filter quo_name slice
-#' @importFrom tibble tibble
 #' @importFrom rlang .data
 #' @importFrom sjmisc is_empty
 #' @export

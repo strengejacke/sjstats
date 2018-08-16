@@ -10,11 +10,12 @@
 #' @param grp Factor with the cross-classifying variable, where \code{dv} is
 #'   grouped into the categories represented by \code{grp}. Numeric vectors
 #'   are coerced to factors.
-#' @param weight.by Name of variable in \code{x} that indicated the vector of
+#' @param weights Name of variable in \code{x} that indicated the vector of
 #'   weights that will be applied to weight all  observations. Default is
 #'   \code{NULL}, so no weights are used.
 #' @param digits Numeric, amount of digits after decimal point when rounding
 #'   estimates and values.
+#' @param weight.by Deprecated.
 #'
 #' @inheritParams hdi
 #'
@@ -44,16 +45,15 @@
 #'
 #' # weighting
 #' efc$weight <- abs(rnorm(n = nrow(efc), mean = 1, sd = .5))
-#' grpmean(efc, c12hour, e42dep, weight.by = weight)
+#' grpmean(efc, c12hour, e42dep, weights = weight)
 #'
 #' @importFrom sjlabelled get_label drop_labels get_labels
 #' @importFrom stats lm na.omit sd weighted.mean
 #' @importFrom purrr map_chr map_df
-#' @importFrom tibble tibble add_row add_column
 #' @importFrom sjmisc to_value is_empty
 #' @importFrom rlang enquo .data quo_name
 #' @export
-grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "viewer", "browser")) {
+grpmean <- function(x, dv, grp, weights = NULL, digits = 2, out = c("txt", "viewer", "browser"), weight.by) {
 
   out <- match.arg(out)
 
@@ -62,32 +62,38 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
     out <- "txt"
   }
 
+  ## TODO remove deprecated argument later
+
+  if (!missing(weight.by)) {
+    message("Argument `weight.by` is deprecated. Please use `weights`.")
+    weights <- weight.by
+  }
 
   # create quosures
   grp.name <- rlang::quo_name(rlang::enquo(grp))
   dv.name <- rlang::quo_name(rlang::enquo(dv))
 
   # weights need extra checking, might be NULL
-  if (!missing(weight.by)) {
-    weights <- rlang::quo_name(rlang::enquo(weight.by))
+  if (!missing(weights)) {
+    .weights <- rlang::quo_name(rlang::enquo(weights))
 
     w.string <- tryCatch(
       {
-        eval(weight.by)
+        eval(weights)
       },
       error = function(x) { NULL },
       warning = function(x) { NULL },
       finally = function(x) { NULL }
     )
 
-    if (!is.null(w.string) && is.character(w.string)) weights <- w.string
-    if (sjmisc::is_empty(weights) || weights == "NULL") weights <- NULL
+    if (!is.null(w.string) && is.character(w.string)) .weights <- w.string
+    if (sjmisc::is_empty(.weights) || .weights == "NULL") .weights <- NULL
   } else
-    weights <- NULL
+    .weights <- NULL
 
 
   # create string with variable names
-  vars <- c(grp.name, dv.name, weights)
+  vars <- c(grp.name, dv.name, .weights)
 
   # get data
   x <- suppressMessages(dplyr::select(x, !! vars))
@@ -122,7 +128,7 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
         x = tmp,
         dv = dv.name,
         grp = grp.name,
-        weight.by = weights,
+        weight.by = .weights,
         digits = digits,
         value.labels = value.labels,
         varCountLabel = varCountLabel,
@@ -146,7 +152,7 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
       x = x,
       dv = dv.name,
       grp = grp.name,
-      weight.by = weights,
+      weight.by = .weights,
       digits = digits,
       value.labels = value.labels,
       varCountLabel = varCountLabel,
@@ -168,7 +174,6 @@ grpmean <- function(x, dv, grp, weight.by = NULL, digits = 2, out = c("txt", "vi
 
 
 #' @importFrom stats pf lm weighted.mean na.omit sd
-#' @importFrom tibble tibble add_row add_column
 #' @importFrom sjmisc to_value
 #' @importFrom emmeans emmeans contrast
 #' @importFrom dplyr pull select n_distinct
@@ -246,20 +251,23 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
     dplyr::select(-.data$grp)
 
   # finally, add total-row
-  dat <- tibble::add_row(
+  dat <- dplyr::bind_rows(
     dat,
-    mean = sprintf("%.*f", digits, stats::weighted.mean(mydf$dv, w = mydf$weight.by, na.rm = TRUE)),
-    N = nrow(mydf),
-    std.dev = sprintf("%.*f", digits, wtd_sd(mydf$dv, mydf$weight.by)),
-    std.error = sprintf("%.*f", digits, wtd_se(mydf$dv, mydf$weight.by)),
-    p.value = ""
+    data_frame(
+      mean = sprintf("%.*f", digits, stats::weighted.mean(mydf$dv, w = mydf$weight.by, na.rm = TRUE)),
+      N = nrow(mydf),
+      std.dev = sprintf("%.*f", digits, wtd_sd(mydf$dv, mydf$weight.by)),
+      std.error = sprintf("%.*f", digits, wtd_se(mydf$dv, mydf$weight.by)),
+      p.value = ""
+    )
   )
 
+
   # add row labels
-  dat <- tibble::add_column(
+  dat <- add_cols(
     dat,
     term = c(unname(value.labels), "Total"),
-    .before = 1
+    .after = -1
   )
 
 
