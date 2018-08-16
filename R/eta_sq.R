@@ -57,7 +57,7 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
   es <- aov_stat(model, type = type)
 
   x <- data_frame(
-    term = names(es),
+    term = var_names(names(es)),
     es = es
   )
 
@@ -85,6 +85,8 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 
   if (!is.null(attr(es, "stratum"))) x$stratum <- attr(es, "stratum")[1:nrow(x)]
 
+  class(x) <- c("sj_anova_stat", class(x))
+
   x
 }
 
@@ -104,7 +106,7 @@ omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
   es <- aov_stat(model, type = type)
 
   x <- data_frame(
-    term = names(es),
+    term = var_names(names(es)),
     es = es
   )
 
@@ -133,6 +135,8 @@ omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 
   if (!is.null(attr(es, "stratum"))) x$stratum <- attr(es, "stratum")[1:nrow(x)]
 
+  class(x) <- c("sj_anova_stat", class(x))
+
   x
 }
 
@@ -143,7 +147,7 @@ cohens_f <- function(model) {
   es <- aov_stat(model, type = "cohens.f")
 
   data_frame(
-    term = names(es),
+    term = var_names(names(es)),
     cohens.f = es
   )
 }
@@ -242,6 +246,8 @@ aov_stat_summary <- function(model) {
   # for car::Anova, the meansq-column might be missing, so add it manually
   if (!obj_has_name(aov.sum, "meansq"))
     aov.sum <- add_cols(aov.sum, meansq = aov.sum$sumsq / aov.sum$df, .after = "sumsq")
+
+  aov.sum$term <- var_names(aov.sum$term)
 
   aov.sum
 }

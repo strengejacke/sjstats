@@ -11,7 +11,7 @@ vignette: >
 
 ```{r set-options, echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", dev = "png", fig.width = 7, fig.height = 3.5, message = FALSE, warning = FALSE)
-options(width = 800, tibble.width = 600)
+options(width = 800)
 ```
 
 # Effect Size Statistics for Anova Tables
@@ -94,7 +94,7 @@ cohens_f(fit)
 
 # Complete Statistical Table Output
 
-The `anova_stats()` function takes a model input and computes a comprehensive summary, including the above effect size measures, returned as tidy data frame (as `tibble`, to be exact):
+The `anova_stats()` function takes a model input and computes a comprehensive summary, including the above effect size measures, returned as tidy data frame:
 
 ```{r}
 anova_stats(fit)

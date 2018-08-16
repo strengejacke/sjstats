@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2018-08-11" />
+<meta name="date" content="2018-08-16" />
 
 <title>Statistics for Mixed Effects Models</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Statistics for Mixed Effects Models</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2018-08-11</em></h4>
+<h4 class="date"><em>2018-08-16</em></h4>
 
 
 
@@ -180,21 +180,21 @@ m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using the t-statistics for calculating the p-value</span>
 <span class="kw">p_value</span>(m2)
 <span class="co">#&gt;          term p.value std.error</span>
-<span class="co">#&gt; 1 (Intercept)       0     9.854</span>
-<span class="co">#&gt; 2        Days       0     0.788</span>
+<span class="co">#&gt; 1 (Intercept)       0     9.747</span>
+<span class="co">#&gt; 2        Days       0     0.804</span>
 
 <span class="co"># p-values based on conditional F-tests with </span>
 <span class="co"># Kenward-Roger approximation for the degrees of freedom</span>
 <span class="kw">p_value</span>(m2, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt;          term p.value std.error</span>
-<span class="co">#&gt; 1 (Intercept)       0     9.867</span>
-<span class="co">#&gt; 2        Days       0     0.795</span></code></pre></div>
+<span class="co">#&gt; 1 (Intercept)       0     9.766</span>
+<span class="co">#&gt; 2        Days       0     0.813</span></code></pre></div>
 <p>To see more details on the degrees of freedom when using Kenward-Roger approximation, use the <code>summary()</code>-method:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pv &lt;-<span class="st"> </span><span class="kw">p_value</span>(m2, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)
 <span class="kw">summary</span>(pv)
 <span class="co">#&gt;          term p.value std.error      df statistic</span>
-<span class="co">#&gt; 1 (Intercept)       0     9.867  24.415    25.475</span>
-<span class="co">#&gt; 2        Days       0     0.795 158.103    13.091</span></code></pre></div>
+<span class="co">#&gt; 1 (Intercept)       0     9.766  22.762    25.742</span>
+<span class="co">#&gt; 2        Days       0     0.813 160.943    12.876</span></code></pre></div>
 </div>
 <div id="random-effect-variances" class="section level2">
 <h2>Random Effect Variances</h2>
@@ -255,8 +255,8 @@ m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span cla
 <span class="co">#&gt; Family : gaussian (identity)</span>
 <span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;     ICC (mygrp): 0.0831</span>
-<span class="co">#&gt;   ICC (Subject): 0.5812</span></code></pre></div>
+<span class="co">#&gt;     ICC (mygrp): 0.0000</span>
+<span class="co">#&gt;   ICC (Subject): 0.5893</span></code></pre></div>
 <p>If <code>adjusted = TRUE</code>, an adjusted and conditional ICC are calculated, which take all sources of uncertainty (of all random effects) into account to report an “adjusted” ICC, as well as the conditional ICC. The latter also takes the fixed effects variances into account (see Nakagawa et al. 2017). If random effects are not nested and not cross-classified, the adjusted (<code>adjusted = TRUE</code>) and unadjusted (<code>adjusted = FALSE</code>) ICC are identical.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icc</span>(m, <span class="dt">adjusted =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; </span>
@@ -269,14 +269,8 @@ m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span cla
 <span class="co">#&gt; Conditional ICC: 0.5206</span>
 
 <span class="kw">icc</span>(m2, <span class="dt">adjusted =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Intra-Class Correlation Coefficient for Generalized Linear Mixed Model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family : gaussian (identity)</span>
-<span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;    Adjusted ICC: 0.6644</span>
-<span class="co">#&gt; Conditional ICC: 0.4803</span></code></pre></div>
+<span class="co">#&gt; Some variance components equal zero. Respecify random structure!</span>
+<span class="co">#&gt; NULL</span></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1">

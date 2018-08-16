@@ -39,7 +39,7 @@ be one of \code{"auto"}, \code{"cramer"}, \code{"phi"}, \code{"spearman"},
 \code{"kendall"}, \code{"pearson"} or \code{"fisher"}. See 'Details'.}
 
 \item{weights}{Name of variable in \code{x} that indicated the vector of
-weights that will be applied to weight all  observations. Default is
+weights that will be applied to weight all observations. Default is
 \code{NULL}, so no weights are used.}
 
 \item{...}{Other arguments, passed down to the statistic functions

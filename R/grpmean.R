@@ -11,7 +11,7 @@
 #'   grouped into the categories represented by \code{grp}. Numeric vectors
 #'   are coerced to factors.
 #' @param weights Name of variable in \code{x} that indicated the vector of
-#'   weights that will be applied to weight all  observations. Default is
+#'   weights that will be applied to weight all observations. Default is
 #'   \code{NULL}, so no weights are used.
 #' @param digits Numeric, amount of digits after decimal point when rounding
 #'   estimates and values.

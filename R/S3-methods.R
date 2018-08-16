@@ -1855,3 +1855,10 @@ print.sj_wmwu <- function(x, ...) {
   cat(crayon::cyan(sprintf("# Chisq=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$parameter), x$p.value)))
   cat(sprintf("  difference in mean rank score: %.3f\n\n", x$estimate))
 }
+
+
+#' @importFrom sjmisc round_num
+#' @export
+print.sj_anova_stat <- function(x, digits = 3, ...) {
+  print.data.frame(sjmisc::round_num(x, digits), ..., row.names = TRUE)
+}

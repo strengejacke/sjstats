@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   eval = if (isTRUE(exists("params"))) params$EVAL else FALSE
 )
 
-options(width = 800, tibble.width = Inf)
+options(width = 800)
 
 if (!requireNamespace("mediation", quietly = TRUE)) {
   warning("Package 'mediation' required for this vignette.", call. = FALSE)
