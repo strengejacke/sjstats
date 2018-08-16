@@ -1579,7 +1579,7 @@ get_hdi_data <- function(x, digits) {
     ml1 <- max(nchar(x[[i]]))
     ml2 <- max(nchar(x[[i + 1]]))
 
-    tmp <- data.frame(hdi = sprintf("[%*s %*s]", ml1, x[[i]], ml2, x[[i + 1]]))
+    tmp <- data_frame(hdi = sprintf("[%*s %*s]", ml1, x[[i]], ml2, x[[i + 1]]))
 
     if (ci_pos[i] < 0) {
       if (!is.null(prob))
