@@ -1,4 +1,4 @@
-# sjstats 0.16.1
+# sjstats 0.17.0
 
 ## General
 
