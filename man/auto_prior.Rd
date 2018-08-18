@@ -39,6 +39,11 @@ This function creates default priors for brms-regression
   more precise definitions of priors is necessary, this needs to be done
   directly with brms-functions like \code{set_prior()}.
 }
+\note{
+As \code{auto_prior()} also sets priors on the intercept, the model
+  formula used in \code{brms::brm()} must be rewritten to something like
+  \code{y ~ 0 + intercept ...}, see \code{\link[brms]{set_prior}}.
+}
 \examples{
 library(sjmisc)
 data(efc)
