@@ -169,6 +169,9 @@ r2 <- function(x, ...) {
 
 #' @export
 r2.glmmTMB <- function(x, ...) {
+  if (!requireNamespace("glmmTMB", quietly = TRUE))
+    stop("Package `glmmTMB` needed for this function to work. Please install it.", call. = FALSE)
+
   r2_mixedmodel(x, type = "r2")
 }
 
@@ -251,6 +254,9 @@ r2.glm <- function(x, ...) {
 
 #' @export
 r2.merMod <- function(x, ...) {
+  if (!requireNamespace("lme4", quietly = TRUE))
+    stop("Package `lme4` needed for this function to work. Please install it.", call. = FALSE)
+
   r2_mixedmodel(x, type = "r2")
 }
 

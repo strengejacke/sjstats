@@ -2,15 +2,18 @@
 % Please edit documentation in R/overdisp.R
 \name{overdisp}
 \alias{overdisp}
+\alias{overdisp.glm}
 \alias{zero_count}
 \title{Check overdispersion of GL(M)M's}
 \usage{
-overdisp(x, trafo = NULL)
+overdisp(x, ...)
+
+\method{overdisp}{glm}(x, trafo = NULL, ...)
 
 zero_count(x, tolerance = 0.05)
 }
 \arguments{
-\item{x}{Fitted GLMM (\code{\link[lme4]{merMod}}-class) or \code{glm} model.}
+\item{x}{Fitted GLMM (of class \code{merMod} or \code{glmmTMB}) or \code{glm} model.}
 
 \item{trafo}{A specification of the alternative, can be numeric or a
 (positive) function or \code{NULL} (the default). See 'Details'
@@ -70,7 +73,6 @@ fit <- glmer(tot_sc_e ~ neg_c_7 + e42dep + c160age + (1 | e15relat),
              data = efc, family = poisson)
 overdisp(fit)
 zero_count(fit)
-
 
 }
 \references{

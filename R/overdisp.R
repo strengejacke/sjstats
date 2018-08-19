@@ -5,7 +5,7 @@
 #'              from poisson-families are over- or underfitting zero-counts in
 #'              the outcome.
 #'
-#' @param x Fitted GLMM (\code{\link[lme4]{merMod}}-class) or \code{glm} model.
+#' @param x Fitted GLMM (of class \code{merMod} or \code{glmmTMB}) or \code{glm} model.
 #' @param trafo A specification of the alternative, can be numeric or a
 #'          (positive) function or \code{NULL} (the default). See 'Details'
 #'          in \code{\link[AER]{dispersiontest}} in package \CRANpkg{AER}. Does not
@@ -57,18 +57,15 @@
 #' overdisp(fit)
 #' zero_count(fit)
 #'
-#'
-#' @importFrom stats df.residual residuals pchisq
 #' @export
-overdisp <- function(x, trafo = NULL) {
-  if (inherits(x, c("merMod", "glmerMod", "glmmTMB")))
-    return(overdisp.lme4(x))
-  else
-    return(overdisp.default(x, trafo))
+overdisp <- function(x, ...) {
+  UseMethod("overdisp")
 }
 
 
-overdisp.default <- function(x, trafo) {
+#' @rdname overdisp
+#' @export
+overdisp.glm <- function(x, trafo = NULL, ...) {
   # check if suggested package is available
   if (!requireNamespace("AER", quietly = TRUE)) {
     stop("Package `AER` needed for this function to work. Please install it.", call. = FALSE)
@@ -86,6 +83,19 @@ overdisp.default <- function(x, trafo) {
 }
 
 
+#' @export
+overdisp.merMod <- function(x, ...) {
+  overdisp.lme4(x)
+}
+
+
+#' @export
+overdisp.glmmTMB <- function(x, ...) {
+  overdisp.lme4(x)
+}
+
+
+#' @importFrom stats df.residual residuals pchisq
 overdisp.lme4 <- function(x) {
   rdf <- stats::df.residual(x)
   rp <- stats::residuals(x, type = "pearson")
