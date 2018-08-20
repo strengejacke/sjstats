@@ -5,19 +5,28 @@
 \alias{svy}
 \title{Robust standard errors for regression models}
 \usage{
-robust(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4",
-  "HC4m", "HC5"), conf.int = FALSE, exponentiate = FALSE)
+robust(x, vcov.fun = "vcovHC", vcov.type = c("HC3", "const", "HC",
+  "HC0", "HC1", "HC2", "HC4", "HC4m", "HC5"), vcov.args = NULL,
+  conf.int = FALSE, exponentiate = FALSE)
 
-svy(x, vcov = c("HC1", "const", "HC", "HC0", "HC2", "HC3", "HC4", "HC4m",
-  "HC5"), conf.int = FALSE, exponentiate = FALSE)
+svy(x, vcov.fun = "vcovHC", vcov.type = c("HC1", "const", "HC", "HC0",
+  "HC3", "HC2", "HC4", "HC4m", "HC5"), vcov.args = NULL,
+  conf.int = FALSE, exponentiate = FALSE)
 }
 \arguments{
-\item{x}{A fitted model of any class that is supported by the \code{coeftest()}-function.
-For \code{svy()}, \code{x} must be \code{lm} object, fitted with weights.}
+\item{x}{A fitted model of any class that is supported by the \code{vcov*()}-functions
+from the \pkg{sandwich} package. For \code{svy()}, \code{x} must be
+\code{lm} object, fitted with weights.}
 
-\item{vcov}{Character vector, specifying the estimation type for the
+\item{vcov.fun}{String, indicating the name of the \code{vcov*()}-function
+from the \pkg{sandwich} package, e.g. \code{vcov.fun = "vcovCL"}.}
+
+\item{vcov.type}{Character vector, specifying the estimation type for the
 heteroskedasticity-consistent covariance matrix estimation
 (see \code{\link[sandwich]{vcovHC}} for details).}
+
+\item{vcov.args}{List of named vectors, used as additional arguments that
+are passed down to \code{vcov.fun}.}
 
 \item{conf.int}{Logical, \code{TRUE} if confidence intervals based on robust
 standard errors should be included.}
@@ -31,17 +40,16 @@ A summary of the model, including estimates, robust standard error,
 }
 \description{
 \code{robust()} computes robust standard error for regression models.
-               This method wraps the \code{\link[lmtest]{coeftest}}-function with
-               robust covariance matrix estimators based on the
-               \code{\link[sandwich]{vcovHC}}-function, and returns the
-               result as tidy data frame.
-               \cr \cr
-               \code{svy()} is intended to compute standard errors for survey
-               designs (complex samples) fitted with regular \code{lm} or
-               \code{glm} functions, as alternative to the \pkg{survey}-package.
-               It simulates sampling weights by adjusting the residual degrees
-               of freedom based on the precision weights used to fit \code{x},
-               and then calls \code{robust()} with the adjusted model.
+   This method calls one of the \code{vcov*()}-functions from the \pkg{sandwich}
+   package for robust covariance matrix estimators. Results are returned
+   as tidy data frame.
+   \cr \cr
+   \code{svy()} is intended to compute standard errors for survey
+   designs (complex samples) fitted with regular \code{lm} or
+   \code{glm} functions, as alternative to the \pkg{survey}-package.
+   It simulates sampling weights by adjusting the residual degrees
+   of freedom based on the precision weights used to fit \code{x},
+   and then calls \code{robust()} with the adjusted model.
 }
 \note{
 \code{svy()} simply calls \code{robust()}, but first adjusts the
@@ -54,7 +62,7 @@ A summary of the model, including estimates, robust standard error,
       the \pkg{survey} package are still more exactly, especially
       regarding the estimates.
       \cr \cr
-      \code{vcov} for \code{svy()} defaults to \code{"HC1"}, because
+      \code{vcov.type} for \code{svy()} defaults to \code{"HC1"}, because
       standard errors with this estimation type come closest to the standard
       errors from the \pkg{survey}-package.
       \cr \cr

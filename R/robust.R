@@ -1,27 +1,31 @@
 #' @title Robust standard errors for regression models
 #' @name robust
 #' @description \code{robust()} computes robust standard error for regression models.
-#'                This method wraps the \code{\link[lmtest]{coeftest}}-function with
-#'                robust covariance matrix estimators based on the
-#'                \code{\link[sandwich]{vcovHC}}-function, and returns the
-#'                result as tidy data frame.
-#'                \cr \cr
-#'                \code{svy()} is intended to compute standard errors for survey
-#'                designs (complex samples) fitted with regular \code{lm} or
-#'                \code{glm} functions, as alternative to the \pkg{survey}-package.
-#'                It simulates sampling weights by adjusting the residual degrees
-#'                of freedom based on the precision weights used to fit \code{x},
-#'                and then calls \code{robust()} with the adjusted model.
+#'    This method calls one of the \code{vcov*()}-functions from the \pkg{sandwich}
+#'    package for robust covariance matrix estimators. Results are returned
+#'    as tidy data frame.
+#'    \cr \cr
+#'    \code{svy()} is intended to compute standard errors for survey
+#'    designs (complex samples) fitted with regular \code{lm} or
+#'    \code{glm} functions, as alternative to the \pkg{survey}-package.
+#'    It simulates sampling weights by adjusting the residual degrees
+#'    of freedom based on the precision weights used to fit \code{x},
+#'    and then calls \code{robust()} with the adjusted model.
 #'
-#' @param x A fitted model of any class that is supported by the \code{coeftest()}-function.
-#'          For \code{svy()}, \code{x} must be \code{lm} object, fitted with weights.
-#' @param vcov Character vector, specifying the estimation type for the
-#'          heteroskedasticity-consistent covariance matrix estimation
-#'          (see \code{\link[sandwich]{vcovHC}} for details).
+#' @param x A fitted model of any class that is supported by the \code{vcov*()}-functions
+#'    from the \pkg{sandwich} package. For \code{svy()}, \code{x} must be
+#'    \code{lm} object, fitted with weights.
+#' @param vcov.fun String, indicating the name of the \code{vcov*()}-function
+#'    from the \pkg{sandwich} package, e.g. \code{vcov.fun = "vcovCL"}.
+#' @param vcov.type Character vector, specifying the estimation type for the
+#'    heteroskedasticity-consistent covariance matrix estimation
+#'    (see \code{\link[sandwich]{vcovHC}} for details).
+#' @param vcov.args List of named vectors, used as additional arguments that
+#'    are passed down to \code{vcov.fun}.
 #' @param conf.int Logical, \code{TRUE} if confidence intervals based on robust
-#'          standard errors should be included.
+#'    standard errors should be included.
 #' @param exponentiate Logical, whether to exponentiate the coefficient estimates
-#'          and confidence intervals (typical for logistic regression).
+#'    and confidence intervals (typical for logistic regression).
 #'
 #' @return A summary of the model, including estimates, robust standard error,
 #'           p-value and - optionally - the confidence intervals.
@@ -36,7 +40,7 @@
 #'       the \pkg{survey} package are still more exactly, especially
 #'       regarding the estimates.
 #'       \cr \cr
-#'       \code{vcov} for \code{svy()} defaults to \code{"HC1"}, because
+#'       \code{vcov.type} for \code{svy()} defaults to \code{"HC1"}, because
 #'       standard errors with this estimation type come closest to the standard
 #'       errors from the \pkg{survey}-package.
 #'       \cr \cr
@@ -62,23 +66,36 @@
 #' robust(fit, conf.int = TRUE, exponentiate = TRUE)
 #'
 #' @importFrom stats qt
-#' @importFrom lmtest coeftest
-#' @importFrom sandwich vcovHC
 #' @export
-robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4", "HC4m", "HC5"), conf.int = FALSE, exponentiate = FALSE) {
-  # match arguments
-  vcov <- match.arg(vcov)
+robust <- function(x, vcov.fun = "vcovHC", vcov.type = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4", "HC4m", "HC5"), vcov.args = NULL, conf.int = FALSE, exponentiate = FALSE) {
 
-  # compute robust standard errors
-  tmp <- lmtest::coeftest(x, vcov. = sandwich::vcovHC(x, type = vcov))
+  if (!requireNamespace("sandwich", quietly = TRUE)) {
+    stop("Package `sandwich` needed for this function. Please install and try again.")
+  }
+
+  # match arguments
+  vcov.type <- match.arg(vcov.type)
+
+  # get coefficients
+  est <- stats::coef(x)
+
+  # compute robust standard errors based on vcov
+  vcov.fun <- get(vcov.fun, asNamespace("sandwich"))
+  .vcov <- do.call(vcov.fun, c(list(x = x, type = vcov.type), vcov.args))
+
+  se <- sqrt(diag(.vcov))
+
+  t.stat <- est / se
+  p.value <- 2 * pt(abs(t.stat), df = 3, lower.tail = F)
+
 
   # create tidy data frame
   result <- data_frame(
-    term = rownames(tmp),
-    estimate = tmp[, 1],
-    std.error = tmp[, 2],
-    statistic = tmp[, 3],
-    p.value = tmp[, 4]
+    term = names(est),
+    estimate = est,
+    std.error = se,
+    statistic = t.stat,
+    p.value = p.value
   )
 
   # add CI
@@ -107,9 +124,9 @@ robust <- function(x, vcov = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4",
 #' @rdname robust
 #' @importFrom stats weights
 #' @export
-svy <- function(x, vcov = c("HC1", "const", "HC", "HC0", "HC2", "HC3", "HC4", "HC4m", "HC5"), conf.int = FALSE, exponentiate = FALSE) {
+svy <- function(x, vcov.fun = "vcovHC", vcov.type = c("HC1", "const", "HC", "HC0", "HC3", "HC2", "HC4", "HC4m", "HC5"), vcov.args = NULL, conf.int = FALSE, exponentiate = FALSE) {
   # match arguments
-  vcov <- match.arg(vcov)
+  vcov.type <- match.arg(vcov.type)
 
   # check if we have lm-object
   if (inherits(x, "lm", which = TRUE) == 1) {
@@ -129,5 +146,12 @@ svy <- function(x, vcov = c("HC1", "const", "HC", "HC0", "HC2", "HC3", "HC4", "H
   }
 
   # compute robust se
-  suppressWarnings(robust(x, vcov, conf.int, exponentiate))
+  suppressWarnings(robust(
+    x,
+    vcov.fun = vcov.fun,
+    vcov.type = vcov.type,
+    vcov.args = vcov.args,
+    conf.int = conf.int,
+    exponentiate = exponentiate
+  ))
 }

@@ -11,6 +11,7 @@
 
 ## Changes to functions
 
+* `robust()` was revised, getting more arguments to specify different types of covariance-matrix estimation, and handling these more flexible.
 * Improved `print()`-method for `tidy_stan()` for _brmsfit_-objects with categorical-families.
 * `se()` now also computes standard errors for relative frequencies (proportions) of a vector.
 * `r2()` now also computes r-squared values for _glmmTMB_-models from `genpois`-families.

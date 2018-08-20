@@ -34,7 +34,6 @@ Imports:
     dplyr,
     emmeans,
     lme4,
-    lmtest,
     glmmTMB (>= 0.2.2.0),
     magrittr,
     MASS,
@@ -45,7 +44,6 @@ Imports:
     purrr,
     pwr,
     rlang,
-    sandwich,
     sjlabelled (>= 1.0.13),
     sjmisc (>= 2.7.3),
     tidyr
@@ -62,6 +60,7 @@ Suggests:
     pbkrtest (>= 0.4-7),
     pROC,
     psych,
+    sandwich,
     scales,
     splines,
     sjPlot,
