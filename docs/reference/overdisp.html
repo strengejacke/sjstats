@@ -66,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -137,7 +137,10 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>overdisp</span>(<span class='no'>x</span>, <span class='kw'>trafo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>overdisp</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for glm</span>
+<span class='fu'>overdisp</span>(<span class='no'>x</span>, <span class='kw'>trafo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='fu'>zero_count</span>(<span class='no'>x</span>, <span class='kw'>tolerance</span> <span class='kw'>=</span> <span class='fl'>0.05</span>)</pre>
     
@@ -146,7 +149,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Fitted GLMM (<code><a href='http://www.rdocumentation.org/packages/lme4/topics/merMod-class'>merMod</a></code>-class) or <code>glm</code> model.</p></td>
+      <td><p>Fitted GLMM (of class <code>merMod</code> or <code>glmmTMB</code>) or <code>glm</code> model.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Currently not used.</p></td>
     </tr>
     <tr>
       <th>trafo</th>
@@ -237,7 +244,6 @@ beyond or below this treshold would indicate over- or underfitting.</p></td>
 #&gt;   Predicted zero-counts: 339
 #&gt;                   Ratio: 0.86
 #&gt; </div><div class='output co'>#&gt; <span class='message'>Model is underfitting zero-counts (probable zero-inflation).</span></div><div class='input'>
-
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

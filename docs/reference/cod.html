@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Goodness-of-fit measures for regression models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/pseudo_r2.R'><code>R/pseudo_r2.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/r2.R'><code>R/r2.R</code></a></small>
     <div class="hidden name"><code>cod.Rd</code></div>
     </div>
 
@@ -272,18 +272,37 @@ a rather "unadjusted" r-squared will be returned by calling
 <span class='no'>efc</span>$<span class='no'>services</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='no'>efc</span>$<span class='no'>tot_sc_e</span> <span class='kw'>&gt;</span> <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
-<span class='fu'>cod</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Tjur's D: 0.023</div><div class='input'>
+<span class='fu'>cod</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
+#&gt; R-Squared for Generalized Linear Mixed Model
+#&gt; 
+#&gt; Tjur's D: 0.023
+#&gt; </div><div class='input'>
 <span class='fu'>library</span>(<span class='no'>lme4</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
-<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;    Marginal R2: 0.279
-#&gt; Conditional R2: 0.799</div><div class='input'>
+<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
+#&gt; R-Squared for Generalized Linear Mixed Model
+#&gt; 
+#&gt; Family : gaussian (identity)
+#&gt; Formula: Reaction ~ Days + (Days | Subject)
+#&gt; 
+#&gt;    Marginal R2: 0.279
+#&gt; Conditional R2: 0.799
+#&gt; </div><div class='input'>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>barthtot</span> ~ <span class='no'>c160age</span> + <span class='no'>c12hour</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
-<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;          R-squared: 0.256
-#&gt; adjusted R-squared: 0.254</div><div class='input'>
+<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
+#&gt; R-Squared for Generalized Linear Mixed Model
+#&gt; 
+#&gt;          R-squared: 0.256
+#&gt; adjusted R-squared: 0.254
+#&gt; </div><div class='input'>
 <span class='co'># Pseudo-R-squared values</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
-<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Cox &amp; Snell's R-squared: 0.023
-#&gt;  Nagelkerke's R-squared: 0.030</div><div class='input'>
+<span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
+#&gt; R-Squared for Generalized Linear Mixed Model
+#&gt; 
+#&gt; Cox &amp; Snell's R-squared: 0.023
+#&gt;  Nagelkerke's R-squared: 0.030
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

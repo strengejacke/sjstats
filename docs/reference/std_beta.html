@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -209,29 +209,23 @@ untransformed binary predictors.</p></td>
     <pre class="examples"><div class='input'><span class='co'># fit linear model</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>Ozone</span> ~ <span class='no'>Wind</span> + <span class='no'>Temp</span> + <span class='no'>Solar.R</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>airquality</span>)
 <span class='co'># print std. beta coefficients</span>
-<span class='fu'>std_beta</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 5
-#&gt;   term    std.estimate std.error conf.low conf.high
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 Wind          -0.356    0.0700  -0.494     -0.219
-#&gt; 2 Temp           0.473    0.0726   0.331      0.615
-#&gt; 3 Solar.R        0.164    0.0635   0.0394     0.288</div><div class='input'>
+<span class='fu'>std_beta</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;      term std.estimate  std.error   conf.low  conf.high
+#&gt; 1    Wind   -0.3564122 0.06996619 -0.4935434 -0.2192810
+#&gt; 2    Temp    0.4731461 0.07260889  0.3308353  0.6154569
+#&gt; 3 Solar.R    0.1638655 0.06351430  0.0393798  0.2883513</div><div class='input'>
 <span class='co'># print std. beta coefficients and ci, using</span>
 <span class='co'># 2 sd and center binary predictors</span>
-<span class='fu'>std_beta</span>(<span class='no'>fit</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"std2"</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 5
-#&gt;   term      std.estimate std.error conf.low conf.high
-#&gt;   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 z.Wind           -23.5      4.61   -32.5      -14.5
-#&gt; 2 z.Temp            31.3      4.80    21.9       40.7
-#&gt; 3 z.Solar.R         10.8      4.18     2.59      19.0</div><div class='input'>
+<span class='fu'>std_beta</span>(<span class='no'>fit</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"std2"</span>)</div><div class='output co'>#&gt;      term std.estimate std.error   conf.low conf.high
+#&gt; 1    Wind    -23.71992  4.656386 -32.846272 -14.59358
+#&gt; 2    Temp     31.48879  4.832262  22.017729  40.95985
+#&gt; 3 Solar.R     10.90557  4.226999   2.620802  19.19034</div><div class='input'>
 <span class='co'># std. beta for mixed models</span>
 <span class='fu'>library</span>(<span class='no'>lme4</span>)
 <span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
-<span class='fu'>std_beta</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 5
-#&gt;   term    std.estimate std.error conf.low conf.high
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 Wind          -0.356    0.0700  -0.494     -0.219
-#&gt; 2 Temp           0.473    0.0726   0.331      0.615
-#&gt; 3 Solar.R        0.164    0.0635   0.0394     0.288</div><div class='input'>
+<span class='fu'>std_beta</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;      term std.estimate  std.error   conf.low  conf.high
+#&gt; 1    Wind   -0.3564122 0.06996619 -0.4935434 -0.2192810
+#&gt; 2    Temp    0.4731461 0.07260889  0.3308353  0.6154569
+#&gt; 3 Solar.R    0.1638655 0.06351430  0.0393798  0.2883513</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

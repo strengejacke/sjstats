@@ -19,11 +19,11 @@ from the \pkg{sandwich} package. For \code{svy()}, \code{x} must be
 \code{lm} object, fitted with weights.}
 
 \item{vcov.fun}{String, indicating the name of the \code{vcov*()}-function
-from the \pkg{sandwich} package, e.g. \code{vcov.fun = "vcovCL"}.}
+from the \pkg{sandwich}-package, e.g. \code{vcov.fun = "vcovCL"}.}
 
 \item{vcov.type}{Character vector, specifying the estimation type for the
-heteroskedasticity-consistent covariance matrix estimation
-(see \code{\link[sandwich]{vcovHC}} for details).}
+robust covariance matrix estimation (see \code{\link[sandwich]{vcovHC}}
+for details).}
 
 \item{vcov.args}{List of named vectors, used as additional arguments that
 are passed down to \code{vcov.fun}.}
@@ -40,9 +40,9 @@ A summary of the model, including estimates, robust standard error,
 }
 \description{
 \code{robust()} computes robust standard error for regression models.
-   This method calls one of the \code{vcov*()}-functions from the \pkg{sandwich}
-   package for robust covariance matrix estimators. Results are returned
-   as tidy data frame.
+   This method calls one of the \code{vcov*()}-functions from the
+   \pkg{sandwich}-package for robust covariance matrix estimators. Results are
+   returned as tidy data frame.
    \cr \cr
    \code{svy()} is intended to compute standard errors for survey
    designs (complex samples) fitted with regular \code{lm} or
@@ -76,7 +76,7 @@ robust(fit)
 
 confint(fit)
 robust(fit, conf.int = TRUE)
-robust(fit, vcov = "HC1", conf.int = TRUE) # "HC1" should be Stata default
+robust(fit, vcov.type = "HC1", conf.int = TRUE) # "HC1" should be Stata default
 
 library(sjmisc)
 # dichtomozize service usage by "service usage yes/no"

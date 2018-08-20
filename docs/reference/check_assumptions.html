@@ -70,7 +70,7 @@ check_assumptions() checks all of the above assumptions.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -193,7 +193,7 @@ outliers.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble with the respective statistics.</p>
+    <p>A data frame with the respective statistics.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -256,16 +256,10 @@ outliers.</p></td>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>efc</span>)
 
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>barthtot</span> ~ <span class='no'>c160age</span> + <span class='no'>c12hour</span> + <span class='no'>c161sex</span> + <span class='no'>c172code</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
-<span class='fu'>outliers</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>No outliers detected.</span></div><div class='input'><span class='fu'>heteroskedastic</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>Heteroscedasticity (non-constant error variance) detected: p = 0.000</span></div><div class='output co'>#&gt; # A tibble: 1 x 1
-#&gt;   heteroskedastic
-#&gt;             &lt;dbl&gt;
-#&gt; 1     0.000000389</div><div class='input'><span class='fu'>autocorrelation</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>Autocorrelated residuals detected: p = 0.000</span></div><div class='output co'>#&gt; # A tibble: 1 x 1
-#&gt;   autocorrelation
-#&gt;             &lt;dbl&gt;
-#&gt; 1               0</div><div class='input'><span class='fu'>normality</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>Non-normality of residuals detected: p = 0.000</span></div><div class='output co'>#&gt; # A tibble: 1 x 1
-#&gt;   non.normality
-#&gt;           &lt;dbl&gt;
-#&gt; 1      1.54e-13</div><div class='input'><span class='fu'>check_assumptions</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
+<span class='fu'>outliers</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>No outliers detected.</span></div><div class='input'><span class='fu'>heteroskedastic</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>Heteroscedasticity (non-constant error variance) detected: p = 0.000</span></div><div class='output co'>#&gt;   heteroskedastic
+#&gt; 1    3.885808e-07</div><div class='input'><span class='fu'>autocorrelation</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>Autocorrelated residuals detected: p = 0.000</span></div><div class='output co'>#&gt;   autocorrelation
+#&gt; 1               0</div><div class='input'><span class='fu'>normality</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>Non-normality of residuals detected: p = 0.000</span></div><div class='output co'>#&gt;   non.normality
+#&gt; 1  1.535796e-13</div><div class='input'><span class='fu'>check_assumptions</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
 #&gt; # Checking Model-Assumptions
 #&gt; 
 #&gt;   Model: barthtot ~ c160age + c12hour + c161sex + c172code
@@ -277,14 +271,10 @@ outliers.</p></td>
 #&gt;   Multicollinearity             no  vif = 1.153</div><div class='input'>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>barthtot</span> ~ <span class='no'>c160age</span> + <span class='no'>c12hour</span> + <span class='no'>c161sex</span> + <span class='no'>c172code</span> + <span class='no'>neg_c_7</span>,
           <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
-<span class='fu'>outliers</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>2 outliers removed in updated model.</span></div><div class='output co'>#&gt; # A tibble: 2 x 3
-#&gt;   models   adjusted.r2   aic
-#&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 original       0.346 7488.
-#&gt; 2 updated        0.353 7469.</div><div class='input'><span class='fu'>check_assumptions</span>(<span class='no'>fit</span>, <span class='kw'>as.logical</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
-#&gt;   heteroskedasticity multicollinearity non.normal.resid autocorrelation
-#&gt;   &lt;lgl&gt;              &lt;lgl&gt;             &lt;lgl&gt;            &lt;lgl&gt;          
-#&gt; 1 TRUE               FALSE             TRUE             TRUE           </div><div class='input'>
+<span class='fu'>outliers</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>2 outliers removed in updated model.</span></div><div class='output co'>#&gt;     models adjusted.r2      aic
+#&gt; 1 original   0.3458095 7487.639
+#&gt; 2  updated   0.3530485 7468.980</div><div class='input'><span class='fu'>check_assumptions</span>(<span class='no'>fit</span>, <span class='kw'>as.logical</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   heteroskedasticity multicollinearity non.normal.resid autocorrelation
+#&gt; 1               TRUE             FALSE             TRUE            TRUE</div><div class='input'>
 <span class='co'># apply function to multiple models in list-variable</span>
 <span class='fu'>library</span>(<span class='no'>purrr</span>)
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
@@ -296,33 +286,107 @@ outliers.</p></td>
 
 <span class='co'># for list-variables, argument 'model.column' is the</span>
 <span class='co'># quoted name of the list-variable with fitted models</span>
-<span class='no'>tmp</span> <span class='kw'>%&gt;%</span> <span class='fu'>normality</span>(<span class='st'>"models"</span>)</div><div class='output co'>#&gt; # A tibble: 50 x 1
-#&gt;    non.normality
-#&gt;            &lt;dbl&gt;
-#&gt;  1      3.23e-19
-#&gt;  2      3.83e-16
-#&gt;  3      9.10e-22
-#&gt;  4      9.98e-19
-#&gt;  5      6.43e-18
-#&gt;  6      3.22e-20
-#&gt;  7      2.12e-19
-#&gt;  8      1.29e-16
-#&gt;  9      2.33e-19
-#&gt; 10      9.00e-21
-#&gt; # ... with 40 more rows</div><div class='input'><span class='no'>tmp</span> <span class='kw'>%&gt;%</span> <span class='fu'>heteroskedastic</span>(<span class='st'>"models"</span>)</div><div class='output co'>#&gt; # A tibble: 50 x 1
-#&gt;    heteroskedastic
-#&gt;              &lt;dbl&gt;
-#&gt;  1        1.12e- 6
-#&gt;  2        4.14e-16
-#&gt;  3        2.30e-11
-#&gt;  4        2.30e-13
-#&gt;  5        2.99e- 9
-#&gt;  6        1.62e- 6
-#&gt;  7        2.46e- 6
-#&gt;  8        5.65e-11
-#&gt;  9        1.95e- 5
-#&gt; 10        9.49e-12
-#&gt; # ... with 40 more rows</div><div class='input'>
+<span class='no'>tmp</span> <span class='kw'>%&gt;%</span> <span class='fu'>normality</span>(<span class='st'>"models"</span>)</div><div class='output co'>#&gt;    non.normality
+#&gt; 1   3.230058e-19
+#&gt; 2   3.827347e-16
+#&gt; 3   9.098247e-22
+#&gt; 4   9.981165e-19
+#&gt; 5   6.428575e-18
+#&gt; 6   3.224082e-20
+#&gt; 7   2.118794e-19
+#&gt; 8   1.288646e-16
+#&gt; 9   2.328003e-19
+#&gt; 10  8.999720e-21
+#&gt; 11  6.353047e-21
+#&gt; 12  1.026013e-19
+#&gt; 13  2.390006e-19
+#&gt; 14  6.701265e-19
+#&gt; 15  2.551566e-19
+#&gt; 16  3.057700e-18
+#&gt; 17  2.117815e-19
+#&gt; 18  1.077834e-17
+#&gt; 19  7.594577e-18
+#&gt; 20  9.239676e-19
+#&gt; 21  3.149844e-21
+#&gt; 22  5.519879e-20
+#&gt; 23  3.637194e-18
+#&gt; 24  1.764174e-21
+#&gt; 25  6.623029e-19
+#&gt; 26  1.181069e-19
+#&gt; 27  3.168530e-19
+#&gt; 28  4.854560e-18
+#&gt; 29  2.001162e-20
+#&gt; 30  7.352369e-22
+#&gt; 31  1.018042e-20
+#&gt; 32  7.376915e-19
+#&gt; 33  1.207461e-18
+#&gt; 34  4.070908e-16
+#&gt; 35  7.510733e-18
+#&gt; 36  2.049412e-20
+#&gt; 37  1.243810e-19
+#&gt; 38  2.813157e-19
+#&gt; 39  3.095559e-22
+#&gt; 40  8.518521e-21
+#&gt; 41  5.261510e-16
+#&gt; 42  1.156834e-18
+#&gt; 43  5.360721e-21
+#&gt; 44  3.306733e-18
+#&gt; 45  8.478782e-20
+#&gt; 46  1.000268e-20
+#&gt; 47  3.684449e-21
+#&gt; 48  1.301398e-17
+#&gt; 49  3.625559e-21
+#&gt; 50  8.619752e-18</div><div class='input'><span class='no'>tmp</span> <span class='kw'>%&gt;%</span> <span class='fu'>heteroskedastic</span>(<span class='st'>"models"</span>)</div><div class='output co'>#&gt;    heteroskedastic
+#&gt; 1     1.117145e-06
+#&gt; 2     4.136378e-16
+#&gt; 3     2.304193e-11
+#&gt; 4     2.303091e-13
+#&gt; 5     2.989163e-09
+#&gt; 6     1.617715e-06
+#&gt; 7     2.462472e-06
+#&gt; 8     5.650847e-11
+#&gt; 9     1.949355e-05
+#&gt; 10    9.487583e-12
+#&gt; 11    8.865950e-05
+#&gt; 12    1.001106e-11
+#&gt; 13    9.380742e-09
+#&gt; 14    2.692178e-11
+#&gt; 15    2.777129e-12
+#&gt; 16    1.156712e-08
+#&gt; 17    1.142231e-09
+#&gt; 18    3.003215e-05
+#&gt; 19    3.513974e-10
+#&gt; 20    8.914693e-07
+#&gt; 21    5.075324e-07
+#&gt; 22    1.443102e-04
+#&gt; 23    3.889332e-08
+#&gt; 24    2.962249e-05
+#&gt; 25    1.108236e-11
+#&gt; 26    1.494601e-11
+#&gt; 27    9.264544e-11
+#&gt; 28    2.394459e-08
+#&gt; 29    3.738415e-03
+#&gt; 30    3.710447e-07
+#&gt; 31    2.980297e-12
+#&gt; 32    4.978182e-15
+#&gt; 33    1.403946e-07
+#&gt; 34    1.833919e-14
+#&gt; 35    2.311357e-05
+#&gt; 36    1.506452e-13
+#&gt; 37    3.740443e-08
+#&gt; 38    2.266819e-07
+#&gt; 39    9.948937e-11
+#&gt; 40    8.844100e-08
+#&gt; 41    3.306678e-14
+#&gt; 42    4.618659e-10
+#&gt; 43    4.902720e-07
+#&gt; 44    8.314707e-12
+#&gt; 45    8.818074e-11
+#&gt; 46    8.447289e-10
+#&gt; 47    5.206397e-09
+#&gt; 48    3.063647e-15
+#&gt; 49    1.658216e-08
+#&gt; 50    1.059808e-12</div><div class='input'>
 # Durbin-Watson-Test from package 'car' takes a little bit longer due
 # to simulation of p-values...
 </div><span class='co'># NOT RUN {</span>

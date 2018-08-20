@@ -66,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -164,7 +164,7 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble with the root mean squared errors for the training and test data.</p>
+    <p>A data frame with the root mean squared errors for the training and test data.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -183,20 +183,16 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>efc</span>)
-<span class='fu'>cv_error</span>(<span class='no'>efc</span>, <span class='no'>neg_c_7</span> ~ <span class='no'>barthtot</span> + <span class='no'>c161sex</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
-#&gt;   model                        train.error test.error
-#&gt;   &lt;chr&gt;                              &lt;dbl&gt;      &lt;dbl&gt;
-#&gt; 1 neg_c_7 ~ barthtot + c161sex        3.51       3.52</div><div class='input'>
+<span class='fu'>cv_error</span>(<span class='no'>efc</span>, <span class='no'>neg_c_7</span> ~ <span class='no'>barthtot</span> + <span class='no'>c161sex</span>)</div><div class='output co'>#&gt;                          model train.error test.error
+#&gt; 1 neg_c_7 ~ barthtot + c161sex      3.5069     3.5162</div><div class='input'>
 <span class='fu'>cv_compare</span>(<span class='no'>efc</span>, <span class='kw'>formulas</span> <span class='kw'>=</span> <span class='fu'>list</span>(
   <span class='no'>neg_c_7</span> ~ <span class='no'>barthtot</span> + <span class='no'>c161sex</span>,
   <span class='no'>neg_c_7</span> ~ <span class='no'>barthtot</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
   <span class='no'>neg_c_7</span> ~ <span class='no'>barthtot</span> + <span class='no'>c12hour</span>
-))</div><div class='output co'>#&gt; # A tibble: 3 x 3
-#&gt;   model                                 train.error test.error
-#&gt;   &lt;chr&gt;                                       &lt;dbl&gt;      &lt;dbl&gt;
-#&gt; 1 neg_c_7 ~ barthtot + c161sex                 3.51       3.52
-#&gt; 2 neg_c_7 ~ barthtot + c161sex + e42dep        3.49       3.50
-#&gt; 3 neg_c_7 ~ barthtot + c12hour                 3.50       3.52</div><div class='input'>
+))</div><div class='output co'>#&gt;                                   model train.error test.error
+#&gt; 1          neg_c_7 ~ barthtot + c161sex      3.5067     3.5190
+#&gt; 2 neg_c_7 ~ barthtot + c161sex + e42dep      3.4869     3.5026
+#&gt; 3          neg_c_7 ~ barthtot + c12hour      3.5033     3.5171</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

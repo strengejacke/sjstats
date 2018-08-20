@@ -15,6 +15,8 @@ zero_count(x, tolerance = 0.05)
 \arguments{
 \item{x}{Fitted GLMM (of class \code{merMod} or \code{glmmTMB}) or \code{glm} model.}
 
+\item{...}{Currently not used.}
+
 \item{trafo}{A specification of the alternative, can be numeric or a
 (positive) function or \code{NULL} (the default). See 'Details'
 in \code{\link[AER]{dispersiontest}} in package \CRANpkg{AER}. Does not

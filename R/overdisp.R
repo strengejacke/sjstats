@@ -14,6 +14,7 @@
 #'          zeros to considered as over- or underfitting zero-counts. A ratio
 #'          between 1 +/- \code{tolerance} are considered as OK, while a ratio
 #'          beyond or below this treshold would indicate over- or underfitting.
+#' @param ... Currently not used.
 #'
 #' @return For \code{overdisp()}, information on the overdispersion test; for
 #'         \code{zero_count()}, the amount of predicted and observed zeros in

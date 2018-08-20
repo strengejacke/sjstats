@@ -33,17 +33,16 @@
 <meta property="og:title" content="Robust standard errors for regression models — robust" />
 
 <meta property="og:description" content="robust() computes robust standard error for regression models.
-               This method wraps the coeftest-function with
-               robust covariance matrix estimators based on the
-               vcovHC-function, and returns the
-               result as tidy data frame.
-                
-               svy() is intended to compute standard errors for survey
-               designs (complex samples) fitted with regular lm or
-               glm functions, as alternative to the survey-package.
-               It simulates sampling weights by adjusting the residual degrees
-               of freedom based on the precision weights used to fit x,
-               and then calls robust() with the adjusted model." />
+   This method calls one of the vcov*()-functions from the
+   sandwich-package for robust covariance matrix estimators. Results are
+   returned as tidy data frame.
+    
+   svy() is intended to compute standard errors for survey
+   designs (complex samples) fitted with regular lm or
+   glm functions, as alternative to the survey-package.
+   It simulates sampling weights by adjusting the residual degrees
+   of freedom based on the precision weights used to fit x,
+   and then calls robust() with the adjusted model." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -74,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -139,39 +138,51 @@
     <div class="ref-description">
     
     <p><code>robust()</code> computes robust standard error for regression models.
-               This method wraps the <code><a href='http://www.rdocumentation.org/packages/lmtest/topics/coeftest'>coeftest</a></code>-function with
-               robust covariance matrix estimators based on the
-               <code><a href='http://www.rdocumentation.org/packages/sandwich/topics/vcovHC'>vcovHC</a></code>-function, and returns the
-               result as tidy data frame.
-               <br /> <br />
-               <code>svy()</code> is intended to compute standard errors for survey
-               designs (complex samples) fitted with regular <code>lm</code> or
-               <code>glm</code> functions, as alternative to the <span class="pkg">survey</span>-package.
-               It simulates sampling weights by adjusting the residual degrees
-               of freedom based on the precision weights used to fit <code>x</code>,
-               and then calls <code>robust()</code> with the adjusted model.</p>
+   This method calls one of the <code>vcov*()</code>-functions from the
+   <span class="pkg">sandwich</span>-package for robust covariance matrix estimators. Results are
+   returned as tidy data frame.
+   <br /> <br />
+   <code>svy()</code> is intended to compute standard errors for survey
+   designs (complex samples) fitted with regular <code>lm</code> or
+   <code>glm</code> functions, as alternative to the <span class="pkg">survey</span>-package.
+   It simulates sampling weights by adjusting the residual degrees
+   of freedom based on the precision weights used to fit <code>x</code>,
+   and then calls <code>robust()</code> with the adjusted model.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>robust</span>(<span class='no'>x</span>, <span class='kw'>vcov</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"HC3"</span>, <span class='st'>"const"</span>, <span class='st'>"HC"</span>, <span class='st'>"HC0"</span>, <span class='st'>"HC1"</span>, <span class='st'>"HC2"</span>, <span class='st'>"HC4"</span>, <span class='st'>"HC4m"</span>,
-  <span class='st'>"HC5"</span>), <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>robust</span>(<span class='no'>x</span>, <span class='kw'>vcov.fun</span> <span class='kw'>=</span> <span class='st'>"vcovHC"</span>, <span class='kw'>vcov.type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"HC3"</span>, <span class='st'>"const"</span>, <span class='st'>"HC"</span>,
+  <span class='st'>"HC0"</span>, <span class='st'>"HC1"</span>, <span class='st'>"HC2"</span>, <span class='st'>"HC4"</span>, <span class='st'>"HC4m"</span>, <span class='st'>"HC5"</span>), <span class='kw'>vcov.args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>svy</span>(<span class='no'>x</span>, <span class='kw'>vcov</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"HC1"</span>, <span class='st'>"const"</span>, <span class='st'>"HC"</span>, <span class='st'>"HC0"</span>, <span class='st'>"HC2"</span>, <span class='st'>"HC3"</span>, <span class='st'>"HC4"</span>, <span class='st'>"HC4m"</span>,
-  <span class='st'>"HC5"</span>), <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>svy</span>(<span class='no'>x</span>, <span class='kw'>vcov.fun</span> <span class='kw'>=</span> <span class='st'>"vcovHC"</span>, <span class='kw'>vcov.type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"HC1"</span>, <span class='st'>"const"</span>, <span class='st'>"HC"</span>, <span class='st'>"HC0"</span>,
+  <span class='st'>"HC3"</span>, <span class='st'>"HC2"</span>, <span class='st'>"HC4"</span>, <span class='st'>"HC4m"</span>, <span class='st'>"HC5"</span>), <span class='kw'>vcov.args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A fitted model of any class that is supported by the <code>coeftest()</code>-function.
-For <code>svy()</code>, <code>x</code> must be <code>lm</code> object, fitted with weights.</p></td>
+      <td><p>A fitted model of any class that is supported by the <code>vcov*()</code>-functions
+from the <span class="pkg">sandwich</span> package. For <code>svy()</code>, <code>x</code> must be
+<code>lm</code> object, fitted with weights.</p></td>
     </tr>
     <tr>
-      <th>vcov</th>
+      <th>vcov.fun</th>
+      <td><p>String, indicating the name of the <code>vcov*()</code>-function
+from the <span class="pkg">sandwich</span>-package, e.g. <code>vcov.fun = "vcovCL"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>vcov.type</th>
       <td><p>Character vector, specifying the estimation type for the
-heteroskedasticity-consistent covariance matrix estimation
-(see <code><a href='http://www.rdocumentation.org/packages/sandwich/topics/vcovHC'>vcovHC</a></code> for details).</p></td>
+robust covariance matrix estimation (see <code><a href='http://www.rdocumentation.org/packages/sandwich/topics/vcovHC'>vcovHC</a></code>
+for details).</p></td>
+    </tr>
+    <tr>
+      <th>vcov.args</th>
+      <td><p>List of named vectors, used as additional arguments that
+are passed down to <code>vcov.fun</code>.</p></td>
     </tr>
     <tr>
       <th>conf.int</th>
@@ -202,7 +213,7 @@ and confidence intervals (typical for logistic regression).</p></td>
       the <span class="pkg">survey</span> package are still more exactly, especially
       regarding the estimates.
       <br /> <br />
-      <code>vcov</code> for <code>svy()</code> defaults to <code>"HC1"</code>, because
+      <code>vcov.type</code> for <code>svy()</code> defaults to <code>"HC1"</code>, because
       standard errors with this estimation type come closest to the standard
       errors from the <span class="pkg">survey</span>-package.
       <br /> <br />
@@ -235,53 +246,55 @@ and confidence intervals (typical for logistic regression).</p></td>
 #&gt;   (87 observations deleted due to missingness)
 #&gt; Multiple R-squared:  0.2696,	Adjusted R-squared:  0.266 
 #&gt; F-statistic: 75.28 on 4 and 816 DF,  p-value: &lt; 2.2e-16
-#&gt; </div><div class='input'><span class='fu'>robust</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 5
-#&gt;   term        estimate std.error statistic  p.value
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1 (Intercept)   90.1      5.58      16.1   4.83e-51
-#&gt; 2 c160age       -0.222    0.0711    -3.12  1.89e- 3
-#&gt; 3 c12hour       -0.278    0.0212   -13.1   8.01e-36
-#&gt; 4 c161sex       -0.262    1.92      -0.136 8.92e- 1
-#&gt; 5 c172code      -0.762    1.39      -0.547 5.85e- 1</div><div class='input'>
+#&gt; </div><div class='input'><span class='fu'>robust</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;          term   estimate  std.error   statistic      p.value
+#&gt; 1 (Intercept) 90.0644792 5.58174936  16.1355291 4.832660e-51
+#&gt; 2     c160age -0.2215581 0.07106417  -3.1177189 1.886499e-03
+#&gt; 3     c12hour -0.2781004 0.02119537 -13.1208077 8.012747e-36
+#&gt; 4     c161sex -0.2617783 1.91864853  -0.1364389 8.915080e-01
+#&gt; 5    c172code -0.7621525 1.39456606  -0.5465159 5.848608e-01</div><div class='input'>
 <span class='fu'>confint</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;                  2.5 %       97.5 %
 #&gt; (Intercept) 77.9488902 102.18006829
 #&gt; c160age     -0.3611297  -0.08198647
 #&gt; c12hour     -0.3146997  -0.24150107
 #&gt; c161sex     -4.3573007   3.83374416
-#&gt; c172code    -3.5488594   2.02455439</div><div class='input'><span class='fu'>robust</span>(<span class='no'>fit</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 7
-#&gt;   term        estimate std.error statistic  p.value conf.low conf.high
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 (Intercept)   90.1      5.58      16.1   4.83e-51   79.1    101.    
-#&gt; 2 c160age       -0.222    0.0711    -3.12  1.89e- 3   -0.361   -0.0821
-#&gt; 3 c12hour       -0.278    0.0212   -13.1   8.01e-36   -0.320   -0.236 
-#&gt; 4 c161sex       -0.262    1.92      -0.136 8.92e- 1   -4.03     3.50  
-#&gt; 5 c172code      -0.762    1.39      -0.547 5.85e- 1   -3.50     1.98  </div><div class='input'><span class='fu'>robust</span>(<span class='no'>fit</span>, <span class='kw'>vcov</span> <span class='kw'>=</span> <span class='st'>"HC1"</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># "HC1" should be Stata default</span></div><div class='output co'>#&gt; # A tibble: 5 x 7
-#&gt;   term        estimate std.error statistic  p.value conf.low conf.high
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 (Intercept)   90.1      5.55      16.2   1.79e-51   79.2    101.    
-#&gt; 2 c160age       -0.222    0.0707    -3.14  1.78e- 3   -0.360   -0.0829
-#&gt; 3 c12hour       -0.278    0.0210   -13.2   2.73e-36   -0.319   -0.237 
-#&gt; 4 c161sex       -0.262    1.91      -0.137 8.91e- 1   -4.01     3.49  
-#&gt; 5 c172code      -0.762    1.39      -0.549 5.83e- 1   -3.49     1.96  </div><div class='input'>
+#&gt; c172code    -3.5488594   2.02455439</div><div class='input'><span class='fu'>robust</span>(<span class='no'>fit</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;          term   estimate  std.error   conf.low    conf.high   statistic
+#&gt; 1 (Intercept) 90.0644792 5.58174936 79.1082006 101.02075786  16.1355291
+#&gt; 2     c160age -0.2215581 0.07106417 -0.3610482  -0.08206799  -3.1177189
+#&gt; 3     c12hour -0.2781004 0.02119537 -0.3197042  -0.23649650 -13.1208077
+#&gt; 4     c161sex -0.2617783 1.91864853 -4.0278463   3.50428977  -0.1364389
+#&gt; 5    c172code -0.7621525 1.39456606 -3.4995120   1.97520692  -0.5465159
+#&gt;        p.value
+#&gt; 1 4.832660e-51
+#&gt; 2 1.886499e-03
+#&gt; 3 8.012747e-36
+#&gt; 4 8.915080e-01
+#&gt; 5 5.848608e-01</div><div class='input'><span class='fu'>robust</span>(<span class='no'>fit</span>, <span class='kw'>vcov.type</span> <span class='kw'>=</span> <span class='st'>"HC1"</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># "HC1" should be Stata default</span></div><div class='output co'>#&gt;          term   estimate  std.error   conf.low    conf.high   statistic
+#&gt; 1 (Intercept) 90.0644792 5.55391758 79.1628309 100.96612755  16.2163874
+#&gt; 2     c160age -0.2215581 0.07066514 -0.3602650  -0.08285124  -3.1353241
+#&gt; 3     c12hour -0.2781004 0.02103734 -0.3193941  -0.23680669 -13.2193675
+#&gt; 4     c161sex -0.2617783 1.90939743 -4.0096876   3.48613101  -0.1370999
+#&gt; 5    c172code -0.7621525 1.38747118 -3.4855856   1.96128056  -0.5493105
+#&gt;        p.value
+#&gt; 1 1.788307e-51
+#&gt; 2 1.778136e-03
+#&gt; 3 2.730414e-36
+#&gt; 4 8.909856e-01
+#&gt; 5 5.829427e-01</div><div class='input'>
 <span class='fu'>library</span>(<span class='no'>sjmisc</span>)
 <span class='co'># dichtomozize service usage by "service usage yes/no"</span>
 <span class='no'>efc</span>$<span class='no'>services</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>sjmisc</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/sjmisc/topics/dicho'>dicho</a></span>(<span class='no'>efc</span>$<span class='no'>tot_sc_e</span>, <span class='kw'>dich.by</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
 
-<span class='fu'>robust</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 5
-#&gt;   term        estimate std.error statistic p.value
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-#&gt; 1 (Intercept)  -0.520     0.380      -1.37 0.172  
-#&gt; 2 neg_c_7       0.0419    0.0204      2.06 0.0396 
-#&gt; 3 c161sex      -0.219     0.163      -1.35 0.178  
-#&gt; 4 e42dep        0.213     0.0797      2.68 0.00740</div><div class='input'><span class='fu'>robust</span>(<span class='no'>fit</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 7
-#&gt;   term        estimate std.error statistic p.value conf.low conf.high
-#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 (Intercept)    0.595    0.380      -1.37 0.172      0.282      1.25
-#&gt; 2 neg_c_7        1.04     0.0204      2.06 0.0396     1.00       1.09
-#&gt; 3 c161sex        0.803    0.163      -1.35 0.178      0.584      1.11
-#&gt; 4 e42dep         1.24     0.0797      2.68 0.00740    1.06       1.45</div><div class='input'>
+<span class='fu'>robust</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;          term   estimate  std.error statistic     p.value
+#&gt; 1 (Intercept) -0.5198021 0.38048112 -1.366171 0.172232067
+#&gt; 2     neg_c_7  0.0419026 0.02035790  2.058296 0.039853669
+#&gt; 3     c161sex -0.2189336 0.16263979 -1.346126 0.178606278
+#&gt; 4      e42dep  0.2134784 0.07970607  2.678320 0.007536269</div><div class='input'><span class='fu'>robust</span>(<span class='no'>fit</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;          term  estimate  std.error  conf.low conf.high statistic     p.value
+#&gt; 1 (Intercept) 0.5946382 0.38048112 0.2818017  1.254764 -1.366171 0.172232067
+#&gt; 2     neg_c_7 1.0427929 0.02035790 1.0019492  1.085302  2.058296 0.039853669
+#&gt; 3     c161sex 0.8033751 0.16263979 0.5838345  1.105470 -1.346126 0.178606278
+#&gt; 4      e42dep 1.2379767 0.07970607 1.0587020  1.447609  2.678320 0.007536269</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

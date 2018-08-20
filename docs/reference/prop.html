@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>prop</span>(<span class='no'>data</span>, <span class='no'>...</span>, <span class='kw'>weight.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+    <pre class="usage"><span class='fu'>prop</span>(<span class='no'>data</span>, <span class='no'>...</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>4</span>)
 
 <span class='fu'>props</span>(<span class='no'>data</span>, <span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>4</span>)</pre>
     
@@ -158,7 +158,7 @@ right hand side. Expressions may be quoted or unquoted. See
 'Examples'.</p></td>
     </tr>
     <tr>
-      <th>weight.by</th>
+      <th>weights</th>
       <td><p>Vector of weights that will be applied to weight all observations.
 Must be a vector of same length as the input vector. Default is
 <code>NULL</code>, so no weights are used.</p></td>
@@ -205,11 +205,9 @@ percentage.</p></td>
 <span class='fu'>props</span>(<span class='no'>efc</span>, <span class='no'>e17age</span> <span class='kw'>&gt;</span> <span class='fl'>70</span> <span class='kw'>&amp;</span> <span class='no'>e17age</span> <span class='kw'>&lt;</span> <span class='fl'>80</span>)</div><div class='output co'>#&gt; [1] 0.3199</div><div class='input'>
 <span class='co'># proportion of value 1 in e42dep, and all values greater</span>
 <span class='co'># than 2 in e42dep, including missing values. will return a tibble</span>
-<span class='fu'>prop</span>(<span class='no'>efc</span>, <span class='no'>e42dep</span> <span class='kw'>==</span> <span class='fl'>1</span>, <span class='no'>e42dep</span> <span class='kw'>&gt;</span> <span class='fl'>2</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
-#&gt;   condition   prop
-#&gt;   &lt;chr&gt;      &lt;dbl&gt;
+<span class='fu'>prop</span>(<span class='no'>efc</span>, <span class='no'>e42dep</span> <span class='kw'>==</span> <span class='fl'>1</span>, <span class='no'>e42dep</span> <span class='kw'>&gt;</span> <span class='fl'>2</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;   condition   prop
 #&gt; 1 e42dep==1 0.0727
-#&gt; 2 e42dep&gt;2  0.672 </div><div class='input'>
+#&gt; 2  e42dep&gt;2 0.6718</div><div class='input'>
 <span class='co'># for factors or character vectors, use quoted or unquoted values</span>
 <span class='fu'>library</span>(<span class='no'>sjmisc</span>)
 <span class='co'># convert numeric to factor, using labels as factor levels</span>
@@ -224,38 +222,30 @@ percentage.</p></td>
 <span class='fu'>props</span>(<span class='no'>efc</span>,
   <span class='no'>e17age</span> <span class='kw'>&gt;</span> <span class='fl'>70</span> <span class='kw'>&amp;</span> <span class='no'>e17age</span> <span class='kw'>&lt;</span> <span class='fl'>80</span>,
   <span class='no'>n4pstu</span> <span class='kw'>==</span> <span class='st'>'Care Level 1'</span> <span class='kw'>|</span> <span class='no'>n4pstu</span> <span class='kw'>==</span> <span class='st'>'Care Level 3'</span>
-)</div><div class='output co'>#&gt; # A tibble: 2 x 2
-#&gt;   condition                              prop
-#&gt;   &lt;chr&gt;                                 &lt;dbl&gt;
-#&gt; 1 e17age&gt;70&amp;e17age&lt;80                   0.320
-#&gt; 2 n4pstu==CareLevel1|n4pstu==CareLevel3 0.314</div><div class='input'>
+)</div><div class='output co'>#&gt;                               condition   prop
+#&gt; 1                   e17age&gt;70&amp;e17age&lt;80 0.3199
+#&gt; 2 n4pstu==CareLevel1|n4pstu==CareLevel3 0.3137</div><div class='input'>
 <span class='co'># also works with pipe-chains</span>
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
-<span class='no'>efc</span> <span class='kw'>%&gt;%</span> <span class='fu'>prop</span>(<span class='no'>e17age</span> <span class='kw'>&gt;</span> <span class='fl'>70</span>)</div><div class='output co'>#&gt; [1] 0.8092</div><div class='input'><span class='no'>efc</span> <span class='kw'>%&gt;%</span> <span class='fu'>prop</span>(<span class='no'>e17age</span> <span class='kw'>&gt;</span> <span class='fl'>70</span>, <span class='no'>e16sex</span> <span class='kw'>==</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
-#&gt;   condition  prop
-#&gt;   &lt;chr&gt;     &lt;dbl&gt;
-#&gt; 1 e17age&gt;70 0.809
-#&gt; 2 e16sex==1 0    </div><div class='input'>
+<span class='no'>efc</span> <span class='kw'>%&gt;%</span> <span class='fu'>prop</span>(<span class='no'>e17age</span> <span class='kw'>&gt;</span> <span class='fl'>70</span>)</div><div class='output co'>#&gt; [1] 0.8092</div><div class='input'><span class='no'>efc</span> <span class='kw'>%&gt;%</span> <span class='fu'>prop</span>(<span class='no'>e17age</span> <span class='kw'>&gt;</span> <span class='fl'>70</span>, <span class='no'>e16sex</span> <span class='kw'>==</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;   condition   prop
+#&gt; 1 e17age&gt;70 0.8092
+#&gt; 2 e16sex==1 0.0000</div><div class='input'>
 <span class='co'># and with group_by</span>
 <span class='no'>efc</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>e16sex</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>prop</span>(<span class='no'>e42dep</span> <span class='kw'>&gt;</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
-#&gt;   `elder's gender` `e42dep&gt;2`
-#&gt;   &lt;chr&gt;                 &lt;dbl&gt;
-#&gt; 1 male                  0.685
-#&gt; 2 female                0.674</div><div class='input'>
+  <span class='fu'>prop</span>(<span class='no'>e42dep</span> <span class='kw'>&gt;</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt;   elder's gender e42dep&gt;2
+#&gt; 1           male   0.6847
+#&gt; 2         female   0.6744</div><div class='input'>
 <span class='no'>efc</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>e42dep</span>, <span class='no'>c161sex</span>, <span class='no'>c172code</span>, <span class='no'>e16sex</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>c161sex</span>, <span class='no'>c172code</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>prop</span>(<span class='no'>e42dep</span> <span class='kw'>&gt;</span> <span class='fl'>2</span>, <span class='no'>e16sex</span> <span class='kw'>==</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 4
-#&gt;   `carer's gender` `carer's level of education`    `e42dep&gt;2` `e16sex==1`
-#&gt;   &lt;chr&gt;            &lt;chr&gt;                                &lt;dbl&gt;       &lt;dbl&gt;
-#&gt; 1 Male             low level of education               0.683           0
-#&gt; 2 Male             intermediate level of education      0.659           0
-#&gt; 3 Male             high level of education              0.787           0
-#&gt; 4 Female           low level of education               0.710           0
-#&gt; 5 Female           intermediate level of education      0.593           0
-#&gt; 6 Female           high level of education              0.688           0</div><div class='input'>
+  <span class='fu'>prop</span>(<span class='no'>e42dep</span> <span class='kw'>&gt;</span> <span class='fl'>2</span>, <span class='no'>e16sex</span> <span class='kw'>==</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;   carer's gender      carer's level of education e42dep&gt;2 e16sex==1
+#&gt; 1           Male          low level of education   0.6829         0
+#&gt; 5           Male intermediate level of education   0.6590         0
+#&gt; 3           Male         high level of education   0.7872         0
+#&gt; 4         Female          low level of education   0.7101         0
+#&gt; 2         Female intermediate level of education   0.5929         0
+#&gt; 6         Female         high level of education   0.6881         0</div><div class='input'>
 <span class='co'># same for "props()"</span>
 <span class='no'>efc</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>e42dep</span>, <span class='no'>c161sex</span>, <span class='no'>c172code</span>, <span class='no'>c12hour</span>, <span class='no'>n4pstu</span>) <span class='kw'>%&gt;%</span>
@@ -264,16 +254,20 @@ percentage.</p></td>
     <span class='no'>e42dep</span> <span class='kw'>&gt;</span> <span class='fl'>2</span>,
     <span class='no'>c12hour</span> <span class='kw'>&gt;</span> <span class='fl'>20</span> <span class='kw'>&amp;</span> <span class='no'>c12hour</span> <span class='kw'>&lt;</span> <span class='fl'>40</span>,
     <span class='no'>n4pstu</span> <span class='kw'>==</span> <span class='st'>'Care Level 1'</span> <span class='kw'>|</span> <span class='no'>n4pstu</span> <span class='kw'>==</span> <span class='st'>'Care Level 3'</span>
-  )</div><div class='output co'>#&gt; # A tibble: 6 x 5
-#&gt;   `carer's gender` `carer's level of educatio~ `e42dep&gt;2` `c12hour&gt;20&amp;c12hour&lt;~
-#&gt;   &lt;chr&gt;            &lt;chr&gt;                            &lt;dbl&gt;                 &lt;dbl&gt;
-#&gt; 1 Male             low level of education           0.683                 0.244
-#&gt; 2 Male             intermediate level of educ~      0.659                 0.176
-#&gt; 3 Male             high level of education          0.787                 0.149
-#&gt; 4 Female           low level of education           0.710                 0.196
-#&gt; 5 Female           intermediate level of educ~      0.593                 0.150
-#&gt; 6 Female           high level of education          0.688                 0.202
-#&gt; # ... with 1 more variable: `n4pstu==CareLevel1|n4pstu==CareLevel3` &lt;dbl&gt;</div><div class='input'>
+  )</div><div class='output co'>#&gt;   carer's gender      carer's level of education e42dep&gt;2 c12hour&gt;20&amp;c12hour&lt;40
+#&gt; 1           Male          low level of education   0.6829                0.2439
+#&gt; 5           Male intermediate level of education   0.6590                0.1756
+#&gt; 3           Male         high level of education   0.7872                0.1489
+#&gt; 4         Female          low level of education   0.7101                0.1957
+#&gt; 2         Female intermediate level of education   0.5929                0.1504
+#&gt; 6         Female         high level of education   0.6881                0.2018
+#&gt;   n4pstu==CareLevel1|n4pstu==CareLevel3
+#&gt; 1                                0.2250
+#&gt; 5                                0.3111
+#&gt; 3                                0.3191
+#&gt; 4                                0.3433
+#&gt; 2                                0.3540
+#&gt; 6                                0.2752</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@
       <h1>Statistics for Anova Tables</h1>
                         <h4 class="author">Daniel Lüdecke</h4>
             
-            <h4 class="date">2018-07-10</h4>
+            <h4 class="date">2018-08-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/vignettes/anova-statistics.Rmd"><code>vignettes/anova-statistics.Rmd</code></a></small>
       <div class="hidden name"><code>anova-statistics.Rmd</code></div>
@@ -127,12 +127,10 @@
 <p>For variables with 1 degree of freedeom (in the numerator), the square root of eta-squared is equal to the correlation coefficient <em>r</em>. For variables with more than 1 degree of freedom, eta-squared equals <em>R2</em>. This makes eta-squared easily interpretable. Furthermore, these effect sizes can easily be converted into effect size measures that can be, for instance, further processed in meta-analyses.</p>
 <p>Eta-squared can be computed simply with:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/eta_sq.html">eta_sq</a></span>(fit)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;   term                  etasq</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;                 &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 1 as.factor(e42dep)   0.266  </span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; 2 as.factor(c172code) 0.00540</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 3 c160age             0.0484</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt;       term etasq</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; 1   e42dep 0.266</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; 2 c172code 0.005</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 3  c160age 0.048</span></a></code></pre></div>
 </div>
 <div id="partial-eta-squared" class="section level2">
 <h2 class="hasAnchor">
@@ -140,12 +138,10 @@
 <p>The partial eta-squared value is the ratio of the sum of squares for each group level to the sum of squares for each group level plus the residual sum of squares. It is more difficult to interpret, because its value strongly depends on the variability of the residuals. Partial eta-squared values should be reported with caution, and Levine and Hullett (2002) recommend reporting eta- or omega-squared rather than partial eta-squared.</p>
 <p>Use the <code>partial</code>-argument to compute partial eta-squared values:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/eta_sq.html">eta_sq</a></span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;   term                partial.etasq</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;                       &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1 as.factor(e42dep)         0.281  </span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2 as.factor(c172code)       0.00788</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3 c160age                   0.0665</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt;       term partial.etasq</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; 1   e42dep         0.281</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; 2 c172code         0.008</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 3  c160age         0.066</span></a></code></pre></div>
 </div>
 <div id="omega-squared" class="section level2">
 <h2 class="hasAnchor">
@@ -153,60 +149,50 @@
 <p>While eta-squared estimates tend to be biased in certain situations, e.g. when the sample size is small or the independent variables have many group levels, omega-squared estimates are corrected for this bias.</p>
 <p>Omega-squared can be simply computed with:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/eta_sq.html">omega_sq</a></span>(fit)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;   term                omegasq</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;                 &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; 1 as.factor(e42dep)   0.263  </span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; 2 as.factor(c172code) 0.00377</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; 3 c160age             0.0476</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;       term omegasq</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; 1   e42dep   0.263</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; 2 c172code   0.004</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; 3  c160age   0.048</span></a></code></pre></div>
 </div>
 <div id="partial-omega-squared" class="section level2">
 <h2 class="hasAnchor">
 <a href="#partial-omega-squared" class="anchor"></a>Partial Omega-Squared</h2>
 <p><code><a href="../reference/eta_sq.html">omega_sq()</a></code> also has a <code>partial</code>-argument to compute partial omega-squared values. Computing the partial omega-squared statistics is based on bootstrapping. In this case, use <code>n</code> to define the number of samples (1000 by default.)</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/eta_sq.html">omega_sq</a></span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">n =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;   term                partial.omegasq</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;                         &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1 as.factor(e42dep)           0.278  </span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 2 as.factor(c172code)         0.00547</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 3 c160age                     0.0649</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt;       term partial.omegasq</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; 1   e42dep           0.278</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; 2 c172code           0.005</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 3  c160age           0.065</span></a></code></pre></div>
 </div>
 <div id="cohens-f" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cohens-f" class="anchor"></a>Cohen’s F</h2>
 <p>Finally, <code><a href="../reference/eta_sq.html">cohens_f()</a></code> computes Cohen’s F effect size for all independent variables in the model:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/eta_sq.html">cohens_f</a></span>(fit)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;   term                cohens.f</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;                  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1 as.factor(e42dep)     0.626 </span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; 2 as.factor(c172code)   0.0891</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 3 c160age               0.267</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt;       term   cohens.f</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; 1   e42dep 0.62555427</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; 2 c172code 0.08910342</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 3  c160age 0.26689334</span></a></code></pre></div>
 </div>
 </div>
 <div id="complete-statistical-table-output" class="section level1">
 <h1 class="hasAnchor">
 <a href="#complete-statistical-table-output" class="anchor"></a>Complete Statistical Table Output</h1>
-<p>The <code><a href="../reference/eta_sq.html">anova_stats()</a></code> function takes a model input and computes a comprehensive summary, including the above effect size measures, returned as tidy data frame (as <code>tibble</code>, to be exact):</p>
+<p>The <code><a href="../reference/eta_sq.html">anova_stats()</a></code> function takes a model input and computes a comprehensive summary, including the above effect size measures, returned as tidy data frame:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/eta_sq.html">anova_stats</a></span>(fit)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 4 x 12</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;   term                   df    sumsq  meansq statistic p.value  etasq partial.etasq omegasq partial.omegasq cohens.f power</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 1 as.factor(e42dep)       3  577756. 192585.    109.     0      0.266         0.281   0.263           0.278    0.626  1   </span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 2 as.factor(c172code)     2   11722.   5861.      3.31   0.037  0.005         0.008   0.004           0.005    0.089  0.63</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; 3 c160age                 1  105170. 105170.     59.4    0      0.048         0.066   0.048           0.065    0.267  1   </span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; 4 Residuals             834 1476436.   1770.     NA     NA     NA            NA      NA              NA       NA     NA</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt;        term power  df      sumsq     meansq statistic p.value etasq partial.etasq omegasq partial.omegasq cohens.f</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; 1    e42dep  1.00   3  577756.33 192585.444   108.786   0.000 0.266         0.281   0.263           0.278    0.626</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 2  c172code  0.63   2   11722.05   5861.024     3.311   0.037 0.005         0.008   0.004           0.005    0.089</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 3   c160age  1.00   1  105169.60 105169.595    59.408   0.000 0.048         0.066   0.048           0.065    0.267</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 4 Residuals    NA 834 1476436.34   1770.307        NA      NA    NA            NA      NA              NA       NA</span></a></code></pre></div>
 <p>Like the other functions, the input may also be an object of class <code>anova</code>, so you can also use model fits from the <em>car</em> package, which allows fitting Anova’s with different types of sum of squares:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/eta_sq.html">anova_stats</a></span>(car<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/car/topics/Anova">Anova</a></span>(fit, <span class="dt">type =</span> <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; # A tibble: 5 x 12</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;   term                   sumsq  meansq    df statistic p.value  etasq partial.etasq omegasq partial.omegasq cohens.f  power</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;                  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; 1 (Intercept)           26851.  26851.     1     15.2    0      0.013         0.018   0.012           0.017    0.135  0.973</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; 2 as.factor(e42dep)    426462. 142154.     3     80.3    0      0.209         0.224   0.206           0.22     0.537  1    </span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; 3 as.factor(c172code)    7352.   3676.     2      2.08   0.126  0.004         0.005   0.002           0.003    0.071  0.429</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 4 c160age              105170. 105170.     1     59.4    0      0.051         0.066   0.051           0.065    0.267  1    </span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; 5 Residuals           1476436.   1770.   834     NA     NA     NA            NA      NA              NA       NA     NA</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt;          term power       sumsq     meansq  df statistic p.value etasq partial.etasq omegasq partial.omegasq cohens.f</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; 1 (Intercept) 0.973   26851.070  26851.070   1    15.167   0.000 0.013         0.018   0.012           0.017    0.135</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; 2      e42dep 1.000  426461.571 142153.857   3    80.299   0.000 0.209         0.224   0.206           0.220    0.537</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; 3    c172code 0.429    7352.049   3676.025   2     2.076   0.126 0.004         0.005   0.002           0.003    0.071</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; 4     c160age 1.000  105169.595 105169.595   1    59.408   0.000 0.051         0.066   0.051           0.065    0.267</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; 5   Residuals    NA 1476436.343   1770.307 834        NA      NA    NA            NA      NA              NA       NA</span></a></code></pre></div>
 </div>
 <div id="confidence-intervals" class="section level1">
 <h1 class="hasAnchor">
@@ -214,21 +200,17 @@
 <p><code><a href="../reference/eta_sq.html">eta_sq()</a></code> and <code><a href="../reference/eta_sq.html">omega_sq()</a></code> have a <code>ci.lvl</code>-argument, which - if not <code>NULL</code> - also computes a confidence interval.</p>
 <p>For eta-squared, i.e. <code><a href="../reference/eta_sq.html">eta_sq()</a></code> with <code>partial = FALSE</code>, due to non-symmetry, confidence intervals are based on bootstrap-methods. Confidence intervals for partial omega-squared, i.e. <code><a href="../reference/eta_sq.html">omega_sq()</a></code> with <code>partial = TRUE</code> - is also based on bootstrapping. In these cases, <code>n</code> indicates the number of bootstrap samples to be drawn to compute the confidence intervals.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/eta_sq.html">eta_sq</a></span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">ci.lvl =</span> <span class="fl">.8</span>)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 4</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;   term                partial.etasq conf.low conf.high</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;                       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; 1 as.factor(e42dep)         0.281    0.247      0.310 </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; 2 as.factor(c172code)       0.00788  0.00109    0.0160</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; 3 c160age                   0.0665   0.0467     0.0885</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co"># uses bootstrapping - here, for speed, just 100 samples</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="kw"><a href="../reference/eta_sq.html">omega_sq</a></span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">ci.lvl =</span> <span class="fl">.9</span>, <span class="dt">n =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; # A tibble: 3 x 4</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;   term     partial.omegasq conf.low conf.high</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;   &lt;chr&gt;              &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 1 e42dep           0.278    0.226      0.334 </span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; 2 c172code         0.00547 -0.00559    0.0203</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; 3 c160age          0.0649   0.0316     0.103</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt;       term partial.etasq conf.low conf.high</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; 1   e42dep         0.281    0.247     0.310</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; 2 c172code         0.008    0.001     0.016</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; 3  c160age         0.066    0.047     0.089</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co"># uses bootstrapping - here, for speed, just 100 samples</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="kw"><a href="../reference/eta_sq.html">omega_sq</a></span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">ci.lvl =</span> <span class="fl">.9</span>, <span class="dt">n =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;       term partial.omegasq conf.low conf.high</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; 1   e42dep           0.278    0.226     0.331</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; 2 c172code           0.005   -0.006     0.023</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; 3  c160age           0.065    0.032     0.101</span></a></code></pre></div>
 </div>
 <div id="references" class="section level1">
 <h1 class="hasAnchor">

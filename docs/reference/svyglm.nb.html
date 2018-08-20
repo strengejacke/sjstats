@@ -68,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -218,21 +218,32 @@ a specification of the survey design.</p></td>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>svyglm.nb</span>(<span class='no'>total</span> ~ <span class='fu'>factor</span>(<span class='no'>RIAGENDR</span>) * (<span class='fu'>log</span>(<span class='no'>age</span>) + <span class='fu'>factor</span>(<span class='no'>RIDRETH1</span>)), <span class='no'>des</span>)
 
 <span class='co'># print coefficients and standard errors</span>
-<span class='no'>fit</span></div><div class='output co'>#&gt; # A tibble: 12 x 6
-#&gt;    term                            irr std.error conf.low conf.high p.value    
-#&gt;    &lt;chr&gt;                         &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      
-#&gt;  1 (Intercept)                   9.85      0.156    7.26     13.4   &lt;0.001 *** 
-#&gt;  2 factor(RIAGENDR)2             0.451     0.180    0.317     0.643 &lt;0.001 *** 
-#&gt;  3 log(age)                      2.92      0.233    1.85      4.61  &lt;0.001 *** 
-#&gt;  4 factor(RIDRETH1)2             1.09      0.148    0.813     1.45  "0.5769   ~
-#&gt;  5 factor(RIDRETH1)3             1.10      0.178    0.775     1.56  "0.6002   ~
-#&gt;  6 factor(RIDRETH1)4             2.27      0.297    1.27      4.06  "0.0059 **~
-#&gt;  7 factor(RIDRETH1)5             1.06      0.379    0.504     2.22  "0.8800   ~
-#&gt;  8 factor(RIAGENDR)2:log(age)    0.295     0.265    0.175     0.496 &lt;0.001 *** 
-#&gt;  9 factor(RIAGENDR)2:factor(RID~ 0.831     0.261    0.498     1.39  "0.4796   ~
-#&gt; 10 factor(RIAGENDR)2:factor(RID~ 1.83      0.193    1.25      2.67  "0.0018 **~
-#&gt; 11 factor(RIAGENDR)2:factor(RID~ 1.07      0.375    0.512     2.22  "0.8631   ~
-#&gt; 12 factor(RIAGENDR)2:factor(RID~ 1.46      0.443    0.612     3.47  "0.3957   ~
+<span class='no'>fit</span></div><div class='output co'>#&gt;                                   term    irr std.error conf.low conf.high
+#&gt; 2                          (Intercept) 9.8463    0.1557   7.2573   13.3589
+#&gt; 3                    factor(RIAGENDR)2 0.4511    0.1805   0.3167    0.6427
+#&gt; 4                             log(age) 2.9163    0.2331   1.8467    4.6056
+#&gt; 5                    factor(RIDRETH1)2 1.0859    0.1477   0.8129    1.4505
+#&gt; 6                    factor(RIDRETH1)3 1.0977    0.1778   0.7746    1.5555
+#&gt; 7                    factor(RIDRETH1)4 2.2686    0.2974   1.2664    4.0637
+#&gt; 8                    factor(RIDRETH1)5 1.0589    0.3789   0.5039    2.2250
+#&gt; 9           factor(RIAGENDR)2:log(age) 0.2947    0.2651   0.1753    0.4955
+#&gt; 10 factor(RIAGENDR)2:factor(RIDRETH1)2 0.8314    0.2612   0.4983    1.3871
+#&gt; 11 factor(RIAGENDR)2:factor(RIDRETH1)3 1.8285    0.1932   1.2522    2.6700
+#&gt; 12 factor(RIAGENDR)2:factor(RIDRETH1)4 1.0668    0.3747   0.5118    2.2235
+#&gt; 13 factor(RIAGENDR)2:factor(RIDRETH1)5 1.4564    0.4427   0.6116    3.4681
+#&gt;       p.value
+#&gt; 2  &lt;0.001 ***
+#&gt; 3  &lt;0.001 ***
+#&gt; 4  &lt;0.001 ***
+#&gt; 5  0.5769    
+#&gt; 6  0.6002    
+#&gt; 7  0.0059 ** 
+#&gt; 8  0.8800    
+#&gt; 9  &lt;0.001 ***
+#&gt; 10 0.4796    
+#&gt; 11 0.0018 ** 
+#&gt; 12 0.8631    
+#&gt; 13 0.3957    
 #&gt; 
 #&gt; Dispersion parameter Theta: 0.8062
 #&gt;    Standard Error of Theta: 0.0216</div><div class='output co'>#&gt; <span class='message'></span>

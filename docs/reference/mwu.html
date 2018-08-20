@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -143,38 +143,31 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>mwu</span>(<span class='no'>x</span>, <span class='no'>dv</span>, <span class='no'>grp</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"asymptotic"</span>, <span class='kw'>weight.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>out</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"txt"</span>, <span class='st'>"viewer"</span>, <span class='st'>"browser"</span>))</pre>
+    <pre class="usage"><span class='fu'>mwu</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>grp</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"asymptotic"</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"txt"</span>, <span class='st'>"viewer"</span>,
+  <span class='st'>"browser"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A (grouped) data frame.</p></td>
+      <th>data</th>
+      <td><p>A data frame.</p></td>
     </tr>
     <tr>
-      <th>dv</th>
-      <td><p>Name of the dependent variable, for which the mean value, grouped
-by <code>grp</code>, is computed.</p></td>
+      <th>x</th>
+      <td><p>Bare (unquoted) variable name, or a character vector with the variable name.</p></td>
     </tr>
     <tr>
       <th>grp</th>
-      <td><p>Factor with the cross-classifying variable, where <code>dv</code> is
-grouped into the categories represented by <code>grp</code>. Numeric vectors
-are coerced to factors.</p></td>
+      <td><p>Bare (unquoted) name of the cross-classifying variable, where
+<code>x</code> is grouped into the categories represented by <code>grp</code>,
+or a character vector with the variable name.</p></td>
     </tr>
     <tr>
       <th>distribution</th>
       <td><p>Indicates how the null distribution of the test statistic should be computed.
 May be one of <code>"exact"</code>, <code>"approximate"</code> or <code>"asymptotic"</code>
 (default). See <code><a href='http://www.rdocumentation.org/packages/coin/topics/LocationTests'>wilcox_test</a></code> for details.</p></td>
-    </tr>
-    <tr>
-      <th>weight.by</th>
-      <td><p>Name of variable in <code>x</code> that indicated the vector of
-weights that will be applied to weight all  observations. Default is
-<code>NULL</code>, so no weights are used.</p></td>
     </tr>
     <tr>
       <th>out</th>

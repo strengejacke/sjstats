@@ -35,7 +35,9 @@
 <meta property="og:description" content="wtd_sd() and wtd_se() compute weighted standard
   deviation or standard error for a variable or for all variables of a data
   frame. svy_md() computes the median for a variable in a survey-design
-  (see svydesign)." />
+  (see svydesign). wtd_ttest() computes a
+  weighted t-test, while wtd_mwu() computes a weighted Mann-Whitney-U
+  test or a Kruskal-Wallis test (for more than two groups)." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -66,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -124,7 +126,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Weighted statistics for variables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/weight.R'><code>R/weight.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/weight.R'><code>R/weight.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/wtd_ttest.R'><code>R/wtd_ttest.R</code></a></small>
     <div class="hidden name"><code>wtd_sd.Rd</code></div>
     </div>
 
@@ -133,33 +135,102 @@
     <p><code>wtd_sd()</code> and <code>wtd_se()</code> compute weighted standard
   deviation or standard error for a variable or for all variables of a data
   frame. <code>svy_md()</code> computes the median for a variable in a survey-design
-  (see <code><a href='http://www.rdocumentation.org/packages/survey/topics/svydesign'>svydesign</a></code>).</p>
+  (see <code><a href='http://www.rdocumentation.org/packages/survey/topics/svydesign'>svydesign</a></code>). <code>wtd_ttest()</code> computes a
+  weighted t-test, while <code>wtd_mwu()</code> computes a weighted Mann-Whitney-U
+  test or a Kruskal-Wallis test (for more than two groups).</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>wtd_sd</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
+<span class='fu'>wtd_mean</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
 <span class='fu'>wtd_se</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>svy_md</span>(<span class='no'>x</span>, <span class='no'>design</span>)</pre>
+<span class='fu'>svy_md</span>(<span class='no'>x</span>, <span class='no'>design</span>)
+
+<span class='fu'>wtd_ttest</span>(<span class='no'>data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>wtd_ttest</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>weights</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"two.sided"</span>, <span class='st'>"less"</span>,
+  <span class='st'>"greater"</span>), <span class='no'>...</span>)
+
+<span class='co'># S3 method for formula</span>
+<span class='fu'>wtd_ttest</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"two.sided"</span>, <span class='st'>"less"</span>, <span class='st'>"greater"</span>), <span class='no'>...</span>)
+
+<span class='fu'>wtd_mwu</span>(<span class='no'>data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>wtd_mwu</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>grp</span>, <span class='no'>weights</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for formula</span>
+<span class='fu'>wtd_mwu</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>(Numeric) vector or a data frame. For <code>svy_md()</code>, the bare
-(unquoted) variable name, or a character vector with the variable
-name.</p></td>
+      <td><p>(Numeric) vector or a data frame. For <code>svy_md()</code>, <code>wtd_ttest()</code>
+and <code>wtd_mwu()</code> the bare (unquoted) variable name, or a character
+vector with the variable name.</p></td>
     </tr>
     <tr>
       <th>weights</th>
-      <td><p>Numeric vector of weights.</p></td>
+      <td><p>Bare (unquoted) variable name, or a character vector with
+the variable name of the numeric vector of weights. If <code>weights = NULL</code>,
+unweighted statistic is reported.</p></td>
     </tr>
     <tr>
       <th>design</th>
       <td><p>An object of class <code><a href='http://www.rdocumentation.org/packages/survey/topics/svydesign'>svydesign</a></code>, providing
 a specification of the survey design.</p></td>
+    </tr>
+    <tr>
+      <th>data</th>
+      <td><p>A data frame.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other arguments passed down to <code><a href='http://www.rdocumentation.org/packages/MASS/topics/glm.nb'>glm.nb</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>Optional, bare (unquoted) variable name, or a character vector with
+the variable name.</p></td>
+    </tr>
+    <tr>
+      <th>mu</th>
+      <td><p>A number indicating the true value of the mean (or difference in
+means if you are performing a two sample test).</p></td>
+    </tr>
+    <tr>
+      <th>paired</th>
+      <td><p>Logical, whether to compute a paired t-test.</p></td>
+    </tr>
+    <tr>
+      <th>ci.lvl</th>
+      <td><p>Confidence level of the interval.</p></td>
+    </tr>
+    <tr>
+      <th>alternative</th>
+      <td><p>A character string specifying the alternative hypothesis,
+must be one of <code>"two.sided"</code> (default), <code>"greater"</code> or
+<code>"less"</code>. You can specify just the initial letter.</p></td>
+    </tr>
+    <tr>
+      <th>formula</th>
+      <td><p>A formula of the form <code>lhs ~ rhs1 + rhs2</code> where <code>lhs</code> is a
+numeric variable giving the data values and <code>rhs1</code> a factor with two
+levels giving the corresponding groups and <code>rhs2</code> a variable with weights.</p></td>
+    </tr>
+    <tr>
+      <th>grp</th>
+      <td><p>Bare (unquoted) name of the cross-classifying variable, where
+<code>x</code> is grouped into the categories represented by <code>grp</code>,
+or a character vector with the variable name.</p></td>
     </tr>
     </table>
     
@@ -170,12 +241,14 @@ a specification of the survey design.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>wtd_sd</span>(<span class='fu'>rnorm</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>3</span>),
-       <span class='fu'>runif</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>))</div><div class='output co'>#&gt; [1] 0.8122863</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='co'># weighted sd and se ----</span>
+
+<span class='fu'>wtd_sd</span>(<span class='fu'>rnorm</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='fu'>runif</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>))</div><div class='output co'>#&gt; [1] 0.8122863</div><div class='input'>
 <span class='fu'>data</span>(<span class='no'>efc</span>)
 <span class='fu'>wtd_sd</span>(<span class='no'>efc</span>[, <span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fu'>runif</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>nrow</span>(<span class='no'>efc</span>)))</div><div class='output co'>#&gt;    c12hour   e15relat     e16sex 
 #&gt; 50.2236821  2.0569434  0.4654878 </div><div class='input'><span class='fu'>wtd_se</span>(<span class='no'>efc</span>[, <span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fu'>runif</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>nrow</span>(<span class='no'>efc</span>)))</div><div class='output co'>#&gt;    c12hour   e15relat     e16sex 
 #&gt; 1.68858848 0.06873935 0.01573668 </div><div class='input'>
+<span class='co'># svy_md ----</span>
 
 <span class='co'># median for variables from weighted survey designs</span>
 <span class='fu'>library</span>(<span class='no'>survey</span>)
@@ -190,6 +263,43 @@ a specification of the survey design.</p></td>
 )
 
 <span class='fu'>svy_md</span>(<span class='no'>total</span>, <span class='no'>des</span>)</div><div class='output co'>#&gt; [1] 6</div><div class='input'><span class='fu'>svy_md</span>(<span class='st'>"total"</span>, <span class='no'>des</span>)</div><div class='output co'>#&gt; [1] 6</div><div class='input'>
+<span class='co'># weighted t-test ----</span>
+
+<span class='no'>efc</span>$<span class='no'>weight</span> <span class='kw'>&lt;-</span> <span class='fu'>abs</span>(<span class='fu'>rnorm</span>(<span class='fu'>nrow</span>(<span class='no'>efc</span>), <span class='fl'>1</span>, <span class='fl'>.3</span>))
+<span class='fu'>wtd_ttest</span>(<span class='no'>efc</span>, <span class='no'>e17age</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight</span>)</div><div class='output co'>#&gt; 
+#&gt; One Sample t-test (two.sided)
+#&gt; # t=292.76  df=890  p-value=0.000
+#&gt; 
+#&gt;   mean of e17age: 79.222 [78.691  79.753]
+#&gt; </div><div class='input'><span class='fu'>wtd_ttest</span>(<span class='no'>efc</span>, <span class='no'>e17age</span>, <span class='no'>c160age</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight</span>)</div><div class='output co'>#&gt; 
+#&gt; Two-Sample t-test (two.sided)
+#&gt; 
+#&gt; # comparison between e17age and c160age
+#&gt; # t=49.62  df=1469  p-value=0.000
+#&gt; 
+#&gt;   mean of e17age    : 79.221
+#&gt;   mean of c160age   : 53.399
+#&gt;   difference of mean: 25.822 [24.801  26.843]
+#&gt; </div><div class='input'><span class='fu'>wtd_ttest</span>(<span class='no'>e17age</span> ~ <span class='no'>e16sex</span> + <span class='no'>weight</span>, <span class='no'>efc</span>)</div><div class='output co'>#&gt; 
+#&gt; Two-Sample t-test (two.sided)
+#&gt; 
+#&gt; # comparison of e17age by e16sex
+#&gt; # t=-7.86  df=598  p-value=0.000
+#&gt; 
+#&gt;   mean in group [1] male  : 76.276
+#&gt;   mean in group [2] female: 80.618
+#&gt;   difference of mean      : -4.342 [-5.426  -3.257]
+#&gt; </div><div class='input'>
+<span class='co'># weighted mwu-test ----</span>
+
+<span class='fu'>wtd_mwu</span>(<span class='no'>c12hour</span> ~ <span class='no'>c161sex</span> + <span class='no'>weight</span>, <span class='no'>efc</span>)</div><div class='output co'>#&gt; 
+#&gt; Weighted Mann-Whitney-U test (two.sided)
+#&gt; 
+#&gt; # comparison of c12hour by c161sex
+#&gt; # Chisq=2.25  df=899  p-value=0.025
+#&gt; 
+#&gt;   difference in mean rank score: 0.054
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -1,9 +1,9 @@
 #' @title Robust standard errors for regression models
 #' @name robust
 #' @description \code{robust()} computes robust standard error for regression models.
-#'    This method calls one of the \code{vcov*()}-functions from the \pkg{sandwich}
-#'    package for robust covariance matrix estimators. Results are returned
-#'    as tidy data frame.
+#'    This method calls one of the \code{vcov*()}-functions from the
+#'    \pkg{sandwich}-package for robust covariance matrix estimators. Results are
+#'    returned as tidy data frame.
 #'    \cr \cr
 #'    \code{svy()} is intended to compute standard errors for survey
 #'    designs (complex samples) fitted with regular \code{lm} or
@@ -16,10 +16,10 @@
 #'    from the \pkg{sandwich} package. For \code{svy()}, \code{x} must be
 #'    \code{lm} object, fitted with weights.
 #' @param vcov.fun String, indicating the name of the \code{vcov*()}-function
-#'    from the \pkg{sandwich} package, e.g. \code{vcov.fun = "vcovCL"}.
+#'    from the \pkg{sandwich}-package, e.g. \code{vcov.fun = "vcovCL"}.
 #' @param vcov.type Character vector, specifying the estimation type for the
-#'    heteroskedasticity-consistent covariance matrix estimation
-#'    (see \code{\link[sandwich]{vcovHC}} for details).
+#'    robust covariance matrix estimation (see \code{\link[sandwich]{vcovHC}}
+#'    for details).
 #' @param vcov.args List of named vectors, used as additional arguments that
 #'    are passed down to \code{vcov.fun}.
 #' @param conf.int Logical, \code{TRUE} if confidence intervals based on robust
@@ -54,7 +54,7 @@
 #'
 #' confint(fit)
 #' robust(fit, conf.int = TRUE)
-#' robust(fit, vcov = "HC1", conf.int = TRUE) # "HC1" should be Stata default
+#' robust(fit, vcov.type = "HC1", conf.int = TRUE) # "HC1" should be Stata default
 #'
 #' library(sjmisc)
 #' # dichtomozize service usage by "service usage yes/no"
@@ -65,7 +65,7 @@
 #' robust(fit)
 #' robust(fit, conf.int = TRUE, exponentiate = TRUE)
 #'
-#' @importFrom stats qt
+#' @importFrom stats qt pt df.residual qnorm pnorm nobs coef
 #' @export
 robust <- function(x, vcov.fun = "vcovHC", vcov.type = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4", "HC4m", "HC5"), vcov.args = NULL, conf.int = FALSE, exponentiate = FALSE) {
 
@@ -85,8 +85,43 @@ robust <- function(x, vcov.fun = "vcovHC", vcov.type = c("HC3", "const", "HC", "
 
   se <- sqrt(diag(.vcov))
 
+  dendf <- tryCatch(
+    stats::df.residual(x),
+    error = function(x) { NULL },
+    warning = function(x) { NULL },
+    finally = function(x) { NULL }
+  )
+
+  # 2nd try
+  if (is.null(dendf)) {
+    dendf <- tryCatch(
+      summary(x)$df[2],
+      error = function(x) { NULL },
+      warning = function(x) { NULL },
+      finally = function(x) { NULL }
+    )
+  }
+
+  # 3rd try
+  if (is.null(dendf)) {
+    dendf <- tryCatch(
+      stats::nobs(x) - length(est),
+      error = function(x) { NULL },
+      warning = function(x) { NULL },
+      finally = function(x) { NULL }
+    )
+  }
+
+
   t.stat <- est / se
-  p.value <- 2 * pt(abs(t.stat), df = 3, lower.tail = F)
+
+  if (is.null(dendf)) {
+    p.value <- 2 * stats::pnorm(abs(t.stat), lower.tail = FALSE)
+    se.factor <- stats::qnorm(.975)
+  } else {
+    p.value <- 2 * stats::pt(abs(t.stat), df = dendf, lower.tail = FALSE)
+    se.factor <- stats::qt(.975, df = dendf)
+  }
 
 
   # create tidy data frame
@@ -100,13 +135,12 @@ robust <- function(x, vcov.fun = "vcovHC", vcov.type = c("HC3", "const", "HC", "
 
   # add CI
   if (conf.int) {
-    # denominator df
-    dendf <- summary(x)$df[2]
     # add columns with CI
     result <- add_cols(
       result,
-      conf.low = result$estimate - (stats::qt(.975, df = dendf) * result$std.error),
-      conf.high = result$estimate + (stats::qt(.975, df = dendf) * result$std.error)
+      conf.low = result$estimate - se.factor * result$std.error,
+      conf.high = result$estimate + se.factor * result$std.error,
+      .after = "std.error"
     )
   }
 

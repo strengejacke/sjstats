@@ -66,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -142,7 +142,8 @@
 <span class='fu'>cramer</span>(<span class='no'>tab</span>)
 
 <span class='fu'>xtab_statistics</span>(<span class='no'>data</span>, <span class='kw'>x1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>x2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>statistics</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"auto"</span>,
-  <span class='st'>"cramer"</span>, <span class='st'>"phi"</span>, <span class='st'>"spearman"</span>, <span class='st'>"kendall"</span>, <span class='st'>"pearson"</span>), <span class='no'>...</span>)</pre>
+  <span class='st'>"cramer"</span>, <span class='st'>"phi"</span>, <span class='st'>"spearman"</span>, <span class='st'>"kendall"</span>, <span class='st'>"pearson"</span>, <span class='st'>"fisher"</span>),
+  <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,7 +179,13 @@ will be irgnored.</p></td>
       <th>statistics</th>
       <td><p>Name of measure of association that should be computed. May
 be one of <code>"auto"</code>, <code>"cramer"</code>, <code>"phi"</code>, <code>"spearman"</code>,
-<code>"kendall"</code> or <code>"pearson"</code>. See 'Details'.</p></td>
+<code>"kendall"</code>, <code>"pearson"</code> or <code>"fisher"</code>. See 'Details'.</p></td>
+    </tr>
+    <tr>
+      <th>weights</th>
+      <td><p>Name of variable in <code>x</code> that indicated the vector of
+weights that will be applied to weight all observations. Default is
+<code>NULL</code>, so no weights are used.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -212,8 +219,10 @@ be one of <code>"auto"</code>, <code>"cramer"</code>, <code>"phi"</code>, <code>
     <p>The p-value for Cramer's V and the Phi coefficient are based
          on <code>chisq.test()</code>. If any expected value of a table cell is
          smaller than 5, or smaller than 10 and the df is 1, then <code>fisher.test()</code>
-         is used to compute the p-value. The test statistic is calculated
-         with <code>cramer()</code> resp. <code>phi()</code>.
+         is used to compute the p-value, unless <code>statistics = "fisher"</code>; in
+         this case, the use of <code>fisher.test()</code> is forced to compute the
+         p-value. The test statistic is calculated with <code>cramer()</code> resp.
+         <code>phi()</code>.
          <br /> <br />
          Both test statistic and p-value for Spearman's rho, Kendall's tau
          and Pearson's r are calculated with <code>cor.test()</code>.
@@ -226,10 +235,10 @@ be one of <code>"auto"</code>, <code>"cramer"</code>, <code>"phi"</code>, <code>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Phi coefficient for 2x2 tables</span>
 <span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>table</span>(<span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>), <span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>))
-<span class='fu'>phi</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; [1] 0.008988968</div><div class='input'>
+<span class='fu'>phi</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; [1] 0.2</div><div class='input'>
 <span class='co'># Cramer's V for nominal variables with more than 2 categories</span>
 <span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>table</span>(<span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>), <span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>))
-<span class='fu'>cramer</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; [1] 0.2915476</div><div class='input'>
+<span class='fu'>cramer</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; [1] 0.3936717</div><div class='input'>
 <span class='fu'>data</span>(<span class='no'>efc</span>)
 <span class='co'># 2x2 table, compute Phi automatically</span>
 <span class='fu'>xtab_statistics</span>(<span class='no'>efc</span>, <span class='no'>e16sex</span>, <span class='no'>c161sex</span>)</div><div class='output co'>#&gt; 

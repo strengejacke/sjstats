@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@
       <h1>Statistics for Mixed Effects Models</h1>
                         <h4 class="author">Daniel Lüdecke</h4>
             
-            <h4 class="date">2018-07-10</h4>
+            <h4 class="date">2018-08-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/vignettes/mixedmodels-statistics.Rmd"><code>vignettes/mixedmodels-statistics.Rmd</code></a></small>
       <div class="hidden name"><code>mixedmodels-statistics.Rmd</code></div>
@@ -224,14 +224,14 @@
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># Kenward-Roger approximation for the degrees of freedom</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw"><a href="../reference/p_value.html">p_value</a></span>(m2, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;          term p.value std.error</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 1 (Intercept)       0     9.773</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 2        Days       0     0.814</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 1 (Intercept)       0     9.770</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 2        Days       0     0.816</span></a></code></pre></div>
 <p>To see more details on the degrees of freedom when using Kenward-Roger approximation, use the <code>summary()</code>-method:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">pv &lt;-<span class="st"> </span><span class="kw"><a href="../reference/p_value.html">p_value</a></span>(m2, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">summary</span>(pv)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;          term p.value std.error      df statistic</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 1 (Intercept)       0     9.773  22.765    25.724</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 2        Days       0     0.814 160.989    12.865</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 1 (Intercept)       0     9.770  22.761    25.734</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 2        Days       0     0.816 158.552    12.834</span></a></code></pre></div>
 </div>
 <div id="random-effect-variances" class="section level2">
 <h2 class="hasAnchor">
@@ -259,7 +259,7 @@
 <a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;       Within-group-variance:  654.941</span></a>
 <a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;      Between-group-variance:  612.090 (Subject)</span></a>
 <a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;       Random-slope-variance:   35.072 (Subject.Days)</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  Slope-Intercept-covariance:    9.604 (Subject)</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  Slope-Intercept-covariance:    9.604 (Subject.(Intercept))</span></a>
 <a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; Slope-Intercept-correlation:    0.066 (Subject)</span></a></code></pre></div>
 </div>
 <div id="r-squared" class="section level2">
@@ -267,8 +267,14 @@
 <a href="#r-squared" class="anchor"></a>R-squared</h2>
 <p>Nakagawa et al. (2017) proposed a method to compute marginal and conditional r-squared values, which is implemented in the <code><a href="../reference/cod.html">r2()</a></code>-function. For mixed models, the marginal r-squared considers only the variance of the fixed effects, while the conditional r-squared takes both the fixed and random effects into account. <code><a href="../reference/cod.html">r2()</a></code> can be used with models fitted with the functions of the <strong>lme4</strong> and <strong>glmmTMB</strong> packages.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/cod.html">r2</a></span>(m)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt;    Marginal R2: 0.279</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; Conditional R2: 0.799</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; R-Squared for Generalized Linear Mixed Model</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Family : gaussian (identity)</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;    Marginal R2: 0.279</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; Conditional R2: 0.799</span></a></code></pre></div>
 </div>
 <div id="intraclass-correlation-coefficient" class="section level2">
 <h2 class="hasAnchor">
@@ -276,23 +282,40 @@
 <p>The components of the random effect variances are of interest when calculating the intraclass-correlation coefficient, ICC. The ICC is calculated by dividing the between-group-variance (random intercept variance) by the total variance (i.e. sum of between-group-variance and within-group (residual) variance). The ICC can be interpreted as “the proportion of the variance explained by the grouping structure in the population” (Hox 2002: 15).</p>
 <p>Usually, the ICC is calculated for the null model (“unconditional model”). However, according to Raudenbush and Bryk (2002) or Rabe-Hesketh and Skrondal (2012) it is also feasible to compute the ICC for full models with covariates (“conditional models”) and compare how much a level-2 variable explains the portion of variation in the grouping structure (random intercept).</p>
 <p>The ICC for mixed models can be computed with <code><a href="../reference/icc.html">icc()</a></code>. <em>Caution:</em> For random-slope-intercept models, the ICC would differ at each unit of the predictors. Hence, the ICC for these kind of models cannot be understood simply as proportion of variance (see Goldstein et al. 2010). For convenience reasons, as the <code><a href="../reference/icc.html">icc()</a></code> function is also used to extract the different random effects variances (see <code><a href="../reference/re_var.html">re_var()</a></code> above), the ICC for random-slope-intercept-models is reported nonetheless, but it is usually no meaningful summary of the proportion of variances.</p>
+<p>By default, for three-level-models, depending on the nested structure of the model, or for cross-classified models, <code><a href="../reference/icc.html">icc()</a></code> only reports the proportion of variance explained for each grouping level. Use <code>adjusted = TRUE</code> to calculate the adjusted and conditional ICC.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Linear mixed model</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;  Family: gaussian (identity)</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;   ICC (Subject): 0.483090</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m2)</a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt; Linear mixed model</span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  Family: gaussian (identity)</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt;     ICC (mygrp): 0.000000</span></a>
-<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt;   ICC (Subject): 0.589309</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Family : gaussian (identity)</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;   ICC (Subject): 0.4831</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m2)</a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt; Linear mixed model</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; Family : gaussian (identity)</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt;     ICC (mygrp): 0.0000</span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt;   ICC (Subject): 0.5893</span></a></code></pre></div>
+<p>If <code>adjusted = TRUE</code>, an adjusted and conditional ICC are calculated, which take all sources of uncertainty (of all random effects) into account to report an “adjusted” ICC, as well as the conditional ICC. The latter also takes the fixed effects variances into account (see Nakagawa et al. 2017). If random effects are not nested and not cross-classified, the adjusted (<code>adjusted = TRUE</code>) and unadjusted (<code>adjusted = FALSE</code>) ICC are identical.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m, <span class="dt">adjusted =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; Intra-Class Correlation Coefficient for Generalized Linear Mixed Model</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; Family : gaussian (identity)</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;    Adjusted ICC: 0.7217</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; Conditional ICC: 0.5206</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="kw"><a href="../reference/icc.html">icc</a></span>(m2, <span class="dt">adjusted =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; Some variance components equal zero. Respecify random structure!</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; NULL</span></a></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1">

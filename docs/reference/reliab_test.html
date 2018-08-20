@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -133,8 +133,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>reliab_test</span>(<span class='no'>x</span>, <span class='kw'>scale.items</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"txt"</span>, <span class='st'>"viewer"</span>,
-  <span class='st'>"browser"</span>))
+    <pre class="usage"><span class='fu'>reliab_test</span>(<span class='no'>x</span>, <span class='kw'>scale.items</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"txt"</span>,
+  <span class='st'>"viewer"</span>, <span class='st'>"browser"</span>))
 
 <span class='fu'>split_half</span>(<span class='no'>x</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 
@@ -211,8 +211,14 @@ You may use initial letter only.</p></td>
              the data frame <code>x</code>, including the Spearman-Brown adjustment.
              Splitting is done by selecting odd versus even columns in <code>x</code>.
              A value closer to 1 indicates greater internal consistency.</p></dd>
-           <dt><code>cronb()</code></dt><dd><p>The Cronbach's Alpha value for <code>x</code>.
-             A value closer to 1 indicates greater internal consistency.</p></dd>
+           <dt><code>cronb()</code></dt><dd><p>The Cronbach's Alpha value for <code>x</code>. A value closer to 1
+             indicates greater internal consistency, where usually following
+             rule of thumb is applied to interprete the results:
+             &alpha; &lt; 0.5 is unacceptable,
+             0.5 &lt; &alpha; &lt; 0.6 is poor,
+             0.6 &lt; &alpha; &lt; 0.7 is questionable,
+             0.7 &lt; &alpha; &lt; 0.8 is acceptable,
+             and everything &gt; 0.8 is good or excellent.</p></dd>
            <dt><code>mic()</code></dt><dd><p>This function calculates a mean inter-item-correlation, i.e.
              a correlation matrix of <code>x</code> will be computed (unless
              <code>x</code> is already a matrix as returned by the
@@ -228,7 +234,7 @@ You may use initial letter only.</p></td>
              representative of the same content domain. If values are higher than
              .40, the items may be only capturing a small bandwidth of the construct.&#8221;
              <cite>(Piedmont 2014)</cite></p></dd>
-           <dt><code>difficulty()</code></dt><dd><p>This function calculates the irem difficutly, which should
+           <dt><code>difficulty()</code></dt><dd><p>This function calculates the item difficutly, which should
              range between 0.2 and 0.8. Lower values are a signal for
              more difficult items, while higher values close to one
              are a sign for easier items. The ideal value for item difficulty
@@ -263,18 +269,26 @@ You may use initial letter only.</p></td>
 <span class='fu'>colnames</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>varlabs</span>[<span class='fu'>c</span>(<span class='no'>start</span>:<span class='no'>end</span>)]
 
 <span class='co'># reliability tests</span>
-<span class='fu'>reliab_test</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; # A tibble: 9 x 3
-#&gt;   term                                              alpha.if.deleted item.discr
-#&gt;   &lt;chr&gt;                                                        &lt;dbl&gt;      &lt;dbl&gt;
-#&gt; 1 do you feel you cope well as caregiver?                      0.539     -0.241
-#&gt; 2 do you find caregiving too demanding?                        0.384      0.329
-#&gt; 3 does caregiving cause difficulties in your relat~            0.339      0.408
-#&gt; 4 does caregiving have negative effect on your phy~            0.324      0.441
-#&gt; 5 does caregiving cause difficulties in your relat~            0.38       0.357
-#&gt; 6 does caregiving cause financial difficulties?                0.366      0.416
-#&gt; 7 do you feel trapped in your role as caregiver?               0.353      0.368
-#&gt; 8 do you feel supported by friends/neighbours?                 0.534     -0.029
-#&gt; 9 do you feel caregiving worthwhile?                           0.556     -0.112</div><div class='input'>
+<span class='fu'>reliab_test</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt;                                                                         term
+#&gt; 1                                    do you feel you cope well as caregiver?
+#&gt; 2                                      do you find caregiving too demanding?
+#&gt; 3 does caregiving cause difficulties in your relationship with your friends?
+#&gt; 4              does caregiving have negative effect on your physical health?
+#&gt; 5  does caregiving cause difficulties in your relationship with your family?
+#&gt; 6                              does caregiving cause financial difficulties?
+#&gt; 7                             do you feel trapped in your role as caregiver?
+#&gt; 8                               do you feel supported by friends/neighbours?
+#&gt; 9                                         do you feel caregiving worthwhile?
+#&gt;   alpha.if.deleted item.discr
+#&gt; 1            0.539     -0.241
+#&gt; 2            0.384      0.329
+#&gt; 3            0.339      0.408
+#&gt; 4            0.324      0.441
+#&gt; 5            0.380      0.357
+#&gt; 6            0.366      0.416
+#&gt; 7            0.353      0.368
+#&gt; 8            0.534     -0.029
+#&gt; 9            0.556     -0.112</div><div class='input'>
 <span class='co'># split-half-reliability</span>
 <span class='fu'>split_half</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; 
 #&gt; # Internal Consistency
@@ -301,7 +315,7 @@ You may use initial letter only.</p></td>
 #&gt;                                           do you feel caregiving worthwhile?      0.73   0.62</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>sjPlot</span>)
-<span class='fu'><a href='http://www.rdocumentation.org/packages/sjPlot/topics/sjt.grpmean'>sjt.df</a></span>(<span class='fu'>reliab_test</span>(<span class='no'>x</span>), <span class='kw'>describe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.cmmn.row</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+<span class='fu'>sjt.df</span>(<span class='fu'>reliab_test</span>(<span class='no'>x</span>), <span class='kw'>describe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.cmmn.row</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
        <span class='kw'>string.cmmn</span> <span class='kw'>=</span> <span class='fu'>sprintf</span>(<span class='st'>"Cronbach's &amp;alpha;=%.2f"</span>, <span class='fu'>cronb</span>(<span class='no'>x</span>)))
 
 <span class='co'># Compute PCA on Cope-Index, and perform a</span>
@@ -312,7 +326,7 @@ You may use initial letter only.</p></td>
 <span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fu'>seq_len</span>(<span class='fu'>length</span>(<span class='no'>findex</span>))) {
  <span class='no'>rel.df</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'>which</span>(<span class='no'>factors</span> <span class='kw'>==</span> <span class='no'>findex</span>[<span class='no'>i</span>]))
  <span class='kw'>if</span> (<span class='fu'>ncol</span>(<span class='no'>rel.df</span>) <span class='kw'>&gt;=</span> <span class='fl'>3</span>) {
-   <span class='fu'><a href='http://www.rdocumentation.org/packages/sjPlot/topics/sjt.grpmean'>sjt.df</a></span>(<span class='fu'>reliab_test</span>(<span class='no'>rel.df</span>), <span class='kw'>describe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.cmmn.row</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+   <span class='fu'>sjt.df</span>(<span class='fu'>reliab_test</span>(<span class='no'>rel.df</span>), <span class='kw'>describe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.cmmn.row</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
           <span class='kw'>use.viewer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Item-Total-Statistic"</span>,
           <span class='kw'>string.cmmn</span> <span class='kw'>=</span> <span class='fu'>sprintf</span>(<span class='st'>"Scale's overall Cronbach's &amp;alpha;=%.2f"</span>,
                                 <span class='fu'>cronb</span>(<span class='no'>rel.df</span>)))

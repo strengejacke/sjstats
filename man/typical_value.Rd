@@ -4,7 +4,7 @@
 \alias{typical_value}
 \title{Return the typical value of a vector}
 \usage{
-typical_value(x, fun = "mean", weight.by = NULL, ...)
+typical_value(x, fun = "mean", weights = NULL, weight.by, ...)
 }
 \arguments{
 \item{x}{A variable.}
@@ -22,9 +22,11 @@ vector to apply other different functions to numeric and categorical
 \code{x}, where factors are first converted to numeric vectors, e.g.
 \code{fun = c(numeric = "median", factor = "mean")}. See 'Examples'.}
 
-\item{weight.by}{Name of variable in \code{x} that indicated the vector of
+\item{weights}{Name of variable in \code{x} that indicated the vector of
 weights that will be applied to weight all observations. Default is
 \code{NULL}, so no weights are used.}
+
+\item{weight.by}{Deprecated.}
 
 \item{...}{Further arguments, passed down to \code{fun}.}
 }

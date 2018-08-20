@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -141,7 +141,8 @@
 
     <pre class="usage"><span class='fu'>re_var</span>(<span class='no'>x</span>)
 
-<span class='fu'>get_re_var</span>(<span class='no'>x</span>, <span class='kw'>comp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"tau.00"</span>, <span class='st'>"tau.01"</span>, <span class='st'>"tau.11"</span>, <span class='st'>"rho.01"</span>, <span class='st'>"sigma_2"</span>))</pre>
+<span class='fu'>get_re_var</span>(<span class='no'>x</span>, <span class='kw'>comp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"tau.00"</span>, <span class='st'>"tau.01"</span>, <span class='st'>"tau.11"</span>, <span class='st'>"rho.01"</span>,
+  <span class='st'>"sigma_2"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -199,18 +200,18 @@
 <span class='fu'>re_var</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt;       Within-group-variance:  654.941
 #&gt;      Between-group-variance:  612.090 (Subject)
 #&gt;       Random-slope-variance:   35.072 (Subject.Days)
-#&gt;  Slope-Intercept-covariance:    9.604 (Subject)
+#&gt;  Slope-Intercept-covariance:    9.604 (Subject.(Intercept))
 #&gt; Slope-Intercept-correlation:    0.066 (Subject)</div><div class='input'>
 <span class='co'># just the rand. slope-intercept covariance</span>
-<span class='fu'>get_re_var</span>(<span class='no'>fit1</span>, <span class='st'>"tau.01"</span>)</div><div class='output co'>#&gt;  Subject 
-#&gt; 9.604334 </div><div class='input'>
+<span class='fu'>get_re_var</span>(<span class='no'>fit1</span>, <span class='st'>"tau.01"</span>)</div><div class='output co'>#&gt; Subject.(Intercept) 
+#&gt;            9.604334 </div><div class='input'>
 <span class='no'>sleepstudy</span>$<span class='no'>mygrp</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>45</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>180</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>mygrp</span>) + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
 <span class='fu'>re_var</span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt;       Within-group-variance:  605.877
 #&gt;      Between-group-variance:   44.955 (mygrp)
 #&gt;      Between-group-variance:  615.539 (Subject)
 #&gt;       Random-slope-variance:   38.305 (Subject.Days)
-#&gt;  Slope-Intercept-covariance:    1.074 (Subject)
+#&gt;  Slope-Intercept-covariance:    1.074 (Subject.(Intercept))
 #&gt; Slope-Intercept-correlation:    0.007 (Subject)</div><div class='input'>
 </div></pre>
   </div>

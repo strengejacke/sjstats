@@ -33,10 +33,10 @@
 <meta property="og:title" content="Standard Error for variables or coefficients — se" />
 
 <meta property="og:description" content="Compute standard error for a variable, for all variables
-               of a data frame, for joint random and fixed effects
-               coefficients of (non-/linear) mixed models, the adjusted
-               standard errors for generalized linear (mixed) models, or
-               for intraclass correlation coefficients (ICC)." />
+    of a data frame, for joint random and fixed effects
+    coefficients of (non-/linear) mixed models, the adjusted
+    standard errors for generalized linear (mixed) models, or
+    for intraclass correlation coefficients (ICC)." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.16.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
       </span>
     </div>
 
@@ -132,10 +132,10 @@
     <div class="ref-description">
     
     <p>Compute standard error for a variable, for all variables
-               of a data frame, for joint random and fixed effects
-               coefficients of (non-/linear) mixed models, the adjusted
-               standard errors for generalized linear (mixed) models, or
-               for intraclass correlation coefficients (ICC).</p>
+    of a data frame, for joint random and fixed effects
+    coefficients of (non-/linear) mixed models, the adjusted
+    standard errors for generalized linear (mixed) models, or
+    for intraclass correlation coefficients (ICC).</p>
     
     </div>
 
@@ -150,11 +150,11 @@
     <tr>
       <th>x</th>
       <td><p>(Numeric) vector, a data frame, an <code>lm</code>, <code>glm</code>,
-<code>merMod</code> (<span class="pkg">lme4</span>), or <code>stanreg</code> model object,
-an ICC object (as obtained by the <code><a href='icc.html'>icc</a></code>-function)
-or a list with estimate and p-value. For the latter case, the list
-must contain elements named <code>estimate</code> and <code>p.value</code>
-(see 'Examples' and 'Details').</p></td>
+<code>merMod</code> (<span class="pkg">lme4</span>), or <code>stanreg</code> model object, an ICC object
+(as obtained by the <code><a href='icc.html'>icc</a></code>-function), a <code>table</code> or
+<code>xtabs</code> object, or a list with estimate and p-value. For the latter
+case, the list must contain elements named <code>estimate</code> and
+<code>p.value</code> (see 'Examples' and 'Details').</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -174,17 +174,40 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For linear mixed models, and generalized linear mixed models, this
+    <p><strong>Standard error for variables</strong>
+  <br /> <br />
+  For variables and data frames, the standard error is the square root of the
+  variance divided by the number of observations (length of vector).
+  <br /> <br />
+  <strong>Standard error for mixed models</strong>
+  <br /> <br />
+  For linear mixed models, and generalized linear mixed models, this
   function computes the standard errors for joint (sums of) random and fixed
   effects coefficients (unlike <code><a href='http://www.rdocumentation.org/packages/arm/topics/se.coef'>se.coef</a></code>, which returns the
   standard error for fixed and random effects separately). Hence, <code>se()</code>
   returns the appropriate standard errors for <code><a href='http://www.rdocumentation.org/packages/lme4/topics/merMod-class'>coef.merMod</a></code>.
   <br /> <br />
+  <strong>Standard error for generalized linear models</strong>
+  <br /> <br />
   For generalized linear models, approximated standard errors, using the delta
   method for transformed regression parameters are returned (Oehlert 1992).
   <br /> <br />
+  <strong>Standard error for Intraclass Correlation Coefficient (ICC)</strong>
+  <br /> <br />
   The standard error for the <code><a href='icc.html'>icc</a></code> is based on bootstrapping,
   thus, the <code>nsim</code>-argument is required. See 'Examples'.
+  <br /> <br />
+  <strong>Standard error for proportions and mean value</strong>
+  <br /> <br />
+  To compute the standard error for relative frequencies (i.e. proportions, or
+  mean value if <code>x</code> has only two categories), this vector must be supplied
+  as table, e.g. <code>se(table(iris$Species))</code>. <code>se()</code> than computes the
+  relative frequencies (proportions) for each value and the related standard
+  error for each value. This might be useful to add standard errors or confidence
+  intervals to descriptive statistics. If standard errors for weighted variables
+  are required, use <code>xtabs()</code>, e.g. <code>se(xtabs(weights ~ variable))</code>.
+  <br /> <br />
+  <strong>Standard error for regression coefficient and p-value</strong>
   <br /> <br />
   <code>se()</code> also returns the standard error of an estimate (regression
   coefficient) and p-value, assuming a normal distribution to compute
@@ -194,15 +217,15 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Computation of standard errors for coefficients of mixed models
-        is based <a href='http://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme'>on this code</a>.
-        Standard errors for generalized linear (mixed) models, if
-        <code>type = "re"</code>, are approximations based on the delta
-        method (Oehlert 1992).
-        <br /> <br />
-        A remark on standard errors:
-        &#8220;Standard error represents variation in the point estimate, but
-        confidence interval has usual Bayesian interpretation only with flat prior.&#8221;
-        (Gelman 2017)</p>
+   is based <a href='http://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme'>on this code</a>.
+   Standard errors for generalized linear (mixed) models, if
+   <code>type = "re"</code>, are approximations based on the delta
+   method (Oehlert 1992).
+   <br /> <br />
+   A remark on standard errors:
+   &#8220;Standard error represents variation in the point estimate, but
+   confidence interval has usual Bayesian interpretation only with flat prior.&#8221;
+   (Gelman 2017)</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -212,7 +235,10 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># compute standard error for vector</span>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>lme4</span>)
+<span class='fu'>library</span>(<span class='no'>sjmisc</span>)
+
+<span class='co'># compute standard error for vector</span>
 <span class='fu'>se</span>(<span class='fu'>rnorm</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] 0.1074613</div><div class='input'>
 <span class='co'># compute standard error for each variable in a data frame</span>
 <span class='fu'>data</span>(<span class='no'>efc</span>)
@@ -246,8 +272,11 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
 <span class='co'># with first-order Taylor approximation.</span>
 <span class='fu'>data</span>(<span class='no'>efc</span>)
 <span class='no'>efc</span>$<span class='no'>services</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>sjmisc</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/sjmisc/topics/dicho'>dicho</a></span>(<span class='no'>efc</span>$<span class='no'>tot_sc_e</span>, <span class='kw'>dich.by</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
-           <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(
+  <span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>,
+  <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>)
+)
 <span class='fu'>se</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
 #&gt;   term        estimate std.error
 #&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;
@@ -257,12 +286,14 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
 #&gt; 4 e42dep         1.24     0.0972</div><div class='input'>
 <span class='co'># compute odds-ratio adjusted standard errors for generalized</span>
 <span class='co'># linear mixed model, also based on delta method</span>
-<span class='fu'>library</span>(<span class='no'>lme4</span>)
-<span class='fu'>library</span>(<span class='no'>sjmisc</span>)
+
 <span class='co'># create binary response</span>
 <span class='no'>sleepstudy</span>$<span class='no'>Reaction.dicho</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/sjmisc/topics/dicho'>dicho</a></span>(<span class='no'>sleepstudy</span>$<span class='no'>Reaction</span>, <span class='kw'>dich.by</span> <span class='kw'>=</span> <span class='st'>"median"</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/glmer'>glmer</a></span>(<span class='no'>Reaction.dicho</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
-             <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='st'>"logit"</span>))
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/glmer'>glmer</a></span>(
+  <span class='no'>Reaction.dicho</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>,
+  <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='st'>"logit"</span>)
+)
 <span class='fu'>se</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; $Subject
 #&gt;    (Intercept)      Days
 #&gt; 1     1.859251 0.4700877
@@ -284,6 +315,20 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
 #&gt; 17    2.314690 0.3959941
 #&gt; 18    1.778644 0.4321839
 #&gt; </div><div class='input'>
+<span class='co'># compute standard error for proportions</span>
+<span class='no'>efc</span>$<span class='no'>e42dep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/sjmisc/topics/to_label'>to_label</a></span>(<span class='no'>efc</span>$<span class='no'>e42dep</span>)
+<span class='fu'>se</span>(<span class='fu'>table</span>(<span class='no'>efc</span>$<span class='no'>e42dep</span>))</div><div class='output co'>#&gt;                  value proportion   std.error
+#&gt; 1          independent 0.07325194 0.008680166
+#&gt; 2   slightly dependent 0.24972253 0.014420404
+#&gt; 3 moderately dependent 0.33962264 0.015777276
+#&gt; 4   severely dependent 0.33740289 0.015752039</div><div class='input'>
+<span class='co'># including weights</span>
+<span class='no'>efc</span>$<span class='no'>weights</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fu'>nrow</span>(<span class='no'>efc</span>), <span class='fl'>1</span>, <span class='fl'>.25</span>)
+<span class='fu'>se</span>(<span class='fu'>xtabs</span>(<span class='no'>efc</span>$<span class='no'>weights</span> ~ <span class='no'>efc</span>$<span class='no'>e42dep</span>))</div><div class='output co'>#&gt;                  value proportion  std.error
+#&gt; 1          independent 0.07898613 0.00900256
+#&gt; 2   slightly dependent 0.24649213 0.01438477
+#&gt; 3 moderately dependent 0.33359206 0.01573749
+#&gt; 4   severely dependent 0.34092968 0.01582180</div><div class='input'>
 <span class='co'># compute standard error from regression coefficient and p-value</span>
 <span class='fu'>se</span>(<span class='fu'>list</span>(<span class='kw'>estimate</span> <span class='kw'>=</span> <span class='fl'>.3</span>, <span class='kw'>p.value</span> <span class='kw'>=</span> <span class='fl'>.002</span>))</div><div class='output co'>#&gt; [1] 0.09708008</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
