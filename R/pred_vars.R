@@ -102,7 +102,7 @@ pred_vars <- function(x) {
     av <- all.vars(fm[[3L]])
 
   if (length(av) == 1 && av == ".")
-    av <- all.vars(stats::terms(x))
+    av <- all.vars(stats::terms(x)[[3L]])
 
   av
 }
@@ -398,8 +398,13 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
       link.fun <- "logit"
   } else if (inherits(x, c("zeroinfl", "hurdle"))) {
     fitfam <- "negative binomial"
-    logit.link <- FALSE
-    link.fun <- NULL
+    if (obj_has_name(x, "link")) {
+      logit.link <- x$link == "logit"
+      link.fun <- x$link
+    } else {
+      logit.link <- FALSE
+      link.fun <- NULL
+    }
     zero.inf <- TRUE
   } else if (inherits(x, "betareg")) {
     fitfam <- "beta"
