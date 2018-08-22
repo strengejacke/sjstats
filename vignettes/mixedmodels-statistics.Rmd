@@ -38,6 +38,7 @@ data(sleepstudy)
 # fit linear mixed model
 m <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
 
+set.seed(2018)
 sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
 m2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 ```
