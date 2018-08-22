@@ -177,8 +177,8 @@ link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
 
   if (inherits(x, c("truncreg", "coxph"))) {
     il <- NULL
-  } else if (inherits(x, c("hurdle", "zeroinfl"))) {
-    il <- x$linkinv
+  } else if (inherits(x, c("zeroinfl", "hurdle"))) {
+    il <- stats::make.link("log")$linkinv
   } else if (inherits(x, c("lme", "plm", "gls", "lm", "lmRob")) && !inherits(x, "glm")) {
     il <- stats::gaussian(link = "identity")$linkinv
   } else if (inherits(x, "betareg")) {
@@ -397,14 +397,18 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
     if (!sjmisc::is_empty(string_starts_with(pattern = "logit(", x = link.fun)))
       link.fun <- "logit"
   } else if (inherits(x, c("zeroinfl", "hurdle"))) {
-    fitfam <- "negative binomial"
-    if (obj_has_name(x, "link")) {
-      logit.link <- x$link == "logit"
-      link.fun <- x$link
-    } else {
-      logit.link <- FALSE
-      link.fun <- NULL
-    }
+    if (is.list(x$dist))
+      dist <- x$dist[[1]]
+    else
+      dist <- x$dist
+    fitfam <- switch(
+      dist,
+      poisson = "poisson",
+      negbin = "negative binomial",
+      "poisson"
+    )
+    logit.link <- FALSE
+    link.fun <- "log"
     zero.inf <- TRUE
   } else if (inherits(x, "betareg")) {
     fitfam <- "beta"

@@ -1,3 +1,9 @@
+# sjstats 0.17.1
+
+## Bug fixes
+
+* Fixed issue with `model_family()` and `link_inverse()` for models fitted with `pscl::hurdle()` or `pscl::zeroinfl()`.
+
 # sjstats 0.17.0
 
 ## General
