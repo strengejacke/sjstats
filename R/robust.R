@@ -85,32 +85,19 @@ robust <- function(x, vcov.fun = "vcovHC", vcov.type = c("HC3", "const", "HC", "
 
   se <- sqrt(diag(.vcov))
 
-  dendf <- tryCatch(
-    stats::df.residual(x),
-    error = function(x) { NULL },
-    warning = function(x) { NULL },
-    finally = function(x) { NULL }
-  )
+  dendf <- try(stats::df.residual(x), silent = TRUE)
 
   # 2nd try
-  if (is.null(dendf)) {
-    dendf <- tryCatch(
-      summary(x)$df[2],
-      error = function(x) { NULL },
-      warning = function(x) { NULL },
-      finally = function(x) { NULL }
-    )
+  if (inherits(dendf, "try-error")) {
+    dendf <- try(summary(x)$df[2], silent = TRUE)
   }
 
   # 3rd try
-  if (is.null(dendf)) {
-    dendf <- tryCatch(
-      stats::nobs(x) - length(est),
-      error = function(x) { NULL },
-      warning = function(x) { NULL },
-      finally = function(x) { NULL }
-    )
+  if (inherits(dendf, "try-error")) {
+    dendf <- try(stats::nobs(x) - length(est), silent = TRUE)
   }
+
+  if (inherits(dendf, "try-error")) dendf <- NULL
 
 
   t.stat <- est / se

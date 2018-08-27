@@ -1239,10 +1239,7 @@ print.sj_outliers <- function(x, ...) {
 #' @export
 print.sj_xtab_stat <- function(x, ...) {
   # get length of method name, to align output
-  l <- nchar(x$method)
-
-  # is method shorter than p-value?
-  if (l < 7) l <- 7
+  l <- max(nchar(c(x$method, x$stat.name, "p-value")))
 
   # headline
   cat(crayon::blue("\n# Measure of Association for Contingency Tables\n"))

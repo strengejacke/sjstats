@@ -77,14 +77,8 @@ grpmean <- function(x, dv, grp, weights = NULL, digits = 2, out = c("txt", "view
   if (!missing(weights)) {
     .weights <- rlang::quo_name(rlang::enquo(weights))
 
-    w.string <- tryCatch(
-      {
-        eval(weights)
-      },
-      error = function(x) { NULL },
-      warning = function(x) { NULL },
-      finally = function(x) { NULL }
-    )
+    w.string <- try(eval(weights), silent = TRUE)
+    if (!inherits(w.string, "try-error")) .weights <- w.string
 
     if (!is.null(w.string) && is.character(w.string)) .weights <- w.string
     if (sjmisc::is_empty(.weights) || .weights == "NULL") .weights <- NULL

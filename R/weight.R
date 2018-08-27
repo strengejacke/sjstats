@@ -97,18 +97,25 @@ weight2 <- function(x, weights) {
 }
 
 
-#' @title Weighted statistics for variables
+#' @title Weighted statistics for tests and variables
 #' @name wtd_sd
-#' @description \code{wtd_sd()} and \code{wtd_se()} compute weighted standard
-#'   deviation or standard error for a variable or for all variables of a data
-#'   frame. \code{svy_md()} computes the median for a variable in a survey-design
-#'   (see \code{\link[survey]{svydesign}}). \code{wtd_ttest()} computes a
-#'   weighted t-test, while \code{wtd_mwu()} computes a weighted Mann-Whitney-U
-#'   test or a Kruskal-Wallis test (for more than two groups).
+#' @description \strong{Weighted statistics for variables}
+#'   \cr \cr
+#'   \code{wtd_sd()}, \code{wtd_se()}, \code{wtd_mean()} and \code{wtd_median()}
+#'   compute weighted standard deviation, standard error, mean or median for a
+#'   variable or for all variables of a data frame. \code{svy_md()} computes the
+#'   median for a variable in a survey-design (see \code{\link[survey]{svydesign}}).
+#'   \cr \cr
+#'   \strong{Weighted tests}
+#'   \cr \cr
+#'   \code{wtd_ttest()} computes a weighted t-test, while \code{wtd_mwu()}
+#'   computes a weighted Mann-Whitney-U test or a Kruskal-Wallis test
+#'   (for more than two groups). \code{wtd_chisqtest()} computes a weighted
+#'   Chi-squared test for contigency tables.
 #'
-#' @param x (Numeric) vector or a data frame. For \code{svy_md()}, \code{wtd_ttest()}
-#'    and \code{wtd_mwu()} the bare (unquoted) variable name, or a character
-#'    vector with the variable name.
+#' @param x (Numeric) vector or a data frame. For \code{svy_md()}, \code{wtd_ttest()},
+#'    \code{wtd_mwu()} and \code{wtd_chisqtest()} the bare (unquoted) variable
+#'    name, or a character vector with the variable name.
 #' @param weights Bare (unquoted) variable name, or a character vector with
 #'    the variable name of the numeric vector of weights. If \code{weights = NULL},
 #'    unweighted statistic is reported.
@@ -128,12 +135,16 @@ weight2 <- function(x, weights) {
 #'   must be one of \code{"two.sided"} (default), \code{"greater"} or
 #'   \code{"less"}. You can specify just the initial letter.
 #' @param paired Logical, whether to compute a paired t-test.
+#' @param ... For \code{wtd_ttest()} and \code{wtd_mwu()}, currently not used.
+#'   For \code{wtd_chisqtest()}, further arguments passed down to
+#'   \code{\link[stats]{chisq.test}}.
 #'
 #' @inheritParams svyglm.nb
 #' @inheritParams grpmean
 #'
-#' @return The weighted standard deviation or standard error of \code{x},
-#'           or for each variable if \code{x} is a data frame.
+#' @return The weighted (test) statistic.
+#'
+#' @note \code{wtd_chisq()} is a convenient wrapper for \code{\link{xtab_statistics}}.
 #'
 #' @examples
 #' # weighted sd and se ----
@@ -168,9 +179,14 @@ weight2 <- function(x, weights) {
 #' wtd_ttest(efc, e17age, c160age, weights = weight)
 #' wtd_ttest(e17age ~ e16sex + weight, efc)
 #'
-#' # weighted mwu-test ----
+#' # weighted Mann-Whitney-U-test ----
 #'
 #' wtd_mwu(c12hour ~ c161sex + weight, efc)
+#'
+#' # weighted Chi-squared-test ----
+#'
+#' wtd_chisqtest(efc, c161sex, e16sex, weights = weight, correct = FALSE)
+#' wtd_chisqtest(c172code ~ c161sex + weight, efc)
 #'
 #' @export
 wtd_sd <- function(x, weights = NULL) {
@@ -252,6 +268,50 @@ wtd_se.default <- function(x, weights = NULL) {
 
 wtd_se_helper <- function(x, weights) {
   sqrt(wtd_var(x, weights) / length(stats::na.omit(x)))
+}
+
+
+#' @rdname wtd_sd
+#' @export
+wtd_median <- function(x, weights = NULL) {
+  UseMethod("wtd_median")
+}
+
+#' @export
+wtd_median.default <- function(x, weights = NULL) {
+  wtd_md_helper(x, w = weights, p = 0.5)
+}
+
+#' @importFrom purrr map_dbl
+#' @importFrom dplyr select_if
+#' @export
+wtd_median.data.frame <- function(x, weights = NULL) {
+  dplyr::select_if(x, is.numeric) %>%
+    purrr::map_dbl(~ wtd_md_helper(.x, w = weights, p = 0.5))
+}
+
+wtd_md_helper <- function(x, w, p = .5) {
+  if (is.null(w)) w <- rep(1, length(x))
+
+  x[is.na(w)] <- NA
+  w[is.na(x)] <- NA
+
+  w <- na.omit(w)
+  x <- na.omit(x)
+
+  order <- order(x)
+  x <- x[order]
+  w <- w[order]
+
+  rw <- cumsum(w) / sum(w)
+  md.values <- min(which(rw >= p))
+
+  if (rw[md.values] == p)
+    q <- mean(x[md.values:(md.values + 1)])
+  else
+    q <- x[md.values]
+
+  q
 }
 
 

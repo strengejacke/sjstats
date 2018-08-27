@@ -1,5 +1,10 @@
 # sjstats 0.17.1
 
+## New functions
+
+* `wtd_chisqtest()` to compute a weighted Chi-squared test.
+* `wtd_median()` to compute the weighted median of variables.
+
 ## Bug fixes
 
 * Fixed issue with `model_family()` and `link_inverse()` for models fitted with `pscl::hurdle()` or `pscl::zeroinfl()`.
