@@ -18,12 +18,20 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
   # only one HDI interval
   if (length(prob) > 1) prob <- prob[1]
 
+  # check for binary response. In this case, user should rescale variables
+  fitinfo <- model_family(x, mv = TRUE)
+  if (any(purrr::map_lgl(fitinfo, ~ .x$is_bin))) {
+    message("One of moderator or outcome is binary, so direct and indirect effects may be on different scales. Consider rescaling model predictors, e.g. with `sjmisc::std()`.")
+  }
+
 
   dv <- resp_var(x)
+  fixm <- FALSE
 
   if (missing(mediator)) {
     pv <- pred_vars(x)
     mediator <- pv[pv %in% dv]
+    fixm <- TRUE
   }
 
   if (missing(treatment)) {
@@ -33,24 +41,14 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
     )
 
     treatment <- pvs[[1]][pvs[[1]] %in% pvs[[2]]][1]
-
-    # check for categorical. if user has not specified a treatment variable
-    # and this variable is categorical, the posterior samples contain the
-    # samples from each category of the treatment variable - so we need to
-    # fix the variable name
-
-    mf <- model_frame(x)
-    if (obj_has_name(mf, treatment)) {
-      check_fac <- mf[[treatment]]
-      if (is.factor(check_fac)) {
-        treatment <- sprintf("%s%s", treatment, levels(check_fac)[nlevels(check_fac)])
-      }
-    }
+    treatment <- fix_factor_name(x, treatment)
   }
 
 
   mediator.model <- which(dv == mediator)
   treatment.model <- which(dv != mediator)
+
+  if (fixm) mediator <- fix_factor_name(x, mediator)
 
   # brms removes underscores from variable names when naming estimates
   # so we need to fix variable names here
@@ -112,4 +110,22 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
 
   class(res) <- c("sj_mediation", class(res))
   res
+}
+
+
+fix_factor_name <- function(model, variable) {
+  # check for categorical. if user has not specified a treatment variable
+  # and this variable is categorical, the posterior samples contain the
+  # samples from each category of the treatment variable - so we need to
+  # fix the variable name
+
+  mf <- model_frame(model)
+  if (obj_has_name(mf, variable)) {
+    check_fac <- mf[[variable]]
+    if (is.factor(check_fac)) {
+      variable <- sprintf("%s%s", variable, levels(check_fac)[nlevels(check_fac)])
+    }
+  }
+
+  variable
 }

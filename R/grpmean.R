@@ -312,9 +312,13 @@ get_title_part <- function(x, grps, level, i) {
   # get values from value labels
   vals <- sjlabelled::get_values(x[[var.name]])
   # if we have no value labels, get values directly
-  if (is.null(vals)) vals <- unique(x[[var.name]])
-  # find position of value labels for current group
-  lab.pos <- which(vals == grps[[var.name]][i])
+  if (is.null(vals)) {
+    vals <- unique(x[[var.name]])
+    lab.pos <- i
+  } else {
+    # find position of value labels for current group
+    lab.pos <- which(vals == grps[[var.name]][i])
+  }
 
   # get variable and value labels
   t1 <- sjlabelled::get_label(x[[var.name]], def.value = var.name)

@@ -5,9 +5,14 @@
 * `wtd_chisqtest()` to compute a weighted Chi-squared test.
 * `wtd_median()` to compute the weighted median of variables.
 
+## Changes to functions
+
+* `mediation()` can now cope with models from different families, e.g. if the moderator or outcome is binary, while the treatment-effect is continuous.
+
 ## Bug fixes
 
 * Fixed issue with `model_family()` and `link_inverse()` for models fitted with `pscl::hurdle()` or `pscl::zeroinfl()`.
+* Fixed issue with wrong title in `grpmean()` for grouped data frames, when grouping variable was an unlabelled factor.
 
 # sjstats 0.17.0
 
