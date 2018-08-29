@@ -44,7 +44,9 @@ For \code{r2()}, depending on the model, returns:
           \item For \code{glm} objects, Cox & Snell's and Nagelkerke's pseudo r-squared values.
           \item For \code{brmsfit} or \code{stanreg} objects, the Bayesian version of r-squared is computed, calling \code{rstantools::bayes_R2()}.
           \item If \code{loo = TRUE}, for \code{brmsfit} or \code{stanreg} objects a LOO-adjusted version of r-squared is returned.
+          \item Models that are not currently supported return \code{NULL}.
         }
+        \cr \cr
         For \code{cod()}, returns the \code{D} Coefficient of Discrimination,
         also known as Tjur's R-squared value.
 }

@@ -83,7 +83,10 @@
 #' @export
 pred_vars <- function(x) {
 
-  fm <- stats::formula(x)
+  if (inherits(x, "clm2"))
+    fm <- attr(x$location, "terms", exact = TRUE)
+  else
+    fm <- stats::formula(x)
 
   if (inherits(x, "brmsfit")) {
     if (!is.null(fm$responses)) {
@@ -125,6 +128,8 @@ resp_var <- function(x) {
     }
   } else if (inherits(x, "stanmvreg")) {
     purrr::map_chr(stats::formula(x), ~ deparse(.x[[2L]]))
+  } else if (inherits(x, "clm2")) {
+    all.vars(attr(x$location, "terms", exact = TRUE)[[2L]])
   } else
     deparse(stats::formula(x)[[2L]])
 }
@@ -211,6 +216,15 @@ link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
     il <- stats::make.link(link)$linkinv
   } else if (inherits(x, c("clm", "clmm"))) {
     il <- stats::make.link(x$link)$linkinv
+  } else if (inherits(x, "clm2")) {
+    il <- switch(
+      x$link,
+      logistic = ,
+      probit = stats::make.link("logit")$linkinv,
+      cloglog = ,
+      loglog = stats::make.link("log")$linkinv,
+      stats::make.link("logit")$linkinv
+    )
   } else if (inherits(x, c("lrm", "logistf", "multinom", "Zelig-relogit"))) {
     # "lrm"-object from pkg "rms" have no family method
     # so we construct a logistic-regression-family-object
@@ -255,6 +269,8 @@ model_frame <- function(x, fe.only = TRUE) {
     fitfram <- suppressMessages(
       purrr::reduce(stats::model.frame(x), ~ dplyr::full_join(.x, .y))
     )
+  else if (inherits(x, "clm2"))
+    fitfram <- x$location
   else if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
     fitfram <- stats::model.frame(x, fixed.only = fe.only)
   else if (inherits(x, "lme"))
@@ -419,9 +435,8 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
     logit.link <- TRUE
     link.fun <- NULL
   } else {
-    # "lrm"-object from pkg "rms" have no family method
-    # so we construct a logistic-regression-family-object
-    if (inherits(x, c("lrm", "polr", "logistf", "clmm", "clm", "multinom", "Zelig-relogit")))
+    # here we have no family method, so we construct a logistic-regression-family-object
+    if (inherits(x, c("lrm", "polr", "logistf", "clmm", "clm", "clm2", "multinom", "Zelig-relogit")))
       faminfo <- stats::binomial(link = "logit")
     else
       # get family info
@@ -483,7 +498,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
   zero.inf <- zero.inf | sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T)
 
   is.ordinal <-
-    inherits(x, c("polr", "clm", "clmm", "multinom")) |
+    inherits(x, c("polr", "clm", "clm2", "clmm", "multinom")) |
     fitfam %in% c("cumulative", "cratio", "sratio", "acat")
 
   is.categorical <- fitfam == "categorical"

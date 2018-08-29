@@ -25,7 +25,9 @@
 #'           \item For \code{glm} objects, Cox & Snell's and Nagelkerke's pseudo r-squared values.
 #'           \item For \code{brmsfit} or \code{stanreg} objects, the Bayesian version of r-squared is computed, calling \code{rstantools::bayes_R2()}.
 #'           \item If \code{loo = TRUE}, for \code{brmsfit} or \code{stanreg} objects a LOO-adjusted version of r-squared is returned.
+#'           \item Models that are not currently supported return \code{NULL}.
 #'         }
+#'         \cr \cr
 #'         For \code{cod()}, returns the \code{D} Coefficient of Discrimination,
 #'         also known as Tjur's R-squared value.
 #'
@@ -278,34 +280,55 @@ r2.lm <- function(x, ...) {
 
 #' @export
 r2.default <- function(x, ...) {
-  # do we have a simple linear model?
-  rsq <- summary(x)$r.squared
-  adjr2 <- summary(x)$adj.r.squared
+  tryCatch(
+    {
+      # do we have a simple linear model?
+      rsq <- summary(x)$r.squared
+      adjr2 <- summary(x)$adj.r.squared
 
-  # name vectors
-  names(rsq) <- "R-squared"
-  names(adjr2) <- "adjusted R-squared"
+      # name vectors
+      names(rsq) <- "R-squared"
+      names(adjr2) <- "adjusted R-squared"
 
-  # return results
-  structure(class = "sj_r2", list(r2 = rsq, adjr2 = adjr2))
+      # return results
+      structure(class = "sj_r2", list(r2 = rsq, adjr2 = adjr2))
+    },
+    error = function(x) { NULL }
+  )
 }
 
 
-#' @importFrom stats logLik
+#' @importFrom stats logLik update
 #' @export
 r2.polr <- function(x, ...) {
-  L.base <- stats::logLik(update(x, ~ 1))
+  L.base <- stats::logLik(stats::update(x, ~ 1))
   r2glm(x, L.base)
 }
 
 
-#' @importFrom stats logLik
+#' @importFrom stats logLik update
+#' @export
+r2.clm2 <- function(x, ...) {
+  L.base <- stats::logLik(stats::update(x, location = ~ 1, scale = ~ 1))
+  r2glm(x, L.base)
+}
+
+
+#' @importFrom stats logLik update
+#' @export
+r2.clm <- function(x, ...) {
+  L.base <- stats::logLik(stats::update(x, ~ 1))
+  r2glm(x, L.base)
+}
+
+
+#' @importFrom stats logLik update
 #' @export
 r2.vglm <- function(x, ...) {
   if (!(is.null(x@call$summ) && !identical(x@call$summ, 0)))
     stop("Can't get log-likelihood when `summ` is not zero.", call. = FALSE)
 
-  L.base <- stats::logLik(update(x, ~ 1))
+  L.base <- stats::logLik(stats::update(x, ~ 1))
   r2glm(x, L.base)
 }
 
@@ -630,7 +653,7 @@ r2glm <- function(x, L.base) {
   D.base <- -2 * L.base
   G2 <- -2 * (L.base - L.full)
 
-  if (inherits(x, "vglm"))
+  if (inherits(x, c("vglm", "clm2")))
     n <- stats::nobs(x)
   else
     n <- attr(L.full, "nobs")
