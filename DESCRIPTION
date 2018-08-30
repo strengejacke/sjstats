@@ -48,7 +48,6 @@ Imports:
     sjmisc (>= 2.7.3),
     tidyr
 Suggests:
-    AER,
     brms,
     car,
     ggplot2,

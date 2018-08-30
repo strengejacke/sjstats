@@ -1215,7 +1215,7 @@ print.sj_zcf <- function(x, ...) {
 
 #' @importFrom crayon blue
 #' @export
-print.sj_ovderdisp <- function(x, ...) {
+print.sj_overdisp <- function(x, ...) {
   cat(crayon::blue("\n# Overdispersion test\n\n"))
   cat(sprintf("       dispersion ratio = %.4f\n", x$ratio))
   cat(sprintf("  Pearson's Chi-Squared = %.4f\n", x$chisq))

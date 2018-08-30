@@ -2,17 +2,14 @@
 #' @name overdisp
 #' @description \code{overdisp()} checks generalized linear (mixed) models for
 #'              overdispersion, while \code{zero_count()} checks whether models
-#'              from poisson-families are over- or underfitting zero-counts in
+#'              from Poisson-families are over- or underfitting zero-counts in
 #'              the outcome.
 #'
-#' @param x Fitted GLMM (of class \code{merMod} or \code{glmmTMB}) or \code{glm} model.
-#' @param trafo A specification of the alternative, can be numeric or a
-#'          (positive) function or \code{NULL} (the default). See 'Details'
-#'          in \code{\link[AER]{dispersiontest}} in package \CRANpkg{AER}. Does not
-#'          apply to \code{merMod} objects.
+#' @param x Fitted model of class \code{merMod}, \code{glmmTMB}, \code{glm},
+#'    or \code{glm.nb} (package \pkg{MASS}).
 #' @param tolerance The tolerance for the ratio of observed and predicted
 #'          zeros to considered as over- or underfitting zero-counts. A ratio
-#'          between 1 +/- \code{tolerance} are considered as OK, while a ratio
+#'          between 1 +/- \code{tolerance} is considered as OK, while a ratio
 #'          beyond or below this treshold would indicate over- or underfitting.
 #' @param ... Currently not used.
 #'
@@ -33,16 +30,21 @@
 #'          of an overdispersion parameter, and is probably inaccurate for
 #'          zero-inflated mixed models (fitted with \code{glmmTMB}).
 #'          \cr \cr
-#'          For \code{glm}'s, \code{overdisp()} simply wraps the \code{dispersiontest}
-#'          from the \pkg{AER}-package.
+#'          The same code as above for mixed models is also used to check
+#'          overdispersion for negative binomial models.
+#'          \cr \cr
+#'          For Poisson-models, the overdispersion test is based on the code
+#'          from Gelman and Hill (2007), page 115.
 #'
 #' @references Bolker B et al. (2017): \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html}{GLMM FAQ.}
+#'  \cr \cr
+#'  Gelman A, Hill J (2007) Data Analysis Using Regression and Multilevel/Hierarchical Models. Cambridge, New York: Cambridge University Press
 #'
 #' @examples
 #' library(sjmisc)
 #' data(efc)
 #'
-#' # response has many zero-counts, poisson models
+#' # response has many zero-counts, Poisson models
 #' # might be overdispersed
 #' barplot(table(efc$tot_sc_e))
 #'
@@ -64,23 +66,38 @@ overdisp <- function(x, ...) {
 }
 
 
-#' @rdname overdisp
+#' @importFrom stats fitted nobs coef pchisq
 #' @export
-overdisp.glm <- function(x, trafo = NULL, ...) {
-  # check if suggested package is available
-  if (!requireNamespace("AER", quietly = TRUE)) {
-    stop("Package `AER` needed for this function to work. Please install it.", call. = FALSE)
-  }
+overdisp.glm <- function(x, ...) {
+  # check if we have poisson
+  if (!stats::family(x)$family %in% c("poisson", "quasipoisson"))
+    stop("Model must be from Poisson-family.", call. = F)
 
-  result <- AER::dispersiontest(x, trafo = trafo, alternative = "greater")
-  print(result)
+  yhat <- stats::fitted(x)
 
-  if (result$p.value < 0.05)
-    message("Overdispersion detected.")
-  else
-    message("No overdispersion detected.")
+  n <- stats::nobs(x)
+  k <- length(stats::coef(x))
 
-  invisible(result)
+  zi <- (resp_val(x) - yhat) / sqrt(yhat)
+  chisq <- sum(zi^2)
+  ratio <-  chisq / (n - k)
+  p.value <- stats::pchisq(chisq, df = n - k, lower.tail = FALSE)
+
+  structure(
+    class = "sj_overdisp",
+    list(
+      chisq = chisq,
+      ratio = ratio,
+      rdf = n - k,
+      p = p.value
+    )
+  )
+}
+
+
+#' @export
+overdisp.negbin <- function(x, ...) {
+  overdisp.lme4(x)
 }
 
 
@@ -104,7 +121,7 @@ overdisp.lme4 <- function(x) {
   prat <- Pearson.chisq / rdf
   pval <- stats::pchisq(Pearson.chisq, df = rdf, lower.tail = FALSE)
 
-  structure(class = "sj_ovderdisp",
+  structure(class = "sj_overdisp",
             list(
               chisq = Pearson.chisq,
               ratio = prat,
@@ -115,15 +132,15 @@ overdisp.lme4 <- function(x) {
 
 
 #' @rdname overdisp
-#' @importFrom stats predict dpois family
+#' @importFrom stats fitted dpois family
 #' @export
 zero_count <- function(x, tolerance = .05) {
   # check if we have poisson
   if (!stats::family(x)$family %in% c("poisson", "quasipoisson"))
-    stop("`x` must be from poisson-family.", call. = F)
+    stop("Model must be from Poisson-family.", call. = F)
 
   # get predictions of outcome
-  mu <- predict(x, type = "response")
+  mu <- stats::fitted(x)
 
   # get predicted zero-counts
   pred.zero <- round(sum(stats::dpois(x = 0, lambda = mu)))
