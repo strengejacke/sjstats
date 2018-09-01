@@ -53,11 +53,9 @@ wtd_mwu(data, ...)
 
 wtd_cor(data, ...)
 
-\method{wtd_cor}{default}(data, x, y, weights, method = c("pearson",
-  "kendall", "spearman"), ci.lvl = 0.95, ...)
+\method{wtd_cor}{default}(data, x, y, weights, ci.lvl = 0.95, ...)
 
-\method{wtd_cor}{formula}(formula, data, method = c("pearson", "kendall",
-  "spearman"), ci.lvl = 0.95, ...)
+\method{wtd_cor}{formula}(formula, data, ci.lvl = 0.95, ...)
 }
 \arguments{
 \item{x}{(Numeric) vector or a data frame. For \code{svy_md()}, \code{wtd_ttest()},
@@ -98,10 +96,6 @@ must be one of \code{"two.sided"} (default), \code{"greater"} or
 \item{grp}{Bare (unquoted) name of the cross-classifying variable, where
 \code{x} is grouped into the categories represented by \code{grp},
 or a character vector with the variable name.}
-
-\item{method}{A character string indicating which correlation coefficient
-is to be used for the test. One of \code{"pearson"}, \code{"kendall"},
-or \code{"spearman"}, can be abbreviated.}
 }
 \value{
 The weighted (test) statistic.

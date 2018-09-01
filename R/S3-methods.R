@@ -1861,10 +1861,10 @@ print.sj_wcor <- function(x, ...) {
 
   if (!is.null(x$ci)) {
     cilvl <- sprintf("%.2i%%", as.integer(100 * x$ci.lvl))
-    cat(sprintf("  estimate [%s CI]: %.3f [%.3f %.3f]\n", cilvl, x$r, x$ci[1], x$ci[2]))
+    cat(sprintf("  estimate [%s CI]: %.3f [%.3f %.3f]\n", cilvl, x$estimate, x$ci[1], x$ci[2]))
     cat(sprintf("            p-value: %.3f\n\n", x$p.value))
   } else {
-    cat(sprintf("  estimate: %.3f\n", x$r))
+    cat(sprintf("  estimate: %.3f\n", x$estimate))
     cat(sprintf("   p-value: %.3f\n\n", x$p.value))
   }
 }

@@ -137,9 +137,6 @@ weight2 <- function(x, weights) {
 #'   must be one of \code{"two.sided"} (default), \code{"greater"} or
 #'   \code{"less"}. You can specify just the initial letter.
 #' @param paired Logical, whether to compute a paired t-test.
-#' @param method A character string indicating which correlation coefficient
-#'    is to be used for the test. One of \code{"pearson"}, \code{"kendall"},
-#'    or \code{"spearman"}, can be abbreviated.
 #' @param ... For \code{wtd_ttest()} and \code{wtd_mwu()}, currently not used.
 #'   For \code{wtd_chisqtest()}, further arguments passed down to
 #'   \code{\link[stats]{chisq.test}}.

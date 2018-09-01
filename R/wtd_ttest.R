@@ -262,10 +262,7 @@ wtd_cor <- function(data, ...) {
 
 #' @rdname wtd_sd
 #' @export
-wtd_cor.default <- function(data, x, y, weights, method = c("pearson", "kendall", "spearman"), ci.lvl = .95, ...) {
-
-  method <- match.arg(method)
-
+wtd_cor.default <- function(data, x, y, weights, ci.lvl = .95, ...) {
   if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
     stop("'ci.lvl' must be a single number between 0 and 1")
 
@@ -289,18 +286,17 @@ wtd_cor.default <- function(data, x, y, weights, method = c("pearson", "kendall"
   yv <- dat[[y.name]]
   wv <- dat[[w.name]]
 
-  wtd_cor_helper(xv, yv, wv, method, ci.lvl)
+  wtd_cor_helper(xv, yv, wv, ci.lvl)
 }
 
 
 #' @rdname wtd_sd
 #' @export
-wtd_cor.formula <- function(formula, data, method = c("pearson", "kendall", "spearman"), ci.lvl = .95, ...) {
+wtd_cor.formula <- function(formula, data, ci.lvl = .95, ...) {
 
   if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
     stop("'ci.lvl' must be a single number between 0 and 1")
 
-  method <- match.arg(method)
   vars <- all.vars(formula)
 
   if (length(vars) < 3) {
@@ -316,24 +312,31 @@ wtd_cor.formula <- function(formula, data, method = c("pearson", "kendall", "spe
   yv <- dat[[vars[2]]]
   wv <- dat[[vars[3]]]
 
-  wtd_cor_helper(xv, yv, wv, method, ci.lvl)
+  wtd_cor_helper(xv, yv, wv, ci.lvl)
 }
 
 
 #' @importFrom stats cor.test
-wtd_cor_helper <- function(xv, yv, wv, method, ci.lvl) {
-  xv <- xv * wv
-  yv <- yv * wv
+wtd_cor_helper <- function(xv, yv, wv, ci.lvl) {
 
-  results <- stats::cor.test(xv, yv, method = method, conf.level = ci.lvl)
+  x <- xv - wtd_mean(xv, weights = wv)
+  y <- yv - wtd_mean(yv, weights = wv)
+
+  x <- x / wtd_sd(x, weights = wv)
+  y <- y / wtd_sd(y, weights = wv)
+
+  results <- stats::coef(summary(stats::lm(y ~ x, weights = wv)))[2, ]
+
+  ci <- ci.lvl - ((1 - ci.lvl) / 2)
+  ci <- results[1] + (stats::qnorm(ci) * c(-1, 1) * results[2])
 
   structure(
     class = "sj_wcor",
     list(
-      r = results$estimate,
-      method = results$method,
-      p.value = results$p.value,
-      ci = results$conf.int,
+      estimate = results[1],
+      method = "Pearson's Correlation Coefficient",
+      p.value = results[4],
+      ci = ci,
       ci.lvl = ci.lvl
     )
   )
