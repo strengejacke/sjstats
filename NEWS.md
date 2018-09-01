@@ -4,6 +4,7 @@
 
 * `wtd_chisqtest()` to compute a weighted Chi-squared test.
 * `wtd_median()` to compute the weighted median of variables.
+* `wtd_cor()` to compute weighted correlation coefficients of variables.
 
 ## Changes to functions
 

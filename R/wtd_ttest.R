@@ -250,3 +250,91 @@ wtd_mwu_helper <- function(dat, vars) {
 
   mw
 }
+
+
+
+#' @rdname wtd_sd
+#' @export
+wtd_cor <- function(data, ...) {
+  UseMethod("wtd_cor")
+}
+
+
+#' @rdname wtd_sd
+#' @export
+wtd_cor.default <- function(data, x, y, weights, method = c("pearson", "kendall", "spearman"), ci.lvl = .95, ...) {
+
+  method <- match.arg(method)
+
+  if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
+    stop("'ci.lvl' must be a single number between 0 and 1")
+
+  x.name <- deparse(substitute(x))
+  y.name <- deparse(substitute(y))
+  w.name <- deparse(substitute(weights))
+
+  if (w.name == "NULL") {
+    w.name <- "weights"
+    data$weights <- 1
+  }
+
+  # create string with variable names
+  vars <- c(x.name, y.name, w.name)
+
+  # get data
+  dat <- suppressMessages(dplyr::select(data, !! vars))
+  dat <- na.omit(dat)
+
+  xv <- dat[[x.name]]
+  yv <- dat[[y.name]]
+  wv <- dat[[w.name]]
+
+  wtd_cor_helper(xv, yv, wv, method, ci.lvl)
+}
+
+
+#' @rdname wtd_sd
+#' @export
+wtd_cor.formula <- function(formula, data, method = c("pearson", "kendall", "spearman"), ci.lvl = .95, ...) {
+
+  if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
+    stop("'ci.lvl' must be a single number between 0 and 1")
+
+  method <- match.arg(method)
+  vars <- all.vars(formula)
+
+  if (length(vars) < 3) {
+    vars <- c(vars, "weights")
+    data$weights <- 1
+  }
+
+  # get data
+  dat <- suppressMessages(dplyr::select(data, !! vars))
+  dat <- na.omit(dat)
+
+  xv <- dat[[vars[1]]]
+  yv <- dat[[vars[2]]]
+  wv <- dat[[vars[3]]]
+
+  wtd_cor_helper(xv, yv, wv, method, ci.lvl)
+}
+
+
+#' @importFrom stats cor.test
+wtd_cor_helper <- function(xv, yv, wv, method, ci.lvl) {
+  xv <- xv * wv
+  yv <- yv * wv
+
+  results <- stats::cor.test(xv, yv, method = method, conf.level = ci.lvl)
+
+  structure(
+    class = "sj_wcor",
+    list(
+      r = results$estimate,
+      method = results$method,
+      p.value = results$p.value,
+      ci = results$conf.int,
+      ci.lvl = ci.lvl
+    )
+  )
+}

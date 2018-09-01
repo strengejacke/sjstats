@@ -15,6 +15,9 @@
 \alias{wtd_mwu}
 \alias{wtd_mwu.default}
 \alias{wtd_mwu.formula}
+\alias{wtd_cor}
+\alias{wtd_cor.default}
+\alias{wtd_cor.formula}
 \title{Weighted statistics for tests and variables}
 \usage{
 wtd_sd(x, weights = NULL)
@@ -47,6 +50,14 @@ wtd_mwu(data, ...)
 \method{wtd_mwu}{default}(data, x, grp, weights, ...)
 
 \method{wtd_mwu}{formula}(formula, data, ...)
+
+wtd_cor(data, ...)
+
+\method{wtd_cor}{default}(data, x, y, weights, method = c("pearson",
+  "kendall", "spearman"), ci.lvl = 0.95, ...)
+
+\method{wtd_cor}{formula}(formula, data, method = c("pearson", "kendall",
+  "spearman"), ci.lvl = 0.95, ...)
 }
 \arguments{
 \item{x}{(Numeric) vector or a data frame. For \code{svy_md()}, \code{wtd_ttest()},
@@ -87,6 +98,10 @@ must be one of \code{"two.sided"} (default), \code{"greater"} or
 \item{grp}{Bare (unquoted) name of the cross-classifying variable, where
 \code{x} is grouped into the categories represented by \code{grp},
 or a character vector with the variable name.}
+
+\item{method}{A character string indicating which correlation coefficient
+is to be used for the test. One of \code{"pearson"}, \code{"kendall"},
+or \code{"spearman"}, can be abbreviated.}
 }
 \value{
 The weighted (test) statistic.
@@ -98,6 +113,8 @@ The weighted (test) statistic.
   compute weighted standard deviation, standard error, mean or median for a
   variable or for all variables of a data frame. \code{svy_md()} computes the
   median for a variable in a survey-design (see \code{\link[survey]{svydesign}}).
+  \code{wtd_cor()} computes a weighted correlation for a two-sided alternative
+  hypothesis.
   \cr \cr
   \strong{Weighted tests}
   \cr \cr
@@ -108,6 +125,8 @@ The weighted (test) statistic.
 }
 \note{
 \code{wtd_chisq()} is a convenient wrapper for \code{\link{xtab_statistics}}.
+   For a weighted one-way Anova, use \code{\link[sjmisc]{grpmean}} with
+   \code{weights}-argument.
 }
 \examples{
 # weighted sd and se ----

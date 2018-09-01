@@ -105,6 +105,8 @@ weight2 <- function(x, weights) {
 #'   compute weighted standard deviation, standard error, mean or median for a
 #'   variable or for all variables of a data frame. \code{svy_md()} computes the
 #'   median for a variable in a survey-design (see \code{\link[survey]{svydesign}}).
+#'   \code{wtd_cor()} computes a weighted correlation for a two-sided alternative
+#'   hypothesis.
 #'   \cr \cr
 #'   \strong{Weighted tests}
 #'   \cr \cr
@@ -135,6 +137,9 @@ weight2 <- function(x, weights) {
 #'   must be one of \code{"two.sided"} (default), \code{"greater"} or
 #'   \code{"less"}. You can specify just the initial letter.
 #' @param paired Logical, whether to compute a paired t-test.
+#' @param method A character string indicating which correlation coefficient
+#'    is to be used for the test. One of \code{"pearson"}, \code{"kendall"},
+#'    or \code{"spearman"}, can be abbreviated.
 #' @param ... For \code{wtd_ttest()} and \code{wtd_mwu()}, currently not used.
 #'   For \code{wtd_chisqtest()}, further arguments passed down to
 #'   \code{\link[stats]{chisq.test}}.
@@ -145,6 +150,8 @@ weight2 <- function(x, weights) {
 #' @return The weighted (test) statistic.
 #'
 #' @note \code{wtd_chisq()} is a convenient wrapper for \code{\link{xtab_statistics}}.
+#'    For a weighted one-way Anova, use \code{\link[sjmisc]{grpmean}} with
+#'    \code{weights}-argument.
 #'
 #' @examples
 #' # weighted sd and se ----

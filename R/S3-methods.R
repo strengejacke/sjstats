@@ -1854,6 +1854,22 @@ print.sj_wmwu <- function(x, ...) {
 }
 
 
+#' @importFrom crayon blue cyan
+#' @export
+print.sj_wcor <- function(x, ...) {
+  cat(crayon::blue(sprintf("\nWeighted %s\n\n", x$method)))
+
+  if (!is.null(x$ci)) {
+    cilvl <- sprintf("%.2i%%", as.integer(100 * x$ci.lvl))
+    cat(sprintf("  estimate [%s CI]: %.3f [%.3f %.3f]\n", cilvl, x$r, x$ci[1], x$ci[2]))
+    cat(sprintf("            p-value: %.3f\n\n", x$p.value))
+  } else {
+    cat(sprintf("  estimate: %.3f\n", x$r))
+    cat(sprintf("   p-value: %.3f\n\n", x$p.value))
+  }
+}
+
+
 #' @importFrom sjmisc round_num
 #' @export
 print.sj_anova_stat <- function(x, digits = 3, ...) {
