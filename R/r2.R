@@ -497,7 +497,7 @@ r2_mixedmodel <- function(x, type = NULL) {
   ## Are random slopes present as fixed effects? Warn.
   random.slopes <- if ("list" %in% class(vals$re)) {
     ## multiple RE
-    unique(c(sapply(vals$re,colnames)))
+    unique(c(sapply(vals$re, colnames)))
   } else {
     colnames(vals$re)
   }
