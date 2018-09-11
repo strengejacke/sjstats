@@ -265,33 +265,44 @@ model_frame <- function(x, fe.only = TRUE) {
   # we may store model weights here later
   mw <- NULL
 
-  if (inherits(x, "stanmvreg"))
-    fitfram <- suppressMessages(
-      purrr::reduce(stats::model.frame(x), ~ dplyr::full_join(.x, .y))
-    )
-  else if (inherits(x, "clm2"))
-    fitfram <- x$location
-  else if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
-    fitfram <- stats::model.frame(x, fixed.only = fe.only)
-  else if (inherits(x, "lme"))
-    fitfram <- x$data
-  else if (inherits(x, c("vgam", "gee", "gls")))
-    fitfram <- prediction::find_data(x)
-  else if (inherits(x, "Zelig-relogit"))
-    fitfram <- get_zelig_relogit_frame(x)
-  else if (inherits(x, "vglm")) {
-    if (!length(x@model)) {
-      env <- environment(x@terms$terms)
-      if (is.null(env)) env <- parent.frame()
-      fcall <- x@call
-      fcall$method <- "model.frame"
-      fcall$smart <- FALSE
-      fitfram <- eval(fcall, env, parent.frame())
-    } else {
-      fitfram <- x@model
-    }
-  } else
-    fitfram <- stats::model.frame(x)
+  tryCatch(
+    {
+      if (inherits(x, "stanmvreg"))
+        fitfram <- suppressMessages(
+          purrr::reduce(stats::model.frame(x), ~ dplyr::full_join(.x, .y))
+        )
+      else if (inherits(x, "clm2"))
+        fitfram <- x$location
+      else if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
+        fitfram <- stats::model.frame(x, fixed.only = fe.only)
+      else if (inherits(x, "lme"))
+        fitfram <- x$data
+      else if (inherits(x, c("vgam", "gee", "gls")))
+        fitfram <- prediction::find_data(x)
+      else if (inherits(x, "Zelig-relogit"))
+        fitfram <- get_zelig_relogit_frame(x)
+      else if (inherits(x, "vglm")) {
+        if (!length(x@model)) {
+          env <- environment(x@terms$terms)
+          if (is.null(env)) env <- parent.frame()
+          fcall <- x@call
+          fcall$method <- "model.frame"
+          fcall$smart <- FALSE
+          fitfram <- eval(fcall, env, parent.frame())
+        } else {
+          fitfram <- x@model
+        }
+      } else
+        fitfram <- stats::model.frame(x)
+    },
+    error = function(x) { fitfram <- NULL }
+  )
+
+
+  if (is.null(fitfram)) {
+    warning("Could not get model frame.", call. = F)
+    return(NULL)
+  }
 
 
   # clean 1-dimensional matrices
