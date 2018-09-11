@@ -547,7 +547,7 @@ get_vn_helper <- function(x) {
   # for survival, remove strata(), and so on...
   pattern <- c(
     "as.factor", "offset", "log", "lag", "diff", "lo", "bs", "ns", "t2", "te",
-    "ti", "mi", "gp", "pspline", "poly", "strata", "scale", "s"
+    "ti", "mi", "gp", "pspline", "poly", "strata", "scale", "s", "I"
   )
 
   # do we have a "log()" pattern here? if yes, get capture region
@@ -556,6 +556,8 @@ get_vn_helper <- function(x) {
     for (j in 1:length(pattern)) {
       if (pattern[j] == "offset") {
         x[i] <- sjmisc::trim(unique(sub("^offset\\(([^-+ )]*).*", "\\1", x[i])))
+      } else if (pattern[j] == "I") {
+        x[i] <- sjmisc::trim(unique(sub("I\\((\\w*).*", "\\1", x[i])))
       } else {
         p <- paste0("^", pattern[j], "\\(([^,)]*).*")
         x[i] <- unique(sub(p, "\\1", x[i]))
