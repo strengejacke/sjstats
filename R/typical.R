@@ -68,8 +68,10 @@
 #' @export
 typical_value <- function(x, fun = "mean", weights = NULL, weight.by, ...) {
 
+  ## TODO remove later
+
   if (!missing(weight.by)) {
-    message("Argument `weight.by` is deprecated. Please use `weights`.")
+    # message("Argument `weight.by` is deprecated. Please use `weights`.")
     weights <- weight.by
   }
 

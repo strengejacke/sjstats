@@ -75,10 +75,11 @@ grpmean <- function(x, dv, grp, weights = NULL, digits = 2, out = c("txt", "view
 
   # weights need extra checking, might be NULL
   if (!missing(weights)) {
-    .weights <- rlang::quo_name(rlang::enquo(weights))
+    .weights <- try(rlang::quo_name(rlang::enquo(weights)), silent = TRUE)
+    if (inherits(w.string, "try-error")) .weights <- NULL
 
     w.string <- try(eval(weights), silent = TRUE)
-    if (!inherits(w.string, "try-error")) .weights <- w.string
+    if (!inherits(w.string, "try-error") && is.character(w.string)) .weights <- w.string
 
     if (!is.null(w.string) && is.character(w.string)) .weights <- w.string
     if (sjmisc::is_empty(.weights) || .weights == "NULL") .weights <- NULL
