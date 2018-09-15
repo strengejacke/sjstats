@@ -15,6 +15,7 @@
 
 * Fixed issue with `model_family()` and `link_inverse()` for models fitted with `pscl::hurdle()` or `pscl::zeroinfl()`.
 * Fixed issue with wrong title in `grpmean()` for grouped data frames, when grouping variable was an unlabelled factor.
+* Fix issue with `model_frame()` for **coxph**-models with polynomial or spline-terms.
 
 # sjstats 0.17.0
 

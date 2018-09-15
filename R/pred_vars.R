@@ -375,7 +375,11 @@ model_frame <- function(x, fe.only = TRUE) {
       }
 
 
-      fitfram <- stats::na.omit(dplyr::select(md, !! needed.vars))
+      if (inherits(x, "coxph")) {
+        fitfram <- md
+      } else {
+        fitfram <- stats::na.omit(dplyr::select(md, !! needed.vars))
+      }
 
       # add back model weights, if any
       if (!is.null(mw)) fitfram$`(weights)` <- mw
