@@ -562,7 +562,7 @@ get_vn_helper <- function(x) {
   # for survival, remove strata(), and so on...
   pattern <- c(
     "as.factor", "offset", "log", "lag", "diff", "lo", "bs", "ns", "t2", "te",
-    "ti", "mi", "gp", "pspline", "poly", "strata", "scale", "s", "I"
+    "ti", "tt", "mi", "gp", "pspline", "poly", "strata", "scale", "s", "I"
   )
 
   # do we have a "log()" pattern here? if yes, get capture region
