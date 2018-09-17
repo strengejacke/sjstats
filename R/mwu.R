@@ -86,6 +86,11 @@ mwu <- function(data, x, grp, distribution = "asymptotic", out = c("txt", "viewe
         # retrieve cases (rows) of subgroups
         xsub <- dv[which(grp == grp_values[i] | grp == grp_values[j])]
         ysub <- grp[which(grp == grp_values[i] | grp == grp_values[j])]
+
+        # this is for unpaired wilcox.test()
+        xsub_2 <- stats::na.omit(dv[which(grp == grp_values[i])])
+        ysub_2 <- stats::na.omit(dv[which(grp == grp_values[j])])
+
         # only use rows with non-missings
         ysub <- ysub[which(!is.na(xsub))]
 
@@ -109,7 +114,7 @@ mwu <- function(data, x, grp, distribution = "asymptotic", out = c("txt", "viewe
         z <- as.numeric(coin::statistic(wt, type = "standardized"))
         p <- coin::pvalue(wt)
         r <- abs(z / sqrt(length(dv)))
-        w <- stats::wilcox.test(xsub, ysub.n, paired = TRUE)$statistic
+        w <- stats::wilcox.test(xsub_2, ysub_2, paired = FALSE)$statistic
         rkm.i <- mean(rank(xsub)[which(ysub.n == grp_values[i])], na.rm = TRUE)
         rkm.j <- mean(rank(xsub)[which(ysub.n == grp_values[j])], na.rm = TRUE)
 

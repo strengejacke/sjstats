@@ -147,7 +147,7 @@ weight2 <- function(x, weights) {
 #' @return The weighted (test) statistic.
 #'
 #' @note \code{wtd_chisq()} is a convenient wrapper for \code{\link{xtab_statistics}}.
-#'    For a weighted one-way Anova, use \code{\link[sjmisc]{grpmean}} with
+#'    For a weighted one-way Anova, use \code{grpmean()} with
 #'    \code{weights}-argument.
 #'
 #' @examples

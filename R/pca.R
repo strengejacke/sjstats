@@ -79,6 +79,7 @@ pca <- function(x) {
 
 #' @rdname pca
 #' @importFrom rlang .data
+#' @importFrom stats varimax
 #' @export
 pca_rotate <- function(x, nf = NULL, rotation = c("varimax", "oblimin")) {
 

@@ -52,8 +52,8 @@
 #' wt <- c(5,  5,  4,  1) / 15
 #' x <- c(3.7, 3.3, 3.5, 2.8)
 #'
-#' typical_value(x, "weighted.mean")
-#' typical_value(x, "weighted.mean", weights = wt)
+#' typical_value(x, fun = "weighted.mean")
+#' typical_value(x, fun = "weighted.mean", weights = wt)
 #'
 #' # for factors, return either reference level or mode value
 #' set.seed(123)
@@ -96,11 +96,11 @@ typical_value <- function(x, fun = "mean", weights = NULL, weight.by, ...) {
 
   # for weighted mean, check that weights are of same length as x
 
-  if (fun == "weighted.mean" && !is.null(weight.by)) {
+  if (fun == "weighted.mean" && !is.null(weights)) {
 
     # make sure weights and x have same length
 
-    if (length(weight.by) != length(x)) {
+    if (length(weights) != length(x)) {
       # if not, tell user and change function to mean
       warning("Vector of weights is of different length than `x`. Using `mean` as function for typical value.", call. = F)
       fun <- "mean"
@@ -109,7 +109,7 @@ typical_value <- function(x, fun = "mean", weights = NULL, weight.by, ...) {
 
     # make sure weights are differen from 1
 
-    if (all(weight.by == 1)) {
+    if (all(weights == 1)) {
       # if not, tell user and change function to mean
       warning("All weight values are `1`. Using `mean` as function for typical value.", call. = F)
       fun <- "mean"
@@ -119,7 +119,7 @@ typical_value <- function(x, fun = "mean", weights = NULL, weight.by, ...) {
 
   # no weights, than use normal mean function
 
-  if (fun == "weighted.mean" && is.null(weight.by)) fun <- "mean"
+  if (fun == "weighted.mean" && is.null(weights)) fun <- "mean"
 
 
   if (fun == "median")
@@ -135,7 +135,7 @@ typical_value <- function(x, fun = "mean", weights = NULL, weight.by, ...) {
 
   if (is.numeric(x)) {
     if (fun == "weighted.mean")
-      do.call(myfun, args = list(x = x, na.rm = TRUE, w = weight.by, ...))
+      do.call(myfun, args = list(x = x, na.rm = TRUE, w = weights, ...))
     else
       do.call(myfun, args = list(x = x, na.rm = TRUE, ...))
   } else if (is.factor(x)) {

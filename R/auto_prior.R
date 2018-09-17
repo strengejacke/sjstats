@@ -82,6 +82,13 @@ auto_prior <- function(formula, data, gaussian, locations = NULL) {
 
   y <- data[[y.name]]
 
+  # check if response is binary
+  if (missing(gaussian) && dplyr::n_distinct(y, na.rm = TRUE) == 2) gaussian <- FALSE
+
+  if (isTRUE(gaussian) && dplyr::n_distinct(y, na.rm = TRUE) == 2)
+    warning("Priors were calculated based on assumption that the response is Gaussian, however it seems to be binary.", call. = F)
+
+
   if (gaussian) {
     scale.factor <- stats::sd(y, na.rm = TRUE)
     scale.b <- scale.b * scale.factor
