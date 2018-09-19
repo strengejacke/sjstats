@@ -8,7 +8,10 @@ auto_prior(formula, data, gaussian, locations = NULL)
 }
 \arguments{
 \item{formula}{A formula describing the model, which just needs to contain
-the model terms, but no notation of interaction, splines etc.}
+the model terms, but no notation of interaction, splines etc. Usually,
+you want only those predictors in the formula, for which automatic
+priors should be generated. Add informative priors afterwards to the
+returned \code{brmsprior}-object.}
 
 \item{data}{The data that will be used to fit the model.}
 
@@ -18,7 +21,7 @@ the model terms, but no notation of interaction, splines etc.}
 \code{locations = NULL}, \code{0} is used as location parameter.}
 }
 \value{
-A \pkg{brms}-\code{prior}-object.
+A \code{brmsprior}-object.
 }
 \description{
 This function creates default priors for brms-regression
@@ -66,6 +69,15 @@ if (requireNamespace("brms", quietly = TRUE))
 # ap <- auto_prior(mf, efc, TRUE)
 # brm(mf, data = efc, priors = ap)
 
+# add informative priors
+mf <- formula(neg_c_7 ~ c161sex + c172code)
+
+if (requireNamespace("brms", quietly = TRUE)) {
+  auto_prior(mf, efc, TRUE) +
+    brms::prior(normal(.1554, 40), class = "b", coef = "c160age")
+}
+
+# example with binary response
 efc$neg_c_7d <- ifelse(efc$neg_c_7 < median(efc$neg_c_7, na.rm = TRUE), 0, 1)
 mf <- formula(neg_c_7d ~ c161sex + c160age + c172code + e17age)
 

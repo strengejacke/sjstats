@@ -6,13 +6,16 @@
 #'   \pkg{rstanarm}.
 #'
 #' @param formula A formula describing the model, which just needs to contain
-#'   the model terms, but no notation of interaction, splines etc.
+#'   the model terms, but no notation of interaction, splines etc. Usually,
+#'   you want only those predictors in the formula, for which automatic
+#'   priors should be generated. Add informative priors afterwards to the
+#'   returned \code{brmsprior}-object.
 #' @param data The data that will be used to fit the model.
 #' @param gaussian Logical, if the outcome is gaussian or not.
 #' @param locations A numeric vector with location values for the priors. If
 #'   \code{locations = NULL}, \code{0} is used as location parameter.
 #'
-#' @return A \pkg{brms}-\code{prior}-object.
+#' @return A \code{brmsprior}-object.
 #'
 #' @details \code{auto_prior()} is a small, convenient function to create
 #'   some default priors for brms-models with automatically adjusted prior
@@ -53,6 +56,15 @@
 #' # ap <- auto_prior(mf, efc, TRUE)
 #' # brm(mf, data = efc, priors = ap)
 #'
+#' # add informative priors
+#' mf <- formula(neg_c_7 ~ c161sex + c172code)
+#'
+#' if (requireNamespace("brms", quietly = TRUE)) {
+#'   auto_prior(mf, efc, TRUE) +
+#'     brms::prior(normal(.1554, 40), class = "b", coef = "c160age")
+#' }
+#'
+#' # example with binary response
 #' efc$neg_c_7d <- ifelse(efc$neg_c_7 < median(efc$neg_c_7, na.rm = TRUE), 0, 1)
 #' mf <- formula(neg_c_7d ~ c161sex + c160age + c172code + e17age)
 #'
