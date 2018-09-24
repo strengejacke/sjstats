@@ -180,7 +180,7 @@ link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
   # do we have glm? if so, get link family. make exceptions
   # for specific models that don't have family function
 
-  if (inherits(x, c("truncreg", "coxph"))) {
+  if (inherits(x, c("truncreg", "coxph", "coxme"))) {
     il <- NULL
   } else if (inherits(x, c("zeroinfl", "hurdle"))) {
     il <- stats::make.link("log")$linkinv
@@ -257,7 +257,6 @@ brms_link_inverse <- function(fam) {
 
 #' @rdname pred_vars
 #' @importFrom stats model.frame formula getCall na.omit
-#' @importFrom prediction find_data
 #' @importFrom purrr map_lgl map reduce
 #' @importFrom dplyr select bind_cols full_join
 #' @export
@@ -277,8 +276,10 @@ model_frame <- function(x, fe.only = TRUE) {
         fitfram <- stats::model.frame(x, fixed.only = fe.only)
       else if (inherits(x, "lme"))
         fitfram <- x$data
-      else if (inherits(x, c("vgam", "gee", "gls")))
-        fitfram <- prediction::find_data(x)
+      else if (inherits(x, "vgam"))
+        fitfram <- get(x@misc$dataname, envir = parent.frame())
+      else if (inherits(x, c("gee", "gls")))
+        fitfram <- eval(x$call$data, envir = parent.frame())
       else if (inherits(x, "Zelig-relogit"))
         fitfram <- get_zelig_relogit_frame(x)
       else if (inherits(x, "vglm")) {
@@ -344,6 +345,10 @@ model_frame <- function(x, fe.only = TRUE) {
       fitfram_matrix <- dplyr::bind_cols(purrr::map(fitfram_matrix, ~ as.data.frame(.x, stringsAsFactors = FALSE)))
       fitfram <- dplyr::bind_cols(fitfram_nonmatrix, fitfram_matrix)
     } else {
+
+      # fix NA in column names
+
+      if (any(is.na(colnames(md)))) colnames(md) <- make.names(colnames(md))
 
       # get "matrix" terms and "normal" predictors, but exclude
       # response variable(s)
@@ -445,7 +450,7 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
     fitfam <- "beta"
     logit.link <- x$link$mean$name == "logit"
     link.fun <- x$link$mean$linkfun
-  } else if (inherits(x, "coxph")) {
+  } else if (inherits(x, c("coxph", "coxme"))) {
     fitfam <- "survival"
     logit.link <- TRUE
     link.fun <- NULL
@@ -561,8 +566,9 @@ get_vn_helper <- function(x) {
   # for gam-smoothers/loess, remove s()- and lo()-function in column name
   # for survival, remove strata(), and so on...
   pattern <- c(
-    "as.factor", "offset", "log", "lag", "diff", "lo", "bs", "ns", "t2", "te",
-    "ti", "tt", "mi", "gp", "pspline", "poly", "strata", "scale", "s", "I"
+    "as.factor", "factor", "offset", "log", "lag", "diff", "lo", "bs", "ns",
+    "t2", "te", "ti", "tt", "mi", "gp", "pspline", "poly", "strata", "scale",
+    "interaction", "s", "I"
   )
 
   # do we have a "log()" pattern here? if yes, get capture region
@@ -578,6 +584,8 @@ get_vn_helper <- function(x) {
         x[i] <- unique(sub(p, "\\1", x[i]))
       }
     }
-    x[i]
+    # for coxme-models, remove random-effect things...
+    sjmisc::trim(sub("^(.*)\\|(.*)", "\\2", x[i]))
+    # x[i]
   })
 }

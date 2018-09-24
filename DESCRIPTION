@@ -40,7 +40,6 @@ Imports:
     Matrix,
     modelr,
     nlme,
-    prediction,
     purrr,
     pwr,
     rlang,
