@@ -239,6 +239,12 @@ aov_stat_summary <- function(model) {
   }
 
 
+  # check if object has sums of square
+  if (!obj_has_name(aov.sum, "sumsq")) {
+    stop("Model object has no sums of squares. Cannot compute effect size statistic.", call. = FALSE)
+  }
+
+
   # need special handling for rms-anova
   if (inherits(model, "anova.rms"))
     colnames(aov.sum) <- c("term", "df", "sumsq", "meansq", "statistic", "p.value")

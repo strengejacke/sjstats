@@ -10,6 +10,7 @@
 
 * `mediation()` can now cope with models from different families, e.g. if the moderator or outcome is binary, while the treatment-effect is continuous.
 * `model_frame()`, `link_inverse()`, `pred_vars()`, `resp_var()`, `resp_val()`, `r2()` and `model_family()` now support `clm2`-objects from package **ordinal**.
+* `anova_stats()` gives a more informative message for non-supported models or ANOVA-options.
 
 ## Bug fixes
 
