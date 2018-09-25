@@ -27,7 +27,6 @@
 #'           \item If \code{loo = TRUE}, for \code{brmsfit} or \code{stanreg} objects a LOO-adjusted version of r-squared is returned.
 #'           \item Models that are not currently supported return \code{NULL}.
 #'         }
-#'         \cr \cr
 #'         For \code{cod()}, returns the \code{D} Coefficient of Discrimination,
 #'         also known as Tjur's R-squared value.
 #'

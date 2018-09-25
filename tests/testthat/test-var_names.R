@@ -15,5 +15,10 @@ if (require("testthat") && require("sjstats")) {
     expect_equal(var_names("bs(test, df = 2)"), "test")
     expect_equal(var_names("offset(test)"), "test")
     expect_equal(var_names("offset(log(test))"), "test")
+    expect_equal(var_names("factor(test)"), "test")
+    expect_equal(var_names("as.factor(test)"), "test")
+    expect_equal(var_names("~ 1 | test"), "test")
+    expect_equal(var_names("~1|test"), "test")
+    expect_equal(var_names("1 | test"), "test")
   })
 }

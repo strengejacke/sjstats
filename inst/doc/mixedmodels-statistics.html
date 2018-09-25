@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2018-08-20" />
+<meta name="date" content="2018-09-25" />
 
 <title>Statistics for Mixed Effects Models</title>
 
@@ -278,7 +278,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Statistics for Mixed Effects Models</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2018-08-20</em></h4>
+<h4 class="date"><em>2018-09-25</em></h4>
 
 
 
@@ -303,8 +303,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co"># fit linear mixed model</span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">m &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data =</span> sleepstudy)</a>
 <a class="sourceLine" id="cb1-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">sleepstudy<span class="op">$</span>mygrp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">45</span>, <span class="dt">size =</span> <span class="dv">180</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>mygrp) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject), sleepstudy)</a></code></pre></div>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw">set.seed</span>(<span class="dv">2018</span>)</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">sleepstudy<span class="op">$</span>mygrp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">45</span>, <span class="dt">size =</span> <span class="dv">180</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>mygrp) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject), sleepstudy)</a></code></pre></div>
 <div id="sample-size-calculation-for-mixed-models" class="section level2">
 <h2>Sample Size Calculation for Mixed Models</h2>
 <p>The first two functions, <code>deff()</code> and <code>smpsize_lmm()</code>, can be used to approximately calculate the sample size in the context of power calculation. Calculating the sample size for simple linear models is pretty straightforward, however, for (linear) mixed models, statistical power is affected through the change of the variance of test statistics. This is what Hsieh et al. (2003) call a <em>design effect</em> (or variance inflation factor, VIF). Once this design effect is calculated, the sample size calculated for a standard design can be adjusted accordingly.</p>
@@ -388,21 +389,21 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Using the t-statistics for calculating the p-value</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">p_value</span>(m2)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;          term p.value std.error</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; 1 (Intercept)       0     9.733</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 2        Days       0     0.797</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; 1 (Intercept)       0     9.933</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 2        Days       0     0.789</span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co"># p-values based on conditional F-tests with </span></a>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># Kenward-Roger approximation for the degrees of freedom</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw">p_value</span>(m2, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;          term p.value std.error</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 1 (Intercept)       0     9.748</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 2        Days       0     0.804</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 1 (Intercept)       0     9.945</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 2        Days       0     0.796</span></a></code></pre></div>
 <p>To see more details on the degrees of freedom when using Kenward-Roger approximation, use the <code>summary()</code>-method:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">pv &lt;-<span class="st"> </span><span class="kw">p_value</span>(m2, <span class="dt">p.kr =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">summary</span>(pv)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;          term p.value std.error      df statistic</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 1 (Intercept)       0     9.748  23.409    25.819</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 2        Days       0     0.804 157.344    13.047</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 1 (Intercept)       0     9.945  23.152    25.241</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 2        Days       0     0.796 154.722    13.133</span></a></code></pre></div>
 </div>
 <div id="random-effect-variances" class="section level2">
 <h2>Random Effect Variances</h2>
@@ -463,8 +464,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; Family : gaussian (identity)</span></a>
 <a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
 <a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt;     ICC (mygrp): 0.0285</span></a>
-<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt;   ICC (Subject): 0.5846</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt;     ICC (mygrp): 0.0383</span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt;   ICC (Subject): 0.5981</span></a></code></pre></div>
 <p>If <code>adjusted = TRUE</code>, an adjusted and conditional ICC are calculated, which take all sources of uncertainty (of all random effects) into account to report an “adjusted” ICC, as well as the conditional ICC. The latter also takes the fixed effects variances into account (see Nakagawa et al. 2017). If random effects are not nested and not cross-classified, the adjusted (<code>adjusted = TRUE</code>) and unadjusted (<code>adjusted = FALSE</code>) ICC are identical.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">icc</span>(m, <span class="dt">adjusted =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; </span></a>
@@ -483,8 +484,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; Family : gaussian (identity)</span></a>
 <a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
 <a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt;    Adjusted ICC: 0.6130</span></a>
-<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt; Conditional ICC: 0.4397</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt;    Adjusted ICC: 0.6363</span></a>
+<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt; Conditional ICC: 0.4609</span></a></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1">
