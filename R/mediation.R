@@ -124,6 +124,8 @@ fix_factor_name <- function(model, variable) {
     check_fac <- mf[[variable]]
     if (is.factor(check_fac)) {
       variable <- sprintf("%s%s", variable, levels(check_fac)[nlevels(check_fac)])
+    } else if (is.logical(check_fac)) {
+      variable <- sprintf("%sTRUE", variable)
     }
   }
 
