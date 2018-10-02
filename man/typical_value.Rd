@@ -4,7 +4,7 @@
 \alias{typical_value}
 \title{Return the typical value of a vector}
 \usage{
-typical_value(x, fun = "mean", weights = NULL, weight.by, ...)
+typical_value(x, fun = "mean", weights = NULL, ...)
 }
 \arguments{
 \item{x}{A variable.}
@@ -25,8 +25,6 @@ vector to apply other different functions to numeric and categorical
 \item{weights}{Name of variable in \code{x} that indicated the vector of
 weights that will be applied to weight all observations. Default is
 \code{NULL}, so no weights are used.}
-
-\item{weight.by}{Deprecated.}
 
 \item{...}{Further arguments, passed down to \code{fun}.}
 }

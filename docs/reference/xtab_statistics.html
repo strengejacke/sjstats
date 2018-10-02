@@ -66,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
       </span>
     </div>
 
@@ -209,7 +209,7 @@ weights that will be applied to weight all observations. Default is
           <dt><code>df</code></dt><dd><p>the degrees of freedom for the contingency table.</p></dd>
           <dt><code>method</code></dt><dd><p>character string indicating the name of the measure of association.</p></dd>
           <dt><code>method.html</code></dt><dd><p>if applicable, the name of the measure of association, in HTML-format.</p></dd>
-          <dt><code>method.short</code></dt><dd><p>the short form of association measure, equals the <code>statistics</code>-aergument.</p></dd>
+          <dt><code>method.short</code></dt><dd><p>the short form of association measure, equals the <code>statistics</code>-argument.</p></dd>
           <dt><code>fisher</code></dt><dd><p>logical, if Fisher's exact test was used to calculate the p-value.</p></dd>
         </dl>
 
@@ -245,15 +245,15 @@ weights that will be applied to weight all observations. Default is
 #&gt; # Measure of Association for Contingency Tables
 #&gt; 
 #&gt;   Chi-squared: 2.2327
-#&gt;       Phi: 0.0526
-#&gt;   p-value: 0.1351</div><div class='input'>
+#&gt;           Phi: 0.0526
+#&gt;       p-value: 0.1351</div><div class='input'>
 <span class='co'># more dimensions than 2x2, compute Cramer's V automatically</span>
 <span class='fu'>xtab_statistics</span>(<span class='no'>efc</span>, <span class='no'>c172code</span>, <span class='no'>c161sex</span>)</div><div class='output co'>#&gt; 
 #&gt; # Measure of Association for Contingency Tables
 #&gt; 
 #&gt;   Chi-squared: 4.1085
-#&gt;   Cramer's V: 0.0699
-#&gt;      p-value: 0.1282</div><div class='input'>
+#&gt;    Cramer's V: 0.0699
+#&gt;       p-value: 0.1282</div><div class='input'>
 <span class='co'># ordinal data, use Kendall's tau</span>
 <span class='fu'>xtab_statistics</span>(<span class='no'>efc</span>, <span class='no'>e42dep</span>, <span class='no'>quol_5</span>, <span class='kw'>statistics</span> <span class='kw'>=</span> <span class='st'>"kendall"</span>)</div><div class='output co'>#&gt; 
 #&gt; # Measure of Association for Contingency Tables

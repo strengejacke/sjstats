@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
       </span>
     </div>
 
@@ -184,6 +184,7 @@ a rather "unadjusted" r-squared will be returned by calling
 <li><p>For <code>glm</code> objects, Cox &amp; Snell's and Nagelkerke's pseudo r-squared values.</p></li>
 <li><p>For <code>brmsfit</code> or <code>stanreg</code> objects, the Bayesian version of r-squared is computed, calling <code><a href='http://www.rdocumentation.org/packages/rstantools/topics/bayes_R2'>rstantools::bayes_R2()</a></code>.</p></li>
 <li><p>If <code>loo = TRUE</code>, for <code>brmsfit</code> or <code>stanreg</code> objects a LOO-adjusted version of r-squared is returned.</p></li>
+<li><p>Models that are not currently supported return <code>NULL</code>.</p></li>
 </ul><p>For <code>cod()</code>, returns the <code>D</code> Coefficient of Discrimination,
         also known as Tjur's R-squared value.</p>
     

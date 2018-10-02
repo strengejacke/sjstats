@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
       </span>
     </div>
 
@@ -143,7 +143,10 @@
     <tr>
       <th>formula</th>
       <td><p>A formula describing the model, which just needs to contain
-the model terms, but no notation of interaction, splines etc.</p></td>
+the model terms, but no notation of interaction, splines etc. Usually,
+you want only those predictors in the formula, for which automatic
+priors should be generated. Add informative priors afterwards to the
+returned <code>brmsprior</code>-object.</p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -162,7 +165,7 @@ the model terms, but no notation of interaction, splines etc.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <span class="pkg">brms</span>-<code>prior</code>-object.</p>
+    <p>A <code>brmsprior</code>-object.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -212,6 +215,19 @@ the model terms, but no notation of interaction, splines etc.</p></td>
 <span class='co'># ap &lt;- auto_prior(mf, efc, TRUE)</span>
 <span class='co'># brm(mf, data = efc, priors = ap)</span>
 
+<span class='co'># add informative priors</span>
+<span class='no'>mf</span> <span class='kw'>&lt;-</span> <span class='fu'>formula</span>(<span class='no'>neg_c_7</span> ~ <span class='no'>c161sex</span> + <span class='no'>c172code</span>)
+
+<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"brms"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='fu'>auto_prior</span>(<span class='no'>mf</span>, <span class='no'>efc</span>, <span class='fl'>TRUE</span>) +
+    <span class='kw pkg'>brms</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/brms/topics/set_prior'>prior</a></span>(<span class='fu'>normal</span>(<span class='fl'>.1554</span>, <span class='fl'>40</span>), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"b"</span>, <span class='kw'>coef</span> <span class='kw'>=</span> <span class='st'>"c160age"</span>)
+}</div><div class='output co'>#&gt;                prior     class          coef group resp dpar nlpar bound
+#&gt; 1   normal(0, 38.95) Intercept                                          
+#&gt; 2    normal(0, 9.74)         b c161sexFemale                            
+#&gt; 3    normal(0, 9.74)         b     c172code2                            
+#&gt; 4    normal(0, 9.74)         b     c172code3                            
+#&gt; 5 normal(0.1554, 40)         b       c160age                            </div><div class='input'>
+<span class='co'># example with binary response</span>
 <span class='no'>efc</span>$<span class='no'>neg_c_7d</span> <span class='kw'>&lt;-</span> <span class='fu'>ifelse</span>(<span class='no'>efc</span>$<span class='no'>neg_c_7</span> <span class='kw'>&lt;</span> <span class='fu'>median</span>(<span class='no'>efc</span>$<span class='no'>neg_c_7</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fl'>0</span>, <span class='fl'>1</span>)
 <span class='no'>mf</span> <span class='kw'>&lt;-</span> <span class='fu'>formula</span>(<span class='no'>neg_c_7d</span> ~ <span class='no'>c161sex</span> + <span class='no'>c160age</span> + <span class='no'>c172code</span> + <span class='no'>e17age</span>)
 

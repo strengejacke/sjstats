@@ -34,7 +34,7 @@
 
 <meta property="og:description" content="overdisp() checks generalized linear (mixed) models for
              overdispersion, while zero_count() checks whether models
-             from poisson-families are over- or underfitting zero-counts in
+             from Poisson-families are over- or underfitting zero-counts in
              the outcome." />
 
 <meta property="og:image" content="/logo.png" />
@@ -66,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
       </span>
     </div>
 
@@ -132,15 +132,12 @@
     
     <p><code>overdisp()</code> checks generalized linear (mixed) models for
              overdispersion, while <code>zero_count()</code> checks whether models
-             from poisson-families are over- or underfitting zero-counts in
+             from Poisson-families are over- or underfitting zero-counts in
              the outcome.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>overdisp</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for glm</span>
-<span class='fu'>overdisp</span>(<span class='no'>x</span>, <span class='kw'>trafo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='fu'>zero_count</span>(<span class='no'>x</span>, <span class='kw'>tolerance</span> <span class='kw'>=</span> <span class='fl'>0.05</span>)</pre>
     
@@ -149,24 +146,18 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Fitted GLMM (of class <code>merMod</code> or <code>glmmTMB</code>) or <code>glm</code> model.</p></td>
+      <td><p>Fitted model of class <code>merMod</code>, <code>glmmTMB</code>, <code>glm</code>,
+or <code>glm.nb</code> (package <span class="pkg">MASS</span>).</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Currently not used.</p></td>
     </tr>
     <tr>
-      <th>trafo</th>
-      <td><p>A specification of the alternative, can be numeric or a
-(positive) function or <code>NULL</code> (the default). See 'Details'
-in <code><a href='http://www.rdocumentation.org/packages/AER/topics/dispersiontest'>dispersiontest</a></code> in package <a href='https://CRAN.R-project.org/package=AER'><span class="pkg">AER</span></a>. Does not
-apply to <code>merMod</code> objects.</p></td>
-    </tr>
-    <tr>
       <th>tolerance</th>
       <td><p>The tolerance for the ratio of observed and predicted
 zeros to considered as over- or underfitting zero-counts. A ratio
-between 1 +/- <code>tolerance</code> are considered as OK, while a ratio
+between 1 +/- <code>tolerance</code> is considered as OK, while a ratio
 beyond or below this treshold would indicate over- or underfitting.</p></td>
     </tr>
     </table>
@@ -186,8 +177,11 @@ beyond or below this treshold would indicate over- or underfitting.</p></td>
          of an overdispersion parameter, and is probably inaccurate for
          zero-inflated mixed models (fitted with <code>glmmTMB</code>).
          <br /> <br />
-         For <code>glm</code>'s, <code>overdisp()</code> simply wraps the <code>dispersiontest</code>
-         from the <span class="pkg">AER</span>-package.</p>
+         The same code as above for mixed models is also used to check
+         overdispersion for negative binomial models.
+         <br /> <br />
+         For Poisson-models, the overdispersion test is based on the code
+         from Gelman and Hill (2007), page 115.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -199,27 +193,26 @@ beyond or below this treshold would indicate over- or underfitting.</p></td>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Bolker B et al. (2017): <a href='http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html'>GLMM FAQ.</a></p>
+    <p>Bolker B et al. (2017): <a href='http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html'>GLMM FAQ.</a>
+ <br /> <br />
+ Gelman A, Hill J (2007) Data Analysis Using Regression and Multilevel/Hierarchical Models. Cambridge, New York: Cambridge University Press</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>sjmisc</span>)
 <span class='fu'>data</span>(<span class='no'>efc</span>)
 
-<span class='co'># response has many zero-counts, poisson models</span>
+<span class='co'># response has many zero-counts, Poisson models</span>
 <span class='co'># might be overdispersed</span>
 <span class='fu'>barplot</span>(<span class='fu'>table</span>(<span class='no'>efc</span>$<span class='no'>tot_sc_e</span>))</div><div class='img'><img src='overdisp-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>tot_sc_e</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>e42dep</span> + <span class='no'>c160age</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='no'>poisson</span>)
 <span class='fu'>overdisp</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
-#&gt; 	Overdispersion test
+#&gt; # Overdispersion test
 #&gt; 
-#&gt; data:  x
-#&gt; z = 3.9657, p-value = 3.658e-05
-#&gt; alternative hypothesis: true dispersion is greater than 1
-#&gt; sample estimates:
-#&gt; dispersion 
-#&gt;   1.539409 
+#&gt;        dispersion ratio = 1.5485
+#&gt;   Pearson's Chi-Squared = 1371.9645
+#&gt;                 p-value = 0.0000
 #&gt; </div><div class='output co'>#&gt; <span class='message'>Overdispersion detected.</span></div><div class='input'><span class='fu'>zero_count</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
 #&gt; # Zero-Count overfitting
 #&gt; 

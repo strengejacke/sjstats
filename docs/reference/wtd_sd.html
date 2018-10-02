@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Weighted statistics for variables — wtd_sd • sjstats</title>
+<title>Weighted statistics for tests and variables — wtd_sd • sjstats</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,14 +30,23 @@
 
 
 
-<meta property="og:title" content="Weighted statistics for variables — wtd_sd" />
+<meta property="og:title" content="Weighted statistics for tests and variables — wtd_sd" />
 
-<meta property="og:description" content="wtd_sd() and wtd_se() compute weighted standard
-  deviation or standard error for a variable or for all variables of a data
-  frame. svy_md() computes the median for a variable in a survey-design
-  (see svydesign). wtd_ttest() computes a
-  weighted t-test, while wtd_mwu() computes a weighted Mann-Whitney-U
-  test or a Kruskal-Wallis test (for more than two groups)." />
+<meta property="og:description" content="Weighted statistics for variables
+   
+  wtd_sd(), wtd_se(), wtd_mean() and wtd_median()
+  compute weighted standard deviation, standard error, mean or median for a
+  variable or for all variables of a data frame. svy_md() computes the
+  median for a variable in a survey-design (see svydesign).
+  wtd_cor() computes a weighted correlation for a two-sided alternative
+  hypothesis.
+   
+  Weighted tests
+   
+  wtd_ttest() computes a weighted t-test, while wtd_mwu()
+  computes a weighted Mann-Whitney-U test or a Kruskal-Wallis test
+  (for more than two groups). wtd_chisqtest() computes a weighted
+  Chi-squared test for contigency tables." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -68,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
       </span>
     </div>
 
@@ -125,19 +134,28 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Weighted statistics for variables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/weight.R'><code>R/weight.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/wtd_ttest.R'><code>R/wtd_ttest.R</code></a></small>
+    <h1>Weighted statistics for tests and variables</h1>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/weight.R'><code>R/weight.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/wtd_chisqtest.R'><code>R/wtd_chisqtest.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/wtd_ttest.R'><code>R/wtd_ttest.R</code></a></small>
     <div class="hidden name"><code>wtd_sd.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>wtd_sd()</code> and <code>wtd_se()</code> compute weighted standard
-  deviation or standard error for a variable or for all variables of a data
-  frame. <code>svy_md()</code> computes the median for a variable in a survey-design
-  (see <code><a href='http://www.rdocumentation.org/packages/survey/topics/svydesign'>svydesign</a></code>). <code>wtd_ttest()</code> computes a
-  weighted t-test, while <code>wtd_mwu()</code> computes a weighted Mann-Whitney-U
-  test or a Kruskal-Wallis test (for more than two groups).</p>
+    <p><strong>Weighted statistics for variables</strong>
+  <br /> <br />
+  <code>wtd_sd()</code>, <code>wtd_se()</code>, <code>wtd_mean()</code> and <code>wtd_median()</code>
+  compute weighted standard deviation, standard error, mean or median for a
+  variable or for all variables of a data frame. <code>svy_md()</code> computes the
+  median for a variable in a survey-design (see <code><a href='http://www.rdocumentation.org/packages/survey/topics/svydesign'>svydesign</a></code>).
+  <code>wtd_cor()</code> computes a weighted correlation for a two-sided alternative
+  hypothesis.
+  <br /> <br />
+  <strong>Weighted tests</strong>
+  <br /> <br />
+  <code>wtd_ttest()</code> computes a weighted t-test, while <code>wtd_mwu()</code>
+  computes a weighted Mann-Whitney-U test or a Kruskal-Wallis test
+  (for more than two groups). <code>wtd_chisqtest()</code> computes a weighted
+  Chi-squared test for contigency tables.</p>
     
     </div>
 
@@ -147,7 +165,17 @@
 
 <span class='fu'>wtd_se</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
+<span class='fu'>wtd_median</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
 <span class='fu'>svy_md</span>(<span class='no'>x</span>, <span class='no'>design</span>)
+
+<span class='fu'>wtd_chisqtest</span>(<span class='no'>data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>wtd_chisqtest</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>weights</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for formula</span>
+<span class='fu'>wtd_chisqtest</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>)
 
 <span class='fu'>wtd_ttest</span>(<span class='no'>data</span>, <span class='no'>...</span>)
 
@@ -166,16 +194,24 @@
 <span class='fu'>wtd_mwu</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>grp</span>, <span class='no'>weights</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for formula</span>
-<span class='fu'>wtd_mwu</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>wtd_mwu</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>)
+
+<span class='fu'>wtd_cor</span>(<span class='no'>data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>wtd_cor</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>weights</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for formula</span>
+<span class='fu'>wtd_cor</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>(Numeric) vector or a data frame. For <code>svy_md()</code>, <code>wtd_ttest()</code>
-and <code>wtd_mwu()</code> the bare (unquoted) variable name, or a character
-vector with the variable name.</p></td>
+      <td><p>(Numeric) vector or a data frame. For <code>svy_md()</code>, <code>wtd_ttest()</code>,
+<code>wtd_mwu()</code> and <code>wtd_chisqtest()</code> the bare (unquoted) variable
+name, or a character vector with the variable name.</p></td>
     </tr>
     <tr>
       <th>weights</th>
@@ -194,12 +230,20 @@ a specification of the survey design.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Other arguments passed down to <code><a href='http://www.rdocumentation.org/packages/MASS/topics/glm.nb'>glm.nb</a></code>.</p></td>
+      <td><p>For <code>wtd_ttest()</code> and <code>wtd_mwu()</code>, currently not used.
+For <code>wtd_chisqtest()</code>, further arguments passed down to
+<code><a href='http://www.rdocumentation.org/packages/stats/topics/chisq.test'>chisq.test</a></code>.</p></td>
     </tr>
     <tr>
       <th>y</th>
       <td><p>Optional, bare (unquoted) variable name, or a character vector with
 the variable name.</p></td>
+    </tr>
+    <tr>
+      <th>formula</th>
+      <td><p>A formula of the form <code>lhs ~ rhs1 + rhs2</code> where <code>lhs</code> is a
+numeric variable giving the data values and <code>rhs1</code> a factor with two
+levels giving the corresponding groups and <code>rhs2</code> a variable with weights.</p></td>
     </tr>
     <tr>
       <th>mu</th>
@@ -221,12 +265,6 @@ must be one of <code>"two.sided"</code> (default), <code>"greater"</code> or
 <code>"less"</code>. You can specify just the initial letter.</p></td>
     </tr>
     <tr>
-      <th>formula</th>
-      <td><p>A formula of the form <code>lhs ~ rhs1 + rhs2</code> where <code>lhs</code> is a
-numeric variable giving the data values and <code>rhs1</code> a factor with two
-levels giving the corresponding groups and <code>rhs2</code> a variable with weights.</p></td>
-    </tr>
-    <tr>
       <th>grp</th>
       <td><p>Bare (unquoted) name of the cross-classifying variable, where
 <code>x</code> is grouped into the categories represented by <code>grp</code>,
@@ -236,8 +274,13 @@ or a character vector with the variable name.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The weighted standard deviation or standard error of <code>x</code>,
-          or for each variable if <code>x</code> is a data frame.</p>
+    <p>The weighted (test) statistic.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p><code>wtd_chisq()</code> is a convenient wrapper for <code><a href='xtab_statistics.html'>xtab_statistics</a></code>.
+   For a weighted one-way Anova, use <code><a href='grpmean.html'>grpmean()</a></code> with
+   <code>weights</code>-argument.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -290,7 +333,7 @@ or a character vector with the variable name.</p></td>
 #&gt;   mean in group [2] female: 80.618
 #&gt;   difference of mean      : -4.342 [-5.426  -3.257]
 #&gt; </div><div class='input'>
-<span class='co'># weighted mwu-test ----</span>
+<span class='co'># weighted Mann-Whitney-U-test ----</span>
 
 <span class='fu'>wtd_mwu</span>(<span class='no'>c12hour</span> ~ <span class='no'>c161sex</span> + <span class='no'>weight</span>, <span class='no'>efc</span>)</div><div class='output co'>#&gt; 
 #&gt; Weighted Mann-Whitney-U test (two.sided)
@@ -300,6 +343,19 @@ or a character vector with the variable name.</p></td>
 #&gt; 
 #&gt;   difference in mean rank score: 0.054
 #&gt; </div><div class='input'>
+<span class='co'># weighted Chi-squared-test ----</span>
+
+<span class='fu'>wtd_chisqtest</span>(<span class='no'>efc</span>, <span class='no'>c161sex</span>, <span class='no'>e16sex</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight</span>, <span class='kw'>correct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; 
+#&gt; # Measure of Association for Contingency Tables
+#&gt; 
+#&gt;   Chi-squared: 2.0244
+#&gt;           Phi: 0.0475
+#&gt;       p-value: 0.1548</div><div class='input'><span class='fu'>wtd_chisqtest</span>(<span class='no'>c172code</span> ~ <span class='no'>c161sex</span> + <span class='no'>weight</span>, <span class='no'>efc</span>)</div><div class='output co'>#&gt; 
+#&gt; # Measure of Association for Contingency Tables
+#&gt; 
+#&gt;   Chi-squared: 4.4437
+#&gt;    Cramer's V: 0.0728
+#&gt;       p-value: 0.1084</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -308,6 +364,8 @@ or a character vector with the variable name.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

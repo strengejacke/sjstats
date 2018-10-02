@@ -20,7 +20,6 @@
 #' @param weights Name of variable in \code{x} that indicated the vector of
 #'   weights that will be applied to weight all observations. Default is
 #'   \code{NULL}, so no weights are used.
-#' @param weight.by Deprecated.
 #' @param ... Further arguments, passed down to \code{fun}.
 #'
 #' @inheritParams grpmean
@@ -66,14 +65,7 @@
 #'
 #'
 #' @export
-typical_value <- function(x, fun = "mean", weights = NULL, weight.by, ...) {
-
-  ## TODO remove later
-
-  if (!missing(weight.by)) {
-    # message("Argument `weight.by` is deprecated. Please use `weights`.")
-    weights <- weight.by
-  }
+typical_value <- function(x, fun = "mean", weights = NULL, ...) {
 
   # check if we have named vectors and find the requested function
   # for special functions for factors, convert to numeric first
