@@ -385,6 +385,16 @@ peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
 #' @importFrom sjmisc rotate_df
 es_boot_fun <- function(model, type, ci.lvl, n) {
 
+  if (inherits(model, "anova") || is.data.frame(model)) {
+    if (type == "pomega")
+      stop("Objects of class `anova` or `data.frame` not supported for partial Omega squared statistics.", call. = FALSE)
+    else if (type == "eta")
+      stop("Objects of class `anova` or `data.frame` not supported for Eta squared statistics.", call. = FALSE)
+    else
+      stop("Objects of class `anova` or `data.frame` not supported.", call. = FALSE)
+  }
+
+
   es <- aov_stat(model = model, type = type)
 
   x <- data_frame(

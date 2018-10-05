@@ -2,8 +2,8 @@ Package: sjstats
 Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
-Version: 0.17.1
-Date: 2018-10-02
+Version: 0.17.1.9000
+Date: 2018-10-05
 Authors@R: person("Daniel", "Lüdecke", role = c("aut", "cre"), email = "d.luedecke@uke.de", comment = c(ORCID = "0000-0002-8895-3206"))
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,

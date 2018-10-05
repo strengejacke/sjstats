@@ -1,3 +1,9 @@
+# sjstats 0.17.2
+
+## Changes to functions
+
+* `omega_sq()` and `eta_sq()` give more informative messages when using non-supported objects.
+
 # sjstats 0.17.1
 
 ## New functions
