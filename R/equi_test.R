@@ -47,7 +47,7 @@ equi_test.data.frame <- function(x, rope, eff_size, out = c("txt", "viewer", "br
 
 
 #' @importFrom purrr map_df
-#' @importFrom sjmisc add_columns var_rename is_empty
+#' @importFrom sjmisc add_columns var_rename is_empty add_variables
 #' @importFrom dplyr case_when select pull
 #' @importFrom stats sd
 #' @importFrom bayesplot neff_ratio
@@ -95,7 +95,7 @@ equi_test_worker <- function(x, rope, eff_size, out, fm, ...) {
     dplyr::select(-1) %>%
     sjmisc::add_columns(.rope) %>%
     dplyr::select(-3) %>%
-    add_cols(decision = result, .after = 1) %>%
+    sjmisc::add_variables(decision = result, .after = 1) %>%
     sjmisc::var_rename(rope = "inside.rope")
 
   # indicate parameters with critical number of effective samples

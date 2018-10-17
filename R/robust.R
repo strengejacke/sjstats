@@ -123,7 +123,7 @@ robust <- function(x, vcov.fun = "vcovHC", vcov.type = c("HC3", "const", "HC", "
   # add CI
   if (conf.int) {
     # add columns with CI
-    result <- add_cols(
+    result <- sjmisc::add_variables(
       result,
       conf.low = result$estimate - se.factor * result$std.error,
       conf.high = result$estimate + se.factor * result$std.error,

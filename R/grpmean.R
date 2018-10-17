@@ -169,7 +169,7 @@ grpmean <- function(x, dv, grp, weights = NULL, digits = 2, out = c("txt", "view
 
 
 #' @importFrom stats pf lm weighted.mean na.omit sd
-#' @importFrom sjmisc to_value
+#' @importFrom sjmisc to_value add_variables
 #' @importFrom emmeans emmeans contrast
 #' @importFrom dplyr pull select n_distinct
 #' @importFrom purrr map_chr
@@ -259,7 +259,7 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
 
 
   # add row labels
-  dat <- add_cols(
+  dat <- sjmisc::add_variables(
     dat,
     term = c(unname(value.labels), "Total"),
     .after = -1

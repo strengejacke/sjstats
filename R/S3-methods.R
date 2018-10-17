@@ -1433,7 +1433,7 @@ print.sj_pca_rotate <- function(x, cutoff = .1, ...) {
       TRUE ~ as.character(.x)
     )) %>%
     as.data.frame() %>%
-    add_cols(variable = rn, .after = -1)
+    sjmisc::add_variables(variable = rn, .after = -1)
 
   xs <- xs %>%
     round(3) %>%

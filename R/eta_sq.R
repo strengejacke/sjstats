@@ -189,7 +189,7 @@ anova_stats <- function(model, digits = 3) {
     NA
   )
 
-  add_cols(as, power = power) %>%
+  sjmisc::add_variables(as, power = power) %>%
     sjmisc::round_num(digits = digits) %>%
     as.data.frame()
 }
@@ -251,7 +251,7 @@ aov_stat_summary <- function(model) {
 
   # for car::Anova, the meansq-column might be missing, so add it manually
   if (!obj_has_name(aov.sum, "meansq"))
-    aov.sum <- add_cols(aov.sum, meansq = aov.sum$sumsq / aov.sum$df, .after = "sumsq")
+    aov.sum <- sjmisc::add_variables(aov.sum, meansq = aov.sum$sumsq / aov.sum$df, .after = "sumsq")
 
   aov.sum$term <- var_names(aov.sum$term)
 
