@@ -88,6 +88,12 @@ pred_vars <- function(x) {
   else
     fm <- stats::formula(x)
 
+
+  if (inherits(x, "gam") && is.list(fm)) {
+    fm <- fm[[1]]
+  }
+
+
   if (inherits(x, "brmsfit")) {
     if (!is.null(fm$responses)) {
       av <- fm$forms %>%
@@ -130,6 +136,8 @@ resp_var <- function(x) {
     purrr::map_chr(stats::formula(x), ~ deparse(.x[[2L]]))
   } else if (inherits(x, "clm2")) {
     all.vars(attr(x$location, "terms", exact = TRUE)[[2L]])
+  } else if (inherits(x, "gam") && is.list(stats::formula(x))) {
+    deparse(stats::formula(x)[[1]][[2L]])
   } else
     deparse(stats::formula(x)[[2L]])
 }
@@ -503,7 +511,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
     sjmisc::str_contains(fitfam, "binomial", ignore.case = TRUE)
 
   poisson_fam <-
-    fitfam %in% c("poisson", "quasipoisson", "genpois") |
+    fitfam %in% c("poisson", "quasipoisson", "genpois", "ziplss") |
     sjmisc::str_contains(fitfam, "poisson", ignore.case = TRUE)
 
   neg_bin_fam <-
@@ -515,7 +523,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
 
   linear_model <- !binom_fam & !poisson_fam & !neg_bin_fam & !logit.link
 
-  zero.inf <- zero.inf | sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T)
+  zero.inf <- zero.inf | fitfam == "ziplss" | sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T)
 
   is.ordinal <-
     inherits(x, c("polr", "clm", "clm2", "clmm", "multinom")) |
