@@ -515,9 +515,20 @@ r2_mixedmodel <- function(x, type = NULL) {
     sum(sapply(
       vals$vc[terms],
       function(Sigma) {
-        Z <- vals$X[, rownames(Sigma), drop = FALSE]
+        rn <- rownames(Sigma)
+
+        if (!is.null(rn)) {
+          valid <- rownames(Sigma) %in% colnames(vals$X)
+          if (!all(valid)) {
+            rn <- rn[valid]
+            Sigma <- Sigma[valid]
+          }
+        }
+
+        Z <- vals$X[, rn, drop = FALSE]
+        # Z <- vals$X[, rownames(Sigma), drop = FALSE]
         Z.m <- Z %*% Sigma
-        return(sum(diag(crossprod(Z.m, Z))) / stats::nobs(x))
+        sum(diag(crossprod(Z.m, Z))) / stats::nobs(x)
       }))
   }
 
