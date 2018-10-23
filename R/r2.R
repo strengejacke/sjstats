@@ -443,6 +443,16 @@ r2linmix <- function(x, n) {
 #' @importFrom stats family nobs var formula reformulate
 r2_mixedmodel <- function(x, type = NULL) {
 
+  if (is.null(type) || type == "r2") {
+    ws <- "r2()"
+    ws2 <- "R2"
+  } else {
+    ws <- "icc()"
+    ws2 <- "ICC"
+  }
+
+
+
   ## Code taken from GitGub-Repo of package glmmTMB
   ## Author: Ben Bolker, who used an
   ## cleaned-up/adapted version of Jon Lefcheck's code from SEMfit
@@ -450,7 +460,7 @@ r2_mixedmodel <- function(x, type = NULL) {
   faminfo <- model_family(x)
 
   if (faminfo$family %in% c("truncated_nbinom1", "truncated_nbinom2", "tweedie")) {
-    warning("Truncated negative binomial and tweedie families are currently not supported by `r2()`.", call. = F)
+    warning(sprintf("Truncated negative binomial and tweedie families are currently not supported by `%s`.", ws), call. = F)
     return(NULL)
   }
 
@@ -461,6 +471,10 @@ r2_mixedmodel <- function(x, type = NULL) {
     re = lme4::ranef(x)
   )
 
+
+  # for glmmTMB, use conditional component of model only,
+  # and tell user that zero-inflation is ignored
+
   if (inherits(x,"glmmTMB")) {
     vals <- lapply(vals, collapse_cond)
 
@@ -469,48 +483,55 @@ r2_mixedmodel <- function(x, type = NULL) {
       return(x)
     }
 
-    if (is.null(type) || type == "r2")
-      ws <- 'r2()'
-    else
-      ws <- 'icc()'
-
     if (!identical(nullEnv(x$modelInfo$allForm$ziformula), nullEnv(~0)))
       warning(sprintf("%s ignores effects of zero-inflation.", ws), call. = FALSE)
 
     dform <- nullEnv(x$modelInfo$allForm$dispformula)
 
-    if (!identical(dform,nullEnv(~1)) && (!identical(dform,nullEnv(~0))))
+    if (!identical(dform,nullEnv(~1)) && (!identical(dform, nullEnv(~0))))
       warning(sprintf("%s ignores effects of dispersion model.", ws), call. = FALSE)
   }
 
-  ## Test for non-zero random effects
+
+  # Test for non-zero random effects
+
   if (any(sapply(vals$vc, function(x) any(diag(x) == 0)))) {
     ## TODO test more generally for singularity, via theta?
-    message("Some variance components equal zero. Respecify random structure!")
+    warning("Some variance components equal zero.\n   Solution: Respecify random structure!", call. = F)
     return(NULL)
   }
 
-  ## Get variance of fixed effects: multiply coefs by design matrix
+
+  # Get variance of fixed effects: multiply coefs by design matrix
+
   varF <- with(vals, stats::var(as.vector(beta %*% t(X))))
 
-  ## Are random slopes present as fixed effects? Warn.
+
+  # Are random slopes present as fixed effects? Warn.
+
   random.slopes <- if ("list" %in% class(vals$re)) {
-    ## multiple RE
+    # multiple RE
     unique(c(sapply(vals$re, colnames)))
+  } else if (is.list(vals$re)) {
+    colnames(vals$re[[1]])
   } else {
     colnames(vals$re)
   }
 
   if (!all(random.slopes %in% names(vals$beta)))
-    warning("Random slopes not present as fixed effects. This artificially inflates the conditional R2. Respecify fixed structure!", call. = FALSE)
+    warning(sprintf("Random slopes not present as fixed effects. This artificially inflates the conditional %s.\n   Solution: Respecify fixed structure!", ws2), call. = FALSE)
 
-  ## Separate observation variance from variance of random effects
+
+  # Separate observation variance from variance of random effects
+
   nr <- sapply(vals$re, nrow)
   not.obs.terms <- names(nr[nr != stats::nobs(x)])
   obs.terms <- names(nr[nr == stats::nobs(x)])
 
-  ## Compute variance associated with a random-effects term
-  ## (Johnson 2014)
+
+  # Compute variance associated with a random-effects term
+  # (Johnson 2014)
+
   getVarRand <- function(terms) {
     sum(sapply(
       vals$vc[terms],
@@ -532,16 +553,23 @@ r2_mixedmodel <- function(x, type = NULL) {
       }))
   }
 
-  ## Variance of random effects
+
+  # Variance of random effects
+
   varRand <- getVarRand(not.obs.terms)
   sig <- attr(vals$vc, "sc")
   if (is.null(sig)) sig <- 1
+
+
+  # Residual variance, which is defined as the variance due to
+  # additive dispersion and the distribution‐specific variance (Johnson 2015)
 
   if (faminfo$is_linear) {
     # get residual standard deviation sigma
     varDist <- sig^2
     varDisp <- 0
   } else {
+
     varDisp <- if (length(obs.terms) == 0 ) 0 else getVarRand(obs.terms)
 
     if (faminfo$is_bin) {
@@ -554,38 +582,58 @@ r2_mixedmodel <- function(x, type = NULL) {
     } else if (faminfo$is_pois) {
       varDist <- switch(
         faminfo$link.fun,
-        log = logVarDist(x, null_model(x), faminfo, sig),
+        log = logVarDist(x, null_model(x), faminfo, sig, type = ws2),
         sqrt = 0.25,
         badlink(faminfo$link.fun, faminfo$family)
       )
     } else if (faminfo$family == "beta") {
       varDist <- switch(
         faminfo$link.fun,
-        logit = logVarDist(x, null_model(x), faminfo, sig),
+        logit = logVarDist(x, null_model(x), faminfo, sig, type = ws2),
         badlink(faminfo$link.fun, faminfo$family)
       )
     }
   }
 
+
+  # Calculate R2 values
+
+  rsq.marginal <- varF / (varF + varRand + varDisp + varDist)
+  rsq.conditional <- (varF + varRand) / (varF + varRand + varDisp + varDist)
+
+  names(rsq.marginal) <- "Marginal R2"
+  names(rsq.conditional) <- "Conditional R2"
+
+
+  # Calculate ICC values
+
+  icc.adjusted <- varRand / (varRand + varDisp + varDist)
+  icc.conditional <- varRand / (varF + varRand + varDisp + varDist)
+
+  names(icc.adjusted) <-    "Adjusted ICC"
+  names(icc.conditional) <- "Conditional ICC"
+
+
   if (is.null(type) || type == "r2") {
-    ## Calculate R2 values
-    rsq.marginal <- varF / (varF + varRand + varDisp + varDist)
-    rsq.conditional <- (varF + varRand) / (varF + varRand + varDisp + varDist)
-
-    names(rsq.marginal) <- "Marginal R2"
-    names(rsq.conditional) <- "Conditional R2"
-
-    var.measure <- structure(class = "sj_r2", list(rsq.marginal = rsq.marginal, rsq.conditional = rsq.conditional))
+    var.measure <- structure(
+      class = "sj_r2",
+      list(rsq.marginal = rsq.marginal, rsq.conditional = rsq.conditional)
+    )
+  } else if (type == "all") {
+    var.measure <- structure(
+      class = "sj_iccr2",
+      list(
+        list(rsq.marginal = rsq.marginal, rsq.conditional = rsq.conditional),
+        list(icc.adjusted = icc.adjusted, icc.conditional = icc.conditional)
+      )
+    )
   } else {
-    ## Calculate R2 values
-    icc.adjusted <- varRand / (varRand + varDisp + varDist)
-    icc.conditional <- varRand / (varF + varRand + varDisp + varDist)
-
-    names(icc.adjusted) <-    "Adjusted ICC"
-    names(icc.conditional) <- "Conditional ICC"
-
-    var.measure <- structure(class = "sj_icc", list(icc.adjusted = icc.adjusted, icc.conditional = icc.conditional))
+    var.measure <- structure(
+      class = "sj_icc",
+      list(icc.adjusted = icc.adjusted, icc.conditional = icc.conditional)
+    )
   }
+
 
   attr(var.measure, "family") <- faminfo$family
   attr(var.measure, "link") <- faminfo$link.fun
@@ -628,11 +676,11 @@ beta_variance <- function(mu, phi) {
 }
 
 
-logVarDist <- function(x, null.fixef, faminfo, sig) {
+logVarDist <- function(x, null.fixef, faminfo, sig, type) {
   ## in general want log(1+var(x)/mu^2)
   mu <- exp(null.fixef)
   if (mu < 6)
-    warning(sprintf("mu of %0.1f is too close to zero, estimate may be unreliable.\n", mu), call. = FALSE)
+    warning(sprintf("mu of %0.1f is too close to zero, estimate of %s may be unreliable.\n", mu, type), call. = FALSE)
 
   vv <- switch(
     faminfo$family,

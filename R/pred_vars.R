@@ -314,6 +314,18 @@ model_frame <- function(x, fe.only = TRUE) {
   }
 
 
+  # do we have an offset, not specified in the formula?
+
+  if ("(offset)" %in% colnames(fitfram)) {
+    if (obj_has_name(x, "call")) {
+      if (obj_has_name(x$call, "offset")) {
+        offcol <- which(colnames(fitfram) == "(offset)")
+        colnames(fitfram)[offcol] <- var_names(deparse(x$call$offset))
+      }
+    }
+  }
+
+
   # clean 1-dimensional matrices
 
   fitfram <- purrr::modify_if(fitfram, is.matrix, function(x) {

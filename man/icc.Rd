@@ -90,6 +90,11 @@ The ICC is calculated by dividing the between-group-variance (random
    nonetheless, but it is usually no meaningful summary of the
    proportion of variances.
    \cr \cr
+   To get a meaningful ICC also for models with random slopes, use \code{adjusted = TRUE}.
+   The adjusted ICC used the mean random effect variance, which is based
+   on the random effect variances for each value of the random slope
+   (see \cite{Johnson 2014}).
+   \cr \cr
    \strong{ICC for models with multiple or nested random effects}
    \cr \cr
    \strong{Caution:} By default, for three-level-models, depending on the
@@ -106,7 +111,8 @@ The ICC is calculated by dividing the between-group-variance (random
    The latter also takes the fixed effects variances into account (see
    \cite{Nakagawa et al. 2017}). If random effects are not nested and not
    cross-classified, the adjusted (\code{adjusted = TRUE}) and unadjusted
-   (\code{adjusted = FALSE}) ICC are identical.
+   (\code{adjusted = FALSE}) ICC are identical. \code{adjust = TRUE} returns
+   a meaningful ICC for models with random slopes.
    \cr \cr
    \strong{ICC for specific group-levels}
    \cr \cr
@@ -170,9 +176,10 @@ fit0 <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
 icc(fit0)
 
 # note: ICC for random-slope-intercept model usually not
-# meaningful - see 'Note'.
+# meaningful, unless you use "adjusted = TRUE" - see 'Note'.
 fit1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 icc(fit1)
+icc(fit1, adjusted = TRUE)
 
 sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
 fit2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
@@ -220,6 +227,7 @@ if (requireNamespace("brms", quietly = TRUE)) {
    \item Goldstein H, Browne W, Rasbash J. 2010. Partitioning Variation in Multilevel Models. Understanding Statistics, 1:4, 223-231 (\doi{10.1207/S15328031US0104_02})
    \item Grace-Martion K. The Intraclass Correlation Coefficient in Mixed Models, \href{http://www.theanalysisfactor.com/the-intraclass-correlation-coefficient-in-mixed-models/}{web}
    \item Hox J. 2002. Multilevel analysis: techniques and applications. Mahwah, NJ: Erlbaum
+   \item Johnson PC, O'Hara RB. 2014. Extension of Nakagawa & Schielzeth's R2GLMM to random slopes models. Methods Ecol Evol, 5: 944-946. (\doi{10.1111/2041-210X.12225})
    \item Nakagawa S, Johnson P, Schielzeth H (2017) The coefficient of determination R2 and intra-class correlation coefficient from generalized linear mixed-effects models revisted and expanded. J. R. Soc. Interface 14. \doi{10.1098/rsif.2017.0213}
    \item Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication
    \item Raudenbush SW, Bryk AS. 2002. Hierarchical linear models: applications and data analysis methods. 2nd ed. Thousand Oaks: Sage Publications
