@@ -5,7 +5,7 @@
 \title{Summary of mean values by group}
 \usage{
 grpmean(x, dv, grp, weights = NULL, digits = 2, out = c("txt",
-  "viewer", "browser"), weight.by)
+  "viewer", "browser"))
 }
 \arguments{
 \item{x}{A (grouped) data frame.}
@@ -29,8 +29,6 @@ to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
 (\code{out = "viewer"}) or browser (\code{out = "browser"}), of if the
 results should be plotted (\code{out = "plot"}, only applies to certain
 functions). May be abbreviated.}
-
-\item{weight.by}{Deprecated.}
 }
 \value{
 For non-grouped data frames, \code{grpmean()} returns a data frame with
