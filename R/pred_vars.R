@@ -412,6 +412,11 @@ model_frame <- function(x, fe.only = TRUE) {
 
   }
 
+  # check if we have monotonic variables, included in formula
+  # with "mo()"? If yes, remove from model frame
+  mos_eisly <- grepl(pattern = "^mo\\(([^,)]*).*", x = colnames(fitfram))
+  if (any(mos_eisly)) fitfram <- fitfram[!mos_eisly]
+
   # clean variable names
   cvn <- get_vn_helper(colnames(fitfram))
 
@@ -587,7 +592,7 @@ get_vn_helper <- function(x) {
   # for survival, remove strata(), and so on...
   pattern <- c(
     "as.factor", "factor", "offset", "log", "lag", "diff", "lo", "bs", "ns",
-    "t2", "te", "ti", "tt", "mi", "gp", "pspline", "poly", "strata", "scale",
+    "t2", "te", "ti", "tt", "mi", "mo", "gp", "pspline", "poly", "strata", "scale",
     "interaction", "s", "I"
   )
 

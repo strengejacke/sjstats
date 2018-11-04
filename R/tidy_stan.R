@@ -167,7 +167,15 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   if (!is.null(trans)) {
     trans <- match.fun(trans)
-    out$estimate <- trans(out$estimate)
+    sp <- string_starts_with("simo_mo", out$term)
+
+    if (!sjmisc::is_empty(sp)) {
+      out$estimate[-sp] <- trans(out$estimate[-sp])
+      hdi.col <- string_starts_with("hdi", colnames(out))
+      out[sp, hdi.col] <- log(out[sp, hdi.col])
+    } else {
+      out$estimate <- trans(out$estimate)
+    }
   }
 
 

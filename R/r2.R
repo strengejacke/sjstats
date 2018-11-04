@@ -529,34 +529,9 @@ r2_mixedmodel <- function(x, type = NULL) {
   obs.terms <- names(nr[nr == stats::nobs(x)])
 
 
-  # Compute variance associated with a random-effects term
-  # (Johnson 2014)
-
-  getVarRand <- function(terms) {
-    sum(sapply(
-      vals$vc[terms],
-      function(Sigma) {
-        rn <- rownames(Sigma)
-
-        if (!is.null(rn)) {
-          valid <- rownames(Sigma) %in% colnames(vals$X)
-          if (!all(valid)) {
-            rn <- rn[valid]
-            Sigma <- Sigma[valid]
-          }
-        }
-
-        Z <- vals$X[, rn, drop = FALSE]
-        # Z <- vals$X[, rownames(Sigma), drop = FALSE]
-        Z.m <- Z %*% Sigma
-        sum(diag(crossprod(Z.m, Z))) / stats::nobs(x)
-      }))
-  }
-
-
   # Variance of random effects
 
-  varRand <- getVarRand(not.obs.terms)
+  varRand <- getVarRand(not.obs.terms, x = x, vals = vals)
   sig <- attr(vals$vc, "sc")
   if (is.null(sig)) sig <- 1
 
@@ -570,7 +545,7 @@ r2_mixedmodel <- function(x, type = NULL) {
     varDisp <- 0
   } else {
 
-    varDisp <- if (length(obs.terms) == 0 ) 0 else getVarRand(obs.terms)
+    varDisp <- if (length(obs.terms) == 0 ) 0 else getVarRand(obs.terms, x = x, vals = vals)
 
     if (faminfo$is_bin) {
       varDist <- switch(
@@ -640,6 +615,31 @@ r2_mixedmodel <- function(x, type = NULL) {
   attr(var.measure, "formula") <- stats::formula(x)
 
   var.measure
+}
+
+
+# Compute variance associated with a random-effects term
+# (Johnson 2014)
+
+getVarRand <- function(terms, x, vals) {
+  sum(sapply(
+    vals$vc[terms],
+    function(Sigma) {
+      rn <- rownames(Sigma)
+
+      if (!is.null(rn)) {
+        valid <- rownames(Sigma) %in% colnames(vals$X)
+        if (!all(valid)) {
+          rn <- rn[valid]
+          Sigma <- Sigma[valid, valid]
+        }
+      }
+
+      Z <- vals$X[, rn, drop = FALSE]
+      # Z <- vals$X[, rownames(Sigma), drop = FALSE]
+      Z.m <- Z %*% Sigma
+      sum(diag(crossprod(Z.m, Z))) / stats::nobs(x)
+    }))
 }
 
 

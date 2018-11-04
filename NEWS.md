@@ -8,11 +8,13 @@
 
 * `omega_sq()` and `eta_sq()` give more informative messages when using non-supported objects.
 * `r2()` and `icc()` give more informative warnings and messages.
+* `tidy_stan()` supports printing simplex parameters of monotonic effects of **brms** models.
 
 ## Bug fixes
 
 * `model_frame()` now correctly names the offset-columns for terms provided as `offset`-argument (i.e. for models where the offset was not specified inside the formula).
 * Fixed issue with `weights`-argument in `grpmean()` when variable name was passed as character vector.
+* Fixed issue with `r2()` for **glmmTMB** models with `ar1` random effects structure.
 
 # sjstats 0.17.1
 
