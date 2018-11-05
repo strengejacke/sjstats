@@ -285,16 +285,14 @@ hdi.default <- function(x, prob = .9, trans = NULL, ...) {
 }
 
 
-#' @importFrom purrr map_df
+#' @importFrom purrr map_df map2_df
 #' @importFrom sjmisc rotate_df
 hdi_worker <- function(x, prob, trans, type) {
   dat <- purrr::map(
     prob,
     function(i) {
-
-      out <- x %>%
-        as.data.frame() %>%
-        purrr::map_df(~ hdi_helper(.x, i, trans)) %>%
+      tmp <- as.data.frame(x)
+      out <- purrr::map2_df(tmp, colnames(tmp), ~ hdi_helper(x = .x, prob = i, trans = trans, cn = .y)) %>%
         sjmisc::rotate_df() %>%
         rownames_as_column()
 
@@ -337,20 +335,23 @@ hdi_worker <- function(x, prob, trans, type) {
 
 # based on Kruschke 2015, pp727f
 #' @importFrom purrr map_dbl map_df
-hdi_helper <- function(x, prob, trans) {
+hdi_helper <- function(x, prob, trans, cn = NULL) {
+
+  # check if we have correct function
+  # do transformation on posterior samples first,
+  # then summarize (see https://discourse.mc-stan.org/t/monotonic-effects-in-non-gaussian-models/6353/5)
+
+  if (!is.null(trans) && (is.null(cn) || !grepl("^simo_mo", cn))) {
+    trans <- match.fun(trans)
+    x <- trans(x)
+  }
+
   x <- sort(x)
   ci.index <- ceiling(prob * length(x))
   nCIs <- length(x) - ci.index
   ci.width <- purrr::map_dbl(1:nCIs, ~ x[.x + ci.index] - x[.x])
   HDImin <- x[which.min(ci.width)]
   HDImax <- x[which.min(ci.width) + ci.index]
-
-  # check if we have correct function
-  if (!is.null(trans)) {
-    trans <- match.fun(trans)
-    HDImin <- trans(HDImin)
-    HDImax <- trans(HDImax)
-  }
 
   c(HDImin, HDImax)
 }

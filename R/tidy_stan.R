@@ -138,6 +138,17 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   se <- mcse(x, type = type)
   se <- se[se$term %in% out.hdi$term, ]
 
+
+  # transform estimate, if requested
+
+  if (!is.null(trans)) {
+    trans <- match.fun(trans)
+    all.cols <- sjmisc::seq_col(mod.dat)
+    simp.pars <- string_starts_with("simo_mo", colnames(mod.dat))
+    if (!sjmisc::is_empty(simp.pars)) all.cols <- all.cols[-simp.pars]
+    for (i in all.cols) mod.dat[[i]] <- trans(mod.dat[[i]])
+  }
+
   est <- purrr::map_dbl(mod.dat, ~ sjstats::typical_value(.x, fun = typical))
 
   out <- data_frame(
@@ -161,22 +172,6 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
       se,
       by = "term"
     )
-
-
-  # transform estimate, if requested
-
-  if (!is.null(trans)) {
-    trans <- match.fun(trans)
-    sp <- string_starts_with("simo_mo", out$term)
-
-    if (!sjmisc::is_empty(sp)) {
-      out$estimate[-sp] <- trans(out$estimate[-sp])
-      hdi.col <- string_starts_with("hdi", colnames(out))
-      out[sp, hdi.col] <- log(out[sp, hdi.col])
-    } else {
-      out$estimate <- trans(out$estimate)
-    }
-  }
 
 
   # check if we need to remove random or fixed effects
