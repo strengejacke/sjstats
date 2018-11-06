@@ -163,7 +163,7 @@ re_grp_var <- function(x) {
     re <- purrr::map_chr(lme4::findbars(stats::formula(x)), deparse)
     sjmisc::trim(substring(re, regexpr(pattern = "\\|", re) + 1))
   },
-  error = NULL
+  error = function(x) { NULL }
   )
 }
 
