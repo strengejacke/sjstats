@@ -15,7 +15,7 @@
 #'   to calculate the ICC for this group-level. Only applies if \code{ppd = TRUE}.
 #' @param typical Character vector, naming the function that will be used as
 #'   measure of central tendency for the ICC. The default is "mean". See
-#'   \code{typical_value} for options.
+#'   \link{typical_value} for options.
 #' @param ppd Logical, if \code{TRUE}, variance decomposition is based on the
 #'   posterior predictive distribution, which is the correct way for Bayesian
 #'   non-Gaussian models.

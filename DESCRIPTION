@@ -44,7 +44,7 @@ Imports:
     pwr,
     rlang,
     sjlabelled (>= 1.0.14),
-    sjmisc (>= 2.7.4),
+    sjmisc (>= 2.7.5),
     tidyr
 Suggests:
     brms,

@@ -38,7 +38,7 @@ to calculate the ICC for this group-level. Only applies if \code{ppd = TRUE}.}
 
 \item{typical}{Character vector, naming the function that will be used as
 measure of central tendency for the ICC. The default is "mean". See
-\code{typical_value} for options.}
+\link{typical_value} for options.}
 
 \item{prob}{Vector of scalars between 0 and 1, indicating the mass within
 the credible interval that is to be estimated. See \code{\link{hdi}}.}
