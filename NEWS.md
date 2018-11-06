@@ -4,6 +4,10 @@
 
 * Revised help-files for `r2()` and `icc()`, also by adding more references.
 
+## New functions
+
+* `re_grp_var()` to find group factors of random effects in mixed models.
+
 ## Changes to functions
 
 * `omega_sq()` and `eta_sq()` give more informative messages when using non-supported objects.

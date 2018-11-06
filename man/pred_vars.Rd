@@ -3,6 +3,7 @@
 \name{pred_vars}
 \alias{pred_vars}
 \alias{resp_var}
+\alias{re_grp_var}
 \alias{resp_val}
 \alias{link_inverse}
 \alias{model_frame}
@@ -13,6 +14,8 @@
 pred_vars(x)
 
 resp_var(x)
+
+re_grp_var(x)
 
 resp_val(x)
 
@@ -39,6 +42,8 @@ model, returns the model frame for fixed effects only.}
 For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
    response or predictor variables from \code{x} as character vector.
    \code{resp_val()} returns the values from \code{x}'s response vector.
+   \code{re_grp_var()} returns the group factor of random effects in
+   mixed models, or \code{NULL} if \code{x} has no such random effects term.
    \code{link_inverse()} returns, if known, the inverse link function from
    \code{x}; else \code{NULL} for those models where the inverse link function
    can't be identified. \code{model_frame()} is similar to \code{model.frame()},
@@ -106,5 +111,11 @@ library(splines)
 m <- lm(neg_c_7 ~ e42dep + ns(c160age), data = efc)
 head(model.frame(m))
 head(model_frame(m))
+
+# get random effects grouping factor from mixed models
+library(lme4)
+data(sleepstudy)
+m <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+re_grp_var(m)
 
 }

@@ -16,6 +16,8 @@
 #' @return For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
 #'    response or predictor variables from \code{x} as character vector.
 #'    \code{resp_val()} returns the values from \code{x}'s response vector.
+#'    \code{re_grp_var()} returns the group factor of random effects in
+#'    mixed models, or \code{NULL} if \code{x} has no such random effects term.
 #'    \code{link_inverse()} returns, if known, the inverse link function from
 #'    \code{x}; else \code{NULL} for those models where the inverse link function
 #'    can't be identified. \code{model_frame()} is similar to \code{model.frame()},
@@ -77,6 +79,12 @@
 #' m <- lm(neg_c_7 ~ e42dep + ns(c160age), data = efc)
 #' head(model.frame(m))
 #' head(model_frame(m))
+#'
+#' # get random effects grouping factor from mixed models
+#' library(lme4)
+#' data(sleepstudy)
+#' m <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+#' re_grp_var(m)
 #'
 #' @importFrom purrr flatten_chr map
 #' @importFrom stats formula terms
@@ -140,6 +148,23 @@ resp_var <- function(x) {
     deparse(stats::formula(x)[[1]][[2L]])
   } else
     deparse(stats::formula(x)[[2L]])
+}
+
+
+
+#' @rdname pred_vars
+#' @importFrom purrr map_chr
+#' @importFrom lme4 findbars
+#' @importFrom stats formula
+#' @importFrom sjmisc trim
+#' @export
+re_grp_var <- function(x) {
+  tryCatch({
+    re <- purrr::map_chr(lme4::findbars(stats::formula(x)), deparse)
+    sjmisc::trim(substring(re, regexpr(pattern = "\\|", re) + 1))
+  },
+  error = NULL
+  )
 }
 
 
