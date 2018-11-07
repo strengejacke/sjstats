@@ -504,6 +504,12 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
     fitfam <- "survival"
     logit.link <- TRUE
     link.fun <- NULL
+  } else if (inherits(x, "glmmTMB")) {
+    faminfo <- stats::family(x)
+    fitfam <- faminfo$family
+    logit.link <- faminfo$link == "logit"
+    link.fun <- faminfo$link
+    zero.inf <- !sjmisc::is_empty(lme4::fixef(x)$zi)
   } else {
     # here we have no family method, so we construct a logistic-regression-family-object
     if (inherits(x, c("lrm", "polr", "logistf", "clmm", "clm", "clm2", "multinom", "Zelig-relogit")))

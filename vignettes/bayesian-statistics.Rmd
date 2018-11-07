@@ -56,8 +56,8 @@ library(brms)
 # load sample data
 data(jobs)
 data(efc)
+data(fish)
 efc <- to_factor(efc, e42dep, c172code, c161sex, e15relat)
-zinb <- read.csv("http://stats.idre.ucla.edu/stat/data/fish.csv")
 
 # linear models, for mediation analysis
 b1 <- lm(job_seek ~ treat + econ_hard + sex + age, data = jobs)
@@ -75,7 +75,7 @@ m2 <- brm(f1 + f2 + set_rescor(FALSE), data = jobs, cores = 4)
 m3 <- brm(
   bf(count ~ child + camper + (1 | persons), 
      zi ~ child + camper + (1 | persons)),
-  data = zinb,
+  data = fish,
   family = zero_inflated_poisson(),
   cores = 4
 )

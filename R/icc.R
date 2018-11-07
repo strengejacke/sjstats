@@ -256,42 +256,8 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
   # random slope-variances (tau 11)
   tau.11 <- unlist(lapply(reva, function(x) diag(x)[-1]))
 
-  # get residual standard deviation sigma
-  sig <- attr(reva, "sc")
-
-  # set default, if no residual variance is available
-
-  if (is.null(sig)) {
-    if (fitfam$is_bin)
-      sig <- sqrt((pi^2) / 3)
-    else
-      sig <- 1
-  }
-
-
-  # residual variances, i.e.
-  # within-cluster-variance (sigma^2)
-
-  if (fitfam$is_linear) {
-    # get residual standard deviation sigma
-    resid_var <- sig^2
-  } else if (fitfam$is_bin) {
-    # for logistic models, we use pi / 3
-    resid_var <- switch(
-      fitfam$link.fun,
-      logit = pi^2 / 3,
-      probit = 1,
-      badlink(fitfam$link.fun, fitfam$family)
-    )
-  } else {
-    resid_var <- switch(
-      fitfam$link.fun,
-      log = logVarDist(x, null_model(x), fitfam, sig, type = "ICC"),
-      sqrt = 0.25,
-      badlink(fitfam$link.fun, fitfam$family)
-    )
-  }
-
+  # residual variances, i.e. within-cluster-variance
+  resid_var <- get_residual_variance(x, var.cor = reva, fitfam, type = "ICC")
 
   # total variance, sum of random intercept and residual variances
   total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid_var)
@@ -329,7 +295,7 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
     rho.01 <- unlist(rho.01)
     tau.01 <- unlist(tau.01)
 
-    message("Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.")
+    message("Caution! ICC for random-slope-intercept models usually not meaningful. Use `adjusted = TRUE` to use the mean random effect variance to calculate the ICC. See 'Note' in `?icc`.")
   }
 
   # name values
@@ -404,42 +370,8 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
   # random slope-variances (tau 11)
   tau.11 <- unlist(lapply(reva, function(x) diag(x)[-1]))
 
-  # get residual standard deviation sigma
-  sig <- attr(reva, "sc")
-
-
-  # set default, if no residual variance is available
-
-  if (is.null(sig)) {
-    if (fitfam$is_bin)
-      sig <- sqrt((pi^2) / 3)
-    else
-      sig <- 1
-  }
-
-
-  # residual variances, i.e.
-  # within-cluster-variance (sigma^2)
-
-  if (fitfam$is_linear) {
-    resid_var <- sig^2
-  } else if (fitfam$is_bin) {
-    # for logistic models, we use pi / 3
-    resid_var <- switch(
-      fitfam$link.fun,
-      logit = pi^2 / 3,
-      probit = 1,
-      badlink(fitfam$link.fun, fitfam$family)
-    )
-  } else {
-    resid_var <- switch(
-      fitfam$link.fun,
-      log = logVarDist(x, null_model(x), fitfam, sig, type = "ICC"),
-      sqrt = 0.25,
-      badlink(fitfam$link.fun, fitfam$family)
-    )
-  }
-
+  # residual variances, i.e. within-cluster-variance
+  resid_var <- get_residual_variance(x, var.cor = reva, fitfam, type = "ICC")
 
   # total variance, sum of random intercept and residual variances
   total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid_var)
@@ -477,7 +409,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
     rho.01 <- unlist(rho.01)
     tau.01 <- unlist(tau.01)
 
-    message("Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.")
+    message("Caution! ICC for random-slope-intercept models usually not meaningful. Use `adjusted = TRUE` to use the mean random effect variance to calculate the ICC. See 'Note' in `?icc`.")
   }
 
   # name values
@@ -621,7 +553,7 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
       # get slope-intercept-correlations
       rho.01 <- tau.01 / sqrt(tau.00.sums * tau.11.sums)
 
-      message("Caution! ICC for random-slope-intercept models usually not meaningful. Use `adjusted = TRUE` to use the mean random effect variance to calculate the ICC. See 'Note' in `?icc`.")
+      message("Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.")
 
     }
 
