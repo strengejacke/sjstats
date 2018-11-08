@@ -367,6 +367,15 @@ looR2 <- function(fit) {
   y <- resp_val(fit)
   ypred <- rstantools::posterior_linpred(fit)
 
+  if (length(y) > ncol(ypred)) {
+    tryCatch(
+      {
+        y <- y[as.numeric(attr(ypred, "dimnames")[[2]])]
+      },
+      error = function(x) { NULL }
+    )
+  }
+
   ll <- rstantools::log_lik(fit)
 
   r_eff <- loo::relative_eff(
