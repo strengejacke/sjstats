@@ -367,6 +367,10 @@ looR2 <- function(fit) {
   y <- resp_val(fit)
   ypred <- rstantools::posterior_linpred(fit)
 
+
+  # for some weird models, not all response values can be
+  # predicted, resulting in different lengths between y and ypred
+
   if (length(y) > ncol(ypred)) {
     tryCatch(
       {
