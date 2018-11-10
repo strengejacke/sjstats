@@ -13,6 +13,7 @@
 * `omega_sq()` and `eta_sq()` give more informative messages when using non-supported objects.
 * `r2()` and `icc()` give more informative warnings and messages.
 * `tidy_stan()` supports printing simplex parameters of monotonic effects of **brms** models.
+* `grpmean()` and `mwu()` get a `file` and `encoding` argument, to save the HTML output as file.
 
 ## Bug fixes
 
