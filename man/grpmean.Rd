@@ -5,7 +5,7 @@
 \title{Summary of mean values by group}
 \usage{
 grpmean(x, dv, grp, weights = NULL, digits = 2, out = c("txt",
-  "viewer", "browser"))
+  "viewer", "browser"), encoding = "UTF-8", file = NULL)
 }
 \arguments{
 \item{x}{A (grouped) data frame.}
@@ -29,6 +29,13 @@ to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
 (\code{out = "viewer"}) or browser (\code{out = "browser"}), of if the
 results should be plotted (\code{out = "plot"}, only applies to certain
 functions). May be abbreviated.}
+
+\item{encoding}{Character vector, indicating the charset encoding used
+for variable and value labels. Default is \code{"UTF-8"}. Only used
+when \code{out} is not \code{"txt"}.}
+
+\item{file}{Destination file, if the output should be saved as file.
+Only used when \code{out} is not \code{"txt"}.}
 }
 \value{
 For non-grouped data frames, \code{grpmean()} returns a data frame with

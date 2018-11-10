@@ -149,6 +149,8 @@ weight2 <- function(x, weights) {
 #' @note \code{wtd_chisq()} is a convenient wrapper for \code{\link{xtab_statistics}}.
 #'    For a weighted one-way Anova, use \code{grpmean()} with
 #'    \code{weights}-argument.
+#'    \cr \cr
+#'    \code{wtd_ttest()} assumes unequal variance between the two groups.
 #'
 #' @examples
 #' # weighted sd and se ----

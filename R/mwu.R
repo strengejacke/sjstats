@@ -41,7 +41,13 @@
 #' @importFrom sjlabelled get_labels as_numeric
 #' @importFrom rlang quo_name enquo
 #' @export
-mwu <- function(data, x, grp, distribution = "asymptotic", out = c("txt", "viewer", "browser")) {
+mwu <- function(data,
+                x,
+                grp,
+                distribution = "asymptotic",
+                out = c("txt", "viewer", "browser"),
+                encoding = "UTF-8",
+                file = NULL) {
 
   out <- match.arg(out)
 
@@ -181,6 +187,8 @@ mwu <- function(data, x, grp, distribution = "asymptotic", out = c("txt", "viewe
 
   # save how to print output
   attr(ret.df, "print") <- out
+  attr(ret.df, "encoding") <- encoding
+  attr(ret.df, "file") <- file
 
   if (out %in% c("viewer", "browser"))
     class(ret.df) <- c("mwu", "sjt_mwu")

@@ -15,6 +15,11 @@
 #'   \code{NULL}, so no weights are used.
 #' @param digits Numeric, amount of digits after decimal point when rounding
 #'   estimates and values.
+#' @param file Destination file, if the output should be saved as file.
+#'   Only used when \code{out} is not \code{"txt"}.
+#' @param encoding Character vector, indicating the charset encoding used
+#'   for variable and value labels. Default is \code{"UTF-8"}. Only used
+#'   when \code{out} is not \code{"txt"}.
 #'
 #' @inheritParams hdi
 #'
@@ -52,7 +57,14 @@
 #' @importFrom sjmisc to_value is_empty
 #' @importFrom rlang enquo .data quo_name
 #' @export
-grpmean <- function(x, dv, grp, weights = NULL, digits = 2, out = c("txt", "viewer", "browser")) {
+grpmean <- function(x,
+                    dv,
+                    grp,
+                    weights = NULL,
+                    digits = 2,
+                    out = c("txt", "viewer", "browser"),
+                    encoding = "UTF-8",
+                    file = NULL) {
 
   out <- match.arg(out)
 
@@ -154,6 +166,8 @@ grpmean <- function(x, dv, grp, weights = NULL, digits = 2, out = c("txt", "view
 
   # save how to print output
   attr(dataframes, "print") <- out
+  attr(dataframes, "encoding") <- encoding
+  attr(dataframes, "file") <- file
 
   dataframes
 }
