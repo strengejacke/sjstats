@@ -26,10 +26,9 @@ icc(x, ...)
 
 \item{...}{Currently not used.}
 
-\item{adjusted}{Logical, if \code{TRUE}, the adjusted (and conditional) ICC
-is calculated, which reflects the uncertainty of all random effects (see
-'Details'). \strong{Note} that if \code{adjusted = TRUE}, \strong{no}
-additional information on the variance components is returned.}
+\item{adjusted}{Logical, if \code{TRUE}, the adjusted (and
+conditional) ICC is calculated, which reflects the uncertainty of all
+random effects (see 'Details').}
 
 \item{re.form}{Formula containing group-level effects to be considered in
 the prediction. If \code{NULL} (default), include all group-level effects.
@@ -93,7 +92,7 @@ The ICC is calculated by dividing the between-group-variance (random
    To get a meaningful ICC also for models with random slopes, use \code{adjusted = TRUE}.
    The adjusted ICC used the mean random effect variance, which is based
    on the random effect variances for each value of the random slope
-   (see \cite{Johnson 2014}).
+   (see \cite{Johnson et al. 2014}).
    \cr \cr
    \strong{ICC for models with multiple or nested random effects}
    \cr \cr

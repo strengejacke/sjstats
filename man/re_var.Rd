@@ -5,7 +5,7 @@
 \alias{get_re_var}
 \title{Random effect variances}
 \usage{
-re_var(x)
+re_var(x, adjusted = FALSE)
 
 get_re_var(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01",
   "sigma_2"))
@@ -13,8 +13,13 @@ get_re_var(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01",
 \arguments{
 \item{x}{Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
 \code{stanreg} or \code{brmsfit}). \code{get_re_var()} also accepts
- an object of class \code{icc.lme4}, as returned by the
- \code{\link{icc}} function.}
+an object of class \code{icc.lme4}, as returned by the
+\code{\link{icc}} function.}
+
+\item{adjusted}{Logical, if \code{TRUE}, returns the variance of the fixed
+and random effects as well as of the additive dispersion and
+distribution-specific variance, which are used to calculate the
+adjusted and conditional \code{\link{r2}} and \code{\link{icc}}.}
 
 \item{comp}{Name of the variance component to be returned. See 'Details'.}
 }
@@ -46,6 +51,18 @@ The random effect variances indicate the between- and within-group
         direct effects) affect the between-group-variance. Cross-level
         interaction effects are group-level factors that explain the
         variance in random slopes (Aguinis et al. 2013).
+        \cr \cr
+        If \code{adjusted = TRUE}, the variance of the fixed and random
+        effects as well as of the additive dispersion and
+        distribution-specific variance are returned (see \cite{Johnson et al. 2014}
+        and \cite{Nakagawa et al. 2017}):
+        \describe{
+         \item{\code{"fixed"}}{variance attributable to the fixed effects}
+         \item{\code{"random"}}{variance of random effects}
+         \item{\code{"dispersion"}}{variance due to additive dispersion}
+         \item{\code{"distribution"}}{distribution-specific variance}
+         \item{\code{"residual"}}{sum of dispersion and distribution}
+        }
 }
 \examples{
 library(lme4)
@@ -53,6 +70,7 @@ fit1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 
 # all random effect variance components
 re_var(fit1)
+re_var(fit1, adjusted = TRUE)
 
 # just the rand. slope-intercept covariance
 get_re_var(fit1, "tau.01")
@@ -63,7 +81,11 @@ re_var(fit2)
 
 }
 \references{
-Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
+\itemize{
+   \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
+   \item Johnson PC, O'Hara RB. 2014. Extension of Nakagawa & Schielzeth's R2GLMM to random slopes models. Methods Ecol Evol, 5: 944-946. (\doi{10.1111/2041-210X.12225})
+   \item Nakagawa S, Johnson P, Schielzeth H (2017) The coefficient of determination R2 and intra-class correlation coefficient from generalized linear mixed-effects models revisted and expanded. J. R. Soc. Interface 14. \doi{10.1098/rsif.2017.0213}
+ }
 }
 \seealso{
 \code{\link{icc}}

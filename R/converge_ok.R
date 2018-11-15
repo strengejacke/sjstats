@@ -12,6 +12,7 @@
 #' @param tolerance Indicates up to which value the convergence result is
 #'          accepted. The smaller \code{tolerance} is, the stricter the test
 #'          will be.
+#' @param ... Currently not used.
 #'
 #' @return For \code{converge_ok()}, a logical vector, which is \code{TRUE} if
 #'           convergence is fine and \code{FALSE} if convergence is suspicious.
@@ -19,16 +20,32 @@
 #'           \code{is_singluar()} returns \code{TRUE} if the model fit is singular.
 #'
 #' @details \code{converge_ok()} provides an alternative convergence test for
-#'                \code{\link[lme4]{merMod}}-objects, as discussed
-#'                \href{https://github.com/lme4/lme4/issues/120}{here}
-#'                and suggested by Ben Bolker in
-#'                \href{https://github.com/lme4/lme4/issues/120#issuecomment-39920269}{this comment}.
-#'                \cr \cr
-#'                \code{is_singular()} checks if a model fit is singular, and can
-#'                be used in case of post-fitting convergence warnings, such as
-#'                warnings about negative eigenvalues of the Hessian. If the fit
-#'                is singular (i.e. \code{is_singular()} returns \code{TRUE}), these
-#'                warnings can most likely be ignored.
+#'   \code{\link[lme4]{merMod}}-objects, as discussed
+#'   \href{https://github.com/lme4/lme4/issues/120}{here}
+#'   and suggested by Ben Bolker in
+#'   \href{https://github.com/lme4/lme4/issues/120#issuecomment-39920269}{this comment}.
+#'   \cr \cr
+#'   If a model is "singular", this means that some dimensions of the variance-covariance
+#'   matrix have been estimated as exactly zero. \code{is_singular()} checks if
+#'   a model fit is singular, and can be used in case of post-fitting convergence
+#'   warnings, such as warnings about negative eigenvalues of the Hessian. If the fit
+#'   is singular (i.e. \code{is_singular()} returns \code{TRUE}), these warnings
+#'   can most likely be ignored.
+#'   \cr \cr
+#'   There is no gold-standard about how to deal with singularity and which
+#'   random-effects specification to choose. Beside using fully Bayesian methods
+#'   (with informative priors), proposals in a frequentist framework are:
+#'   \itemize{
+#'   \item avoid fitting overly complex models, such that the variance-covariance matrices can be estimated precisely enough (\cite{Matuschek et al. 2017})
+#'   \item use some form of model selection to choose a model that balances predictive accuracy and overfitting/type I error (\cite{Bates et al. 2015}, \cite{Matuschek et al. 2017})
+#'   \item \dQuote{keep it maximal}, i.e. fit the most complex model consistent with the experimental design, removing only terms required to allow a non-singular fit (\cite{Barr et al. 2013})
+#'   }
+#'
+#' @references \itemize{
+#'   \item Bates D, Kliegl R, Vasishth S, Baayen H. Parsimonious Mixed Models. arXiv:1506.04967, June 2015.
+#'   \item Barr DJ, Levy R, Scheepers C, Tily HJ. Random effects structure for confirmatory hypothesis testing: Keep it maximal. Journal of Memory and Language, 68(3):255–278, April 2013.
+#'   \item Matuschek H, Kliegl R, Vasishth S, Baayen H, Bates D. Balancing type I error and power in linear mixed models. Journal of Memory and Language, 94:305–315, 2017.
+#'   }
 #'
 #' @examples
 #' library(sjmisc)
@@ -74,23 +91,25 @@ converge_ok <- function(x, tolerance = 0.001) {
 }
 
 
-#' @importFrom lme4 getME
-#' @importFrom glmmTMB getME
 #' @rdname converge_ok
 #' @export
-is_singular <- function(x, tolerance = 1e-5) {
-  if (is_merMod(x)) {
-    theta <- lme4::getME(x, "theta")
-    # diagonal elements are identifiable because they are fitted
-    #  with a lower bound of zero ...
-    diag.element <- lme4::getME(x, "lower") == 0
-    any(abs(theta[diag.element]) < tolerance)
-  } else if (inherits(x, "glmmTMB")) {
-    theta <- glmmTMB::getME(x, "theta")
-    # diagonal elements are identifiable because they are fitted
-    #  with a lower bound of zero ...
-    diag.element <- glmmTMB::getME(x, "lower") == 0
-    any(abs(theta[diag.element]) < tolerance)
-  } else
-    warning("`x` must be a merMod- or glmmTMB-object.", call. = F)
+is_singular <- function(x, tolerance = 1e-5, ...) {
+  UseMethod("is_singular")
+}
+
+#' @importFrom lme4 getME
+#' @export
+is_singular.merMod <- function(x, tolerance = 1e-5, ...) {
+  theta <- lme4::getME(x, "theta")
+  # diagonal elements are identifiable because they are fitted
+  #  with a lower bound of zero ...
+  diag.element <- lme4::getME(x, "lower") == 0
+  any(abs(theta[diag.element]) < tolerance)
+}
+
+#' @importFrom lme4 VarCorr
+#' @export
+is_singular.glmmTMB <- function(x, tolerance = 1e-5, ...) {
+  vc <- collapse_cond(lme4::VarCorr(x))
+  any(sapply(vc, function(.x) any(abs(diag(.x)) < tolerance)))
 }

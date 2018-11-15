@@ -506,18 +506,17 @@ r2_mixedmodel <- function(x, type = NULL) {
   }
 
 
-  # Test for non-zero random effects
+  # Test for non-zero random effects ((near) singularity)
 
-  if (any(sapply(vals$vc, function(x) any(diag(x) == 0)))) {
-    ## TODO test more generally for singularity, via theta?
-    warning("Some variance components equal zero.\n   Solution: Respecify random structure!", call. = F)
+  if (is_singular(x)) {
+    warning(sprintf("Can't compute %s. Some variance components equal zero.\n  Solution: Respecify random structure!", ws2), call. = F)
     return(NULL)
   }
 
 
   # Get variance of fixed effects: multiply coefs by design matrix
 
-  varF <- with(vals, stats::var(as.vector(beta %*% t(X))))
+  var.fixef <- get_fixef_variance(vals)
 
 
   # Are random slopes present as fixed effects? Warn.
@@ -532,7 +531,7 @@ r2_mixedmodel <- function(x, type = NULL) {
   }
 
   if (!all(random.slopes %in% names(vals$beta)))
-    warning(sprintf("Random slopes not present as fixed effects. This artificially inflates the conditional %s.\n   Solution: Respecify fixed structure!", ws2), call. = FALSE)
+    warning(sprintf("Random slopes not present as fixed effects. This artificially inflates the conditional %s.\n  Solution: Respecify fixed structure!", ws2), call. = FALSE)
 
 
   # Separate observation variance from variance of random effects
@@ -543,23 +542,21 @@ r2_mixedmodel <- function(x, type = NULL) {
 
 
   # Variance of random effects
-  varRand <- get_ranef_variance(not.obs.terms, x = x, vals = vals)
+  var.ranef <- get_ranef_variance(not.obs.terms, x = x, vals = vals)
 
   # Residual variance, which is defined as the variance due to
-  # additive dispersion and the distribution‐specific variance (Johnson 2015)
-  varDist <- get_residual_variance(x, var.cor = vals$vc, faminfo, type = ws2)
+  # additive dispersion and the distribution-specific variance (Johnson et al. 2014)
 
-  if (faminfo$is_linear) {
-    varDisp <- 0
-  } else {
-    varDisp <- if (length(obs.terms) == 0 ) 0 else get_ranef_variance(obs.terms, x = x, vals = vals)
-  }
+  var.dist <- get_residual_variance(x, var.cor = vals$vc, faminfo, type = ws2)
+  var.disp <- get_disp_variance(x = x, vals = vals, faminfo = faminfo, obs.terms = obs.terms)
+
+  var.resid <- var.dist + var.disp
 
 
   # Calculate R2 values
 
-  rsq.marginal <- varF / (varF + varRand + varDisp + varDist)
-  rsq.conditional <- (varF + varRand) / (varF + varRand + varDisp + varDist)
+  rsq.marginal <- var.fixef / (var.fixef + var.ranef + var.resid)
+  rsq.conditional <- (var.fixef + var.ranef) / (var.fixef + var.ranef + var.resid)
 
   names(rsq.marginal) <- "Marginal R2"
   names(rsq.conditional) <- "Conditional R2"
@@ -567,8 +564,8 @@ r2_mixedmodel <- function(x, type = NULL) {
 
   # Calculate ICC values
 
-  icc.adjusted <- varRand / (varRand + varDisp + varDist)
-  icc.conditional <- varRand / (varF + varRand + varDisp + varDist)
+  icc.adjusted <- var.ranef / (var.ranef + var.resid)
+  icc.conditional <- var.ranef / (var.fixef + var.ranef + var.resid)
 
   names(icc.adjusted) <-    "Adjusted ICC"
   names(icc.conditional) <- "Conditional ICC"
@@ -595,6 +592,14 @@ r2_mixedmodel <- function(x, type = NULL) {
   }
 
 
+  # save variance information
+
+  attr(var.measure, "var.fixef") <- var.fixef
+  attr(var.measure, "var.ranef") <- var.ranef
+  attr(var.measure, "var.disp") <- var.disp
+  attr(var.measure, "var.dist") <- var.dist
+  attr(var.measure, "var.resid") <- var.resid
+
   attr(var.measure, "family") <- faminfo$family
   attr(var.measure, "link") <- faminfo$link.fun
   attr(var.measure, "formula") <- stats::formula(x)
@@ -603,7 +608,7 @@ r2_mixedmodel <- function(x, type = NULL) {
 }
 
 
-#' @importFrom stats nobs
+#' @importFrom stats nobs logLik
 r2glm <- function(x, L.base) {
   L.full <- stats::logLik(x)
   D.full <- -2 * L.full

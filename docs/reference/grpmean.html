@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.2</span>
       </span>
     </div>
 
@@ -134,7 +134,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>grpmean</span>(<span class='no'>x</span>, <span class='no'>dv</span>, <span class='no'>grp</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"txt"</span>,
-  <span class='st'>"viewer"</span>, <span class='st'>"browser"</span>), <span class='no'>weight.by</span>)</pre>
+  <span class='st'>"viewer"</span>, <span class='st'>"browser"</span>), <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,8 +174,15 @@ results should be plotted (<code>out = "plot"</code>, only applies to certain
 functions). May be abbreviated.</p></td>
     </tr>
     <tr>
-      <th>weight.by</th>
-      <td><p>Deprecated.</p></td>
+      <th>encoding</th>
+      <td><p>Character vector, indicating the charset encoding used
+for variable and value labels. Default is <code>"UTF-8"</code>. Only used
+when <code>out</code> is not <code>"txt"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>file</th>
+      <td><p>Destination file, if the output should be saved as file.
+Only used when <code>out</code> is not <code>"txt"</code>.</p></td>
     </tr>
     </table>
     

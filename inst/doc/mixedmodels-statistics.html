@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2018-10-02" />
+<meta name="date" content="2018-11-15" />
 
 <title>Statistics for Mixed Effects Models</title>
 
@@ -278,7 +278,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Statistics for Mixed Effects Models</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2018-10-02</em></h4>
+<h4 class="date"><em>2018-11-15</em></h4>
 
 
 
@@ -308,7 +308,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-11" data-line-number="11">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>mygrp) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject), sleepstudy)</a></code></pre></div>
 <div id="sample-size-calculation-for-mixed-models" class="section level2">
 <h2>Sample Size Calculation for Mixed Models</h2>
-<p>The first two functions, <code>deff()</code> and <code>smpsize_lmm()</code>, can be used to approximately calculate the sample size in the context of power calculation. Calculating the sample size for simple linear models is pretty straightforward, however, for (linear) mixed models, statistical power is affected through the change of the variance of test statistics. This is what Hsieh et al. (2003) call a <em>design effect</em> (or variance inflation factor, VIF). Once this design effect is calculated, the sample size calculated for a standard design can be adjusted accordingly.</p>
+<p>The first two functions, <code>deff()</code> and <code>smpsize_lmm()</code>, can be used to approximately calculate the sample size in the context of power calculation. Calculating the sample size for simple linear models is pretty straightforward, however, for (linear) mixed models, statistical power is affected through the change of the variance of test statistics. This is what <em>Hsieh et al. (2003)</em> call a <em>design effect</em> (or variance inflation factor, VIF). Once this design effect is calculated, the sample size calculated for a standard design can be adjusted accordingly.</p>
 <div id="design-effect-for-two-level-mixed-models" class="section level3">
 <h3>Design Effect for Two-Level Mixed Models</h3>
 <p><code>deff()</code> computes this design effect for linear mixed models with two-level design. It requires the approximated average number of observations per grouping cluster (i.e. level-2 unit) and the assumed intraclass correlation coefficient (ICC) for the multilevel-model. Typically, the minimum assumed value for the ICC is <em>0.05</em>.</p>
@@ -350,21 +350,33 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 <div id="trouble-shooting" class="section level2">
 <h2>Trouble Shooting</h2>
-<p>Sometimes, when fitting mixed models, covergence warnings or warnings about singularity may come up (see details on these issues <a href="http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#troubleshooting">in this FAQ</a>). These warnings may arise due to the strict tresholds and / or may be safely ignored. <code>converge_ok()</code> and <code>is_singular()</code> may help to check whether such a warning is problematic or not.</p>
-<p><code>converge_ok()</code> provides an alternative convergence test for merMod-objects (with a less strict treshold, as suggested by one of the <em>lme4</em>-package authors), while <code>is_singular()</code> can be used in case of post-fitting convergence warnings, such as warnings about negative eigenvalues of the Hessian. In both cases, if the function returns <code>TRUE</code>, these warnings can most likely be ignored.</p>
+<p>Sometimes, when fitting mixed models, covergence warnings or warnings about singularity may come up (see details on these issues <a href="http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#troubleshooting">in this FAQ</a>). These warnings sometimes arise due to the strict tresholds and / or may be safely ignored, but sometimes indicate overly complex models or models with poorly defined random structure. <code>converge_ok()</code> and <code>is_singular()</code> may help to check whether such a warning is problematic or not.</p>
+<p><code>converge_ok()</code> provides an alternative convergence test for merMod-objects (with a less strict treshold, as suggested by one of the <em>lme4</em>-package authors), while <code>is_singular()</code> can be used in case of post-fitting convergence warnings, such as warnings about negative eigenvalues of the Hessian. Typically, you want <code>TRUE</code> for <code>converge_ok()</code> and non-singular models (i.e. <code>FALSE</code> for <code>is_singular()</code>).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">converge_ok</span>(m)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; 1.79669205387819e-07 </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;                 TRUE</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw">is_singular</span>(m)</a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
+<p>Regarding singular models, there may be some concerns that should be checked:</p>
+<ul>
+<li>singular fits correspond to overfitted models that may have poor power;</li>
+<li>chances of numerical problems and mis-convergence are higher for singular models (e.g. it may be computationally difficult to compute profile confidence intervals for such models);</li>
+<li>standard inferential procedures such as Wald statistics and likelihood ratio tests may be inappropriate.</li>
+</ul>
+<p>Singular fits are likely to occur when the numbers of random-effect levels is small or for complex random-effects models, e.g. models with several different random-slopes terms. There are several (contradicting) proposals how to deal with singularity, although there is no consensus about the best approach:</p>
+<ul>
+<li>Start with the most complex model, then dropping terms until model fit is non-singular and convergence is ok (see <em>Barr et al. 2013</em>).</li>
+<li>Define a parsimonious, simplified model <em>a priori</em> (see <em>Bates et al. 2015</em>, <em>Matuschek et al. 2017</em>).</li>
+</ul>
+<p>See <code>?is_singular</code> and <code>?lme4::isSingular</code> for further details.</p>
 </div>
 <div id="rescale-model-weights-for-complex-samples" class="section level2">
 <h2>Rescale model weights for complex samples</h2>
 <p>Most functions to fit multilevel and mixed effects models only allow to specify frequency weights, but not design (i.e. <em>sampling</em> or <em>probability</em>) weights, which should be used when analyzing complex samples and survey data.</p>
-<p><code>scale_weights()</code> implements an algorithm proposed by Aaparouhov (2006) and Carle (2009) to rescale design weights in survey data to account for the grouping structure of multilevel models, which then can be used for multilevel modelling.</p>
+<p><code>scale_weights()</code> implements an algorithm proposed by <em>Aaparouhov (2006)</em> and <em>Carle (2009)</em> to rescale design weights in survey data to account for the grouping structure of multilevel models, which then can be used for multilevel modelling.</p>
 <p>To calculate a weight-vector that can be used in multilevel models, <code>scale_weights()</code> needs the data frame with survey data as <code>x</code>-argument. This data frame should contain 1) a <em>cluster ID</em> (argument <code>cluster.id</code>), which represents the <em>strata</em> of the survey data (the level-2-cluster variable) and 2) the probability weights (argument <code>pweight</code>), which represents the design or sampling weights of the survey data (level-1-weight).</p>
-<p><code>scale_weights()</code> then returns the original data frame, including two new variables: <code>svywght_a</code>, where the sample weights <code>pweight</code> are adjusted by a factor that represents the proportion of cluster size divided by the sum of sampling weights within each cluster. The adjustment factor for <code>svywght_b</code> is the sum of sample weights within each cluster devided by the sum of squared sample weights within each cluster (see Carle (2009), Appendix B, for details).</p>
+<p><code>scale_weights()</code> then returns the original data frame, including two new variables: <code>svywght_a</code>, where the sample weights <code>pweight</code> are adjusted by a factor that represents the proportion of cluster size divided by the sum of sampling weights within each cluster. The adjustment factor for <code>svywght_b</code> is the sum of sample weights within each cluster devided by the sum of squared sample weights within each cluster (see <em>Carle (2009)</em>, Appendix B, for details).</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">data</span>(nhanes_sample)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">scale_weights</span>(nhanes_sample, SDMVSTRA, WTINT2YR)</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2,992 x 9</span></a>
@@ -407,7 +419,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 <div id="random-effect-variances" class="section level2">
 <h2>Random Effect Variances</h2>
-<p>In mixed effects models, several random effect variances (depending on the model specification) are calculated:</p>
+<p>In mixed effects models, several random effect variances (depending on the model specification) can be calculated:</p>
 <ul>
 <li><code>sigma_2</code>: Within-group (residual) variance</li>
 <li><code>tau.00</code>: Between-group-variance (variation between individual intercepts and average intercept)</li>
@@ -427,74 +439,92 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;       Random-slope-variance:   35.072 (Subject.Days)</span></a>
 <a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  Slope-Intercept-covariance:    9.604 (Subject.(Intercept))</span></a>
 <a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; Slope-Intercept-correlation:    0.066 (Subject)</span></a></code></pre></div>
+<p>Further variance components can be calculated using <code>adjusted = TRUE</code>. In this case, <code>re_var()</code> returns the variance attributable to the fixed effects, the variance of the random effects, the variance due to additive dispersion and the distribution-specific variance. The residual variance is the sum of the dispersion and distribution-specific variance (see <em>Nakagawa et al. (2017)</em> and <em>Johnson et al. (2014)</em>):</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># get all variance components of mixed models</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">re_var</span>(m, <span class="dt">adjusted =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; Variance Components of Mixed Models</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; Family : gaussian (identity)</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;          fixed:  908.953</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;         random: 1698.071</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;       residual:  654.941</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;     dispersion:    0.000</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;   distribution:  654.941</span></a></code></pre></div>
 </div>
 <div id="r-squared" class="section level2">
 <h2>R-squared</h2>
-<p>Nakagawa et al. (2017) proposed a method to compute marginal and conditional r-squared values, which is implemented in the <code>r2()</code>-function. For mixed models, the marginal r-squared considers only the variance of the fixed effects, while the conditional r-squared takes both the fixed and random effects into account. <code>r2()</code> can be used with models fitted with the functions of the <strong>lme4</strong> and <strong>glmmTMB</strong> packages.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">r2</span>(m)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; R-Squared for Generalized Linear Mixed Model</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Family : gaussian (identity)</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;    Marginal R2: 0.279</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; Conditional R2: 0.799</span></a></code></pre></div>
+<p><em>Nakagawa et al. (2017)</em> proposed a method to compute marginal and conditional r-squared values, which is implemented in the <code>r2()</code>-function. For mixed models, the marginal r-squared considers only the variance of the fixed effects, while the conditional r-squared takes both the fixed and random effects into account. <code>r2()</code> can be used with models fitted with the functions of the <strong>lme4</strong> and <strong>glmmTMB</strong> packages.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">r2</span>(m)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; R-Squared for Generalized Linear Mixed Model</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; Family : gaussian (identity)</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;    Marginal R2: 0.279</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; Conditional R2: 0.799</span></a></code></pre></div>
 </div>
 <div id="intraclass-correlation-coefficient" class="section level2">
 <h2>Intraclass-Correlation Coefficient</h2>
 <p>The components of the random effect variances are of interest when calculating the intraclass-correlation coefficient, ICC. The ICC is calculated by dividing the between-group-variance (random intercept variance) by the total variance (i.e. sum of between-group-variance and within-group (residual) variance). The ICC can be interpreted as “the proportion of the variance explained by the grouping structure in the population” (Hox 2002: 15).</p>
-<p>Usually, the ICC is calculated for the null model (“unconditional model”). However, according to Raudenbush and Bryk (2002) or Rabe-Hesketh and Skrondal (2012) it is also feasible to compute the ICC for full models with covariates (“conditional models”) and compare how much a level-2 variable explains the portion of variation in the grouping structure (random intercept).</p>
-<p>The ICC for mixed models can be computed with <code>icc()</code>. <em>Caution:</em> For random-slope-intercept models, the ICC would differ at each unit of the predictors. Hence, the ICC for these kind of models cannot be understood simply as proportion of variance (see Goldstein et al. 2010). For convenience reasons, as the <code>icc()</code> function is also used to extract the different random effects variances (see <code>re_var()</code> above), the ICC for random-slope-intercept-models is reported nonetheless, but it is usually no meaningful summary of the proportion of variances.</p>
-<p>By default, for three-level-models, depending on the nested structure of the model, or for cross-classified models, <code>icc()</code> only reports the proportion of variance explained for each grouping level. Use <code>adjusted = TRUE</code> to calculate the adjusted and conditional ICC.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">icc</span>(m)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Linear mixed model</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Family : gaussian (identity)</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;   ICC (Subject): 0.4831</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="kw">icc</span>(m2)</a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt; Linear mixed model</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; Family : gaussian (identity)</span></a>
-<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
-<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt;     ICC (mygrp): 0.0383</span></a>
-<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt;   ICC (Subject): 0.5981</span></a></code></pre></div>
-<p>If <code>adjusted = TRUE</code>, an adjusted and conditional ICC are calculated, which take all sources of uncertainty (of all random effects) into account to report an “adjusted” ICC, as well as the conditional ICC. The latter also takes the fixed effects variances into account (see Nakagawa et al. 2017). If random effects are not nested and not cross-classified, the adjusted (<code>adjusted = TRUE</code>) and unadjusted (<code>adjusted = FALSE</code>) ICC are identical.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">icc</span>(m, <span class="dt">adjusted =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; Intra-Class Correlation Coefficient for Generalized Linear Mixed Model</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; Family : gaussian (identity)</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;    Adjusted ICC: 0.7217</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; Conditional ICC: 0.5206</span></a>
+<p>Usually, the ICC is calculated for the null model (“unconditional model”). However, according to <em>Raudenbush and Bryk (2002)</em> or <em>Rabe-Hesketh and Skrondal (2012)</em> it is also feasible to compute the ICC for full models with covariates (“conditional models”) and compare how much a level-2 variable explains the portion of variation in the grouping structure (random intercept).</p>
+<p>The ICC for mixed models can be computed with <code>icc()</code>. <em>Caution:</em> For random-slope-intercept models, the ICC would differ at each unit of the predictors. Hence, the ICC for these kind of models cannot be understood simply as proportion of variance (see <em>Goldstein et al. 2010</em>). For convenience reasons, as the <code>icc()</code> function is also used to extract the different random effects variances (see <code>re_var()</code> above), the ICC for random-slope-intercept-models is reported nonetheless, but it is usually no meaningful summary of the proportion of variances. To get a meaningful ICC also for models with random slopes, use <code>adjusted = TRUE</code>. The adjusted ICC used the mean random effect variance, which is based on the random effect variances for each value of the random slope (see <em>Johnson 2014</em>).</p>
+<p>By default, for three-level-models, depending on the nested structure of the model, or for cross-classified models, <code>icc()</code> only reports the proportion of variance explained for each grouping level. Use <code>adjusted = TRUE</code> to calculate the adjusted and conditional ICC that take all random effect variances into account.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">icc</span>(m)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; Caution! ICC for random-slope-intercept models usually not meaningful. Use `adjusted = TRUE` to use the mean random effect variance to calculate the ICC. See 'Note' in `?icc`.</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; Intraclass Correlation Coefficient for Linear mixed model</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; Family : gaussian (identity)</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;   ICC (Subject): 0.4831</span></a>
 <a class="sourceLine" id="cb11-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="kw">icc</span>(m2, <span class="dt">adjusted =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="kw">icc</span>(m2)</a>
 <a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; Intra-Class Correlation Coefficient for Generalized Linear Mixed Model</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; Intraclass Correlation Coefficient for Linear mixed model</span></a>
 <a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; Family : gaussian (identity)</span></a>
 <a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
 <a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt;    Adjusted ICC: 0.6363</span></a>
-<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt; Conditional ICC: 0.4609</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt;     ICC (mygrp): 0.0383</span></a>
+<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt;   ICC (Subject): 0.5981</span></a></code></pre></div>
+<p>If <code>adjusted = TRUE</code>, an adjusted and a conditional ICC are calculated, which take all sources of uncertainty (of all random effects) into account to report an “adjusted” ICC, as well as the conditional ICC. The latter also takes the fixed effects variances into account (see <em>Nakagawa et al. 2017</em>). If random effects are not nested and not cross-classified, the adjusted (<code>adjusted = TRUE</code>) and unadjusted (<code>adjusted = FALSE</code>) ICC are identical.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">icc</span>(m, <span class="dt">adjusted =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; Intraclass Correlation Coefficient for Generalized Linear Mixed Model</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; Family : gaussian (identity)</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; Formula: Reaction ~ Days + (Days | Subject)</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;    Adjusted ICC: 0.7217</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; Conditional ICC: 0.5206</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="kw">icc</span>(m2, <span class="dt">adjusted =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt; Intraclass Correlation Coefficient for Generalized Linear Mixed Model</span></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; Family : gaussian (identity)</span></a>
+<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)</span></a>
+<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt;    Adjusted ICC: 0.6363</span></a>
+<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; Conditional ICC: 0.4609</span></a></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
 <p>Aaparouhov T. 2006. <em>General Multi-Level Modeling with Sampling Weights.</em> Communications in Statistics—Theory and Methods (35): 439–460</p>
+<p>Barr DJ, Levy R, Scheepers C, Tily HJ. 2013. Random effects structure for confirmatory hypothesis testing: Keep it maximal. Journal of Memory and Language, 68(3):255–278</p>
+<p>Bates D, Kliegl R, Vasishth S, Baayen H. 2015. Parsimonious Mixed Models. arXiv:1506.04967</p>
 <p>Carle AC. 2009. <em>Fitting multilevel models in complex survey data with design weights: Recommendations.</em> BMC Medical Research Methodology 9(49): 1-13</p>
 <p>Goldstein H, Browne W, Rasbash J. 2010. Partitioning Variation in Multilevel Models. Understanding Statistics, 1:4, 223-231, doi: <a href="http://doi.org/10.1207/S15328031US0104_02">10.1207/S15328031US0104_02</a></p>
 <p>Hox J. 2002. <em>Multilevel analysis: techniques and applications.</em> Mahwah, NJ: Erlbaum</p>
 <p>Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. <em>An Overview of Variance Inflation Factors for Sample-Size Calculation.</em> Evaluation &amp; the Health Professions 26: 239–257. doi: <a href="http://doi.org/10.1177/0163278703255230">10.1177/0163278703255230</a></p>
+<p>Johnson PC, O’Hara RB. 2014. Extension of Nakagawa &amp; Schielzeth’s R2GLMM to random slopes models. Methods Ecol Evol, 5: 944-946. doi: <a href="http://doi.org/10.1111/2041-210X.12225">10.1111/2041-210X.12225</a></p>
+<p>Matuschek H, Kliegl R, Vasishth S, Baayen H, Bates D. 2017.Balancing type I error and power in linear mixed models. Journal of Memory and Language, 94:305–315</p>
 <p>Nakagawa S, Johnson P, Schielzeth H. 2017. The coefficient of determination R2 and intra-class correlation coefficient from generalized linear mixed-effects models revisted and expanded. J. R. Soc. Interface 14. doi: <a href="http://doi.org/10.1098/rsif.2017.0213">10.1098/rsif.2017.0213</a></p>
 <p>Rabe-Hesketh S, Skrondal A. 2012. <em>Multilevel and longitudinal modeling using Stata.</em> 3rd ed. College Station, Tex: Stata Press Publication</p>
 <p>Raudenbush SW, Bryk AS. 2002. <em>Hierarchical linear models: applications and data analysis methods.</em> 2nd ed. Thousand Oaks: Sage Publications</p>

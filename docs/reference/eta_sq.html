@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.2</span>
       </span>
     </div>
 
@@ -215,16 +215,16 @@ frame with effect sizes including lower and upper confidence intervals.</p></td>
 #&gt; 1   e42dep         0.281    0.247     0.310
 #&gt; 2 c172code         0.008    0.001     0.016
 #&gt; 3  c160age         0.066    0.047     0.089</div><div class='input'>
-<span class='fu'>anova_stats</span>(<span class='kw pkg'>car</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/car/topics/Anova'>Anova</a></span>(<span class='no'>fit</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt;        term power       sumsq     meansq  df statistic p.value etasq
-#&gt; 1    e42dep 1.000  426461.571 142153.857   3    80.299   0.000 0.212
-#&gt; 2  c172code 0.429    7352.049   3676.025   2     2.076   0.126 0.004
-#&gt; 3   c160age 1.000  105169.595 105169.595   1    59.408   0.000 0.052
-#&gt; 4 Residuals    NA 1476436.343   1770.307 834        NA      NA    NA
-#&gt;   partial.etasq omegasq partial.omegasq cohens.f
-#&gt; 1         0.224   0.209           0.221    0.537
-#&gt; 2         0.005   0.002           0.003    0.071
-#&gt; 3         0.066   0.051           0.065    0.267
-#&gt; 4            NA      NA              NA       NA</div><div class='input'>
+<span class='fu'>anova_stats</span>(<span class='kw pkg'>car</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/car/topics/Anova'>Anova</a></span>(<span class='no'>fit</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt;        term       sumsq     meansq  df statistic p.value etasq partial.etasq
+#&gt; 1    e42dep  426461.571 142153.857   3    80.299   0.000 0.212         0.224
+#&gt; 2  c172code    7352.049   3676.025   2     2.076   0.126 0.004         0.005
+#&gt; 3   c160age  105169.595 105169.595   1    59.408   0.000 0.052         0.066
+#&gt; 4 Residuals 1476436.343   1770.307 834        NA      NA    NA            NA
+#&gt;   omegasq partial.omegasq cohens.f power
+#&gt; 1   0.209           0.221    0.537 1.000
+#&gt; 2   0.002           0.003    0.071 0.429
+#&gt; 3   0.051           0.065    0.267 1.000
+#&gt; 4      NA              NA       NA    NA</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

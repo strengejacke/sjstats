@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.2</span>
       </span>
     </div>
 
@@ -122,13 +122,57 @@
       <small>Source: <a href='https://github.com/strengejacke/sjstats/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="sjstats-0-17-2" class="section level1">
+<h1 class="page-header">
+<a href="#sjstats-0-17-2" class="anchor"></a>sjstats 0.17.2<small> 2018-11-15 </small>
+</h1>
+<div id="general" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general" class="anchor"></a>General</h2>
+<ul>
+<li>Revised help-files for <code><a href="../reference/cod.html">r2()</a></code> and <code><a href="../reference/icc.html">icc()</a></code>, also by adding more references.</li>
+</ul>
+</div>
+<div id="new-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions" class="anchor"></a>New functions</h2>
+<ul>
+<li>
+<code><a href="../reference/pred_vars.html">re_grp_var()</a></code> to find group factors of random effects in mixed models.</li>
+</ul>
+</div>
+<div id="changes-to-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-functions" class="anchor"></a>Changes to functions</h2>
+<ul>
+<li>
+<code><a href="../reference/eta_sq.html">omega_sq()</a></code> and <code><a href="../reference/eta_sq.html">eta_sq()</a></code> give more informative messages when using non-supported objects.</li>
+<li>
+<code><a href="../reference/cod.html">r2()</a></code> and <code><a href="../reference/icc.html">icc()</a></code> give more informative warnings and messages.</li>
+<li>
+<code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> supports printing simplex parameters of monotonic effects of <strong>brms</strong> models.</li>
+<li>
+<code><a href="../reference/grpmean.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code> get a <code>file</code> and <code>encoding</code> argument, to save the HTML output as file.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>
+<code><a href="../reference/pred_vars.html">model_frame()</a></code> now correctly names the offset-columns for terms provided as <code>offset</code>-argument (i.e. for models where the offset was not specified inside the formula).</li>
+<li>Fixed issue with <code>weights</code>-argument in <code><a href="../reference/grpmean.html">grpmean()</a></code> when variable name was passed as character vector.</li>
+<li>Fixed issue with <code><a href="../reference/cod.html">r2()</a></code> for <strong>glmmTMB</strong> models with <code>ar1</code> random effects structure.</li>
+</ul>
+</div>
+</div>
     <div id="sjstats-0-17-1" class="section level1">
 <h1 class="page-header">
 <a href="#sjstats-0-17-1" class="anchor"></a>sjstats 0.17.1<small> 2018-10-02 </small>
 </h1>
-<div id="new-functions" class="section level2">
+<div id="new-functions-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions" class="anchor"></a>New functions</h2>
+<a href="#new-functions-1" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/wtd_sd.html">wtd_chisqtest()</a></code> to compute a weighted Chi-squared test.</li>
@@ -138,9 +182,9 @@
 <code><a href="../reference/wtd_sd.html">wtd_cor()</a></code> to compute weighted correlation coefficients of variables.</li>
 </ul>
 </div>
-<div id="changes-to-functions" class="section level2">
+<div id="changes-to-functions-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-1" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/hdi.html">mediation()</a></code> can now cope with models from different families, e.g. if the moderator or outcome is binary, while the treatment-effect is continuous.</li>
@@ -150,9 +194,9 @@
 <code><a href="../reference/eta_sq.html">anova_stats()</a></code> gives a more informative message for non-supported models or ANOVA-options.</li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed issue with <code><a href="../reference/pred_vars.html">model_family()</a></code> and <code><a href="../reference/pred_vars.html">link_inverse()</a></code> for models fitted with <code><a href="http://www.rdocumentation.org/packages/pscl/topics/hurdle">pscl::hurdle()</a></code> or <code><a href="http://www.rdocumentation.org/packages/pscl/topics/zeroinfl">pscl::zeroinfl()</a></code>.</li>
 <li>Fixed issue with wrong title in <code><a href="../reference/grpmean.html">grpmean()</a></code> for grouped data frames, when grouping variable was an unlabelled factor.</li>
@@ -165,16 +209,16 @@
 <h1 class="page-header">
 <a href="#sjstats-0-17-0" class="anchor"></a>sjstats 0.17.0<small> 2018-08-20 </small>
 </h1>
-<div id="general" class="section level2">
+<div id="general-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general" class="anchor"></a>General</h2>
+<a href="#general-1" class="anchor"></a>General</h2>
 <ul>
 <li>Reduce package dependencies.</li>
 </ul>
 </div>
-<div id="new-functions-1" class="section level2">
+<div id="new-functions-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-1" class="anchor"></a>New functions</h2>
+<a href="#new-functions-2" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/wtd_sd.html">wtd_ttest()</a></code> to compute a weighted t-test.</li>
@@ -182,9 +226,9 @@
 <code><a href="../reference/wtd_sd.html">wtd_mwu()</a></code> to compute a weighted Mann-Whitney-U or Kruskal-Wallis test.</li>
 </ul>
 </div>
-<div id="changes-to-functions-1" class="section level2">
+<div id="changes-to-functions-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-1" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-2" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/robust.html">robust()</a></code> was revised, getting more arguments to specify different types of covariance-matrix estimation, and handling these more flexible.</li>
@@ -204,9 +248,9 @@
 <li>To get consistent argument names accross functions, argument <code>weight.by</code> is now deprecated and renamed into <code>weights</code>.</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix issues with effect size computation for repeated-measure Anova when using bootstrapping to compute confidence intervals.</li>
 <li>
@@ -222,9 +266,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-16-0" class="anchor"></a>sjstats 0.16.0<small> 2018-07-10 </small>
 </h1>
-<div id="general-1" class="section level2">
+<div id="general-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-1" class="anchor"></a>General</h2>
+<a href="#general-2" class="anchor"></a>General</h2>
 <ul>
 <li>The S3-generics for functions like <code><a href="../reference/hdi.html">hdi()</a></code>, <code><a href="../reference/hdi.html">rope()</a></code>, <code><a href="../reference/hdi.html">equi_test()</a></code> etc. are now more generic, and function usage for each supported object is now included in the documentation.</li>
 <li>Following functions are now S3-generic: <code><a href="../reference/icc.html">icc()</a></code>, <code><a href="../reference/cod.html">r2()</a></code>, <code><a href="../reference/p_value.html">p_value()</a></code>, <code><a href="../reference/se.html">se()</a></code>, and <code><a href="../reference/std_beta.html">std_beta()</a></code>.</li>
@@ -235,9 +279,9 @@
 <code>stanmvreg</code>-models are now supported by many functions.</li>
 </ul>
 </div>
-<div id="new-functions-2" class="section level2">
+<div id="new-functions-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-2" class="anchor"></a>New functions</h2>
+<a href="#new-functions-3" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/rmse.html">binned_resid()</a></code> to plot binned residuals for logistic regression models.</li>
@@ -249,9 +293,9 @@
 <code><a href="../reference/reliab_test.html">difficulty()</a></code> to compute the item difficulty.</li>
 </ul>
 </div>
-<div id="changes-to-functions-2" class="section level2">
+<div id="changes-to-functions-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-2" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-3" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/icc.html">icc()</a></code> gets a <code>ppd</code>-argument for Stan-models (<em>brmsfit</em> and <em>stanreg</em>), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.</li>
@@ -270,9 +314,9 @@
 <code><a href="../reference/eta_sq.html">eta_sq()</a></code> and <code><a href="../reference/eta_sq.html">omega_sq()</a></code> now also work for repeated-measure Anovas, i.e. Anova with error term (requires broom &gt; 0.4.5).</li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">model_frame()</a></code> and <code><a href="../reference/pred_vars.html">var_names()</a></code> now correctly cleans nested patterns like <code>offset(log(x + 10))</code> from column names.</li>
@@ -290,16 +334,16 @@
 <h1 class="page-header">
 <a href="#sjstats-0-15-0" class="anchor"></a>sjstats 0.15.0<small> 2018-06-06 </small>
 </h1>
-<div id="general-2" class="section level2">
+<div id="general-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-2" class="anchor"></a>General</h2>
+<a href="#general-3" class="anchor"></a>General</h2>
 <ul>
 <li>Added new Vignette <em>Statistics for Bayesian Models</em>.</li>
 </ul>
 </div>
-<div id="new-functions-3" class="section level2">
+<div id="new-functions-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-3" class="anchor"></a>New functions</h2>
+<a href="#new-functions-4" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/hdi.html">equi_test()</a></code> to test if parameter values in Bayesian estimation should be accepted or rejected.</li>
@@ -307,9 +351,9 @@
 <code><a href="../reference/hdi.html">mediation()</a></code> to print a summary of a mediation analysis from multivariate response models fitted with <em>brms</em>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-3" class="section level2">
+<div id="changes-to-functions-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-3" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-4" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">link_inverse()</a></code> now also returns the link-inverse function for cumulative-family <em>brms</em>-models.</li>
@@ -325,9 +369,9 @@
 <li>The column name for the ratio of the number of effective samples in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> is now named <em>neff_ratio</em>, to avoid confusion.</li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level2">
+<div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed issue in <code><a href="../reference/se.html">se()</a></code> for <code><a href="../reference/icc.html">icc()</a></code>-objects, where random effect term could not be found.</li>
 <li>Fixed issue in <code><a href="../reference/se.html">se()</a></code> for <code>merMod</code>-objects.</li>
@@ -339,9 +383,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-3" class="anchor"></a>sjstats 0.14.3<small> 2018-05-02 </small>
 </h1>
-<div id="general-3" class="section level2">
+<div id="general-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-3" class="anchor"></a>General</h2>
+<a href="#general-4" class="anchor"></a>General</h2>
 <ul>
 <li>Remove <em>tidyverse</em> from suggested packages, as requested by maintainers.</li>
 </ul>
@@ -354,30 +398,30 @@
 <code><a href="../reference/mwu.html">mwu()</a></code> now requires a data frame as first argument, followed by the names of the two variables to perform the Mann-Whitney-U-Test on.</li>
 </ul>
 </div>
-<div id="changes-to-functions-4" class="section level2">
+<div id="changes-to-functions-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-4" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-5" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> was improved especially for more complex multilevel models.</li>
-<li>Make <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for large <code>brmsfit</code>-objects (esp. with random effects) more efficient.</li>
+<li>Make <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for large <code>brmsfit</code>-objects (esp. with random effects) more efficient.</li>
 <li>Better <code>print()</code>-method for <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, <code><a href="../reference/hdi.html">hdi()</a></code>, <code><a href="../reference/hdi.html">rope()</a></code>, <code><a href="../reference/icc.html">icc()</a></code> and some other functions.</li>
 <li>
 <code><a href="../reference/pred_vars.html">link_inverse()</a></code> now also should return the link-inverse function for most (or some or all?) custom families of <em>brms</em>-models.</li>
 <li>The <code>weight.by</code>-arguments in <code><a href="../reference/grpmean.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code> now should be a variable name from a variable in <code>x</code>, and no longer a separate vector.</li>
 </ul>
 </div>
-<div id="new-functions-4" class="section level2">
+<div id="new-functions-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-4" class="anchor"></a>New functions</h2>
+<a href="#new-functions-5" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">model_family()</a></code> to get model-information about family and link-functions. This function is intended to be “generic” and work with many different model objects, because not all packages provide a <code>family()</code> function.</li>
 </ul>
 </div>
-<div id="bug-fixes-4" class="section level2">
+<div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix issue with <code><a href="../reference/eta_sq.html">omega_sq()</a></code>, <code><a href="../reference/eta_sq.html">eta_sq()</a></code> etc. when confidence intervals were computed with bootstrapping and the model-formula contained function calls like <code>scale()</code> or <code>as.factor()</code>.</li>
 <li>Fix issue with <code><a href="../reference/p_value.html">p_value()</a></code> for unconditional mixed models.</li>
@@ -393,9 +437,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-2" class="anchor"></a>sjstats 0.14.2<small> 2018-03-25 </small>
 </h1>
-<div id="general-4" class="section level2">
+<div id="general-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-4" class="anchor"></a>General</h2>
+<a href="#general-5" class="anchor"></a>General</h2>
 <ul>
 <li>Revise examples, vignettes and package description to make sure all used packages are available for CRAN checks on operating systems.</li>
 </ul>
@@ -405,17 +449,17 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-2-1" class="anchor"></a>sjstats 0.14.2<small> 2018-03-25 </small>
 </h1>
-<div id="new-functions-5" class="section level2">
+<div id="new-functions-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-5" class="anchor"></a>New functions</h2>
+<a href="#new-functions-6" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code>residuals.svyglm.nb()</code> as S3-generic <code>residuals()</code> method for objects fitted with <code><a href="../reference/svyglm.nb.html">svyglm.nb()</a></code>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-5" class="section level2">
+<div id="changes-to-functions-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-5" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-6" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/icc.html">icc()</a></code> gets a <code>posterior</code>-argument, to compute ICC-values from <code>brmsfit</code>-objects, for the whole posterior distribution.</li>
@@ -441,9 +485,9 @@
 <code><a href="../reference/eta_sq.html">omega_sq()</a></code>, <code><a href="../reference/eta_sq.html">eta_sq()</a></code>, <code><a href="../reference/eta_sq.html">cohens_f()</a></code> and <code><a href="../reference/eta_sq.html">anova_stats()</a></code> now support <code>anova.rms</code>-objects from the <em>rms</em>-package.</li>
 </ul>
 </div>
-<div id="bug-fixes-5" class="section level2">
+<div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix unnecessary warning for tibbles in <code><a href="../reference/reliab_test.html">mic()</a></code>.</li>
 <li>Make sure that <code><a href="../reference/pred_vars.html">model_frame()</a></code> does not return duplicated column names.</li>
@@ -457,17 +501,17 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-1" class="anchor"></a>sjstats 0.14.1<small> 2018-02-04 </small>
 </h1>
-<div id="general-5" class="section level2">
+<div id="general-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-5" class="anchor"></a>General</h2>
+<a href="#general-6" class="anchor"></a>General</h2>
 <ul>
 <li>Remove unused imports.</li>
 <li>Cross refences from <code><a href="http://dplyr.tidyverse.org/reference/reexports.html">dplyr::select_helpers</a></code> were updated to <code><a href="http://www.rdocumentation.org/packages/tidyselect/topics/select_helpers">tidyselect::select_helpers</a></code>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-6" class="section level2">
+<div id="changes-to-functions-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-6" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-7" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">var_names()</a></code> now also cleans variable names from variables modeled with the <code>mi()</code> function (multiple imputation on the fly in <em>brms</em>).</li>
@@ -475,9 +519,9 @@
 <code><a href="../reference/reliab_test.html">reliab_test()</a></code> gets an <code>out</code>-argument, to print output to console, or as HTML table in the viewer or web browser.</li>
 </ul>
 </div>
-<div id="bug-fixes-6" class="section level2">
+<div id="bug-fixes-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix issues with <code><a href="../reference/hdi.html">mcse()</a></code>, <code><a href="../reference/hdi.html">n_eff()</a></code> and <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> with more complex <em>brmsfit</em>-models.</li>
 <li>Fix issue in <code><a href="../reference/typical_value.html">typical_value()</a></code> to prevent error for R-oldrel-Windows.</li>
@@ -491,16 +535,16 @@
 <h1 class="page-header">
 <a href="#sjstats-0-14-0" class="anchor"></a>sjstats 0.14.0<small> 2018-01-14 </small>
 </h1>
-<div id="general-6" class="section level2">
+<div id="general-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-6" class="anchor"></a>General</h2>
+<a href="#general-7" class="anchor"></a>General</h2>
 <ul>
 <li>Beautiful colored output for <code><a href="../reference/grpmean.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code>.</li>
 </ul>
 </div>
-<div id="new-functions-6" class="section level2">
+<div id="new-functions-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-6" class="anchor"></a>New functions</h2>
+<a href="#new-functions-7" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/hdi.html">mcse()</a></code> to compute the Monte Carlo standard error for <code>stanreg</code>- and <code>brmsfit</code>-models.</li>
@@ -508,9 +552,9 @@
 <code><a href="../reference/hdi.html">n_eff()</a></code> to compute the effective sample size for <code>stanreg</code>- and <code>brmsfit</code>-models.</li>
 </ul>
 </div>
-<div id="changes-to-functions-7" class="section level2">
+<div id="changes-to-functions-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-7" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-8" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/grpmean.html">grpmean()</a></code> now uses <code>contrasts()</code> from package <em>emmeans</em> to compute p-values, which correclty indicate whether the sub-group mean is significantly different from the total mean.</li>
@@ -524,9 +568,9 @@
 <code><a href="../reference/typical_value.html">typical_value()</a></code> gets an explicit <code>weight.by</code>-argument.</li>
 </ul>
 </div>
-<div id="bug-fixes-7" class="section level2">
+<div id="bug-fixes-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-8" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">model_frame()</a></code> did not work properly for variables that were standardized with <code>scale()</code>.</li>
@@ -538,17 +582,17 @@
 <h1 class="page-header">
 <a href="#sjstats-0-13-0" class="anchor"></a>sjstats 0.13.0<small> 2017-11-22 </small>
 </h1>
-<div id="general-7" class="section level2">
+<div id="general-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-7" class="anchor"></a>General</h2>
+<a href="#general-8" class="anchor"></a>General</h2>
 <ul>
 <li>Remove deprecated <code>get_model_pval()</code>.</li>
 <li>Revised documentation for <code><a href="../reference/overdisp.html">overdisp()</a></code>.</li>
 </ul>
 </div>
-<div id="new-functions-7" class="section level2">
+<div id="new-functions-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-7" class="anchor"></a>New functions</h2>
+<a href="#new-functions-8" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/scale_weights.html">scale_weights()</a></code> to rescale design weights for multilevel models.</li>
@@ -560,9 +604,9 @@
 <code><a href="../reference/is_prime.html">is_prime()</a></code> to check whether a number is a prime number or not.</li>
 </ul>
 </div>
-<div id="changes-to-functions-8" class="section level2">
+<div id="changes-to-functions-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-8" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-9" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">link_inverse()</a></code> now supports <code>brmsfit</code>, <code>multinom</code> and <code>clm</code>-models.</li>
@@ -578,9 +622,9 @@
 <li>The print-method for <code><a href="../reference/grpmean.html">grpmean()</a></code> now also prints the overall p-value from the model.</li>
 </ul>
 </div>
-<div id="bug-fixes-8" class="section level2">
+<div id="bug-fixes-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-8" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-9" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">resp_val()</a></code>, <code><a href="../reference/cv_error.html">cv_error()</a></code> and <code><a href="../reference/pred_accuracy.html">pred_accuracy()</a></code> did not work for formulas with transforming function for response terms, e.g. <code>log(response)</code>.</li>
@@ -591,17 +635,17 @@
 <h1 class="page-header">
 <a href="#sjstats-0-12-0" class="anchor"></a>sjstats 0.12.0<small> 2017-10-16 </small>
 </h1>
-<div id="general-8" class="section level2">
+<div id="general-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-8" class="anchor"></a>General</h2>
+<a href="#general-9" class="anchor"></a>General</h2>
 <ul>
 <li>Fixed examples, to resolve issues with CRAN package checks.</li>
 <li>More model objects supported in <code><a href="../reference/p_value.html">p_value()</a></code>.</li>
 </ul>
 </div>
-<div id="new-functions-8" class="section level2">
+<div id="new-functions-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-8" class="anchor"></a>New functions</h2>
+<a href="#new-functions-9" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/pred_vars.html">model_frame()</a></code> to get the model frame from model objects, also of those models that don’t have a S3-generic model.frame-function.</li>
@@ -611,16 +655,16 @@
 <code><a href="../reference/pred_vars.html">link_inverse()</a></code> to get the inverse link function from model objects.</li>
 </ul>
 </div>
-<div id="changes-to-functions-9" class="section level2">
+<div id="changes-to-functions-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-9" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-10" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>The <code>fun</code>-argument in <code><a href="../reference/typical_value.html">typical_value()</a></code> can now also be a named vector, to apply different functions for numeric and categorical variables.</li>
 </ul>
 </div>
-<div id="bug-fixes-9" class="section level2">
+<div id="bug-fixes-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-9" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-10" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed issue with specific model formulas in <code><a href="../reference/pred_vars.html">pred_vars()</a></code>.</li>
 <li>Fixed issue with specific model objects in <code><a href="../reference/pred_vars.html">resp_val()</a></code>.</li>
@@ -632,17 +676,17 @@
 <h1 class="page-header">
 <a href="#sjstats-0-11-2" class="anchor"></a>sjstats 0.11.2<small> 2017-09-28 </small>
 </h1>
-<div id="new-functions-9" class="section level2">
+<div id="new-functions-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-9" class="anchor"></a>New functions</h2>
+<a href="#new-functions-10" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> to return a tidy summary of Stan-models.</li>
 </ul>
 </div>
-<div id="changes-to-functions-10" class="section level2">
+<div id="changes-to-functions-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-10" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-11" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/hdi.html">hdi()</a></code> and <code><a href="../reference/hdi.html">rope()</a></code> now also work for <code>brmsfit</code>-models, from package <em>brms</em>.</li>
@@ -655,9 +699,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0-11-1" class="anchor"></a>sjstats 0.11.1<small> 2017-09-16 </small>
 </h1>
-<div id="changes-to-functions-11" class="section level2">
+<div id="changes-to-functions-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-11" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-12" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/typical_value.html">typical_value()</a></code> gets a “zero”-option for the <code>fun</code>-argument.</li>
@@ -672,9 +716,9 @@
 <code>get_model_pval()</code> is now deprecated. Please use <code><a href="../reference/p_value.html">p_value()</a></code> instead.</li>
 </ul>
 </div>
-<div id="new-functions-10" class="section level2">
+<div id="new-functions-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-10" class="anchor"></a>New functions</h2>
+<a href="#new-functions-11" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/hdi.html">rope()</a></code> to calculate the region of practical equivalence for MCMC samples.</li>
@@ -685,17 +729,17 @@
 <h1 class="page-header">
 <a href="#sjstats-0-11-0" class="anchor"></a>sjstats 0.11.0<small> 2017-08-21 </small>
 </h1>
-<div id="general-9" class="section level2">
+<div id="general-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-9" class="anchor"></a>General</h2>
+<a href="#general-10" class="anchor"></a>General</h2>
 <ul>
 <li>Added vignettes for various functions.</li>
 <li>Fixed issue with latest tidyr-update on CRAN.</li>
 </ul>
 </div>
-<div id="new-functions-11" class="section level2">
+<div id="new-functions-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-11" class="anchor"></a>New functions</h2>
+<a href="#new-functions-12" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/grpmean.html">grpmean()</a></code> to compute mean values by groups (One-way Anova).</li>
@@ -714,6 +758,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#sjstats-0-17-2">0.17.2</a></li>
         <li><a href="#sjstats-0-17-1">0.17.1</a></li>
         <li><a href="#sjstats-0-17-0">0.17.0</a></li>
         <li><a href="#sjstats-0-16-0">0.16.0</a></li>

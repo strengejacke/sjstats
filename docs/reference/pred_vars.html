@@ -34,7 +34,7 @@
 
 <meta property="og:description" content="Several functions to retrieve information from model objects,
    like variable names, link-inverse function, model frame,
-   model_family etc., in a tidy and consistent way." />
+   model family etc., in a tidy and consistent way." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.2</span>
       </span>
     </div>
 
@@ -131,13 +131,15 @@
     
     <p>Several functions to retrieve information from model objects,
    like variable names, link-inverse function, model frame,
-   model_family etc., in a tidy and consistent way.</p>
+   model family etc., in a tidy and consistent way.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>pred_vars</span>(<span class='no'>x</span>)
 
 <span class='fu'>resp_var</span>(<span class='no'>x</span>)
+
+<span class='fu'>re_grp_var</span>(<span class='no'>x</span>)
 
 <span class='fu'>resp_val</span>(<span class='no'>x</span>)
 
@@ -175,6 +177,8 @@ model, returns the model frame for fixed effects only.</p></td>
     <p>For <code>pred_vars()</code> and <code>resp_var()</code>, the name(s) of the
    response or predictor variables from <code>x</code> as character vector.
    <code>resp_val()</code> returns the values from <code>x</code>'s response vector.
+   <code>re_grp_var()</code> returns the group factor of random effects in
+   mixed models, or <code>NULL</code> if <code>x</code> has no such random effects term.
    <code>link_inverse()</code> returns, if known, the inverse link function from
    <code>x</code>; else <code>NULL</code> for those models where the inverse link function
    can't be identified. <code>model_frame()</code> is similar to <code>model.frame()</code>,
@@ -276,6 +280,11 @@ model, returns the model frame for fixed effects only.</p></td>
 #&gt; 4      10      4 0.5759292
 #&gt; 5      12      4 0.3274891
 #&gt; 6      19      4 0.4291237</div><div class='input'>
+<span class='co'># get random effects grouping factor from mixed models</span>
+<span class='fu'>library</span>(<span class='no'>lme4</span>)
+<span class='fu'>data</span>(<span class='no'>sleepstudy</span>)
+<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> + <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
+<span class='fu'>re_grp_var</span>(<span class='no'>m</span>)</div><div class='output co'>#&gt; [1] "Subject"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

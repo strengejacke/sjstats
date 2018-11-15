@@ -56,7 +56,7 @@ For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
 \description{
 Several functions to retrieve information from model objects,
    like variable names, link-inverse function, model frame,
-   model_family etc., in a tidy and consistent way.
+   model family etc., in a tidy and consistent way.
 }
 \details{
 \code{model_family()} returns a list with information about the

@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.2</span>
       </span>
     </div>
 
@@ -169,10 +169,9 @@
     </tr>
     <tr>
       <th>adjusted</th>
-      <td><p>Logical, if <code>TRUE</code>, the adjusted (and conditional) ICC
-is calculated, which reflects the uncertainty of all random effects (see
-'Details'). <strong>Note</strong> that if <code>adjusted = TRUE</code>, <strong>no</strong>
-additional information on the variance components is returned.</p></td>
+      <td><p>Logical, if <code>TRUE</code>, the adjusted (and
+conditional) ICC is calculated, which reflects the uncertainty of all
+random effects (see 'Details').</p></td>
     </tr>
     <tr>
       <th>re.form</th>
@@ -185,7 +184,7 @@ to calculate the ICC for this group-level. Only applies if <code>ppd = TRUE</cod
       <th>typical</th>
       <td><p>Character vector, naming the function that will be used as
 measure of central tendency for the ICC. The default is "mean". See
-<code>typical_value</code> for options.</p></td>
+<a href='typical_value.html'>typical_value</a> for options.</p></td>
     </tr>
     <tr>
       <th>prob</th>
@@ -238,6 +237,11 @@ non-Gaussian models.</p></td>
    nonetheless, but it is usually no meaningful summary of the
    proportion of variances.
    <br /> <br />
+   To get a meaningful ICC also for models with random slopes, use <code>adjusted = TRUE</code>.
+   The adjusted ICC used the mean random effect variance, which is based
+   on the random effect variances for each value of the random slope
+   (see <cite>Johnson et al. 2014</cite>).
+   <br /> <br />
    <strong>ICC for models with multiple or nested random effects</strong>
    <br /> <br />
    <strong>Caution:</strong> By default, for three-level-models, depending on the
@@ -254,7 +258,8 @@ non-Gaussian models.</p></td>
    The latter also takes the fixed effects variances into account (see
    <cite>Nakagawa et al. 2017</cite>). If random effects are not nested and not
    cross-classified, the adjusted (<code>adjusted = TRUE</code>) and unadjusted
-   (<code>adjusted = FALSE</code>) ICC are identical.
+   (<code>adjusted = FALSE</code>) ICC are identical. <code>adjust = TRUE</code> returns
+   a meaningful ICC for models with random slopes.
    <br /> <br />
    <strong>ICC for specific group-levels</strong>
    <br /> <br />
@@ -319,6 +324,8 @@ non-Gaussian models.</p></td>
 )</p></li>
 <li><p>Grace-Martion K. The Intraclass Correlation Coefficient in Mixed Models, <a href='http://www.theanalysisfactor.com/the-intraclass-correlation-coefficient-in-mixed-models/'>web</a></p></li>
 <li><p>Hox J. 2002. Multilevel analysis: techniques and applications. Mahwah, NJ: Erlbaum</p></li>
+<li><p>Johnson PC, O'Hara RB. 2014. Extension of Nakagawa &amp; Schielzeth's R2GLMM to random slopes models. Methods Ecol Evol, 5: 944-946. (doi: <a href='http://doi.org/10.1111/2041-210X.12225'>10.1111/2041-210X.12225</a>
+)</p></li>
 <li><p>Nakagawa S, Johnson P, Schielzeth H (2017) The coefficient of determination R2 and intra-class correlation coefficient from generalized linear mixed-effects models revisted and expanded. J. R. Soc. Interface 14. doi: <a href='http://doi.org/10.1098/rsif.2017.0213'>10.1098/rsif.2017.0213</a></p></li>
 <li><p>Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication</p></li>
 <li><p>Raudenbush SW, Bryk AS. 2002. Hierarchical linear models: applications and data analysis methods. 2nd ed. Thousand Oaks: Sage Publications</p></li>
@@ -339,33 +346,44 @@ non-Gaussian models.</p></td>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>lme4</span>)
 <span class='no'>fit0</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='fl'>1</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
 <span class='fu'>icc</span>(<span class='no'>fit0</span>)</div><div class='output co'>#&gt; 
-#&gt; Linear mixed model
+#&gt; Intraclass Correlation Coefficient for Linear mixed model
 #&gt; 
 #&gt; Family : gaussian (identity)
 #&gt; Formula: Reaction ~ 1 + (1 | Subject)
 #&gt; 
-#&gt;   ICC (Subject): 0.3949</div><div class='input'>
+#&gt;   ICC (Subject): 0.3949
+#&gt; </div><div class='input'>
 <span class='co'># note: ICC for random-slope-intercept model usually not</span>
-<span class='co'># meaningful - see 'Note'.</span>
+<span class='co'># meaningful, unless you use "adjusted = TRUE" - see 'Note'.</span>
 <span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
-<span class='fu'>icc</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='output co'>#&gt; 
-#&gt; Linear mixed model
+<span class='fu'>icc</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. Use `adjusted = TRUE` to use the mean random effect variance to calculate the ICC. See 'Note' in `?icc`.</span></div><div class='output co'>#&gt; 
+#&gt; Intraclass Correlation Coefficient for Linear mixed model
 #&gt; 
 #&gt; Family : gaussian (identity)
 #&gt; Formula: Reaction ~ Days + (Days | Subject)
 #&gt; 
-#&gt;   ICC (Subject): 0.4831</div><div class='input'>
+#&gt;   ICC (Subject): 0.4831
+#&gt; </div><div class='input'><span class='fu'>icc</span>(<span class='no'>fit1</span>, <span class='kw'>adjusted</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
+#&gt; Intraclass Correlation Coefficient for Generalized Linear Mixed Model
+#&gt; 
+#&gt; Family : gaussian (identity)
+#&gt; Formula: Reaction ~ Days + (Days | Subject)
+#&gt; 
+#&gt;    Adjusted ICC: 0.7217
+#&gt; Conditional ICC: 0.5206
+#&gt; </div><div class='input'>
 <span class='no'>sleepstudy</span>$<span class='no'>mygrp</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fl'>1</span>:<span class='fl'>45</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>180</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>mygrp</span>) + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
 <span class='fu'>icc</span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt; 
-#&gt; Linear mixed model
+#&gt; Intraclass Correlation Coefficient for Linear mixed model
 #&gt; 
 #&gt; Family : gaussian (identity)
 #&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)
 #&gt; 
 #&gt;     ICC (mygrp): 0.0060
-#&gt;   ICC (Subject): 0.5899</div><div class='input'><span class='fu'>icc</span>(<span class='no'>fit2</span>, <span class='kw'>adjusted</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
-#&gt; Intra-Class Correlation Coefficient for Generalized Linear Mixed Model
+#&gt;   ICC (Subject): 0.5899
+#&gt; </div><div class='input'><span class='fu'>icc</span>(<span class='no'>fit2</span>, <span class='kw'>adjusted</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
+#&gt; Intraclass Correlation Coefficient for Generalized Linear Mixed Model
 #&gt; 
 #&gt; Family : gaussian (identity)
 #&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)
@@ -373,10 +391,10 @@ non-Gaussian models.</p></td>
 #&gt;    Adjusted ICC: 0.5959
 #&gt; Conditional ICC: 0.4292
 #&gt; </div><div class='input'>
-<span class='no'>icc1</span> <span class='kw'>&lt;-</span> <span class='fu'>icc</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. See 'Note' in `?icc`.</span></div><div class='input'><span class='no'>icc2</span> <span class='kw'>&lt;-</span> <span class='fu'>icc</span>(<span class='no'>fit2</span>)
+<span class='no'>icc1</span> <span class='kw'>&lt;-</span> <span class='fu'>icc</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; <span class='message'>Caution! ICC for random-slope-intercept models usually not meaningful. Use `adjusted = TRUE` to use the mean random effect variance to calculate the ICC. See 'Note' in `?icc`.</span></div><div class='input'><span class='no'>icc2</span> <span class='kw'>&lt;-</span> <span class='fu'>icc</span>(<span class='no'>fit2</span>)
 
 <span class='fu'>print</span>(<span class='no'>icc1</span>, <span class='kw'>comp</span> <span class='kw'>=</span> <span class='st'>"var"</span>)</div><div class='output co'>#&gt; 
-#&gt; Linear mixed model
+#&gt; Intraclass Correlation Coefficient for Linear mixed model
 #&gt; 
 #&gt; Family : gaussian (identity)
 #&gt; Formula: Reaction ~ Days + (Days | Subject)
@@ -385,15 +403,17 @@ non-Gaussian models.</p></td>
 #&gt;      Between-group-variance:  612.090 (Subject)
 #&gt;       Random-slope-variance:   35.072 (Subject.Days)
 #&gt;  Slope-Intercept-covariance:    9.604 (Subject.(Intercept))
-#&gt; Slope-Intercept-correlation:    0.066 (Subject)</div><div class='input'><span class='fu'>print</span>(<span class='no'>icc2</span>, <span class='kw'>comp</span> <span class='kw'>=</span> <span class='st'>"var"</span>)</div><div class='output co'>#&gt; 
-#&gt; Linear mixed model
+#&gt; Slope-Intercept-correlation:    0.066 (Subject)
+#&gt; </div><div class='input'><span class='fu'>print</span>(<span class='no'>icc2</span>, <span class='kw'>comp</span> <span class='kw'>=</span> <span class='st'>"var"</span>)</div><div class='output co'>#&gt; 
+#&gt; Intraclass Correlation Coefficient for Linear mixed model
 #&gt; 
 #&gt; Family : gaussian (identity)
 #&gt; Formula: Reaction ~ Days + (1 | mygrp) + (1 | Subject)
 #&gt; 
 #&gt;       Within-group-variance:  946.474
 #&gt;      Between-group-variance:   14.082 (mygrp)
-#&gt;      Between-group-variance: 1381.596 (Subject)</div><div class='input'>
+#&gt;      Between-group-variance: 1381.596 (Subject)
+#&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># compute ICC for Bayesian mixed model, with an ICC for each</span>
 <span class='co'># sample of the posterior. The print()-method then shows</span>

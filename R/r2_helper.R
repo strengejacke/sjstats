@@ -23,7 +23,15 @@ get_ranef_variance <- function(terms, x, vals) {
 }
 
 
-# Get residual variance from random effects
+# get fixed effects variance
+
+#' @importFrom stats var
+get_fixef_variance <- function(vals) {
+  with(vals, stats::var(as.vector(beta %*% t(X))))
+}
+
+
+# Get residual (distribution specific) variance from random effects
 
 get_residual_variance <- function(x, var.cor, faminfo, type) {
 
@@ -58,6 +66,20 @@ get_residual_variance <- function(x, var.cor, faminfo, type) {
   }
 
   residual.variance
+}
+
+
+# get dispersion-specific variance
+
+get_disp_variance <- function(x, vals, faminfo, obs.terms) {
+  if (faminfo$is_linear) {
+    0
+  } else {
+    if (length(obs.terms) == 0 )
+      0
+    else
+      get_ranef_variance(obs.terms, x = x, vals = vals)
+  }
 }
 
 

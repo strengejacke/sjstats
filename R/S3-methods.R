@@ -186,7 +186,7 @@ print.sj_r2 <- function(x, digits = 3, ...) {
 #' @importFrom purrr map_chr map2_chr
 #' @export
 print.sj_icc <- function(x, digits = 4, ...) {
-  cat("\nIntra-Class Correlation Coefficient for Generalized Linear Mixed Model\n\n")
+  cat("\nIntraclass Correlation Coefficient for Generalized Linear Mixed Model\n\n")
   print_icc_and_r2(x, digits, ...)
 }
 
@@ -216,7 +216,7 @@ print_icc_and_r2 <- function(x, digits, ...) {
 #' @export
 print.sj_icc_merMod <- function(x, comp, ...) {
   # print model information
-  cat(sprintf("\n%s\n\n", attr(x, "model", exact = T)))
+  cat(sprintf("\nIntraclass Correlation Coefficient for %s\n\n", attr(x, "model", exact = T)))
 
   cat(crayon::blue(
     sprintf("Family : %s (%s)\nFormula: %s\n\n",
@@ -287,6 +287,8 @@ print.sj_icc_merMod <- function(x, comp, ...) {
                   as.vector(x[i])))
     }
   }
+
+  cat("\n")
 }
 
 
@@ -1421,6 +1423,30 @@ print.sj_grpmeans <- function(x, ...) {
 
     cat("\n\n")
   })
+}
+
+
+#' @importFrom crayon blue cyan
+#' @export
+print.sj_revar_adjust <- function(x, ...) {
+  cat("\nVariance Components of Mixed Models\n\n")
+  cat(crayon::blue(sprintf("Family : %s (%s)\nFormula: %s\n\n", x$family, x$link, deparse(x$formula))))
+
+  vals <- c(
+    sprintf("%.3f", x$var.fixef),
+    sprintf("%.3f", x$var.ranef),
+    sprintf("%.3f", x$var.disp),
+    sprintf("%.3f", x$var.dist),
+    sprintf("%.3f", x$var.resid)
+  )
+
+  vals <- format(vals, justify = "right")
+
+  cat(sprintf("         fixed: %s\n", vals[1]))
+  cat(sprintf("        random: %s\n", vals[2]))
+  cat(sprintf("      residual: %s\n", vals[5]))
+  cat(crayon::cyan(sprintf("    dispersion: %s\n", vals[3])))
+  cat(crayon::cyan(sprintf("  distribution: %s\n\n", vals[4])))
 }
 
 

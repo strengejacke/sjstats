@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.2</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>mwu</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>grp</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"asymptotic"</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"txt"</span>, <span class='st'>"viewer"</span>,
-  <span class='st'>"browser"</span>))</pre>
+  <span class='st'>"browser"</span>), <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,6 +176,17 @@ to console (<code>out = "txt"</code>) or as HTML-table in the viewer-pane
 (<code>out = "viewer"</code>) or browser (<code>out = "browser"</code>), of if the
 results should be plotted (<code>out = "plot"</code>, only applies to certain
 functions). May be abbreviated.</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p>Character vector, indicating the charset encoding used
+for variable and value labels. Default is <code>"UTF-8"</code>. Only used
+when <code>out</code> is not <code>"txt"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>file</th>
+      <td><p>Destination file, if the output should be saved as file.
+Only used when <code>out</code> is not <code>"txt"</code>.</p></td>
     </tr>
     </table>
     

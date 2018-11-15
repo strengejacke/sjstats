@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.17.2</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@
 
     <pre class="usage"><span class='fu'>converge_ok</span>(<span class='no'>x</span>, <span class='kw'>tolerance</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)
 
-<span class='fu'>is_singular</span>(<span class='no'>x</span>, <span class='kw'>tolerance</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>)</pre>
+<span class='fu'>is_singular</span>(<span class='no'>x</span>, <span class='kw'>tolerance</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,6 +157,10 @@
 accepted. The smaller <code>tolerance</code> is, the stricter the test
 will be.</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Currently not used.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -169,16 +173,33 @@ will be.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>converge_ok()</code> provides an alternative convergence test for
-               <code><a href='http://www.rdocumentation.org/packages/lme4/topics/merMod-class'>merMod</a></code>-objects, as discussed
-               <a href='https://github.com/lme4/lme4/issues/120'>here</a>
-               and suggested by Ben Bolker in
-               <a href='https://github.com/lme4/lme4/issues/120#issuecomment-39920269'>this comment</a>.
-               <br /> <br />
-               <code>is_singular()</code> checks if a model fit is singular, and can
-               be used in case of post-fitting convergence warnings, such as
-               warnings about negative eigenvalues of the Hessian. If the fit
-               is singular (i.e. <code>is_singular()</code> returns <code>TRUE</code>), these
-               warnings can most likely be ignored.</p>
+  <code><a href='http://www.rdocumentation.org/packages/lme4/topics/merMod-class'>merMod</a></code>-objects, as discussed
+  <a href='https://github.com/lme4/lme4/issues/120'>here</a>
+  and suggested by Ben Bolker in
+  <a href='https://github.com/lme4/lme4/issues/120#issuecomment-39920269'>this comment</a>.
+  <br /> <br />
+  If a model is "singular", this means that some dimensions of the variance-covariance
+  matrix have been estimated as exactly zero. <code>is_singular()</code> checks if
+  a model fit is singular, and can be used in case of post-fitting convergence
+  warnings, such as warnings about negative eigenvalues of the Hessian. If the fit
+  is singular (i.e. <code>is_singular()</code> returns <code>TRUE</code>), these warnings
+  can most likely be ignored.
+  <br /> <br />
+  There is no gold-standard about how to deal with singularity and which
+  random-effects specification to choose. Beside using fully Bayesian methods
+  (with informative priors), proposals in a frequentist framework are:</p><ul>
+<li><p>avoid fitting overly complex models, such that the variance-covariance matrices can be estimated precisely enough (<cite>Matuschek et al. 2017</cite>)</p></li>
+<li><p>use some form of model selection to choose a model that balances predictive accuracy and overfitting/type I error (<cite>Bates et al. 2015</cite>, <cite>Matuschek et al. 2017</cite>)</p></li>
+<li><p>&#8220;keep it maximal&#8221;, i.e. fit the most complex model consistent with the experimental design, removing only terms required to allow a non-singular fit (<cite>Barr et al. 2013</cite>)</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <ul>
+<li><p>Bates D, Kliegl R, Vasishth S, Baayen H. Parsimonious Mixed Models. arXiv:1506.04967, June 2015.</p></li>
+<li><p>Barr DJ, Levy R, Scheepers C, Tily HJ. Random effects structure for confirmatory hypothesis testing: Keep it maximal. Journal of Memory and Language, 68(3):255–278, April 2013.</p></li>
+<li><p>Matuschek H, Kliegl R, Vasishth S, Baayen H, Bates D. Balancing type I error and power in linear mixed models. Journal of Memory and Language, 94:305–315, 2017.</p></li>
+</ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -211,6 +232,8 @@ will be.</p></td>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#references">References</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

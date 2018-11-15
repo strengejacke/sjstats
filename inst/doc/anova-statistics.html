@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2018-10-02" />
+<meta name="date" content="2018-11-15" />
 
 <title>Statistics for Anova Tables</title>
 
@@ -278,7 +278,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Statistics for Anova Tables</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2018-10-02</em></h4>
+<h4 class="date"><em>2018-11-15</em></h4>
 
 
 
@@ -357,19 +357,19 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h1>Complete Statistical Table Output</h1>
 <p>The <code>anova_stats()</code> function takes a model input and computes a comprehensive summary, including the above effect size measures, returned as tidy data frame:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">anova_stats</span>(fit)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt;        term power  df      sumsq     meansq statistic p.value etasq partial.etasq omegasq partial.omegasq cohens.f</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; 1    e42dep  1.00   3  577756.33 192585.444   108.786   0.000 0.266         0.281   0.263           0.278    0.626</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 2  c172code  0.63   2   11722.05   5861.024     3.311   0.037 0.005         0.008   0.004           0.005    0.089</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 3   c160age  1.00   1  105169.60 105169.595    59.408   0.000 0.048         0.066   0.048           0.065    0.267</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 4 Residuals    NA 834 1476436.34   1770.307        NA      NA    NA            NA      NA              NA       NA</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt;        term  df      sumsq     meansq statistic p.value etasq partial.etasq omegasq partial.omegasq cohens.f power</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; 1    e42dep   3  577756.33 192585.444   108.786   0.000 0.266         0.281   0.263           0.278    0.626  1.00</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; 2  c172code   2   11722.05   5861.024     3.311   0.037 0.005         0.008   0.004           0.005    0.089  0.63</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 3   c160age   1  105169.60 105169.595    59.408   0.000 0.048         0.066   0.048           0.065    0.267  1.00</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 4 Residuals 834 1476436.34   1770.307        NA      NA    NA            NA      NA              NA       NA    NA</span></a></code></pre></div>
 <p>Like the other functions, the input may also be an object of class <code>anova</code>, so you can also use model fits from the <em>car</em> package, which allows fitting Anova’s with different types of sum of squares:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">anova_stats</span>(car<span class="op">::</span><span class="kw">Anova</span>(fit, <span class="dt">type =</span> <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt;          term power       sumsq     meansq  df statistic p.value etasq partial.etasq omegasq partial.omegasq cohens.f</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; 1 (Intercept) 0.973   26851.070  26851.070   1    15.167   0.000 0.013         0.018   0.012           0.017    0.135</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; 2      e42dep 1.000  426461.571 142153.857   3    80.299   0.000 0.209         0.224   0.206           0.220    0.537</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; 3    c172code 0.429    7352.049   3676.025   2     2.076   0.126 0.004         0.005   0.002           0.003    0.071</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; 4     c160age 1.000  105169.595 105169.595   1    59.408   0.000 0.051         0.066   0.051           0.065    0.267</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; 5   Residuals    NA 1476436.343   1770.307 834        NA      NA    NA            NA      NA              NA       NA</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt;          term       sumsq     meansq  df statistic p.value etasq partial.etasq omegasq partial.omegasq cohens.f power</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; 1 (Intercept)   26851.070  26851.070   1    15.167   0.000 0.013         0.018   0.012           0.017    0.135 0.973</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; 2      e42dep  426461.571 142153.857   3    80.299   0.000 0.209         0.224   0.206           0.220    0.537 1.000</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; 3    c172code    7352.049   3676.025   2     2.076   0.126 0.004         0.005   0.002           0.003    0.071 0.429</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; 4     c160age  105169.595 105169.595   1    59.408   0.000 0.051         0.066   0.051           0.065    0.267 1.000</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; 5   Residuals 1476436.343   1770.307 834        NA      NA    NA            NA      NA              NA       NA    NA</span></a></code></pre></div>
 </div>
 <div id="confidence-intervals" class="section level1">
 <h1>Confidence Intervals</h1>
@@ -384,9 +384,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co"># uses bootstrapping - here, for speed, just 100 samples</span></a>
 <a class="sourceLine" id="cb9-8" data-line-number="8"><span class="kw">omega_sq</span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">ci.lvl =</span> <span class="fl">.9</span>, <span class="dt">n =</span> <span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;       term partial.omegasq conf.low conf.high</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; 1   e42dep           0.278    0.222     0.339</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; 2 c172code           0.005   -0.006     0.021</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; 3  c160age           0.065    0.031     0.097</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; 1   e42dep           0.278    0.220     0.333</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; 2 c172code           0.005   -0.005     0.022</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; 3  c160age           0.065    0.034     0.106</span></a></code></pre></div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

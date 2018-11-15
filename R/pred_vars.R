@@ -3,7 +3,7 @@
 #'
 #' @description Several functions to retrieve information from model objects,
 #'    like variable names, link-inverse function, model frame,
-#'    model_family etc., in a tidy and consistent way.
+#'    model family etc., in a tidy and consistent way.
 #'
 #' @param x A fitted model; for \code{var_names()}, \code{x} may also be a
 #'    character vector.
