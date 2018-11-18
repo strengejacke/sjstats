@@ -81,24 +81,24 @@ pca <- function(x) {
 #' @importFrom rlang .data
 #' @importFrom stats varimax
 #' @export
-pca_rotate <- function(x, nf = NULL, rotation = c("varimax", "oblimin")) {
+pca_rotate <- function(x, nf = NULL, rotation = c("varimax", "quartimax", "promax", "oblimin", "simplimax", "cluster", "none")) {
 
   rotation <- match.arg(rotation)
 
   if (!inherits(x, c("prcomp", "data.frame")))
     stop("`x` must be of class `prcomp` or a data frame.", call. = F)
 
-  if (!inherits(x, "data.frame") && rotation == "oblimin")
-    stop("`x` must be a data frame for oblimin-rotation.", call. = F)
+  if (!inherits(x, "data.frame") && rotation != "varimax")
+    stop(sprintf("`x` must be a data frame for `%s`-rotation.", rotation), call. = F)
 
-  if (rotation == "oblimin" && !requireNamespace("psych", quietly = TRUE))
-    stop("Package `psych` required for `oblimin`-rotation.", call. = F)
+  if (rotation != "varimax" && !requireNamespace("psych", quietly = TRUE))
+    stop(sprintf("Package `psych` required for `%s`-rotation.", rotation), call. = F)
 
 
   # rotate loadings
 
-  if (rotation == "oblimin")
-    tmp <- psych::principal(r = x, nfactors = nf, rotate = "oblimin")
+  if (rotation != "varimax")
+    tmp <- psych::principal(r = x, nfactors = nf, rotate = rotation)
   else {
     if (!inherits(x, "sj_pca")) x <- pca(x)
 

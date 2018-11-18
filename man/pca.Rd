@@ -7,7 +7,8 @@
 \usage{
 pca(x)
 
-pca_rotate(x, nf = NULL, rotation = c("varimax", "oblimin"))
+pca_rotate(x, nf = NULL, rotation = c("varimax", "quartimax", "promax",
+  "oblimin", "simplimax", "cluster", "none"))
 }
 \arguments{
 \item{x}{A data frame or a \code{\link[stats]{prcomp}} object.}

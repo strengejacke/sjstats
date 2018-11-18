@@ -3,6 +3,7 @@
 ## Changes to functions
 
 * `boot_ci()` gets a `ci.lvl`-argument.
+* The `rotation`-argument in `pca_rotate()` now supports all rotations from `psych::principal()`.
 
 # sjstats 0.17.2
 
