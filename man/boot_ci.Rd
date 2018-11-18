@@ -7,7 +7,7 @@
 \alias{boot_est}
 \title{Standard error and confidence intervals for bootstrapped estimates}
 \usage{
-boot_ci(data, ..., method = c("dist", "quantile"))
+boot_ci(data, ..., method = c("dist", "quantile"), ci.lvl = 0.95)
 
 boot_se(data, ...)
 
@@ -30,6 +30,8 @@ based on bootstrap standard error, multiplied by the value of the
 quantile function of the t distribution (default), or on sample
 quantiles of the bootstrapped values. See 'Details'. May be
 abbreviated.}
+
+\item{ci.lvl}{Numeric, the level of the confidence intervals.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with either bootstrap estimate,
@@ -61,6 +63,7 @@ The methods require one or more vectors of bootstrap replicate estimates
              \code{mean(x) +/- qt(.975, df = length(x) - 1) * sd(x)}); for
              \code{method = "quantile"}, 95\% sample quantiles are used to compute
              the confidence intervals (\code{quantile(x, probs = c(.025, .975))}).
+             Use \code{ci.lvl} to change the level for the confidence interval.
            }
            \item{
              P-values from \code{boot_p()} are also based on t-statistics,

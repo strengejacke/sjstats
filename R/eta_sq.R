@@ -428,7 +428,7 @@ es_boot_fun <- function(model, type, ci.lvl, n) {
       )) %>%
       dplyr::pull(2) %>%
       purrr::map_df(~ .x) %>%
-      boot_ci()
+      boot_ci(ci.lvl = ci.lvl)
 
   } else {
 
@@ -453,7 +453,7 @@ es_boot_fun <- function(model, type, ci.lvl, n) {
       )) %>%
       dplyr::pull(2) %>%
       purrr::map_df(~ .x) %>%
-      boot_ci()
+      boot_ci(ci.lvl = ci.lvl)
   }
 
 

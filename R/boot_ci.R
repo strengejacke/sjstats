@@ -17,6 +17,7 @@
 #'          quantile function of the t distribution (default), or on sample
 #'          quantiles of the bootstrapped values. See 'Details'. May be
 #'          abbreviated.
+#' @inheritParams std_beta
 #'
 #' @return A \code{\link[tibble]{tibble}} with either bootstrap estimate,
 #'         standard error, the lower and upper confidence intervals or the
@@ -41,6 +42,7 @@
 #'              \code{mean(x) +/- qt(.975, df = length(x) - 1) * sd(x)}); for
 #'              \code{method = "quantile"}, 95\% sample quantiles are used to compute
 #'              the confidence intervals (\code{quantile(x, probs = c(.025, .975))}).
+#'              Use \code{ci.lvl} to change the level for the confidence interval.
 #'            }
 #'            \item{
 #'              P-values from \code{boot_p()} are also based on t-statistics,
@@ -132,7 +134,7 @@
 #' @importFrom dplyr quos
 #' @importFrom rlang .data
 #' @export
-boot_ci <- function(data, ..., method = c("dist", "quantile")) {
+boot_ci <- function(data, ..., method = c("dist", "quantile"), ci.lvl = .95) {
   # match arguments
   method <- match.arg(method)
 
@@ -145,12 +147,12 @@ boot_ci <- function(data, ..., method = c("dist", "quantile")) {
     # bootstrap values or quantiles
     if (method == "dist") {
       # get bootstrap standard error
-      bootse <- stats::qt(.975, df = length(x) - 1) * stats::sd(x, na.rm = T)
+      bootse <- stats::qt((1 + ci.lvl) / 2, df = length(x) - 1) * stats::sd(x, na.rm = T)
       # lower and upper confidence interval
       ci <- mean(x, na.rm = T) + c(-bootse, bootse)
     } else {
       # CI based on quantiles of bootstrapped values
-      ci <- stats::quantile(x, probs = c(.025, .975))
+      ci <- stats::quantile(x, probs = c((1 - ci.lvl) / 2, (1 + ci.lvl) / 2))
     }
     # give proper names
     names(ci) <- c("conf.low", "conf.high")

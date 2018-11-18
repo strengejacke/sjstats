@@ -1,5 +1,11 @@
 # sjstats 0.17.2
 
+## Changes to functions
+
+* `boot_ci()` gets a `ci.lvl`-argument.
+
+# sjstats 0.17.2
+
 ## General
 
 * Revised help-files for `r2()` and `icc()`, also by adding more references.
