@@ -457,7 +457,7 @@ es_boot_fun <- function(model, type, ci.lvl, n) {
   }
 
 
-  x <- dplyr::bind_cols(x, es[1:nrow(x), -1])
+  x <- dplyr::bind_cols(x, es[1:nrow(x), -1, drop = FALSE])
 
   colnames(x)[2] <- dplyr::case_when(
     type == "eta" ~ "etasq",
