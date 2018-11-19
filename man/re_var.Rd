@@ -13,8 +13,7 @@ get_re_var(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01",
 \arguments{
 \item{x}{Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
 \code{stanreg} or \code{brmsfit}). \code{get_re_var()} also accepts
-an object of class \code{icc.lme4}, as returned by the
-\code{\link{icc}} function.}
+an object returned by the \code{\link{icc}} function.}
 
 \item{adjusted}{Logical, if \code{TRUE}, returns the variance of the fixed
 and random effects as well as of the additive dispersion and

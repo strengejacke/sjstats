@@ -1135,7 +1135,11 @@ print.sj_resample <- function(x, ...) {
 
 #' @export
 print.sj_se_icc <- function(x, ...) {
-  cat("Standard Error of ICC\n")
+  if (x$adjusted)
+    cat("Standard Error of adjusted ICC\n")
+  else
+    cat("Standard Error of ICC\n")
+
   cat(sprintf("      Model: %s\n", x$result$model[[1]]))
 
   for (i in 1:nrow(x$result)) {

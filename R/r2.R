@@ -173,7 +173,7 @@ r2.glmmTMB <- function(x, ...) {
   if (!requireNamespace("glmmTMB", quietly = TRUE))
     stop("Package `glmmTMB` needed for this function to work. Please install it.", call. = FALSE)
 
-  r2_mixedmodel(x, type = "r2")
+  r2_mixedmodel(x, type = "r2", obj.name = deparse(substitute(x)))
 }
 
 
@@ -258,7 +258,7 @@ r2.merMod <- function(x, ...) {
   if (!requireNamespace("lme4", quietly = TRUE))
     stop("Package `lme4` needed for this function to work. Please install it.", call. = FALSE)
 
-  r2_mixedmodel(x, type = "r2")
+  r2_mixedmodel(x, type = "r2", obj.name = deparse(substitute(x)))
 }
 
 
@@ -454,7 +454,7 @@ r2linmix <- function(x, n) {
 
 #' @importFrom lme4 fixef getME VarCorr ranef findbars
 #' @importFrom stats family nobs var formula reformulate
-r2_mixedmodel <- function(x, type = NULL) {
+r2_mixedmodel <- function(x, type = NULL, obj.name = NULL) {
 
   if (is.null(type) || type == "r2") {
     ws <- "r2()"
@@ -603,6 +603,11 @@ r2_mixedmodel <- function(x, type = NULL) {
   attr(var.measure, "family") <- faminfo$family
   attr(var.measure, "link") <- faminfo$link.fun
   attr(var.measure, "formula") <- stats::formula(x)
+
+  # finally, save name of fitted model object. May be needed for
+  # the 'se()' function, which accesses the global environment
+
+  attr(var.measure, ".obj.name") <- obj.name
 
   var.measure
 }

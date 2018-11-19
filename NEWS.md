@@ -1,9 +1,13 @@
-# sjstats 0.17.2
+# sjstats 0.17.3
 
 ## Changes to functions
 
 * `boot_ci()` gets a `ci.lvl`-argument.
 * The `rotation`-argument in `pca_rotate()` now supports all rotations from `psych::principal()`.
+
+## Bug fixes
+
+* Fix issue with `se()` and `get_re_var()` for objects returned by `icc()`.
 
 # sjstats 0.17.2
 

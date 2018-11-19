@@ -2,12 +2,15 @@
 % Please edit documentation in R/se.R
 \name{se}
 \alias{se}
-\alias{se.icc.lme4}
+\alias{se.sj_icc_merMod}
+\alias{se.sj_icc}
 \title{Standard Error for variables or coefficients}
 \usage{
 se(x, ...)
 
-\method{se}{icc.lme4}(x, nsim = 100, ...)
+\method{se}{sj_icc_merMod}(x, nsim = 100, ...)
+
+\method{se}{sj_icc}(x, nsim = 100, ...)
 }
 \arguments{
 \item{x}{(Numeric) vector, a data frame, an \code{lm}, \code{glm},

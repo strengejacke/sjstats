@@ -231,7 +231,7 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
     type <- "icc"
 
   # compute adjusted and conditional ICC
-  if (adjusted) return(r2_mixedmodel(x, type = type))
+  if (adjusted) return(r2_mixedmodel(x, type = type, obj.name = deparse(substitute(x))))
 
   # get family
   fitfam <- model_family(x)
@@ -345,7 +345,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
     type <- "icc"
 
   # compute adjusted and conditional ICC
-  if (adjusted) return(r2_mixedmodel(x, type = type))
+  if (adjusted) return(r2_mixedmodel(x, type = type, obj.name = deparse(substitute(x))))
 
   # get family
   fitfam <- model_family(x)
@@ -758,8 +758,7 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 #'
 #' @param x Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
 #'   \code{stanreg} or \code{brmsfit}). \code{get_re_var()} also accepts
-#'   an object of class \code{icc.lme4}, as returned by the
-#'   \code{\link{icc}} function.
+#'   an object returned by the \code{\link{icc}} function.
 #' @param comp Name of the variance component to be returned. See 'Details'.
 #' @param adjusted Logical, if \code{TRUE}, returns the variance of the fixed
 #'   and random effects as well as of the additive dispersion and
@@ -868,7 +867,7 @@ re_var <- function(x, adjusted = FALSE) {
 #' @export
 get_re_var <- function(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01", "sigma_2")) {
   # check if we have a valid object
-  if (!inherits(x, "icc.lme4") && !is_merMod(x) && !inherits(x, c("glmmTMB", "brmsfit"))) {
+  if (!inherits(x, c("sj_icc_merMod", "sj_icc_stanreg", "sj_icc_brms")) && !is_merMod(x) && !inherits(x, c("glmmTMB", "brmsfit"))) {
     stop("`x` must either be an object returned by the `icc` function, or a merMod-, glmmTMB- or brmsfit-object.", call. = F)
   }
 
