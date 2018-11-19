@@ -15,10 +15,10 @@ if (.runThisTest) {
     m2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 
     test_that("se_icc", {
-      se(icc(m), nsim = 50)
-      se(icc(m2), nsim = 50)
-      se(icc(m, adjusted = TRUE), nsim = 50)
-      se(icc(m2, adjusted = TRUE), nsim = 50)
+      sjstats::se(sjstats::icc(m), nsim = 50)
+      sjstats::se(sjstats::icc(m2), nsim = 50)
+      sjstats::se(sjstats::icc(m, adjusted = TRUE), nsim = 50)
+      sjstats::se(sjstats::icc(m2, adjusted = TRUE), nsim = 50)
     })
   }
 }
