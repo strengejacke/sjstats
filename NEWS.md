@@ -4,6 +4,8 @@
 
 * `boot_ci()` gets a `ci.lvl`-argument.
 * The `rotation`-argument in `pca_rotate()` now supports all rotations from `psych::principal()`.
+* `pred_vars()` gets a `fe.only`-argument to return only fixed effects terms from mixed models.
+* `icc()` for Bayesian models gets a `adjusted`-argument, to calculate adjusted and conditional ICC.
 
 ## Bug fixes
 

@@ -7,8 +7,11 @@
 #'
 #' @param x A fitted model; for \code{var_names()}, \code{x} may also be a
 #'    character vector.
-#' @param fe.only Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
-#'    model, returns the model frame for fixed effects only.
+#' @param fe.only Logical, if \code{TRUE} and \code{x} is a mixed effects
+#'    model, \code{model_frame()} returns the model frame for fixed effects only,
+#'    and \code{pred_vars()} returns only fixed effects terms. Note that the default
+#'    for \code{model_frame()} is \code{fe.only = TRUE}, while for \code{pred_vars()}
+#'    the default is \code{fe.only = FALSE}.
 #' @param mv,multi.resp Logical, if \code{TRUE} and model is a multivariate response
 #'    model from a \code{brmsfit} object or of class \code{stanmvreg}, then a
 #'    list of values (one for each regression) is returned.
@@ -89,7 +92,7 @@
 #' @importFrom purrr flatten_chr map
 #' @importFrom stats formula terms
 #' @export
-pred_vars <- function(x) {
+pred_vars <- function(x, fe.only = FALSE) {
 
   if (inherits(x, "clm2"))
     fm <- attr(x$location, "terms", exact = TRUE)
@@ -120,6 +123,18 @@ pred_vars <- function(x) {
 
   if (length(av) == 1 && av == ".")
     av <- all.vars(stats::terms(x)[[3L]])
+
+
+  # remove random effects from formula
+
+  if (fe.only) {
+    re <- re_grp_var(x)
+    if (!sjmisc::is_empty(re)) {
+      re <- unique(sjmisc::trim(unlist(strsplit(re, ":", fixed = TRUE))))
+      pos <- match(re, av)
+      av <- av[-pos]
+    }
+  }
 
   av
 }
@@ -160,7 +175,13 @@ resp_var <- function(x) {
 #' @export
 re_grp_var <- function(x) {
   tryCatch({
-    re <- purrr::map_chr(lme4::findbars(stats::formula(x)), deparse)
+
+    if (inherits(x, "brmsfit"))
+      f <- stats::formula(x)[[1]]
+    else
+      f <- stats::formula(x)
+
+    re <- purrr::map_chr(lme4::findbars(f), deparse)
     sjmisc::trim(substring(re, regexpr(pattern = "\\|", re) + 1))
   },
   error = function(x) { NULL }

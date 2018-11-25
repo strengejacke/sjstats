@@ -15,10 +15,10 @@ icc(x, ...)
 \method{icc}{glmmTMB}(x, adjusted = FALSE, ...)
 
 \method{icc}{stanreg}(x, re.form = NULL, typical = "mean",
-  prob = 0.89, ppd = FALSE, ...)
+  prob = 0.89, ppd = FALSE, adjusted = FALSE, ...)
 
 \method{icc}{brmsfit}(x, re.form = NULL, typical = "mean",
-  prob = 0.89, ppd = FALSE, ...)
+  prob = 0.89, ppd = FALSE, adjusted = FALSE, ...)
 }
 \arguments{
 \item{x}{Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
@@ -28,7 +28,8 @@ icc(x, ...)
 
 \item{adjusted}{Logical, if \code{TRUE}, the adjusted (and
 conditional) ICC is calculated, which reflects the uncertainty of all
-random effects (see 'Details').}
+random effects (see 'Details'). For Bayesian models, if \code{ppd = TRUE},
+\code{adjusted} will be ignored.}
 
 \item{re.form}{Formula containing group-level effects to be considered in
 the prediction. If \code{NULL} (default), include all group-level effects.
@@ -44,7 +45,9 @@ the credible interval that is to be estimated. See \code{\link{hdi}}.}
 
 \item{ppd}{Logical, if \code{TRUE}, variance decomposition is based on the
 posterior predictive distribution, which is the correct way for Bayesian
-non-Gaussian models.}
+non-Gaussian models. If \code{adjusted = TRUE} and \code{ppd = FALSE},
+variance decomposition is approximated following the suggestion by
+\cite{Nakagawa et al. 2017} (see 'Details').}
 }
 \value{
 A numeric vector with all random intercept intraclass-correlation-coefficients.

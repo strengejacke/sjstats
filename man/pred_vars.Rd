@@ -11,7 +11,7 @@
 \alias{var_names}
 \title{Access information from model objects}
 \usage{
-pred_vars(x)
+pred_vars(x, fe.only = FALSE)
 
 resp_var(x)
 
@@ -31,12 +31,15 @@ var_names(x)
 \item{x}{A fitted model; for \code{var_names()}, \code{x} may also be a
 character vector.}
 
+\item{fe.only}{Logical, if \code{TRUE} and \code{x} is a mixed effects
+model, \code{model_frame()} returns the model frame for fixed effects only,
+and \code{pred_vars()} returns only fixed effects terms. Note that the default
+for \code{model_frame()} is \code{fe.only = TRUE}, while for \code{pred_vars()}
+the default is \code{fe.only = FALSE}.}
+
 \item{mv, multi.resp}{Logical, if \code{TRUE} and model is a multivariate response
 model from a \code{brmsfit} object or of class \code{stanmvreg}, then a
 list of values (one for each regression) is returned.}
-
-\item{fe.only}{Logical, if \code{TRUE} (default) and \code{x} is a mixed effects
-model, returns the model frame for fixed effects only.}
 }
 \value{
 For \code{pred_vars()} and \code{resp_var()}, the name(s) of the

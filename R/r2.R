@@ -484,6 +484,31 @@ r2_mixedmodel <- function(x, type = NULL, obj.name = NULL) {
     re = lme4::ranef(x)
   )
 
+  # fix brms structure
+
+  if (inherits(x, "brmsfit")) {
+    vals$beta <- vals$beta[, 1]
+
+    vals$re <- lapply(vals$re, function(r) {
+      dim.ranef <- dim(r)
+      dim.names <- dimnames(r)[[3]]
+      v.re <- purrr::map(1:dim.ranef[3], ~ r[1:dim.ranef[1], 1, .x])
+      names(v.re) <- dim.names
+      as.data.frame(v.re)
+    })
+
+    sc <- vals$vc$residual__$sd[1]
+    vals$vc <- vals$vc[-which(names(vals$vc) == "residual__")]
+    vals$vc <- purrr::map(vals$vc, function(.x) {
+      d <- dim(.x$cov)
+      .x$cov[1:d[1], 1, ]
+    })
+    attr(vals$vc, "sc") <- sc
+
+    if (faminfo$is_zeroinf)
+      warning(sprintf("%s ignores effects of zero-inflation.", ws), call. = FALSE)
+  }
+
 
   # for glmmTMB, use conditional component of model only,
   # and tell user that zero-inflation is ignored
@@ -602,7 +627,7 @@ r2_mixedmodel <- function(x, type = NULL, obj.name = NULL) {
 
   attr(var.measure, "family") <- faminfo$family
   attr(var.measure, "link") <- faminfo$link.fun
-  attr(var.measure, "formula") <- stats::formula(x)
+  attr(var.measure, "formula") <- if (inherits(x, "brmsfit")) stats::formula(x)[[1]] else stats::formula(x)
 
   # finally, save name of fitted model object. May be needed for
   # the 'se()' function, which accesses the global environment

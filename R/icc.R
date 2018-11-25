@@ -18,10 +18,13 @@
 #'   \link{typical_value} for options.
 #' @param ppd Logical, if \code{TRUE}, variance decomposition is based on the
 #'   posterior predictive distribution, which is the correct way for Bayesian
-#'   non-Gaussian models.
+#'   non-Gaussian models. If \code{adjusted = TRUE} and \code{ppd = FALSE},
+#'   variance decomposition is approximated following the suggestion by
+#'   \cite{Nakagawa et al. 2017} (see 'Details').
 #' @param adjusted Logical, if \code{TRUE}, the adjusted (and
 #'   conditional) ICC is calculated, which reflects the uncertainty of all
-#'   random effects (see 'Details').
+#'   random effects (see 'Details'). For Bayesian models, if \code{ppd = TRUE},
+#'   \code{adjusted} will be ignored.
 #'
 #' @inheritParams hdi
 #'
@@ -445,7 +448,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
 #' @importFrom sjmisc row_sums is_empty
 #' @rdname icc
 #' @export
-icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = FALSE, ...) {
+icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = FALSE, adjusted = FALSE, ...) {
 
   if (!requireNamespace("rstanarm", quietly = TRUE))
     stop("Please install and load package `rstanarm` first.", call. = F)
@@ -486,6 +489,9 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     names(icc_) <- c("icc", "tau.00", "resid.var", "total.var")
     class(icc_) <- c("icc_ppd", class(icc_))
 
+  } else if (adjusted) {
+    # compute adjusted and conditional ICC
+    return(r2_mixedmodel(x, type = "ICC", obj.name = deparse(substitute(x))))
   } else {
 
     # random intercept-variances, i.e.
@@ -613,7 +619,7 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 #' @importFrom sjmisc all_na
 #' @rdname icc
 #' @export
-icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = FALSE, ...) {
+icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = FALSE, adjusted = FALSE, ...) {
 
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.", call. = F)
@@ -654,6 +660,9 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     names(icc_) <- c("icc", "tau.00", "resid.var", "total.var")
     class(icc_) <- c("icc_ppd", class(icc_))
 
+  } else if (adjusted) {
+    # compute adjusted and conditional ICC
+    return(r2_mixedmodel(x, type = "ICC", obj.name = deparse(substitute(x))))
   } else {
 
     # get random effect variances for each sample of posterior

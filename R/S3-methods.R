@@ -2001,3 +2001,27 @@ print.sj_wcor <- function(x, ...) {
 print.sj_anova_stat <- function(x, digits = 3, ...) {
   print.data.frame(sjmisc::round_num(x, digits), ..., row.names = TRUE)
 }
+
+
+#' @export
+getME.brmsfit <- function(object, name, ...) {
+  rv <- NULL
+  if (name == "X") {
+    rv <- as.matrix(cbind(1, model_frame(object)[pred_vars(object, fe.only = T)]))
+    colnames(rv)[1] = "(Intercept)"
+  }
+  rv
+}
+
+
+#' @export
+getME.stanreg <- function(object, name, ...) {
+  if (!requireNamespace("rstanarm", quietly = TRUE))
+    stop("Package `rstanarm` needed for this function to work. Please install it.", call. = FALSE)
+
+  rv <- NULL
+  if (name == "X") {
+    rv <- rstanarm::get_x(object)
+  }
+  rv
+}

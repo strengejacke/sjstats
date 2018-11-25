@@ -1,5 +1,5 @@
 if (require("testthat") && require("sjstats") && require("lme4") && require("dplyr")) {
-  context("sjstats, re_grp_var")
+  context("sjstats, pred_vars")
 
   data("sleepstudy")
 
@@ -19,8 +19,10 @@ if (require("testthat") && require("sjstats") && require("lme4") && require("dpl
   )
 
   test_that("re_grp_var", {
-    expect_equal(re_grp_var(m1), "Subject")
-    expect_equal(re_grp_var(m2), c("mysubgrp:mygrp", "mygrp", "Subject"))
+    expect_equal(pred_vars(m1, fe.only = FALSE), c("Days", "Subject"))
+    expect_equal(pred_vars(m1, fe.only = TRUE), "Days")
+    expect_equal(pred_vars(m2, fe.only = FALSE), c("Days", "mygrp", "mysubgrp", "Subject"))
+    expect_equal(pred_vars(m2, fe.only = TRUE), "Days")
   })
 }
 
