@@ -74,7 +74,8 @@
 #'     \item Random-Intercept-Slope-correlation: rho.01
 #'   }
 #'
-#' @details The ICC is calculated by dividing the between-group-variance (random
+#' @details The "simple" ICC (with both \code{ppd} and \code{adjusted} set to
+#'    \code{FALSE}) is calculated by dividing the between-group-variance (random
 #'    intercept variance) by the total variance (i.e. sum of between-group-variance
 #'    and within-group (residual) variance). \cr \cr
 #'    The calculation of the ICC for generalized linear mixed models with binary outcome is based on
@@ -102,7 +103,7 @@
 #'    proportion of variances.
 #'    \cr \cr
 #'    To get a meaningful ICC also for models with random slopes, use \code{adjusted = TRUE}.
-#'    The adjusted ICC used the mean random effect variance, which is based
+#'    The adjusted ICC uses the mean random effect variance, which is based
 #'    on the random effect variances for each value of the random slope
 #'    (see \cite{Johnson et al. 2014}).
 #'    \cr \cr
@@ -112,7 +113,7 @@
 #'    nested structure of the model, or for models with multiple random effects,
 #'    \code{icc()} only reports the proportion of variance explained for each
 #'    grouping level. Use \code{adjusted = TRUE} to calculate the adjusted and
-#'    conditional ICC.
+#'    conditional ICC, which condition on \emph{all random effects}.
 #'    \cr \cr
 #'    \strong{Adjusted and conditional ICC}
 #'    \cr \cr
@@ -207,6 +208,9 @@
 #'
 #'   # show 50% interval
 #'   icc(m, prob = .5)
+#'
+#'   # adjusted ICC, 89% interval
+#'   icc(m, adjusted = TRUE)
 #'
 #'   # variances based on posterior predictive distribution
 #'   icc(m, ppd = TRUE)
