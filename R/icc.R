@@ -262,10 +262,10 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
   tau.11 <- unlist(lapply(reva, function(x) diag(x)[-1]))
 
   # residual variances, i.e. within-cluster-variance
-  resid_var <- get_residual_variance(x, var.cor = reva, fitfam, type = "ICC")
+  resid.var <- get_residual_variance(x, var.cor = reva, fitfam, type = "ICC")
 
   # total variance, sum of random intercept and residual variances
-  total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid_var)
+  total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid.var)
 
   # random intercept icc
   ri.icc <- tau.00 / total_var
@@ -322,7 +322,7 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
   attr(ri.icc, "tau.01") <- tau.01
   attr(ri.icc, "rho.01") <- rho.01
   attr(ri.icc, "tau.11") <- tau.11
-  attr(ri.icc, "sigma_2") <- resid_var
+  attr(ri.icc, "sigma_2") <- resid.var
   attr(ri.icc, "rnd.slope.model") <- any(has_rnd_slope)
 
 
@@ -376,10 +376,10 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
   tau.11 <- unlist(lapply(reva, function(x) diag(x)[-1]))
 
   # residual variances, i.e. within-cluster-variance
-  resid_var <- get_residual_variance(x, var.cor = reva, fitfam, type = "ICC")
+  resid.var <- get_residual_variance(x, var.cor = reva, fitfam, type = "ICC")
 
   # total variance, sum of random intercept and residual variances
-  total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid_var)
+  total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid.var)
 
   # random intercept icc
   ri.icc <- tau.00 / total_var
@@ -433,7 +433,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
   attr(ri.icc, "tau.01") <- tau.01
   attr(ri.icc, "rho.01") <- rho.01
   attr(ri.icc, "tau.11") <- tau.11
-  attr(ri.icc, "sigma_2") <- resid_var
+  attr(ri.icc, "sigma_2") <- resid.var
   attr(ri.icc, "rnd.slope.model") <- any(has_rnd_slope)
 
 
@@ -473,18 +473,18 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     tau.00 <- apply(PPD_0, MARGIN = 1, FUN = stats::var)
 
     ri.icc <- tau.00 / total_var
-    resid_var <- total_var - tau.00
+    resid.var <- total_var - tau.00
 
     icc_ <- c(
       1 - typical_value(ri.icc, fun = typical),
       typical_value(tau.00, fun = typical),
-      typical_value(resid_var, fun = typical),
+      typical_value(resid.var, fun = typical),
       typical_value(total_var, fun = typical)
     )
 
     attr(icc_, "hdi.icc") <- rev(1 - hdi(ri.icc, prob = prob))
     attr(icc_, "hdi.tau.00") <- hdi(tau.00, prob = prob)
-    attr(icc_, "hdi.resid") <- hdi(resid_var, prob = prob)
+    attr(icc_, "hdi.resid") <- hdi(resid.var, prob = prob)
     attr(icc_, "hdi.total") <- hdi(total_var, prob = prob)
     attr(icc_, "re.form") <- re.form
     attr(icc_, "ranef") <- x$ranef$group[1]
@@ -527,11 +527,11 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     sig <- xdat[["sigma"]]
 
     # residual variance
-    resid_var <- sig^2
+    resid.var <- sig^2
 
     # total variance, sum of random intercept and residual variances
     total_var <- sjmisc::row_sums(
-      cbind(tau.00, data.frame(resid_var)),
+      cbind(tau.00, data.frame(resid.var)),
       var = "total_var",
       append = FALSE
     )
@@ -577,8 +577,8 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     attr(icc_, "hdi.tau.00") <- purrr::map(tau.00, ~ hdi(.x, prob = prob))
     tau.00 <- purrr::map_dbl(tau.00, ~ typical_value(.x, fun = typical))
 
-    attr(icc_, "hdi.sigma_2") <- hdi(resid_var, prob = prob)
-    resid_var <- typical_value(resid_var, fun = typical)
+    attr(icc_, "hdi.sigma_2") <- hdi(resid.var, prob = prob)
+    resid.var <- typical_value(resid.var, fun = typical)
 
     if (!is.null(tau.11)) {
       attr(icc_, "hdi.tau.11") <- purrr::map(tau.11, ~ hdi(.x, prob = prob))
@@ -599,7 +599,7 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     attr(icc_, "tau.01") <- tau.01
     attr(icc_, "rho.01") <- rho.01
     attr(icc_, "tau.11") <- tau.11
-    attr(icc_, "sigma_2") <- resid_var
+    attr(icc_, "sigma_2") <- resid.var
     attr(icc_, "rnd.slope.model") <- any(has_rnd_slope)
     attr(icc_, "model") <- mt
 
@@ -643,18 +643,18 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     tau.00 <- apply(PPD_0, MARGIN = 1, FUN = stats::var)
 
     ri.icc <- tau.00 / total_var
-    resid_var <- total_var - tau.00
+    resid.var <- total_var - tau.00
 
     icc_ <- c(
       1 - typical_value(ri.icc, fun = typical),
       typical_value(tau.00, fun = typical),
-      typical_value(resid_var, fun = typical),
+      typical_value(resid.var, fun = typical),
       typical_value(total_var, fun = typical)
     )
 
     attr(icc_, "hdi.icc") <- rev(1 - hdi(ri.icc, prob = prob))
     attr(icc_, "hdi.tau.00") <- hdi(tau.00, prob = prob)
-    attr(icc_, "hdi.resid") <- hdi(resid_var, prob = prob)
+    attr(icc_, "hdi.resid") <- hdi(resid.var, prob = prob)
     attr(icc_, "hdi.total") <- hdi(total_var, prob = prob)
     attr(icc_, "prob") <- prob
     attr(icc_, "re.form") <- re.form
@@ -703,21 +703,21 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     # residual variances, i.e.
     # within-cluster-variance (sigma^2)
 
-    resid_var <- sig^2
+    resid.var <- sig^2
 
 
     # total variance, sum of random intercept and residual variances
-    total_var <- apply(as.data.frame(vars), MARGIN = 1, FUN = sum) + resid_var
+    total_var <- apply(as.data.frame(vars), MARGIN = 1, FUN = sum) + resid.var
 
     # make sure residual variance has same length as other components
     # if not, just repeat the current value to match number of samples
-    if (length(resid_var) == 1) resid_var <- rep(resid_var, length(total_var))
+    if (length(resid.var) == 1) resid.var <- rep(resid.var, length(total_var))
 
     # random intercept icc
     ri.icc <- purrr::map(tau.00, ~ .x / total_var)
 
     # random slope-variances (tau 11)
-    tau.11 <- purrr::map_if(tau.11, is.null, ~ rep(NA, length(resid_var)))
+    tau.11 <- purrr::map_if(tau.11, is.null, ~ rep(NA, length(resid.var)))
 
     names(ri.icc) <- sprintf("icc_%s", names(ri.icc))
     names(tau.00) <- sprintf("tau.00_%s", names(tau.00))
@@ -729,8 +729,8 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     attr(icc_, "hdi.icc") <- purrr::map(ri.icc, ~ hdi(.x, prob = prob))
     attr(icc_, "hdi.tau.00") <- purrr::map(tau.00, ~ hdi(.x, prob = prob))
 
-    attr(icc_, "sigma_2") <- typical_value(resid_var, fun = typical)
-    attr(icc_, "hdi.sigma_2") <- hdi(resid_var, prob = prob)
+    attr(icc_, "sigma_2") <- typical_value(resid.var, fun = typical)
+    attr(icc_, "hdi.sigma_2") <- hdi(resid.var, prob = prob)
 
     attr(icc_, "prob") <- prob
 
@@ -810,7 +810,7 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 #'         and \cite{Nakagawa et al. 2017}):
 #'         \describe{
 #'          \item{\code{"fixed"}}{variance attributable to the fixed effects}
-#'          \item{\code{"random"}}{variance of random effects}
+#'          \item{\code{"random"}}{(mean) variance of random effects}
 #'          \item{\code{"dispersion"}}{variance due to additive dispersion}
 #'          \item{\code{"distribution"}}{distribution-specific variance}
 #'          \item{\code{"residual"}}{sum of dispersion and distribution}

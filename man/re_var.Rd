@@ -57,7 +57,7 @@ The random effect variances indicate the between- and within-group
         and \cite{Nakagawa et al. 2017}):
         \describe{
          \item{\code{"fixed"}}{variance attributable to the fixed effects}
-         \item{\code{"random"}}{variance of random effects}
+         \item{\code{"random"}}{(mean) variance of random effects}
          \item{\code{"dispersion"}}{variance due to additive dispersion}
          \item{\code{"distribution"}}{distribution-specific variance}
          \item{\code{"residual"}}{sum of dispersion and distribution}
