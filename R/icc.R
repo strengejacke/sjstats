@@ -80,7 +80,9 @@
 #'    and within-group (residual) variance). \cr \cr
 #'    The calculation of the ICC for generalized linear mixed models with binary outcome is based on
 #'    \cite{Wu et al. (2012)}. For other distributions (negative binomial, poisson, ...),
-#'    calculation is based on \cite{Nakagawa et al. 2017}.
+#'    calculation is based on \cite{Nakagawa et al. 2017}, \strong{however}, for
+#'    non-Gaussian models it is recommended to compute the adjusted ICC (with
+#'    \code{adjusted = TRUE}, see below).
 #'    \cr \cr
 #'    \strong{ICC for unconditional and conditional models}
 #'    \cr \cr
@@ -124,7 +126,8 @@
 #'    \cite{Nakagawa et al. 2017}). If random effects are not nested and not
 #'    cross-classified, the adjusted (\code{adjusted = TRUE}) and unadjusted
 #'    (\code{adjusted = FALSE}) ICC are identical. \code{adjust = TRUE} returns
-#'    a meaningful ICC for models with random slopes.
+#'    a meaningful ICC for models with random slopes. Furthermore, the adjusted
+#'    ICC is recommended for models with other distributions than Gaussian.
 #'    \cr \cr
 #'    \strong{ICC for specific group-levels}
 #'    \cr \cr
