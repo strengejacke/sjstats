@@ -32,4 +32,15 @@ if (require("testthat") && require("sjstats")) {
     anova_stats(car::Anova(m, type = 2))
     anova_stats(car::Anova(m, type = 3))
   })
+
+
+  set.seed(123)
+  fit <- aov(
+    c12hour ~ as.factor(e42dep) + as.factor(c172code) + c160age,
+    data = efc
+  )
+
+  test_that("omega_sq", {
+    omega_sq(fit, partial = TRUE, ci.lvl = 0.95, n = 50)
+  })
 }
