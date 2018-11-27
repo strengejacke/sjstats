@@ -47,7 +47,8 @@ the credible interval that is to be estimated. See \code{\link{hdi}}.}
 posterior predictive distribution, which is the correct way for Bayesian
 non-Gaussian models. If \code{adjusted = TRUE} and \code{ppd = FALSE},
 variance decomposition is approximated following the suggestion by
-\cite{Nakagawa et al. 2017} (see 'Details').}
+\cite{Nakagawa et al. 2017} (see 'Details'). By default, \code{ppd} is
+set to \code{TRUE} for non-Gaussian models.}
 }
 \value{
 A numeric vector with all random intercept intraclass-correlation-coefficients.

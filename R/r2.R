@@ -498,10 +498,19 @@ r2_mixedmodel <- function(x, type = NULL, obj.name = NULL) {
     })
 
     sc <- vals$vc$residual__$sd[1]
-    vals$vc <- vals$vc[-which(names(vals$vc) == "residual__")]
+
+    if (obj_has_name(vals$vc, "residual__"))
+      vals$vc <- vals$vc[-which(names(vals$vc) == "residual__")]
+
     vals$vc <- purrr::map(vals$vc, function(.x) {
-      d <- dim(.x$cov)
-      .x$cov[1:d[1], 1, ]
+      if (obj_has_name(.x, "cov")) {
+        d <- dim(.x$cov)
+        .x <- .x$cov[1:d[1], 1, ]
+      } else if (obj_has_name(.x, "sd")) {
+        .x <- .x$sd[1, 1, drop = FALSE]^2
+        attr(.x, "dimnames") <- list("Intercept", "Intercept")
+      }
+      .x
     })
     attr(vals$vc, "sc") <- sc
 

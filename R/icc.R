@@ -20,7 +20,8 @@
 #'   posterior predictive distribution, which is the correct way for Bayesian
 #'   non-Gaussian models. If \code{adjusted = TRUE} and \code{ppd = FALSE},
 #'   variance decomposition is approximated following the suggestion by
-#'   \cite{Nakagawa et al. 2017} (see 'Details').
+#'   \cite{Nakagawa et al. 2017} (see 'Details'). By default, \code{ppd} is
+#'   set to \code{TRUE} for non-Gaussian models.
 #' @param adjusted Logical, if \code{TRUE}, the adjusted (and
 #'   conditional) ICC is calculated, which reflects the uncertainty of all
 #'   random effects (see 'Details'). For Bayesian models, if \code{ppd = TRUE},
@@ -464,6 +465,10 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
   fitfam <- model_family(x)
   xdat <- as.data.frame(x)
 
+  if (missing(ppd) && missing(adjusted) && !fitfam$is_linear) {
+    message("Variance decomposition is based on the posterior predictive distribution. Set `ppd = FALSE` to calculate \"classical\" ICC, and `adjusted = TRUE` for adjusted ICC.")
+    ppd <- TRUE
+  }
 
   if (ppd) {
 
@@ -529,12 +534,21 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     # get residual standard deviation sigma
     sig <- xdat[["sigma"]]
 
+    # set default, if no residual variance is available
+    if (is.null(sig)) {
+      if (fitfam$is_bin)
+        sig <- sqrt((pi^2) / 3)
+      else
+        sig <- 1
+    }
+
     # residual variance
     resid.var <- sig^2
 
     # total variance, sum of random intercept and residual variances
     total_var <- sjmisc::row_sums(
       cbind(tau.00, data.frame(resid.var)),
+      n = 1,
       var = "total_var",
       append = FALSE
     )
@@ -633,6 +647,11 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 
   # get family
   fitfam <- model_family(x)
+
+  if (missing(ppd) && missing(adjusted) && !fitfam$is_linear) {
+    message("Variance decomposition is based on the posterior predictive distribution. Set `ppd = FALSE` to calculate \"classical\" ICC, and `adjusted = TRUE` for adjusted ICC.")
+    ppd <- TRUE
+  }
 
 
   if (ppd) {
@@ -844,7 +863,7 @@ re_var <- function(x, adjusted = FALSE) {
 
   if (adjusted) {
 
-    rv <- r2(x)
+    rv <- r2_mixedmodel(x)
 
     rv_ <- list(
       var.fixef = attr(rv, "var.fixef", exact = TRUE),

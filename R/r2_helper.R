@@ -105,10 +105,13 @@ collapse_cond <- function(fit) {
 # Generate null model (intercept and random effects only, no fixed effects)
 
 null_model <- function(x) {
+  # yet another brms fix
+  f <- stats::formula(x)
+  if (is.list(f) && obj_has_name(f, "formula")) f <- f$formula
 
   ## https://stat.ethz.ch/pipermail/r-sig-mixed-models/2014q4/023013.html
   ## FIXME: deparse is a *little* dangerous
-  rterms <- paste0("(", sapply(lme4::findbars(stats::formula(x)), deparse), ")")
+  rterms <- paste0("(", sapply(lme4::findbars(f), deparse), ")")
   nullform <- stats::reformulate(rterms, response = ".")
   null.model <- stats::update(x, nullform)
 
@@ -132,21 +135,31 @@ logVarDist <- function(x, null.fixef, faminfo, sig, type) {
   if (mu < 6)
     warning(sprintf("mu of %0.1f is too close to zero, estimate of %s may be unreliable.\n", mu, type), call. = FALSE)
 
-  vv <- switch(
-    faminfo$family,
-    poisson = stats::family(x)$variance(mu),
-    truncated_poisson = stats::family(x)$variance(sig),
-    beta = beta_variance(mu, sig),
-    genpois = ,
-    nbinom1 = ,
-    nbinom2 = stats::family(x)$variance(mu, sig),
+  ## TODO how to get theta or variance from brms-objects?
+  cvsquared <- tryCatch(
+    {
+      vv <- switch(
+        faminfo$family,
+        poisson = stats::family(x)$variance(mu),
+        truncated_poisson = stats::family(x)$variance(sig),
+        beta = beta_variance(mu, sig),
+        genpois = ,
+        nbinom1 = ,
+        nbinom2 = stats::family(x)$variance(mu, sig),
 
-    if (inherits(x,"merMod"))
-      mu * (1 + mu / lme4::getME(x, "glmer.nb.theta"))
-    else
-      mu * (1 + mu / x$theta)
+        if (inherits(x,"merMod"))
+          mu * (1 + mu / lme4::getME(x, "glmer.nb.theta"))
+        else
+          mu * (1 + mu / x$theta)
+      )
+
+      vv / mu^2
+    },
+    error = function(x) {
+      warning("Can't calculate model's distributional variance. Results are not reliable.", call. = F)
+      0
+    }
   )
 
-  cvsquared <- vv / mu^2
   log1p(cvsquared)
 }

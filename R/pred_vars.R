@@ -20,14 +20,22 @@
 #'    response or predictor variables from \code{x} as character vector.
 #'    \code{resp_val()} returns the values from \code{x}'s response vector.
 #'    \code{re_grp_var()} returns the group factor of random effects in
-#'    mixed models, or \code{NULL} if \code{x} has no such random effects term.
+#'    mixed models, or \code{NULL} if \code{x} has no such random effects term
+#'    (\code{grp_var()} is an alias for \code{re_grp_var()}).
+#'    \cr \cr
 #'    \code{link_inverse()} returns, if known, the inverse link function from
 #'    \code{x}; else \code{NULL} for those models where the inverse link function
-#'    can't be identified. \code{model_frame()} is similar to \code{model.frame()},
+#'    can't be identified.
+#'    \cr \cr
+#'    \code{model_frame()} is similar to \code{model.frame()},
 #'    but should also work for model objects that don't have a S3-generic for
-#'    \code{model.frame()}. \code{var_names()} returns the "cleaned" variable
+#'    \code{model.frame()}.
+#'    c\r \cr
+#'    \code{var_names()} returns the "cleaned" variable
 #'    names, i.e. things like \code{s()} for splines or \code{log()} are
-#'    removed. \code{model_family()} returns a list with information about the
+#'    removed.
+#'    \cr \cr
+#'    \code{model_family()} returns a list with information about the
 #'    model family (see 'Details').
 #'
 #' @details \code{model_family()} returns a list with information about the
@@ -186,6 +194,13 @@ re_grp_var <- function(x) {
   },
   error = function(x) { NULL }
   )
+}
+
+
+#' @rdname pred_vars
+#' @export
+grp_var <- function(x) {
+  re_grp_var(x)
 }
 
 
