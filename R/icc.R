@@ -18,10 +18,11 @@
 #'   \link{typical_value} for options.
 #' @param ppd Logical, if \code{TRUE}, variance decomposition is based on the
 #'   posterior predictive distribution, which is the correct way for Bayesian
-#'   non-Gaussian models. If \code{adjusted = TRUE} and \code{ppd = FALSE},
+#'   non-Gaussian models. By default, \code{ppd} is set to \code{TRUE} for
+#'   non-Gaussian models.If \code{adjusted = TRUE} and \code{ppd = FALSE},
 #'   variance decomposition is approximated following the suggestion by
-#'   \cite{Nakagawa et al. 2017} (see 'Details'). By default, \code{ppd} is
-#'   set to \code{TRUE} for non-Gaussian models.
+#'   \cite{Nakagawa et al. 2017} (see 'Details'), however, this is currently
+#'   only implemented for Gaussian models.
 #' @param adjusted Logical, if \code{TRUE}, the adjusted (and
 #'   conditional) ICC is calculated, which reflects the uncertainty of all
 #'   random effects (see 'Details'). For Bayesian models, if \code{ppd = TRUE},

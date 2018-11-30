@@ -3,6 +3,8 @@ if (require("testthat") && require("sjstats")) {
 
   test_that("var_names", {
     expect_equal(var_names("as.factor(test)"), "test")
+    expect_equal(var_names("log(test)"), "test")
+    expect_equal(var_names("log(log(test))"), "test")
     expect_equal(var_names("I(test^2)"), "test")
     expect_equal(var_names("I(test ^ 2)"), "test")
     expect_equal(var_names("I(test / 10)"), "test")

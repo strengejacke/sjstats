@@ -5,13 +5,14 @@
 * `boot_ci()` gets a `ci.lvl`-argument.
 * The `rotation`-argument in `pca_rotate()` now supports all rotations from `psych::principal()`.
 * `pred_vars()` gets a `fe.only`-argument to return only fixed effects terms from mixed models.
-* `icc()` for Bayesian models gets a `adjusted`-argument, to calculate adjusted and conditional ICC.
+* `icc()` for Bayesian models gets a `adjusted`-argument, to calculate adjusted and conditional ICC (however, only for Gaussian models).
 * For `icc()` for non-Gaussian Bayes-models, argument `ppd` defaults to `TRUE`.
 
 ## Bug fixes
 
 * Fix issue with `se()` and `get_re_var()` for objects returned by `icc()`.
 * Fix issue with `icc()` for Stan-models.
+* `var_names()` did not clear terms with log-log transformation, e.g. `log(log(y))`.
 
 # sjstats 0.17.2
 

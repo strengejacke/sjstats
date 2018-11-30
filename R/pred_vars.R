@@ -30,7 +30,7 @@
 #'    \code{model_frame()} is similar to \code{model.frame()},
 #'    but should also work for model objects that don't have a S3-generic for
 #'    \code{model.frame()}.
-#'    c\r \cr
+#'    \cr \cr
 #'    \code{var_names()} returns the "cleaned" variable
 #'    names, i.e. things like \code{s()} for splines or \code{log()} are
 #'    removed.
@@ -658,7 +658,7 @@ get_vn_helper <- function(x) {
   # for gam-smoothers/loess, remove s()- and lo()-function in column name
   # for survival, remove strata(), and so on...
   pattern <- c(
-    "as.factor", "factor", "offset", "log", "lag", "diff", "lo", "bs", "ns",
+    "as.factor", "factor", "offset", "log-log", "log", "lag", "diff", "lo", "bs", "ns",
     "t2", "te", "ti", "tt", "mi", "mo", "gp", "pspline", "poly", "strata", "scale",
     "interaction", "s", "I"
   )
@@ -671,6 +671,8 @@ get_vn_helper <- function(x) {
         x[i] <- sjmisc::trim(unique(sub("^offset\\(([^-+ )]*).*", "\\1", x[i])))
       } else if (pattern[j] == "I") {
         x[i] <- sjmisc::trim(unique(sub("I\\((\\w*).*", "\\1", x[i])))
+      } else if (pattern[j] == "log-log") {
+        x[i] <- sjmisc::trim(unique(sub("^log\\(log\\(([^,)]*)).*", "\\1", x[i])))
       } else {
         p <- paste0("^", pattern[j], "\\(([^,)]*).*")
         x[i] <- unique(sub(p, "\\1", x[i]))

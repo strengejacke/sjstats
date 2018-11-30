@@ -59,7 +59,7 @@ For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
    \code{model_frame()} is similar to \code{model.frame()},
    but should also work for model objects that don't have a S3-generic for
    \code{model.frame()}.
-   c\r \cr
+   \cr \cr
    \code{var_names()} returns the "cleaned" variable
    names, i.e. things like \code{s()} for splines or \code{log()} are
    removed.

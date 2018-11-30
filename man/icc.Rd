@@ -45,10 +45,11 @@ the credible interval that is to be estimated. See \code{\link{hdi}}.}
 
 \item{ppd}{Logical, if \code{TRUE}, variance decomposition is based on the
 posterior predictive distribution, which is the correct way for Bayesian
-non-Gaussian models. If \code{adjusted = TRUE} and \code{ppd = FALSE},
+non-Gaussian models. By default, \code{ppd} is set to \code{TRUE} for
+non-Gaussian models.If \code{adjusted = TRUE} and \code{ppd = FALSE},
 variance decomposition is approximated following the suggestion by
-\cite{Nakagawa et al. 2017} (see 'Details'). By default, \code{ppd} is
-set to \code{TRUE} for non-Gaussian models.}
+\cite{Nakagawa et al. 2017} (see 'Details'), however, this is currently
+only implemented for Gaussian models.}
 }
 \value{
 A numeric vector with all random intercept intraclass-correlation-coefficients.
