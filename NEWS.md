@@ -7,6 +7,9 @@
 * `pred_vars()` gets a `fe.only`-argument to return only fixed effects terms from mixed models.
 * `icc()` for Bayesian models gets a `adjusted`-argument, to calculate adjusted and conditional ICC (however, only for Gaussian models).
 * For `icc()` for non-Gaussian Bayes-models, argument `ppd` defaults to `TRUE`.
+* `resp_val()` and `resp_var()` now also work for **brms**-models with additional response information.
+* `resp_var()` gets a `combine`-argument, to return either the name of the matrix-column or the original variable names for matrix-columns.
+* `model_frame()` now also returns the original variables for matrix-column-variables.
 
 ## Bug fixes
 

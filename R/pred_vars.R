@@ -15,6 +15,10 @@
 #' @param mv,multi.resp Logical, if \code{TRUE} and model is a multivariate response
 #'    model from a \code{brmsfit} object or of class \code{stanmvreg}, then a
 #'    list of values (one for each regression) is returned.
+#' @param combine Logical, if \code{TRUE} and the response is a matrix-column,
+#'    the name of the response matches the notation in formula, and would for
+#'    instance also contain patterns like \code{"cbind(...)"}. Else, the original
+#'    variable names from the matrix-column are returned. See 'Examples'.
 #'
 #' @return For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
 #'    response or predictor variables from \code{x} as character vector.
@@ -51,15 +55,20 @@
 #'      \item \code{is_categorical}: family is categorical link
 #'      \item \code{is_zeroinf}: model has zero-inflation component
 #'      \item \code{is_multivariate}: model is a multivariate response model (currently only works for \emph{brmsfit} objects)
+#'      \item \code{is_trial}: model response contains additional information about the trials
 #'      \item \code{link.fun}: the link-function
 #'      \item \code{family}: the family-object
 #'    }
 #'    \code{model_frame()} slighty differs from \code{model.frame()}, especially
-#'    for spline terms. Where \code{model.frame()} returns a matrix for splines,
+#'    for spline terms and matrix-variables created with \code{cbind()} (for example
+#'    in binomial models, where the response is a combination of successes and
+#'    trials) . Where \code{model.frame()} returns a matrix for splines,
 #'    \code{model_frame()} returns the data of the original variable and uses
 #'    the same column name as in the \code{data}-argument from the model-function.
 #'    This makes it easier, for instance, to get data that should be used as new
-#'    data in \code{predict()}. See 'Examples'.
+#'    data in \code{predict()}. For matrix-variables created with \code{cbind()},
+#'    \code{model_frame()} returns the original variable as matrix and
+#'    \emph{additionally} each column as own variable. See 'Examples'.
 #'
 #' @examples
 #' data(efc)
@@ -90,6 +99,16 @@
 #' m <- lm(neg_c_7 ~ e42dep + ns(c160age), data = efc)
 #' head(model.frame(m))
 #' head(model_frame(m))
+#'
+#' library(lme4)
+#' data(cbpp)
+#' cbpp$trials <- cbpp$size - cbpp$incidence
+#' m <- glm(cbind(incidence, trials) ~ period, data = cbpp, family = binomial)
+#' head(model.frame(m))
+#' head(model_frame(m))
+#'
+#' resp_var(m, matrix = TRUE)
+#' resp_var(m, matrix = FALSE)
 #'
 #' # get random effects grouping factor from mixed models
 #' library(lme4)
@@ -152,25 +171,43 @@ pred_vars <- function(x, fe.only = FALSE) {
 #' @importFrom stats formula
 #' @rdname pred_vars
 #' @export
-resp_var <- function(x) {
+resp_var <- function(x, combine = TRUE) {
   if (inherits(x, "brmsfit")) {
     if (is.null(stats::formula(x)$responses)) {
-      deparse(stats::formula(x)$formula[[2L]])
+      rv <- deparse(stats::formula(x)$formula[[2L]])
+      # check for brms Additional Response Information
+      if (!sjmisc::is_empty(string_contains("|", rv))) {
+        r1 <- sjmisc::trim(sub("(.*)\\|(.*)", "\\1", rv))
+        r2 <- sjmisc::trim(sub("(.*)\\|(.*)\\(([^,)]*).*", "\\3", rv))
+        rv <- c(r1, r2)
+      }
     } else {
-      purrr::map_chr(
+      rv <- purrr::map_chr(
         x$formula$forms,
         ~ stats::formula(.x)[[2L]] %>% all.vars()
       )
       # stats::formula(x)$responses
     }
   } else if (inherits(x, "stanmvreg")) {
-    purrr::map_chr(stats::formula(x), ~ deparse(.x[[2L]]))
+    rv <- purrr::map_chr(stats::formula(x), ~ deparse(.x[[2L]]))
   } else if (inherits(x, "clm2")) {
-    all.vars(attr(x$location, "terms", exact = TRUE)[[2L]])
+    rv <- all.vars(attr(x$location, "terms", exact = TRUE)[[2L]])
   } else if (inherits(x, "gam") && is.list(stats::formula(x))) {
-    deparse(stats::formula(x)[[1]][[2L]])
+    rv <- deparse(stats::formula(x)[[1]][[2L]])
   } else
-    deparse(stats::formula(x)[[2L]])
+    rv <- deparse(stats::formula(x)[[2L]])
+
+  if (!combine && grepl("cbind\\((.*)\\)", rv) && !inherits(x, "brmsfit")) {
+    rv <- sub("cbind\\(([^,].*)([\\)].*)" ,"\\1", rv) %>%
+      strsplit(split  = ",", fixed = TRUE) %>%
+      unlist() %>%
+      sjmisc::trim()
+
+    if (!sjmisc::is_empty(string_contains("-", rv[2])))
+      rv[2] <- sjmisc::trim(sub("(.*)(\\-)(.*)", "\\1", rv[2]))
+  }
+
+  rv
 }
 
 
@@ -208,13 +245,25 @@ grp_var <- function(x) {
 #' @importFrom nlme getResponse
 #' @export
 resp_val <- function(x) {
+
+  rn <- resp_var(x, combine = FALSE)
+
   if (inherits(x, c("lme", "gls")))
     as.vector(nlme::getResponse(x))
-  else if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$responses))
+  else if (inherits(x, "brmsfit")) {
+    rv <- model_frame(x)[, var_names(resp_var(x))]
+    rc <- ncol(rv)
+    if (!is.null(stats::formula(x)$responses) || !is.null(rc))
+      as.vector(rv)
+    else
+      rv
+  } else if (inherits(x, "stanmvreg"))
     as.vector(model_frame(x)[, var_names(resp_var(x))])
-  else if (inherits(x, "stanmvreg"))
-    as.vector(model_frame(x)[, var_names(resp_var(x))])
-  else
+  else if (length(rn) > 1) {
+    rv <- as.data.frame(model_frame(x)[[var_names(resp_var(x))]])
+    colnames(rv) <- rn
+    rv
+  } else
     as.vector(model_frame(x)[[var_names(resp_var(x))]])
 }
 
@@ -404,8 +453,19 @@ model_frame <- function(x, fe.only = TRUE) {
 
   # don't change response value, if it's a matrix
   # bound with cbind()
+  rn <- resp_var(x, combine = TRUE)
+  trials.data <- NULL
 
-  if (mc[1] && resp_var(x) == colnames(fitfram)[1]) mc[1] <- FALSE
+  if (mc[1] && rn == colnames(fitfram)[1]) {
+    mc[1] <- FALSE
+    tryCatch(
+      {
+        trials.data <- as.data.frame(fitfram[[1]])
+        colnames(trials.data) <- resp_var(x, combine = FALSE)
+      },
+      error = function(x) { NULL }
+    )
+  }
 
 
   # if we have any matrix columns, we remove them from original
@@ -486,6 +546,13 @@ model_frame <- function(x, fe.only = TRUE) {
   if (!sjmisc::is_empty(dupes)) cvn[dupes] <- sprintf("%s.%s", cvn[dupes], 1:length(dupes))
 
   colnames(fitfram) <- cvn
+
+  # add back possible trials-data
+  if (!is.null(trials.data)) {
+    new.cols <- setdiff(colnames(trials.data), colnames(fitfram))
+    if (!sjmisc::is_empty(new.cols)) fitfram <- cbind(fitfram, trials.data[, new.cols, drop = FALSE])
+  }
+
   fitfram
 }
 
@@ -615,6 +682,32 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
 
   is.categorical <- fitfam == "categorical"
 
+
+  # check if we have binomial models with trials instead of binary outcome
+
+  is.trial <- FALSE
+
+  if (inherits(x, "brmsfit") && is.null(stats::formula(x)$responses)) {
+    tryCatch(
+      {
+        rv <- deparse(stats::formula(x)$formula[[2L]])
+        is.trial <- sjmisc::trim(sub("(.*)\\|(.*)\\(([^,)]*).*", "\\2", rv)) %in% c("trials", "resp_trials")
+      },
+      error = function(x) { NULL }
+    )
+  }
+
+  if (binom_fam && !inherits(x, "brmsfit")) {
+    tryCatch(
+      {
+        rv <- deparse(stats::formula(x)[[2L]])
+        is.trial <- grepl("cbind\\((.*)\\)", rv)
+      },
+      error = function(x) { NULL }
+    )
+  }
+
+
   list(
     is_bin = binom_fam & !neg_bin_fam,
     is_pois = poisson_fam | neg_bin_fam,
@@ -625,6 +718,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
     is_ordinal = is.ordinal,
     is_categorical = is.categorical,
     is_multivariate = multi.var,
+    is_trial = is.trial,
     link.fun = link.fun,
     family = fitfam
   )

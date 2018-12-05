@@ -14,7 +14,7 @@
 \usage{
 pred_vars(x, fe.only = FALSE)
 
-resp_var(x)
+resp_var(x, combine = TRUE)
 
 re_grp_var(x)
 
@@ -39,6 +39,11 @@ model, \code{model_frame()} returns the model frame for fixed effects only,
 and \code{pred_vars()} returns only fixed effects terms. Note that the default
 for \code{model_frame()} is \code{fe.only = TRUE}, while for \code{pred_vars()}
 the default is \code{fe.only = FALSE}.}
+
+\item{combine}{Logical, if \code{TRUE} and the response is a matrix-column,
+the name of the response matches the notation in formula, and would for
+instance also contain patterns like \code{"cbind(...)"}. Else, the original
+variable names from the matrix-column are returned. See 'Examples'.}
 
 \item{mv, multi.resp}{Logical, if \code{TRUE} and model is a multivariate response
 model from a \code{brmsfit} object or of class \code{stanmvreg}, then a
@@ -86,15 +91,20 @@ Several functions to retrieve information from model objects,
      \item \code{is_categorical}: family is categorical link
      \item \code{is_zeroinf}: model has zero-inflation component
      \item \code{is_multivariate}: model is a multivariate response model (currently only works for \emph{brmsfit} objects)
+     \item \code{is_trial}: model response contains additional information about the trials
      \item \code{link.fun}: the link-function
      \item \code{family}: the family-object
    }
    \code{model_frame()} slighty differs from \code{model.frame()}, especially
-   for spline terms. Where \code{model.frame()} returns a matrix for splines,
+   for spline terms and matrix-variables created with \code{cbind()} (for example
+   in binomial models, where the response is a combination of successes and
+   trials) . Where \code{model.frame()} returns a matrix for splines,
    \code{model_frame()} returns the data of the original variable and uses
    the same column name as in the \code{data}-argument from the model-function.
    This makes it easier, for instance, to get data that should be used as new
-   data in \code{predict()}. See 'Examples'.
+   data in \code{predict()}. For matrix-variables created with \code{cbind()},
+   \code{model_frame()} returns the original variable as matrix and
+   \emph{additionally} each column as own variable. See 'Examples'.
 }
 \examples{
 data(efc)
@@ -125,6 +135,16 @@ library(splines)
 m <- lm(neg_c_7 ~ e42dep + ns(c160age), data = efc)
 head(model.frame(m))
 head(model_frame(m))
+
+library(lme4)
+data(cbpp)
+cbpp$trials <- cbpp$size - cbpp$incidence
+m <- glm(cbind(incidence, trials) ~ period, data = cbpp, family = binomial)
+head(model.frame(m))
+head(model_frame(m))
+
+resp_var(m, matrix = TRUE)
+resp_var(m, matrix = FALSE)
 
 # get random effects grouping factor from mixed models
 library(lme4)
