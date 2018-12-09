@@ -155,7 +155,6 @@ cohens_f <- function(model) {
 
 
 #' @importFrom sjmisc add_columns round_num
-#' @importFrom broom tidy
 #' @importFrom stats anova
 #' @importFrom pwr pwr.f2.test
 #' @rdname eta_sq
@@ -210,7 +209,7 @@ aov_stat <- function(model, type) {
 
 
 #' @importFrom stats anova residuals
-#' @importFrom broom tidy
+#' @importFrom generics tidy
 aov_stat_summary <- function(model) {
   # check if we have a mixed model
   mm <- is_merMod(model)
@@ -221,7 +220,7 @@ aov_stat_summary <- function(model) {
   if (!inherits(model, c("aov", "anova", "anova.rms", "aovlist"))) model <- stats::anova(model)
 
   # get summary table
-  aov.sum <- as.data.frame(broom::tidy(model))
+  aov.sum <- as.data.frame(generics::tidy(model))
 
   # for mixed models, add information on residuals
   if (mm) {
@@ -378,7 +377,6 @@ peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
 }
 
 
-#' @importFrom broom tidy
 #' @importFrom purrr map map_df
 #' @importFrom dplyr bind_cols mutate case_when pull
 #' @importFrom stats anova formula aov

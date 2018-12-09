@@ -209,19 +209,19 @@ se.data.frame <- function(x, ...) {
 }
 
 
-#' @importFrom broom tidy
+#' @importFrom generics tidy
 #' @importFrom dplyr select
 #' @importFrom rlang .data
 #' @export
 se.lm <- function(x, ...) {
   x %>%
-    broom::tidy(effects = "fixed") %>%
+    generics::tidy(effects = "fixed") %>%
     dplyr::select(.data$term, .data$estimate, .data$std.error)
 }
 
 
 #' @importFrom stats qnorm vcov
-#' @importFrom broom tidy
+#' @importFrom generics tidy
 #' @importFrom dplyr mutate select
 #' @importFrom rlang .data
 #' @export
@@ -230,7 +230,7 @@ se.glm <- function(x, ...) {
   # 'exponentiate'-argument currently not works for lme4-tidiers
   # so we need to do this manually for glmer's
 
-  tm <- broom::tidy(x, effects = "fixed")
+  tm <- generics::tidy(x, effects = "fixed")
   tm$estimate <- exp(tm$estimate)
 
   tm %>%
@@ -295,24 +295,24 @@ se.merModLmerTest <- function(x, ...) {
 }
 
 
-#' @importFrom broom tidy
+#' @importFrom generics tidy
 #' @importFrom dplyr select
 #' @importFrom rlang .data
 #' @export
 se.stanreg <- function(x, ...) {
   x %>%
-    broom::tidy() %>%
+    generics::tidy() %>%
     dplyr::select(.data$term, .data$estimate, .data$std.error)
 }
 
 
-#' @importFrom broom tidy
+#' @importFrom generics tidy
 #' @importFrom dplyr select
 #' @importFrom rlang .data
 #' @export
 se.stanfit <- function(x, ...) {
   x %>%
-    broom::tidy() %>%
+    generics::tidy() %>%
     dplyr::select(.data$term, .data$estimate, .data$std.error)
 }
 

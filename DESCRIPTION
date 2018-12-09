@@ -28,11 +28,11 @@ Depends:
     utils
 Imports:
     bayesplot,
-    broom (>= 0.4.5),
     coin,
     crayon,
     dplyr,
     emmeans,
+    generics,
     lme4,
     glmmTMB (>= 0.2.2.0),
     magrittr,
