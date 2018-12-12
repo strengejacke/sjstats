@@ -302,6 +302,8 @@ link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
     il <- NULL
   } else if (inherits(x, c("zeroinfl", "hurdle"))) {
     il <- stats::make.link("log")$linkinv
+  } else if (inherits(x, "glmmPQL")) {
+    il <- x$family$linkinv
   } else if (inherits(x, c("lme", "plm", "gls", "lm", "lmRob")) && !inherits(x, "glm")) {
     il <- stats::gaussian(link = "identity")$linkinv
   } else if (inherits(x, "betareg")) {
@@ -574,7 +576,12 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
 
   # do we have glm? if so, get link family. make exceptions
   # for specific models that don't have family function
-  if (inherits(x, c("lme", "plm", "gls", "truncreg", "lmRob"))) {
+  if (inherits(x, "glmmPQL")) {
+    faminfo <- x$family
+    fitfam <- faminfo$family
+    logit.link <- faminfo$link == "logit"
+    link.fun <- faminfo$link
+  } else if (inherits(x, c("lme", "plm", "gls", "truncreg", "lmRob"))) {
     fitfam <- "gaussian"
     logit.link <- FALSE
     link.fun <- "identity"
