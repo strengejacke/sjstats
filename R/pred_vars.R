@@ -145,6 +145,8 @@ pred_vars <- function(x, fe.only = FALSE) {
       purrr::map(~ all.vars(.x[[3L]])) %>%
       purrr::flatten_chr() %>%
       unique()
+  } else if (inherits(x, "felm")) {
+    av <- all.vars(fm[[2L]])
   } else
     av <- all.vars(fm[[3L]])
 
@@ -190,6 +192,8 @@ resp_var <- function(x, combine = TRUE) {
     }
   } else if (inherits(x, "stanmvreg")) {
     rv <- purrr::map_chr(stats::formula(x), ~ deparse(.x[[2L]]))
+  } else if (inherits(x, "felm")) {
+    rv <- x$lhs
   } else if (inherits(x, "clm2")) {
     rv <- all.vars(attr(x$location, "terms", exact = TRUE)[[2L]])
   } else if (inherits(x, "gam") && is.list(stats::formula(x))) {
@@ -304,7 +308,7 @@ link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
     il <- stats::make.link("log")$linkinv
   } else if (inherits(x, "glmmPQL")) {
     il <- x$family$linkinv
-  } else if (inherits(x, c("lme", "plm", "gls", "lm", "lmRob")) && !inherits(x, "glm")) {
+  } else if (inherits(x, c("lme", "plm", "lm_robust", "felm", "gls", "lm", "lmRob")) && !inherits(x, "glm")) {
     il <- stats::gaussian(link = "identity")$linkinv
   } else if (inherits(x, "betareg")) {
     il <- x$link$mean$linkinv
@@ -561,7 +565,8 @@ model_frame <- function(x, fe.only = TRUE) {
 
 #' @rdname pred_vars
 #' @importFrom sjmisc str_contains is_empty
-#' @importFrom stats family formula
+#' @importFrom stats family formula gaussian binomial
+#' @importFrom lme4 fixef
 #' @export
 model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
   zero.inf <- FALSE
@@ -606,6 +611,11 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
     logit.link <- FALSE
     link.fun <- "log"
     zero.inf <- TRUE
+  } else if (inherits(x, c("lm_robust", "felm"))) {
+    faminfo <- stats::gaussian(link = "identity")
+    fitfam <- faminfo$family
+    logit.link <- faminfo$link == "logit"
+    link.fun <- faminfo$link
   } else if (inherits(x, "betareg")) {
     fitfam <- "beta"
     logit.link <- x$link$mean$name == "logit"
