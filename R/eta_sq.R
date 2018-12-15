@@ -209,7 +209,7 @@ aov_stat <- function(model, type) {
 
 
 #' @importFrom stats anova residuals
-#' @importFrom generics tidy
+#' @importFrom broom tidy
 aov_stat_summary <- function(model) {
   # check if we have a mixed model
   mm <- is_merMod(model)
@@ -220,7 +220,7 @@ aov_stat_summary <- function(model) {
   if (!inherits(model, c("aov", "anova", "anova.rms", "aovlist"))) model <- stats::anova(model)
 
   # get summary table
-  aov.sum <- as.data.frame(generics::tidy(model))
+  aov.sum <- as.data.frame(broom::tidy(model))
 
   # for mixed models, add information on residuals
   if (mm) {

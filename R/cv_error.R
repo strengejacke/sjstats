@@ -37,7 +37,7 @@
 #' @importFrom modelr crossv_kfold
 #' @importFrom dplyr mutate summarise
 #' @importFrom purrr map map2 map_dbl map_df
-#' @importFrom generics augment
+#' @importFrom broom augment
 #' @importFrom tidyr unnest
 #' @importFrom rlang .data
 #' @export
@@ -48,7 +48,7 @@ cv_error <- function(data, formula, k = 5) {
     modelr::crossv_kfold(k = k) %>%
     dplyr::mutate(
       trained.models = purrr::map(.data$train, ~ stats::lm(formula, data = .x)),
-      predicted = purrr::map2(.data$trained.models, .data$test, ~ generics::augment(.x, newdata = .y)),
+      predicted = purrr::map2(.data$trained.models, .data$test, ~ broom::augment(.x, newdata = .y)),
       residuals = purrr::map(.data$predicted, ~.x[[var_names(resp_var(formula))]] - .x$.fitted),
       rmse.train = purrr::map_dbl(.data$trained.models, ~ sjstats::rmse(.x))
     )

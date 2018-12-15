@@ -55,7 +55,7 @@
 #' summary(pv)
 #'
 #' @importFrom stats coef pnorm
-#' @importFrom generics tidy
+#' @importFrom broom tidy
 #' @importFrom dplyr select
 #' @importFrom stats coef pt pnorm
 #' @export
@@ -67,7 +67,7 @@ p_value <- function(fit, ...) {
 #' @export
 p_value.multinom <- function(fit, ...) {
   fit %>%
-    generics::tidy() %>%
+    broom::tidy() %>%
     dplyr::select(.data$term, .data$p.value, .data$std.error)
 }
 
