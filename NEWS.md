@@ -1,9 +1,5 @@
 # sjstats 0.17.3
 
-## General
-
-* Replaced package dependency **broom** with **generics**.
-
 ## Changes to functions
 
 * `boot_ci()` gets a `ci.lvl`-argument.
