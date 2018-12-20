@@ -132,7 +132,7 @@ var_names(m)
 
 # model.frame and model_frame behave slightly different
 library(splines)
-m <- lm(neg_c_7 ~ e42dep + ns(c160age), data = efc)
+m <- lm(neg_c_7 ~ e42dep + ns(c160age, knots = 2), data = efc)
 head(model.frame(m))
 head(model_frame(m))
 
@@ -143,8 +143,8 @@ m <- glm(cbind(incidence, trials) ~ period, data = cbpp, family = binomial)
 head(model.frame(m))
 head(model_frame(m))
 
-resp_var(m, matrix = TRUE)
-resp_var(m, matrix = FALSE)
+resp_var(m, combine = TRUE)
+resp_var(m, combine = FALSE)
 
 # get random effects grouping factor from mixed models
 library(lme4)

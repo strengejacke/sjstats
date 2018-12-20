@@ -467,8 +467,10 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
   xdat <- as.data.frame(x)
 
   if (missing(ppd) && missing(adjusted) && !fitfam$is_linear) {
-    message("Variance decomposition is based on the posterior predictive distribution. Set `ppd = FALSE` to calculate \"classical\" ICC, and `adjusted = TRUE` for adjusted ICC.")
-    ppd <- TRUE
+    #message("Variance decomposition is based on the posterior predictive distribution. Set `ppd = FALSE` to calculate \"classical\" ICC, and `adjusted = TRUE` for adjusted ICC.")
+    message("Variance decomposition for non-Gaussian models should be based on the posterior predictive distribution. To do this, set `ppd = TRUE`.")
+    ## TODO set ppd to FALSE by default later
+    # ppd <- TRUE
   }
 
   if (ppd) {
@@ -595,7 +597,8 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     attr(icc_, "hdi.tau.00") <- purrr::map(tau.00, ~ hdi(.x, prob = prob))
     tau.00 <- purrr::map_dbl(tau.00, ~ typical_value(.x, fun = typical))
 
-    attr(icc_, "hdi.sigma_2") <- hdi(resid.var, prob = prob)
+    if (length(resid.var) > 10)
+      attr(icc_, "hdi.sigma_2") <- hdi(resid.var, prob = prob)
     resid.var <- typical_value(resid.var, fun = typical)
 
     if (!is.null(tau.11)) {
@@ -650,8 +653,10 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
   fitfam <- model_family(x)
 
   if (missing(ppd) && missing(adjusted) && !fitfam$is_linear) {
-    message("Variance decomposition is based on the posterior predictive distribution. Set `ppd = FALSE` to calculate \"classical\" ICC, and `adjusted = TRUE` for adjusted ICC.")
-    ppd <- TRUE
+    #message("Variance decomposition is based on the posterior predictive distribution. Set `ppd = FALSE` to calculate \"classical\" ICC, and `adjusted = TRUE` for adjusted ICC.")
+    message("Variance decomposition for non-Gaussian models should be based on the posterior predictive distribution. To do this, set `ppd = TRUE`.")
+    ## TODO set ppd to FALSE by default later
+    # ppd <- TRUE
   }
 
 
@@ -884,7 +889,7 @@ re_var <- function(x, adjusted = FALSE) {
     rv <- c("sigma_2", "tau.00", "tau.11", "tau.01", "rho.01")
 
     # compute icc
-    icc_ <- suppressMessages(icc(x))
+    icc_ <- suppressMessages(icc(x, ppd = FALSE))
 
     rv_ <- purrr::map(rv, ~ attr(icc_, .x, exact = TRUE))
     rn <- purrr::map2(1:length(rv_), rv, ~ sjmisc::trim(paste(names(rv_[[.x]]), .y, sep = "_")))
@@ -904,14 +909,14 @@ re_var <- function(x, adjusted = FALSE) {
 get_re_var <- function(x, comp = c("tau.00", "tau.01", "tau.11", "rho.01", "sigma_2")) {
   # check if we have a valid object
   if (!inherits(x, c("sj_icc_merMod", "sj_icc_stanreg", "sj_icc_brms")) && !is_merMod(x) && !inherits(x, c("glmmTMB", "brmsfit"))) {
-    stop("`x` must either be an object returned by the `icc` function, or a merMod-, glmmTMB- or brmsfit-object.", call. = F)
+    stop("`x` must either be an object returned by the `icc()` function, or a merMod-, glmmTMB- or brmsfit-object.", call. = F)
   }
 
   # check arguments
   comp <- match.arg(comp)
 
   # do we have a merMod object? If yes, get ICC and var components
-  if (is_merMod(x) || inherits(x, c("glmmTMB", "brmsfit"))) x <- suppressMessages(icc(x))
+  if (is_merMod(x) || inherits(x, c("glmmTMB", "brmsfit"))) x <- suppressMessages(icc(x, ppd = FALSE))
 
   # return results
   attr(x, comp, exact = TRUE)

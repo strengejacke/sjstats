@@ -1434,7 +1434,7 @@ print.sj_grpmeans <- function(x, ...) {
 #' @export
 print.sj_revar_adjust <- function(x, ...) {
   cat("\nVariance Components of Mixed Models\n\n")
-  cat(crayon::blue(sprintf("Family : %s (%s)\nFormula: %s\n\n", x$family, x$link, deparse(x$formula))))
+  cat(crayon::blue(sprintf("Family : %s (%s)\nFormula: %s\n\n", x$family, x$link, deparse(x$formula, width.cutoff = 500))))
 
   vals <- c(
     sprintf("%.3f", x$var.fixef),

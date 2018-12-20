@@ -6,8 +6,8 @@
 * The `rotation`-argument in `pca_rotate()` now supports all rotations from `psych::principal()`.
 * `pred_vars()` gets a `fe.only`-argument to return only fixed effects terms from mixed models.
 * `icc()` for Bayesian models gets a `adjusted`-argument, to calculate adjusted and conditional ICC (however, only for Gaussian models).
-* For `icc()` for non-Gaussian Bayes-models, argument `ppd` defaults to `TRUE`.
-* `resp_val()` and `resp_var()` now also work for **brms**-models with additional response information.
+* For `icc()` for non-Gaussian Bayes-models, a message is printed that recommends setting argument `ppd` to `TRUE`.
+* `resp_val()` and `resp_var()` now also work for **brms**-models with additional response information (like `trial()` in formula).
 * `resp_var()` gets a `combine`-argument, to return either the name of the matrix-column or the original variable names for matrix-columns.
 * `model_frame()` now also returns the original variables for matrix-column-variables.
 * `model_family()` and `link_inverse()` now supports **glmmPQL**, **felm** and **lm_robust**-models.
@@ -17,6 +17,7 @@
 * Fix issue with `se()` and `get_re_var()` for objects returned by `icc()`.
 * Fix issue with `icc()` for Stan-models.
 * `var_names()` did not clear terms with log-log transformation, e.g. `log(log(y))`.
+* Fix issue in `model_frame()` for models with splines with only one column.
 
 # sjstats 0.17.2
 

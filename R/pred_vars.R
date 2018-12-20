@@ -96,7 +96,7 @@
 #'
 #' # model.frame and model_frame behave slightly different
 #' library(splines)
-#' m <- lm(neg_c_7 ~ e42dep + ns(c160age), data = efc)
+#' m <- lm(neg_c_7 ~ e42dep + ns(c160age, knots = 2), data = efc)
 #' head(model.frame(m))
 #' head(model_frame(m))
 #'
@@ -107,8 +107,8 @@
 #' head(model.frame(m))
 #' head(model_frame(m))
 #'
-#' resp_var(m, matrix = TRUE)
-#' resp_var(m, matrix = FALSE)
+#' resp_var(m, combine = TRUE)
+#' resp_var(m, combine = FALSE)
 #'
 #' # get random effects grouping factor from mixed models
 #' library(lme4)
@@ -304,7 +304,7 @@ link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
 
   if (inherits(x, c("truncreg", "coxph", "coxme"))) {
     il <- NULL
-  } else if (inherits(x, c("zeroinfl", "hurdle"))) {
+  } else if (inherits(x, c("zeroinfl", "hurdle", "zerotrunc"))) {
     il <- stats::make.link("log")$linkinv
   } else if (inherits(x, "glmmPQL")) {
     il <- x$family$linkinv
@@ -445,7 +445,7 @@ model_frame <- function(x, fe.only = TRUE) {
   # clean 1-dimensional matrices
 
   fitfram <- purrr::modify_if(fitfram, is.matrix, function(x) {
-    if (dim(x)[2] == 1)
+    if (dim(x)[2] == 1 && !inherits(x, c("ns", "bs")))
       as.vector(x)
     else
       x
@@ -597,7 +597,7 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
     link.fun <- faminfo@blurb[3]
     if (!sjmisc::is_empty(string_starts_with(pattern = "logit(", x = link.fun)))
       link.fun <- "logit"
-  } else if (inherits(x, c("zeroinfl", "hurdle"))) {
+  } else if (inherits(x, c("zeroinfl", "hurdle", "zerotrunc"))) {
     if (is.list(x$dist))
       dist <- x$dist[[1]]
     else
