@@ -14,6 +14,10 @@ if (.runThisTest) {
     sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
     m2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 
+    # we need these objects in the global environment, since "se()"
+    # seraches there for those objects
+    list2env(list(m = m, m2 = m2), envir = .GlobalEnv)
+
     test_that("se_icc", {
       sjstats::se(sjstats::icc(m), nsim = 50)
       sjstats::se(sjstats::icc(m2), nsim = 50)

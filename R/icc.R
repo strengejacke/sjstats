@@ -575,8 +575,8 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
       tau01s <- grep("^Sigma\\[(.*):[^\\(\\)](.*),\\(Intercept\\)\\]", colnames(xdat))
       tau.01 <- xdat[, tau01s, drop = FALSE]
 
-      tau.00.sums <- sjmisc::row_sums(tau.00, var = "t0sums")$t0sums
-      tau.11.sums <- sjmisc::row_sums(tau.11, var = "t1sums")$t1sums
+      tau.00.sums <- sjmisc::row_sums(tau.00, var = "t0sums", n = 1)$t0sums
+      tau.11.sums <- sjmisc::row_sums(tau.11, var = "t1sums", n = 1)$t1sums
 
       # get slope-intercept-correlations
       rho.01 <- tau.01 / sqrt(tau.00.sums * tau.11.sums)

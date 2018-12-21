@@ -66,7 +66,7 @@ if (.runThisTest) {
 
     data(sleepstudy)
     sleepstudy$age <- round(runif(nrow(sleepstudy), min = 20, max = 60))
-    sleepstudy$Rdicho <- dicho(sleepstudy$Reaction)
+    sleepstudy$Rdicho <- dicho(sleepstudy$Reaction, as.num = TRUE)
 
     m1 <- stan_glmer(
       Rdicho ~ Days + age + (1 | Subject),

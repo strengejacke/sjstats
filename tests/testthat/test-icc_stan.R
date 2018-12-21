@@ -54,7 +54,7 @@ if (.runThisTest) {
 
     m5 <- rstanarm::stan_glmer(
       tot_sc_e ~ e42dep + c160age + (1 | e15relat),
-      data = data,
+      data = efc,
       family = poisson(),
       iter = 500,
       chains = 1

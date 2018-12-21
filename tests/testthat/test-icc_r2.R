@@ -42,7 +42,7 @@ if (.runThisTest) {
 
     m4 <- glmer(
       tot_sc_e ~ e42dep + c160age + (1 | e15relat),
-      data = data,
+      data = efc,
       family = poisson()
     )
 

@@ -13,7 +13,7 @@ if (.runThisTest) {
     # load sample data
     data(sleepstudy)
     sleepstudy$age <- round(runif(nrow(sleepstudy), min = 20, max = 60))
-    sleepstudy$Rdicho <- dicho(sleepstudy$Reaction)
+    sleepstudy$Rdicho <- dicho(sleepstudy$Reaction, as.num = TRUE)
 
     m1 <- stan_glmer(
       Reaction ~ Days + age + (1 | Subject),
@@ -29,7 +29,7 @@ if (.runThisTest) {
     )
 
     m3 <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
-    m4 <- glmer(RDicho ~ Days + (Days | Subject), data = sleepstudy, family = binomial)
+    m4 <- glmer(Rdicho ~ Days + (Days | Subject), data = sleepstudy, family = binomial)
 
     test_that("re_var", {
       re_var(m1)
