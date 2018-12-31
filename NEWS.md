@@ -1,5 +1,9 @@
 # sjstats 0.17.3
 
+## General
+
+* Export `dplyr::n()`, to meet forthcoming changes in dplyr 0.8.0.
+
 ## Changes to functions
 
 * `boot_ci()` gets a `ci.lvl`-argument.

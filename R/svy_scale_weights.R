@@ -49,7 +49,7 @@
 #' data(nhanes_sample)
 #' scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
 #'
-#' @importFrom dplyr group_by summarise n right_join enquo filter quo_name slice
+#' @importFrom dplyr group_by summarise n right_join enquo filter quo_name slice n
 #' @importFrom rlang .data
 #' @importFrom sjmisc is_empty
 #' @export
@@ -93,7 +93,7 @@ scale_weights <- function(x, cluster.id, pweight) {
     dplyr::summarise(
       sum_wij = sum(!! quo.weights),
       sum_sqwij = sum(.data$s_q_w),
-      nj = n()
+      nj = dplyr::n()
     ) %>%
     dplyr::right_join(dummy_x, by = id.name)
 
