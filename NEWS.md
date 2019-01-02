@@ -14,6 +14,7 @@
 * `resp_val()` and `resp_var()` now also work for **brms**-models with additional response information (like `trial()` in formula).
 * `resp_var()` gets a `combine`-argument, to return either the name of the matrix-column or the original variable names for matrix-columns.
 * `model_frame()` now also returns the original variables for matrix-column-variables.
+* `model_frame()` now also returns the variable from the dispersion-formula of **glmmTMB**-models.
 * `model_family()` and `link_inverse()` now supports **glmmPQL**, **felm** and **lm_robust**-models.
 
 ## Bug fixes

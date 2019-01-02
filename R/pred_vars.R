@@ -383,6 +383,7 @@ brms_link_inverse <- function(fam) {
 #' @importFrom stats model.frame formula getCall na.omit
 #' @importFrom purrr map_lgl map reduce
 #' @importFrom dplyr select bind_cols full_join
+#' @importFrom sjmisc add_columns
 #' @export
 model_frame <- function(x, fe.only = TRUE) {
   # we may store model weights here later
@@ -480,7 +481,12 @@ model_frame <- function(x, fe.only = TRUE) {
 
   if (any(mc)) {
     # try to get model data from environment
-    md <- eval(stats::getCall(x)$data, environment(stats::formula(x)))
+    md <- tryCatch(
+      {
+        eval(stats::getCall(x)$data, environment(stats::formula(x)))
+      },
+      error = function(x) { NULL }
+    )
 
     # if data not found in environment, reduce matrix variables into regular vectors
     if (is.null(md)) {
@@ -558,6 +564,26 @@ model_frame <- function(x, fe.only = TRUE) {
     new.cols <- setdiff(colnames(trials.data), colnames(fitfram))
     if (!sjmisc::is_empty(new.cols)) fitfram <- cbind(fitfram, trials.data[, new.cols, drop = FALSE])
   }
+
+  # for glmmtmb, check dispersion formula
+  if (inherits(x, "glmmTMB")) {
+    disp <- tryCatch(
+      {all.vars(x$modelInfo$allForm$dispformula[[2L]])},
+      error = function(x) { NULL}
+    )
+
+    if (!is.null(disp)) {
+      fitfram <- tryCatch(
+        {
+          eval(x$call$data, envir = parent.frame()) %>%
+            dplyr::select(!! disp) %>%
+            sjmisc::add_columns(fitfram, replace = TRUE)
+        },
+        error = function(x) { fitfram }
+      )
+    }
+  }
+
 
   fitfram
 }
