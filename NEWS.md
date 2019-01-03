@@ -16,6 +16,7 @@
 * `model_frame()` now also returns the original variables for matrix-column-variables.
 * `model_frame()` now also returns the variable from the dispersion-formula of **glmmTMB**-models.
 * `model_family()` and `link_inverse()` now supports **glmmPQL**, **felm** and **lm_robust**-models.
+* `anova_stats()` and alike (`omeqa_sq()` etc.) now support gam-model from package **gam**.
 
 ## Bug fixes
 

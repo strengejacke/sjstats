@@ -215,12 +215,19 @@ aov_stat_summary <- function(model) {
   mm <- is_merMod(model)
   ori.model <- model
 
-  # check that model inherits from correct class
-  # else, try to coerce to anova table
-  if (!inherits(model, c("aov", "anova", "anova.rms", "aovlist"))) model <- stats::anova(model)
+  if (inherits(model, "Gam")) {
+    aov.sum <- as.data.frame(summary(model)$parametric.anova)
+    colnames(aov.sum) <- c("df", "sumsq", "meansq", "statistic", "p.value")
+    aov.sum <- rownames_as_column(aov.sum, var = "term")
+  } else {
+    # check that model inherits from correct class
+    # else, try to coerce to anova table
+    if (!inherits(model, c("aov", "anova", "anova.rms", "aovlist")))
+      model <- stats::anova(model)
 
-  # get summary table
-  aov.sum <- as.data.frame(broom::tidy(model))
+    # get summary table
+    aov.sum <- as.data.frame(broom::tidy(model))
+  }
 
   # for mixed models, add information on residuals
   if (mm) {

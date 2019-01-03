@@ -59,7 +59,9 @@ For linear models, the r-squared and adjusted r-squared value is returned,
          \cr \cr
          For mixed models (from \pkg{lme4} or \pkg{glmmTMB}) marginal and
          conditional r-squared values are calculated, based on
-         \cite{Nakagawa et al. 2017}.
+         \cite{Nakagawa et al. 2017}. The distributional variance
+         (or observation-level variance) is based on lognormal approximation,
+         \code{log(1+var(x)/mu^2)}.
          \cr \cr
          For \code{lme}-models, an r-squared approximation by computing the
          correlation between the fitted and observed values, as suggested by
