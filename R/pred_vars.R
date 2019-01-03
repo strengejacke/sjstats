@@ -203,6 +203,7 @@ pred_vars <- function(x, fe.only = FALSE, disp = FALSE) {
 
 #' @importFrom purrr map_chr
 #' @importFrom stats formula
+#' @importFrom sjmisc is_empty trim
 #' @rdname pred_vars
 #' @export
 resp_var <- function(x, combine = TRUE) {
