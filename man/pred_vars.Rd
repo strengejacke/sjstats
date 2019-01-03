@@ -12,7 +12,7 @@
 \alias{var_names}
 \title{Access information from model objects}
 \usage{
-pred_vars(x, fe.only = FALSE)
+pred_vars(x, fe.only = FALSE, disp = FALSE)
 
 resp_var(x, combine = TRUE)
 
@@ -39,6 +39,10 @@ model, \code{model_frame()} returns the model frame for fixed effects only,
 and \code{pred_vars()} returns only fixed effects terms. Note that the default
 for \code{model_frame()} is \code{fe.only = TRUE}, while for \code{pred_vars()}
 the default is \code{fe.only = FALSE}.}
+
+\item{disp}{Logical, if \code{TRUE} and model is of class \code{glmmTMB} and
+has a dispersion-formula, the variable(s) used in the dispersion-formula
+are also returned.}
 
 \item{combine}{Logical, if \code{TRUE} and the response is a matrix-column,
 the name of the response matches the notation in formula, and would for
@@ -151,5 +155,21 @@ library(lme4)
 data(sleepstudy)
 m <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 re_grp_var(m)
+
+# get model predictors, with and w/o dispersion formula
+\dontrun{
+library(glmmTMB)
+data("Salamanders")
+m <- glmmTMB(
+  count ~ spp + cover + mined + poly(DOP, 3) + (1 | site),
+  ziformula = ~spp + mined,
+  dispformula = ~DOY,
+  data = Salamanders,
+  family = nbinom2
+)
+
+pred_vars(m)
+pred_vars(m, fe.only = TRUE)
+pred_vars(m, disp = TRUE)}
 
 }

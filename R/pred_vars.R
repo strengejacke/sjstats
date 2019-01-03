@@ -19,6 +19,9 @@
 #'    the name of the response matches the notation in formula, and would for
 #'    instance also contain patterns like \code{"cbind(...)"}. Else, the original
 #'    variable names from the matrix-column are returned. See 'Examples'.
+#' @param disp Logical, if \code{TRUE} and model is of class \code{glmmTMB} and
+#'    has a dispersion-formula, the variable(s) used in the dispersion-formula
+#'    are also returned.
 #'
 #' @return For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
 #'    response or predictor variables from \code{x} as character vector.
@@ -116,10 +119,26 @@
 #' m <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #' re_grp_var(m)
 #'
+#' # get model predictors, with and w/o dispersion formula
+#' \dontrun{
+#' library(glmmTMB)
+#' data("Salamanders")
+#' m <- glmmTMB(
+#'   count ~ spp + cover + mined + poly(DOP, 3) + (1 | site),
+#'   ziformula = ~spp + mined,
+#'   dispformula = ~DOY,
+#'   data = Salamanders,
+#'   family = nbinom2
+#' )
+#'
+#' pred_vars(m)
+#' pred_vars(m, fe.only = TRUE)
+#' pred_vars(m, disp = TRUE)}
+#'
 #' @importFrom purrr flatten_chr map
 #' @importFrom stats formula terms
 #' @export
-pred_vars <- function(x, fe.only = FALSE) {
+pred_vars <- function(x, fe.only = FALSE, disp = FALSE) {
 
   if (inherits(x, "clm2"))
     fm <- attr(x$location, "terms", exact = TRUE)
@@ -164,6 +183,19 @@ pred_vars <- function(x, fe.only = FALSE) {
       av <- av[-pos]
     }
   }
+
+
+  # for glmmtmb, check dispersion formula
+
+  if (isTRUE(disp) && inherits(x, "glmmTMB")) {
+    dp <- tryCatch(
+      {all.vars(x$modelInfo$allForm$dispformula[[2L]])},
+      error = function(x) { NULL}
+    )
+
+    if (!is.null(dp)) av <- c(av, dp)
+  }
+
 
   av
 }
