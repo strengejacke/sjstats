@@ -229,6 +229,8 @@ resp_var <- function(x, combine = TRUE) {
     rv <- x$lhs
   } else if (inherits(x, "clm2")) {
     rv <- all.vars(attr(x$location, "terms", exact = TRUE)[[2L]])
+  } else if (inherits(x, "aovlist")) {
+    rv <- all.vars(attr(x, "terms")[[2L]])
   } else if (inherits(x, "gam") && is.list(stats::formula(x))) {
     rv <- deparse(stats::formula(x)[[1]][[2L]])
   } else

@@ -37,4 +37,19 @@ if (suppressWarnings(
     model_frame(m3)
     model_frame(m4)
   })
+
+  set.seed(123)
+  data(mtcars)
+  m5 <-
+    stats::aov(
+      formula = mpg ~ wt + qsec + Error(disp / am),
+      data = mtcars
+    )
+
+  test_that("mod-info", {
+    model_frame(m5)
+    resp_var(m5)
+    resp_val(m5)
+  })
+
 }
