@@ -598,7 +598,10 @@ model_frame <- function(x, fe.only = TRUE) {
     if (!sjmisc::is_empty(new.cols)) fitfram <- cbind(fitfram, trials.data[, new.cols, drop = FALSE])
   }
 
-  # for glmmtmb, check dispersion formula
+
+  # for glmmtmb, check dispersion and zi-formula
+  # and add variables to model frame
+
   if (inherits(x, "glmmTMB")) {
     disp <- tryCatch(
       {all.vars(x$modelInfo$allForm$dispformula[[2L]])},
@@ -610,6 +613,23 @@ model_frame <- function(x, fe.only = TRUE) {
         {
           eval(x$call$data, envir = parent.frame()) %>%
             dplyr::select(!! disp) %>%
+            sjmisc::add_columns(fitfram, replace = TRUE)
+        },
+        error = function(x) { fitfram }
+      )
+    }
+
+
+    zi <- tryCatch(
+      {all.vars(x$modelInfo$allForm$ziformula[[2L]])},
+      error = function(x) { NULL}
+    )
+
+    if (!is.null(zi)) {
+      fitfram <- tryCatch(
+        {
+          eval(x$call$data, envir = parent.frame()) %>%
+            dplyr::select(!! zi) %>%
             sjmisc::add_columns(fitfram, replace = TRUE)
         },
         error = function(x) { fitfram }

@@ -95,7 +95,7 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
         )
     }
 
-  } else if (inherits(fit, "glm") && stats::family(fit) == "binomial") {
+  } else if (inherits(fit, "glm") && stats::family(fit)$family == "binomial") {
 
     measure <- "Area under Curve"
 
