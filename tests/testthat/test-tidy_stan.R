@@ -7,6 +7,7 @@ if (.runThisTest) {
         require("sjstats") &&
         require("rstanarm") &&
         require("lme4") &&
+        require("brms") &&
         require("sjmisc")
     )) {
     context("sjstats, stan")
@@ -31,6 +32,16 @@ if (.runThisTest) {
       chains = 2, iter = 500
     )
 
+    m3 <- brm(
+      Reaction ~ Days + age + (1 | Subject),
+      data = sleepstudy, chains = 2, iter = 500
+    )
+
+    m4 <- brm(
+      Rdicho ~ Days + age + (1 | Subject),
+      data = sleepstudy, chains = 2, iter = 500,
+      family = bernoulli()
+    )
 
     expect_string <- function(object) {
       # 2. Call expect()
@@ -63,5 +74,26 @@ if (.runThisTest) {
       expect_string(tidy_stan(m2, type = "all", trans = "exp"))
     })
 
+    test_that("tidy_stan", {
+      expect_string(tidy_stan(m3))
+      expect_string(tidy_stan(m3, prob = c(.5, .8)))
+      expect_string(tidy_stan(m3, type = "random"))
+      expect_string(tidy_stan(m3, type = "all"))
+      expect_string(tidy_stan(m3, prob = c(.5, .8), type = "random"))
+      expect_string(tidy_stan(m3, prob = c(.5, .8), type = "all"))
+      expect_string(tidy_stan(m3, prob = c(.5, .8), typical = "mean"))
+      expect_string(tidy_stan(m3, prob = c(.5, .8), type = "random", typical = "mean"))
+      expect_string(tidy_stan(m3, prob = c(.5, .8), type = "all", typical = "mean"))
+
+      expect_string(tidy_stan(m4))
+      expect_string(tidy_stan(m4, prob = c(.5, .8)))
+      expect_string(tidy_stan(m4, type = "random"))
+      expect_string(tidy_stan(m4, type = "all"))
+
+      expect_string(tidy_stan(m4, trans = "exp"))
+      expect_string(tidy_stan(m4, prob = c(.5, .8), trans = "exp"))
+      expect_string(tidy_stan(m4, type = "random", trans = "exp"))
+      expect_string(tidy_stan(m4, type = "all", trans = "exp"))
+    })
   }
 }
