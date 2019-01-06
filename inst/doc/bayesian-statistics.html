@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2019-01-03" />
+<meta name="date" content="2019-01-05" />
 
 <title>Statistics for Bayesian Models</title>
 
@@ -92,7 +92,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Statistics for Bayesian Models</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2019-01-03</em></h4>
+<h4 class="date"><em>2019-01-05</em></h4>
 
 
 
@@ -167,16 +167,16 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; # Highest Density Interval</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                            HDI(90%)</span>
-<span class="co">#&gt;  b_jobseek_Intercept  [ 3.47  3.87]</span>
-<span class="co">#&gt;  b_depress2_Intercept [ 1.97  2.45]</span>
+<span class="co">#&gt;  b_jobseek_Intercept  [ 3.46  3.87]</span>
+<span class="co">#&gt;  b_depress2_Intercept [ 1.98  2.45]</span>
 <span class="co">#&gt;  b_jobseek_treat      [-0.02  0.15]</span>
 <span class="co">#&gt;  b_jobseek_econ_hard  [ 0.01  0.10]</span>
 <span class="co">#&gt;  b_jobseek_sex        [-0.09  0.07]</span>
 <span class="co">#&gt;  b_jobseek_age        [ 0.00  0.01]</span>
 <span class="co">#&gt;  b_depress2_treat     [-0.11  0.03]</span>
-<span class="co">#&gt;  b_depress2_job_seek  [-0.29 -0.19]</span>
-<span class="co">#&gt;  b_depress2_econ_hard [ 0.11  0.18]</span>
-<span class="co">#&gt;  b_depress2_sex       [ 0.03  0.17]</span>
+<span class="co">#&gt;  b_depress2_job_seek  [-0.28 -0.19]</span>
+<span class="co">#&gt;  b_depress2_econ_hard [ 0.12  0.18]</span>
+<span class="co">#&gt;  b_depress2_sex       [ 0.04  0.18]</span>
 <span class="co">#&gt;  b_depress2_age       [-0.00  0.00]</span>
 <span class="co">#&gt;  sigma_jobseek        [ 0.70  0.76]</span>
 <span class="co">#&gt;  sigma_depress2       [ 0.59  0.64]</span>
@@ -186,18 +186,18 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; # Highest Density Interval</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                            HDI(50%)      HDI(89%)</span>
-<span class="co">#&gt;  b_jobseek_Intercept  [ 3.60  3.77] [ 3.47  3.86]</span>
-<span class="co">#&gt;  b_depress2_Intercept [ 2.11  2.31] [ 1.98  2.45]</span>
-<span class="co">#&gt;  b_jobseek_treat      [ 0.03  0.10] [-0.02  0.15]</span>
-<span class="co">#&gt;  b_jobseek_econ_hard  [ 0.04  0.07] [ 0.01  0.09]</span>
-<span class="co">#&gt;  b_jobseek_sex        [-0.04  0.02] [-0.08  0.07]</span>
+<span class="co">#&gt;  b_jobseek_Intercept  [ 3.59  3.75] [ 3.46  3.86]</span>
+<span class="co">#&gt;  b_depress2_Intercept [ 2.11  2.30] [ 1.98  2.44]</span>
+<span class="co">#&gt;  b_jobseek_treat      [ 0.03  0.10] [-0.01  0.15]</span>
+<span class="co">#&gt;  b_jobseek_econ_hard  [ 0.04  0.07] [ 0.02  0.09]</span>
+<span class="co">#&gt;  b_jobseek_sex        [-0.04  0.03] [-0.09  0.07]</span>
 <span class="co">#&gt;  b_jobseek_age        [ 0.00  0.01] [ 0.00  0.01]</span>
-<span class="co">#&gt;  b_depress2_treat     [-0.07 -0.02] [-0.11  0.03]</span>
-<span class="co">#&gt;  b_depress2_job_seek  [-0.26 -0.22] [-0.28 -0.19]</span>
-<span class="co">#&gt;  b_depress2_econ_hard [ 0.14  0.16] [ 0.11  0.18]</span>
-<span class="co">#&gt;  b_depress2_sex       [ 0.08  0.13] [ 0.04  0.17]</span>
+<span class="co">#&gt;  b_depress2_treat     [-0.08 -0.02] [-0.11  0.03]</span>
+<span class="co">#&gt;  b_depress2_job_seek  [-0.26 -0.22] [-0.28 -0.20]</span>
+<span class="co">#&gt;  b_depress2_econ_hard [ 0.14  0.17] [ 0.12  0.18]</span>
+<span class="co">#&gt;  b_depress2_sex       [ 0.08  0.14] [ 0.05  0.18]</span>
 <span class="co">#&gt;  b_depress2_age       [-0.00  0.00] [-0.00  0.00]</span>
-<span class="co">#&gt;  sigma_jobseek        [ 0.72  0.74] [ 0.70  0.76]</span>
+<span class="co">#&gt;  sigma_jobseek        [ 0.71  0.74] [ 0.70  0.76]</span>
 <span class="co">#&gt;  sigma_depress2       [ 0.60  0.62] [ 0.59  0.64]</span></code></pre></div>
 <p>For multilevel models, the <code>type</code>-argument defines whether the HDI of fixed, random or all effects are shown.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hdi</span>(m5, <span class="dt">type =</span> <span class="st">&quot;random&quot;</span>)
@@ -205,14 +205,14 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; # Highest Density Interval</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                              HDI(90%)</span>
-<span class="co">#&gt;  r_e15relat.1.Intercept. [-0.13 1.28]</span>
-<span class="co">#&gt;  r_e15relat.2.Intercept. [-0.13 1.05]</span>
-<span class="co">#&gt;  r_e15relat.3.Intercept. [-0.82 0.77]</span>
-<span class="co">#&gt;  r_e15relat.4.Intercept. [-0.68 0.68]</span>
-<span class="co">#&gt;  r_e15relat.5.Intercept. [-0.98 0.74]</span>
-<span class="co">#&gt;  r_e15relat.6.Intercept. [-1.59 0.29]</span>
-<span class="co">#&gt;  r_e15relat.7.Intercept. [-1.18 0.78]</span>
-<span class="co">#&gt;  r_e15relat.8.Intercept. [-0.86 0.45]</span></code></pre></div>
+<span class="co">#&gt;  r_e15relat.1.Intercept. [-0.14 1.28]</span>
+<span class="co">#&gt;  r_e15relat.2.Intercept. [-0.16 1.03]</span>
+<span class="co">#&gt;  r_e15relat.3.Intercept. [-0.85 0.75]</span>
+<span class="co">#&gt;  r_e15relat.4.Intercept. [-0.59 0.78]</span>
+<span class="co">#&gt;  r_e15relat.5.Intercept. [-0.98 0.76]</span>
+<span class="co">#&gt;  r_e15relat.6.Intercept. [-1.70 0.28]</span>
+<span class="co">#&gt;  r_e15relat.7.Intercept. [-1.11 0.98]</span>
+<span class="co">#&gt;  r_e15relat.8.Intercept. [-0.85 0.53]</span></code></pre></div>
 <p>The computation for the HDI is based on the code from <em>Kruschke 2015, pp. 727f</em>. For default sampling in Stan (4000 samples), the 90% intervals for HDI are more stable than, for instance, 95% intervals. An effective sample size of at least 10.000 is recommended if 95% intervals should be computed (see <em>Kruschke 2015, p. 183ff</em>).</p>
 </div>
 <div id="region-of-practical-equivalence-rope" class="section level2">
@@ -225,12 +225,12 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; </span>
 <span class="co">#&gt;              inside outside</span>
 <span class="co">#&gt;  b_Intercept   0.0%  100.0%</span>
-<span class="co">#&gt;  b_e42dep2    42.4%   57.6%</span>
-<span class="co">#&gt;  b_e42dep3     0.4%   99.5%</span>
+<span class="co">#&gt;  b_e42dep2    43.2%   56.8%</span>
+<span class="co">#&gt;  b_e42dep3     0.4%   99.6%</span>
 <span class="co">#&gt;  b_e42dep4     0.0%  100.0%</span>
 <span class="co">#&gt;  b_c12hour   100.0%    0.0%</span>
-<span class="co">#&gt;  b_c172code2  99.6%    0.4%</span>
-<span class="co">#&gt;  b_c172code3  79.2%   20.8%</span>
+<span class="co">#&gt;  b_c172code2  99.4%    0.6%</span>
+<span class="co">#&gt;  b_c172code3  78.0%   22.0%</span>
 <span class="co">#&gt;  sigma         0.0%  100.0%</span></code></pre></div>
 <p><code>rope()</code> does not suggest limits for the region of practical equivalence and does not tell you how big is practically equivalent to the null value. However, there are suggestions how to choose reasonable limits (see <em>Kruschke 2018</em>), which are implemented in the <code>equi_test()</code> functions.</p>
 </div>
@@ -248,20 +248,20 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt;       Samples: 4000</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                         H0 %inROPE     HDI(95%)</span>
-<span class="co">#&gt;  b_Intercept (*)    reject    0.00 [ 7.59 9.90]</span>
-<span class="co">#&gt;  b_e42dep2 (*)   undecided    8.38 [ 0.09 2.11]</span>
-<span class="co">#&gt;  b_e42dep3 (*)      reject    0.00 [ 1.35 3.32]</span>
-<span class="co">#&gt;  b_e42dep4 (*)      reject    0.00 [ 2.78 4.87]</span>
+<span class="co">#&gt;  b_Intercept (*)    reject    0.00 [ 7.61 9.97]</span>
+<span class="co">#&gt;  b_e42dep2 (*)   undecided    8.20 [ 0.12 2.14]</span>
+<span class="co">#&gt;  b_e42dep3 (*)      reject    0.00 [ 1.28 3.29]</span>
+<span class="co">#&gt;  b_e42dep4 (*)      reject    0.00 [ 2.83 5.01]</span>
 <span class="co">#&gt;  b_c12hour          accept  100.00 [ 0.00 0.01]</span>
-<span class="co">#&gt;  b_c172code2     undecided   73.42 [-0.46 0.75]</span>
-<span class="co">#&gt;  b_c172code3     undecided   23.35 [-0.01 1.51]</span>
+<span class="co">#&gt;  b_c172code2     undecided   70.97 [-0.48 0.80]</span>
+<span class="co">#&gt;  b_c172code3     undecided   23.00 [-0.11 1.50]</span>
 <span class="co">#&gt;  sigma              reject    0.00 [ 3.41 3.75]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; (*) the number of effective samples may be insufficient for some parameters</span></code></pre></div>
 <p>For models with binary outcome, there is no concrete way to derive the effect size that defines the ROPE limits. Two examples from Kruschke suggest that a negligible change is about .05 on the logit-scale. In these cases, it is recommended to specify the <code>rope</code> argument, however, if not specified, the ROPE limits are calculated in this way: <code>0 +/- .1 * sd(intercept) / 4</code>. For all other models, <code>0 +/- .1 * sd(intercept)</code> is used to determine the ROPE limits. These formulas are based on experience that worked well in real-life situations, but are most likely not generally the best approach.</p>
 <p>Beside a numerical output, the results can also be printed as HTML-table or plotted, using the <code>out</code>-argument. For plots, the 95% distributions of the posterior samles are shown, the ROPE is a light-blue shaded region in the plot, and the distributions are colored depending on whether the parameter values are accepted, rejected or undecided.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">equi_test</span>(m5, <span class="dt">out =</span> <span class="st">&quot;plot&quot;</span>)</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAHgCAMAAABNUi8GAAABMlBMVEUAAAAAADoAAGYAOmYAOpAAZrYzMzM6AAA6ADo6AGY6Ojo6OmY6OpA6kJA6kNtNTU1NTW5NTY5Nbo5NbqtNjshmAABmADpmAGZmOgBmOpBmZjpmkJBmtv9uTU1uTW5uTY5ubo5ubqtuq6tuq+R1zqJ50aV/2KyOTU2OTW6OTY6Obk2Ojk2Ojm6Ojo6OyP+QOgCQOjqQZgCQkDqQkGaQtpCQ27aQ2/+iusqrbk2rbm6rbo6rq26ryKur5OSr5P+wyNi2ZgC225C22/+2/9u2//+3w8u6ZYW+ytLBbIzIjk3Ijm7I09vI///Kz9PNco7Z5OzbkDrb25Db29vb/9vb///f39/hgZnkq27k///l5eXr6+v/tmb/yI7/25D/27b/29v/5Kv//7b//8j//9v//+T///8UzH9CAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAc0UlEQVR4nO2dDZvc5lWGxyGOYwjehDhNgXU+cKiTQO3StG4CbbIF82EI6WIMNrUN67Xn//8F9OrzlUZHGmmkObdmnnNd8exqbr3zjHTPq49t56zWKhW4Vt4BVKqukqAqdElQFbokqApdElSFLgmqQtdsgv5+y6rAf+utX3236mXaRh4UwxNmpEDAyxR0JUGPBV6ooD/0GjpmY2BgRgoELEGtGJ4wIwUCXqSgq3+RoMcCL1XQXkPHbAwMzEiBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YnjCjBQIeImCrv5Jgh4NLEGtGJ4wIwUCXqygfYaO2RgYmJECAUtQK4YnzEiBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YnjCjBQIeIGCrn6QoMcDS1ArhifMSIGAJagVwxNmpEDAyxW0x9AxGwMDM1IgYAlqxfCEGSkQsAS1YnjCjBQIWIJaMTxhRgoELEGtGJ4wIwUClqBWDE+YkQIBS1ArhifMSIGAJagVwxNmpEDAyxN09YMEPSJYgloxPGFGCgS8YEG7DR2zMTAwIwUClqBWDE+YkQIBS1ArhifMSIGAJagVwxNmpEDAEtSK4QkzUiBgCWrF8IQZKRCwBLVieMKMFAhYgloxPGFGCgQsQa0YnjAjBQJenKCJnxL0iGAJasXwhBkpEPCSBe00dMzGwMCMFAhYgloxPGFGCgQsQa0YnjAjBQKWoFYMT5iRAgFLUCuGJ8xIgYAlqBXDE2akQMAS1IrhCTNSIGAJasXwhBkpEPDSBA1+StAjgiWoFcMTZqRAwBLUiuEJM1Ig4EUL2mXomI2BgRkpELAEtWJ4wowUCFiCWjE8YUYKBCxBrRieMCMFApagVgxPmJECAUtQK4YnzEiBgCWoFcMTZqRAwAsTNPVTgh4RLEGtGJ4wIwUCXragHYaO2RgYmJECAUtQK4YnzEiBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YnjCjBQIeFmCZn5K0COCJagVwxNmpEDAEtSK4QkzUiDghQtqGzpmY2BgRgoELEGtGJ4wIwUClqBWDE+YkQIBS1ArhifMSIGAFyVo7qcEPSJYgloxPGFGCgQsQa0YnjAjBQJeuqCmoWM2BgZmpEDAEtSK4QkzUiBgCWrF8IQZKRDwkgQt/JSgRwRLUCuGJ8xIgYAXL6hl6JiNgYEZKRCwBLVieMKMFAh4QYKWfkrQI4KXL6hh6JiNgYEZKRCwBLVieMKMFAh4OYJWfkrQI4IPQNB2Q8dsDAzMSIGAFyNo5KcEPSK4V9CHd9uWXnz8ffLPrZOTu9mProK2GjpmY2BgRgoEPE7Q5yfvfb++/Pzb9cVH3+5H0NjPDUHbDB2zMTAwIwUC7hf0p2GaLOryzsm7364fvvvrxMrnN1N/Lz7+q5RInkqsDbom/1188uV730vQsTAjBQLuF/T9p9Uc+frru+vn7z9dl8f1ZBa9uHU7XfYwfSgEvZVK/dZbb3XNru31u7ZaddfmCsNfV0WuzkN8eZgvVc1/eP317WLOvPwiPegXgpZOD/9MtZ+DxvWr7/qZMZ9WDMxIgYB7Bf3Xb2NBP30aC3p55/Z6HSn5+hsJOgnMSIGAt5lBw4G9bQbNjuOaQaeHGSkQcL+gN9f1c9DMzeBhdp6ZK5mfg4ZL+yfvSdDdYEYKBNwv6E/DdXtR2VV8ZuWTk1B3C0Gzq/iw9C++kKC7wYwUCLhX0F1reGQJCkmBgLcTNPzNKKloKpWgc8KMFAh4O0F3qOGRJSgkBQKWoFYMT5iRAgFLUCuGJ8xIgYAlqBXDE2akQMAS1IrhCTNSIGAJasXwhBkpELAEtWJ4wowUCFiCWjE8YUYKBCxBrRieMCMFApagVgxPmJECAUtQK4YnzEiBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YnjCjBQIWIJaMTxhRgoELEGtGJ4wIwUClqBWDE+YkQIBS1ArhifMSIGAJagVwxNmpEDAEtSK4QkzUiDgxQta/xIxCXpo8KIFDUr+e60qScdsDAzMSIGAlyroalPOSFIJejDw8gRddbgZOTpmY2BgRgoEvChBCzX/8Z+7/SwO9kM3BgZmpEDAixE0nja3EfRRUpmjhM08EGakQMDLELRxTN9W0NRRxGYeCDNSIGC+oC1nnAMELabR6bfcnDAjBQKmC9p6OTRI0Ef/M8RRwj6hpEDAaEGtq/Whgg6YRwn7hJICAYMFte8ljRB0W0cJ+4SSAgFTBe281TlO0K0cJewTSgoEjBS070b8aEH7HSXsE0oKBMwTtPfPRLsJ2uMoYZ9QUiDgDUHt7sZ5V4+8yfFGVd2UasSwyIk7j/rl21HQzNF2Swn7hJICAW8naNrdOP0h64R08dFmO4VK0BoxIHKwM6l9CGrOpIR9QkmBgDcFNbsb5+rlTY7zp/LuSMnDn3x5N/+tIAYJmtu5T0HbHCXsE0oKBLwpaFd34yc3yzkyf+ph1eo48Tp5yJGg8qBuxz3tjOerbQOqXKt2iLe6G2fWVU2OkyVZh87wkBgbng8/ZkRWwz9TXf9bu6z0f/k4HnhD0K7uxulkWjQ5Tp+KehwnayVH+KzbV0pI0NEwIwUCbptBre7G4Qi+jpscb8ygX2R43mZWgo6FGSkQ8KagZnfjMFVW9uVPbZyDJr/FfkrQMTAjBQLeFNTsbpyfgha3Q2tX8a+/Lq7ik2UFIUHHwowUCHhD0KlreGQJCkmBgNsF3aG7sQSdAGakQMDtgk5YwyNLUEgKBCxBrRieMCMFApagVgxPmJECAUtQK4YnzEiBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YnjCjBQIWIJaMTxhRgoELEGtGJ4wIwUClqBWDE+YkQIBS1ArhifMSIGAJagVwxNmpEDAEtSK4QkzUiBgCWrF8IQZKRCwBLVieMKMFAhYgloxPGFGCgQsQa0YnjAjBQKWoFYMT5iRAgFLUCuGJ8xIgYAlqBXDE2akQMAS1IrhCTNSIGAJasXwhBkpELAEtWJ4wowUCFiCWjE8YUYKBHyEghbfXLvjlpsTZqRAwEcgaPMrlWuNFJqmEvYJJQUCPmhBM/+6vqN+w1TCPqGkQMAHK2g1V/YKWjd1ls08ECaYAYEPUtD4QD5E0EeU1sgEMyDwoQmaToLbt6FpETSfSafdzANhghkQ+HAEXZVuDuiT1C7otpJK0PnhwxC0puY0guaSTrSZB8IEMyDw8gVtkXMqQR/1XDdJ0PnhRQu6MuScUNDC0h0380CYYAYEXqqgXW5OLuij4l7p6M08ECaYAYE3BJ2iHffzk6I78hyC9ro5h6CxpqWpEnR+eDtBh7XjTm2+OYugmZvTdTseKGjNVAm6D3hT0N3bcReSTixoNXH6C1pJOsM+YZgBgTcFnaYdd/YwoB13Vb8zapve2vuu4e9ONa6mbcd9cavsATb8M7XVRVJvjfm0YmBGCgS8Iegk7bgrlyXoGJiRAgG3zaA7t+MuZmIJOhJmpEDAm4Lu3o47LNAMugvMSIGANwXdvR13QHQOugvMSIGANwSduoZHlqCQFAi4XVC14/aFGSkQcLugE9bwyBIUkgIBS1ArhifMSIGAJagVwxNmpEDAEtSK4QkzUiBgCWrF8IQZKRCwBLVieMKMFAhYgloxPGFGCgQsQa0YnjAjBQKWoFYMT5iRAgFLUCuGJ8xIgYAlqBXDE2akQMAS1IrhCTNSIGAJasXwhBkpELAEtWJ4wowUCFiCWjE8YUYKBCxBrRieMCMFApagVgxPmJECAUtQK4YnzEiBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YnjCjBQIWIJaMTxhRgoELEGtGJ4wIwUClqBWDE+YkQIBS1ArhifMSIGAJagVwxNmpEDAEtSK4QkzUiBgCfr7oq98d3VnHvQGp2UPHD5qQQv5tuny0aapBJ0fPkpBW8Tcsg1NfT6VoPPDRyaoKeaWgjZFNY793W9wWvbA4WMR1J4zRwkawdtqKkFHwQcv6LZmjhY0q/7pVIKOgg9Y0MLMuVohtsEdB34JOgo+REEbk+Y+BW2aOmqfMMyAwJ2Ctrfmzhp9VU25oz7cecUNu4dHHiloddmyp2ay28CRpxJ0FDxG0CehS1LVlHtD0FrD7uGRBwsaabnPbscD4L47/uP338HD3YI2W3OnvbYvPvnybtyUu+rDffnF34XWNcVz+xC0RU2goDG8jaYEMyBwt6Bxa+6i1/brb36TT5lhpqz14b688/7T5++VneUnbsdd1XffoXt0b1PDN8uRl3mILw/zRa/tJ7fzY3poyl3vw315527e0DM8l9Xwz9TgQ3xrjfm0YmBGCgTcKWitNXfea/vi06eZoFlT7lof7nTaDCukz0nQ0TAjBQLum0GrK6C813bWS/Z23vS43oc7CBpm0LwhsgQdCzNSIOBuQePW3Hmv7XXeiTt3sNaH+/LOzfAQ+ylBx8CMFAi4W9DW1typoEVT7lof7svP/zo8FM9J0LEwIwUC7hR0aGWX7vUaHlmCQlIg4H5BB7TmlqATwYwUCLhf0B1reGQJCkmBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YnjCjBQIWIJaMTxhRgoELEGtGJ4wIwUClqBWDE+YkQIBS1ArhifMSIGAJagVwxNmpEDAEtSK4QkzUiBgCWrF8IQZKRCwBLVieMKMFAhYgloxPGFGCgQsQa0YnjAjBQKWoFYMT5iRAgFLUCuGJ8xIgYAlqBXDE2akQMAS1IrhCTNSIGAJasXwhBkpELAEtWJ4wowUCFiCWjE8YUYKBCxBrRieMCMFApagVgxPmJECAUtQK4YnzEiBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YuwD7vgS+z2mQMMS1IoxPbxp4WdG/eSzz7ZXFfP+ZoElqBVjKrhfx1ZBq+rzlKDRfLAEtWLsBLfMkj/Z9HA7QWNPZ4wMhSWoFWMsbE2WuwpqWkrQaD5YgloxxsA955W7C1pZWnlK0Gg+WIJaMQbBW5xlTido3dMDv+SXoFaM/tricnxOQSP4gC/5OwUd2477+UnWdvZQBS2sHOrRbIJWdXCX/GME7WvHHZp/hbazByfoLhfmexI0L1NTgnOD4G5Bx7XjLiQ9LEFbDuRcQbNqcZTg3CC4W9Dx7bizGXT+dtxmDX/dntr8O9ASavLN4FXTtuO+uFX2/Rr+mYLOoPuEGSkQcKego9txR03nhkeWoJAUCLhvBh3VjruYfSXoSJiRAgF3CzquHXegNIPuAjNSIOBuQce14w5P6hx0F5iRAgF3Cjq01O14IpiRAgH3C6p23PuHGSkQcL+gO9bwyBIUkgIBS1ArhifMSIGAJagVwxNmpEDAEtSK4QkzUiBgCWrF8IQZKRCwBLVieMKMFAhYgloxPGFGCgQsQa0YnjAjBQKWoFYMT5iRAgFLUCuGJ8xIgYAlqBXDE2akQMAS1IrhCTNSIGAJasXwhBkpELAEtWJ4wowUCFiCWjE8YUYKBCxBrRieMCMFApagVgxPmJECAUtQK4YnzEiBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YnjCjBQIWIJaMTxhRgoELEGtGJ4wIwUClqBWDE+YkQIBS1ArhifMSIGAJagVwxNmpEDAEtSK4QkzUiBgCWrF8IT3lqLvK+73FKOLlKBGDE94HylSAfv6hwywVYJK0GngXLfhDW66NZWgEnQsXD9sb2Fmu6CRpvNnLkkJasTwhKcaeFPJ6VqENUWVoBJ0ENw+WU7cHG/sVZUEPWJBO4/ks3VvzOEtLZWgRyjoVueYcwtaWdrp6USCjm3HHS8bupkl6NZs4+g6q3Nj4I7j/ryC9rXjzhEJOhruY2tG7tO5cfDmeepUgo5tx50iEnQ03M02Jku+oI0a9CeqbkFHtuMukUNqx82pjUvnBdbwN922cGw77hJZawYdBTNSIOBOQUe24y4RCToSZqRAwH0z6Jh23AUiQcfCjBQIuFvQce2417rNtCPMSIGAuwUd2Y5bgu4IM1Ig4E5Bh5a6HU8EM1Ig4H5B1Y57/zAjBQLuF3THGh5ZgkJSIGAJasXwhBkpELAEtWJ4wowUCFiCWjE8YUYKBCxBrRieMCMFApagVgxPmJECAUtQK4YnzEiBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YnjCjBQIWIJaMTxhRgoELEGtGJ4wIwUClqBWDE+YkQIBS1ArhifMSIGAJagVwxNmpEDAEtSK4QkzUiBgCWrF8IQZKRCwBLVieMKMFAhYgloxPGFGCgQsQa0YnjAjBQKWoFYMT5iRAgFLUCuGJ8xIgYAlqBXDE2akQMAS1IrhCTNSIGAJasXwhBkpELAEtWJ4wowUCFiCWjE8YUYKBCxBrRieMCMFApagVgxPmJECAUtQK4YnzEiBgCWoFcMTZqRAwBLUiuEJM1IgYAlqxfCEGSkQsAS1YnjCjBQIWIJaMTxhRgoELEGtGJ4wIwUClqBWDE+YkQIBS1ArhifMSIGAZxd0lhrR5PtwR15g5BEjS9DFjrzAyBL0mEZeYOSDF1R1dCVBVeiSoCp0SVAVuiSoCl0LEvTyzsn7T2ca++Lj7+cZ99bJyd05Bn5+cvLePJHX69dfzxJ5/eRkROjlCBo225Ob84z9fKa9ffn5t+uLj76dfuDwgZprYyQizSPowzHDLkfQyy++n2uie/jur+cZ+HlwaNR+2aJmm/U/+XKWxK+/GfNJXY6gF58+TWekeQafaWev1/NlnmkGff3Nb+Y5xCenaCPOd5Yj6PP3Fyno669vzzLuxa1359kWT27PdA4aznWGz6LLEXSZM+jlnXn8XM81NSebea6LpFCDz3eWI+iM56BzXsXPt6/nObkNl9onJ7N9qg5Y0HCsnO3CdSZBZ/Nz1vOdmWbQkPn13x7ubaYl3gfNpqOZJrqZzkFnvQ86PPOCBFUdY0lQFbokqApdElSFLgmqQpcEVaFLgqrQJUFV6DpQQV9+sFrdSB5fXFutVm8+Xj/Lfn12tXz+NDw8e+PBi7fvFytFP9brf/8+fXh1bxXqajtUDpHTeeUrpS/fAnfV+erK/WqEKy1w/aWsEc+NtQeF8arDFPTVvTcfv7qXOPEskXOd+hh2wMsPH+RAJWi0lrWPiuXpiOnYXa/dGCVbKfmknA59E3nGYoTzWtbOwPVKV3y26nl9CbrPehYmjGDf+dX09xfXH7y6d7o+L6exHQQtxTGqXdD12dVB72Crl91KqvDGw+t3f6wk6F4rFS9s8rPMjkzQagJtHOKTE4Irv7ie/PhVcjA8zQ6q6QjhBOE0/JsOU7gWrM+RF2//4lq6Sobmv99Ibcw+HLGgxbjl691PF11dV+Nkq4RlYcR4hBA5p2vBiiTXf75647fRiOH3B1GAYrUbRcgX17LEX6UnQUWY6n3PsWOG14EKms6gq9OXH/xhusmzQ3w1gdYFffnBjWRB8uO1ZEclB8RX964mer35OJ1UkmNzYyoL5w0lkq8SoeHH8AHJZ658pXCILVYqX+/t+2FR+K8YJ1sjX1Z/2bMsWPlMHqxKcjX9TFYjXi02RnECnL7p8+J9rvLk17Jx81Xj9z3b7hlShynoyw/CXgpzzI10+kx3UjKBnhUXC+EiKlRqSTrfpvvqNN3Hz7JZ7jSsGGpD0DcelEi+SoRmU/LpOl9UXCSd5vN68lT5evlLPateOh++dvmWj5AsLZ+JgjWT1EbM6zy7tPu/x3nCFC2SF4+b7xtRhylodhB9u5Ax21XnN5ItX101hYdMg/Ow7MX1fBpMfi+uu8/yA+rmDFogxSoRmi5KDu/56W+6UvpBWRcrRa+XxilWKgSNl63jY3TxTBysmaS5drlBwvJn6fV89WIFlx9hGu8bUQcqaKgXdUFf/unj4vDVJ2h1PZGIHk9l5elkgURiFWi26Po/3IuvwdOL6GKl3QWNgjWTGIKu01OZ5PhRe7GGoI33PcE+2L0OU9BsFnvzcXbQ+lG6q85O14agtWNq+D2+aZjfoQoVXa0USCxWjqa/vbr35/lxsjqDLFeKXq+43VATNF62rgla3JyIgjWTNNcuRi3cfdacQdND/PUHLe97gh2xex2moNlVwml2oZId1V+883htHOKji5b8OiPc2r9yv7gXUL8hmT5bIKUWOVrS58VBsrwPerVcqe0iKRLUuEiKnomDNZM0104+G1fuZ6sGAV9c2xA0ukiqv+/599MWdZiCphdBp/ljqmR2TX1eXSQ1bzN9FU1j4bIkuw+QPZ4V93uqvwnlSLlKjmYniFeji+Dy3lR+R+jK/XX8euVtpmgmjpetY0HL20xxsGaSxtrr/Nw3jJGcW175ZX5EqA7xX5V8830T6kAFHV7Pem5kD6zeK+GJX290UWZKqyRodmqX3gOcsKJ7rnt5vdElQRdQ5z3/E5DBld4K3+Pr7VASVKXaoSSoCl0SVIUuCapClwRVoUuCqtAlQVXokqAqdElQFbokqApdElSFLgmqQpcEVaFLgqrQJUFV6JKgKnRJUBW6JKgKXRJUhS4JqkKXBFWhS4Kq0CVB56pVazmN1D7EEnb+EjIus1Z/2VLjBP3vlhoo6H+11RJ2/hIyLrMk6CS1hIzLLAk6SS0h4zJLgk5SS8i4zJKgk9QSMjaro+Nb9FVYA74Vq6OXm13NLm/NkqCT1BIyNmu7jm+DB2zr5WZXr/+7CRp/v+i2gr76WeNr6asxhgqa99BpDlVf3IRmqeUKOuG3qI8ZEChoxxi7Ctq6WIIa1dLxLf7i67LpW1cft9qySNCiGVvap62tM1v+iptd3h40+rN1C5oPFr4M/H71b+g59uHPV+Fr7KMuG52CvvijH7/xIMPDDJqvGEb8ZTRGt6DB5NBH4Z2/KUL9wY9P46HSPlAbi8Nvs9eSBY06voXH1K+iyUrahq2zj1ttWdGJo2rGdtXozBa3Y2t2eav1Z+sUNHQeyRuIPnvzP9N/H5/dCB+50NAo6tWVjtQpaHjFbNUgaP5TOuJ/bDuDFoJeu5F+M3kyRmib0xyqtrj4bfZatKBRx7e3y2YsURu2zj5u0bKql1utGVtrZ7b4Fetd3hrfSt97iH/5Ya5h9m9wNlmUdu742f3tBQ1zW7Zqslr+UzxuNsRWgmYPoaVp6GzaGKq+OP9tit3ZXYsWtOr4VjQPqrdh622TVQpafaN81IyttTNb3Nmt1uWt2Z+tR9Cz9EThnaJDTt6d8Uqq2PrsdJig2apB0OynfNxxgqarnZ02h2oszn7bdVf215IFjTq+xYJWbdiGC1prxtbamS3u7Fbr8la8bpGy+xCfNfOszaBZL+Yg6OAZNFs1CJr9NMkM2hiqvlgzaEdZHd/WsSqn2/Rx2xC01oyttTNb/IrNV6/dCOgUNHUhnCSf5l0TkwVn6Rlg6IObPAwSdJ2tmp+DpqfmYcTfbito+FCcv1EIGp1s1oaqLdY5aEe1dHyL+qtFTd96+7htCho3Y2vtzFa1i2t0eWv2Z+s+xCdnB/klcXwVH/790Z+t0jY1217FXy+utIur+KJV2P1ojJ7bTEmaP/6wFDQ5Ja+yVVfx9cX5b7PXMgXd6PgW32aKmr719XHbPAeNm7G1dmYrX7HZ5a3Zn23kfdC8s2hc294HbVm1HKJbUHAtIeMya++Cnq/sP61JUFWz9Lf4SWoJGZdZEnSSWkLGZZYEnaSWkHGZpf/T3CS1hIyqIy4JqkKXBFWhS4Kq0CVBVeiSoCp0SVAVuiSoCl0SVIUuCapClwRVoUuCqtAlQVXokqAqdElQFbr+H6EN64HuEQ+EAAAAAElFTkSuQmCC" /><!-- --></p>
 </div>
 <div id="tidy-summary-of-bayesian-models" class="section level2">
 <h2>Tidy Summary of Bayesian Models</h2>
@@ -279,16 +279,16 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; ## Conditional Model:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) ratio rhat mcse</span>
-<span class="co">#&gt;  Intercept     1.23      0.80 [-0.33  2.77]  0.09 1.01 0.06</span>
-<span class="co">#&gt;  child        -1.15      0.09 [-1.31 -1.01]  0.80 1.00 0.00</span>
-<span class="co">#&gt;  camper        0.73      0.09 [ 0.58  0.88]  0.87 1.00 0.00</span>
+<span class="co">#&gt;  Intercept     1.26      0.77 [-0.36  2.76]  0.11 1.01 0.05</span>
+<span class="co">#&gt;  child        -1.15      0.09 [-1.30 -1.00]  0.85 1.00 0.00</span>
+<span class="co">#&gt;  camper        0.73      0.10 [ 0.58  0.89]  0.67 1.00 0.00</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Zero-Inflated Model:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) ratio rhat mcse</span>
-<span class="co">#&gt;  Intercept    -0.67      0.71 [-1.92  0.63]  0.43    1 0.02</span>
-<span class="co">#&gt;  child         1.88      0.32 [ 1.38  2.46]  0.76    1 0.01</span>
-<span class="co">#&gt;  camper       -0.85      0.37 [-1.48 -0.27]  0.84    1 0.01</span></code></pre></div>
+<span class="co">#&gt;  Intercept    -0.67      0.73 [-2.00  0.58]  0.37    1 0.02</span>
+<span class="co">#&gt;  child         1.88      0.32 [ 1.36  2.38]  0.94    1 0.01</span>
+<span class="co">#&gt;  camper       -0.85      0.35 [-1.39 -0.24]  0.89    1 0.01</span></code></pre></div>
 <p>Additional statistics in the output are:</p>
 <ul>
 <li>standard errors (which are actually median absolute deviations)</li>
@@ -304,16 +304,16 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; ## Conditional Model:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) ratio rhat mcse</span>
-<span class="co">#&gt;  Intercept     1.27      0.80 [-0.33  2.77]  0.09 1.01 0.06</span>
-<span class="co">#&gt;  child        -1.15      0.09 [-1.31 -1.01]  0.80 1.00 0.00</span>
-<span class="co">#&gt;  camper        0.73      0.09 [ 0.58  0.88]  0.87 1.00 0.00</span>
+<span class="co">#&gt;  Intercept     1.26      0.77 [-0.36  2.76]  0.11 1.01 0.05</span>
+<span class="co">#&gt;  child        -1.15      0.09 [-1.30 -1.00]  0.85 1.00 0.00</span>
+<span class="co">#&gt;  camper        0.73      0.10 [ 0.58  0.89]  0.67 1.00 0.00</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Zero-Inflated Model:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) ratio rhat mcse</span>
-<span class="co">#&gt;  Intercept    -0.69      0.71 [-1.92  0.63]  0.43    1 0.02</span>
-<span class="co">#&gt;  child         1.89      0.32 [ 1.38  2.46]  0.76    1 0.01</span>
-<span class="co">#&gt;  camper       -0.85      0.37 [-1.48 -0.27]  0.84    1 0.01</span></code></pre></div>
+<span class="co">#&gt;  Intercept    -0.68      0.73 [-2.00  0.58]  0.37    1 0.02</span>
+<span class="co">#&gt;  child         1.88      0.32 [ 1.36  2.38]  0.94    1 0.01</span>
+<span class="co">#&gt;  camper       -0.85      0.35 [-1.39 -0.24]  0.89    1 0.01</span></code></pre></div>
 <p>To also show random effects of multilevel models, use the <code>type</code>-argument.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># printing fixed and random effects of multilevel model</span>
 <span class="kw">tidy_stan</span>(m3, <span class="dt">type =</span> <span class="st">&quot;all&quot;</span>)
@@ -323,32 +323,32 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; ## Conditional Model: Fixed effects</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) ratio rhat mcse</span>
-<span class="co">#&gt;  Intercept     1.23      0.80 [-0.33  2.77]  0.09 1.01 0.06</span>
-<span class="co">#&gt;  child        -1.15      0.09 [-1.31 -1.01]  0.80 1.00 0.00</span>
-<span class="co">#&gt;  camper        0.73      0.09 [ 0.58  0.88]  0.87 1.00 0.00</span>
+<span class="co">#&gt;  Intercept     1.26      0.77 [-0.36  2.76]  0.11 1.01 0.05</span>
+<span class="co">#&gt;  child        -1.15      0.09 [-1.30 -1.00]  0.85 1.00 0.00</span>
+<span class="co">#&gt;  camper        0.73      0.10 [ 0.58  0.89]  0.67 1.00 0.00</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Conditional Model: Random effect (Intercept: persons)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) ratio rhat mcse</span>
-<span class="co">#&gt;  persons.1    -1.29      0.81 [-2.90  0.25]  0.09 1.01 0.06</span>
-<span class="co">#&gt;  persons.2    -0.31      0.79 [-1.87  1.26]  0.09 1.01 0.06</span>
-<span class="co">#&gt;  persons.3     0.39      0.79 [-1.05  2.08]  0.09 1.01 0.06</span>
-<span class="co">#&gt;  persons.4     1.29      0.80 [-0.19  2.92]  0.09 1.01 0.06</span>
+<span class="co">#&gt;  persons.1    -1.31      0.79 [-2.82  0.32]  0.12 1.01 0.05</span>
+<span class="co">#&gt;  persons.2    -0.34      0.76 [-1.80  1.32]  0.12 1.01 0.05</span>
+<span class="co">#&gt;  persons.3     0.37      0.76 [-1.11  2.03]  0.12 1.01 0.05</span>
+<span class="co">#&gt;  persons.4     1.26      0.76 [-0.24  2.88]  0.11 1.01 0.05</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Zero-Inflated Model: Fixed effects</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) ratio rhat mcse</span>
-<span class="co">#&gt;  Intercept    -0.67      0.71 [-1.92  0.63]  0.43    1 0.02</span>
-<span class="co">#&gt;  child         1.88      0.32 [ 1.38  2.46]  0.76    1 0.01</span>
-<span class="co">#&gt;  camper       -0.85      0.37 [-1.48 -0.27]  0.84    1 0.01</span>
+<span class="co">#&gt;  Intercept    -0.67      0.73 [-2.00  0.58]  0.37    1 0.02</span>
+<span class="co">#&gt;  child         1.88      0.32 [ 1.36  2.38]  0.94    1 0.01</span>
+<span class="co">#&gt;  camper       -0.85      0.35 [-1.39 -0.24]  0.89    1 0.01</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Zero-Inflated Model: Random effect (Intercept: persons)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(89%) ratio rhat mcse</span>
-<span class="co">#&gt;  persons.1     1.26      0.79 [-0.16  2.52]  0.43    1 0.02</span>
-<span class="co">#&gt;  persons.2     0.30      0.69 [-0.93  1.56]  0.42    1 0.02</span>
-<span class="co">#&gt;  persons.3    -0.17      0.71 [-1.41  1.14]  0.43    1 0.02</span>
-<span class="co">#&gt;  persons.4    -1.27      0.75 [-2.65 -0.03]  0.45    1 0.02</span></code></pre></div>
+<span class="co">#&gt;  persons.1     1.23      0.80 [-0.05  2.74]  0.34    1 0.02</span>
+<span class="co">#&gt;  persons.2     0.31      0.70 [-0.91  1.66]  0.39    1 0.02</span>
+<span class="co">#&gt;  persons.3    -0.15      0.71 [-1.55  1.03]  0.41    1 0.02</span>
+<span class="co">#&gt;  persons.4    -1.26      0.78 [-2.69 -0.06]  0.38    1 0.02</span></code></pre></div>
 <p>By default, 89%-HDI are computed (a convention following <em>McElreath 2015</em>), but other or even multiple HDI can be computed using the <code>prob</code> argument.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># two different HDI for multivariate response model</span>
 <span class="kw">tidy_stan</span>(m2, <span class="dt">prob =</span> <span class="kw">c</span>(.<span class="dv">5</span>, .<span class="dv">95</span>))
@@ -358,21 +358,21 @@ m5 &lt;-<span class="st"> </span><span class="kw">brm</span>(
 <span class="co">#&gt; ## Response: jobseek</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(50%)      HDI(95%) ratio rhat mcse</span>
-<span class="co">#&gt;  Intercept     3.68      0.12 [ 3.60  3.77] [ 3.44  3.93]  1.63    1    0</span>
-<span class="co">#&gt;  treat         0.07      0.05 [ 0.03  0.10] [-0.03  0.17]  1.45    1    0</span>
-<span class="co">#&gt;  econ_hard     0.05      0.03 [ 0.04  0.07] [ 0.00  0.10]  1.26    1    0</span>
-<span class="co">#&gt;  sex          -0.01      0.05 [-0.04  0.02] [-0.10  0.09]  1.45    1    0</span>
-<span class="co">#&gt;  age           0.00      0.00 [ 0.00  0.01] [ 0.00  0.01]  2.06    1    0</span>
+<span class="co">#&gt;  Intercept     3.67      0.12 [ 3.59  3.75] [ 3.42  3.91]  1.69    1    0</span>
+<span class="co">#&gt;  treat         0.07      0.05 [ 0.03  0.10] [-0.04  0.17]  1.63    1    0</span>
+<span class="co">#&gt;  econ_hard     0.05      0.02 [ 0.04  0.07] [ 0.01  0.10]  1.64    1    0</span>
+<span class="co">#&gt;  sex          -0.01      0.05 [-0.04  0.03] [-0.10  0.09]  1.48    1    0</span>
+<span class="co">#&gt;  age           0.00      0.00 [ 0.00  0.01] [ 0.00  0.01]  1.59    1    0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Response: depress2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;            estimate std.error      HDI(50%)      HDI(95%) ratio rhat mcse</span>
-<span class="co">#&gt;  Intercept     2.21      0.15 [ 2.11  2.31] [ 1.93  2.50]  1.50    1    0</span>
-<span class="co">#&gt;  treat        -0.04      0.04 [-0.07 -0.02] [-0.12  0.05]  1.32    1    0</span>
-<span class="co">#&gt;  job_seek     -0.24      0.03 [-0.26 -0.22] [-0.30 -0.18]  1.43    1    0</span>
-<span class="co">#&gt;  econ_hard     0.15      0.02 [ 0.14  0.16] [ 0.11  0.19]  1.28    1    0</span>
-<span class="co">#&gt;  sex           0.11      0.04 [ 0.08  0.13] [ 0.03  0.19]  1.83    1    0</span>
-<span class="co">#&gt;  age           0.00      0.00 [-0.00  0.00] [-0.00  0.00]  1.51    1    0</span></code></pre></div>
+<span class="co">#&gt;  Intercept     2.20      0.14 [ 2.11  2.30] [ 1.91  2.48]  1.42    1    0</span>
+<span class="co">#&gt;  treat        -0.04      0.04 [-0.08 -0.02] [-0.12  0.05]  1.49    1    0</span>
+<span class="co">#&gt;  job_seek     -0.24      0.03 [-0.26 -0.22] [-0.29 -0.18]  1.44    1    0</span>
+<span class="co">#&gt;  econ_hard     0.15      0.02 [ 0.14  0.17] [ 0.11  0.19]  1.32    1    0</span>
+<span class="co">#&gt;  sex           0.11      0.04 [ 0.08  0.14] [ 0.03  0.18]  1.77    1    0</span>
+<span class="co">#&gt;  age           0.00      0.00 [-0.00  0.00] [-0.00  0.00]  1.27    1    0</span></code></pre></div>
 </div>
 <div id="summary-of-mediation-analysis" class="section level2">
 <h2>Summary of Mediation Analysis</h2>
@@ -396,9 +396,9 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt;                  Estimate    HDI (90%)</span>
 <span class="co">#&gt;   Direct effect:    -0.04 [-0.11 0.03]</span>
 <span class="co">#&gt; Indirect effect:    -0.02 [-0.04 0.01]</span>
-<span class="co">#&gt;    Total effect:    -0.06 [-0.13 0.02]</span>
+<span class="co">#&gt;    Total effect:    -0.06 [-0.13 0.01]</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Proportion mediated: 27.77% [-76.77% 132.3%]</span></code></pre></div>
+<span class="co">#&gt; Proportion mediated: 27.16% [-75.94% 130.27%]</span></code></pre></div>
 <p>Typically, <code>mediation()</code> finds the treatment and mediator variables automatically. If this does not work, use the <code>treatment</code> and <code>mediator</code> arguments to specify the related variable names. For all values, the 90% HDIs are calculated by default. Use <code>prob</code> to calculate a different interval.</p>
 <p>Here is a comparison with the <em>mediation</em> package. Note that the <code>summary()</code>-output of the <em>mediation</em> package shows the indirect effect first, followed by the direct effect.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)
@@ -408,10 +408,10 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Quasi-Bayesian Confidence Intervals</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                Estimate 95% CI Lower 95% CI Upper p-value</span>
-<span class="co">#&gt; ACME            -0.0161      -0.0427         0.01    0.20</span>
-<span class="co">#&gt; ADE             -0.0420      -0.1274         0.05    0.34</span>
-<span class="co">#&gt; Total Effect    -0.0581      -0.1475         0.03    0.21</span>
-<span class="co">#&gt; Prop. Mediated   0.2367      -1.8395         3.19    0.32</span>
+<span class="co">#&gt; ACME            -0.0155      -0.0408         0.01    0.19</span>
+<span class="co">#&gt; ADE             -0.0404      -0.1229         0.04    0.34</span>
+<span class="co">#&gt; Total Effect    -0.0559      -0.1362         0.04    0.21</span>
+<span class="co">#&gt; Prop. Mediated   0.2291      -1.1964         2.37    0.31</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Sample Size Used: 899 </span>
 <span class="co">#&gt; </span>
@@ -431,7 +431,7 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Indirect effect:    -0.02 [-0.04 0.01]</span>
 <span class="co">#&gt;    Total effect:    -0.06 [-0.14 0.03]</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Proportion mediated: 27.77% [-172.04% 227.57%]</span></code></pre></div>
+<span class="co">#&gt; Proportion mediated: 27.16% [-181.24% 235.57%]</span></code></pre></div>
 <p>If you want to calculate mean instead of median values from the posterior samples, use the <code>typical</code>-argument. Furthermore, there is a <code>print()</code>-method, which allows to print more digits.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mediation</span>(m2, <span class="dt">typical =</span> <span class="st">&quot;mean&quot;</span>, <span class="dt">prob =</span> .<span class="dv">95</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">digits =</span> <span class="dv">4</span>)
 <span class="co">#&gt; </span>
@@ -442,11 +442,11 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt;    Response: depress2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                  Estimate        HDI (95%)</span>
-<span class="co">#&gt;   Direct effect:  -0.0402 [-0.1184 0.0503]</span>
-<span class="co">#&gt; Indirect effect:  -0.0155 [-0.0402 0.0100]</span>
-<span class="co">#&gt;    Total effect:  -0.0557 [-0.1444 0.0313]</span>
+<span class="co">#&gt;   Direct effect:  -0.0412 [-0.1229 0.0452]</span>
+<span class="co">#&gt; Indirect effect:  -0.0159 [-0.0425 0.0076]</span>
+<span class="co">#&gt;    Total effect:  -0.0571 [-0.1446 0.0299]</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Proportion mediated: 27.8978% [-171.908% 227.7035%]</span></code></pre></div>
+<span class="co">#&gt; Proportion mediated: 27.7908% [-180.6144% 236.1959%]</span></code></pre></div>
 <p>As you can see, the results are similar to what the <em>mediation</em> package produces for non-Bayesian models.</p>
 </div>
 <div id="icc-for-multilevel-models" class="section level2">
@@ -460,17 +460,17 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## cyl</span>
 <span class="co">#&gt;           ICC:  0.25  HDI 89%: [0.00  0.67]</span>
-<span class="co">#&gt; Between-group: 16.57  HDI 89%: [0.00 35.54]</span>
+<span class="co">#&gt; Between-group: 16.29  HDI 89%: [0.00 37.95]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## gear</span>
-<span class="co">#&gt;           ICC:  0.51  HDI 89%: [0.00   0.91]</span>
-<span class="co">#&gt; Between-group: 47.44  HDI 89%: [0.00 106.29]</span>
+<span class="co">#&gt;           ICC:  0.50  HDI 89%: [0.00  0.90]</span>
+<span class="co">#&gt; Between-group: 40.86  HDI 89%: [0.00 91.47]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Residuals</span>
-<span class="co">#&gt; Within-group: 6.44  HDI 89%: [3.33 8.98]</span>
+<span class="co">#&gt; Within-group: 6.36  HDI 89%: [3.23 9.00]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Random-slope-variance</span>
-<span class="co">#&gt; gear: 8.11  HDI 89%: [0.00 17.26]</span>
+<span class="co">#&gt; gear: 5.31  HDI 89%: [0.00 12.15]</span>
 
 <span class="kw">icc</span>(m5)
 <span class="co">#&gt; </span>
@@ -479,11 +479,11 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Family: gaussian (identity)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## e15relat</span>
-<span class="co">#&gt;           ICC: 0.04  HDI 89%: [0.00 0.09]</span>
-<span class="co">#&gt; Between-group: 0.57  HDI 89%: [0.00 1.28]</span>
+<span class="co">#&gt;           ICC: 0.05  HDI 89%: [0.00 0.10]</span>
+<span class="co">#&gt; Between-group: 0.70  HDI 89%: [0.00 1.41]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Residuals</span>
-<span class="co">#&gt; Within-group: 12.81  HDI 89%: [11.83 13.80]</span></code></pre></div>
+<span class="co">#&gt; Within-group: 12.83  HDI 89%: [11.82 13.79]</span></code></pre></div>
 <p>For non-Gaussian models, there is no clean variance decomposition and hence the ICC can’t be calculated exactly. The general Bayesian way to analyse the random-effect variances is then to draw samples from the posterior predictive distribution, calculate the variances and compare how the variance across models changes when group-specific term are included or dropped.</p>
 <p>You can achieve this with the <code>ppd</code>-argument. In this case, draws from the posterior predictive distribution <em>not conditioned</em> on group-level terms (using <code>posterior_predict(..., re.form = NA)</code>) as well as draws from this distribution <em>conditioned</em> on <em>all random effects</em> (by default, unless specified else in the <code>re.form</code>-argument) are taken. Then, the variances for each of these draws are calculated. The “ICC” is then the ratio between these two variances.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icc</span>(m4, <span class="dt">ppd =</span> <span class="ot">TRUE</span>, <span class="dt">re.form =</span> <span class="op">~</span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>cyl), <span class="dt">prob =</span> .<span class="dv">5</span>)
@@ -494,14 +494,14 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Conditioned on: ~(1 | cyl)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Variance Ratio (comparable to ICC)</span>
-<span class="co">#&gt; Ratio: 0.10  HDI 50%: [-0.05 0.32]</span>
+<span class="co">#&gt; Ratio: 0.10  HDI 50%: [-0.02 0.34]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Variances of Posterior Predicted Distribution</span>
-<span class="co">#&gt; Conditioned on fixed effects: 32.50  HDI 50%: [20.84 37.95]</span>
-<span class="co">#&gt; Conditioned on rand. effects: 37.16  HDI 50%: [24.60 40.20]</span>
+<span class="co">#&gt; Conditioned on fixed effects: 32.48  HDI 50%: [19.62 35.55]</span>
+<span class="co">#&gt; Conditioned on rand. effects: 37.22  HDI 50%: [25.53 40.34]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Difference in Variances</span>
-<span class="co">#&gt; Difference: 4.66  HDI 50%: [-2.46 10.78]</span></code></pre></div>
+<span class="co">#&gt; Difference: 4.75  HDI 50%: [-3.48 9.73]</span></code></pre></div>
 <p>Sometimes, when the variance of the posterior predictive distribution is very large, the variance ratio in the output makes no sense, e.g. because it is negative. In such cases, it might help to use a more robust measure to calculate the central tendency of the variances. This can be done with the <code>typical</code>-argument.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the &quot;classical&quot; ICC, not recommended for non-Gaussian</span>
 <span class="kw">icc</span>(m3)
@@ -511,8 +511,8 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Family: zero_inflated_poisson (log)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## persons</span>
-<span class="co">#&gt;           ICC: 0.68  HDI 89%: [0.43 0.97]</span>
-<span class="co">#&gt; Between-group: 4.31  HDI 89%: [0.20 9.48]</span>
+<span class="co">#&gt;           ICC: 0.68  HDI 89%: [0.43  0.97]</span>
+<span class="co">#&gt; Between-group: 4.47  HDI 89%: [0.23 10.06]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Residuals</span>
 <span class="co">#&gt; Within-group: 1.00  HDI 89%: [1.00 1.00]</span>
@@ -527,14 +527,14 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Conditioned on: all random effects</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Variance Ratio (comparable to ICC)</span>
-<span class="co">#&gt; Ratio: -14.19  HDI 89%: [-1.25 1.00]</span>
+<span class="co">#&gt; Ratio: -21.39  HDI 89%: [-1.04 1.00]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Variances of Posterior Predicted Distribution</span>
-<span class="co">#&gt; Conditioned on fixed effects: 591.77  HDI 89%: [ 0.00 89.35]</span>
-<span class="co">#&gt; Conditioned on rand. effects:  39.53  HDI 89%: [31.51 48.28]</span>
+<span class="co">#&gt; Conditioned on fixed effects: 883.97  HDI 89%: [ 0.01 79.05]</span>
+<span class="co">#&gt; Conditioned on rand. effects:  39.59  HDI 89%: [31.31 48.40]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Difference in Variances</span>
-<span class="co">#&gt; Difference: -552.24  HDI 89%: [-52.35 50.49]</span>
+<span class="co">#&gt; Difference: -844.38  HDI 89%: [-42.23 51.00]</span>
 
 <span class="co"># use median instead of mean</span>
 <span class="kw">icc</span>(m3, <span class="dt">ppd =</span> <span class="ot">TRUE</span>, <span class="dt">typical =</span> <span class="st">&quot;median&quot;</span>)
@@ -545,14 +545,14 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; Conditioned on: all random effects</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Variance Ratio (comparable to ICC)</span>
-<span class="co">#&gt; Ratio: 0.72  HDI 89%: [-1.22 1.00]</span>
+<span class="co">#&gt; Ratio: 0.71  HDI 89%: [-1.00 1.00]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Variances of Posterior Predicted Distribution</span>
-<span class="co">#&gt; Conditioned on fixed effects: 10.80  HDI 89%: [ 0.00 88.26]</span>
-<span class="co">#&gt; Conditioned on rand. effects: 39.18  HDI 89%: [31.00 47.56]</span>
+<span class="co">#&gt; Conditioned on fixed effects: 11.26  HDI 89%: [ 0.02 77.89]</span>
+<span class="co">#&gt; Conditioned on rand. effects: 39.25  HDI 89%: [30.76 47.50]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ## Difference in Variances</span>
-<span class="co">#&gt; Difference: 27.30  HDI 89%: [-49.46 50.42]</span></code></pre></div>
+<span class="co">#&gt; Difference: 26.61  HDI 89%: [-39.41 51.81]</span></code></pre></div>
 </div>
 <div id="bayes-r-squared-and-loo-adjusted-r-squared" class="section level2">
 <h2>Bayes r-squared and LOO-adjusted r-squared</h2>
@@ -562,8 +562,8 @@ m2 &lt;-<span class="st"> </span><span class="kw">brm</span>(f1 <span class="op"
 <span class="co">#&gt; </span>
 <span class="co">#&gt; R-Squared for Generalized Linear Mixed Model</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;       Bayes R2: 0.168</span>
-<span class="co">#&gt; Standard Error: 0.021</span>
+<span class="co">#&gt;       Bayes R2: 0.169</span>
+<span class="co">#&gt; Standard Error: 0.022</span>
 
 <span class="kw">r2</span>(m5, <span class="dt">loo =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; </span>

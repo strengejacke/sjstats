@@ -120,7 +120,7 @@ data(nhanes_sample)
 scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
 ```
 
-## p-Values
+## P-Values
 
 For linear mixed models, the `summary()` in **lme4** does not report p-values. Other objects from regression functions are not consistent in their output structure when reporting p-values. `p_value()` aims at returning a standardized ("tidy") output for any regression model. The return value is always a data frame with three columns: _term_, _p.value_ and _std.error_, which represent the name, p-value and standard error for each term.
 
@@ -183,7 +183,7 @@ The components of the random effect variances are of interest when calculating t
 
 Usually, the ICC is calculated for the null model ("unconditional model"). However, according to _Raudenbush and Bryk (2002)_ or _Rabe-Hesketh and Skrondal (2012)_ it is also feasible to compute the ICC for full models with covariates ("conditional models") and compare how much a level-2 variable explains the portion of variation in the grouping structure (random intercept). 
 
-The ICC for mixed models can be computed with `icc()`. *Caution:* For random-slope-intercept models, the ICC would differ at each unit of the predictors. Hence, the ICC for these kind of models cannot be understood simply as proportion of variance (see _Goldstein et al. 2010_). For convenience reasons, as the `icc()` function is also used to extract the different random effects variances (see `re_var()` above), the ICC for random-slope-intercept-models is reported nonetheless, but it is usually no meaningful summary of the proportion of variances. To get a meaningful ICC also for models with random slopes, use `adjusted = TRUE`. The adjusted ICC uses the mean random effect variance, which is based on the random effect variances for each value of the random slope (see _Johnson 2014_). 
+The ICC for mixed models can be computed with `icc()`. *Caution:* For random-slope-intercept models, the ICC would differ at each unit of the predictors. Hence, the ICC for these kind of models cannot be understood simply as proportion of variance (see _Goldstein et al. 2010_). For convenience reasons, as the `icc()` function is also used to extract the different random effects variances (see `re_var()` above), the ICC for random-slope-intercept-models is reported nonetheless, but it is usually no meaningful summary of the proportion of variances. To get a meaningful ICC also for models with random slopes, use `adjusted = TRUE`. The adjusted ICC uses the mean random effect variance, which is based on the random effect variances for each value of the random slope (see _Johnson 2014_).
 
 By default, for three-level-models, depending on the nested structure of the model, or for cross-classified models, `icc()` only reports the proportion of variance explained for each grouping level. Use `adjusted = TRUE` to calculate the adjusted and conditional ICC that take all random effect variances into account.
 

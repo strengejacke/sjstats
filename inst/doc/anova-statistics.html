@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2019-01-03" />
+<meta name="date" content="2019-01-05" />
 
 <title>Statistics for Anova Tables</title>
 
@@ -92,7 +92,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Statistics for Anova Tables</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2019-01-03</em></h4>
+<h4 class="date"><em>2019-01-05</em></h4>
 
 
 
@@ -198,9 +198,9 @@ fit &lt;-<span class="st"> </span><span class="kw">aov</span>(
 <span class="co"># uses bootstrapping - here, for speed, just 100 samples</span>
 <span class="kw">omega_sq</span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">ci.lvl =</span> .<span class="dv">9</span>, <span class="dt">n =</span> <span class="dv">100</span>)
 <span class="co">#&gt;       term partial.omegasq conf.low conf.high</span>
-<span class="co">#&gt; 1   e42dep           0.278    0.229     0.327</span>
-<span class="co">#&gt; 2 c172code           0.005   -0.006     0.023</span>
-<span class="co">#&gt; 3  c160age           0.065    0.037     0.098</span></code></pre></div>
+<span class="co">#&gt; 1   e42dep           0.278    0.241     0.316</span>
+<span class="co">#&gt; 2 c172code           0.005   -0.005     0.021</span>
+<span class="co">#&gt; 3  c160age           0.065    0.037     0.091</span></code></pre></div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

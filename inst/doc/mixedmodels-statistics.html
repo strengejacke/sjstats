@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Lüdecke" />
 
-<meta name="date" content="2019-01-03" />
+<meta name="date" content="2019-01-05" />
 
 <title>Statistics for Mixed Effects Models</title>
 
@@ -92,7 +92,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Statistics for Mixed Effects Models</h1>
 <h4 class="author"><em>Daniel Lüdecke</em></h4>
-<h4 class="date"><em>2019-01-03</em></h4>
+<h4 class="date"><em>2019-01-05</em></h4>
 
 
 
@@ -209,7 +209,7 @@ m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span cla
 <span class="co">#&gt; # ... with 2,982 more rows</span></code></pre></div>
 </div>
 <div id="p-values" class="section level2">
-<h2>p-Values</h2>
+<h2>P-Values</h2>
 <p>For linear mixed models, the <code>summary()</code> in <strong>lme4</strong> does not report p-values. Other objects from regression functions are not consistent in their output structure when reporting p-values. <code>p_value()</code> aims at returning a standardized (“tidy”) output for any regression model. The return value is always a data frame with three columns: <em>term</em>, <em>p.value</em> and <em>std.error</em>, which represent the name, p-value and standard error for each term.</p>
 <p>For linear mixed models, the approximation of p-values are more precise when <code>p.kr = TRUE</code>, based on conditional F-tests with Kenward-Roger approximation for the degrees of freedom (calling <code>pbkrtest::get_Lb_ddf()</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using the t-statistics for calculating the p-value</span>
