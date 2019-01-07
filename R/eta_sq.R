@@ -57,7 +57,7 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
   es <- aov_stat(model, type = type)
 
   x <- data_frame(
-    term = var_names(names(es)),
+    term = names(es),
     es = es
   )
 
@@ -106,7 +106,7 @@ omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
   es <- aov_stat(model, type = type)
 
   x <- data_frame(
-    term = var_names(names(es)),
+    term = names(es),
     es = es
   )
 
@@ -147,7 +147,7 @@ cohens_f <- function(model) {
   es <- aov_stat(model, type = "cohens.f")
 
   data_frame(
-    term = var_names(names(es)),
+    term = names(es),
     cohens.f = es
   )
 }
@@ -252,9 +252,6 @@ aov_stat_summary <- function(model) {
   # for car::Anova, the meansq-column might be missing, so add it manually
   if (!obj_has_name(aov.sum, "meansq"))
     aov.sum <- sjmisc::add_variables(aov.sum, meansq = aov.sum$sumsq / aov.sum$df, .after = "sumsq")
-
-  if (!inherits(model, "Gam"))
-    aov.sum$term <- var_names(aov.sum$term)
 
   aov.sum
 }
@@ -398,7 +395,7 @@ es_boot_fun <- function(model, type, ci.lvl, n) {
   es <- aov_stat(model = model, type = type)
 
   x <- data_frame(
-    term = var_names(names(es)),
+    term = names(es),
     es = es
   )
 

@@ -8,7 +8,7 @@
 
 * `boot_ci()` gets a `ci.lvl`-argument.
 * The `rotation`-argument in `pca_rotate()` now supports all rotations from `psych::principal()`.
-* `pred_vars()` gets a `fe.only`-argument to return only fixed effects terms from mixed models.
+* `pred_vars()` gets a `fe.only`-argument to return only fixed effects terms from mixed models, and a `disp`-argument to return the variables from a model's dispersion-formula.
 * `icc()` for Bayesian models gets a `adjusted`-argument, to calculate adjusted and conditional ICC (however, only for Gaussian models).
 * For `icc()` for non-Gaussian Bayes-models, a message is printed that recommends setting argument `ppd` to `TRUE`.
 * `resp_val()` and `resp_var()` now also work for **brms**-models with additional response information (like `trial()` in formula).
