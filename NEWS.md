@@ -1,3 +1,13 @@
+# sjstats 0.17.4
+
+## Changes to functions
+
+* `anova_stats()` and alike (e.g. `eta_sq()`) now all preserve original term names.
+
+## Bug fixes
+
+* Fix minor issues in `wtd_sd()` and `wtd_mean()` when weight was `NULL` (which usually shoudln't be the case anyway).
+
 # sjstats 0.17.3
 
 ## General
