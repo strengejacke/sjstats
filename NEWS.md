@@ -8,6 +8,7 @@
 
 * `anova_stats()` and alike (e.g. `eta_sq()`) now all preserve original term names.
 * `model_family()` now returns `$is_count = TRUE`, when model is a count-model.
+* `pred_vars()` checks that return value has only unique values.
 
 ## Bug fixes
 
