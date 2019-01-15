@@ -197,7 +197,7 @@ pred_vars <- function(x, fe.only = FALSE, disp = FALSE) {
   }
 
 
-  av
+  unique(av)
 }
 
 
