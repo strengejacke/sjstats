@@ -1,8 +1,13 @@
 # sjstats 0.17.4
 
+## General
+
+* `MixMod`-objects (package **GLMMadaptive**) are now supported by model-information functions like `model_family()`, `link_inverse()` or `model_frame()`.
+
 ## Changes to functions
 
 * `anova_stats()` and alike (e.g. `eta_sq()`) now all preserve original term names.
+* `model_family()` now returns `$is_count = TRUE`, when model is a count-model.
 
 ## Bug fixes
 

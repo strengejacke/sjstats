@@ -341,7 +341,7 @@ link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
     il <- NULL
   } else if (inherits(x, c("zeroinfl", "hurdle", "zerotrunc"))) {
     il <- stats::make.link("log")$linkinv
-  } else if (inherits(x, "glmmPQL")) {
+  } else if (inherits(x, c("glmmPQL", "MixMod"))) {
     il <- x$family$linkinv
   } else if (inherits(x, c("lme", "plm", "lm_robust", "felm", "gls", "lm", "lmRob")) && !inherits(x, "glm")) {
     il <- stats::gaussian(link = "identity")$linkinv
@@ -662,7 +662,7 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
 
   # do we have glm? if so, get link family. make exceptions
   # for specific models that don't have family function
-  if (inherits(x, "glmmPQL")) {
+  if (inherits(x, c("glmmPQL", "MixMod"))) {
     faminfo <- x$family
     fitfam <- faminfo$family
     logit.link <- faminfo$link == "logit"
@@ -772,7 +772,10 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
 
   linear_model <- !binom_fam & !poisson_fam & !neg_bin_fam & !logit.link
 
-  zero.inf <- zero.inf | fitfam == "ziplss" | sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T)
+  zero.inf <- zero.inf | fitfam == "ziplss" |
+    sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T) |
+    sjmisc::str_contains(fitfam, "zero-inflated", ignore.case = T) |
+    sjmisc::str_contains(fitfam, "hurdle", ignore.case = T)
 
   is.ordinal <-
     inherits(x, c("polr", "clm", "clm2", "clmm", "multinom")) |
@@ -808,6 +811,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
 
   list(
     is_bin = binom_fam & !neg_bin_fam,
+    is_count = poisson_fam | neg_bin_fam,
     is_pois = poisson_fam | neg_bin_fam,
     is_negbin = neg_bin_fam,
     is_logit = logit.link,
