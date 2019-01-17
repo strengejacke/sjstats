@@ -19,9 +19,12 @@
 #'    the name of the response matches the notation in formula, and would for
 #'    instance also contain patterns like \code{"cbind(...)"}. Else, the original
 #'    variable names from the matrix-column are returned. See 'Examples'.
+#' @param zi Logical, if \code{TRUE} and model has a zero-inflation-formula,
+#'    the variable(s) used in this formula are also returned.
 #' @param disp Logical, if \code{TRUE} and model is of class \code{glmmTMB} and
 #'    has a dispersion-formula, the variable(s) used in the dispersion-formula
 #'    are also returned.
+#' @param ... Currently not used.
 #'
 #' @return For \code{pred_vars()} and \code{resp_var()}, the name(s) of the
 #'    response or predictor variables from \code{x} as character vector.
@@ -138,40 +141,19 @@
 #' @importFrom purrr flatten_chr map
 #' @importFrom stats formula terms
 #' @export
-pred_vars <- function(x, fe.only = FALSE, disp = FALSE) {
-
-  if (inherits(x, "clm2"))
-    fm <- attr(x$location, "terms", exact = TRUE)
-  else
-    fm <- stats::formula(x)
+pred_vars <- function(x, ...) {
+  UseMethod("pred_vars")
+}
 
 
-  if (inherits(x, "gam") && is.list(fm)) {
-    fm <- fm[[1]]
-  }
-
-
-  if (inherits(x, "brmsfit")) {
-    if (!is.null(fm$responses)) {
-      av <- fm$forms %>%
-        purrr::map(~ all.vars(stats::formula(.x)[[3L]])) %>%
-        purrr::flatten_chr() %>%
-        unique()
-    } else
-      av <- all.vars(fm$formula[[3L]])
-  } else if (inherits(x, "stanmvreg")) {
-    av <- fm %>%
-      purrr::map(~ all.vars(.x[[3L]])) %>%
-      purrr::flatten_chr() %>%
-      unique()
-  } else if (inherits(x, "felm")) {
-    av <- all.vars(fm[[2L]])
-  } else
-    av <- all.vars(fm[[3L]])
+#' @rdname pred_vars
+#' @export
+pred_vars.default <- function(x, fe.only = FALSE, ...) {
+  fm <- stats::formula(x)
+  av <- all.vars(fm[[3L]])
 
   if (length(av) == 1 && av == ".")
     av <- all.vars(stats::terms(x)[[3L]])
-
 
   # remove random effects from formula
 
@@ -184,10 +166,56 @@ pred_vars <- function(x, fe.only = FALSE, disp = FALSE) {
     }
   }
 
+  unique(av)
+}
+
+
+#' @export
+pred_vars.clm2 <- function(x, ...) {
+  fm <- attr(x$location, "terms", exact = TRUE)
+  av <- all.vars(fm[[3L]])
+
+  if (length(av) == 1 && av == ".")
+    av <- all.vars(stats::terms(x)[[3L]])
+
+  unique(av)
+}
+
+
+#' @rdname pred_vars
+#' @export
+pred_vars.glmmTMB <- function(x, fe.only = FALSE, zi = FALSE, disp = FALSE, ...) {
+  fm <- stats::formula(x)
+  av <- all.vars(fm[[3L]])
+
+  if (length(av) == 1 && av == ".")
+    av <- all.vars(stats::terms(x)[[3L]])
+
+  # remove random effects from formula
+
+  if (fe.only) {
+    re <- re_grp_var(x)
+    if (!sjmisc::is_empty(re)) {
+      re <- unique(sjmisc::trim(unlist(strsplit(re, ":", fixed = TRUE))))
+      pos <- match(re, av)
+      av <- av[-pos]
+    }
+  }
+
+  # add variables from zero-inflation
+
+  if (isTRUE(zi)) {
+    dp <- tryCatch(
+      {all.vars(x$modelInfo$allForm$ziformula[[2L]])},
+      error = function(x) { NULL}
+    )
+
+    if (!is.null(dp)) av <- c(av, dp)
+  }
 
   # for glmmtmb, check dispersion formula
 
-  if (isTRUE(disp) && inherits(x, "glmmTMB")) {
+  if (isTRUE(disp)) {
     dp <- tryCatch(
       {all.vars(x$modelInfo$allForm$dispformula[[2L]])},
       error = function(x) { NULL}
@@ -196,686 +224,111 @@ pred_vars <- function(x, fe.only = FALSE, disp = FALSE) {
     if (!is.null(dp)) av <- c(av, dp)
   }
 
+  unique(av)
+}
+
+
+#' @export
+pred_vars.brmsfit <- function(x, fe.only = FALSE, ...) {
+  fm <- stats::formula(x)
+
+  if (!is.null(fm$responses)) {
+    av <- fm$forms %>%
+      purrr::map(~ all.vars(stats::formula(.x)[[3L]])) %>%
+      purrr::flatten_chr() %>%
+      unique()
+  } else
+    av <- all.vars(fm$formula[[3L]])
+
+  if (length(av) == 1 && av == ".")
+    av <- all.vars(stats::terms(x)[[3L]])
+
+  # remove random effects from formula
+
+  if (fe.only) {
+    re <- re_grp_var(x)
+    if (!sjmisc::is_empty(re)) {
+      re <- unique(sjmisc::trim(unlist(strsplit(re, ":", fixed = TRUE))))
+      pos <- match(re, av)
+      av <- av[-pos]
+    }
+  }
 
   unique(av)
 }
 
 
-#' @importFrom purrr map_chr
-#' @importFrom stats formula
-#' @importFrom sjmisc is_empty trim
 #' @rdname pred_vars
 #' @export
-resp_var <- function(x, combine = TRUE) {
-  if (inherits(x, "brmsfit")) {
-    if (is.null(stats::formula(x)$responses)) {
-      rv <- deparse(stats::formula(x)$formula[[2L]])
-      # check for brms Additional Response Information
-      if (!sjmisc::is_empty(string_contains("|", rv))) {
-        r1 <- sjmisc::trim(sub("(.*)\\|(.*)", "\\1", rv))
-        r2 <- sjmisc::trim(sub("(.*)\\|(.*)\\(([^,)]*).*", "\\3", rv))
-        rv <- c(r1, r2)
-      }
-    } else {
-      rv <- purrr::map_chr(
-        x$formula$forms,
-        ~ stats::formula(.x)[[2L]] %>% all.vars()
-      )
-      # stats::formula(x)$responses
-    }
-  } else if (inherits(x, "stanmvreg")) {
-    rv <- purrr::map_chr(stats::formula(x), ~ deparse(.x[[2L]]))
-  } else if (inherits(x, "felm")) {
-    rv <- x$lhs
-  } else if (inherits(x, "clm2")) {
-    rv <- all.vars(attr(x$location, "terms", exact = TRUE)[[2L]])
-  } else if (inherits(x, "aovlist")) {
-    rv <- all.vars(attr(x, "terms")[[2L]])
-  } else if (inherits(x, "gam") && is.list(stats::formula(x))) {
-    rv <- deparse(stats::formula(x)[[1]][[2L]])
-  } else
-    rv <- deparse(stats::formula(x)[[2L]])
+pred_vars.MixMod <- function(x, fe.only = FALSE, zi = FALSE, ...) {
+  fm <- stats::formula(x)
+  av <- all.vars(fm[[3L]])
 
-  if (!combine && grepl("cbind\\((.*)\\)", rv) && !inherits(x, "brmsfit")) {
-    rv <- sub("cbind\\(([^,].*)([\\)].*)" ,"\\1", rv) %>%
-      strsplit(split  = ",", fixed = TRUE) %>%
-      unlist() %>%
-      sjmisc::trim()
-
-    if (!sjmisc::is_empty(string_contains("-", rv[2])))
-      rv[2] <- sjmisc::trim(sub("(.*)(\\-)(.*)", "\\1", rv[2]))
+  if (!fe.only) {
+    av <- c(av, x$id_name)
+    avrandom <- all.vars(stats::formula(x, type = "random")[[2L]])
+    if (!sjmisc::is_empty(avrandom)) av <- c(av, avrandom)
   }
 
-  rv
+  if (isTRUE(zi)) {
+    avzi <- all.vars(stats::formula(x, type = "zi_fixed")[[2L]])
+    if (!sjmisc::is_empty(avzi)) av <- c(av, avzi)
+  }
+
+  if (length(av) == 1 && av == ".")
+    av <- all.vars(stats::terms(x)[[3L]])
+
+  unique(av)
 }
 
 
-
-#' @rdname pred_vars
-#' @importFrom purrr map_chr
-#' @importFrom lme4 findbars
-#' @importFrom stats formula
-#' @importFrom sjmisc trim
 #' @export
-re_grp_var <- function(x) {
-  tryCatch({
+pred_vars.gam <- function(x, ...) {
+  fm <- stats::formula(x)
+  if (is.list(fm)) fm <- fm[[1]]
+  av <- all.vars(fm[[3L]])
 
-    if (inherits(x, "brmsfit"))
-      f <- stats::formula(x)[[1]]
-    else
-      f <- stats::formula(x)
+  if (length(av) == 1 && av == ".")
+    av <- all.vars(stats::terms(x)[[3L]])
 
-    re <- purrr::map_chr(lme4::findbars(f), deparse)
-    sjmisc::trim(substring(re, regexpr(pattern = "\\|", re) + 1))
-  },
-  error = function(x) { NULL }
-  )
+  unique(av)
 }
 
 
-#' @rdname pred_vars
 #' @export
-grp_var <- function(x) {
-  re_grp_var(x)
+pred_vars.stanmvreg <- function(x, fe.only = FALSE, ...) {
+  fm <- stats::formula(x)
+
+  av <- fm %>%
+    purrr::map(~ all.vars(.x[[3L]])) %>%
+    purrr::flatten_chr() %>%
+    unique()
+
+  if (length(av) == 1 && av == ".")
+    av <- all.vars(stats::terms(x)[[3L]])
+
+  # remove random effects from formula
+
+  if (fe.only) {
+    re <- re_grp_var(x)
+    if (!sjmisc::is_empty(re)) {
+      re <- unique(sjmisc::trim(unlist(strsplit(re, ":", fixed = TRUE))))
+      pos <- match(re, av)
+      av <- av[-pos]
+    }
+  }
+
+  unique(av)
 }
 
 
-#' @rdname pred_vars
-#' @importFrom nlme getResponse
 #' @export
-resp_val <- function(x) {
+pred_vars.felm <- function(x, ...) {
+  fm <- stats::formula(x)
+  av <- all.vars(fm[[2L]])
 
-  rn <- resp_var(x, combine = FALSE)
+  if (length(av) == 1 && av == ".")
+    av <- all.vars(stats::terms(x)[[3L]])
 
-  if (inherits(x, c("lme", "gls")))
-    as.vector(nlme::getResponse(x))
-  else if (inherits(x, "brmsfit")) {
-    rv <- model_frame(x)[, var_names(resp_var(x))]
-    rc <- ncol(rv)
-    if (!is.null(stats::formula(x)$responses) || !is.null(rc))
-      as.vector(rv)
-    else
-      rv
-  } else if (inherits(x, "stanmvreg"))
-    as.vector(model_frame(x)[, var_names(resp_var(x))])
-  else if (length(rn) > 1) {
-    rv <- as.data.frame(model_frame(x)[[var_names(resp_var(x))]])
-    colnames(rv) <- rn
-    rv
-  } else
-    as.vector(model_frame(x)[[var_names(resp_var(x))]])
-}
-
-
-#' @rdname pred_vars
-#' @importFrom stats family binomial gaussian make.link
-#' @export
-link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
-
-  if (!missing(multi.resp)) mv <- multi.resp
-
-  # handle glmmTMB models
-  if (inherits(x, "glmmTMB")) {
-    ff <- stats::family(x)
-
-    if ("linkinv" %in% names(ff))
-      return(ff$linkinv)
-    else if ("link" %in% names(ff) && is.character(ff$link))
-      return(stats::make.link(ff$link)$linkinv)
-    else
-      return(match.fun("exp"))
-  }
-
-
-  # for gam-components from gamm4, add class attributes, so family
-  # function works correctly
-
-  if (inherits(x, "gam") && !inherits(x, c("glm", "lm")))
-    class(x) <- c(class(x), "glm", "lm")
-
-
-  # do we have glm? if so, get link family. make exceptions
-  # for specific models that don't have family function
-
-  if (inherits(x, c("truncreg", "coxph", "coxme"))) {
-    il <- NULL
-  } else if (inherits(x, c("zeroinfl", "hurdle", "zerotrunc"))) {
-    il <- stats::make.link("log")$linkinv
-  } else if (inherits(x, c("glmmPQL", "MixMod"))) {
-    il <- x$family$linkinv
-  } else if (inherits(x, c("lme", "plm", "lm_robust", "felm", "gls", "lm", "lmRob")) && !inherits(x, "glm")) {
-    il <- stats::gaussian(link = "identity")$linkinv
-  } else if (inherits(x, "betareg")) {
-    il <- x$link$mean$linkinv
-  } else if (inherits(x, c("vgam", "vglm"))) {
-    il <- x@family@linkinv
-  } else if (inherits(x, "stanmvreg")) {
-    fam <- stats::family(x)
-    if (mv) {
-      il <- purrr::map(fam, ~ .x$linkinv)
-    } else {
-      fam <- fam[[1]]
-      il <- fam$linkinv
-    }
-  } else if (inherits(x, "brmsfit")) {
-    fam <- stats::family(x)
-    if (!is.null(stats::formula(x)$response)) {
-      if (mv) {
-        il <- purrr::map(fam, ~ brms_link_inverse(.x))
-      } else {
-        fam <- fam[[1]]
-        il <- brms_link_inverse(fam)
-      }
-    } else {
-      il <- brms_link_inverse(fam)
-    }
-  } else if (inherits(x, "polr")) {
-    link <- x$method
-    if (link == "logistic") link <- "logit"
-    il <- stats::make.link(link)$linkinv
-  } else if (inherits(x, c("clm", "clmm"))) {
-    il <- stats::make.link(x$link)$linkinv
-  } else if (inherits(x, "clm2")) {
-    il <- switch(
-      x$link,
-      logistic = ,
-      probit = stats::make.link("logit")$linkinv,
-      cloglog = ,
-      loglog = stats::make.link("log")$linkinv,
-      stats::make.link("logit")$linkinv
-    )
-  } else if (inherits(x, c("lrm", "logistf", "multinom", "Zelig-relogit"))) {
-    # "lrm"-object from pkg "rms" have no family method
-    # so we construct a logistic-regression-family-object
-    il <- stats::make.link(link = "logit")$linkinv
-  } else {
-    # get family info
-    il <- stats::family(x)$linkinv
-  }
-
-  il
-}
-
-brms_link_inverse <- function(fam) {
-  # do we have custom families?
-  if (!is.null(fam$family) && (is.character(fam$family) && fam$family == "custom")) {
-    il <- stats::make.link(fam$link)$linkinv
-  } else {
-    if ("linkinv" %in% names(fam)) {
-      il <- fam$linkinv
-    } else if ("link" %in% names(fam) && is.character(fam$link)) {
-      il <- stats::make.link(fam$link)$linkinv
-    } else {
-      ff <- get(fam$family, asNamespace("stats"))
-      il <- ff(fam$link)$linkinv
-    }
-  }
-  il
-}
-
-
-#' @rdname pred_vars
-#' @importFrom stats model.frame formula getCall na.omit
-#' @importFrom purrr map_lgl map reduce
-#' @importFrom dplyr select bind_cols full_join
-#' @importFrom sjmisc add_columns
-#' @export
-model_frame <- function(x, fe.only = TRUE) {
-  # we may store model weights here later
-  mw <- NULL
-
-  tryCatch(
-    {
-      if (inherits(x, "stanmvreg"))
-        fitfram <- suppressMessages(
-          purrr::reduce(stats::model.frame(x), ~ dplyr::full_join(.x, .y))
-        )
-      else if (inherits(x, "clm2"))
-        fitfram <- x$location
-      else if (inherits(x, c("merMod", "lmerMod", "glmerMod", "nlmerMod", "merModLmerTest")))
-        fitfram <- stats::model.frame(x, fixed.only = fe.only)
-      else if (inherits(x, "lme"))
-        fitfram <- x$data
-      else if (inherits(x, "vgam"))
-        fitfram <- get(x@misc$dataname, envir = parent.frame())
-      else if (inherits(x, c("gee", "gls")))
-        fitfram <- eval(x$call$data, envir = parent.frame())
-      else if (inherits(x, "Zelig-relogit"))
-        fitfram <- get_zelig_relogit_frame(x)
-      else if (inherits(x, "vglm")) {
-        if (!length(x@model)) {
-          env <- environment(x@terms$terms)
-          if (is.null(env)) env <- parent.frame()
-          fcall <- x@call
-          fcall$method <- "model.frame"
-          fcall$smart <- FALSE
-          fitfram <- eval(fcall, env, parent.frame())
-        } else {
-          fitfram <- x@model
-        }
-      } else
-        fitfram <- stats::model.frame(x)
-    },
-    error = function(x) { fitfram <- NULL }
-  )
-
-
-  if (is.null(fitfram)) {
-    warning("Could not get model frame.", call. = F)
-    return(NULL)
-  }
-
-
-  # do we have an offset, not specified in the formula?
-
-  if ("(offset)" %in% colnames(fitfram)) {
-    if (obj_has_name(x, "call")) {
-      if (obj_has_name(x$call, "offset")) {
-        offcol <- which(colnames(fitfram) == "(offset)")
-        colnames(fitfram)[offcol] <- var_names(deparse(x$call$offset))
-      }
-    }
-  }
-
-
-  # clean 1-dimensional matrices
-
-  fitfram <- purrr::modify_if(fitfram, is.matrix, function(x) {
-    if (dim(x)[2] == 1 && !inherits(x, c("ns", "bs")))
-      as.vector(x)
-    else
-      x
-  })
-
-
-  # check if we have any matrix columns, e.g. from splines
-
-  mc <- purrr::map_lgl(fitfram, is.matrix)
-
-
-  # don't change response value, if it's a matrix
-  # bound with cbind()
-  rn <- resp_var(x, combine = TRUE)
-  trials.data <- NULL
-
-  if (mc[1] && rn == colnames(fitfram)[1]) {
-    mc[1] <- FALSE
-    tryCatch(
-      {
-        trials.data <- as.data.frame(fitfram[[1]])
-        colnames(trials.data) <- resp_var(x, combine = FALSE)
-      },
-      error = function(x) { NULL }
-    )
-  }
-
-
-  # if we have any matrix columns, we remove them from original
-  # model frame and convert them to regular data frames, give
-  # proper column names and bind them back to the original model frame
-
-  if (any(mc)) {
-    # try to get model data from environment
-    md <- tryCatch(
-      {
-        eval(stats::getCall(x)$data, environment(stats::formula(x)))
-      },
-      error = function(x) { NULL }
-    )
-
-    # if data not found in environment, reduce matrix variables into regular vectors
-    if (is.null(md)) {
-      # first, we select the non-matrix variables. calling "as_tibble" would
-      # remove their column name, so we us as_tibble to convert matrix
-      # to vectors only for the matrix-columns
-      fitfram_matrix <- dplyr::select(fitfram, which(mc))
-      fitfram_nonmatrix <- dplyr::select(fitfram, -which(mc))
-      fitfram_matrix <- dplyr::bind_cols(purrr::map(fitfram_matrix, ~ as.data.frame(.x, stringsAsFactors = FALSE)))
-      fitfram <- dplyr::bind_cols(fitfram_nonmatrix, fitfram_matrix)
-    } else {
-
-      # fix NA in column names
-
-      if (any(is.na(colnames(md)))) colnames(md) <- make.names(colnames(md))
-
-      # get "matrix" terms and "normal" predictors, but exclude
-      # response variable(s)
-
-      fitfram_matrix <- dplyr::select(fitfram, -which(mc))
-      spline.term <- get_vn_helper(names(which(mc)))
-      other.terms <- get_vn_helper(colnames(fitfram_matrix))[-1]
-
-      # now we have all variable names that we need from the original
-      # data set
-
-      needed.vars <- c(other.terms, spline.term)
-
-      # if response is a matrix vector (e.g. multivariate response),
-      # we need to include all response names as well, because else
-      # rows may not match due to additional missings in the response variables
-
-      if (is.matrix(fitfram[[1]])) {
-        needed.vars <- c(dimnames(fitfram[[1]])[[2]], needed.vars)
-      } else {
-        needed.vars <- c(colnames(fitfram)[1], needed.vars)
-      }
-
-      # check model weights
-
-      if ("(weights)" %in% needed.vars && !obj_has_name(md, "(weights)")) {
-        needed.vars <- needed.vars[-which(needed.vars == "(weights)")]
-        mw <- fitfram[["(weights)"]]
-      }
-
-
-      if (inherits(x, "coxph")) {
-        fitfram <- md
-      } else {
-        fitfram <- stats::na.omit(dplyr::select(md, !! needed.vars))
-      }
-
-      # add back model weights, if any
-      if (!is.null(mw)) fitfram$`(weights)` <- mw
-    }
-
-  }
-
-  # check if we have monotonic variables, included in formula
-  # with "mo()"? If yes, remove from model frame
-  mos_eisly <- grepl(pattern = "^mo\\(([^,)]*).*", x = colnames(fitfram))
-  if (any(mos_eisly)) fitfram <- fitfram[!mos_eisly]
-
-  # clean variable names
-  cvn <- get_vn_helper(colnames(fitfram))
-
-  # do we have duplicated names?
-  dupes <- which(duplicated(cvn))
-  if (!sjmisc::is_empty(dupes)) cvn[dupes] <- sprintf("%s.%s", cvn[dupes], 1:length(dupes))
-
-  colnames(fitfram) <- cvn
-
-  # add back possible trials-data
-  if (!is.null(trials.data)) {
-    new.cols <- setdiff(colnames(trials.data), colnames(fitfram))
-    if (!sjmisc::is_empty(new.cols)) fitfram <- cbind(fitfram, trials.data[, new.cols, drop = FALSE])
-  }
-
-
-  # for glmmtmb, check dispersion and zi-formula
-  # and add variables to model frame
-
-  if (inherits(x, "glmmTMB")) {
-    disp <- tryCatch(
-      {all.vars(x$modelInfo$allForm$dispformula[[2L]])},
-      error = function(x) { NULL}
-    )
-
-    if (!is.null(disp)) {
-      fitfram <- tryCatch(
-        {
-          eval(x$call$data, envir = parent.frame()) %>%
-            dplyr::select(!! disp) %>%
-            sjmisc::add_columns(fitfram, replace = TRUE)
-        },
-        error = function(x) { fitfram }
-      )
-    }
-
-
-    zi <- tryCatch(
-      {all.vars(x$modelInfo$allForm$ziformula[[2L]])},
-      error = function(x) { NULL}
-    )
-
-    if (!is.null(zi)) {
-      fitfram <- tryCatch(
-        {
-          eval(x$call$data, envir = parent.frame()) %>%
-            dplyr::select(!! zi) %>%
-            sjmisc::add_columns(fitfram, replace = TRUE)
-        },
-        error = function(x) { fitfram }
-      )
-    }
-  }
-
-
-  fitfram
-}
-
-
-#' @rdname pred_vars
-#' @importFrom sjmisc str_contains is_empty
-#' @importFrom stats family formula gaussian binomial
-#' @importFrom lme4 fixef
-#' @export
-model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
-  zero.inf <- FALSE
-  multi.var <- FALSE
-
-  if (!missing(multi.resp)) mv <- multi.resp
-
-  # for gam-components from gamm4, add class attributes, so family
-  # function works correctly
-  if (inherits(x, "gam") && !inherits(x, c("glm", "lm")))
-    class(x) <- c(class(x), "glm", "lm")
-
-  # do we have glm? if so, get link family. make exceptions
-  # for specific models that don't have family function
-  if (inherits(x, c("glmmPQL", "MixMod"))) {
-    faminfo <- x$family
-    fitfam <- faminfo$family
-    logit.link <- faminfo$link == "logit"
-    link.fun <- faminfo$link
-  } else if (inherits(x, c("lme", "plm", "gls", "truncreg", "lmRob"))) {
-    fitfam <- "gaussian"
-    logit.link <- FALSE
-    link.fun <- "identity"
-  } else if (inherits(x, c("vgam", "vglm"))) {
-    faminfo <- x@family
-    fitfam <- faminfo@vfamily[1]
-    logit.link <- sjmisc::str_contains(faminfo@blurb, "logit")
-    link.fun <- faminfo@blurb[3]
-    if (!sjmisc::is_empty(string_starts_with(pattern = "logit(", x = link.fun)))
-      link.fun <- "logit"
-  } else if (inherits(x, c("zeroinfl", "hurdle", "zerotrunc"))) {
-    if (is.list(x$dist))
-      dist <- x$dist[[1]]
-    else
-      dist <- x$dist
-    fitfam <- switch(
-      dist,
-      poisson = "poisson",
-      negbin = "negative binomial",
-      "poisson"
-    )
-    logit.link <- FALSE
-    link.fun <- "log"
-    zero.inf <- TRUE
-  } else if (inherits(x, c("lm_robust", "felm"))) {
-    faminfo <- stats::gaussian(link = "identity")
-    fitfam <- faminfo$family
-    logit.link <- faminfo$link == "logit"
-    link.fun <- faminfo$link
-  } else if (inherits(x, "betareg")) {
-    fitfam <- "beta"
-    logit.link <- x$link$mean$name == "logit"
-    link.fun <- x$link$mean$linkfun
-  } else if (inherits(x, c("coxph", "coxme"))) {
-    fitfam <- "survival"
-    logit.link <- TRUE
-    link.fun <- NULL
-  } else if (inherits(x, "glmmTMB")) {
-    faminfo <- stats::family(x)
-    fitfam <- faminfo$family
-    logit.link <- faminfo$link == "logit"
-    link.fun <- faminfo$link
-    zero.inf <- !sjmisc::is_empty(lme4::fixef(x)$zi)
-  } else {
-    # here we have no family method, so we construct a logistic-regression-family-object
-    if (inherits(x, c("lrm", "polr", "logistf", "clmm", "clm", "clm2", "multinom", "Zelig-relogit")))
-      faminfo <- stats::binomial(link = "logit")
-    else
-      # get family info
-      faminfo <- stats::family(x)
-
-    # in case of multivariate response models for brms or rstanarm,
-    # we just take the information from the first model
-    if (inherits(x, "brmsfit") && !is.null(stats::formula(x)$response)) {
-      multi.var <- TRUE
-      if (!mv) faminfo <- faminfo[[1]]
-    }
-
-    if (inherits(x, "stanmvreg")) {
-      multi.var <- TRUE
-      if (!mv) faminfo <- faminfo[[1]]
-    }
-
-
-    if (mv && multi.var) {
-      return(purrr::map(faminfo, ~ make_family(
-        x,
-        .x$family,
-        zero.inf,
-        .x$link == "logit",
-        TRUE,
-        .x$link
-      )))
-    }
-
-
-    fitfam <- faminfo$family
-    logit.link <- faminfo$link == "logit"
-    link.fun <- faminfo$link
-  }
-
-  make_family(x, fitfam, zero.inf, logit.link, multi.var, link.fun)
-}
-
-
-make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
-  # create logical for family
-  binom_fam <-
-    fitfam %in% c("bernoulli", "binomial", "quasibinomial", "binomialff") |
-    sjmisc::str_contains(fitfam, "binomial", ignore.case = TRUE)
-
-  poisson_fam <-
-    fitfam %in% c("poisson", "quasipoisson", "genpois", "ziplss") |
-    sjmisc::str_contains(fitfam, "poisson", ignore.case = TRUE)
-
-  neg_bin_fam <-
-    sjmisc::str_contains(fitfam, "negative binomial", ignore.case = T) |
-    sjmisc::str_contains(fitfam, "nbinom", ignore.case = TRUE) |
-    sjmisc::str_contains(fitfam, "genpois", ignore.case = TRUE) |
-    sjmisc::str_contains(fitfam, "negbinomial", ignore.case = TRUE) |
-    sjmisc::str_contains(fitfam, "neg_binomial", ignore.case = TRUE)
-
-  linear_model <- !binom_fam & !poisson_fam & !neg_bin_fam & !logit.link
-
-  zero.inf <- zero.inf | fitfam == "ziplss" |
-    sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T) |
-    sjmisc::str_contains(fitfam, "zero-inflated", ignore.case = T) |
-    sjmisc::str_contains(fitfam, "hurdle", ignore.case = T)
-
-  is.ordinal <-
-    inherits(x, c("polr", "clm", "clm2", "clmm", "multinom")) |
-    fitfam %in% c("cumulative", "cratio", "sratio", "acat")
-
-  is.categorical <- fitfam == "categorical"
-
-
-  # check if we have binomial models with trials instead of binary outcome
-
-  is.trial <- FALSE
-
-  if (inherits(x, "brmsfit") && is.null(stats::formula(x)$responses)) {
-    tryCatch(
-      {
-        rv <- deparse(stats::formula(x)$formula[[2L]])
-        is.trial <- sjmisc::trim(sub("(.*)\\|(.*)\\(([^,)]*).*", "\\2", rv)) %in% c("trials", "resp_trials")
-      },
-      error = function(x) { NULL }
-    )
-  }
-
-  if (binom_fam && !inherits(x, "brmsfit")) {
-    tryCatch(
-      {
-        rv <- deparse(stats::formula(x)[[2L]])
-        is.trial <- grepl("cbind\\((.*)\\)", rv)
-      },
-      error = function(x) { NULL }
-    )
-  }
-
-
-  list(
-    is_bin = binom_fam & !neg_bin_fam,
-    is_count = poisson_fam | neg_bin_fam,
-    is_pois = poisson_fam | neg_bin_fam,
-    is_negbin = neg_bin_fam,
-    is_logit = logit.link,
-    is_linear = linear_model,
-    is_zeroinf = zero.inf,
-    is_ordinal = is.ordinal,
-    is_categorical = is.categorical,
-    is_multivariate = multi.var,
-    is_trial = is.trial,
-    link.fun = link.fun,
-    family = fitfam
-  )
-}
-
-
-#' @importFrom dplyr select
-get_zelig_relogit_frame <- function(x) {
-  vars <- c(resp_var(x), pred_vars(x))
-  dplyr::select(x$data, !! vars)
-}
-
-#' @rdname pred_vars
-#' @importFrom purrr map_chr
-#' @export
-var_names <- function(x) {
-  if (is.character(x))
-    get_vn_helper(x)
-  else
-    colnames(model_frame(x))
-}
-
-
-#' @importFrom sjmisc is_empty trim
-#' @importFrom purrr map_chr
-get_vn_helper <- function(x) {
-
-  # return if x is empty
-  if (sjmisc::is_empty(x)) return("")
-
-  # for gam-smoothers/loess, remove s()- and lo()-function in column name
-  # for survival, remove strata(), and so on...
-  pattern <- c(
-    "as.factor", "factor", "offset", "log-log", "log", "lag", "diff", "lo", "bs", "ns",
-    "t2", "te", "ti", "tt", "mi", "mo", "gp", "pspline", "poly", "strata", "scale",
-    "interaction", "s", "I"
-  )
-
-  # do we have a "log()" pattern here? if yes, get capture region
-  # which matches the "cleaned" variable name
-  purrr::map_chr(1:length(x), function(i) {
-    for (j in 1:length(pattern)) {
-      if (pattern[j] == "offset") {
-        x[i] <- sjmisc::trim(unique(sub("^offset\\(([^-+ )]*).*", "\\1", x[i])))
-      } else if (pattern[j] == "I") {
-        x[i] <- sjmisc::trim(unique(sub("I\\((\\w*).*", "\\1", x[i])))
-      } else if (pattern[j] == "log-log") {
-        x[i] <- sjmisc::trim(unique(sub("^log\\(log\\(([^,)]*)).*", "\\1", x[i])))
-      } else {
-        p <- paste0("^", pattern[j], "\\(([^,)]*).*")
-        x[i] <- unique(sub(p, "\\1", x[i]))
-      }
-    }
-    # for coxme-models, remove random-effect things...
-    sjmisc::trim(sub("^(.*)\\|(.*)", "\\2", x[i]))
-    # x[i]
-  })
+  unique(av)
 }
