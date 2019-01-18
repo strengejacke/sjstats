@@ -22,6 +22,8 @@ resp_var <- function(x, combine = TRUE) {
     }
   } else if (inherits(x, "stanmvreg")) {
     rv <- purrr::map_chr(stats::formula(x), ~ deparse(.x[[2L]]))
+  } else if (inherits(x, "MCMCglmm")) {
+    rv <- all.vars(x$Fixed$formula[[2L]])
   } else if (inherits(x, "felm")) {
     rv <- x$lhs
   } else if (inherits(x, "clm2")) {

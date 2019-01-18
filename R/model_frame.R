@@ -48,6 +48,19 @@ model_frame <- function(x, fe.only = TRUE) {
 
         fitfram <- sjmisc::add_variables(fitfram, grp__id = x$id)
         colnames(fitfram)[ncol(fitfram)] <- x$id_name[1]
+      } else if (inherits(x, "MCMCglmm")) {
+        env_dataframes <- names(which(unlist(eapply(.GlobalEnv, is.data.frame))))
+        env_dataframes <- names(which(unlist(eapply(.GlobalEnv, is.data.frame))))
+        pv <- pred_vars(x, fe.only = FALSE)
+        matchframe <- unlist(lapply(env_dataframes, function(.x) {
+          dat <- get(.x)
+          all(pv %in% colnames(dat))
+        }))
+        mf <- env_dataframes[matchframe][1]
+        if (!is.na(mf))
+          fitfram <- get(mf)
+        else
+          fitfram <- NULL
       } else
         fitfram <- stats::model.frame(x)
     },

@@ -258,6 +258,21 @@ pred_vars.brmsfit <- function(x, fe.only = FALSE, ...) {
 }
 
 
+#' @export
+pred_vars.MCMCglmm <- function(x, fe.only = FALSE, ...) {
+  fm <- x$Fixed
+  av <- all.vars(fm$formula[[3L]])
+
+  if (!fe.only) {
+    fmr <- x$Random
+    avr <- all.vars(fmr$formula[[2L]])
+    av <- c(av, avr)
+  }
+
+  unique(av)
+}
+
+
 #' @rdname pred_vars
 #' @export
 pred_vars.MixMod <- function(x, fe.only = FALSE, zi = FALSE, ...) {

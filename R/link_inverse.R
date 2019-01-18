@@ -5,6 +5,8 @@ link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
 
   if (!missing(multi.resp)) mv <- multi.resp
 
+  if (inherits(x, "MCMCglmm")) return(NULL)
+
   # handle glmmTMB models
   if (inherits(x, "glmmTMB")) {
     ff <- stats::family(x)

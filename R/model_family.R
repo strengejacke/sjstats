@@ -65,6 +65,10 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
     logit.link <- faminfo$link == "logit"
     link.fun <- faminfo$link
     zero.inf <- !sjmisc::is_empty(lme4::fixef(x)$zi)
+  } else if (inherits(x, "MCMCglmm")) {
+    fitfam <- x$Residual$family
+    logit.link <- FALSE
+    link.fun <- ""
   } else {
     # here we have no family method, so we construct a logistic-regression-family-object
     if (inherits(x, c("lrm", "polr", "logistf", "clmm", "clm", "clm2", "multinom", "Zelig-relogit")))
@@ -120,6 +124,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
   neg_bin_fam <-
     sjmisc::str_contains(fitfam, "negative binomial", ignore.case = T) |
     sjmisc::str_contains(fitfam, "nbinom", ignore.case = TRUE) |
+    sjmisc::str_contains(fitfam, "nzbinom", ignore.case = TRUE) |
     sjmisc::str_contains(fitfam, "genpois", ignore.case = TRUE) |
     sjmisc::str_contains(fitfam, "negbinomial", ignore.case = TRUE) |
     sjmisc::str_contains(fitfam, "neg_binomial", ignore.case = TRUE)
@@ -129,11 +134,12 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
   zero.inf <- zero.inf | fitfam == "ziplss" |
     sjmisc::str_contains(fitfam, "zero_inflated", ignore.case = T) |
     sjmisc::str_contains(fitfam, "zero-inflated", ignore.case = T) |
-    sjmisc::str_contains(fitfam, "hurdle", ignore.case = T)
+    sjmisc::str_contains(fitfam, "hurdle", ignore.case = T) |
+    grepl("^(zt|zi|za|hu)", fitfam, perl = TRUE)
 
   is.ordinal <-
     inherits(x, c("polr", "clm", "clm2", "clmm", "multinom")) |
-    fitfam %in% c("cumulative", "cratio", "sratio", "acat")
+    fitfam %in% c("cumulative", "cratio", "sratio", "acat", "ordinal", "multinomial")
 
   is.categorical <- fitfam == "categorical"
 

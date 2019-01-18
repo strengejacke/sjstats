@@ -2,7 +2,7 @@
 
 ## General
 
-* `MixMod`-objects (package **GLMMadaptive**) are now supported by model-information functions like `model_family()`, `link_inverse()` or `model_frame()`.
+* `MixMod`-objects (package **GLMMadaptive**) and **MCMCglmm**-models are now supported by model-information functions like `model_family()`, `link_inverse()` or `model_frame()`.
 
 ## Changes to functions
 
