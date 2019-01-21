@@ -163,3 +163,38 @@ logVarDist <- function(x, null.fixef, faminfo, sig, type) {
 
   log1p(cvsquared)
 }
+
+
+vals_brms <- function(vals, faminfo) {
+  vals$beta <- vals$beta[, 1]
+
+  vals$re <- lapply(vals$re, function(r) {
+    dim.ranef <- dim(r)
+    dim.names <- dimnames(r)[[3]]
+    v.re <- purrr::map(1:dim.ranef[3], ~ r[1:dim.ranef[1], 1, .x])
+    names(v.re) <- dim.names
+    as.data.frame(v.re)
+  })
+
+  sc <- vals$vc$residual__$sd[1]
+
+  if (obj_has_name(vals$vc, "residual__"))
+    vals$vc <- vals$vc[-which(names(vals$vc) == "residual__")]
+
+  vals$vc <- purrr::map(vals$vc, function(.x) {
+    if (obj_has_name(.x, "cov")) {
+      d <- dim(.x$cov)
+      .x <- .x$cov[1:d[1], 1, ]
+    } else if (obj_has_name(.x, "sd")) {
+      .x <- .x$sd[1, 1, drop = FALSE]^2
+      attr(.x, "dimnames") <- list("Intercept", "Intercept")
+    }
+    .x
+  })
+  attr(vals$vc, "sc") <- sc
+
+  if (faminfo$is_zeroinf)
+    warning(sprintf("%s ignores effects of zero-inflation.", ws), call. = FALSE)
+
+  vals
+}
