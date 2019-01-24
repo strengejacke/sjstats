@@ -129,6 +129,8 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
     sjmisc::str_contains(fitfam, "negbinomial", ignore.case = TRUE) |
     sjmisc::str_contains(fitfam, "neg_binomial", ignore.case = TRUE)
 
+  beta_fam <- inherits(x, "betareg") | fitfam %in% c("beta")
+
   linear_model <- !binom_fam & !poisson_fam & !neg_bin_fam & !logit.link
 
   zero.inf <- zero.inf | fitfam == "ziplss" |
@@ -174,6 +176,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
     is_count = poisson_fam | neg_bin_fam,
     is_pois = poisson_fam | neg_bin_fam,
     is_negbin = neg_bin_fam,
+    is_beta = beta_fam,
     is_logit = logit.link,
     is_linear = linear_model,
     is_zeroinf = zero.inf,

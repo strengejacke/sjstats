@@ -7,7 +7,7 @@
 ## Changes to functions
 
 * `anova_stats()` and alike (e.g. `eta_sq()`) now all preserve original term names.
-* `model_family()` now returns `$is_count = TRUE`, when model is a count-model.
+* `model_family()` now returns `$is_count = TRUE`, when model is a count-model, and `$is_beta = TRUE` for models with beta-family.
 * `pred_vars()` checks that return value has only unique values.
 * `pred_vars()` gets a `zi`-argument to return the variables from a model's zero-inflation-formula.
 

@@ -55,6 +55,8 @@
 #'      \item \code{is_bin}: family is binomial (but not negative binomial)
 #'      \item \code{is_pois}: family is either poisson or negative binomial
 #'      \item \code{is_negbin}: family is negative binomial
+#'      \item \code{is_count}: model is a count model (i.e. family is either poisson or negative binomial)
+#'      \item \code{is_beta}: family is beta
 #'      \item \code{is_logit}: model has logit link
 #'      \item \code{is_linear}: family is gaussian
 #'      \item \code{is_ordinal}: family is ordinal or cumulative link
