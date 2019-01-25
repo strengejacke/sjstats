@@ -189,13 +189,13 @@ model_frame <- function(x, fe.only = TRUE) {
     # check if we really have all formula terms in our model frame now
     pv <- tryCatch(
       {
-        pred_vars(x, fe.only = FALSE)
+        pred_vars(x, fe.only = fe.only)
       },
       error = function(x) { NULL }
     )
 
     if (!is.null(pv) && !all(pv %in% colnames(fitfram))) {
-      warning("Some model terms could not be found in model frame. Maybe the data is missing in the environment?", call. = FALSE)
+      warning("Some model terms could not be found in model frame. You probably need to load the data into the environment.", call. = FALSE)
     }
 
   }
