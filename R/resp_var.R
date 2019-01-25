@@ -6,7 +6,7 @@
 resp_var <- function(x, combine = TRUE) {
   if (inherits(x, "brmsfit")) {
     if (is.null(stats::formula(x)$responses)) {
-      rv <- deparse(stats::formula(x)$formula[[2L]])
+      rv <- deparse(stats::formula(x)$formula[[2L]], width.cutoff = 500L)
       # check for brms Additional Response Information
       if (!sjmisc::is_empty(string_contains("|", rv))) {
         r1 <- sjmisc::trim(sub("(.*)\\|(.*)", "\\1", rv))
@@ -21,7 +21,7 @@ resp_var <- function(x, combine = TRUE) {
       # stats::formula(x)$responses
     }
   } else if (inherits(x, "stanmvreg")) {
-    rv <- purrr::map_chr(stats::formula(x), ~ deparse(.x[[2L]]))
+    rv <- purrr::map_chr(stats::formula(x), ~ deparse(.x[[2L]], width.cutoff = 500L))
   } else if (inherits(x, "MCMCglmm")) {
     rv <- all.vars(x$Fixed$formula[[2L]])
   } else if (inherits(x, "felm")) {
@@ -31,9 +31,9 @@ resp_var <- function(x, combine = TRUE) {
   } else if (inherits(x, "aovlist")) {
     rv <- all.vars(attr(x, "terms")[[2L]])
   } else if (inherits(x, "gam") && is.list(stats::formula(x))) {
-    rv <- deparse(stats::formula(x)[[1]][[2L]])
+    rv <- deparse(stats::formula(x)[[1]][[2L]], width.cutoff = 500L)
   } else
-    rv <- deparse(stats::formula(x)[[2L]])
+    rv <- deparse(stats::formula(x)[[2L]], width.cutoff = 500L)
 
   if (!combine && grepl("cbind\\((.*)\\)", rv) && !inherits(x, "brmsfit")) {
     rv <- sub("cbind\\(([^,].*)([\\)].*)" ,"\\1", rv) %>%

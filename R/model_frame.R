@@ -80,7 +80,7 @@ model_frame <- function(x, fe.only = TRUE) {
     if (obj_has_name(x, "call")) {
       if (obj_has_name(x$call, "offset")) {
         offcol <- which(colnames(fitfram) == "(offset)")
-        colnames(fitfram)[offcol] <- var_names(deparse(x$call$offset))
+        colnames(fitfram)[offcol] <- var_names(deparse(x$call$offset, width.cutoff = 500L))
       }
     }
   }

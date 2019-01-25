@@ -388,7 +388,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   if (inherits(x, "brmsfit"))
     attr(out, "formula") <- as.character(stats::formula(x))[1]
   else
-    attr(out, "formula") <- deparse(stats::formula(x))
+    attr(out, "formula") <- deparse(stats::formula(x), width.cutoff = 500L)
 
   # round values
   purrr::modify_if(out, is.numeric, ~ round(.x, digits = digits))

@@ -153,7 +153,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
   if (inherits(x, "brmsfit") && is.null(stats::formula(x)$responses)) {
     tryCatch(
       {
-        rv <- deparse(stats::formula(x)$formula[[2L]])
+        rv <- deparse(stats::formula(x)$formula[[2L]], width.cutoff = 500L)
         is.trial <- sjmisc::trim(sub("(.*)\\|(.*)\\(([^,)]*).*", "\\2", rv)) %in% c("trials", "resp_trials")
       },
       error = function(x) { NULL }
@@ -163,7 +163,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
   if (binom_fam && !inherits(x, "brmsfit")) {
     tryCatch(
       {
-        rv <- deparse(stats::formula(x)[[2L]])
+        rv <- deparse(stats::formula(x)[[2L]], width.cutoff = 500L)
         is.trial <- grepl("cbind\\((.*)\\)", rv)
       },
       error = function(x) { NULL }

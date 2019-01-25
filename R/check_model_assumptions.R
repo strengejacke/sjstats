@@ -138,7 +138,7 @@ check_assumptions <- function(x, model.column = NULL, as.logical = FALSE, ...) {
 
   if (is.null(model.column) && !as.logical) {
     class(rv) <- c("sj_check_assump", class(rv))
-    attr(rv, "formula") <- deparse(stats::formula(x))
+    attr(rv, "formula") <- deparse(stats::formula(x), width.cutoff = 500L)
   }
 
   rv
