@@ -186,6 +186,18 @@ model_frame <- function(x, fe.only = TRUE) {
       if (!is.null(mw)) fitfram$`(weights)` <- mw
     }
 
+    # check if we really have all formula terms in our model frame now
+    pv <- tryCatch(
+      {
+        pred_vars(x, fe.only = FALSE)
+      },
+      error = function(x) { NULL }
+    )
+
+    if (!is.null(pv) && !all(pv %in% colnames(fitfram))) {
+      warning("Some model terms could not be found in model frame. Maybe the data is missing in the environment?", call. = FALSE)
+    }
+
   }
 
   # check if we have monotonic variables, included in formula
