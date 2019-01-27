@@ -26,6 +26,8 @@ model_frame <- function(x, fe.only = TRUE) {
         fitfram <- eval(x$call$data, envir = parent.frame())
       else if (inherits(x, "Zelig-relogit"))
         fitfram <- get_zelig_relogit_frame(x)
+      else if (inherits(x, "gmnl"))
+        fitfram <- x$mf
       else if (inherits(x, "vglm")) {
         if (!length(x@model)) {
           env <- environment(x@terms$terms)

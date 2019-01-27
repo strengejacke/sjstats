@@ -71,7 +71,7 @@ model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
     link.fun <- ""
   } else {
     # here we have no family method, so we construct a logistic-regression-family-object
-    if (inherits(x, c("lrm", "polr", "logistf", "clmm", "clm", "clm2", "multinom", "Zelig-relogit")))
+    if (inherits(x, c("lrm", "polr", "gmnl", "logistf", "mlogit", "clmm", "clm", "clm2", "multinom", "Zelig-relogit")))
       faminfo <- stats::binomial(link = "logit")
     else
       # get family info
@@ -140,7 +140,7 @@ make_family <- function(x, fitfam, zero.inf, logit.link, multi.var, link.fun) {
     grepl("^(zt|zi|za|hu)", fitfam, perl = TRUE)
 
   is.ordinal <-
-    inherits(x, c("polr", "clm", "clm2", "clmm", "multinom")) |
+    inherits(x, c("polr", "clm", "clm2", "clmm", "gmnl", "mlogit", "multinom")) |
     fitfam %in% c("cumulative", "cratio", "sratio", "acat", "ordinal", "multinomial")
 
   is.categorical <- fitfam == "categorical"

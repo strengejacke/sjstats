@@ -111,6 +111,16 @@ p_value.svyglm <- function(fit, ...) {
 
 
 #' @export
+p_value.gmnl <- function(fit, ...) {
+  cs <- fit$CoefTable
+  p <- cs[, 4]
+  se <- cs[, 2]
+
+  make_it_so(p, se)
+}
+
+
+#' @export
 p_value.polr <- function(fit, ...) {
   smry <- suppressMessages(as.data.frame(stats::coef(summary(fit))))
   tstat <- smry[[3]]
