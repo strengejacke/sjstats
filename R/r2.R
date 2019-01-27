@@ -256,6 +256,14 @@ r2.glm <- function(x, ...) {
 
 
 #' @export
+r2.mlogit <- function(x, ...) {
+  McFadden <- as.vector(summary(x)$mfR2)
+  names(McFadden) <- "McFadden R-squared"
+  structure(class = "sj_r2", list(McFadden = McFadden))
+}
+
+
+#' @export
 r2.merMod <- function(x, ...) {
   if (!requireNamespace("lme4", quietly = TRUE))
     stop("Package `lme4` needed for this function to work. Please install it.", call. = FALSE)

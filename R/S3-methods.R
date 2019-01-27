@@ -178,7 +178,7 @@ deviance.svyglm.nb <- function(object, ...) {
 #' @importFrom purrr map_chr map2_chr
 #' @export
 print.sj_r2 <- function(x, digits = 3, ...) {
-  cat("\nR-Squared for Generalized Linear Mixed Model\n\n")
+  cat("\nR-Squared for (Generalized) Linear (Mixed) Model\n\n")
   print_icc_and_r2(x, digits, ...)
 }
 
