@@ -112,11 +112,20 @@ p_value.svyglm <- function(fit, ...) {
 
 #' @export
 p_value.gmnl <- function(fit, ...) {
-  cs <- fit$CoefTable
+  cs <- summary(fit)$CoefTable
   p <- cs[, 4]
   se <- cs[, 2]
 
-  make_it_so(p, se)
+  pv <- make_it_so(p, se)
+
+  # rename intercepts
+  intercepts <- grepl(":(intercept)", pv$term, fixed = TRUE)
+  pv$term[intercepts] <- sprintf(
+    "(Intercept: %s)",
+    sub(":(intercept)", replacement = "", pv$term[intercepts], fixed = TRUE)
+  )
+
+  pv
 }
 
 
