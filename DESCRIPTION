@@ -3,7 +3,7 @@ Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
 Version: 0.17.3.9000
-Date: 2019-01-08
+Date: 2019-01-07
 Authors@R: person("Daniel", "Lüdecke", role = c("aut", "cre"), email = "d.luedecke@uke.de", comment = c(ORCID = "0000-0002-8895-3206"))
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -27,21 +27,15 @@ Depends:
     stats,
     utils
 Imports:
-    bayesplot,
     broom,
-    coin,
-    crayon,
     dplyr,
     emmeans,
     lme4,
-    glmmTMB (>= 0.2.2.0),
     magrittr,
     MASS,
     Matrix,
     modelr,
-    nlme,
     purrr,
-    pwr,
     rlang,
     sjlabelled (>= 1.0.14),
     sjmisc (>= 2.7.5),
@@ -49,15 +43,19 @@ Imports:
 Suggests:
     brms,
     car,
+    coin,
     ggplot2,
     ggridges,
     graphics,
+    glmmTMB,
     knitr,
     loo,
     mediation,
+    nlme,
     pbkrtest (>= 0.4-7),
     pROC,
     psych,
+    pwr,
     sandwich,
     scales,
     splines,
@@ -66,6 +64,7 @@ Suggests:
     rstan,
     rstantools,
     rstanarm,
+    rstudioapi,
     VGAM,
     Zelig,
     testthat

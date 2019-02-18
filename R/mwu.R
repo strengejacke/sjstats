@@ -36,7 +36,6 @@
 #' mwu(efc, e17age, e42dep)
 #'
 #' @importFrom stats na.omit wilcox.test kruskal.test
-#' @importFrom coin wilcox_test pvalue statistic
 #' @importFrom sjmisc recode_to is_empty
 #' @importFrom sjlabelled get_labels as_numeric
 #' @importFrom rlang quo_name enquo
@@ -54,6 +53,10 @@ mwu <- function(data,
   if (out != "txt" && !requireNamespace("sjPlot", quietly = TRUE)) {
     message("Package `sjPlot` needs to be loaded to print HTML tables.")
     out <- "txt"
+  }
+
+  if (!requireNamespace("coin", quietly = TRUE)) {
+    stop("Package `coin` needs to be installed to compute the Mann-Whitney-U test.", call. = FALSE)
   }
 
 

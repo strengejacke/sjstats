@@ -156,10 +156,13 @@ cohens_f <- function(model) {
 
 #' @importFrom sjmisc add_columns round_num
 #' @importFrom stats anova
-#' @importFrom pwr pwr.f2.test
 #' @rdname eta_sq
 #' @export
 anova_stats <- function(model, digits = 3) {
+  if (!requireNamespace("pwr", quietly = TRUE)) {
+    stop("Package `pwr` needed for this function to work. Please install it.", call. = FALSE)
+  }
+
   # get tidy summary table
   aov.sum <- aov_stat_summary(model)
 

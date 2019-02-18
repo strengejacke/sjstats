@@ -1,7 +1,9 @@
-#' @importFrom nlme getData
 #' @importFrom stats formula
 #' @export
 model.matrix.gls <- function(object, ...) {
+  if (!requireNamespace("nlme"))
+    stop("Package `nlme` is required, please install it first.", call. = FALSE)
+
   cbind(
     `(Intercept)` = 1,
     nlme::getData(object)[, all.vars(stats::formula(object))]
@@ -193,7 +195,7 @@ print.sj_icc <- function(x, digits = 4, ...) {
 
 print_icc_and_r2 <- function(x, digits, ...) {
   # print model information
-  cat(crayon::blue(
+  cat(.colour("blue",
     sprintf("Family : %s (%s)\nFormula: %s\n\n",
             attr(x, "family", exact = T),
             attr(x, "link", exact = T),
@@ -218,7 +220,7 @@ print.sj_icc_merMod <- function(x, comp, ...) {
   # print model information
   cat(sprintf("\nIntraclass Correlation Coefficient for %s\n\n", attr(x, "model", exact = T)))
 
-  cat(crayon::blue(
+  cat(.colour("blue",
     sprintf("Family : %s (%s)\nFormula: %s\n\n",
             attr(x, "family", exact = T),
             attr(x, "link", exact = T),
@@ -294,12 +296,11 @@ print.sj_icc_merMod <- function(x, comp, ...) {
 
 #' @importFrom rlang .data
 #' @importFrom dplyr filter slice select
-#' @importFrom crayon blue cyan red
 #' @importFrom sjmisc var_rename trim
 #' @export
 print.tidy_stan <- function(x, ...) {
 
-  cat(crayon::blue("\n# Summary Statistics of Stan-Model\n\n"))
+  cat(.colour("blue", "\n# Summary Statistics of Stan-Model\n\n"))
 
   # check if data has certain terms, so we know if we print
   # zero inflated or multivariate response models
@@ -357,7 +358,7 @@ print.tidy_stan <- function(x, ...) {
       } else
         x.sp <- NULL
 
-      cat(crayon::blue("## Conditional Model:\n\n"))
+      cat(.colour("blue", "## Conditional Model:\n\n"))
       x <- trim_hdi(x)
       colnames(x)[1] <- ""
 
@@ -383,7 +384,7 @@ print.tidy_stan <- function(x, ...) {
       } else
         x.sp <- NULL
 
-      cat(crayon::blue("## Zero-Inflated Model:\n\n"))
+      cat(.colour("blue", "## Zero-Inflated Model:\n\n"))
       x.zi <- trim_hdi(x.zi)
       colnames(x.zi)[1] <- ""
 
@@ -419,7 +420,7 @@ print.tidy_stan <- function(x, ...) {
       if (ran.eff) {
         print_stan_mv_re(x, resp)
       } else {
-        cat(crayon::blue(sprintf("## Response%s: %s\n\n", resp.string, crayon::red(resp))))
+        cat(.colour("blue", sprintf("## Response%s: %s\n\n", resp.string, .colour("red", resp))))
 
         xr <- x %>%
           dplyr::filter(.data$response == !! resp) %>%
@@ -444,7 +445,7 @@ print.tidy_stan <- function(x, ...) {
       x.cor$term <- gsub("rescor__", "", x = x.cor$term, fixed = TRUE)
       x.cor$term <- gsub("__", "-", x = x.cor$term, fixed = TRUE)
 
-      cat(crayon::cyan(sprintf("## Residual Correlations\n\n", resp)))
+      cat(.colour("cyan", sprintf("## Residual Correlations\n\n", resp)))
 
       x.cor <- x.cor %>%
         dplyr::select(-1, -.data$simplex) %>%
@@ -486,7 +487,7 @@ print.tidy_stan <- function(x, ...) {
 
 
 print_stan_simplex <- function(x, ...) {
-  cat(crayon::blue("## Simplex Parameters:\n\n"))
+  cat(.colour("blue", "## Simplex Parameters:\n\n"))
   x <- trim_hdi(x)
 
   if (colnames(x)[1] != "term")
@@ -503,7 +504,6 @@ print_stan_simplex <- function(x, ...) {
 
 
 #' @importFrom sjmisc is_empty
-#' @importFrom crayon blue red
 #' @importFrom dplyr slice select filter mutate
 print_stan_ranef <- function(x, zeroinf = FALSE) {
   # find fixed effects - if type = "all"
@@ -512,9 +512,9 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
   if (!sjmisc::is_empty(fe)) {
 
     if (!zeroinf)
-      cat(crayon::blue("## Fixed effects:\n\n"))
+      cat(.colour("blue", "## Fixed effects:\n\n"))
     else
-      cat(crayon::blue("## Conditional Model: Fixed effects\n\n"))
+      cat(.colour("blue", "## Conditional Model: Fixed effects\n\n"))
 
     # if we have fixed and random effects, get information for
     # fixed effects, and then remove these summary lines from
@@ -557,9 +557,9 @@ print_stan_ranef <- function(x, zeroinf = FALSE) {
   for (r in re) {
 
     if (!zeroinf)
-      cat(crayon::blue(sprintf("## Random effect %s\n\n", crayon::red(r))))
+      cat(.colour("blue", sprintf("## Random effect %s\n\n", .colour("red", r))))
     else
-      cat(crayon::blue(sprintf("## Conditional Model: Random effect %s\n\n", crayon::red(r))))
+      cat(.colour("blue", sprintf("## Conditional Model: Random effect %s\n\n", .colour("red", r))))
 
     xr <- x %>%
       dplyr::filter(.data$random.effect == !! r) %>%
@@ -603,7 +603,6 @@ trim_hdi <- function(x) {
 
 
 #' @importFrom sjmisc is_empty
-#' @importFrom crayon blue red
 #' @importFrom dplyr slice select filter mutate
 print_stan_mv_re <- function(x, resp) {
   # find fixed effects - is type = "all"
@@ -611,7 +610,7 @@ print_stan_mv_re <- function(x, resp) {
 
   if (!sjmisc::is_empty(fe)) {
 
-    cat(crayon::blue(sprintf("## Fixed effects for response: %s\n\n", crayon::red(resp))))
+    cat(.colour("blue", sprintf("## Fixed effects for response: %s\n\n", .colour("red", resp))))
 
     x.fe <- dplyr::slice(x, !! fe)
     x <- dplyr::slice(x, -!! fe)
@@ -637,8 +636,8 @@ print_stan_mv_re <- function(x, resp) {
     find.re <- which(x$random.effect == r & x$response == resp)
 
     if (!sjmisc::is_empty(find.re)) {
-      cat(crayon::blue(sprintf("## Random effect %s", crayon::red(r))))
-      cat(crayon::blue(sprintf(" for response %s\n\n", crayon::red(resp))))
+      cat(.colour("blue", sprintf("## Random effect %s", .colour("red", r))))
+      cat(.colour("blue", sprintf(" for response %s\n\n", .colour("red", resp))))
 
       xr <- x %>%
         dplyr::filter(.data$random.effect == !! r, .data$response == !! resp) %>%
@@ -657,7 +656,6 @@ print_stan_mv_re <- function(x, resp) {
 
 
 #' @importFrom sjmisc is_empty
-#' @importFrom crayon blue red
 #' @importFrom dplyr slice select filter mutate
 print_stan_zeroinf_ranef <- function(x) {
   # find fixed effects - is type = "all"
@@ -665,7 +663,7 @@ print_stan_zeroinf_ranef <- function(x) {
 
   if (!sjmisc::is_empty(fe)) {
 
-    cat(crayon::blue("## Zero-Inflated Model: Fixed effects\n\n"))
+    cat(.colour("blue", "## Zero-Inflated Model: Fixed effects\n\n"))
 
     # if we have fixed and random effects, get information for
     # fixed effects, and then remove these summary lines from
@@ -701,7 +699,7 @@ print_stan_zeroinf_ranef <- function(x) {
     re <- gsub("__zi", "", re, fixed = TRUE)
 
     for (r in re) {
-      cat(crayon::blue(sprintf("## Zero-Inflated Model: Random effect %s\n\n", crayon::red(r))))
+      cat(.colour("blue", sprintf("## Zero-Inflated Model: Random effect %s\n\n", .colour("red", r))))
 
       xr <- x %>%
         dplyr::filter(.data$random.effect == !! r) %>%
@@ -727,7 +725,6 @@ clean_term_name <- function(x) {
 
 
 #' @importFrom sjmisc remove_empty_cols
-#' @importFrom crayon cyan blue red magenta green silver
 #' @importFrom dplyr case_when
 #' @export
 print.sj_icc_brms <- function(x, digits = 2, ...) {
@@ -741,12 +738,12 @@ print.sj_icc_brms <- function(x, digits = 2, ...) {
 
   get_re_col <- function(i, st) {
     dplyr::case_when(
-      i == 1 ~ crayon::blue(st),
-      i == 2 ~ crayon::cyan(st),
-      i == 3 ~ crayon::magenta(st),
-      i == 4 ~ crayon::green(st),
-      i == 5 ~ crayon::red(st),
-      TRUE ~ crayon::silver(st)
+      i == 1 ~ .colour("blue", st),
+      i == 2 ~ .colour("cyan", st),
+      i == 3 ~ .colour("violet", st),
+      i == 4 ~ .colour("green", st),
+      i == 5 ~ .colour("red", st),
+      TRUE ~ .colour("grey", st)
     )
   }
 
@@ -803,7 +800,7 @@ print.sj_icc_brms <- function(x, digits = 2, ...) {
   # print sigma squared
 
   ci <- attr(x, "hdi.sigma_2", exact = TRUE)
-  infs <- crayon::red("## Residuals")
+  infs <- .colour("red", "## Residuals")
   cat(sprintf(
     "%s\nWithin-group: %.*f  HDI %i%%: [%.*f %.*f]\n",
     infs,
@@ -818,7 +815,7 @@ print.sj_icc_brms <- function(x, digits = 2, ...) {
 
 
   rsv <- attr(x, "tau.11", exact = TRUE)
-  if (!is.null(rsv)) cat(crayon::red("\n## Random-slope-variance\n"))
+  if (!is.null(rsv)) cat(.colour("red", "\n## Random-slope-variance\n"))
 
   # print Random-slope-variance
 
@@ -841,7 +838,6 @@ print.sj_icc_brms <- function(x, digits = 2, ...) {
 
 
 #' @importFrom sjmisc remove_empty_cols
-#' @importFrom crayon cyan blue red magenta green silver
 #' @importFrom dplyr case_when
 #' @export
 print.sj_icc_stanreg <- function(x, digits = 2, ...) {
@@ -855,12 +851,12 @@ print.sj_icc_stanreg <- function(x, digits = 2, ...) {
 
   get_re_col <- function(i, st) {
     dplyr::case_when(
-      i == 1 ~ crayon::blue(st),
-      i == 2 ~ crayon::cyan(st),
-      i == 3 ~ crayon::magenta(st),
-      i == 4 ~ crayon::green(st),
-      i == 5 ~ crayon::red(st),
-      TRUE ~ crayon::silver(st)
+      i == 1 ~ .colour("blue", st),
+      i == 2 ~ .colour("cyan", st),
+      i == 3 ~ .colour("violet", st),
+      i == 4 ~ .colour("green", st),
+      i == 5 ~ .colour("red", st),
+      TRUE ~ .colour("grey", st)
     )
   }
 
@@ -915,7 +911,7 @@ print.sj_icc_stanreg <- function(x, digits = 2, ...) {
   # print sigma squared
 
   ci <- attr(x, "hdi.sigma_2", exact = TRUE)
-  infs <- crayon::red("## Residuals")
+  infs <- .colour("red", "## Residuals")
   cat(sprintf(
     "%s\nWithin-group: %.*f  HDI %i%%: [%.*f %.*f]\n",
     infs,
@@ -930,7 +926,7 @@ print.sj_icc_stanreg <- function(x, digits = 2, ...) {
 
 
   rsv <- attr(x, "tau.11", exact = TRUE)
-  if (!is.null(rsv)) cat(crayon::cyan("\n## Random-slope-variance\n"))
+  if (!is.null(rsv)) cat(.colour("cyan", "\n## Random-slope-variance\n"))
 
   # print Random-slope-variance
 
@@ -953,7 +949,7 @@ print.sj_icc_stanreg <- function(x, digits = 2, ...) {
 
   rsicov <- attr(x, "tau.01", exact = TRUE)
   rsicor <- attr(x, "rho.01", exact = TRUE)
-  if (!is.null(rsicov)) cat(crayon::cyan("\n## Random-slope-intercept covariances\n"))
+  if (!is.null(rsicov)) cat(.colour("cyan", "\n## Random-slope-intercept covariances\n"))
 
   # print Random-slope-variance
 
@@ -1026,7 +1022,7 @@ print.icc_ppd <- function(x, digits = 2, ...) {
 
   prob <- attr(x, "prob", exact = TRUE)
 
-  cat(crayon::blue("## Variance Ratio (comparable to ICC)\n"))
+  cat(.colour("blue", "## Variance Ratio (comparable to ICC)\n"))
 
   icc.val <- sprintf("%.*f", digits, x["icc"])
 
@@ -1043,7 +1039,7 @@ print.icc_ppd <- function(x, digits = 2, ...) {
     ci.icc.hi
   ))
 
-  cat(crayon::blue("\n## Variances of Posterior Predicted Distribution\n"))
+  cat(.colour("blue", "\n## Variances of Posterior Predicted Distribution\n"))
 
   null.model <- sprintf("%.*f", digits, x["tau.00"])
 
@@ -1085,7 +1081,7 @@ print.icc_ppd <- function(x, digits = 2, ...) {
     ci.full.hi
   ))
 
-  cat(crayon::red("\n## Difference in Variances\n"))
+  cat(.colour("red", "\n## Difference in Variances\n"))
 
   res <- sprintf("%.*f", digits, x["resid.var"])
 
@@ -1202,11 +1198,10 @@ plot.sj_inequ_trend <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue
 #' @importFrom stats kruskal.test na.omit
 #' @export
 print.sj_mwu <- function(x, ...) {
-  cat(crayon::blue("\n# Mann-Whitney-U-Test\n\n"))
+  cat(.colour("blue", "\n# Mann-Whitney-U-Test\n\n"))
   # get data
   .dat <- x$df
   # print to console
@@ -1216,7 +1211,7 @@ print.sj_mwu <- function(x, ...) {
     l2 <- .dat[i, "grp2.label"]
     # do we have value labels?
     if (!is.null(l1) && !is.na(l1) %% !is.null(l2) && !is.na(l2)) {
-      cat(crayon::cyan(
+      cat(.colour("cyan",
         sprintf(
           "Groups %i = %s (n = %i) | %i = %s (n = %i):\n",
           .dat[i, "grp1"],
@@ -1228,7 +1223,7 @@ print.sj_mwu <- function(x, ...) {
         )
       ))
     } else {
-      cat(crayon::cyan(
+      cat(.colour("cyan",
         sprintf("Groups (%i|%i), n = %i/%i:\n",
                 .dat[i, "grp1"], .dat[i, "grp2"],
                 .dat[i, "grp1.n"], .dat[i, "grp2.n"])
@@ -1267,7 +1262,7 @@ print.sj_mwu <- function(x, ...) {
 
   # if we have more than 2 groups, also perfom kruskal-wallis-test
   if (length(unique(stats::na.omit(x$data$grp))) > 2) {
-    cat(crayon::blue("# Kruskal-Wallis-Test\n\n"))
+    cat(.colour("blue", "# Kruskal-Wallis-Test\n\n"))
     kw <- stats::kruskal.test(x$data$dv, x$data$grp)
     cat(sprintf("chi-squared = %.3f\n", kw$statistic))
     cat(sprintf("df = %i\n", kw$parameter))
@@ -1284,20 +1279,18 @@ print.sj_mwu <- function(x, ...) {
 
 
 
-#' @importFrom crayon blue
 #' @export
 print.sj_splithalf <- function(x, ...) {
-  cat(crayon::blue("\n# Internal Consistency\n\n"))
+  cat(.colour("blue", "\n# Internal Consistency\n\n"))
   cat(sprintf("   Split-Half Reliability: %.3f\n", x$splithalf))
   cat(sprintf("Spearman-Brown Adjustment: %.3f\n", x$spearmanbrown))
 }
 
 
 
-#' @importFrom crayon blue
 #' @export
 print.sj_zcf <- function(x, ...) {
-  cat(crayon::blue("\n# Zero-Count overfitting\n\n"))
+  cat(.colour("blue", "\n# Zero-Count overfitting\n\n"))
   cat(sprintf("   Observed zero-counts: %i\n", x$observed.zeros))
   cat(sprintf("  Predicted zero-counts: %i\n", x$predicted.zeros))
   cat(sprintf("                  Ratio: %.2f\n\n", x$ratio))
@@ -1315,10 +1308,9 @@ print.sj_zcf <- function(x, ...) {
 
 
 
-#' @importFrom crayon blue
 #' @export
 print.sj_overdisp <- function(x, ...) {
-  cat(crayon::blue("\n# Overdispersion test\n\n"))
+  cat(.colour("blue", "\n# Overdispersion test\n\n"))
   cat(sprintf("       dispersion ratio = %.4f\n", x$ratio))
   cat(sprintf("  Pearson's Chi-Squared = %.4f\n", x$chisq))
   cat(sprintf("                p-value = %.4f\n\n", x$p))
@@ -1337,18 +1329,17 @@ print.sj_outliers <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue
 #' @export
 print.sj_xtab_stat <- function(x, ...) {
   # get length of method name, to align output
   l <- max(nchar(c(x$method, x$stat.name, "p-value")))
 
   # headline
-  cat(crayon::blue("\n# Measure of Association for Contingency Tables\n"))
+  cat(.colour("blue", "\n# Measure of Association for Contingency Tables\n"))
 
   # used fisher?
   if (x$fisher)
-    cat(crayon::blue("                  (using Fisher's Exact Test)\n"))
+    cat(.colour("blue", "                  (using Fisher's Exact Test)\n"))
 
   cat("\n")
 
@@ -1365,11 +1356,10 @@ print.sj_xtab_stat <- function(x, ...) {
 
 
 
-#' @importFrom crayon blue
 #' @export
 print.sj_pred_accuracy <- function(x, ...) {
   # headline
-  cat(crayon::blue("\n# Accuracy of Model Predictions\n\n"))
+  cat(.colour("blue", "\n# Accuracy of Model Predictions\n\n"))
 
   # statistics
   cat(sprintf("Accuracy: %.2f%%\n", 100 * x$accuracy))
@@ -1386,10 +1376,9 @@ print.sj_grpmean <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue
 print_grpmean <- function(x, ...) {
   # headline
-  cat(crayon::blue(sprintf(
+  cat(.colour("blue", sprintf(
     "# Grouped Means for %s by %s\n\n",
     attr(x, "dv.label", exact = TRUE),
     attr(x, "grp.label", exact = TRUE)
@@ -1409,7 +1398,6 @@ print_grpmean <- function(x, ...) {
 }
 
 
-#' @importFrom crayon cyan
 #' @importFrom purrr walk
 #' @export
 print.sj_grpmeans <- function(x, ...) {
@@ -1420,7 +1408,7 @@ print.sj_grpmeans <- function(x, ...) {
     grp <- attr(dat, "group", exact = T)
 
     # print title for grouping
-    cat(crayon::cyan(sprintf("Grouped by:\n%s\n\n", grp)))
+    cat(.colour("cyan", sprintf("Grouped by:\n%s\n\n", grp)))
 
     # print grpmean-table
     print_grpmean(dat, ...)
@@ -1430,11 +1418,10 @@ print.sj_grpmeans <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue cyan
 #' @export
 print.sj_revar_adjust <- function(x, ...) {
   cat("\nVariance Components of Mixed Models\n\n")
-  cat(crayon::blue(sprintf("Family : %s (%s)\nFormula: %s\n\n", x$family, x$link, deparse(x$formula, width.cutoff = 500))))
+  cat(.colour("blue", sprintf("Family : %s (%s)\nFormula: %s\n\n", x$family, x$link, deparse(x$formula, width.cutoff = 500))))
 
   vals <- c(
     sprintf("%.3f", x$var.fixef),
@@ -1449,8 +1436,8 @@ print.sj_revar_adjust <- function(x, ...) {
   cat(sprintf("         fixed: %s\n", vals[1]))
   cat(sprintf("        random: %s\n", vals[2]))
   cat(sprintf("      residual: %s\n", vals[5]))
-  cat(crayon::cyan(sprintf("    dispersion: %s\n", vals[3])))
-  cat(crayon::cyan(sprintf("  distribution: %s\n\n", vals[4])))
+  cat(.colour("cyan", sprintf("    dispersion: %s\n", vals[3])))
+  cat(.colour("cyan", sprintf("  distribution: %s\n\n", vals[4])))
 }
 
 
@@ -1565,11 +1552,10 @@ print.sj_pca <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue
 #' @importFrom purrr map_if
 #' @export
 print.sj_rope <- function(x, digits = 1, ...) {
-  cat(crayon::blue("\n# Proportions of samples inside and outside the ROPE\n\n"))
+  cat(.colour("blue", "\n# Proportions of samples inside and outside the ROPE\n\n"))
 
   # nicer column names for output
   colnames(x) <- c("term", "inside", "outside")
@@ -1586,10 +1572,9 @@ print.sj_rope <- function(x, digits = 1, ...) {
 }
 
 
-#' @importFrom crayon blue
 #' @export
 print.sj_hdi <- function(x, digits = 2, ...) {
-  cat(crayon::blue("\n# Highest Density Interval\n\n"))
+  cat(.colour("blue", "\n# Highest Density Interval\n\n"))
 
   dat <- get_hdi_data(x, digits)
   colnames(dat)[1] <- ""
@@ -1598,11 +1583,10 @@ print.sj_hdi <- function(x, digits = 2, ...) {
 }
 
 
-#' @importFrom crayon blue cyan
 #' @export
 print.sj_equi_test <- function(x, ...) {
-  cat(crayon::blue("\n# Test for Practical Equivalence of Model Predictors\n\n"))
-  cat(crayon::cyan(sprintf(
+  cat(.colour("blue", "\n# Test for Practical Equivalence of Model Predictors\n\n"))
+  cat(.colour("cyan", sprintf(
     "  Effect Size: %.2f\n         ROPE: [%.2f %.2f]\n",
     attr(x, "eff_size", exact = TRUE),
     attr(x, "rope", exact = TRUE)[1],
@@ -1610,7 +1594,7 @@ print.sj_equi_test <- function(x, ...) {
   )))
 
   if (!is.null(attr(x, "nsamples", exact = TRUE))) {
-    cat(crayon::cyan(sprintf(
+    cat(.colour("cyan", sprintf(
       "      Samples: %i\n",
       attr(x, "nsamples", exact = TRUE)
     )))
@@ -1630,11 +1614,10 @@ print.sj_equi_test <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue cyan
 #' @export
 print.sj_mediation <- function(x, digits = 2, ...) {
-  cat(crayon::blue("\n# Causal Mediation Analysis for Stan Model\n\n"))
-  cat(crayon::cyan(sprintf(
+  cat(.colour("blue", "\n# Causal Mediation Analysis for Stan Model\n\n"))
+  cat(.colour("cyan", sprintf(
     "  Treatment: %s\n   Mediator: %s\n   Response: %s\n",
     attr(x, "treatment", exact = TRUE),
     attr(x, "mediator", exact = TRUE),
@@ -1667,7 +1650,7 @@ print.sj_mediation <- function(x, digits = 2, ...) {
   cat(sprintf("Indirect effect: %s [%s %s]\n", x$value[2], x$hdi.low[2], x$hdi.high[2]))
   cat(sprintf("   Total effect: %s [%s %s]\n", x$value[3], x$hdi.low[3], x$hdi.high[3]))
 
-  cat(crayon::red(
+  cat(.colour("red",
     sprintf(
       "\nProportion mediated: %s%% [%s%% %s%%]\n",
       prop.med[1], prop.med[2], prop.med[3]))
@@ -1753,11 +1736,11 @@ summary.sj_pval <- function(object, digits = 3, summary = FALSE, ...) {
 
 #' @export
 print.sj_error_rate <- function(x, ...) {
-  cat(crayon::blue("\n# Error Rate of Logistic Regression Model\n\n"))
+  cat(.colour("blue", "\n# Error Rate of Logistic Regression Model\n\n"))
   cat(sprintf("  Full model: %.2f%%\n", 100 * x$error.model))
   cat(sprintf("  Null model: %.2f%%\n", 100 * x$error.null))
 
-  cat(crayon::blue("\n# Likelihood-Ratio-Test\n\n"))
+  cat(.colour("blue", "\n# Likelihood-Ratio-Test\n\n"))
 
   v1 <- sprintf("%.3f", x$lrt.chisq)
   v2 <- sprintf("%.3f", x$lrt.p)
@@ -1837,7 +1820,7 @@ print.sj_binres <- function(x, ...) {
 
 #' @export
 print.sj_chi2gof <- function(x, ...) {
-  cat(crayon::blue("\n# Chi-squared Goodness-of-Fit Test\n\n"))
+  cat(.colour("blue", "\n# Chi-squared Goodness-of-Fit Test\n\n"))
 
   v1 <- sprintf("%.3f", x$chisq)
   v2 <- sprintf("%.3f", x$z.score)
@@ -1856,10 +1839,9 @@ print.sj_chi2gof <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue
 #' @export
 print.sj_hoslem <- function(x, ...) {
-  cat(crayon::blue("\n# Hosmer-Lemeshow Goodness-of-Fit Test\n\n"))
+  cat(.colour("blue", "\n# Hosmer-Lemeshow Goodness-of-Fit Test\n\n"))
 
   v1 <- sprintf("%.3f", x$chisq)
   v2 <- sprintf("%i    ", x$df)
@@ -1878,13 +1860,12 @@ print.sj_hoslem <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue
 #' @export
 print.sj_check_assump <- function(x, ...) {
-  cat(crayon::blue("\n# Checking Model-Assumptions\n\n"))
+  cat(.colour("blue", "\n# Checking Model-Assumptions\n\n"))
   cat(sprintf("  Model: %s", attr(x, "formula", exact = TRUE)))
 
-  cat(crayon::red("\n\n                          violated    statistic\n"))
+  cat(.colour("red", "\n\n                          violated    statistic\n"))
 
   v1 <- ifelse(x$heteroskedasticity < 0.05, "yes", "no")
   v2 <- ifelse(x$multicollinearity > 4, "yes", "no")
@@ -1903,26 +1884,24 @@ print.sj_check_assump <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue
 #' @export
 print.sj_item_diff <- function(x, ...) {
-  cat(crayon::blue("\n# Item Difficulty\n\n"))
+  cat(.colour("blue", "\n# Item Difficulty\n\n"))
 
   items <- attr(x, "items", exact = TRUE)
   ideal <- attr(x, "ideal.difficulty", exact = TRUE)
   spaces <- max(nchar(items))
 
-  cat(crayon::red(sprintf("  %*s  ideal\n", spaces + 10, "difficulty")))
+  cat(.colour("red", sprintf("  %*s  ideal\n", spaces + 10, "difficulty")))
 
   for (i in 1:length(items))
     cat(sprintf("  %*s      %.2f   %.2f\n", spaces, items[i], x[i], ideal[i]))
 }
 
 
-#' @importFrom crayon blue cyan
 #' @export
 print.sj_ttest <- function(x, ...) {
-  cat(crayon::blue(sprintf("\n%s (%s)\n", x$method, x$alternative)))
+  cat(.colour("blue", sprintf("\n%s (%s)\n", x$method, x$alternative)))
 
   group <- attr(x, "group.name", exact = TRUE)
   xn <- attr(x, "x.name", exact = TRUE)
@@ -1936,10 +1915,10 @@ print.sj_ttest <- function(x, ...) {
   st <- sprintf("# t=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$df), x$p.value)
 
   if (!is.null(yn)) {
-    cat(crayon::cyan(sprintf("\n# comparison %s %s %s %s\n", verbs[1], xn, verbs[2], yn)))
+    cat(.colour("cyan", sprintf("\n# comparison %s %s %s %s\n", verbs[1], xn, verbs[2], yn)))
   }
 
-  cat(crayon::cyan(st))
+  cat(.colour("cyan", st))
 
 
   if (!is.null(yn)) {
@@ -1966,24 +1945,22 @@ print.sj_ttest <- function(x, ...) {
 }
 
 
-#' @importFrom crayon blue cyan
 #' @export
 print.sj_wmwu <- function(x, ...) {
-  cat(crayon::blue(sprintf("\n%s (%s)\n", x$method, x$alternative)))
+  cat(.colour("blue", sprintf("\n%s (%s)\n", x$method, x$alternative)))
 
   group <- attr(x, "group.name", exact = TRUE)
   xn <- attr(x, "x.name", exact = TRUE)
 
-  cat(crayon::cyan(sprintf("\n# comparison of %s by %s\n", xn, group)))
-  cat(crayon::cyan(sprintf("# Chisq=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$parameter), x$p.value)))
+  cat(.colour("cyan", sprintf("\n# comparison of %s by %s\n", xn, group)))
+  cat(.colour("cyan", sprintf("# Chisq=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$parameter), x$p.value)))
   cat(sprintf("  difference in mean rank score: %.3f\n\n", x$estimate))
 }
 
 
-#' @importFrom crayon blue cyan
 #' @export
 print.sj_wcor <- function(x, ...) {
-  cat(crayon::blue(sprintf("\nWeighted %s\n\n", x$method)))
+  cat(.colour("blue", sprintf("\nWeighted %s\n\n", x$method)))
 
   if (!is.null(x$ci)) {
     cilvl <- sprintf("%.2i%%", as.integer(100 * x$ci.lvl))

@@ -1,13 +1,14 @@
 #' @rdname pred_vars
-#' @importFrom nlme getResponse
 #' @export
 resp_val <- function(x) {
 
   rn <- resp_var(x, combine = FALSE)
 
-  if (inherits(x, c("lme", "gls")))
+  if (inherits(x, c("lme", "gls"))) {
+    if (!requireNamespace("nlme"))
+      stop("Package `nlme` is required, please install it first.", call. = FALSE)
     as.vector(nlme::getResponse(x))
-  else if (inherits(x, "brmsfit")) {
+  } else if (inherits(x, "brmsfit")) {
     rv <- model_frame(x)[, var_names(resp_var(x))]
     rc <- ncol(rv)
     if (!is.null(stats::formula(x)$responses) || !is.null(rc))

@@ -73,7 +73,6 @@
 #' @importFrom purrr map flatten_dbl map_dbl modify_if
 #' @importFrom dplyr bind_cols select mutate slice inner_join n_distinct
 #' @importFrom stats mad formula
-#' @importFrom bayesplot rhat neff_ratio
 #' @importFrom sjmisc is_empty trim
 #' @export
 tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c("fixed", "random", "all"), digits = 2) {
@@ -97,7 +96,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   out.hdi <- hdi(x, prob = prob, trans = trans, type = type)
 
   # get statistics
-  nr <- bayesplot::neff_ratio(x)
+  nr <- .neff_ratio(x)
 
   # we need names of elements, for correct removal
 
@@ -115,7 +114,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   )
 
 
-  rh <- bayesplot::rhat(x)
+  rh <- .rhat(x)
 
   if (inherits(x, "brmsfit")) {
     cnames <- make.names(names(rh))
@@ -509,4 +508,42 @@ n_of_chains <- function(x) {
     length(x$fit@stan_args)
   else
     length(x$stanfit@stan_args)
+}
+
+
+#' @keywords internal
+.neff_ratio <- function(x) {
+  if (!requireNamespace("rstan", quietly = TRUE))
+    stop("Package `rstan` is required. Please install it first.", call. = FALSE)
+
+  if (inherits(x, "brms")) x <- x$fit
+
+  if (inherits(x, "stanfit")) {
+    s <- rstan::summary(x)
+    tss <- nrow(as.matrix(x, pars = "lp__"))
+    ratio <- s$summary[, "n_eff"]/tss
+  } else if (inherits(x, "stanreg")) {
+    s <- summary(x, pars = NULL, regex_pars = NULL)
+    ess <- s[, "n_eff"]
+    tss <- attr(s, "posterior_sample_size")
+    ratio <- ess/tss
+    ratio <- ratio[!names(ratio) %in% c("mean_PPD", "log-posterior")]
+  }
+}
+
+
+#' @keywords internal
+.rhat <- function(x) {
+  if (!requireNamespace("rstan", quietly = TRUE))
+    stop("Package `rstan` is required. Please install it first.", call. = FALSE)
+
+  if (inherits(x, "brms")) x <- x$fit
+
+  if (inherits(x, "stanfit")) {
+    rstan::summary(x)$summary[, "Rhat"]
+  } else if (inherits(x, "stanreg")) {
+    s <- summary(x, pars = NULL, regex_pars = NULL)
+    rhat <- s[, "Rhat"]
+    rhat[!names(rhat) %in% c("mean_PPD", "log-posterior")]
+  }
 }

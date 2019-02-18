@@ -342,12 +342,14 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
 
 
 #' @importFrom lme4 VarCorr fixef getME
-#' @importFrom glmmTMB VarCorr fixef getME
 #' @importFrom stats family formula
 #' @importFrom purrr map map_dbl map_lgl
 #' @rdname icc
 #' @export
 icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
+
+  if (!requireNamespace("glmmTMB", quietly = TRUE))
+    stop("Package `glmmTMB` is needed for this function. Please install it first.", call. = FALSE)
 
   add.args <- lapply(match.call(expand.dots = F)$`...`, function(x) x)
 
