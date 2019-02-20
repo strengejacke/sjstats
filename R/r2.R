@@ -464,6 +464,7 @@ r2linmix <- function(x, n) {
 
 #' @importFrom lme4 fixef getME VarCorr ranef findbars
 #' @importFrom stats family nobs var formula reformulate
+#' @importFrom insight find_formula
 r2_mixedmodel <- function(x, type = NULL, obj.name = NULL) {
 
   if (is.null(type) || type == "r2") {
@@ -616,7 +617,7 @@ r2_mixedmodel <- function(x, type = NULL, obj.name = NULL) {
 
   attr(var.measure, "family") <- faminfo$family
   attr(var.measure, "link") <- faminfo$link.fun
-  attr(var.measure, "formula") <- if (inherits(x, "brmsfit")) stats::formula(x)[[1]] else stats::formula(x)
+  attr(var.measure, "formula") <- insight::find_formula(x)
 
   # finally, save name of fitted model object. May be needed for
   # the 'se()' function, which accesses the global environment
