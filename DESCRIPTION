@@ -30,6 +30,7 @@ Imports:
     broom,
     dplyr,
     emmeans,
+    insight,
     lme4,
     magrittr,
     MASS,
