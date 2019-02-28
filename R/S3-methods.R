@@ -1584,6 +1584,17 @@ print.sj_hdi <- function(x, digits = 2, ...) {
 
 
 #' @export
+print.sj_credint <- function(x, digits = 2, ...) {
+  cat(.colour("blue", "\n# Uncertainty Interval\n\n"))
+
+  dat <- get_hdi_data(x, digits, ci_pattern = "ci.", ci_name = "CI")
+  colnames(dat)[1] <- ""
+
+  print(as.data.frame(dat), ..., row.names = FALSE)
+}
+
+
+#' @export
 print.sj_equi_test <- function(x, ...) {
   cat(.colour("blue", "\n# Test for Practical Equivalence of Model Predictors\n\n"))
   cat(.colour("cyan", sprintf(
@@ -1663,11 +1674,11 @@ print.sj_mediation <- function(x, digits = 2, ...) {
 
 #' @importFrom purrr map_at map_df
 #' @importFrom dplyr bind_cols select
-get_hdi_data <- function(x, digits) {
+get_hdi_data <- function(x, digits, ci_pattern = "hdi.", ci_name = "HDI") {
   cn <- colnames(x)
   prob <- attr(x, "prob", exact = TRUE)
 
-  hdi.cols <- string_starts_with(pattern = "hdi.", x = cn)
+  hdi.cols <- string_starts_with(pattern = ci_pattern, x = cn)
 
   # convert all to character, with fixed fractional part
   x <- x %>%
@@ -1695,7 +1706,7 @@ get_hdi_data <- function(x, digits) {
     } else
       interv <- round(100 * as.numeric(substr(cn[i], ci_pos[i] + 1, nchar(cn[i]))))
 
-    colnames(tmp) <- sprintf("HDI(%d%%)", interv)
+    colnames(tmp) <- sprintf("%s(%d%%)", ci_name, interv)
     tmp
   }) %>%
     dplyr::bind_cols()

@@ -3,10 +3,15 @@
 ## General
 
 * Following models/objects are now supported by model-information functions like `model_family()`, `link_inverse()` or `model_frame()`: `MixMod` (package **GLMMadaptive**), **MCMCglmm**, `mlogit` and `gmnl`.
-# Reduce package dependencies.
+* Reduce package dependencies.
+
+## New functions
+
+* `cred_int()`, to compute uncertainty intervals of Bayesian models. Mimics the behaviour and style of `hdi()` and is thus a convenient complement to functions like `posterior_interval()`.
 
 ## Changes to functions
 
+* `equi_test()` now finds better defaults for models with binomial outcome (like logistic regression models).
 * `anova_stats()` and alike (e.g. `eta_sq()`) now all preserve original term names.
 * `model_family()` now returns `$is_count = TRUE`, when model is a count-model, and `$is_beta = TRUE` for models with beta-family.
 * `pred_vars()` checks that return value has only unique values.

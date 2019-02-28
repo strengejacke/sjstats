@@ -69,9 +69,11 @@ equi_test_worker <- function(x, rope, eff_size, out, fm, ...) {
     if (missing(rope)) {
       if (fm$is_linear)
         eff_range <- stats::sd(resp_val(x)) * eff_size
-      else if (fm$is_bin)
-        eff_range <- stats::sd(dat[[1]]) * eff_size / 4
-      else
+      else if (fm$is_bin) {
+        prob_resp <- mean(sjmisc::recode_to(as.numeric(as.vector(resp_val(x)))))
+        eff_size <- prob_resp / pi
+        eff_range <- (stats::qlogis(prob_resp + eff_size) - stats::qlogis(prob_resp - eff_size)) / 4
+      } else
         eff_range <- stats::sd(dat[[1]]) * eff_size
 
       rope <- c(-1, 1) * eff_range

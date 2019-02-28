@@ -2,7 +2,8 @@
 #' @name hdi
 #'
 #' @description \code{hdi()} computes the highest density interval for values from
-#'   MCMC samples. \code{rope()} calculates the proportion of a posterior
+#'   MCMC samples, while \code{cred_int()} computes the credible interval (or
+#'   \emph{uncertainty interval}). \code{rope()} calculates the proportion of a posterior
 #'   distribution that lies within a region of practical equivalence.
 #'   \code{equi_test()} combines these two functions and performs a
 #'   "HDI+ROPE decision rule" (Test for Practical Equivalence) (\cite{Kruschke 2018})
@@ -22,11 +23,11 @@
 #'   range around zero, which indicates the region of practical equivalence.
 #'   Values of the posterior distribution within this range are considered as
 #'   being "practically equivalent to zero".
-#' @param eff_size A scalar indicating the effect size that is used
-#'   to calculate the limits of the ROPE for the test of practical equivalence.
-#'   If not specified, an effect size of .1 is used, as suggested by
-#'   \cite{Kruschke 2018} (see 'Details'). If \code{rope} is specified, this
-#'   argument will be ignored.
+#' @param eff_size A scalar indicating the effect size (the size of an negligible
+#'   effect) that is used to calculate the limits of the ROPE for the test of
+#'   practical equivalence. If not specified, an effect size of .1 is used for
+#'   linear models, as suggested by \cite{Kruschke 2018} (see 'Details').
+#'   If \code{rope} is specified, this argument will be ignored.
 #' @param trans Name of a function or character vector naming a function, used
 #'   to apply transformations on the returned HDI-values resp.
 #'   (for \code{rope()}) on the values of the posterior distribution, before
@@ -108,6 +109,11 @@
 #'       (see \code{\link[brms]{nsamples}}) of at least 10.000 is recommended if
 #'       95\% intervals should be computed (see Kruschke 2015, p. 183ff).
 #'     }
+#'     \item{\strong{Credible Intervals}}{
+#'       Credible intervals (or uncertainty intervals) are simply the quantiles
+#'       for a given probability of the posterior draws. See
+#'       \code{\link[rstanarm]{posterior_interval}} for more details.
+#'     }
 #'     \item{\strong{MCSE}}{
 #'       The Monte Carlo Standard Error is another useful measure of accuracy of
 #'       the chains. It is defined as standard deviation of the chains divided by
@@ -150,16 +156,17 @@
 #'       the ROPE (the closer to zero the better) and the H0 should be rejected.
 #'       \cr \cr
 #'       If neither the \code{rope} nor \code{eff_size} argument are specified,
-#'       the effect size will be set to 0.1 and the ROPE is \code{0 +/- .1 * sd(y)}
-#'       for linear models. This is the suggested way to specify the ROPE limits
-#'       according to \cite{Kruschke (2018)}. For models with binary outcome, there
-#'       is no direct way to specify the effect size that defines the ROPE limits.
-#'       Two examples from Kruschke suggest that a negligible change is about
-#'       .05 on the logit-scale. In these cases, it is recommended to specify
-#'       the \code{rope} argument, however, if not specified, the ROPE limits
-#'       are calculated in this way: \code{0 +/- .1 * sd(intercept) / 4}. For
-#'       all other models, \code{0 +/- .1 * sd(intercept)} is used to determine
-#'       the ROPE limits.
+#'       the effect size (the size of an negligible effect) will be set to 0.1
+#'       and the ROPE is \code{0 +/- .1 * sd(y)} for linear models. This is the
+#'       suggested way to specify the ROPE limits according to \cite{Kruschke (2018)}.
+#'       For models with binary outcome, there is no direct way to specify the
+#'       effect size that defines the ROPE limits. Two examples from Kruschke
+#'       suggest that a negligible change is about .05 on the logit-scale.
+#'       In these cases, it is recommended to specify the \code{rope} argument,
+#'       however, if not specified, the ROPE limits are caluclated as suggested
+#'       by Kruschke: The effect size is the probability of "success" for the
+#'       outcome, divided by \code{pi}. For all other models,
+#'       \code{0 +/- .1 * sd(intercept)} is used to determine the ROPE limits.
 #'       \cr \cr
 #'       If \code{eff_size} is specified, but \code{rope} is not, then
 #'       the same formulas apply, except that \code{.1} is replaced by the
