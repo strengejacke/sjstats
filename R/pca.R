@@ -5,8 +5,9 @@
 #' @param x A data frame or a \code{\link[stats]{prcomp}} object.
 #' @param nf Number of components to extract. If \code{rotation = "varmiax"}
 #'    and \code{nf = NULL}, number of components is based on the Kaiser-criteria.
-#' @param rotation Rotation of the factor loadings. May be \code{"varimax"} for
-#'    orthogonal rotation or \code{"oblimin"} for oblique transformation.
+#' @param rotation Rotation of the factor loadings. May be one of
+#'    \code{"varimax", "quartimax", "promax", "oblimin", "simplimax", "cluster"}
+#'    or \code{"none"}.
 #'
 #' @return A tidy data frame with either all loadings of principal components
 #'    (for \code{pca()}) or a rotated loadings matrix (for \code{pca_rotate()}).

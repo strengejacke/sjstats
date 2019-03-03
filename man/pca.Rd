@@ -16,8 +16,9 @@ pca_rotate(x, nf = NULL, rotation = c("varimax", "quartimax", "promax",
 \item{nf}{Number of components to extract. If \code{rotation = "varmiax"}
 and \code{nf = NULL}, number of components is based on the Kaiser-criteria.}
 
-\item{rotation}{Rotation of the factor loadings. May be \code{"varimax"} for
-orthogonal rotation or \code{"oblimin"} for oblique transformation.}
+\item{rotation}{Rotation of the factor loadings. May be one of
+\code{"varimax", "quartimax", "promax", "oblimin", "simplimax", "cluster"}
+or \code{"none"}.}
 }
 \value{
 A tidy data frame with either all loadings of principal components
