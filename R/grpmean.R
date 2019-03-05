@@ -301,7 +301,7 @@ get_grouped_title <- function(x, grps, i, sep = "\n") {
   title <- sprintf("%s: %s", tp[1], tp[2])
 
   # do we have another groupng variable?
-  if (length(attr(x, "vars", exact = T)) > 1) {
+  if (length(dplyr::group_vars(x)) > 1) {
     tp <- get_title_part(x, grps, 2, i)
     title <- sprintf("%s%s%s: %s", title, sep, tp[1], tp[2])
   }

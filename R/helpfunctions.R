@@ -49,7 +49,7 @@ dot_names <- function(dots) unname(unlist(lapply(dots, as.character)))
 
 
 #' @importFrom tidyr nest
-#' @importFrom dplyr select filter
+#' @importFrom dplyr select filter group_vars
 #' @importFrom stats complete.cases
 #' @importFrom rlang .data
 get_grouped_data <- function(x) {
@@ -65,7 +65,7 @@ get_grouped_data <- function(x) {
   grps <- grps %>% dplyr::filter(!! cc)
 
   # arrange data
-  if (length(attr(x, "vars", exact = T)) == 1)
+  if (length(dplyr::group_vars(x)) == 1)
     reihe <- order(grps[[1]])
   else
     reihe <- order(grps[[1]], grps[[2]])
