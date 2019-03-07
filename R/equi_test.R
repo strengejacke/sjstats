@@ -81,7 +81,6 @@ equi_test_worker <- function(x, rope, eff_size, out, fm, ...) {
   }
 
   .hdi <- hdi(x = x, prob = .95, trans = NULL, type = "fixed")
-  .rope <- rope(x = x, rope = rope, trans = NULL, type = "fixed")
   .neff <- nrow(dat)
 
   result <- dplyr::case_when(
@@ -91,13 +90,18 @@ equi_test_worker <- function(x, rope, eff_size, out, fm, ...) {
     TRUE ~ "undecided"
   )
 
+  rdat <- dat[, colnames(dat) %in% .hdi$term, drop = FALSE]
+  # compute proportion of values within boundaries
+  .rope <- purrr::map_dbl(1:ncol(rdat), function(i) {
+    pd <- rdat[[i]]
+    pd <- sort(pd)
+    pd <- pd[pd >= .hdi$hdi.low[i] & pd <= .hdi$hdi.high[i]]
+    r <- dplyr::between(pd, rope[1], rope[2])
+    round(100 * sum(r) / length(pd), 3)
+  })
+
   # for convenience reasons, also add proportion of values outside rope
-  dat <- .hdi %>%
-    dplyr::select(-1) %>%
-    sjmisc::add_columns(.rope) %>%
-    dplyr::select(-3) %>%
-    sjmisc::add_variables(decision = result, .after = 1) %>%
-    sjmisc::var_rename(rope = "inside.rope")
+  dat <- sjmisc::add_variables(.hdi, decision = result, inside.rope = .rope, .after = 1)
 
   # indicate parameters with critical number of effective samples
 

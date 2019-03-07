@@ -14,7 +14,7 @@ tidy_stan(x, prob = 0.89, typical = "median", trans = NULL,
 the credible interval that is to be estimated. See \code{\link{hdi}}.}
 
 \item{typical}{The typical value that will represent the Bayesian point estimate.
-By default, the posterior median is returned. See \code{\link{typical_value}}
+By default, the posterior median is returned. See \code{\link[sjmisc]{typical_value}}
 for possible values for this argument.}
 
 \item{trans}{Name of a function or character vector naming a function, used

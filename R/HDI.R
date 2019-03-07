@@ -49,7 +49,7 @@
 #'   response) mediator-model. If missing, \code{mediation()} tries to find the
 #'   treatment variable automatically, however, this may fail.
 #' @param typical The typical value that will represent the Bayesian point estimate.
-#'   By default, the posterior median is returned. See \code{\link{typical_value}}
+#'   By default, the posterior median is returned. See \code{\link[sjmisc]{typical_value}}
 #'   for possible values for this argument.
 #' @param ... Further arguments passed down to \code{equi_test()} when
 #'   \code{plot = TRUE}:

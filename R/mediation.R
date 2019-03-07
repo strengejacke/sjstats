@@ -9,6 +9,7 @@ mediation <- function(x, ...) {
 #' @importFrom purrr map
 #' @importFrom stats formula
 #' @importFrom dplyr pull bind_cols
+#' @importFrom sjmisc typical_value
 #' @export
 mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "median", ...) {
   # check for pkg availability, else function might fail
@@ -77,17 +78,17 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
   eff.total <- eff.indirect + eff.direct
 
   # proportion mediated: indirect effect / total effect
-  prop.mediated <- typical_value(eff.indirect, fun = typical) / typical_value(eff.total, fun = typical)
+  prop.mediated <- sjmisc::typical_value(eff.indirect, fun = typical) / sjmisc::typical_value(eff.total, fun = typical)
   prop.se <- diff(hdi(eff.indirect / eff.total, prob = prob) / 2)
   prop.hdi <- prop.mediated + c(-1, 1) * prop.se
 
   res <- data_frame(
     effect = c("direct", "indirect", "mediator", "total", "proportion mediated"),
     value = c(
-      typical_value(eff.direct, fun = typical),
-      typical_value(eff.indirect, fun = typical),
-      typical_value(eff.mediator, fun = typical),
-      typical_value(eff.total, fun = typical),
+      sjmisc::typical_value(eff.direct, fun = typical),
+      sjmisc::typical_value(eff.indirect, fun = typical),
+      sjmisc::typical_value(eff.mediator, fun = typical),
+      sjmisc::typical_value(eff.total, fun = typical),
       prop.mediated
     )
   ) %>% dplyr::bind_cols(

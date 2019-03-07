@@ -15,7 +15,7 @@
 #'   to calculate the ICC for this group-level. Only applies if \code{ppd = TRUE}.
 #' @param typical Character vector, naming the function that will be used as
 #'   measure of central tendency for the ICC. The default is "mean". See
-#'   \link{typical_value} for options.
+#'   \code{\link[sjmisc]{typical_value}} for options.
 #' @param ppd Logical, if \code{TRUE}, variance decomposition is based on the
 #'   posterior predictive distribution, which is the correct way for Bayesian
 #'   non-Gaussian models. By default, \code{ppd} is set to \code{TRUE} for
@@ -456,7 +456,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
 
 #' @importFrom stats formula
 #' @importFrom purrr map map_dbl map_lgl
-#' @importFrom sjmisc row_sums is_empty
+#' @importFrom sjmisc row_sums is_empty typical_value
 #' @rdname icc
 #' @export
 icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = FALSE, adjusted = FALSE, ...) {
@@ -489,10 +489,10 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     resid.var <- total_var - tau.00
 
     icc_ <- c(
-      1 - typical_value(ri.icc, fun = typical),
-      typical_value(tau.00, fun = typical),
-      typical_value(resid.var, fun = typical),
-      typical_value(total_var, fun = typical)
+      1 - sjmisc::typical_value(ri.icc, fun = typical),
+      sjmisc::typical_value(tau.00, fun = typical),
+      sjmisc::typical_value(resid.var, fun = typical),
+      sjmisc::typical_value(total_var, fun = typical)
     )
 
     attr(icc_, "hdi.icc") <- rev(1 - hdi(ri.icc, prob = prob))
@@ -593,29 +593,29 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
       mt <- "Linear mixed model"
 
 
-    icc_ <- purrr::map_dbl(ri.icc, ~ typical_value(.x, fun = typical))
+    icc_ <- purrr::map_dbl(ri.icc, ~ sjmisc::typical_value(.x, fun = typical))
     attr(icc_, "hdi.icc") <- purrr::map(ri.icc, ~ hdi(.x, prob = prob))
 
     attr(icc_, "hdi.tau.00") <- purrr::map(tau.00, ~ hdi(.x, prob = prob))
-    tau.00 <- purrr::map_dbl(tau.00, ~ typical_value(.x, fun = typical))
+    tau.00 <- purrr::map_dbl(tau.00, ~ sjmisc::typical_value(.x, fun = typical))
 
     if (length(resid.var) > 10)
       attr(icc_, "hdi.sigma_2") <- hdi(resid.var, prob = prob)
-    resid.var <- typical_value(resid.var, fun = typical)
+    resid.var <- sjmisc::typical_value(resid.var, fun = typical)
 
     if (!is.null(tau.11)) {
       attr(icc_, "hdi.tau.11") <- purrr::map(tau.11, ~ hdi(.x, prob = prob))
-      tau.11 <- purrr::map_dbl(tau.11, ~ typical_value(.x, fun = typical))
+      tau.11 <- purrr::map_dbl(tau.11, ~ sjmisc::typical_value(.x, fun = typical))
     }
 
     if (!is.null(rho.01)) {
       attr(icc_, "hdi.rho.01") <- purrr::map(rho.01, ~ hdi(.x, prob = prob))
-      rho.01 <- purrr::map_dbl(rho.01, ~ typical_value(.x, fun = typical))
+      rho.01 <- purrr::map_dbl(rho.01, ~ sjmisc::typical_value(.x, fun = typical))
     }
 
     if (!is.null(tau.01)) {
       attr(icc_, "hdi.tau.01") <- purrr::map(tau.01, ~ hdi(.x, prob = prob))
-      tau.01 <- purrr::map_dbl(tau.01, ~ typical_value(.x, fun = typical))
+      tau.01 <- purrr::map_dbl(tau.01, ~ sjmisc::typical_value(.x, fun = typical))
     }
 
     attr(icc_, "tau.00") <- tau.00
@@ -676,10 +676,10 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     resid.var <- total_var - tau.00
 
     icc_ <- c(
-      1 - typical_value(ri.icc, fun = typical),
-      typical_value(tau.00, fun = typical),
-      typical_value(resid.var, fun = typical),
-      typical_value(total_var, fun = typical)
+      1 - sjmisc::typical_value(ri.icc, fun = typical),
+      sjmisc::typical_value(tau.00, fun = typical),
+      sjmisc::typical_value(resid.var, fun = typical),
+      sjmisc::typical_value(total_var, fun = typical)
     )
 
     attr(icc_, "hdi.icc") <- rev(1 - hdi(ri.icc, prob = prob))
@@ -753,13 +753,13 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     names(tau.00) <- sprintf("tau.00_%s", names(tau.00))
     names(tau.11) <- sprintf("tau.11_%s", names(tau.11))
 
-    icc_ <- purrr::map_dbl(ri.icc, ~ typical_value(.x, fun = typical))
+    icc_ <- purrr::map_dbl(ri.icc, ~ sjmisc::typical_value(.x, fun = typical))
 
-    attr(icc_, "tau.00") <- purrr::map_dbl(tau.00, ~ typical_value(.x, fun = typical))
+    attr(icc_, "tau.00") <- purrr::map_dbl(tau.00, ~ sjmisc::typical_value(.x, fun = typical))
     attr(icc_, "hdi.icc") <- purrr::map(ri.icc, ~ hdi(.x, prob = prob))
     attr(icc_, "hdi.tau.00") <- purrr::map(tau.00, ~ hdi(.x, prob = prob))
 
-    attr(icc_, "sigma_2") <- typical_value(resid.var, fun = typical)
+    attr(icc_, "sigma_2") <- sjmisc::typical_value(resid.var, fun = typical)
     attr(icc_, "hdi.sigma_2") <- hdi(resid.var, prob = prob)
 
     attr(icc_, "prob") <- prob
@@ -767,7 +767,7 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     check_tau <- purrr::map_lgl(tau.11, ~ sjmisc::all_na(.x))
     if (any(!check_tau)) {
       tau.11 <- tau.11[!check_tau]
-      attr(icc_, "tau.11") <- purrr::map_dbl(tau.11, ~ typical_value(.x, fun = typical))
+      attr(icc_, "tau.11") <- purrr::map_dbl(tau.11, ~ sjmisc::typical_value(.x, fun = typical))
       attr(icc_, "hdi.tau.11") <- purrr::map(tau.11, ~ hdi(.x, prob = prob))
     }
 

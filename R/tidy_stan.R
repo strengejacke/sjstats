@@ -148,7 +148,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     for (i in all.cols) mod.dat[[i]] <- trans(mod.dat[[i]])
   }
 
-  est <- purrr::map_dbl(mod.dat, ~ sjstats::typical_value(.x, fun = typical))
+  est <- purrr::map_dbl(mod.dat, ~ sjmisc::typical_value(.x, fun = typical))
 
   out <- data_frame(
     term = names(est),
@@ -516,7 +516,7 @@ n_of_chains <- function(x) {
   if (!requireNamespace("rstan", quietly = TRUE))
     stop("Package `rstan` is required. Please install it first.", call. = FALSE)
 
-  if (inherits(x, "brms")) x <- x$fit
+  if (inherits(x, "brmsfit")) x <- x$fit
 
   if (inherits(x, "stanfit")) {
     s <- rstan::summary(x)
@@ -537,7 +537,7 @@ n_of_chains <- function(x) {
   if (!requireNamespace("rstan", quietly = TRUE))
     stop("Package `rstan` is required. Please install it first.", call. = FALSE)
 
-  if (inherits(x, "brms")) x <- x$fit
+  if (inherits(x, "brmsfit")) x <- x$fit
 
   if (inherits(x, "stanfit")) {
     rstan::summary(x)$summary[, "Rhat"]
