@@ -21,6 +21,7 @@
 
 * Fix minor issues in `wtd_sd()` and `wtd_mean()` when weight was `NULL` (which usually shoudln't be the case anyway).
 * Fix potential issue with `deparse()`, cutting off very long formulas in various functions.
+* Fix encoding issues in help-files.
 
 # sjstats 0.17.3
 
