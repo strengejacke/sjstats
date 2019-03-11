@@ -34,5 +34,5 @@ gmd(efc, e17age, c160age, c12hour)
 
 }
 \references{
-David HA. Gini's mean difference rediscovered. Biometrika 1968(55): 573–575
+David HA. Gini's mean difference rediscovered. Biometrika 1968(55): 573-575
 }

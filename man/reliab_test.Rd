@@ -177,9 +177,9 @@ for (i in seq_len(length(findex))) {
 
 }
 \references{
-Spearman C. 1910. Correlation calculated from faulty data. British Journal of Psychology (3): 271–295. \doi{10.1111/j.2044-8295.1910.tb00206.x}
+Spearman C. 1910. Correlation calculated from faulty data. British Journal of Psychology (3): 271-295. \doi{10.1111/j.2044-8295.1910.tb00206.x}
             \cr \cr
-            Brown W. 1910. Some experimental results in the correlation of mental abilities. British Journal of Psychology (3): 296–322. \doi{10.1111/j.2044-8295.1910.tb00207.x}
+            Brown W. 1910. Some experimental results in the correlation of mental abilities. British Journal of Psychology (3): 296-322. \doi{10.1111/j.2044-8295.1910.tb00207.x}
             \cr \cr
             Piedmont RL. 2014. Inter-item Correlations. In: Michalos AC (eds) Encyclopedia of Quality of Life and Well-Being Research. Dordrecht: Springer, 3303-3304. \doi{10.1007/978-94-007-0753-5_1493}
 }

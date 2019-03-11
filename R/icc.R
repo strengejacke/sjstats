@@ -38,7 +38,7 @@
 #'    is also  included as attribute.
 #'
 #' @references \itemize{
-#'    \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
+#'    \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490-1528 (\doi{10.1177/0149206313478188})
 #'    \item Goldstein H, Browne W, Rasbash J. 2010. Partitioning Variation in Multilevel Models. Understanding Statistics, 1:4, 223-231 (\doi{10.1207/S15328031US0104_02})
 #'    \item Grace-Martion K. The Intraclass Correlation Coefficient in Mixed Models, \href{http://www.theanalysisfactor.com/the-intraclass-correlation-coefficient-in-mixed-models/}{web}
 #'    \item Hox J. 2002. Multilevel analysis: techniques and applications. Mahwah, NJ: Erlbaum
@@ -253,7 +253,7 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
   # for details on tau and sigma, see
   # Aguinis H, Gottfredson RK, Culpepper SA2013. Best-Practice Recommendations
   # for Estimating Cross-Level Interaction Effects Using Multilevel Modeling.
-  # Journal of Management 39(6): 1490–1528. doi:10.1177/0149206313478188.
+  # Journal of Management 39(6): 1490-1528. doi:10.1177/0149206313478188.
   reva <- lme4::VarCorr(x)
 
   # retrieve only intercepts
@@ -369,7 +369,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
   # for details on tau and sigma, see
   # Aguinis H, Gottfredson RK, Culpepper SA2013. Best-Practice Recommendations
   # for Estimating Cross-Level Interaction Effects Using Multilevel Modeling.
-  # Journal of Management 39(6): 1490–1528. doi:10.1177/0149206313478188.
+  # Journal of Management 39(6): 1490-1528. doi:10.1177/0149206313478188.
   reva <- glmmTMB::VarCorr(x)[[1]]
 
   # retrieve only intercepts
@@ -812,7 +812,7 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 #'           \code{re_var()} returns all random effects variances.
 #'
 #' @references \itemize{
-#'    \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (\doi{10.1177/0149206313478188})
+#'    \item Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490-1528 (\doi{10.1177/0149206313478188})
 #'    \item Johnson PC, O'Hara RB. 2014. Extension of Nakagawa & Schielzeth's R2GLMM to random slopes models. Methods Ecol Evol, 5: 944-946. (\doi{10.1111/2041-210X.12225})
 #'    \item Nakagawa S, Johnson P, Schielzeth H (2017) The coefficient of determination R2 and intra-class correlation coefficient from generalized linear mixed-effects models revisted and expanded. J. R. Soc. Interface 14. \doi{10.1098/rsif.2017.0213}
 #'  }

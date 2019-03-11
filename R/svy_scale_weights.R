@@ -41,9 +41,9 @@
 #'    nested design, or cluster and PSU as varying intercepts), depending
 #'    on the survey design that should be mimicked.
 #'
-#' @references Carle AC. \emph{Fitting multilevel models in complex survey data with design weights: Recommendations.} BMC Medical Research Methodology 2009, 9(49): 1-13
+#' @references Carle AC. \emph{Fitting multilevel models in complex survey data with design weights: Recommendations} BMC Medical Research Methodology 2009, 9(49): 1-13
 #'    \cr \cr
-#'    Asparouhov T. \emph{General Multi-Level Modeling with Sampling Weights.} Communications in Statistics—Theory and Methods 2006, 35: 439–460
+#'    Asparouhov T. \emph{General Multi-Level Modeling with Sampling Weights} Communications in Statistics - Theory and Methods 2006, 35: 439-460
 #'
 #' @examples
 #' data(nhanes_sample)

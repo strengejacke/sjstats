@@ -202,14 +202,14 @@
 #'   }
 #'
 #' @note Since \code{equi_test()} computes 95\% HDI, a number of 10.000 samples
-#'   produces more stable results (see Kruschke 2015, p. 183ff).
+#'   produces more stable results (see Kruschke 2015, p183ff).
 #'
 #' @references
 #'   Kruschke JK. Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and Stan. 2nd edition. Academic Press, 2015
 #'   \cr \cr
 #'   Kruschke JK. Rejecting or Accepting Parameter Values in Bayesian Estimation. Advances in Methods and Practices in Psychological Science. 2018; \doi{10.1177/2515245918771304}
 #'   \cr \cr
-#'   Norman GR, Sloan JA, Wyrwich KW. Interpretation of Changes in Health-related Quality of Life: The Remarkable Universality of Half a Standard Deviation. Medical Care. 2003;41: 582–592. \doi{10.1097/01.MLR.0000062554.74615.4C}
+#'   Norman GR, Sloan JA, Wyrwich KW. Interpretation of Changes in Health-related Quality of Life: The Remarkable Universality of Half a Standard Deviation. Medical Care. 2003;41: 582-592. \doi{10.1097/01.MLR.0000062554.74615.4C}
 #'
 #' @examples
 #' \dontrun{

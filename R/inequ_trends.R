@@ -17,7 +17,7 @@
 #'           proportional change in absolute (\code{rd}) and relative (\code{rr})
 #'           ineqqualities.
 #'
-#' @references Mackenbach JP, Martikainen P, Menvielle G, de Gelder R. 2015. The Arithmetic of Reducing Relative and Absolute Inequalities in Health: A Theoretical Analysis Illustrated with European Mortality Data. Journal of Epidemiology and Community Health 70(7): 730–36. \doi{10.1136/jech-2015-207018}
+#' @references Mackenbach JP, Martikainen P, Menvielle G, de Gelder R. 2015. The Arithmetic of Reducing Relative and Absolute Inequalities in Health: A Theoretical Analysis Illustrated with European Mortality Data. Journal of Epidemiology and Community Health 70(7): 730-36. \doi{10.1136/jech-2015-207018}
 #'
 #' @details Given the time trend of prevalence rates of an outcome for two status
 #'          groups (e.g. the mortality rates for people with lower and higher

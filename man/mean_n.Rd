@@ -17,7 +17,7 @@ mean_n(dat, n, digits = 2)
 If a row's sum of valid values is less than \code{n}, \code{NA} will be returned as row mean value.}
 
 \item{digits}{Numeric value indicating the number of decimal places to be used for rounding mean
-value. Negative values are allowed (see ‘Details’).}
+value. Negative values are allowed (see 'Details').}
 }
 \value{
 A vector with row mean values of \code{df} for those rows with at least \code{n}

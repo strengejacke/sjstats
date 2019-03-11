@@ -16,7 +16,7 @@
 #'   any two distinct elements of a vector. Missing values from \code{x} are
 #'   silently removed.
 #'
-#' @references David HA. Gini's mean difference rediscovered. Biometrika 1968(55): 573–575
+#' @references David HA. Gini's mean difference rediscovered. Biometrika 1968(55): 573-575
 #'
 #' @examples
 #' data(efc)

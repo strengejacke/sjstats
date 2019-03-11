@@ -44,7 +44,7 @@ Returns the standardized beta coefficients, std. error and confidence intervals
         usually done to answer the question of which of the independent variables have a greater effect
         on the dependent variable in a multiple regression analysis, when the variables are measured
         in different units of measurement (for example, income measured in dollars and family size
-        measured in number of individuals).} \cite{(Source: Wikipedia)}
+        measured in number of individuals)} \cite{(Source: Wikipedia)}
 }
 \note{
 For \code{\link[nlme]{gls}}-objects, standardized beta coefficients may be wrong
@@ -77,5 +77,5 @@ std_beta(fit)
 \references{
 \href{http://en.wikipedia.org/wiki/Standardized_coefficient}{Wikipedia: Standardized coefficient}
             \cr \cr
-            Gelman A. 2008. Scaling regression inputs by dividing by two standard deviations. \emph{Statistics in Medicine 27: 2865–2873.} \url{http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf}
+            Gelman A. 2008. Scaling regression inputs by dividing by two standard deviations. Statistics in Medicine 27: 2865-2873 \url{http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf}
 }
