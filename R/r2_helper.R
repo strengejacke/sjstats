@@ -194,7 +194,7 @@ vals_brms <- function(vals, faminfo) {
   attr(vals$vc, "sc") <- sc
 
   if (faminfo$is_zeroinf)
-    warning(sprintf("%s ignores effects of zero-inflation.", ws), call. = FALSE)
+    warning("Effects of zero-inflation are ignored.", call. = FALSE)
 
   vals
 }
