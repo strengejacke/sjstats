@@ -467,8 +467,10 @@ brms_clean <- function(out) {
     re.s <- string_starts_with(pattern = "Sigma[", x = out$term)
     lp <- string_starts_with(pattern = "lp__", x = out$term)
     priors <- string_starts_with(pattern = "prior_", x = out$term)
+    xme <- string_starts_with(pattern = "Xme_me", x = out$term)
+    xme.sd <- string_starts_with(pattern = "sdme_me", x = out$term)
 
-    removers <- unique(c(re.sd, re.cor, re.s, lp, priors))
+    removers <- unique(c(re.sd, re.cor, re.s, lp, priors, xme, xme.sd))
 
     if (!sjmisc::is_empty(removers))
       out <- dplyr::slice(out, !! -removers)
@@ -483,8 +485,10 @@ brms_clean <- function(out) {
   re.s <- string_starts_with(pattern = "Sigma[", x = colnames(out))
   lp <- string_starts_with(pattern = "lp__", x = colnames(out))
   priors <- string_starts_with(pattern = "prior_", x = colnames(out))
+  xme <- string_starts_with(pattern = "Xme_me", x = colnames(out))
+  xme.sd <- string_starts_with(pattern = "sdme_me", x = colnames(out))
 
-  removers <- unique(c(re.sd, re.cor, re.s, lp, priors))
+  removers <- unique(c(re.sd, re.cor, re.s, lp, priors, xme, xme.sd))
 
   if (!sjmisc::is_empty(removers))
     out <- dplyr::select(out, !! -removers)
