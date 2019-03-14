@@ -52,13 +52,9 @@ if (.runThisTest) {
     )
 
     test_that("icc-bayes", {
-      icc(m1, adjusted = TRUE)
       icc(m1, adjusted = FALSE)
-      icc(m2, adjusted = TRUE)
       icc(m2, adjusted = FALSE)
-      icc(m3, adjusted = TRUE)
       icc(m3, adjusted = FALSE)
-      icc(m4, adjusted = TRUE)
       icc(m4, adjusted = FALSE)
     })
 
@@ -85,8 +81,6 @@ if (.runThisTest) {
     test_that("icc-bayes", {
       icc(m1, adjusted = TRUE)
       icc(m1, adjusted = FALSE)
-      icc(m2, adjusted = TRUE)
-      icc(m2, adjusted = FALSE)
     })
   }
 }

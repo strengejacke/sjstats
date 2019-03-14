@@ -38,8 +38,8 @@ Imports:
     modelr,
     purrr,
     rlang,
-    sjlabelled (>= 1.0.14),
-    sjmisc (>= 2.7.5),
+    sjlabelled (>= 1.0.17),
+    sjmisc (>= 2.7.8),
     tidyr
 Suggests:
     brms,

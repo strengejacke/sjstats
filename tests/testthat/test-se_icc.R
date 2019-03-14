@@ -21,8 +21,6 @@ if (.runThisTest) {
     test_that("se_icc", {
       sjstats::se(sjstats::icc(m), nsim = 50)
       sjstats::se(sjstats::icc(m2), nsim = 50)
-      sjstats::se(sjstats::icc(m, adjusted = TRUE), nsim = 50)
-      sjstats::se(sjstats::icc(m2, adjusted = TRUE), nsim = 50)
     })
   }
 }
