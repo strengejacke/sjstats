@@ -1,6 +1,6 @@
 .runThisTest <- Sys.getenv("RunAllsjstatsTests") == "yes"
 
-if (.runThisTest) {
+if (.runThisTest && Sys.getenv("USER") != "travis") {
 
   if (suppressWarnings(
         require("testthat") &&
