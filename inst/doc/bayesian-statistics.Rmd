@@ -58,6 +58,7 @@ data(jobs)
 data(efc)
 data(fish)
 efc <- to_factor(efc, e42dep, c172code, c161sex, e15relat)
+set.seed(123)
 
 # linear models, for mediation analysis
 b1 <- lm(job_seek ~ treat + econ_hard + sex + age, data = jobs)
@@ -137,7 +138,7 @@ If neither the `rope` nor `eff_size` argument are specified, the effect size wil
 equi_test(m5)
 ```
 
-For models with binary outcome, there is no concrete way to derive the effect size that defines the ROPE limits. Two examples from Kruschke suggest that a negligible change is about .05 on the logit-scale. In these cases, it is recommended to specify the `rope` argument, however, if not specified, the ROPE limits are calculated in this way: `0 +/- .1 * sd(intercept) / 4`. For all other models, `0 +/- .1 * sd(intercept)` is used to determine the ROPE limits. These formulas are based on experience that worked well in real-life situations, but are most likely not generally the best approach.
+For models with binary outcome, there is no concrete way to derive the effect size that defines the ROPE limits. Two examples from Kruschke suggest that a negligible change is about .05 on the logit-scale. In these cases, it is recommended to specify the `rope` argument, however, if not specified, the ROPE limits are caluclated as suggested by Kruschke: The effect size is the probability of "success" for the outcome, divided by `pi`. For all other models, `0 +/- .1 * sd(intercept)` is used to determine the ROPE limits. 
 
 Beside a numerical output, the results can also be printed as HTML-table or plotted, using the `out`-argument. For plots, the 95% distributions of the posterior samles are shown, the ROPE is a light-blue shaded region in the plot, and the distributions are colored depending on whether the parameter values are accepted, rejected or undecided.
 

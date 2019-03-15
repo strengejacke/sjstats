@@ -12,6 +12,7 @@
 ## Changes to functions
 
 * `equi_test()` now finds better defaults for models with binomial outcome (like logistic regression models).
+* `r2()` for mixed models now also should work properly for mixed models fitted with **rstanarm**.
 * `anova_stats()` and alike (e.g. `eta_sq()`) now all preserve original term names.
 * `model_family()` now returns `$is_count = TRUE`, when model is a count-model, and `$is_beta = TRUE` for models with beta-family.
 * `pred_vars()` checks that return value has only unique values.

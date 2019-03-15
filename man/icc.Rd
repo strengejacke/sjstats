@@ -18,7 +18,7 @@ icc(x, ...)
   prob = 0.89, ppd = FALSE, adjusted = FALSE, ...)
 
 \method{icc}{brmsfit}(x, re.form = NULL, typical = "mean",
-  prob = 0.89, ppd = FALSE, adjusted = FALSE, ...)
+  prob = 0.89, ppd = FALSE, ...)
 }
 \arguments{
 \item{x}{Fitted mixed effects model (of class \code{merMod}, \code{glmmTMB},
@@ -191,8 +191,6 @@ icc(fit1, adjusted = TRUE)
 
 sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
 fit2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
-icc(fit2)
-icc(fit2, adjusted = TRUE)
 
 icc1 <- icc(fit1)
 icc2 <- icc(fit2)
@@ -223,9 +221,6 @@ if (requireNamespace("brms", quietly = TRUE)) {
 
   # show 50\% interval
   icc(m, prob = .5)
-
-  # adjusted ICC, 89\% interval
-  icc(m, adjusted = TRUE)
 
   # variances based on posterior predictive distribution
   icc(m, ppd = TRUE)

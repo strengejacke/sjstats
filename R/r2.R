@@ -462,9 +462,7 @@ r2linmix <- function(x, n) {
 }
 
 
-#' @importFrom lme4 fixef getME VarCorr ranef findbars
-#' @importFrom stats family nobs var formula reformulate
-#' @importFrom insight find_formula
+#' @importFrom insight find_formula model_info
 r2_mixedmodel <- function(x, type = NULL, obj.name = NULL) {
 
   if (is.null(type) || type == "r2") {
@@ -475,103 +473,17 @@ r2_mixedmodel <- function(x, type = NULL, obj.name = NULL) {
     ws2 <- "ICC"
   }
 
+  faminfo <- insight::model_info(x)
+  vars <- .compute_variances(x, name_fun = ws, name_full = ws2, faminfo = faminfo)
 
-
-  ## Code taken from GitGub-Repo of package glmmTMB
-  ## Author: Ben Bolker, who used an
-  ## cleaned-up/adapted version of Jon Lefcheck's code from SEMfit
-
-  faminfo <- model_family(x)
-
-  if (faminfo$family %in% c("truncated_nbinom1", "truncated_nbinom2", "tweedie")) {
-    warning(sprintf("Truncated negative binomial and tweedie families are currently not supported by `%s`.", ws), call. = F)
-    return(NULL)
+  if (length(vars) == 1 && is.na(vars)) {
+    return(NA)
   }
-
-  vals <- list(
-    beta = lme4::fixef(x),
-    X = lme4::getME(x, "X"),
-    vc = lme4::VarCorr(x),
-    re = lme4::ranef(x)
-  )
-
-  # fix brms structure
-  if (inherits(x, "brmsfit")) {
-    vals <- vals_brms(vals, faminfo)
-  }
-
-  # for glmmTMB, use conditional component of model only,
-  # and tell user that zero-inflation is ignored
-
-  if (inherits(x,"glmmTMB")) {
-    vals <- lapply(vals, collapse_cond)
-
-    nullEnv <- function(x) {
-      environment(x) <- NULL
-      return(x)
-    }
-
-    if (!identical(nullEnv(x$modelInfo$allForm$ziformula), nullEnv(~0)))
-      warning(sprintf("%s ignores effects of zero-inflation.", ws), call. = FALSE)
-
-    dform <- nullEnv(x$modelInfo$allForm$dispformula)
-
-    if (!identical(dform,nullEnv(~1)) && (!identical(dform, nullEnv(~0))))
-      warning(sprintf("%s ignores effects of dispersion model.", ws), call. = FALSE)
-  }
-
-
-  # Test for non-zero random effects ((near) singularity)
-
-  if (is_singular(x)) {
-    warning(sprintf("Can't compute %s. Some variance components equal zero.\n  Solution: Respecify random structure!", ws2), call. = F)
-    return(NULL)
-  }
-
-
-  # Get variance of fixed effects: multiply coefs by design matrix
-
-  var.fixef <- get_fixef_variance(vals)
-
-
-  # Are random slopes present as fixed effects? Warn.
-
-  random.slopes <- if ("list" %in% class(vals$re)) {
-    # multiple RE
-    unique(c(sapply(vals$re, colnames)))
-  } else if (is.list(vals$re)) {
-    colnames(vals$re[[1]])
-  } else {
-    colnames(vals$re)
-  }
-
-  if (!all(random.slopes %in% names(vals$beta)))
-    warning(sprintf("Random slopes not present as fixed effects. This artificially inflates the conditional %s.\n  Solution: Respecify fixed structure!", ws2), call. = FALSE)
-
-
-  # Separate observation variance from variance of random effects
-
-  nr <- sapply(vals$re, nrow)
-  not.obs.terms <- names(nr[nr != stats::nobs(x)])
-  obs.terms <- names(nr[nr == stats::nobs(x)])
-
-
-  # Variance of random effects
-  var.ranef <- get_ranef_variance(not.obs.terms, x = x, vals = vals)
-
-  # Residual variance, which is defined as the variance due to
-  # additive dispersion and the distribution-specific variance (Johnson et al. 2014)
-
-  var.dist <- get_residual_variance(x, var.cor = vals$vc, faminfo, type = ws2)
-  var.disp <- get_disp_variance(x = x, vals = vals, faminfo = faminfo, obs.terms = obs.terms)
-
-  var.resid <- var.dist + var.disp
-
 
   # Calculate R2 values
 
-  rsq.marginal <- var.fixef / (var.fixef + var.ranef + var.resid)
-  rsq.conditional <- (var.fixef + var.ranef) / (var.fixef + var.ranef + var.resid)
+  rsq.marginal <- vars$var.fixef / (vars$var.fixef + vars$var.ranef + vars$var.resid)
+  rsq.conditional <- (vars$var.fixef + vars$var.ranef) / (vars$var.fixef + vars$var.ranef + vars$var.resid)
 
   names(rsq.marginal) <- "Marginal R2"
   names(rsq.conditional) <- "Conditional R2"
@@ -579,8 +491,8 @@ r2_mixedmodel <- function(x, type = NULL, obj.name = NULL) {
 
   # Calculate ICC values
 
-  icc.adjusted <- var.ranef / (var.ranef + var.resid)
-  icc.conditional <- var.ranef / (var.fixef + var.ranef + var.resid)
+  icc.adjusted <- vars$var.ranef / (vars$var.ranef + vars$var.resid)
+  icc.conditional <- vars$var.ranef / (vars$var.fixef + vars$var.ranef + vars$var.resid)
 
   names(icc.adjusted) <-    "Adjusted ICC"
   names(icc.conditional) <- "Conditional ICC"
@@ -609,14 +521,14 @@ r2_mixedmodel <- function(x, type = NULL, obj.name = NULL) {
 
   # save variance information
 
-  attr(var.measure, "var.fixef") <- var.fixef
-  attr(var.measure, "var.ranef") <- var.ranef
-  attr(var.measure, "var.disp") <- var.disp
-  attr(var.measure, "var.dist") <- var.dist
-  attr(var.measure, "var.resid") <- var.resid
+  attr(var.measure, "var.fixef") <- vars$var.fixef
+  attr(var.measure, "var.ranef") <- vars$var.ranef
+  attr(var.measure, "var.disp") <- vars$var.disp
+  attr(var.measure, "var.dist") <- vars$var.dist
+  attr(var.measure, "var.resid") <- vars$var.resid
 
   attr(var.measure, "family") <- faminfo$family
-  attr(var.measure, "link") <- faminfo$link.fun
+  attr(var.measure, "link") <- faminfo$link_function
   attr(var.measure, "formula") <- insight::find_formula(x)
 
   # finally, save name of fitted model object. May be needed for

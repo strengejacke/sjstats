@@ -100,8 +100,8 @@ if (.runThisTest) {
 
     test_that("r2", {
       r2(j11)
-      expect_warning(r2(j12))
-      expect_warning(r2(j13))
+      r2(j12)
+      r2(j13)
     })
   }
 }

@@ -30,6 +30,7 @@ data(jobs)
 data(efc)
 data(fish)
 efc <- to_factor(efc, e42dep, c172code, c161sex, e15relat)
+set.seed(123)
 
 # linear models, for mediation analysis
 b1 <- lm(job_seek ~ treat + econ_hard + sex + age, data = jobs)

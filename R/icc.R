@@ -181,8 +181,6 @@
 #'
 #' sleepstudy$mygrp <- sample(1:45, size = 180, replace = TRUE)
 #' fit2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
-#' icc(fit2)
-#' icc(fit2, adjusted = TRUE)
 #'
 #' icc1 <- icc(fit1)
 #' icc2 <- icc(fit2)
@@ -214,9 +212,6 @@
 #'   # show 50% interval
 #'   icc(m, prob = .5)
 #'
-#'   # adjusted ICC, 89% interval
-#'   icc(m, adjusted = TRUE)
-#'
 #'   # variances based on posterior predictive distribution
 #'   icc(m, ppd = TRUE)
 #' }}
@@ -246,7 +241,7 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
   if (adjusted) return(r2_mixedmodel(x, type = type, obj.name = deparse(substitute(x))))
 
   # get family
-  fitfam <- model_family(x)
+  fitfam <- insight::model_info(x)
 
 
   # random effects variances
@@ -267,7 +262,7 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
   tau.11 <- unlist(lapply(reva, function(x) diag(x)[-1]))
 
   # residual variances, i.e. within-cluster-variance
-  resid.var <- get_residual_variance(x, var.cor = reva, fitfam, type = "ICC")
+  resid.var <- .get_variance_residual(x, var.cor = reva, fitfam, name = "ICC")
 
   # total variance, sum of random intercept and residual variances
   total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid.var)
@@ -320,7 +315,7 @@ icc.merMod <- function(x, adjusted = FALSE, ...) {
   # add attributes, for print method
   class(ri.icc) <- c("sj_icc_merMod", class(ri.icc))
   attr(ri.icc, "family") <- fitfam$family
-  attr(ri.icc, "link") <- fitfam$link.fun
+  attr(ri.icc, "link") <- fitfam$link_function
   attr(ri.icc, "formula") <- stats::formula(x)
   attr(ri.icc, "model") <- mt
   attr(ri.icc, "tau.00") <- tau.00
@@ -362,7 +357,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
   if (adjusted) return(r2_mixedmodel(x, type = type, obj.name = deparse(substitute(x))))
 
   # get family
-  fitfam <- model_family(x)
+  fitfam <- insight::model_info(x)
 
 
   # random effects variances
@@ -383,7 +378,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
   tau.11 <- unlist(lapply(reva, function(x) diag(x)[-1]))
 
   # residual variances, i.e. within-cluster-variance
-  resid.var <- get_residual_variance(x, var.cor = reva, fitfam, type = "ICC")
+  resid.var <- .get_variance_residual(x, var.cor = reva, fitfam, name = "ICC")
 
   # total variance, sum of random intercept and residual variances
   total_var <- sum(purrr::map_dbl(vars, ~ sum(.x)), resid.var)
@@ -433,7 +428,7 @@ icc.glmmTMB <- function(x, adjusted = FALSE, ...) {
   # add attributes, for print method
   class(ri.icc) <- c("sj_icc_merMod", class(ri.icc))
   attr(ri.icc, "family") <- fitfam$family
-  attr(ri.icc, "link") <- fitfam$link.fun
+  attr(ri.icc, "link") <- fitfam$link_function
   attr(ri.icc, "formula") <- stats::formula(x)
   attr(ri.icc, "model") <- mt
   attr(ri.icc, "tau.00") <- tau.00
@@ -465,7 +460,7 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     stop("Please install and load package `rstanarm` first.", call. = F)
 
   # get family
-  fitfam <- model_family(x)
+  fitfam <- insight::model_info(x)
   xdat <- as.data.frame(x)
 
   if (missing(ppd) && missing(adjusted) && !fitfam$is_linear) {
@@ -541,7 +536,7 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 
     # set default, if no residual variance is available
     if (is.null(sig)) {
-      if (fitfam$is_bin)
+      if (fitfam$is_binomial)
         sig <- sqrt((pi^2) / 3)
       else
         sig <- 1
@@ -631,7 +626,7 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 
   # add attributes, for print method
   attr(icc_, "family") <- fitfam$family
-  attr(icc_, "link") <- fitfam$link.fun
+  attr(icc_, "link") <- fitfam$link_function
   attr(icc_, "formula") <- stats::formula(x)
   attr(icc_, "prob") <- prob
 
@@ -646,15 +641,15 @@ icc.stanreg <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 #' @importFrom sjmisc all_na
 #' @rdname icc
 #' @export
-icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = FALSE, adjusted = FALSE, ...) {
+icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = FALSE, ...) {
 
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please install and load package `brms` first.", call. = F)
 
   # get family
-  fitfam <- model_family(x)
+  fitfam <- insight::model_info(x)
 
-  if (missing(ppd) && missing(adjusted) && !fitfam$is_linear) {
+  if (missing(ppd) && !fitfam$is_linear) {
     #message("Variance decomposition is based on the posterior predictive distribution. Set `ppd = FALSE` to calculate \"classical\" ICC, and `adjusted = TRUE` for adjusted ICC.")
     message("Variance decomposition for non-Gaussian models should be based on the posterior predictive distribution. To do this, set `ppd = TRUE`.")
     ## TODO set ppd to FALSE by default later
@@ -694,9 +689,6 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
     names(icc_) <- c("icc", "tau.00", "resid.var", "total.var")
     class(icc_) <- c("icc_ppd", class(icc_))
 
-  } else if (adjusted) {
-    # compute adjusted and conditional ICC
-    return(r2_mixedmodel(x, type = "ICC", obj.name = deparse(substitute(x))))
   } else {
 
     # get random effect variances for each sample of posterior
@@ -723,7 +715,7 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 
     # set default, if no residual variance is available
     if (is.null(sig)) {
-      if (fitfam$is_bin)
+      if (fitfam$is_binomial)
         sig <- sqrt((pi^2) / 3)
       else
         sig <- 1
@@ -781,7 +773,7 @@ icc.brmsfit <- function(x, re.form = NULL, typical = "mean", prob = .89, ppd = F
 
 
   attr(icc_, "family") <- fitfam$family
-  attr(icc_, "link") <- fitfam$link.fun
+  attr(icc_, "link") <- fitfam$link_function
   attr(icc_, "formula") <- stats::formula(x)
   attr(icc_, "model") <- "Bayesian mixed model"
   attr(ri.icc, "rnd.slope.model") <- any(has_rnd_slope)

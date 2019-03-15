@@ -1,26 +1,6 @@
 #' @rdname pred_vars
+#' @importFrom insight get_response
 #' @export
 resp_val <- function(x) {
-
-  rn <- resp_var(x, combine = FALSE)
-
-  if (inherits(x, c("lme", "gls"))) {
-    if (!requireNamespace("nlme"))
-      stop("Package `nlme` is required, please install it first.", call. = FALSE)
-    as.vector(nlme::getResponse(x))
-  } else if (inherits(x, "brmsfit")) {
-    rv <- model_frame(x)[, var_names(resp_var(x))]
-    rc <- ncol(rv)
-    if (!is.null(stats::formula(x)$responses) || !is.null(rc))
-      as.vector(rv)
-    else
-      rv
-  } else if (inherits(x, "stanmvreg"))
-    as.vector(model_frame(x)[, var_names(resp_var(x))])
-  else if (length(rn) > 1) {
-    rv <- as.data.frame(model_frame(x)[[var_names(resp_var(x))]])
-    colnames(rv) <- rn
-    rv
-  } else
-    as.vector(model_frame(x)[[var_names(resp_var(x))]])
+  insight::get_response(x)
 }

@@ -110,7 +110,7 @@ is_singular.merMod <- function(x, tolerance = 1e-5, ...) {
 #' @importFrom lme4 VarCorr
 #' @export
 is_singular.glmmTMB <- function(x, tolerance = 1e-5, ...) {
-  vc <- collapse_cond(lme4::VarCorr(x))
+  vc <- .collapse_cond(lme4::VarCorr(x))
   any(sapply(vc, function(.x) any(abs(diag(.x)) < tolerance)))
 }
 

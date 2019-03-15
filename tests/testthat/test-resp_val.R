@@ -15,7 +15,7 @@ if (.runThisTest && Sys.getenv("USER") != "travis") {
     bprior1 <- prior(student_t(5,0,10), class = b) + prior(cauchy(0,2), class = sd)
 
     m1 <- brm(
-      count ~ log_Age_c + log_Base4_c * Trt + (1|patient),
+      count ~ Age + Base * Trt + (1|patient),
       data = epilepsy,
       family = poisson(),
       prior = bprior1,
