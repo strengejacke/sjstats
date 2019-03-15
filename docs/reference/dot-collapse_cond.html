@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate population variance and standard deviation — var_pop • sjstats</title>
+<title>glmmTMB returns a list of model information, one for conditional and one for zero-inflated part, so here we "unlist" it — .collapse_cond • sjstats</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Calculate population variance and standard deviation — var_pop" />
+<meta property="og:title" content="glmmTMB returns a list of model information, one for conditional and one for zero-inflated part, so here we "unlist" it — .collapse_cond" />
 
-<meta property="og:description" content="Calculate the population variance or standard deviation of a vector." />
+<meta property="og:description" content="glmmTMB returns a list of model information, one for conditional and one for zero-inflated part, so here we &quot;unlist&quot; it" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -122,63 +122,25 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate population variance and standard deviation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/var_pop.R'><code>R/var_pop.R</code></a></small>
-    <div class="hidden name"><code>var_pop.Rd</code></div>
+    <h1>glmmTMB returns a list of model information, one for conditional and one for zero-inflated part, so here we "unlist" it</h1>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/compute_variances.R'><code>R/compute_variances.R</code></a></small>
+    <div class="hidden name"><code>dot-collapse_cond.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Calculate the population variance or standard deviation of a vector.</p>
+    <p>glmmTMB returns a list of model information, one for conditional and one for zero-inflated part, so here we "unlist" it</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>var_pop</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>.collapse_cond</span>(<span class='no'>x</span>)</pre>
+        
 
-<span class='fu'>sd_pop</span>(<span class='no'>x</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>(Numeric) vector.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>The population variance or standard deviation of <code>x</code>.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Unlike <code><a href='https://www.rdocumentation.org/packages/stats/topics/cor'>var</a></code>, which returns the sample variance,
-           <code>var_pop()</code> returns the population variance. <code>sd_pop()</code>
-           returns the standard deviation based on the population variance.</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>efc</span>)
-
-<span class='co'># sampling variance</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/cor'>var</a></span>(<span class='no'>efc</span>$<span class='no'>c12hour</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] 2581.152</div><div class='input'><span class='co'># population variance</span>
-<span class='fu'>var_pop</span>(<span class='no'>efc</span>$<span class='no'>c12hour</span>)</div><div class='output co'>#&gt; [1] 2578.291</div><div class='input'>
-<span class='co'># sampling sd</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/sd'>sd</a></span>(<span class='no'>efc</span>$<span class='no'>c12hour</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] 50.80504</div><div class='input'><span class='co'># population sd</span>
-<span class='fu'>sd_pop</span>(<span class='no'>efc</span>$<span class='no'>c12hour</span>)</div><div class='output co'>#&gt; [1] 50.77687</div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>

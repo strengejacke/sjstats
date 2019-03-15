@@ -70,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
       </span>
     </div>
 
@@ -319,7 +319,7 @@ plotted.</p></td>
 <span class='fu'>rmse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 25.46792</div><div class='input'><span class='fu'>rse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 25.51134</div><div class='input'><span class='fu'>cv</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.3948098</div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>lme4</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
-<span class='fu'>rmse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 23.43806</div><div class='input'><span class='fu'>mse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 549.3425</div><div class='input'><span class='fu'>cv</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.07851737</div><div class='input'>
+<span class='fu'>rmse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 23.43815</div><div class='input'><span class='fu'>mse</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 549.3468</div><div class='input'><span class='fu'>cv</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.07851768</div><div class='input'>
 <span class='co'># normalized RMSE</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>nlme</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/nlme/topics/lme'>lme</a></span>(<span class='no'>distance</span> ~ <span class='no'>age</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Orthodont</span>)

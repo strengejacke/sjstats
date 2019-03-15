@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
       </span>
     </div>
 
@@ -253,25 +253,25 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>lme4</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
 <span class='fu'>se</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; $Subject
-#&gt;    (Intercept)   Days
-#&gt; 1     13.86649 2.7752
-#&gt; 2     13.86649 2.7752
-#&gt; 3     13.86649 2.7752
-#&gt; 4     13.86649 2.7752
-#&gt; 5     13.86649 2.7752
-#&gt; 6     13.86649 2.7752
-#&gt; 7     13.86649 2.7752
-#&gt; 8     13.86649 2.7752
-#&gt; 9     13.86649 2.7752
-#&gt; 10    13.86649 2.7752
-#&gt; 11    13.86649 2.7752
-#&gt; 12    13.86649 2.7752
-#&gt; 13    13.86649 2.7752
-#&gt; 14    13.86649 2.7752
-#&gt; 15    13.86649 2.7752
-#&gt; 16    13.86649 2.7752
-#&gt; 17    13.86649 2.7752
-#&gt; 18    13.86649 2.7752
+#&gt;    (Intercept)     Days
+#&gt; 1     13.86572 2.775269
+#&gt; 2     13.86572 2.775269
+#&gt; 3     13.86572 2.775269
+#&gt; 4     13.86572 2.775269
+#&gt; 5     13.86572 2.775269
+#&gt; 6     13.86572 2.775269
+#&gt; 7     13.86572 2.775269
+#&gt; 8     13.86572 2.775269
+#&gt; 9     13.86572 2.775269
+#&gt; 10    13.86572 2.775269
+#&gt; 11    13.86572 2.775269
+#&gt; 12    13.86572 2.775269
+#&gt; 13    13.86572 2.775269
+#&gt; 14    13.86572 2.775269
+#&gt; 15    13.86572 2.775269
+#&gt; 16    13.86572 2.775269
+#&gt; 17    13.86572 2.775269
+#&gt; 18    13.86572 2.775269
 #&gt; </div><div class='input'>
 <span class='co'># compute odds-ratio adjusted standard errors, based on delta method</span>
 <span class='co'># with first-order Taylor approximation.</span>

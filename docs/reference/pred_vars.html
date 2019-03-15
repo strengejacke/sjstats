@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Access information from model objects — pred_vars • sjstats</title>
+<title>Access information from model objects — link_inverse • sjstats</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Access information from model objects — pred_vars" />
+<meta property="og:title" content="Access information from model objects — link_inverse" />
 
 <meta property="og:description" content="Several functions to retrieve information from model objects,
    like variable names, link-inverse function, model frame,
@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
       </span>
     </div>
 
@@ -125,7 +125,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Access information from model objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/pred_vars.R'><code>R/pred_vars.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/link_inverse.R'><code>R/link_inverse.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/model_family.R'><code>R/model_family.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/model_frame.R'><code>R/model_frame.R</code></a>, and 6 more</small>
     <div class="hidden name"><code>pred_vars.Rd</code></div>
     </div>
 
@@ -137,9 +137,23 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>pred_vars</span>(<span class='no'>x</span>, <span class='kw'>fe.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>disp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>link_inverse</span>(<span class='no'>x</span>, <span class='kw'>multi.resp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mv</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>resp_var</span>(<span class='no'>x</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>model_family</span>(<span class='no'>x</span>, <span class='kw'>multi.resp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mv</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>model_frame</span>(<span class='no'>x</span>, <span class='kw'>fe.only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>pred_vars</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>pred_vars</span>(<span class='no'>x</span>, <span class='kw'>fe.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for glmmTMB</span>
+<span class='fu'>pred_vars</span>(<span class='no'>x</span>, <span class='kw'>fe.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>zi</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>disp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for MixMod</span>
+<span class='fu'>pred_vars</span>(<span class='no'>x</span>, <span class='kw'>fe.only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>zi</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>re_grp_var</span>(<span class='no'>x</span>)
 
@@ -147,11 +161,7 @@
 
 <span class='fu'>resp_val</span>(<span class='no'>x</span>)
 
-<span class='fu'>link_inverse</span>(<span class='no'>x</span>, <span class='kw'>multi.resp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mv</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>model_frame</span>(<span class='no'>x</span>, <span class='kw'>fe.only</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>model_family</span>(<span class='no'>x</span>, <span class='kw'>multi.resp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mv</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>resp_var</span>(<span class='no'>x</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>var_names</span>(<span class='no'>x</span>)</pre>
     
@@ -164,12 +174,27 @@
 character vector.</p></td>
     </tr>
     <tr>
+      <th>mv, multi.resp</th>
+      <td><p>Logical, if <code>TRUE</code> and model is a multivariate response
+model from a <code>brmsfit</code> object or of class <code>stanmvreg</code>, then a
+list of values (one for each regression) is returned.</p></td>
+    </tr>
+    <tr>
       <th>fe.only</th>
       <td><p>Logical, if <code>TRUE</code> and <code>x</code> is a mixed effects
 model, <code>model_frame()</code> returns the model frame for fixed effects only,
 and <code>pred_vars()</code> returns only fixed effects terms. Note that the default
 for <code>model_frame()</code> is <code>fe.only = TRUE</code>, while for <code>pred_vars()</code>
 the default is <code>fe.only = FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Currently not used.</p></td>
+    </tr>
+    <tr>
+      <th>zi</th>
+      <td><p>Logical, if <code>TRUE</code> and model has a zero-inflation-formula,
+the variable(s) used in this formula are also returned.</p></td>
     </tr>
     <tr>
       <th>disp</th>
@@ -183,12 +208,6 @@ are also returned.</p></td>
 the name of the response matches the notation in formula, and would for
 instance also contain patterns like <code>"cbind(...)"</code>. Else, the original
 variable names from the matrix-column are returned. See 'Examples'.</p></td>
-    </tr>
-    <tr>
-      <th>mv, multi.resp</th>
-      <td><p>Logical, if <code>TRUE</code> and model is a multivariate response
-model from a <code>brmsfit</code> object or of class <code>stanmvreg</code>, then a
-list of values (one for each regression) is returned.</p></td>
     </tr>
     </table>
     
@@ -224,6 +243,8 @@ list of values (one for each regression) is returned.</p></td>
 <li><p><code>is_bin</code>: family is binomial (but not negative binomial)</p></li>
 <li><p><code>is_pois</code>: family is either poisson or negative binomial</p></li>
 <li><p><code>is_negbin</code>: family is negative binomial</p></li>
+<li><p><code>is_count</code>: model is a count model (i.e. family is either poisson or negative binomial)</p></li>
+<li><p><code>is_beta</code>: family is beta</p></li>
 <li><p><code>is_logit</code>: model has logit link</p></li>
 <li><p><code>is_linear</code>: family is gaussian</p></li>
 <li><p><code>is_ordinal</code>: family is ordinal or cumulative link</p></li>
@@ -284,7 +305,9 @@ list of values (one for each regression) is returned.</p></td>
 #&gt; [801]  9 13  9 12 14 12  8 10  7 22 18 16 13 15 24 11 14 12 11 10  7 10 10 12 10
 #&gt; [826]  7  9 16 14 12  9 10  8  9  7  8 10  9  8 10 10  7 11  8 10 11 14  7  8 10
 #&gt; [851] 10 11 11  8  8  9 11  7  7  8  9  9  7 13 15 11 24  8  9  7 10 15 18 22 18
-#&gt; [876]  9 11 14  7  9 17 23 12 13 15  8  8 14 10 10</div><div class='input'>
+#&gt; [876]  9 11 14  7  9 17 23 12 13 15  8  8 14 10 10
+#&gt; attr(,"label")
+#&gt; [1] "Negative impact with 7 items"</div><div class='input'>
 <span class='fu'>link_inverse</span>(<span class='no'>fit</span>)(<span class='fl'>2.3</span>)</div><div class='output co'>#&gt; [1] 2.3</div><div class='input'>
 <span class='co'># example from ?stats::glm</span>
 <span class='no'>counts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>18</span>, <span class='fl'>17</span>, <span class='fl'>15</span>, <span class='fl'>20</span>, <span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>25</span>, <span class='fl'>13</span>, <span class='fl'>12</span>)

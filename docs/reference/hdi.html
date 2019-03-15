@@ -33,7 +33,8 @@
 <meta property="og:title" content="Compute statistics for MCMC samples and Stan models — hdi" />
 
 <meta property="og:description" content="hdi() computes the highest density interval for values from
-  MCMC samples. rope() calculates the proportion of a posterior
+  MCMC samples, while cred_int() computes the credible interval (or
+  uncertainty interval). rope() calculates the proportion of a posterior
   distribution that lies within a region of practical equivalence.
   equi_test() combines these two functions and performs a
   &quot;HDI+ROPE decision rule&quot; (Test for Practical Equivalence) (Kruschke 2018)
@@ -74,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
       </span>
     </div>
 
@@ -132,14 +133,15 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Compute statistics for MCMC samples and Stan models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/HDI.R'><code>R/HDI.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/equi_test.R'><code>R/equi_test.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/mcse.R'><code>R/mcse.R</code></a>, and 4 more</small>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/HDI.R'><code>R/HDI.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/credint.R'><code>R/credint.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/equi_test.R'><code>R/equi_test.R</code></a>, and 5 more</small>
     <div class="hidden name"><code>hdi.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
     <p><code>hdi()</code> computes the highest density interval for values from
-  MCMC samples. <code>rope()</code> calculates the proportion of a posterior
+  MCMC samples, while <code>cred_int()</code> computes the credible interval (or
+  <em>uncertainty interval</em>). <code>rope()</code> calculates the proportion of a posterior
   distribution that lies within a region of practical equivalence.
   <code>equi_test()</code> combines these two functions and performs a
   "HDI+ROPE decision rule" (Test for Practical Equivalence) (<cite>Kruschke 2018</cite>)
@@ -160,6 +162,16 @@
 <span class='co'># S3 method for brmsfit</span>
 <span class='fu'>hdi</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"fixed"</span>,
   <span class='st'>"random"</span>, <span class='st'>"all"</span>), <span class='no'>...</span>)
+
+<span class='fu'>cred_int</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>cred_int</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>), <span class='no'>...</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>cred_int</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>), <span class='no'>...</span>)
 
 <span class='fu'>equi_test</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
@@ -260,11 +272,11 @@ being "practically equivalent to zero".</p></td>
     </tr>
     <tr>
       <th>eff_size</th>
-      <td><p>A scalar indicating the effect size that is used
-to calculate the limits of the ROPE for the test of practical equivalence.
-If not specified, an effect size of .1 is used, as suggested by
-<cite>Kruschke 2018</cite> (see 'Details'). If <code>rope</code> is specified, this
-argument will be ignored.</p></td>
+      <td><p>A scalar indicating the effect size (the size of an negligible
+effect) that is used to calculate the limits of the ROPE for the test of
+practical equivalence. If not specified, an effect size of .1 is used for
+linear models, as suggested by <cite>Kruschke 2018</cite> (see 'Details').
+If <code>rope</code> is specified, this argument will be ignored.</p></td>
     </tr>
     <tr>
       <th>out</th>
@@ -289,7 +301,7 @@ treatment variable automatically, however, this may fail.</p></td>
     <tr>
       <th>typical</th>
       <td><p>The typical value that will represent the Bayesian point estimate.
-By default, the posterior median is returned. See <code><a href='typical_value.html'>typical_value</a></code>
+By default, the posterior median is returned. See <code><a href='https://www.rdocumentation.org/packages/sjmisc/topics/typical_value'>typical_value</a></code>
 for possible values for this argument.</p></td>
     </tr>
     </table>
@@ -330,6 +342,9 @@ for possible values for this argument.</p></td>
       more stable than, for instance, 95% intervals. An effective sample size
       (see <code><a href='https://www.rdocumentation.org/packages/brms/topics/nsamples'>nsamples</a></code>) of at least 10.000 is recommended if
       95% intervals should be computed (see Kruschke 2015, p. 183ff).</p></dd>
+    <dt><strong>Credible Intervals</strong></dt><dd><p>Credible intervals (or uncertainty intervals) are simply the quantiles
+      for a given probability of the posterior draws. See
+      <code><a href='https://www.rdocumentation.org/packages/rstanarm/topics/posterior_interval.stanreg'>posterior_interval</a></code> for more details.</p></dd>
     <dt><strong>MCSE</strong></dt><dd><p>The Monte Carlo Standard Error is another useful measure of accuracy of
       the chains. It is defined as standard deviation of the chains divided by
       their effective sample size (the formula for <code>mcse()</code> is from
@@ -365,16 +380,17 @@ for possible values for this argument.</p></td>
       the ROPE (the closer to zero the better) and the H0 should be rejected.
       <br /> <br />
       If neither the <code>rope</code> nor <code>eff_size</code> argument are specified,
-      the effect size will be set to 0.1 and the ROPE is <code>0 +/- .1 * sd(y)</code>
-      for linear models. This is the suggested way to specify the ROPE limits
-      according to <cite>Kruschke (2018)</cite>. For models with binary outcome, there
-      is no direct way to specify the effect size that defines the ROPE limits.
-      Two examples from Kruschke suggest that a negligible change is about
-      .05 on the logit-scale. In these cases, it is recommended to specify
-      the <code>rope</code> argument, however, if not specified, the ROPE limits
-      are calculated in this way: <code>0 +/- .1 * sd(intercept) / 4</code>. For
-      all other models, <code>0 +/- .1 * sd(intercept)</code> is used to determine
-      the ROPE limits.
+      the effect size (the size of an negligible effect) will be set to 0.1
+      and the ROPE is <code>0 +/- .1 * sd(y)</code> for linear models. This is the
+      suggested way to specify the ROPE limits according to <cite>Kruschke (2018)</cite>.
+      For models with binary outcome, there is no direct way to specify the
+      effect size that defines the ROPE limits. Two examples from Kruschke
+      suggest that a negligible change is about .05 on the logit-scale.
+      In these cases, it is recommended to specify the <code>rope</code> argument,
+      however, if not specified, the ROPE limits are caluclated as suggested
+      by Kruschke: The effect size is the probability of "success" for the
+      outcome, divided by <code>pi</code>. For all other models,
+      <code>0 +/- .1 * sd(intercept)</code> is used to determine the ROPE limits.
       <br /> <br />
       If <code>eff_size</code> is specified, but <code>rope</code> is not, then
       the same formulas apply, except that <code>.1</code> is replaced by the
@@ -409,7 +425,7 @@ for possible values for this argument.</p></td>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Since <code>equi_test()</code> computes 95% HDI, a number of 10.000 samples
-  produces more stable results (see Kruschke 2015, p. 183ff).</p>
+  produces more stable results (see Kruschke 2015, p183ff).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -417,7 +433,7 @@ for possible values for this argument.</p></td>
   <br /> <br />
   Kruschke JK. Rejecting or Accepting Parameter Values in Bayesian Estimation. Advances in Methods and Practices in Psychological Science. 2018; doi: <a href='http://doi.org/10.1177/2515245918771304'>10.1177/2515245918771304</a>
     <br /> <br />
-  Norman GR, Sloan JA, Wyrwich KW. Interpretation of Changes in Health-related Quality of Life: The Remarkable Universality of Half a Standard Deviation. Medical Care. 2003;41: 582–592. doi: <a href='http://doi.org/10.1097/01.MLR.0000062554.74615.4C'>10.1097/01.MLR.0000062554.74615.4C</a></p>
+  Norman GR, Sloan JA, Wyrwich KW. Interpretation of Changes in Health-related Quality of Life: The Remarkable Universality of Half a Standard Deviation. Medical Care. 2003;41: 582-592. doi: <a href='http://doi.org/10.1097/01.MLR.0000062554.74615.4C'>10.1097/01.MLR.0000062554.74615.4C</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

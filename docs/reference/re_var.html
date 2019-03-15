@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
       </span>
     </div>
 
@@ -204,7 +204,7 @@ adjusted and conditional <code><a href='cod.html'>r2</a></code> and <code><a hre
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <ul>
-<li><p>Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490–1528 (doi: <a href='http://doi.org/10.1177/0149206313478188'>10.1177/0149206313478188</a>
+<li><p>Aguinis H, Gottfredson RK, Culpepper SA. 2013. Best-Practice Recommendations for Estimating Cross-Level Interaction Effects Using Multilevel Modeling. Journal of Management 39(6): 1490-1528 (doi: <a href='http://doi.org/10.1177/0149206313478188'>10.1177/0149206313478188</a>
 )</p></li>
 <li><p>Johnson PC, O'Hara RB. 2014. Extension of Nakagawa &amp; Schielzeth's R2GLMM to random slopes models. Methods Ecol Evol, 5: 944-946. (doi: <a href='http://doi.org/10.1111/2041-210X.12225'>10.1111/2041-210X.12225</a>
 )</p></li>
@@ -222,17 +222,17 @@ adjusted and conditional <code><a href='cod.html'>r2</a></code> and <code><a hre
 
 <span class='co'># all random effect variance components</span>
 <span class='fu'>re_var</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt;       Within-group-variance:  654.941
-#&gt;      Between-group-variance:  612.090 (Subject)
-#&gt;       Random-slope-variance:   35.072 (Subject.Days)
-#&gt;  Slope-Intercept-covariance:    9.604 (Subject.(Intercept))
+#&gt;      Between-group-variance:  611.898 (Subject)
+#&gt;       Random-slope-variance:   35.081 (Subject.Days)
+#&gt;  Slope-Intercept-covariance:    9.614 (Subject.(Intercept))
 #&gt; Slope-Intercept-correlation:    0.066 (Subject)</div><div class='input'><span class='fu'>re_var</span>(<span class='no'>fit1</span>, <span class='kw'>adjusted</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
 #&gt; Variance Components of Mixed Models
 #&gt; 
 #&gt; <span style='color: #0000BB;'>Family : gaussian (identity)
-#&gt; Formula: Reaction ~ Days + (Days | Subject)
+#&gt; Formula: list(conditional = Reaction ~ Days, random = ~Days | Subject)
 #&gt; 
 #&gt; </span><span>         fixed:  908.953
-#&gt;         random: 1698.071
+#&gt;         random: 1698.233
 #&gt;       residual:  654.941
 #&gt; </span><span style='color: #00BBBB;'>    dispersion:    0.000
 #&gt;   distribution:  654.941
@@ -240,14 +240,14 @@ adjusted and conditional <code><a href='cod.html'>r2</a></code> and <code><a hre
 #&gt; </span><span></div><div class='input'>
 <span class='co'># just the rand. slope-intercept covariance</span>
 <span class='fu'>get_re_var</span>(<span class='no'>fit1</span>, <span class='st'>"tau.01"</span>)</div><div class='output co'>#&gt; Subject.(Intercept) 
-#&gt;            9.604334 </div><div class='input'>
+#&gt;            9.613886 </div><div class='input'>
 <span class='no'>sleepstudy</span>$<span class='no'>mygrp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>45</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>180</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>mygrp</span>) + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
-<span class='fu'>re_var</span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt;       Within-group-variance:  605.877
-#&gt;      Between-group-variance:   44.955 (mygrp)
-#&gt;      Between-group-variance:  615.539 (Subject)
-#&gt;       Random-slope-variance:   38.305 (Subject.Days)
-#&gt;  Slope-Intercept-covariance:    1.074 (Subject.(Intercept))
+<span class='fu'>re_var</span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt;       Within-group-variance:  605.912
+#&gt;      Between-group-variance:   44.917 (mygrp)
+#&gt;      Between-group-variance:  615.511 (Subject)
+#&gt;       Random-slope-variance:   38.301 (Subject.Days)
+#&gt;  Slope-Intercept-covariance:    1.108 (Subject.(Intercept))
 #&gt; Slope-Intercept-correlation:    0.007 (Subject)</div><div class='input'>
 </div></span></pre>
   </div>

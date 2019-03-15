@@ -66,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
       </span>
     </div>
 
@@ -257,10 +257,10 @@ a rather "unadjusted" r-squared will be returned by calling
 
     <ul>
 <li><p><a href='http://glmm.wikidot.com/faq'>DRAFT r-sig-mixed-models FAQ</a></p></li>
-<li><p>Bolker B et al. (2017): <a href='http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html'>GLMM FAQ.</a></p></li>
+<li><p>Bolker B et al. (2017): <a href='http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html'>GLMM FAQ</a></p></li>
 <li><p>Byrnes, J. 2008. Re: Coefficient of determination (R^2) when using lme() (<a href='https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q2/000713.html'>https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q2/000713.html</a>)</p></li>
-<li><p>Kwok OM, Underhill AT, Berry JW, Luo W, Elliott TR, Yoon M. 2008. Analyzing Longitudinal Data with Multilevel Models: An Example with Individuals Living with Lower Extremity Intra-Articular Fractures. Rehabilitation Psychology 53(3): 370–86. doi: <a href='http://doi.org/10.1037/a0012765'>10.1037/a0012765</a></p></li>
-<li><p>Nakagawa S, Schielzeth H. 2013. A general and simple method for obtaining R2 from generalized linear mixed-effects models. Methods in Ecology and Evolution, 4(2):133–142. doi: <a href='http://doi.org/10.1111/j.2041-210x.2012.00261.x'>10.1111/j.2041-210x.2012.00261.x</a></p></li>
+<li><p>Kwok OM, Underhill AT, Berry JW, Luo W, Elliott TR, Yoon M. 2008. Analyzing Longitudinal Data with Multilevel Models: An Example with Individuals Living with Lower Extremity Intra-Articular Fractures. Rehabilitation Psychology 53(3): 370-86. doi: <a href='http://doi.org/10.1037/a0012765'>10.1037/a0012765</a></p></li>
+<li><p>Nakagawa S, Schielzeth H. 2013. A general and simple method for obtaining R2 from generalized linear mixed-effects models. Methods in Ecology and Evolution, 4(2):133-142. doi: <a href='http://doi.org/10.1111/j.2041-210x.2012.00261.x'>10.1111/j.2041-210x.2012.00261.x</a></p></li>
 <li><p>Nakagawa S, Johnson P, Schielzeth H (2017) The coefficient of determination R2 and intra-class correlation coefficient from generalized linear mixed-effects models revisted and expanded. J. R. Soc. Interface 14. doi: <a href='http://doi.org/10.1098/rsif.2017.0213'>10.1098/rsif.2017.0213</a></p></li>
 <li><p>Rabe-Hesketh S, Skrondal A. 2012. Multilevel and longitudinal modeling using Stata. 3rd ed. College Station, Tex: Stata Press Publication</p></li>
 <li><p>Raudenbush SW, Bryk AS. 2002. Hierarchical linear models: applications and data analysis methods. 2nd ed. Thousand Oaks: Sage Publications</p></li>
@@ -278,23 +278,23 @@ a rather "unadjusted" r-squared will be returned by calling
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
 <span class='fu'>cod</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
-#&gt; R-Squared for Generalized Linear Mixed Model
+#&gt; R-Squared for (Generalized) Linear (Mixed) Model
 #&gt; 
 #&gt; Tjur's D: 0.023
 #&gt; </div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>lme4</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='input'><span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
 <span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
-#&gt; R-Squared for Generalized Linear Mixed Model
+#&gt; R-Squared for (Generalized) Linear (Mixed) Model
 #&gt; 
 #&gt; <span style='color: #0000BB;'>Family : gaussian (identity)
-#&gt; Formula: Reaction ~ Days + (Days | Subject)
+#&gt; Formula: ~Days | Subject Reaction ~ Days NA
 #&gt; 
 #&gt; </span><span>   Marginal R2: 0.279
 #&gt; Conditional R2: 0.799
 #&gt; </div><div class='input'>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>lm</a></span>(<span class='no'>barthtot</span> ~ <span class='no'>c160age</span> + <span class='no'>c12hour</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
 <span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
-#&gt; R-Squared for Generalized Linear Mixed Model
+#&gt; R-Squared for (Generalized) Linear (Mixed) Model
 #&gt; 
 #&gt;          R-squared: 0.256
 #&gt; adjusted R-squared: 0.254
@@ -303,7 +303,7 @@ a rather "unadjusted" r-squared will be returned by calling
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>services</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
 <span class='fu'>r2</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
-#&gt; R-Squared for Generalized Linear Mixed Model
+#&gt; R-Squared for (Generalized) Linear (Mixed) Model
 #&gt; 
 #&gt; Cox &amp; Snell's R-squared: 0.023
 #&gt;  Nagelkerke's R-squared: 0.030
