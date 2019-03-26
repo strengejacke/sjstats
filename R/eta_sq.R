@@ -1,8 +1,9 @@
 #' @title Effect size statistics for anova
 #' @name eta_sq
-#' @description Returns the (partial) eta-squared, (partial) omega-squared statistic
-#'   or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
-#'   a tidy summary, including all these statistics and power for each term.
+#' @description Returns the (partial) eta-squared, (partial) omega-squared,
+#'   epsilon-squared statistic or Cohen's F for all terms in an anovas.
+#'   \code{anova_stats()} returns a tidy summary, including all these statistics
+#'   and power for each term.
 #'
 #' @param model A fitted anova-model of class \code{aov} or \code{anova}. Other
 #'   models are coerced to \code{\link[stats]{anova}}.
@@ -12,6 +13,7 @@
 #'   frame with effect sizes including lower and upper confidence intervals.
 #'
 #' @inheritParams bootstrap
+#' @inheritParams boot_ci
 #'
 #' @return A data frame with the term name(s) and effect size statistics; if
 #'   \code{ci.lvl} is not \code{NULL}, a data frame including lower and
@@ -22,7 +24,12 @@
 #'   non-symmetry, confidence intervals are based on bootstrap-methods. In this
 #'   case, \code{n} indicates the number of bootstrap samples to be drawn to
 #'   compute the confidence intervals. Confidence intervals for partial
-#'   omega-squared is also based on bootstrapping.
+#'   omega-squared and epsilon-squared is also based on bootstrapping.
+#'   \cr \cr
+#'   Since bootstrapped confidence intervals are based on the bootstrap standard error
+#'   (i.e. \code{mean(x) +/- qt(.975, df = length(x) - 1) * sd(x))}, bounds of
+#'   the confidence interval may be negative. Use \code{method = "quantile"} to
+#'   make sure that the confidence intervals are always positive.
 #'
 #' @references Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
 #'   \cr \cr
@@ -46,7 +53,8 @@
 #' anova_stats(car::Anova(fit, type = 2))
 #'
 #' @export
-eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
+eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000, method = c("dist", "quantile")) {
+  method <- match.arg(method)
 
   if (partial)
     type <- "peta"
@@ -72,7 +80,8 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
           model = model,
           type = "eta",
           ci.lvl = ci.lvl,
-          n = n
+          n = n,
+          boot.method = method
         )
     }
   }
@@ -95,7 +104,8 @@ eta_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
 #' @rdname eta_sq
 #' @importFrom dplyr bind_cols mutate
 #' @export
-omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
+omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000, method = c("dist", "quantile")) {
+  method <- match.arg(method)
 
   if (partial)
     type <- "pomega"
@@ -118,7 +128,8 @@ omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
         model = model,
         type = "pomega",
         ci.lvl = ci.lvl,
-        n = n
+        n = n,
+        boot.method = method
       )
     }
   } else {
@@ -133,6 +144,39 @@ omega_sq <- function(model, partial = FALSE, ci.lvl = NULL, n = 1000) {
     TRUE ~ "effect.size"
   )
 
+  if (!is.null(attr(es, "stratum"))) x$stratum <- attr(es, "stratum")[1:nrow(x)]
+
+  class(x) <- c("sj_anova_stat", class(x))
+
+  x
+}
+
+
+#' @rdname eta_sq
+#' @importFrom dplyr bind_cols mutate
+#' @export
+epsilon_sq <- function(model, ci.lvl = NULL, n = 1000, method = c("dist", "quantile")) {
+  method <- match.arg(method)
+  es <- aov_stat(model, type = "epsilon")
+
+  x <- data_frame(
+    term = names(es),
+    es = es
+  )
+
+
+  if (!is.null(ci.lvl) && !is.na(ci.lvl)) {
+    x <-
+      es_boot_fun(
+        model = model,
+        type = "epsilon",
+        ci.lvl = ci.lvl,
+        n = n,
+        boot.method = method
+      )
+  }
+
+  colnames(x)[2] <- "epsilonsq"
   if (!is.null(attr(es, "stratum"))) x$stratum <- attr(es, "stratum")[1:nrow(x)]
 
   class(x) <- c("sj_anova_stat", class(x))
@@ -171,14 +215,15 @@ anova_stats <- function(model, digits = 3) {
   partial.etasq <- aov_stat_core(aov.sum, type = "peta")
   omegasq <- aov_stat_core(aov.sum, type = "omega")
   partial.omegasq <- aov_stat_core(aov.sum, type = "pomega")
+  epsilonsq <- aov_stat_core(aov.sum, type = "epsilon")
 
   # compute power for each estimate
   cohens.f <- sqrt(partial.etasq / (1 - partial.etasq))
 
   # bind as data frame
   as <- dplyr::bind_rows(
-    data.frame(etasq, partial.etasq, omegasq, partial.omegasq, cohens.f),
-    data.frame(etasq = NA, partial.etasq = NA, omegasq = NA, partial.omegasq = NA, cohens.f = NA)
+    data.frame(etasq, partial.etasq, omegasq, partial.omegasq, epsilonsq, cohens.f),
+    data.frame(etasq = NA, partial.etasq = NA, omegasq = NA, partial.omegasq = NA, epsilonsq = NA, cohens.f = NA)
   ) %>%
     sjmisc::add_columns(aov.sum)
 
@@ -186,9 +231,16 @@ anova_stats <- function(model, digits = 3) {
   nt <- nrow(as) - 1
 
   # finally, compute power
-  power <- c(
-    pwr::pwr.f2.test(u = as$df[1:nt], v = as$df[nrow(as)], f2 = as$cohens.f[1:nt]^2)[["power"]],
-    NA
+  power <- tryCatch(
+    {
+      c(
+        pwr::pwr.f2.test(u = as$df[1:nt], v = as$df[nrow(as)], f2 = as$cohens.f[1:nt]^2)[["power"]],
+        NA
+      )
+    },
+    error = function(x) {
+      NA
+    }
   )
 
   sjmisc::add_variables(as, power = power) %>%
@@ -290,6 +342,13 @@ aov_stat_core <- function(aov.sum, type) {
       meansq.term <- aov.sum[["meansq"]][x]
       (df.term * (meansq.term - meansq.resid)) / (df.term * meansq.term + (N - df.term) * meansq.resid)
     })
+  } else if (type == "epsilon") {
+    # compute epsilon squared for each model term
+    aovstat <- purrr::map_dbl(1:n_terms, function(x) {
+      ss.term <- aov.sum[["sumsq"]][x]
+      df.term <- aov.sum[["df"]][x]
+      (ss.term - df.term * meansq.resid) / ss.total
+    })
   } else if (type == "eta") {
     # compute eta squared for each model term
     aovstat <-
@@ -383,7 +442,7 @@ peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
 #' @importFrom dplyr bind_cols mutate case_when pull
 #' @importFrom stats anova formula aov
 #' @importFrom sjmisc rotate_df
-es_boot_fun <- function(model, type, ci.lvl, n) {
+es_boot_fun <- function(model, type, ci.lvl, n, boot.method = "dist") {
 
   if (inherits(model, "anova") || is.data.frame(model)) {
     if (type == "pomega")
@@ -428,7 +487,7 @@ es_boot_fun <- function(model, type, ci.lvl, n) {
       )) %>%
       dplyr::pull(2) %>%
       purrr::map_df(~ .x) %>%
-      boot_ci(ci.lvl = ci.lvl)
+      boot_ci(ci.lvl = ci.lvl, method = boot.method)
 
   } else {
 
@@ -453,7 +512,7 @@ es_boot_fun <- function(model, type, ci.lvl, n) {
       )) %>%
       dplyr::pull(2) %>%
       purrr::map_df(~ .x) %>%
-      boot_ci(ci.lvl = ci.lvl)
+      boot_ci(ci.lvl = ci.lvl, method = boot.method)
   }
 
 
@@ -461,6 +520,7 @@ es_boot_fun <- function(model, type, ci.lvl, n) {
 
   colnames(x)[2] <- dplyr::case_when(
     type == "eta" ~ "etasq",
+    type == "epsilon" ~ "epsilonsq",
     type == "peta" ~ "partial.etasq",
     type == "omega" ~ "omegasq",
     type == "pomega" ~ "partial.omegasq",

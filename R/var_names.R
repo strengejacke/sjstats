@@ -2,6 +2,8 @@
 #' @importFrom purrr map_chr
 #' @export
 var_names <- function(x) {
+  .Deprecated("insight::clean_names()")
+
   if (is.character(x))
     get_vn_helper(x)
   else

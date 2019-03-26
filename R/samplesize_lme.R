@@ -64,7 +64,13 @@ smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, n
 
   # if we have no information on the number of observations per cluster,
   # compute this number now
-  if (missing(n) || is.null(n)) n <- (obs * (1 - icc)) / (k - (obs * icc))
+  if (missing(n) || is.null(n)) {
+    n <- (obs * (1 - icc)) / (k - (obs * icc))
+    if (n < 1) {
+      warning("Minimum required number of subjects per cluster is negative and was adjusted to be positive. You may reduce the requirements for the multi-level structure (i.e. reduce `k` or `icc`), or you can increase the effect-size.", call. = FALSE)
+      n <- 1
+    }
+  }
 
   # adjust standard design by design effect
   total.n <- obs * deff(n = n, icc = icc)

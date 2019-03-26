@@ -3,13 +3,19 @@
 \name{eta_sq}
 \alias{eta_sq}
 \alias{omega_sq}
+\alias{epsilon_sq}
 \alias{cohens_f}
 \alias{anova_stats}
 \title{Effect size statistics for anova}
 \usage{
-eta_sq(model, partial = FALSE, ci.lvl = NULL, n = 1000)
+eta_sq(model, partial = FALSE, ci.lvl = NULL, n = 1000,
+  method = c("dist", "quantile"))
 
-omega_sq(model, partial = FALSE, ci.lvl = NULL, n = 1000)
+omega_sq(model, partial = FALSE, ci.lvl = NULL, n = 1000,
+  method = c("dist", "quantile"))
+
+epsilon_sq(model, ci.lvl = NULL, n = 1000, method = c("dist",
+  "quantile"))
 
 cohens_f(model)
 
@@ -26,6 +32,12 @@ frame with effect sizes including lower and upper confidence intervals.}
 
 \item{n}{Number of bootstraps to be generated.}
 
+\item{method}{Character vector, indicating if confidence intervals should be
+based on bootstrap standard error, multiplied by the value of the
+quantile function of the t-distribution (default), or on sample
+quantiles of the bootstrapped values. See 'Details' in \code{boot_ci()}.
+May be abbreviated.}
+
 \item{digits}{Number of decimal points in the returned data frame.}
 }
 \value{
@@ -35,16 +47,22 @@ A data frame with the term name(s) and effect size statistics; if
   data frame with all statistics is returned (excluding confidence intervals).
 }
 \description{
-Returns the (partial) eta-squared, (partial) omega-squared statistic
-  or Cohen's F for all terms in an anovas. \code{anova_stats()} returns
-  a tidy summary, including all these statistics and power for each term.
+Returns the (partial) eta-squared, (partial) omega-squared,
+  epsilon-squared statistic or Cohen's F for all terms in an anovas.
+  \code{anova_stats()} returns a tidy summary, including all these statistics
+  and power for each term.
 }
 \details{
 For \code{eta_sq()} (with \code{partial = FALSE}), due to
   non-symmetry, confidence intervals are based on bootstrap-methods. In this
   case, \code{n} indicates the number of bootstrap samples to be drawn to
   compute the confidence intervals. Confidence intervals for partial
-  omega-squared is also based on bootstrapping.
+  omega-squared and epsilon-squared is also based on bootstrapping.
+  \cr \cr
+  Since bootstrapped confidence intervals are based on the bootstrap standard error
+  (i.e. \code{mean(x) +/- qt(.975, df = length(x) - 1) * sd(x))}, bounds of
+  the confidence interval may be negative. Use \code{method = "quantile"} to
+  make sure that the confidence intervals are always positive.
 }
 \examples{
 # load sample data

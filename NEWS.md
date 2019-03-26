@@ -1,3 +1,31 @@
+# sjstats 0.17.5
+
+## New functions
+
+* `epsilon_sq()`, to compute epsilon-squared effect-size.
+
+## Deprecated and defunct
+
+Following functions are deprecated:
+
+* link_inverse(), please use `insight::link_inverse()`
+* model_family(), please use `insight::model_info()`
+* model_frame(), please use `insight::get_data()`
+* pred_vars(), please use `insight::find_predictors()`
+* re_grp_var(), please use `insight::find_random()`
+* grp_var(), please use `insight::find_random()`
+* resp_val(), please use `insight::get_response()`
+* resp_var(), please use `insight::find_response()`
+* var_names(), please use `insight::clean_names()`
+
+## Changes to functions
+
+* Anova-stats functions (like `eta_sq()`) get a `method`-argument to define the method for computing confidence intervals from bootstrapping.
+
+## Bug fixes
+
+* In some situations, `smpsize_lmm()` could result in negative sample-size recommendations. This was fixed, and a warning is now shown indicating that the parameters for the power-calculation should be modified.
+
 # sjstats 0.17.4
 
 ## General

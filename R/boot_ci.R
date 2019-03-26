@@ -14,9 +14,9 @@
 #'          \code{\link[tidyselect]{select_helpers}}.
 #' @param method Character vector, indicating if confidence intervals should be
 #'          based on bootstrap standard error, multiplied by the value of the
-#'          quantile function of the t distribution (default), or on sample
-#'          quantiles of the bootstrapped values. See 'Details'. May be
-#'          abbreviated.
+#'          quantile function of the t-distribution (default), or on sample
+#'          quantiles of the bootstrapped values. See 'Details' in \code{boot_ci()}.
+#'          May be abbreviated.
 #' @inheritParams std_beta
 #'
 #' @return A \code{\link[tibble]{tibble}} with either bootstrap estimate,

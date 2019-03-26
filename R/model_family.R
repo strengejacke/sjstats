@@ -4,6 +4,8 @@
 #' @importFrom lme4 fixef
 #' @export
 model_family <- function(x, multi.resp = FALSE, mv = FALSE) {
+  .Deprecated("insight::model_info()")
+
   zero.inf <- FALSE
   multi.var <- FALSE
 

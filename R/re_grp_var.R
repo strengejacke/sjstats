@@ -5,6 +5,8 @@
 #' @importFrom sjmisc trim
 #' @export
 re_grp_var <- function(x) {
+  .Deprecated("insight::find_random()")
+
   tryCatch({
     if (inherits(x, "brmsfit"))
       f <- stats::formula(x)[[1]]
@@ -24,5 +26,6 @@ re_grp_var <- function(x) {
 #' @rdname pred_vars
 #' @export
 grp_var <- function(x) {
+  .Deprecated("insight::find_random()")
   re_grp_var(x)
 }

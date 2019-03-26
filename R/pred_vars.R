@@ -144,6 +144,7 @@
 #' @importFrom stats formula terms
 #' @export
 pred_vars <- function(x, ...) {
+  .Deprecated("insight::find_predictors()")
   UseMethod("pred_vars")
 }
 

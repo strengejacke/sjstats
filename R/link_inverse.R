@@ -2,6 +2,7 @@
 #' @importFrom stats family binomial gaussian make.link
 #' @export
 link_inverse <- function(x, multi.resp = FALSE, mv = FALSE) {
+  .Deprecated("insight::link_inverse()")
 
   if (!missing(multi.resp)) mv <- multi.resp
 

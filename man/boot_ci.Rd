@@ -27,9 +27,9 @@ You may also use functions like \code{:} or tidyselect's
 
 \item{method}{Character vector, indicating if confidence intervals should be
 based on bootstrap standard error, multiplied by the value of the
-quantile function of the t distribution (default), or on sample
-quantiles of the bootstrapped values. See 'Details'. May be
-abbreviated.}
+quantile function of the t-distribution (default), or on sample
+quantiles of the bootstrapped values. See 'Details' in \code{boot_ci()}.
+May be abbreviated.}
 
 \item{ci.lvl}{Numeric, the level of the confidence intervals.}
 }

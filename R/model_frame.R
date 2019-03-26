@@ -5,6 +5,7 @@
 #' @importFrom sjmisc add_columns is_empty
 #' @export
 model_frame <- function(x, fe.only = TRUE) {
+  .Deprecated("insight::get_data()")
   # we may store model weights here later
   mw <- NULL
 
