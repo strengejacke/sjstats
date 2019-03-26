@@ -1995,7 +1995,7 @@ print.sj_anova_stat <- function(x, digits = 3, ...) {
 getME.brmsfit <- function(object, name, ...) {
   rv <- NULL
   if (name == "X") {
-    rv <- as.matrix(cbind(1, model_frame(object)[pred_vars(object, fe.only = T)]))
+    rv <- as.matrix(cbind(1, model_frame(object)[insight::find_predictors(object, effects = "fixed")]))
     colnames(rv)[1] = "Intercept"
   }
   rv

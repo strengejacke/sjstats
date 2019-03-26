@@ -73,6 +73,7 @@
 #'
 #' @importFrom stats sd
 #' @importFrom dplyr select
+#' @importFrom insight find_predictors find_response
 #' @export
 auto_prior <- function(formula, data, gaussian, locations = NULL) {
 
@@ -82,8 +83,8 @@ auto_prior <- function(formula, data, gaussian, locations = NULL) {
   scale.b <- 2.5
   scale.y <- 10
 
-  pred <- pred_vars(formula)
-  y.name <- resp_var(formula)
+  pred <- insight::find_predictors(formula, effects = "all")
+  y.name <- insight::find_response(formula, combine = TRUE)
 
   cols <- c(y.name, pred)
 

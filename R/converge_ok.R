@@ -115,6 +115,19 @@ is_singular.glmmTMB <- function(x, tolerance = 1e-5, ...) {
 }
 
 #' @export
+is_singular.MixMod <- function(x, tolerance = 1e-5, ...) {
+  any(sapply(diag(x$D), function(.x) any(abs(.x) < tolerance)))
+}
+
+#' @export
+is_singular.lme <- function(x, tolerance = 1e-5, ...) {
+  if (!requireNamespace("nlme", quietly = TRUE))
+    stop("Please install and load package `nlme` first.")
+
+  any(abs(stats::na.omit(as.numeric(diag(nlme::getVarCov(x)))) < tolerance))
+}
+
+#' @export
 is_singular.default <- function(x, ...) {
   FALSE
 }

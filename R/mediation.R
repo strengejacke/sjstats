@@ -26,11 +26,11 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
   }
 
 
-  dv <- resp_var(x)
+  dv <- insight::find_response(x, combine = TRUE)
   fixm <- FALSE
 
   if (missing(mediator)) {
-    pv <- pred_vars(x)
+    pv <- insight::find_predictors(x)
     mediator <- pv[pv %in% dv]
     fixm <- TRUE
   }

@@ -21,6 +21,7 @@ Following functions are deprecated:
 ## Changes to functions
 
 * Anova-stats functions (like `eta_sq()`) get a `method`-argument to define the method for computing confidence intervals from bootstrapping.
+* `is_singular()` now supports `MixMod` and `lme`-objects.
 
 ## Bug fixes
 
