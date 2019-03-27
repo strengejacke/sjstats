@@ -55,7 +55,6 @@
 #' summary(pv)
 #'
 #' @importFrom stats coef pnorm
-#' @importFrom broom tidy
 #' @importFrom dplyr select
 #' @importFrom stats coef pt pnorm
 #' @export
@@ -66,9 +65,11 @@ p_value <- function(fit, ...) {
 
 #' @export
 p_value.multinom <- function(fit, ...) {
-  fit %>%
-    broom::tidy() %>%
-    dplyr::select(.data$term, .data$p.value, .data$std.error)
+  s <- summary(fit)
+  stat <- s$coefficients / s$standard.errors
+  p <- 2 * stats::pnorm(stat, lower.tail = FALSE)
+
+  make_it_so(p, s$standard.errors)
 }
 
 
