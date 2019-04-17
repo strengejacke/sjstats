@@ -27,6 +27,7 @@ Depends:
     stats,
     utils
 Imports:
+    bayestestR,
     broom,
     dplyr,
     emmeans,
@@ -36,6 +37,7 @@ Imports:
     MASS,
     Matrix,
     modelr,
+    performance,
     purrr,
     rlang,
     sjlabelled (>= 1.0.17),

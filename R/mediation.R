@@ -1,11 +1,55 @@
-#' @rdname hdi
+#' @title Summary of Bayesian multivariate-response mediation-models
+#' @name mediation
+#'
+#' @description \code{mediation()} is a short summary for multivariate-response
+#'   mediation-models.
+#'
+#' @param x A \code{stanreg}, \code{stanfit}, or \code{brmsfit} object.
+#' @param prob Vector of scalars between 0 and 1, indicating the mass within
+#'   the credible interval that is to be estimated.
+#' @param treatment Character, name of the treatment variable (or direct effect)
+#'   in a (multivariate response) mediator-model. If missing, \code{mediation()}
+#'   tries to find the treatment variable automatically, however, this may fail.
+#' @param mediator Character, name of the mediator variable in a (multivariate
+#'   response) mediator-model. If missing, \code{mediation()} tries to find the
+#'   treatment variable automatically, however, this may fail.
+#' @param typical The typical value that will represent the Bayesian point estimate.
+#'   By default, the posterior median is returned. See \code{\link[sjmisc]{typical_value}}
+#'   for possible values for this argument.
+#' @param ... Not used.
+#'
+#' @return A data frame with direct, indirect, mediator and
+#'   total effect of a multivariate-response mediation-model, as well as the
+#'   proportion mediated. The effect sizes are mean values of the posterior
+#'   samples.
+#'
+#' @details \code{mediation()} returns a data frame with information on the
+#'       \emph{direct effect} (mean value of posterior samples from \code{treatment}
+#'       of the outcome model), \emph{mediator effect} (mean value of posterior
+#'       samples from \code{mediator} of the outcome model), \emph{indirect effect}
+#'       (mean value of the multiplication of the posterior samples from
+#'       \code{mediator} of the outcome model and the posterior samples from
+#'       \code{treatment} of the mediation model) and the total effect (mean
+#'       value of sums of posterior samples used for the direct and indirect
+#'       effect). The \emph{proportion mediated} is the indirect effect divided
+#'       by the total effect.
+#'       \cr \cr
+#'       For all values, the 90\% HDIs are calculated by default. Use \code{prob}
+#'       to calculate a different interval.
+#'       \cr \cr
+#'       The arguments \code{treatment} and \code{mediator} do not necessarily
+#'       need to be specified. If missing, \code{mediation()} tries to find the
+#'       treatment and mediator variable automatically. If this does not work,
+#'       specify these variables.
+#'
+#'
 #' @export
 mediation <- function(x, ...) {
   UseMethod("mediation")
 }
 
 
-#' @rdname hdi
+#' @rdname mediation
 #' @importFrom purrr map
 #' @importFrom stats formula
 #' @importFrom dplyr pull bind_cols

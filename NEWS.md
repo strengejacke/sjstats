@@ -8,20 +8,39 @@
 
 Following functions are deprecated:
 
-* link_inverse(), please use `insight::link_inverse()`
-* model_family(), please use `insight::model_info()`
-* model_frame(), please use `insight::get_data()`
-* pred_vars(), please use `insight::find_predictors()`
-* re_grp_var(), please use `insight::find_random()`
-* grp_var(), please use `insight::find_random()`
-* resp_val(), please use `insight::get_response()`
-* resp_var(), please use `insight::find_response()`
-* var_names(), please use `insight::clean_names()`
+* `link_inverse()`, please use `insight::link_inverse()`
+* `model_family()`, please use `insight::model_info()`
+* `model_frame()`, please use `insight::get_data()`
+* `pred_vars()`, please use `insight::find_predictors()`
+* `re_grp_var()`, please use `insight::find_random()`
+* `grp_var()`, please use `insight::find_random()`
+* `resp_val()`, please use `insight::get_response()`
+* `resp_var()`, please use `insight::find_response()`
+* `var_names()`, please use `insight::clean_names()`
+* `overdisp()`, please use `performance::check_overdispersion()`
+* `zero_count()`, please use `performance::check_zeroinflation()`
+* `converge_ok()`, please use `performance::check_convergence()`
+* `is_singular()`, please use `performance::check_singularity()`
+* `reliab_test()`, please use `performance::item_reliability()`
+* `split_half()`, please use `performance::item_split_half()`
+* `cronb()`, please use `performance::cronbachs_alpha()`
+* `difficulty()`, please use `performance::item_difficulty()`
+* `mic()`, please use `performance::item_intercor()`
+* `pca()`, please use `performance::principal_components()`
+* `pca_rotate()`, please use `performance::principal_components()`
+* `r2()`, please use `performance::r2()`
+* `icc()`, please use `performance::icc()`
+* `rmse()`, please use `performance::rmse()`
+* `rse()`, please use `performance::rse()`
+* `mse()`, please use `performance::mse()`
+* `hdi()`, please use `bayestestR::hdi()`
+* `cred_int()`, please use `bayestestR::ci()`
+* `rope()`, please use `bayestestR::rope()`
+* `equi_test()`, please use `bayestestR::equivalence_test()`
 
 ## Changes to functions
 
 * Anova-stats functions (like `eta_sq()`) get a `method`-argument to define the method for computing confidence intervals from bootstrapping.
-* `is_singular()` now supports `MixMod` and `lme`-objects.
 
 ## Bug fixes
 

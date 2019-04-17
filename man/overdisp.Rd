@@ -3,78 +3,47 @@
 \name{overdisp}
 \alias{overdisp}
 \alias{zero_count}
-\title{Check overdispersion of GL(M)M's}
+\alias{converge_ok}
+\alias{is_singular}
+\alias{reliab_test}
+\alias{split_half}
+\alias{cronb}
+\alias{difficulty}
+\alias{mic}
+\alias{pca}
+\alias{pca_rotate}
+\title{Deprecated functions}
 \usage{
 overdisp(x, ...)
 
-zero_count(x, tolerance = 0.05)
+zero_count(x, ...)
+
+converge_ok(x, ...)
+
+is_singular(x, ...)
+
+reliab_test(x, ...)
+
+split_half(x, ...)
+
+cronb(x, ...)
+
+difficulty(x, ...)
+
+mic(x, ...)
+
+pca(x, ...)
+
+pca_rotate(x, ...)
 }
 \arguments{
-\item{x}{Fitted model of class \code{merMod}, \code{glmmTMB}, \code{glm},
-or \code{glm.nb} (package \pkg{MASS}).}
+\item{x}{An object.}
 
 \item{...}{Currently not used.}
-
-\item{tolerance}{The tolerance for the ratio of observed and predicted
-zeros to considered as over- or underfitting zero-counts. A ratio
-between 1 +/- \code{tolerance} is considered as OK, while a ratio
-beyond or below this treshold would indicate over- or underfitting.}
 }
 \value{
-For \code{overdisp()}, information on the overdispersion test; for
-        \code{zero_count()}, the amount of predicted and observed zeros in
-        the outcome, as well as the ratio between these two values.
+Nothing.
 }
 \description{
-\code{overdisp()} checks generalized linear (mixed) models for
-             overdispersion, while \code{zero_count()} checks whether models
-             from Poisson-families are over- or underfitting zero-counts in
-             the outcome.
-}
-\details{
-For \code{merMod}- and \code{glmmTMB}-objects, \code{overdisp()} is
-         based on the code in the \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html}{GLMM FAQ},
-         section \emph{How can I deal with overdispersion in GLMMs?}.
-         Note that this function only returns an \emph{approximate} estimate
-         of an overdispersion parameter, and is probably inaccurate for
-         zero-inflated mixed models (fitted with \code{glmmTMB}).
-         \cr \cr
-         The same code as above for mixed models is also used to check
-         overdispersion for negative binomial models.
-         \cr \cr
-         For Poisson-models, the overdispersion test is based on the code
-         from Gelman and Hill (2007), page 115.
-}
-\note{
-For overdispersoion test, a p-value < .05 indicates overdispersion.
-      \cr \cr
-      For \code{zero_count()}, a model that is underfitting zero-counts
-      indicates a zero-inflation in the data, i.e. it is recommended to
-      use negative binomial or zero-inflated models then.
-}
-\examples{
-library(sjmisc)
-data(efc)
-
-# response has many zero-counts, Poisson models
-# might be overdispersed
-barplot(table(efc$tot_sc_e))
-
-fit <- glm(tot_sc_e ~ neg_c_7 + e42dep + c160age,
-           data = efc, family = poisson)
-overdisp(fit)
-zero_count(fit)
-
-library(lme4)
-efc$e15relat <- to_factor(efc$e15relat)
-fit <- glmer(tot_sc_e ~ neg_c_7 + e42dep + c160age + (1 | e15relat),
-             data = efc, family = poisson)
-overdisp(fit)
-zero_count(fit)
-
-}
-\references{
-Bolker B et al. (2017): \href{http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html}{GLMM FAQ.}
- \cr \cr
- Gelman A, Hill J (2007) Data Analysis Using Regression and Multilevel/Hierarchical Models. Cambridge, New York: Cambridge University Press
+A list of deprecated functions.
 }

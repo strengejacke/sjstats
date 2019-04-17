@@ -1,15 +1,5 @@
 # Help-functions
 
-#' @importFrom magrittr %>%
-#' @export
-magrittr::`%>%`
-
-
-#' @importFrom sjmisc typical_value
-#' @export
-sjmisc::typical_value
-
-
 data_frame <- function(...) {
   x <- data.frame(..., stringsAsFactors = FALSE)
   rownames(x) <- NULL

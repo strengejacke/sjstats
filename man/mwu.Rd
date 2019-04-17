@@ -20,12 +20,6 @@ or a character vector with the variable name.}
 May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
 (default). See \code{\link[coin]{wilcox_test}} for details.}
 
-\item{out}{Character vector, indicating whether the results should be printed
-to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
-(\code{out = "viewer"}) or browser (\code{out = "browser"}), of if the
-results should be plotted (\code{out = "plot"}, only applies to certain
-functions). May be abbreviated.}
-
 \item{encoding}{Character vector, indicating the charset encoding used
 for variable and value labels. Default is \code{"UTF-8"}. Only used
 when \code{out} is not \code{"txt"}.}

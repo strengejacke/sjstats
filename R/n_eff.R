@@ -1,4 +1,4 @@
-#' @rdname hdi
+#' @rdname mcse
 #' @export
 n_eff <- function(x, ...) {
   UseMethod("n_eff")
@@ -11,7 +11,7 @@ n_eff.default <- function(x, ...) {
 }
 
 
-#' @rdname hdi
+#' @rdname mcse
 #' @export
 n_eff.stanreg <- function(x, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)
@@ -28,7 +28,7 @@ n_eff.stanfit <- function(x, type = c("fixed", "random", "all"), ...) {
 }
 
 
-#' @rdname hdi
+#' @rdname mcse
 #' @export
 n_eff.brmsfit <- function(x, type = c("fixed", "random", "all"), ...) {
   type <- match.arg(type)

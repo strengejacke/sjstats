@@ -21,8 +21,6 @@
 #'   for variable and value labels. Default is \code{"UTF-8"}. Only used
 #'   when \code{out} is not \code{"txt"}.
 #'
-#' @inheritParams hdi
-#'
 #' @return For non-grouped data frames, \code{grpmean()} returns a data frame with
 #'   following columns: \code{term}, \code{mean}, \code{N}, \code{std.dev},
 #'   \code{std.error} and \code{p.value}. For grouped data frames, returns

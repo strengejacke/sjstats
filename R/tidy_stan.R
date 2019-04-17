@@ -9,8 +9,6 @@
 #'        values for standard errors are \emph{not} transformed!
 #' @param digits Amount of digits to round numerical values in the output.
 #'
-#' @inheritParams hdi
-#'
 #' @return A tidy data frame, summarizing \code{x}, with consistent column names.
 #'         To distinguish multiple HDI values, column names for the HDI get a suffix
 #'         when \code{prob} has more than one element.
@@ -31,7 +29,7 @@
 #'        The standard error (which is actually the \emph{median absolute deviation}).
 #'      }
 #'      \item{
-#'        The HDI (see \code{\link{hdi}}). Computation for HDI is based on the
+#'        The HDI. Computation for HDI is based on the
 #'        code from Kruschke 2015, pp. 727f.
 #'      }
 #'      \item{
