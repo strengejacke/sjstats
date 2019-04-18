@@ -11,8 +11,10 @@ tidy_stan(x, prob = 0.89, typical = "median", trans = NULL,
 \item{x}{A \code{stanreg}, \code{stanfit} or \code{brmsfit} object.}
 
 \item{trans}{Name of a function or character vector naming a function, used
-to apply transformations on the estimate and HDI-values. The
-values for standard errors are \emph{not} transformed!}
+to apply transformations on the estimates and uncertainty intervals. The
+values for standard errors are \emph{not} transformed! If \code{trans}
+is not \code{NULL}, \emph{credible intervals} instead of \emph{HDI}
+are computed, due to the possible asymmetry of the HDI.}
 
 \item{digits}{Amount of digits to round numerical values in the output.}
 }

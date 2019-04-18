@@ -5,8 +5,10 @@
 #'
 #' @param x A \code{stanreg}, \code{stanfit} or \code{brmsfit} object.
 #' @param trans Name of a function or character vector naming a function, used
-#'        to apply transformations on the estimate and HDI-values. The
-#'        values for standard errors are \emph{not} transformed!
+#'        to apply transformations on the estimates and uncertainty intervals. The
+#'        values for standard errors are \emph{not} transformed! If \code{trans}
+#'        is not \code{NULL}, \emph{credible intervals} instead of \emph{HDI}
+#'        are computed, due to the possible asymmetry of the HDI.
 #' @param digits Amount of digits to round numerical values in the output.
 #'
 #' @return A tidy data frame, summarizing \code{x}, with consistent column names.
@@ -72,6 +74,8 @@
 #' @importFrom dplyr bind_cols select mutate slice inner_join n_distinct
 #' @importFrom stats mad formula
 #' @importFrom sjmisc is_empty trim
+#' @importFrom insight model_info
+#' @importFrom bayestestR hdi ci
 #' @export
 tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c("fixed", "random", "all"), digits = 2) {
 
@@ -84,14 +88,33 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   # get data frame and family info
   mod.dat <- as.data.frame(x)
-  faminfo <- model_family(x)
+  faminfo <- insight::model_info(x)
 
   # for brmsfit models, we need to remove some columns here to
   # match data rows later
   if (inherits(x, "brmsfit")) mod.dat <- brms_clean(mod.dat)
 
-  # compute HDI
-  out.hdi <- hdi(x, prob = prob, trans = trans, type = type)
+  # compute HDI / ci
+  if (!is.null(trans)) {
+    out.hdi <- bayestestR::ci(x, ci = prob, effects = type)
+    colnames(out.hdi) <- c("term", "ci.lvl", "ci.low", "ci.high")
+  } else {
+    out.hdi <- bayestestR::hdi(x, ci = prob, effects = type)
+    colnames(out.hdi) <- c("term", "ci.lvl", "hdi.low", "hdi.high")
+  }
+
+  # transform data frame for multiple ci-levels
+  if (length(unique(out.hdi$ci.lvl)) > 1) {
+    hdi_list <- lapply(
+      split(out.hdi, out.hdi$ci.lvl, drop = FALSE),
+      function(i) {
+        colnames(i)[3:4] <- sprintf("%s_%i", colnames(i)[3:4], i$ci.lvl[1])
+        i
+      })
+    hdi_frame <- Reduce(function(x, y) merge(x, y, all.y = TRUE, by = "term"), hdi_list)
+    to_remove <- string_starts_with("ci.lvl", colnames(hdi_frame))
+    out.hdi <- hdi_frame[, -to_remove, drop = FALSE]
+  }
 
   # get statistics
   nr <- .neff_ratio(x)
@@ -144,6 +167,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     simp.pars <- string_starts_with("simo_mo", colnames(mod.dat))
     if (!sjmisc::is_empty(simp.pars)) all.cols <- all.cols[-simp.pars]
     for (i in all.cols) mod.dat[[i]] <- trans(mod.dat[[i]])
+    for (i in 2:ncol(out.hdi)) out.hdi[[i]] <- trans(out.hdi[[i]])
   }
 
   est <- purrr::map_dbl(mod.dat, ~ sjmisc::typical_value(.x, fun = typical))
@@ -381,6 +405,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   attr(out, "digits") <- digits
   attr(out, "model_name") <- deparse(substitute(x))
   attr(out, "prob") <- prob
+  attr(out, "trans") <- trans
 
   if (inherits(x, "brmsfit"))
     attr(out, "formula") <- as.character(stats::formula(x))[1]

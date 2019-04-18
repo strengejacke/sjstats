@@ -209,7 +209,11 @@ print.tidy_stan <- function(x, ...) {
   if (!sjmisc::is_empty(simplex))
     x$simplex[simplex] <- "simplex"
 
-  x <- get_hdi_data(x, digits = as.numeric(attr(x, "digits")))
+  if (is.null(attr(x, "trans"))) {
+    x <- get_hdi_data(x, digits = as.numeric(attr(x, "digits")))
+  } else {
+    x <- get_hdi_data(x, digits = as.numeric(attr(x, "digits")), ci_pattern = "ci.", ci_name = "CI")
+  }
 
   # print zero-inflated models ----
 
@@ -961,7 +965,7 @@ get_hdi_data <- function(x, digits, ci_pattern = "hdi.", ci_name = "HDI") {
       else
         interv <- 90
     } else
-      interv <- round(100 * as.numeric(substr(cn[i], ci_pos[i] + 1, nchar(cn[i]))))
+      interv <- round(as.numeric(substr(cn[i], ci_pos[i] + 1, nchar(cn[i]))))
 
     colnames(tmp) <- sprintf("%s(%d%%)", ci_name, interv)
     tmp
