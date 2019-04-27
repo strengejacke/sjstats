@@ -123,6 +123,7 @@ predict.svyglm.nb <- function(object, newdata = NULL,
 
 #' @importFrom MASS glm.nb
 #' @importFrom stats coef setNames predict.glm
+#' @importFrom insight get_response
 #' @export
 residuals.svyglm.nb <- function(object, ...) {
 
@@ -135,7 +136,7 @@ residuals.svyglm.nb <- function(object, ...) {
     weights = scaled.weights
   )
 
-  y <- resp_val(fnb)
+  y <- insight::get_response(fnb)
   mu <- stats::predict.glm(fnb, type = "response")
   wts <- fnb$prior.weights
 

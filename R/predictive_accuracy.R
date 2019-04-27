@@ -50,6 +50,7 @@
 #' @importFrom purrr map map2 map2_dbl
 #' @importFrom stats lm cor glm predict predict.glm model.frame formula binomial
 #' @importFrom dplyr mutate
+#' @importFrom insight find_response get_response
 #' @export
 pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) {
 
@@ -64,7 +65,7 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
   formula <- stats::formula(fit)
 
   # get name of response
-  resp.name <- var_names(resp_var(fit))
+  resp.name <- insight::find_response(fit)
 
   # accuracy for linear models
   if (inherits(fit, "lm") && !inherits(fit, "glm")) {
@@ -80,7 +81,7 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
         dplyr::mutate(
           models = purrr::map(.data$strap, ~ stats::lm(formula, data = .x)),
           predictions = purrr::map(.data$models, ~ stats::predict(.x, type = "response")),
-          response = purrr::map(.data$models, ~ resp_val(.x)),
+          response = purrr::map(.data$models, ~ insight::get_response(.x)),
           accuracy = purrr::map2_dbl(.data$predictions, .data$response, ~ stats::cor(.x, .y, use = "pairwise.complete.obs"))
         )
     } else {
@@ -107,7 +108,7 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
         bootstrap(n) %>%
         dplyr::mutate(
           models = purrr::map(.data$strap, ~ stats::glm(formula, data = .x, family = stats::binomial(link = "logit"))),
-          accuracy = purrr::map_dbl(.data$models, ~ pROC::auc(pROC::roc(response = resp_val(.x), predictor = stats::predict.glm(.x, stats::model.frame(.x)))))
+          accuracy = purrr::map_dbl(.data$models, ~ pROC::auc(pROC::roc(response = insight::get_response(.x), predictor = stats::predict.glm(.x, stats::model.frame(.x)))))
         )
 
     } else {
@@ -128,7 +129,7 @@ pred_accuracy <- function(data, fit, method = c("cv", "boot"), k = 5, n = 1000) 
     class = c("sj_pred_accuracy", "list"),
     list(
       accuracy = mean(cv$accuracy),
-      std.error = sd(cv$accuracy),
+      std.error = stats::sd(cv$accuracy),
       stat = measure
     )
   )

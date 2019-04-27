@@ -143,7 +143,7 @@ std_beta_helper <- function(fit, type, ci.lvl, se, ...) {
 
     # get standard deviations for predictors
     sx <- purrr::map_dbl(fit.data, ~ stats::sd(.x, na.rm = TRUE))
-    sy <- stats::sd(resp_val(fit), na.rm = TRUE)
+    sy <- stats::sd(insight::get_response(fit), na.rm = TRUE)
 
     beta <- b * sx / sy
 
@@ -185,12 +185,13 @@ std_beta.stanreg <- function(fit, ...) {
 #' @importFrom dplyr n_distinct
 #' @importFrom sjlabelled as_numeric
 #' @importFrom sjmisc std
-#' @importFrom stats weights
+#' @importFrom stats weights lm
+#' @importFrom insight get_data find_predictors find_response
 std2 <- function(x) {
   form <- stats::formula(x)
-  data <- model_frame(x)
-  terms <- pred_vars(x)
-  resp <- resp_var(x)
+  data <- insight::get_data(x)
+  terms <- insight::find_predictors(x, effects = "all", flatten = TRUE)
+  resp <- insight::find_response(x)
 
   newdata <- purrr::map(colnames(data), function(.x) {
     v <- data[[.x]]
@@ -214,8 +215,8 @@ std2 <- function(x) {
   newdata <- newdata[, c(resp, terms)]
   if (!is.null(w)) {
     newdata <- cbind(newdata, w)
-    lm(form, data = newdata, weights = w)
+    stats::lm(form, data = newdata, weights = w)
   } else {
-    lm(form, data = newdata)
+    stats::lm(form, data = newdata)
   }
 }

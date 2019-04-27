@@ -3,6 +3,7 @@
 #' @importFrom purrr map_lgl map reduce
 #' @importFrom dplyr select bind_cols full_join
 #' @importFrom sjmisc add_columns is_empty
+#' @importFrom insight find_predictors
 #' @export
 model_frame <- function(x, fe.only = TRUE) {
   .Deprecated("insight::get_data()")
@@ -54,7 +55,7 @@ model_frame <- function(x, fe.only = TRUE) {
       } else if (inherits(x, "MCMCglmm")) {
         env_dataframes <- names(which(unlist(eapply(.GlobalEnv, is.data.frame))))
         env_dataframes <- names(which(unlist(eapply(.GlobalEnv, is.data.frame))))
-        pv <- pred_vars(x, fe.only = FALSE)
+        pv <- insight::find_predictors(x, effects = "all", flatten = TRUE)
         matchframe <- unlist(lapply(env_dataframes, function(.x) {
           dat <- get(.x)
           all(pv %in% colnames(dat))
@@ -192,7 +193,7 @@ model_frame <- function(x, fe.only = TRUE) {
     # check if we really have all formula terms in our model frame now
     pv <- tryCatch(
       {
-        pred_vars(x, fe.only = fe.only)
+        insight::find_predictors(x, effects = "all", flatten = TRUE)
       },
       error = function(x) { NULL }
     )
@@ -268,6 +269,6 @@ model_frame <- function(x, fe.only = TRUE) {
 
 #' @importFrom dplyr select
 get_zelig_relogit_frame <- function(x) {
-  vars <- c(resp_var(x), pred_vars(x))
+  vars <- c(resp_var(x), insight::find_predictors(x, effects = "all", flatten = TRUE))
   dplyr::select(x$data, !! vars)
 }

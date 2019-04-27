@@ -45,13 +45,14 @@ cv <- function(x, ...) {
 }
 
 
+#' @importFrom insight get_response
 cv_helper <- function(x) {
   # check if we have a fitted linear model
   if (inherits(x, c("lm", "lmerMod", "lme", "merModLmerTest")) && !inherits(x, "glm")) {
     # get response
-    dv <- resp_val(x)
+    dv <- insight::get_response(x)
     mw <- mean(dv, na.rm = TRUE)
-    stddev <- rmse(x)
+    stddev <- performance::rmse(x)
   } else {
     mw <- mean(x, na.rm = TRUE)
     stddev <- stats::sd(x, na.rm = TRUE)

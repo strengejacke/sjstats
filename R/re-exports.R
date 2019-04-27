@@ -42,3 +42,7 @@ bayestestR::rope
 #' @importFrom bayestestR equivalence_test
 #' @export
 bayestestR::equivalence_test
+
+#' @importFrom insight link_inverse
+#' @export
+insight::link_inverse

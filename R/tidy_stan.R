@@ -90,6 +90,10 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   mod.dat <- as.data.frame(x)
   faminfo <- insight::model_info(x)
 
+  if (insight::is_multivariate(x)) {
+    faminfo <- faminfo[[1]]
+  }
+
   # for brmsfit models, we need to remove some columns here to
   # match data rows later
   if (inherits(x, "brmsfit")) mod.dat <- brms_clean(mod.dat)
@@ -378,7 +382,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
     # get response variables
 
-    responses <- resp_var(x)
+    responses <- insight::find_response(x)
     resp.names <- names(responses)
 
 

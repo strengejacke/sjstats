@@ -14,6 +14,7 @@
 \alias{ci}
 \alias{rope}
 \alias{equivalence_test}
+\alias{link_inverse}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -22,6 +23,8 @@ below to see their documentation.
 
 \describe{
   \item{bayestestR}{\code{\link[bayestestR]{hdi}}, \code{\link[bayestestR]{ci}}, \code{\link[bayestestR]{rope}}, \code{\link[bayestestR]{equivalence_test}}}
+
+  \item{insight}{\code{\link[insight]{link_inverse}}}
 
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 
