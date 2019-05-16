@@ -962,13 +962,13 @@ get_hdi_data <- function(x, digits, ci_pattern = "hdi.", ci_name = "HDI") {
 
     if (ci_pos[i] < 0) {
       if (!is.null(prob))
-        interv <- round(100 * prob[1])
+        interv <- 100 * prob[1]
       else
         interv <- 90
     } else
-      interv <- round(as.numeric(substr(cn[i], ci_pos[i] + 1, nchar(cn[i]))))
+      interv <- as.numeric(substr(cn[i], ci_pos[i] + 1, nchar(cn[i])))
 
-    colnames(tmp) <- sprintf("%s(%d%%)", ci_name, interv)
+    colnames(tmp) <- sprintf("%s(%.9g%%)", ci_name, interv)
     tmp
   }) %>%
     dplyr::bind_cols()
