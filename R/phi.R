@@ -17,7 +17,7 @@ cramer <- function(tab, ...) {
 
 
 #' @export
-cramer.table <- function(tab) {
+cramer.table <- function(tab, ...) {
   .cramer(tab)
 }
 
