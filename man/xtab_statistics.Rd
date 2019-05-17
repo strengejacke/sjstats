@@ -3,12 +3,15 @@
 \name{phi}
 \alias{phi}
 \alias{cramer}
+\alias{cramer.formula}
 \alias{xtab_statistics}
 \title{Measures of association for contingency tables}
 \usage{
 phi(tab)
 
-cramer(tab)
+cramer(tab, ...)
+
+\method{cramer}{formula}(formula, data, ...)
 
 xtab_statistics(data, x1 = NULL, x2 = NULL, statistics = c("auto",
   "cramer", "phi", "spearman", "kendall", "pearson", "fisher"),
@@ -18,6 +21,10 @@ xtab_statistics(data, x1 = NULL, x2 = NULL, statistics = c("auto",
 \item{tab}{A \code{\link{table}} or \code{\link[stats]{ftable}}. Tables of class
 \code{\link[stats]{xtabs}} and other will be coerced to \code{ftable}
 objects.}
+
+\item{...}{Other arguments, passed down to the statistic functions
+\code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
+\code{\link[stats]{cor.test}}.}
 
 \item{data}{A data frame or a table object. If a table object, \code{x1} and
 \code{x2} will be ignored. For Kendall's \emph{tau}, Spearman's \emph{rho}
@@ -41,10 +48,6 @@ be one of \code{"auto"}, \code{"cramer"}, \code{"phi"}, \code{"spearman"},
 \item{weights}{Name of variable in \code{x} that indicated the vector of
 weights that will be applied to weight all observations. Default is
 \code{NULL}, so no weights are used.}
-
-\item{...}{Other arguments, passed down to the statistic functions
-\code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
-\code{\link[stats]{cor.test}}.}
 }
 \value{
 For \code{phi()}, the table's Phi value. For \code{cramer()}, the

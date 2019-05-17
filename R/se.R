@@ -259,18 +259,6 @@ se.svyglm.nb <- function(x, ...) {
 }
 
 
-#' @rdname se
-#' @export
-se.sj_icc_merMod <- function(x, nsim = 100, ...) {
-  std_e_icc(x, nsim, adjusted = FALSE)
-}
-
-#' @rdname se
-#' @export
-se.sj_icc <- function(x, nsim = 100, ...) {
-  std_e_icc(x, nsim, adjusted = TRUE)
-}
-
 #' @export
 se.glmerMod <- function(x, ...) {
   std_merMod(x)
@@ -358,98 +346,6 @@ std_merMod <- function(fit) {
   names(se.merMod) <- inames
 
   se.merMod
-}
-
-
-std_e_icc <- function(x, nsim, adjusted = FALSE) {
-  # check whether model is still in environment?
-  obj.name <- attr(x, ".obj.name", exact = T)
-  if (!exists(obj.name, envir = globalenv()))
-    stop(sprintf("Can't find merMod-object `%s` (that was used to compute the ICC) in the environment.", obj.name), call. = F)
-
-  # get object, see whether formulas match
-  fitted.model <- globalenv()[[obj.name]]
-  model.formula <- attr(x, "formula", exact = T)
-
-  if (!identical(model.formula, formula(fitted.model)))
-    stop(sprintf("merMod-object `%s` was fitted with a different formula than ICC-model", obj.name), call. = F)
-
-  # get model family, we may have glmer
-  model.family <- attr(x, "family", exact = T)
-
-  # check for all required arguments
-  if (missing(nsim) || is.null(nsim)) nsim <- 100
-
-  # get ICC, and compute bootstrapped SE, than return both
-  bstr <- bootstr_icc_se(
-    model_frame(fitted.model, fe.only = FALSE),
-    nsim,
-    model.formula,
-    model.family,
-    adjusted
-  )
-
-  # get adjusted ICC only
-  if (adjusted) x <- x[[1]]
-
-  # now compute SE and p-values for the bootstrapped ICC
-  res <- data_frame(
-    model = obj.name,
-    icc = as.vector(x),
-    std.err = boot_se(bstr)[["std.err"]],
-    p.value = boot_p(bstr)[["p.value"]]
-  )
-
-  structure(
-    class = "sj_se_icc",
-    list(result = res, bootstrap_data = bstr, adjusted = adjusted)
-  )
-}
-
-
-
-#' @importFrom dplyr mutate
-#' @importFrom lme4 lmer glmer
-#' @importFrom utils txtProgressBar
-#' @importFrom purrr map map_dbl
-#' @importFrom rlang .data
-bootstr_icc_se <- function(dd, nsim, formula, model.family, adjusted) {
-  # create progress bar
-  pb <- utils::txtProgressBar(min = 1, max = nsim, style = 3)
-
-  # generate bootstraps
-  dummy <- dd %>%
-    bootstrap(nsim) %>%
-    dplyr::mutate(
-      models = purrr::map(.data$strap, function(x) {
-        # update progress bar
-        utils::setTxtProgressBar(pb, x$resample.id)
-        # check model family, then compute mixed model
-        if (model.family == "gaussian")
-          lme4::lmer(formula, data = x)
-        else
-          lme4::glmer(formula, data = x, family = model.family)
-      }),
-      # compute ICC(s) for each "bootstrapped" regression
-      icc = suppressMessages(purrr::map(.data$models, ~ icc(.x, adjusted = adjusted)))
-    )
-
-  # we may have more than one random term in the model, so we might have
-  # multiple ICC values. In this case, we need to split the multiple icc-values
-  # into multiple columns, i.e. one column per ICC value
-
-  if (adjusted) {
-    icc_data <-
-      as.data.frame(matrix(unlist(purrr::map(dummy$icc, ~ .x[[1]])), nrow = nrow(dummy)))
-  } else {
-    icc_data <-
-      as.data.frame(matrix(unlist(purrr::map(dummy$icc, ~ .x)), nrow = nrow(dummy)))
-  }
-
-  # close progresss bar
-  close(pb)
-
-  icc_data
 }
 
 ## TODO se for poisson etc

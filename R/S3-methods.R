@@ -188,13 +188,6 @@ print.tidy_stan <- function(x, ...) {
 }
 
 
-#' @importFrom knitr knit_print asis_output
-#' @export
-knit_print.tidy_stan <-  function(input, ...) {
-  knitr::asis_output(.print_tidy_stan(input, .color = FALSE, ...))
-}
-
-
 .print_tidy_stan <- function(x, .color, ...) {
   if (.color)
     insight::print_color("\n# Summary Statistics of Stan-Model\n\n", "blue")
@@ -333,7 +326,7 @@ knit_print.tidy_stan <-  function(input, ...) {
       } else {
 
         if (.color)
-          insight::print_color(sprintf("## Response%s: %s\n\n", resp.string, insight::print_color(resp, "red")), "blue")
+          insight::print_color(sprintf("## Response%s: %s\n\n", resp.string, resp), "blue")
         else
           cat(sprintf("## Response%s: %s\n\n", resp.string, resp))
 
@@ -488,12 +481,12 @@ print_stan_ranef <- function(x, zeroinf = FALSE, .color) {
 
     if (!zeroinf) {
       if (.color)
-        insight::print_color(sprintf("## Random effect %s\n\n", insight::print_color(r, "red")), "blue")
+        insight::print_color(sprintf("## Random effect %s\n\n", r), "blue")
       else
         cat(sprintf("## Random effect %s\n\n", r))
     } else {
       if (.color)
-        insight::print_color(sprintf("## Conditional Model: Random effect %s\n\n", insight::print_color(r, "red")), "blue")
+        insight::print_color(sprintf("## Conditional Model: Random effect %s\n\n", r), "blue")
       else
         cat(sprintf("## Conditional Model: Random effect %s\n\n", r))
     }
@@ -548,7 +541,7 @@ print_stan_mv_re <- function(x, resp, .color) {
   if (!sjmisc::is_empty(fe)) {
 
     if (.color)
-      insight::print_color(sprintf("## Fixed effects for response: %s\n\n", insight::print_color(resp, "red")), "blue")
+      insight::print_color(sprintf("## Fixed effects for response: %s\n\n", resp), "blue")
     else
       cat(sprintf("## Fixed effects for response: %s\n\n", resp))
 
@@ -577,8 +570,8 @@ print_stan_mv_re <- function(x, resp, .color) {
 
     if (!sjmisc::is_empty(find.re)) {
       if (.color) {
-        insight::print_color(sprintf("## Random effect %s", insight::print_color(resp, "red")), "blue")
-        insight::print_color(sprintf(" for response %s\n\n", insight::print_color(resp, "red")), "blue")
+        insight::print_color(sprintf("## Random effect %s", resp), "blue")
+        insight::print_color(sprintf(" for response %s\n\n", resp), "blue")
       } else {
         cat(sprintf("## Random effect %s", resp))
         cat(sprintf(" for response %s\n\n", resp))
@@ -650,7 +643,7 @@ print_stan_zeroinf_ranef <- function(x, .color) {
     for (r in re) {
 
       if (.color)
-        insight::print_color(sprintf("## Zero-Inflated Model: Random effect %s\n\n", insight::print_color(r, "red")), "blue")
+        insight::print_color(sprintf("## Zero-Inflated Model: Random effect %s\n\n", r), "blue")
       else
         cat(sprintf("## Zero-Inflated Model: Random effect %s\n\n", r))
 

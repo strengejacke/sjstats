@@ -100,11 +100,11 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   # compute HDI / ci
   if (!is.null(trans)) {
-    out.hdi <- bayestestR::ci(x, ci = prob, effects = type)
-    colnames(out.hdi) <- c("term", "ci.lvl", "ci.low", "ci.high")
+    out.hdi <- bayestestR::ci(x, ci = prob, effects = type, component = "all")
+    colnames(out.hdi)[1:4] <- c("term", "ci.lvl", "ci.low", "ci.high")
   } else {
-    out.hdi <- bayestestR::hdi(x, ci = prob, effects = type)
-    colnames(out.hdi) <- c("term", "ci.lvl", "hdi.low", "hdi.high")
+    out.hdi <- bayestestR::hdi(x, ci = prob, effects = type, component = "all")
+    colnames(out.hdi)[1:4] <- c("term", "ci.lvl", "hdi.low", "hdi.high")
   }
 
   # transform data frame for multiple ci-levels
@@ -127,9 +127,9 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   if (inherits(x, "brmsfit")) {
     cnames <- make.names(names(nr))
-    keep <- cnames %in% out.hdi$term
+    keep <- cnames %in% names(mod.dat)
   } else {
-    keep <- names(nr) %in% out.hdi$term
+    keep <- names(nr) %in% names(mod.dat)
   }
 
   nr <- nr[keep]
@@ -143,9 +143,9 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   if (inherits(x, "brmsfit")) {
     cnames <- make.names(names(rh))
-    keep <- cnames %in% out.hdi$term
+    keep <- cnames %in% names(mod.dat)
   } else {
-    keep <- names(rh) %in% out.hdi$term
+    keep <- names(rh) %in% names(mod.dat)
   }
 
   rh <- rh[keep]
@@ -160,7 +160,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   }
 
   se <- mcse(x, type = type)
-  se <- se[se$term %in% out.hdi$term, ]
+  se <- se[se$term %in% names(mod.dat), ]
 
 
   # transform estimate, if requested
@@ -179,12 +179,9 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   out <- data_frame(
     term = names(est),
     estimate = est,
-    std.error = purrr::map_dbl(mod.dat, stats::mad)
+    std.error = purrr::map_dbl(mod.dat, stats::mad),
+    out.hdi[, -1]
   ) %>%
-    dplyr::inner_join(
-      out.hdi,
-      by = "term"
-    ) %>%
     dplyr::inner_join(
       ratio,
       by = "term"
@@ -404,6 +401,9 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   }
 
 
+  if (obj_has_name(out, "Component")) out[, "Component"] <- NULL
+  if (obj_has_name(out, "Group")) out[, "Group"] <- NULL
+
   class(out) <- c("tidy_stan", class(out))
 
   attr(out, "digits") <- digits
@@ -560,6 +560,8 @@ n_of_chains <- function(x) {
     ratio <- ess/tss
     ratio <- ratio[!names(ratio) %in% c("mean_PPD", "log-posterior")]
   }
+
+  ratio
 }
 
 
