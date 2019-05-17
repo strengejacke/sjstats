@@ -8,7 +8,6 @@
 \alias{r2}
 \alias{icc}
 \alias{mse}
-\alias{performance_rse}
 \alias{rmse}
 \alias{hdi}
 \alias{ci}
@@ -28,7 +27,7 @@ below to see their documentation.
 
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 
-  \item{performance}{\code{\link[performance]{r2}}, \code{\link[performance]{icc}}, \code{\link[performance]{mse}}, \code{\link[performance]{performance_rse}}, \code{\link[performance]{rmse}}}
+  \item{performance}{\code{\link[performance]{r2}}, \code{\link[performance]{icc}}, \code{\link[performance]{mse}}, \code{\link[performance]{rmse}}}
 
   \item{sjmisc}{\code{\link[sjmisc]{typical_value}}}
 }}

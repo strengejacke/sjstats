@@ -19,10 +19,6 @@ performance::icc
 #' @export
 performance::mse
 
-#' @importFrom performance performance_rse
-#' @export
-performance::performance_rse
-
 #' @importFrom performance rmse
 #' @export
 performance::rmse
