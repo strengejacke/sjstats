@@ -54,6 +54,7 @@ mediation <- function(x, ...) {
 #' @importFrom stats formula
 #' @importFrom dplyr pull bind_cols
 #' @importFrom sjmisc typical_value
+#' @importFrom insight model_info
 #' @export
 mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "median", ...) {
   # check for pkg availability, else function might fail
@@ -64,7 +65,7 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
   if (length(prob) > 1) prob <- prob[1]
 
   # check for binary response. In this case, user should rescale variables
-  fitinfo <- model_family(x, mv = TRUE)
+  fitinfo <- insight::model_info(x)
   if (any(purrr::map_lgl(fitinfo, ~ .x$is_bin))) {
     message("One of moderator or outcome is binary, so direct and indirect effects may be on different scales. Consider rescaling model predictors, e.g. with `sjmisc::std()`.")
   }
