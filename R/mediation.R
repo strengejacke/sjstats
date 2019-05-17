@@ -74,7 +74,7 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
   fixm <- FALSE
 
   if (missing(mediator)) {
-    pv <- insight::find_predictors(x)
+    pv <- insight::find_predictors(x, flatten = TRUE)
     mediator <- pv[pv %in% dv]
     fixm <- TRUE
   }
@@ -123,7 +123,8 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
 
   # proportion mediated: indirect effect / total effect
   prop.mediated <- sjmisc::typical_value(eff.indirect, fun = typical) / sjmisc::typical_value(eff.total, fun = typical)
-  prop.se <- diff(hdi(eff.indirect / eff.total, prob = prob) / 2)
+  hdi_eff <- hdi(eff.indirect / eff.total, ci = prob)
+  prop.se <- (hdi_eff$CI_high - hdi_eff$CI_low) / 2
   prop.hdi <- prop.mediated + c(-1, 1) * prop.se
 
   res <- data_frame(
@@ -137,10 +138,10 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
     )
   ) %>% dplyr::bind_cols(
     as.data.frame(rbind(
-      hdi(eff.direct, prob = prob),
-      hdi(eff.indirect, prob = prob),
-      hdi(eff.mediator, prob = prob),
-      hdi(eff.total, prob = prob),
+      hdi(eff.direct, ci = prob)[, -1],
+      hdi(eff.indirect, ci = prob)[, -1],
+      hdi(eff.mediator, ci = prob)[, -1],
+      hdi(eff.total, ci = prob)[, -1],
       prop.hdi
     ))
   )
