@@ -100,10 +100,10 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
 
   # compute HDI / ci
   if (!is.null(trans)) {
-    out.hdi <- bayestestR::ci(x, ci = prob, effects = type, component = "all")
+    out.hdi <- bayestestR::ci(x, ci = prob, effects = "all", component = "all")
     colnames(out.hdi)[1:4] <- c("term", "ci.lvl", "ci.low", "ci.high")
   } else {
-    out.hdi <- bayestestR::hdi(x, ci = prob, effects = type, component = "all")
+    out.hdi <- bayestestR::hdi(x, ci = prob, effects = "all", component = "all")
     colnames(out.hdi)[1:4] <- c("term", "ci.lvl", "hdi.low", "hdi.high")
   }
 
