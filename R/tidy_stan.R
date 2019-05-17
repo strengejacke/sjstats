@@ -120,6 +120,8 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     out.hdi <- hdi_frame[, -to_remove, drop = FALSE]
   }
 
+  mod.dat <- mod.dat[, grepl("^(?!sigma_)", colnames(mod.dat), perl = TRUE)]
+
   # get statistics
   nr <- .neff_ratio(x)
 
