@@ -45,7 +45,7 @@ cv <- function(x, ...) {
 }
 
 
-#' @importFrom performance performance_rmse
+#' @importFrom performance rmse
 #' @importFrom insight get_response
 cv_helper <- function(x) {
   # check if we have a fitted linear model
@@ -53,7 +53,7 @@ cv_helper <- function(x) {
     # get response
     dv <- insight::get_response(x)
     mw <- mean(dv, na.rm = TRUE)
-    stddev <- performance::performance_rmse(x)
+    stddev <- performance::rmse(x)
   } else {
     mw <- mean(x, na.rm = TRUE)
     stddev <- stats::sd(x, na.rm = TRUE)

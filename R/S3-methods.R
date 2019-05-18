@@ -325,10 +325,12 @@ print.tidy_stan <- function(x, ...) {
         print_stan_mv_re(x, resp, .color)
       } else {
 
-        if (.color)
-          insight::print_color(sprintf("## Response%s: %s\n\n", resp.string, resp), "blue")
-        else
+        if (.color) {
+          insight::print_color(sprintf("## Response%s:", resp.string), "blue")
+          insight::print_color(sprintf(" %s\n\n", resp), "red")
+        } else {
           cat(sprintf("## Response%s: %s\n\n", resp.string, resp))
+        }
 
         xr <- x %>%
           dplyr::filter(.data$response == !! resp) %>%
@@ -480,15 +482,19 @@ print_stan_ranef <- function(x, zeroinf = FALSE, .color) {
   for (r in re) {
 
     if (!zeroinf) {
-      if (.color)
-        insight::print_color(sprintf("## Random effect %s\n\n", r), "blue")
-      else
+      if (.color) {
+        insight::print_color("## Random effect ", "blue")
+        insight::print_color(sprintf("%s\n\n", r), "red")
+      } else {
         cat(sprintf("## Random effect %s\n\n", r))
+      }
     } else {
-      if (.color)
-        insight::print_color(sprintf("## Conditional Model: Random effect %s\n\n", r), "blue")
-      else
+      if (.color) {
+        insight::print_color("## Conditional Model: Random effect ", "blue")
+        insight::print_color(sprintf("%s\n\n", r), "red")
+      } else {
         cat(sprintf("## Conditional Model: Random effect %s\n\n", r))
+      }
     }
 
     xr <- x %>%
@@ -540,10 +546,12 @@ print_stan_mv_re <- function(x, resp, .color) {
 
   if (!sjmisc::is_empty(fe)) {
 
-    if (.color)
-      insight::print_color(sprintf("## Fixed effects for response: %s\n\n", resp), "blue")
-    else
+    if (.color) {
+      insight::print_color("## Fixed effects for response: ", "blue")
+      insight::print_color(sprintf("%s\n\n", resp), "red")
+    } else {
       cat(sprintf("## Fixed effects for response: %s\n\n", resp))
+    }
 
     x.fe <- dplyr::slice(x, !! fe)
     x <- dplyr::slice(x, -!! fe)
@@ -570,8 +578,10 @@ print_stan_mv_re <- function(x, resp, .color) {
 
     if (!sjmisc::is_empty(find.re)) {
       if (.color) {
-        insight::print_color(sprintf("## Random effect %s", resp), "blue")
-        insight::print_color(sprintf(" for response %s\n\n", resp), "blue")
+        insight::print_color("## Random effect ", "blue")
+        insight::print_color(sprintf("%s", resp), "red")
+        insight::print_color(" for response ", "blue")
+        insight::print_color(sprintf("%s\n\n", resp), "red")
       } else {
         cat(sprintf("## Random effect %s", resp))
         cat(sprintf(" for response %s\n\n", resp))
@@ -642,10 +652,12 @@ print_stan_zeroinf_ranef <- function(x, .color) {
 
     for (r in re) {
 
-      if (.color)
-        insight::print_color(sprintf("## Zero-Inflated Model: Random effect %s\n\n", r), "blue")
-      else
+      if (.color) {
+        insight::print_color("## Zero-Inflated Model: Random effect ", "blue")
+        insight::print_color(sprintf("%s\n\n", r), "red")
+      } else {
         cat(sprintf("## Zero-Inflated Model: Random effect %s\n\n", r))
+      }
 
       xr <- x %>%
         dplyr::filter(.data$random.effect == !! r) %>%
@@ -1087,10 +1099,10 @@ print.sj_chi2gof <- function(x, ...) {
 
 #' @export
 print.sj_check_assump <- function(x, ...) {
-  cat(.colour("blue", "\n# Checking Model-Assumptions\n\n"))
+  insight::print_color("\n# Checking Model-Assumptions\n\n", "blue")
   cat(sprintf("  Model: %s", attr(x, "formula", exact = TRUE)))
 
-  cat(.colour("red", "\n\n                          violated    statistic\n"))
+  insight::print_color("\n\n                          violated    statistic\n", "red")
 
   v1 <- ifelse(x$heteroskedasticity < 0.05, "yes", "no")
   v2 <- ifelse(x$multicollinearity > 4, "yes", "no")
@@ -1111,7 +1123,7 @@ print.sj_check_assump <- function(x, ...) {
 
 #' @export
 print.sj_ttest <- function(x, ...) {
-  cat(.colour("blue", sprintf("\n%s (%s)\n", x$method, x$alternative)))
+  insight::print_color(sprintf("\n%s (%s)\n", x$method, x$alternative), "blue")
 
   group <- attr(x, "group.name", exact = TRUE)
   xn <- attr(x, "x.name", exact = TRUE)
@@ -1125,10 +1137,10 @@ print.sj_ttest <- function(x, ...) {
   st <- sprintf("# t=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$df), x$p.value)
 
   if (!is.null(yn)) {
-    cat(.colour("cyan", sprintf("\n# comparison %s %s %s %s\n", verbs[1], xn, verbs[2], yn)))
+    insight::print_color(sprintf("\n# comparison %s %s %s %s\n", verbs[1], xn, verbs[2], yn), "cyan")
   }
 
-  cat(.colour("cyan", st))
+  insight::print_color(st, "cyan")
 
 
   if (!is.null(yn)) {
@@ -1157,20 +1169,20 @@ print.sj_ttest <- function(x, ...) {
 
 #' @export
 print.sj_wmwu <- function(x, ...) {
-  cat(.colour("blue", sprintf("\n%s (%s)\n", x$method, x$alternative)))
+  insight::print_color(sprintf("\n%s (%s)\n", x$method, x$alternative), "blue")
 
   group <- attr(x, "group.name", exact = TRUE)
   xn <- attr(x, "x.name", exact = TRUE)
 
-  cat(.colour("cyan", sprintf("\n# comparison of %s by %s\n", xn, group)))
-  cat(.colour("cyan", sprintf("# Chisq=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$parameter), x$p.value)))
+  insight::print_color(sprintf("\n# comparison of %s by %s\n", xn, group), "cyan")
+  insight::print_color(sprintf("# Chisq=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$parameter), x$p.value), "cyan")
   cat(sprintf("  difference in mean rank score: %.3f\n\n", x$estimate))
 }
 
 
 #' @export
 print.sj_wcor <- function(x, ...) {
-  cat(.colour("blue", sprintf("\nWeighted %s\n\n", x$method)))
+  insight::print_color(sprintf("\nWeighted %s\n\n", x$method), "blue")
 
   if (!is.null(x$ci)) {
     cilvl <- sprintf("%.2i%%", as.integer(100 * x$ci.lvl))
