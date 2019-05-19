@@ -65,9 +65,7 @@ Suggests:
     sjPlot,
     survey,
     rstan,
-    rstantools,
     rstanarm,
-    rstudioapi,
     VGAM,
     Zelig,
     testthat
