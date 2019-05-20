@@ -200,3 +200,12 @@ var_names <- function(x) {
   .Deprecated("insight::clean_names()")
   insight::clean_names(x)
 }
+
+
+#' @importFrom performance performance_accuracy
+#' @rdname overdisp
+#' @export
+pred_accuracy <- function(x, ...) {
+  .Deprecated("performance::performance_accuracy()")
+  performance::performance_accuracy(x, ...)
+}

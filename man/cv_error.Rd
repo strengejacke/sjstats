@@ -14,8 +14,6 @@ cv_compare(data, formulas, k = 5)
 
 \item{formula}{The formula to fit the linear model for the test and training data.}
 
-\item{k}{The number of folds for the kfold-crossvalidation.}
-
 \item{formulas}{A list of formulas, to fit linear models for the test and training data.}
 }
 \value{

@@ -22,6 +22,7 @@
 \alias{grp_var}
 \alias{re_grp_var}
 \alias{var_names}
+\alias{pred_accuracy}
 \title{Deprecated functions}
 \usage{
 overdisp(x, ...)
@@ -65,6 +66,8 @@ grp_var(x)
 re_grp_var(x)
 
 var_names(x)
+
+pred_accuracy(x, ...)
 }
 \arguments{
 \item{x}{An object.}

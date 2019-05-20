@@ -23,6 +23,7 @@ Following functions are deprecated:
 * `is_singular()`, please use `performance::check_singularity()`
 * `reliab_test()`, please use `performance::item_reliability()`
 * `split_half()`, please use `performance::item_split_half()`
+* `predictive_accurarcy()`, please use `performance::performance_accuracy()`
 * `cronb()`, please use `performance::cronbachs_alpha()`
 * `difficulty()`, please use `performance::item_difficulty()`
 * `mic()`, please use `performance::item_intercor()`
