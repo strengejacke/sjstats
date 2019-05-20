@@ -14,6 +14,14 @@
 \alias{pca_rotate}
 \alias{n_eff}
 \alias{mcse}
+\alias{pred_vars}
+\alias{model_family}
+\alias{model_frame}
+\alias{resp_val}
+\alias{resp_var}
+\alias{grp_var}
+\alias{re_grp_var}
+\alias{var_names}
 \title{Deprecated functions}
 \usage{
 overdisp(x, ...)
@@ -41,6 +49,22 @@ pca_rotate(x, ...)
 n_eff(x, ...)
 
 mcse(x, ...)
+
+pred_vars(x, ...)
+
+model_family(x, ...)
+
+model_frame(x, ...)
+
+resp_val(x, ...)
+
+resp_var(x, ...)
+
+grp_var(x)
+
+re_grp_var(x)
+
+var_names(x)
 }
 \arguments{
 \item{x}{An object.}

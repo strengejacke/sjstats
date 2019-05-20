@@ -7,13 +7,15 @@
 #'
 #' @return Nothing.
 #'
-#' @importFrom performance check_overdispersion check_zeroinflation check_convergence check_singularity item_reliability item_split_half cronbachs_alpha item_difficulty item_intercor principal_components
+#' @importFrom performance check_overdispersion
 #' @export
 overdisp <- function(x, ...) {
   .Deprecated("performance::check_overdispersion()")
   performance::check_overdispersion(x)
 }
 
+
+#' @importFrom performance check_zeroinflation
 #' @rdname overdisp
 #' @export
 zero_count <- function(x, ...) {
@@ -21,6 +23,8 @@ zero_count <- function(x, ...) {
   performance::check_zeroinflation(x)
 }
 
+
+#' @importFrom performance check_convergence
 #' @rdname overdisp
 #' @export
 converge_ok <- function(x, ...) {
@@ -28,6 +32,8 @@ converge_ok <- function(x, ...) {
   performance::check_convergence(x)
 }
 
+
+#' @importFrom performance check_singularity
 #' @rdname overdisp
 #' @export
 is_singular <- function(x, ...) {
@@ -35,6 +41,8 @@ is_singular <- function(x, ...) {
   performance::check_singularity(x)
 }
 
+
+#' @importFrom performance item_reliability
 #' @rdname overdisp
 #' @export
 reliab_test <- function(x, ...) {
@@ -42,6 +50,8 @@ reliab_test <- function(x, ...) {
   performance::item_reliability(x)
 }
 
+
+#' @importFrom performance item_split_half
 #' @rdname overdisp
 #' @export
 split_half <- function(x, ...) {
@@ -49,6 +59,8 @@ split_half <- function(x, ...) {
   performance::item_split_half(x)
 }
 
+
+#' @importFrom performance cronbachs_alpha
 #' @rdname overdisp
 #' @export
 cronb <- function(x, ...) {
@@ -56,6 +68,8 @@ cronb <- function(x, ...) {
   performance::cronbachs_alpha(x)
 }
 
+
+#' @importFrom performance item_difficulty
 #' @rdname overdisp
 #' @export
 difficulty <- function(x, ...) {
@@ -63,6 +77,8 @@ difficulty <- function(x, ...) {
   performance::item_difficulty(x)
 }
 
+
+#' @importFrom performance item_intercor
 #' @rdname overdisp
 #' @export
 mic <- function(x, ...) {
@@ -70,6 +86,8 @@ mic <- function(x, ...) {
   performance::item_intercor(x)
 }
 
+
+#' @importFrom performance principal_components
 #' @rdname overdisp
 #' @export
 pca <- function(x, ...) {
@@ -77,6 +95,8 @@ pca <- function(x, ...) {
   performance::principal_components(x)
 }
 
+
+#' @importFrom performance principal_components
 #' @rdname overdisp
 #' @export
 pca_rotate <- function(x, ...) {
@@ -85,6 +105,7 @@ pca_rotate <- function(x, ...) {
 }
 
 
+#' @importFrom bayestestR effective_sample
 #' @rdname overdisp
 #' @export
 n_eff <- function(x, ...) {
@@ -93,9 +114,89 @@ n_eff <- function(x, ...) {
 }
 
 
+#' @importFrom bayestestR mcse
 #' @rdname overdisp
 #' @export
 mcse <- function(x, ...) {
   .Deprecated("bayestestR::mcse()")
   bayestestR::mcse(x, ...)
+}
+
+
+
+#' @importFrom insight find_predictors
+#' @rdname overdisp
+#' @export
+pred_vars <- function(x, ...) {
+  .Deprecated("insight::find_predictors()")
+  insight::find_predictors(x, ...)
+}
+
+
+
+#' @importFrom insight model_info
+#' @rdname overdisp
+#' @export
+model_family <- function(x, ...) {
+  .Deprecated("insight::model_info()")
+  insight::model_info(x, ...)
+}
+
+
+#' @importFrom insight get_data
+#' @rdname overdisp
+#' @export
+model_frame <- function(x, ...) {
+  .Deprecated("insight::get_data()")
+  insight::get_data(x, ...)
+}
+
+
+
+#' @rdname overdisp
+#' @importFrom insight get_response
+#' @export
+resp_val <- function(x, ...) {
+  .Deprecated("insight::get_response()")
+  insight::get_response(x, ...)
+}
+
+
+
+#' @rdname overdisp
+#' @importFrom insight find_response
+#' @export
+resp_var <- function(x, ...) {
+  .Deprecated("insight::find_response()")
+  insight::find_response(x, ...)
+}
+
+
+
+#' @importFrom insight find_random
+#' @rdname overdisp
+#' @export
+grp_var <- function(x) {
+  .Deprecated("insight::find_random()")
+  insight::find_random(x)
+}
+
+
+
+#' @importFrom insight find_random
+#' @rdname overdisp
+#' @export
+re_grp_var <- function(x) {
+  .Deprecated("insight::find_random()")
+  insight::find_random(x)
+}
+
+
+
+#' @importFrom insight clean_names
+#' @rdname overdisp
+#' @export
+var_names <- function(x) {
+  .Deprecated("insight::clean_names()")
+  insight::clean_names(x)
 }
