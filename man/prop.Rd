@@ -25,6 +25,8 @@ Must be a vector of same length as the input vector. Default is
 proportion is calculated. \code{na.rm = FALSE} gives you the raw
 percentage of a value in a vector, \code{na.rm = TRUE} the valid
 percentage.}
+
+\item{digits}{Amount of digits for returned values.}
 }
 \value{
 For one condition, a numeric value with the proportion of the values

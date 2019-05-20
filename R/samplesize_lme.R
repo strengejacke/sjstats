@@ -147,19 +147,22 @@ deff <- function(n, icc = 0.05) {
 #' @export
 se_ybar <- function(fit) {
   # get model icc
-  icc <- icc(fit)
+  vars <- insight::get_variance(fit, verbose = FALSE)
 
   # get group variances
-  tau.00 <- unname(attr(icc, "tau.00", exact = T))
+  tau.00 <- unname(vars$var.intercept)
 
   # total variance
-  tot_var <- sum(tau.00, attr(icc, "sigma_2", exact = T))
+  tot_var <- sum(tau.00, vars$var.residual)
 
   # get number of groups
   m.cnt <- lme4::ngrps(fit)
 
   # compute number of observations per group (level-2-unit)
   obs <- round(stats::nobs(fit) / m.cnt)
+
+  # compute simple icc
+  icc <- tau.00 / tot_var
 
   # compute standard error of sample mean
   se <- purrr::map_dbl(seq_len(length(m.cnt)), ~ sqrt((tot_var / stats::nobs(fit)) * deff(n = obs[.x], icc = icc[.x])))

@@ -12,6 +12,8 @@
 \alias{mic}
 \alias{pca}
 \alias{pca_rotate}
+\alias{n_eff}
+\alias{mcse}
 \title{Deprecated functions}
 \usage{
 overdisp(x, ...)
@@ -35,6 +37,10 @@ mic(x, ...)
 pca(x, ...)
 
 pca_rotate(x, ...)
+
+n_eff(x, ...)
+
+mcse(x, ...)
 }
 \arguments{
 \item{x}{An object.}

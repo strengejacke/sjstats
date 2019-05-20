@@ -15,10 +15,6 @@ case, the list must contain elements named \code{estimate} and
 \code{p.value} (see 'Examples' and 'Details').}
 
 \item{...}{Currently not used.}
-
-\item{nsim}{Numeric, the number of simulations for calculating the
-standard error for intraclass correlation coefficients, as
-obtained by the \code{\link{icc}}-function.}
 }
 \value{
 The standard error of \code{x}.
@@ -48,11 +44,6 @@ Compute standard error for a variable, for all variables
   \cr \cr
   For generalized linear models, approximated standard errors, using the delta
   method for transformed regression parameters are returned (Oehlert 1992).
-  \cr \cr
-  \strong{Standard error for Intraclass Correlation Coefficient (ICC)}
-  \cr \cr
-  The standard error for the \code{\link{icc}} is based on bootstrapping,
-  thus, the \code{nsim}-argument is required. See 'Examples'.
   \cr \cr
   \strong{Standard error for proportions and mean value}
   \cr \cr

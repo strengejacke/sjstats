@@ -24,6 +24,12 @@ weights that will be applied to weight all observations. Default is
 \item{digits}{Numeric, amount of digits after decimal point when rounding
 estimates and values.}
 
+\item{out}{Character vector, indicating whether the results should be printed
+to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
+(\code{out = "viewer"}) or browser (\code{out = "browser"}), of if the
+results should be plotted (\code{out = "plot"}, only applies to certain
+functions). May be abbreviated.}
+
 \item{encoding}{Character vector, indicating the charset encoding used
 for variable and value labels. Default is \code{"UTF-8"}. Only used
 when \code{out} is not \code{"txt"}.}

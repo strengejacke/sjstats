@@ -10,6 +10,15 @@
 #'        is not \code{NULL}, \emph{credible intervals} instead of \emph{HDI}
 #'        are computed, due to the possible asymmetry of the HDI.
 #' @param digits Amount of digits to round numerical values in the output.
+#' @param type For mixed effects models, specify the type of effects that should
+#'   be returned. \code{type = "fixed"} returns fixed effects only,
+#'   \code{type = "random"} the random effects and \code{type = "all"} returns
+#'   both fixed and random effects.
+#' @param prob Vector of scalars between 0 and 1, indicating the mass within
+#'   the credible interval that is to be estimated.
+#' @param typical The typical value that will represent the Bayesian point estimate.
+#'   By default, the posterior median is returned. See \code{\link[sjmisc]{typical_value}}
+#'   for possible values for this argument.
 #'
 #' @return A tidy data frame, summarizing \code{x}, with consistent column names.
 #'         To distinguish multiple HDI values, column names for the HDI get a suffix
@@ -161,7 +170,8 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
     rhat$term <- make.names(rhat$term)
   }
 
-  se <- mcse(x, type = type)
+  se <- bayestestR::mcse(x, effects = "all", component = "all")
+  colnames(se) <- c("term", "mcse")
   se <- se[se$term %in% names(mod.dat), ]
 
 
@@ -181,9 +191,12 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   out <- data_frame(
     term = names(est),
     estimate = est,
-    std.error = purrr::map_dbl(mod.dat, stats::mad),
-    out.hdi[, -1]
+    std.error = purrr::map_dbl(mod.dat, stats::mad)
   ) %>%
+    dplyr::inner_join(
+      out.hdi[, -2],
+      by = "term"
+    ) %>%
     dplyr::inner_join(
       ratio,
       by = "term"

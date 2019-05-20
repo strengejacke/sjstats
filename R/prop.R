@@ -19,7 +19,7 @@
 #'          proportion is calculated. \code{na.rm = FALSE} gives you the raw
 #'          percentage of a value in a vector, \code{na.rm = TRUE} the valid
 #'          percentage.
-#' @inheritParams reliab_test
+#' @param digits Amount of digits for returned values.
 #'
 #' @details \code{prop()} only allows one logical statement per comparison,
 #'          while \code{props()} allows multiple logical statements per comparison.

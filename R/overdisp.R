@@ -83,3 +83,19 @@ pca_rotate <- function(x, ...) {
   .Deprecated("performance::principal_components()")
   performance::principal_components(x, rotation = "varimax")
 }
+
+
+#' @rdname overdisp
+#' @export
+n_eff <- function(x, ...) {
+  .Deprecated("bayestestR::effective_sample()")
+  bayestestR::effective_sample(x, ...)
+}
+
+
+#' @rdname overdisp
+#' @export
+mcse <- function(x, ...) {
+  .Deprecated("bayestestR::mcse()")
+  bayestestR::mcse(x, ...)
+}

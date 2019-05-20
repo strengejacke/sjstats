@@ -36,6 +36,7 @@ Following functions are deprecated:
 * `hdi()`, please use `bayestestR::hdi()`
 * `cred_int()`, please use `bayestestR::ci()`
 * `rope()`, please use `bayestestR::rope()`
+* `n_eff()`, please use `bayestestR::effective_sample()`
 * `equi_test()`, please use `bayestestR::equivalence_test()`
 
 ## Changes to functions
