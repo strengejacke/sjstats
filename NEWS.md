@@ -47,6 +47,7 @@ Following functions are deprecated:
 ## Bug fixes
 
 * In some situations, `smpsize_lmm()` could result in negative sample-size recommendations. This was fixed, and a warning is now shown indicating that the parameters for the power-calculation should be modified.
+* Fixed issue with wrong calculated effect size `r` in `mwu()` if group-factor contained more than two groups.
 
 # sjstats 0.17.4
 

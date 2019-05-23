@@ -122,7 +122,7 @@ mwu <- function(data,
         u <- as.numeric(coin::statistic(wt, type = "linear"))
         z <- as.numeric(coin::statistic(wt, type = "standardized"))
         p <- coin::pvalue(wt)
-        r <- abs(z / sqrt(length(dv)))
+        r <- abs(z / sqrt(length(ysub)))
         w <- stats::wilcox.test(xsub_2, ysub_2, paired = FALSE)$statistic
         rkm.i <- mean(rank(xsub)[which(ysub.n == grp_values[i])], na.rm = TRUE)
         rkm.j <- mean(rank(xsub)[which(ysub.n == grp_values[j])], na.rm = TRUE)
