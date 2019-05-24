@@ -16,7 +16,8 @@
 #'    weights of the survey data (level-1-weight).
 #'
 #' @return \code{x}, with two new variables: \code{svywght_a} and \code{svywght_b},
-#'    which represent the rescaled design weights to use in multilevel models.
+#'    which represent the rescaled design weights to use in multilevel models
+#'    (use these variables for the \code{weights} argument).
 #'
 #' @details Rescaling is based on two methods: For \code{svywght_a}, the sample
 #'    weights \code{pweight} are adjusted by a factor that represents the proportion
@@ -48,6 +49,15 @@
 #' @examples
 #' data(nhanes_sample)
 #' scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
+#'
+#' library(lme4)
+#' nhanes_sample <- scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
+#' glmer(
+#'   total ~ factor(RIAGENDR) * (log(age) + factor(RIDRETH1)) + (1 | SDMVPSU),
+#'   family = poisson(),
+#'   data = nhanes_sample,
+#'   weights = svywght_a
+#' )
 #'
 #' @importFrom dplyr group_by summarise n right_join enquo filter quo_name slice n
 #' @importFrom rlang .data

@@ -17,7 +17,8 @@ weights of the survey data (level-1-weight).}
 }
 \value{
 \code{x}, with two new variables: \code{svywght_a} and \code{svywght_b},
-   which represent the rescaled design weights to use in multilevel models.
+   which represent the rescaled design weights to use in multilevel models
+   (use these variables for the \code{weights} argument).
 }
 \description{
 Most functions to fit multilevel and mixed effects models only
@@ -55,6 +56,15 @@ Rescaling is based on two methods: For \code{svywght_a}, the sample
 \examples{
 data(nhanes_sample)
 scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
+
+library(lme4)
+nhanes_sample <- scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
+glmer(
+  total ~ factor(RIAGENDR) * (log(age) + factor(RIDRETH1)) + (1 | SDMVPSU),
+  family = poisson(),
+  data = nhanes_sample,
+  weights = svywght_a
+)
 
 }
 \references{
