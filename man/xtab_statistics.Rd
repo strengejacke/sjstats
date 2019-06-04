@@ -26,6 +26,10 @@ objects.}
 \code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
 \code{\link[stats]{cor.test}}.}
 
+\item{formula}{A formula of the form \code{lhs ~ rhs} where \code{lhs} is a
+numeric variable giving the data values and \code{rhs} a factor giving the
+corresponding groups.}
+
 \item{data}{A data frame or a table object. If a table object, \code{x1} and
 \code{x2} will be ignored. For Kendall's \emph{tau}, Spearman's \emph{rho}
 or Pearson's product moment correlation coefficient, \code{data} needs

@@ -184,15 +184,7 @@ deviance.svyglm.nb <- function(object, ...) {
 #' @importFrom sjmisc var_rename trim
 #' @export
 print.tidy_stan <- function(x, ...) {
-  .print_tidy_stan(x, .color = TRUE, ...)
-}
-
-
-.print_tidy_stan <- function(x, .color, ...) {
-  if (.color)
-    insight::print_color("\n# Summary Statistics of Stan-Model\n\n", "blue")
-  else
-    cat("\n# Summary Statistics of Stan-Model\n\n")
+  insight::print_color("\n# Summary Statistics of Stan-Model\n\n", "blue")
 
   # check if data has certain terms, so we know if we print
   # zero inflated or multivariate response models
@@ -244,7 +236,7 @@ print.tidy_stan <- function(x, ...) {
     x.zi$term <- clean_term_name(x.zi$term)
 
     if (ran.eff) {
-      print_stan_ranef(x, zeroinf = TRUE, .color)
+      print_stan_ranef(x, zeroinf = TRUE)
     } else {
       simplex <- which(x$simplex == "simplex")
 
@@ -254,10 +246,7 @@ print.tidy_stan <- function(x, ...) {
       } else
         x.sp <- NULL
 
-      if (.color)
-        insight::print_color("## Conditional Model:\n\n", "blue")
-      else
-        cat("## Conditional Model:\n\n")
+      insight::print_color("## Conditional Model:\n\n", "blue")
 
       x <- trim_hdi(x)
       colnames(x)[1] <- ""
@@ -269,12 +258,12 @@ print.tidy_stan <- function(x, ...) {
       cat("\n")
 
       if (!is.null(x.sp))
-        print_stan_simplex(x.sp, .color)
+        print_stan_simplex(x.sp)
     }
 
 
     if (ran.eff) {
-      print_stan_zeroinf_ranef(x.zi, .color)
+      print_stan_zeroinf_ranef(x.zi)
     } else {
       simplex <- which(x$simplex == "simplex")
 
@@ -284,10 +273,7 @@ print.tidy_stan <- function(x, ...) {
       } else
         x.sp <- NULL
 
-      if (.color)
-        insight::print_color("## Zero-Inflated Model:\n\n", "blue")
-      else
-        cat("## Zero-Inflated Model:\n\n")
+      insight::print_color("## Zero-Inflated Model:\n\n", "blue")
 
       x.zi <- trim_hdi(x.zi)
       colnames(x.zi)[1] <- ""
@@ -299,7 +285,7 @@ print.tidy_stan <- function(x, ...) {
       cat("\n")
 
       if (!is.null(x.sp))
-        print_stan_simplex(x.sp, .color)
+        print_stan_simplex(x.sp)
     }
 
 
@@ -322,15 +308,11 @@ print.tidy_stan <- function(x, ...) {
     for (resp in responses) {
 
       if (ran.eff) {
-        print_stan_mv_re(x, resp, .color)
+        print_stan_mv_re(x, resp)
       } else {
 
-        if (.color) {
-          insight::print_color(sprintf("## Response%s:", resp.string), "blue")
-          insight::print_color(sprintf(" %s\n\n", resp), "red")
-        } else {
-          cat(sprintf("## Response%s: %s\n\n", resp.string, resp))
-        }
+        insight::print_color(sprintf("## Response%s:", resp.string), "blue")
+        insight::print_color(sprintf(" %s\n\n", resp), "red")
 
         xr <- x %>%
           dplyr::filter(.data$response == !! resp) %>%
@@ -355,10 +337,7 @@ print.tidy_stan <- function(x, ...) {
       x.cor$term <- gsub("rescor__", "", x = x.cor$term, fixed = TRUE)
       x.cor$term <- gsub("__", "-", x = x.cor$term, fixed = TRUE)
 
-      if (.color)
-        insight::print_color("## Residual Correlations\n\n", "cyan")
-      else
-        cat("## Residual Correlations\n\n")
+      insight::print_color("## Residual Correlations\n\n", "cyan")
 
       x.cor <- x.cor %>%
         dplyr::select(-1, -.data$simplex) %>%
@@ -373,7 +352,7 @@ print.tidy_stan <- function(x, ...) {
 
     # print random effects models ----
 
-    print_stan_ranef(x, .color)
+    print_stan_ranef(x)
 
   } else {
 
@@ -393,18 +372,15 @@ print.tidy_stan <- function(x, ...) {
 
     if (!is.null(x.sp)) {
       cat("\n")
-      print_stan_simplex(x.sp, .color, ...)
+      print_stan_simplex(x.sp, ...)
     }
   }
 }
 
 
 
-print_stan_simplex <- function(x, .color, ...) {
-  if (.color)
-    insight::print_color("## Simplex Parameters:\n\n", "blue")
-  else
-    cat("## Simplex Parameters:\n\n")
+print_stan_simplex <- function(x, ...) {
+  insight::print_color("## Simplex Parameters:\n\n", "blue")
 
   x <- trim_hdi(x)
 
@@ -423,22 +399,16 @@ print_stan_simplex <- function(x, .color, ...) {
 
 #' @importFrom sjmisc is_empty
 #' @importFrom dplyr slice select filter mutate
-print_stan_ranef <- function(x, zeroinf = FALSE, .color) {
+print_stan_ranef <- function(x, zeroinf = FALSE) {
   # find fixed effects - if type = "all"
   fe <- which(x$random.effect == "")
 
   if (!sjmisc::is_empty(fe)) {
 
     if (!zeroinf) {
-      if (.color)
-        insight::print_color("## Fixed effects:\n\n", "blue")
-      else
-        cat("## Fixed effects:\n\n")
+      insight::print_color("## Fixed effects:\n\n", "blue")
     } else {
-      if (.color)
-        insight::print_color("## Conditional Model: Fixed effects\n\n", "blue")
-      else
-        cat("## Conditional Model: Fixed effects\n\n")
+      insight::print_color("## Conditional Model: Fixed effects\n\n", "blue")
     }
 
     # if we have fixed and random effects, get information for
@@ -469,7 +439,7 @@ print_stan_ranef <- function(x, zeroinf = FALSE, .color) {
     cat("\n")
 
     if (!is.null(x.sp))
-      print_stan_simplex(x.sp, .color)
+      print_stan_simplex(x.sp)
   }
 
   # iterate all random effects
@@ -482,19 +452,11 @@ print_stan_ranef <- function(x, zeroinf = FALSE, .color) {
   for (r in re) {
 
     if (!zeroinf) {
-      if (.color) {
-        insight::print_color("## Random effect ", "blue")
-        insight::print_color(sprintf("%s\n\n", r), "red")
-      } else {
-        cat(sprintf("## Random effect %s\n\n", r))
-      }
+      insight::print_color("## Random effect ", "blue")
+      insight::print_color(sprintf("%s\n\n", r), "red")
     } else {
-      if (.color) {
-        insight::print_color("## Conditional Model: Random effect ", "blue")
-        insight::print_color(sprintf("%s\n\n", r), "red")
-      } else {
-        cat(sprintf("## Conditional Model: Random effect %s\n\n", r))
-      }
+      insight::print_color("## Conditional Model: Random effect ", "blue")
+      insight::print_color(sprintf("%s\n\n", r), "red")
     }
 
     xr <- x %>%
@@ -540,18 +502,14 @@ trim_hdi <- function(x) {
 
 #' @importFrom sjmisc is_empty
 #' @importFrom dplyr slice select filter mutate
-print_stan_mv_re <- function(x, resp, .color) {
+print_stan_mv_re <- function(x, resp) {
   # find fixed effects - is type = "all"
   fe <- which(x$random.effect == "")
 
   if (!sjmisc::is_empty(fe)) {
 
-    if (.color) {
-      insight::print_color("## Fixed effects for response: ", "blue")
-      insight::print_color(sprintf("%s\n\n", resp), "red")
-    } else {
-      cat(sprintf("## Fixed effects for response: %s\n\n", resp))
-    }
+    insight::print_color("## Fixed effects for response: ", "blue")
+    insight::print_color(sprintf("%s\n\n", resp), "red")
 
     x.fe <- dplyr::slice(x, !! fe)
     x <- dplyr::slice(x, -!! fe)
@@ -577,15 +535,10 @@ print_stan_mv_re <- function(x, resp, .color) {
     find.re <- which(x$random.effect == r & x$response == resp)
 
     if (!sjmisc::is_empty(find.re)) {
-      if (.color) {
-        insight::print_color("## Random effect ", "blue")
-        insight::print_color(sprintf("%s", resp), "red")
-        insight::print_color(" for response ", "blue")
-        insight::print_color(sprintf("%s\n\n", resp), "red")
-      } else {
-        cat(sprintf("## Random effect %s", resp))
-        cat(sprintf(" for response %s\n\n", resp))
-      }
+      insight::print_color("## Random effect ", "blue")
+      insight::print_color(sprintf("%s", resp), "red")
+      insight::print_color(" for response ", "blue")
+      insight::print_color(sprintf("%s\n\n", resp), "red")
 
       xr <- x %>%
         dplyr::filter(.data$random.effect == !! r, .data$response == !! resp) %>%
@@ -605,17 +558,13 @@ print_stan_mv_re <- function(x, resp, .color) {
 
 #' @importFrom sjmisc is_empty
 #' @importFrom dplyr slice select filter mutate
-print_stan_zeroinf_ranef <- function(x, .color) {
+print_stan_zeroinf_ranef <- function(x) {
   # find fixed effects - is type = "all"
   fe <- which(x$random.effect == "")
 
   if (!sjmisc::is_empty(fe)) {
 
-    if (.color) {
-      insight::print_color("## Zero-Inflated Model: Fixed effects\n\n", "blue")
-    } else {
-      cat("## Zero-Inflated Model: Fixed effects\n\n")
-    }
+    insight::print_color("## Zero-Inflated Model: Fixed effects\n\n", "blue")
 
     # if we have fixed and random effects, get information for
     # fixed effects, and then remove these summary lines from
@@ -652,12 +601,8 @@ print_stan_zeroinf_ranef <- function(x, .color) {
 
     for (r in re) {
 
-      if (.color) {
-        insight::print_color("## Zero-Inflated Model: Random effect ", "blue")
-        insight::print_color(sprintf("%s\n\n", r), "red")
-      } else {
-        cat(sprintf("## Zero-Inflated Model: Random effect %s\n\n", r))
-      }
+      insight::print_color("## Zero-Inflated Model: Random effect ", "blue")
+      insight::print_color(sprintf("%s\n\n", r), "red")
 
       xr <- x %>%
         dplyr::filter(.data$random.effect == !! r) %>%

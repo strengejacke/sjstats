@@ -6,7 +6,9 @@
 
 ## Deprecated and defunct
 
-Following functions are deprecated:
+_sjstats_ is being re-structured, and many functions are re-implemented in new packages that are part of a new project called **easystats**. The aim of **easystats** is to provide a unifying and consistent framework to tame, discipline and harness the scary R statistics and their pesky models.
+
+Therefore, following functions are now deprecated:
 
 * `link_inverse()`, please use `insight::link_inverse()`
 * `model_family()`, please use `insight::model_info()`
@@ -39,6 +41,11 @@ Following functions are deprecated:
 * `rope()`, please use `bayestestR::rope()`
 * `n_eff()`, please use `bayestestR::effective_sample()`
 * `equi_test()`, please use `bayestestR::equivalence_test()`
+* `multicollin()`, please use `performance::check_collinearity()`
+* `normality()`, please use `performance::check_normality()`
+* `autocorrelation()`, please use `performance::check_autocorrelation()`
+* `heteroskedastic()`, please use `performance::check_heteroscedasticity()`
+* `outliers()`, please use `performance::check_outliers()`
 
 ## Changes to functions
 

@@ -12,6 +12,9 @@
 #'          to be a data frame. If \code{x1} and \code{x2} are not specified,
 #'          the first two columns of the data frames are used as variables
 #'          to compute the crosstab.
+#' @param formula A formula of the form \code{lhs ~ rhs} where \code{lhs} is a
+#'    numeric variable giving the data values and \code{rhs} a factor giving the
+#'    corresponding groups.
 #' @param tab A \code{\link{table}} or \code{\link[stats]{ftable}}. Tables of class
 #'          \code{\link[stats]{xtabs}} and other will be coerced to \code{ftable}
 #'          objects.

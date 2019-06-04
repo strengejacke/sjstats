@@ -95,6 +95,9 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   # check arguments
   type <- match.arg(type)
 
+  # get transformaton function
+  if (!is.null(trans)) trans <- match.fun(trans)
+
   # get data frame and family info
   mod.dat <- as.data.frame(x)
   faminfo <- insight::model_info(x)
@@ -108,8 +111,15 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   if (inherits(x, "brmsfit")) mod.dat <- brms_clean(mod.dat)
 
   # compute HDI / ci
-  out.hdi <- bayestestR::hdi(x, ci = prob, effects = "all", component = "all")
-  colnames(out.hdi)[1:4] <- c("term", "ci.lvl", "hdi.low", "hdi.high")
+  if (!is.null(trans)) {
+    out.hdi <- bayestestR::ci(x, ci = prob, effects = "all", component = "all")
+    colnames(out.hdi)[1:4] <- c("term", "ci.lvl", "ci.low", "ci.high")
+    out.hdi$ci.low <- trans(out.hdi$ci.low)
+    out.hdi$ci.high <- trans(out.hdi$ci.high)
+  } else {
+    out.hdi <- bayestestR::hdi(x, ci = prob, effects = "all", component = "all")
+    colnames(out.hdi)[1:4] <- c("term", "ci.lvl", "hdi.low", "hdi.high")
+  }
 
   # transform data frame for multiple ci-levels
   if (length(unique(out.hdi$ci.lvl)) > 1) {
@@ -121,6 +131,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
       })
     hdi_frame <- Reduce(function(x, y) merge(x, y, all.y = TRUE, by = "term"), hdi_list)
     to_remove <- string_starts_with("ci.lvl", colnames(hdi_frame))
+    to_remove <- c(to_remove, string_starts_with("Group.", colnames(hdi_frame)))
     out.hdi <- hdi_frame[, -to_remove, drop = FALSE]
   }
 
@@ -173,13 +184,10 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, type = c(
   # transform estimate, if requested
 
   if (!is.null(trans)) {
-    trans <- match.fun(trans)
     all.cols <- sjmisc::seq_col(mod.dat)
     simp.pars <- string_starts_with("simo_mo", colnames(mod.dat))
     if (!sjmisc::is_empty(simp.pars)) all.cols <- all.cols[-simp.pars]
     for (i in all.cols) mod.dat[[i]] <- trans(mod.dat[[i]])
-    out.hdi$hdi.low <- trans(out.hdi$hdi.low)
-    out.hdi$hdi.high <- trans(out.hdi$hdi.high)
   }
 
   est <- purrr::map_dbl(mod.dat, ~ sjmisc::typical_value(.x, fun = typical))

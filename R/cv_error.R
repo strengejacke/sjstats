@@ -1,8 +1,6 @@
 #' @title Test and training error from model cross-validation
 #' @name cv_error
 #'
-#' @seealso \code{\link{pred_accuracy}}
-#'
 #' @description \code{cv_error()} computes the root mean squared error from a model fitted
 #'          to kfold cross-validated test-training-data. \code{cv_compare()}
 #'          does the same, for multiple formulas at once (by calling \code{cv_error()}
@@ -11,8 +9,7 @@
 #' @param data A data frame.
 #' @param formula The formula to fit the linear model for the test and training data.
 #' @param formulas A list of formulas, to fit linear models for the test and training data.
-#'
-#' @inheritParams pred_accuracy
+#' @param k The number of folds for the kfold-crossvalidation.
 #'
 #' @return A data frame with the root mean squared errors for the training and test data.
 #'
