@@ -5,7 +5,8 @@
 \title{Tidy summary output for stan models}
 \usage{
 tidy_stan(x, prob = 0.89, typical = "median", trans = NULL,
-  type = c("fixed", "random", "all"), digits = 2)
+  effects = c("all", "fixed", "random"), component = c("all",
+  "conditional", "zero_inflated", "zi"), digits = 2)
 }
 \arguments{
 \item{x}{A \code{stanreg}, \code{stanfit} or \code{brmsfit} object.}
@@ -23,10 +24,12 @@ values for standard errors are \emph{not} transformed! If \code{trans}
 is not \code{NULL}, \emph{credible intervals} instead of \emph{HDI}
 are computed, due to the possible asymmetry of the HDI.}
 
-\item{type}{For mixed effects models, specify the type of effects that should
-be returned. \code{type = "fixed"} returns fixed effects only,
-\code{type = "random"} the random effects and \code{type = "all"} returns
-both fixed and random effects.}
+\item{effects}{Should results for fixed effects, random effects or both be returned?
+Only applies to mixed models. May be abbreviated.}
+
+\item{component}{Should results for all parameters, parameters for the conditional model
+or the zero-inflated part of the model be returned? May be abbreviated. Only
+applies to \pkg{brms}-models.}
 
 \item{digits}{Amount of digits to round numerical values in the output.}
 }
@@ -41,7 +44,7 @@ Returns a tidy summary output for stan models.
 \details{
 The returned data frame has an additonal class-attribute,
    \code{tidy_stan}, to pass the result to its own \code{print()}-method.
-   The \code{print()}-method create a cleaner output, especially for multilevel,
+   The \code{print()}-method creates a cleaner output, especially for multilevel,
    zero-inflated or multivariate response models, where - for instance -
    the conditional part of a model is printed separately from the zero-inflated
    part, or random and fixed effects are printed separately.
@@ -59,11 +62,7 @@ The returned data frame has an additonal class-attribute,
        code from Kruschke 2015, pp. 727f.
      }
      \item{
-       The ratio of effective numbers of samples, \emph{neff_ratio}, (i.e.
-       effective number of samples divided by total number of samples).
-       This ratio ranges from 0 to 1, and should be close to 1. The closer
-       this ratio comes to zero means that the chains may be inefficient,
-       but possibly still okay.
+       The effective numbers of samples, \emph{ESS}.
      }
      \item{
        The Rhat statistics. When Rhat is above 1, it usually indicates that
