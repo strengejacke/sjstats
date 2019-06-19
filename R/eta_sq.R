@@ -442,6 +442,7 @@ peta_sq_ci <- function(aov.sum, ci.lvl = .95) {
 #' @importFrom dplyr bind_cols mutate case_when pull
 #' @importFrom stats anova formula aov
 #' @importFrom sjmisc rotate_df
+#' @importFrom insight get_data
 es_boot_fun <- function(model, type, ci.lvl, n, boot.method = "dist") {
 
   if (inherits(model, "anova") || is.data.frame(model)) {
@@ -466,7 +467,7 @@ es_boot_fun <- function(model, type, ci.lvl, n, boot.method = "dist") {
 
   if (inherits(model, "aovlist")) {
 
-    mdata <- sjstats::model_frame(model)
+    mdata <- insight::get_data(model)
     mformula <- stats::formula(attr(model, "terms"))
 
     # this is a bit sloppy, but I need to catch all exceptions here
@@ -491,7 +492,7 @@ es_boot_fun <- function(model, type, ci.lvl, n, boot.method = "dist") {
 
   } else {
 
-    mdata <- sjstats::model_frame(model)
+    mdata <- insight::get_data(model)
     mformula <- stats::formula(model)
 
     # this is a bit sloppy, but I need to catch all exceptions here

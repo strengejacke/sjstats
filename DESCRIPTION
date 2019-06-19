@@ -27,20 +27,20 @@ Depends:
     stats,
     utils
 Imports:
-    bayestestR,
+    bayestestR (>= 0.2.0),
     broom,
     dplyr,
     emmeans,
-    insight,
+    insight (>= 0.3.0),
     lme4,
     magrittr,
     MASS,
     modelr,
-    performance,
+    performance (>= 0.2.0),
     purrr,
     rlang,
-    sjlabelled (>= 1.0.17),
-    sjmisc (>= 2.7.8),
+    sjlabelled (>= 1.1.0),
+    sjmisc (>= 2.8.0),
     tidyr
 Suggests:
     brms,
@@ -48,6 +48,7 @@ Suggests:
     coin,
     ggplot2,
     graphics,
+    httr,
     knitr,
     mediation,
     nlme,

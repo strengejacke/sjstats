@@ -160,13 +160,14 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
 }
 
 
+#' @importFrom insight get_data
 fix_factor_name <- function(model, variable) {
   # check for categorical. if user has not specified a treatment variable
   # and this variable is categorical, the posterior samples contain the
   # samples from each category of the treatment variable - so we need to
   # fix the variable name
 
-  mf <- model_frame(model)
+  mf <- insight::get_data(model)
   if (obj_has_name(mf, variable)) {
     check_fac <- mf[[variable]]
     if (is.factor(check_fac)) {
