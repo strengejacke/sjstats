@@ -7,14 +7,6 @@ magrittr::`%>%`
 #' @export
 sjmisc::typical_value
 
-#' @importFrom performance r2
-#' @export
-performance::r2
-
-#' @importFrom performance icc
-#' @export
-performance::icc
-
 #' @importFrom performance mse
 #' @export
 performance::mse
@@ -23,17 +15,9 @@ performance::mse
 #' @export
 performance::rmse
 
-#' @importFrom bayestestR hdi
-#' @export
-bayestestR::hdi
-
 #' @importFrom bayestestR ci
 #' @export
 bayestestR::ci
-
-#' @importFrom bayestestR rope
-#' @export
-bayestestR::rope
 
 #' @importFrom bayestestR equivalence_test
 #' @export

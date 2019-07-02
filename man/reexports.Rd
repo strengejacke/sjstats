@@ -5,13 +5,9 @@
 \alias{reexports}
 \alias{\%>\%}
 \alias{typical_value}
-\alias{r2}
-\alias{icc}
 \alias{mse}
 \alias{rmse}
-\alias{hdi}
 \alias{ci}
-\alias{rope}
 \alias{equivalence_test}
 \alias{link_inverse}
 \title{Objects exported from other packages}
@@ -21,13 +17,13 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{bayestestR}{\code{\link[bayestestR]{hdi}}, \code{\link[bayestestR]{ci}}, \code{\link[bayestestR]{rope}}, \code{\link[bayestestR]{equivalence_test}}}
+  \item{bayestestR}{\code{\link[bayestestR]{ci}}, \code{\link[bayestestR]{equivalence_test}}}
 
   \item{insight}{\code{\link[insight]{link_inverse}}}
 
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 
-  \item{performance}{\code{\link[performance]{r2}}, \code{\link[performance]{icc}}, \code{\link[performance]{mse}}, \code{\link[performance]{rmse}}}
+  \item{performance}{\code{\link[performance]{mse}}, \code{\link[performance]{rmse}}}
 
   \item{sjmisc}{\code{\link[sjmisc]{typical_value}}}
 }}

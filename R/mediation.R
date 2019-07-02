@@ -55,6 +55,7 @@ mediation <- function(x, ...) {
 #' @importFrom dplyr pull bind_cols
 #' @importFrom sjmisc typical_value
 #' @importFrom insight model_info
+#' @importFrom bayestestR hdi
 #' @export
 mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "median", ...) {
   # check for pkg availability, else function might fail
@@ -124,7 +125,7 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
 
   # proportion mediated: indirect effect / total effect
   prop.mediated <- sjmisc::typical_value(eff.indirect, fun = typical) / sjmisc::typical_value(eff.total, fun = typical)
-  hdi_eff <- hdi(eff.indirect / eff.total, ci = prob)
+  hdi_eff <- bayestestR::hdi(eff.indirect / eff.total, ci = prob)
   prop.se <- (hdi_eff$CI_high - hdi_eff$CI_low) / 2
   prop.hdi <- prop.mediated + c(-1, 1) * prop.se
 
@@ -139,10 +140,10 @@ mediation.brmsfit <- function(x, treatment, mediator, prob = .9, typical = "medi
     )
   ) %>% dplyr::bind_cols(
     as.data.frame(rbind(
-      hdi(eff.direct, ci = prob)[, -1],
-      hdi(eff.indirect, ci = prob)[, -1],
-      hdi(eff.mediator, ci = prob)[, -1],
-      hdi(eff.total, ci = prob)[, -1],
+      bayestestR::hdi(eff.direct, ci = prob)[, -1],
+      bayestestR::hdi(eff.indirect, ci = prob)[, -1],
+      bayestestR::hdi(eff.mediator, ci = prob)[, -1],
+      bayestestR::hdi(eff.total, ci = prob)[, -1],
       prop.hdi
     ))
   )

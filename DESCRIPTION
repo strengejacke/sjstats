@@ -27,11 +27,11 @@ Depends:
     stats,
     utils
 Imports:
-    bayestestR (>= 0.2.0),
+    bayestestR (>= 0.2.2),
     broom,
     dplyr,
     emmeans,
-    insight (>= 0.3.0),
+    insight (>= 0.4.0),
     lme4,
     magrittr,
     MASS,

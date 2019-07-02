@@ -209,3 +209,93 @@ pred_accuracy <- function(x, ...) {
   .Deprecated("performance::performance_accuracy()")
   performance::performance_accuracy(x, ...)
 }
+
+
+#' @importFrom performance check_outliers
+#' @rdname overdisp
+#' @export
+outliers <- function(x) {
+  .Deprecated("performance::check_outliers()")
+  performance::check_outliers(x)
+}
+
+
+#' @importFrom performance check_heteroscedasticity
+#' @rdname overdisp
+#' @export
+heteroskedastic <- function(x) {
+  .Deprecated("performance::check_heteroscedasticity()")
+  performance::check_heteroscedasticity(x)
+}
+
+
+#' @importFrom performance check_autocorrelation
+#' @rdname overdisp
+#' @export
+autocorrelation <- function(x) {
+  .Deprecated("performance::check_autocorrelation()")
+  performance::check_autocorrelation(x)
+}
+
+
+#' @importFrom performance check_normality
+#' @rdname overdisp
+#' @export
+normality <- function(x) {
+  .Deprecated("performance::check_normality()")
+  performance::check_normality(x)
+}
+
+
+#' @importFrom performance check_collinearity
+#' @rdname overdisp
+#' @export
+multicollin <- function(x) {
+  .Deprecated("performance::check_collinearity()")
+  performance::check_collinearity(x)
+}
+
+
+#' @importFrom performance check_model
+#' @rdname overdisp
+#' @export
+check_assumptions <- function(x) {
+  .Deprecated("performance::check_model()")
+  performance::check_model(x)
+}
+
+
+#' @importFrom performance r2
+#' @rdname overdisp
+#' @export
+r2 <- function(x) {
+  .Deprecated("performance::r2()")
+  performance::r2(x)
+}
+
+
+#' @importFrom performance icc
+#' @rdname overdisp
+#' @export
+icc <- function(x) {
+  .Deprecated("performance::icc()")
+  performance::icc(x)
+}
+
+
+#' @importFrom bayestestR hdi
+#' @rdname overdisp
+#' @export
+hdi <- function(x) {
+  .Deprecated("bayestestR::hdi()")
+  bayestestR::hdi(x)
+}
+
+
+#' @importFrom bayestestR rope
+#' @rdname overdisp
+#' @export
+rope <- function(x) {
+  .Deprecated("bayestestR::rope()")
+  bayestestR::rope(x)
+}
