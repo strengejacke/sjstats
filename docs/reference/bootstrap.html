@@ -66,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
       </span>
     </div>
 
@@ -206,7 +206,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; 
 #&gt; Coefficients:
 #&gt; (Intercept)       e42dep      c161sex  
-#&gt;      6.9170       1.4899       0.3422  
+#&gt;      6.9036       1.4385       0.4329  
 #&gt; 
 #&gt; 
 #&gt; [[2]]
@@ -216,7 +216,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; 
 #&gt; Coefficients:
 #&gt; (Intercept)       e42dep      c161sex  
-#&gt;      5.8186       1.6403       0.6733  
+#&gt;      7.8918       1.3693      -0.1371  
 #&gt; 
 #&gt; 
 #&gt; [[3]]
@@ -226,7 +226,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; 
 #&gt; Coefficients:
 #&gt; (Intercept)       e42dep      c161sex  
-#&gt;      6.5533       1.3925       0.6047  
+#&gt;      7.7762       1.3265       0.1469  
 #&gt; 
 #&gt; 
 #&gt; [[4]]
@@ -236,7 +236,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; 
 #&gt; Coefficients:
 #&gt; (Intercept)       e42dep      c161sex  
-#&gt;      6.5895       1.5923       0.3775  
+#&gt;      5.4334       1.7106       0.7536  
 #&gt; 
 #&gt; 
 #&gt; [[5]]
@@ -246,7 +246,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; 
 #&gt; Coefficients:
 #&gt; (Intercept)       e42dep      c161sex  
-#&gt;      6.7512       1.6053       0.2498  
+#&gt;      6.3228       1.5540       0.5277  
 #&gt; 
 #&gt; </div><div class='input'>
 <span class='co'># generate bootstrap samples with 600 observations for each sample</span>
@@ -283,8 +283,8 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
   )
 
 <span class='co'># bootstrapped standard error</span>
-<span class='fu'><a href='boot_ci.html'>boot_se</a></span>(<span class='no'>bs</span>, <span class='no'>c12hour</span>)</div><div class='output co'>#&gt;      term  std.err
-#&gt; 1 c12hour 1.730115</div><div class='input'><span class='co'># standard error of original variable</span>
+<span class='fu'><a href='boot_ci.html'>boot_se</a></span>(<span class='no'>bs</span>, <span class='no'>c12hour</span>)</div><div class='output co'>#&gt;      term std.err
+#&gt; 1 c12hour  1.6688</div><div class='input'><span class='co'># standard error of original variable</span>
 <span class='fu'><a href='se.html'>se</a></span>(<span class='no'>efc</span>$<span class='no'>c12hour</span>)</div><div class='output co'>#&gt; [1] 1.691623</div><div class='input'>
 </div></pre>
   </div>

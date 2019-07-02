@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Expected and relative table values — table_values • sjstats</title>
+<title>Compute model quality — cv • sjstats</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Expected and relative table values — table_values" />
+<meta property="og:title" content="Compute model quality — cv" />
 
-<meta property="og:description" content="This function calculates a table's cell, row and column percentages as
-               well as expected values and returns all results as lists of tables." />
+<meta property="og:description" content="Compute the coefficient of variation." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -123,57 +122,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Expected and relative table values</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/sjStatistics.R'><code>R/sjStatistics.R</code></a></small>
-    <div class="hidden name"><code>table_values.Rd</code></div>
+    <h1>Compute model quality</h1>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/cv.R'><code>R/cv.R</code></a></small>
+    <div class="hidden name"><code>cv.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function calculates a table's cell, row and column percentages as
-               well as expected values and returns all results as lists of tables.</p>
+    <p>Compute the coefficient of variation.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>table_values</span>(<span class='no'>tab</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
+    <pre class="usage"><span class='fu'>cv</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tab</th>
-      <td><p>Simple <code><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></code> or <code><a href='https://www.rdocumentation.org/packages/stats/topics/ftable'>ftable</a></code> of which
-cell, row and column percentages as well as expected values are calculated.
-Tables of class <code><a href='https://www.rdocumentation.org/packages/stats/topics/xtabs'>xtabs</a></code> and other will be coerced to
-<code>ftable</code> objects.</p></td>
+      <th>x</th>
+      <td><p>Fitted linear model of class <code>lm</code>, <code>merMod</code> (<span class="pkg">lme4</span>)
+or <code>lme</code> (<span class="pkg">nlme</span>).</p></td>
     </tr>
     <tr>
-      <th>digits</th>
-      <td><p>Amount of digits for the table percentage values.</p></td>
+      <th>...</th>
+      <td><p>More fitted model objects, to compute multiple coefficients of
+variation at once.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>(Invisibly) returns a list with four tables:</p><ol>
-<li><p><code>cell</code> a table with cell percentages of <code>tab</code></p></li>
-<li><p><code>row</code> a table with row percentages of <code>tab</code></p></li>
-<li><p><code>col</code> a table with column percentages of <code>tab</code></p></li>
-<li><p><code>expected</code> a table with expected values of <code>tab</code></p></li>
-</ol>
+    <p>Numeric, the coefficient of variation.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>The advantage of the cv is that it is unitless. This allows
+        coefficient of variation to be compared to each other in ways
+        that other measures, like standard deviations or root mean
+        squared residuals, cannot be.
+        <br /> <br />
+        &#8220;It is interesting to note the differences between a model's CV
+        and R-squared values. Both are unitless measures that are indicative
+        of model fit, but they define model fit in two different ways: CV
+        evaluates the relative closeness of the predictions to the actual
+        values while R-squared evaluates how much of the variability in the
+        actual values is explained by the model.&#8221;
+        <cite>(<a href='http://www.ats.ucla.edu/stat/mult_pkg/faq/general/coefficient_of_variation.htm'>source: UCLA-FAQ</a>)</cite></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>))
-<span class='co'># show expected values</span>
-<span class='fu'>table_values</span>(<span class='no'>tab</span>)$<span class='no'>expected</span></div><div class='output co'>#&gt;   A B C
-#&gt; A 4 8 3
-#&gt; B 4 8 3</div><div class='input'><span class='co'># show cell percentages</span>
-<span class='fu'>table_values</span>(<span class='no'>tab</span>)$<span class='no'>cell</span></div><div class='output co'>#&gt;        1     2     3
-#&gt;                     
-#&gt; 1  10.00 30.00 10.00
-#&gt; 2  13.33 26.67 10.00</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>efc</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>lm</a></span>(<span class='no'>barthtot</span> ~ <span class='no'>c160age</span> + <span class='no'>c12hour</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
+<span class='fu'>cv</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; [1] 0.3948098</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -182,6 +182,8 @@ Tables of class <code><a href='https://www.rdocumentation.org/packages/stats/top
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

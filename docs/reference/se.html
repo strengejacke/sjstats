@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
       </span>
     </div>
 
@@ -141,13 +141,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>se</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for sj_icc_merMod</span>
-<span class='fu'>se</span>(<span class='no'>x</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for sj_icc</span>
-<span class='fu'>se</span>(<span class='no'>x</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>se</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,7 +150,7 @@
       <th>x</th>
       <td><p>(Numeric) vector, a data frame, an <code>lm</code>, <code>glm</code>,
 <code>merMod</code> (<span class="pkg">lme4</span>), or <code>stanreg</code> model object, an ICC object
-(as obtained by the <code><a href='icc.html'>icc</a></code>-function), a <code>table</code> or
+(as obtained by the <code><a href='overdisp.html'>icc</a></code>-function), a <code>table</code> or
 <code>xtabs</code> object, or a list with estimate and p-value. For the latter
 case, the list must contain elements named <code>estimate</code> and
 <code>p.value</code> (see 'Examples' and 'Details').</p></td>
@@ -164,12 +158,6 @@ case, the list must contain elements named <code>estimate</code> and
     <tr>
       <th>...</th>
       <td><p>Currently not used.</p></td>
-    </tr>
-    <tr>
-      <th>nsim</th>
-      <td><p>Numeric, the number of simulations for calculating the
-standard error for intraclass correlation coefficients, as
-obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
     </tr>
     </table>
     
@@ -196,11 +184,6 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
   <br /> <br />
   For generalized linear models, approximated standard errors, using the delta
   method for transformed regression parameters are returned (Oehlert 1992).
-  <br /> <br />
-  <strong>Standard error for Intraclass Correlation Coefficient (ICC)</strong>
-  <br /> <br />
-  The standard error for the <code><a href='icc.html'>icc</a></code> is based on bootstrapping,
-  thus, the <code>nsim</code>-argument is required. See 'Examples'.
   <br /> <br />
   <strong>Standard error for proportions and mean value</strong>
   <br /> <br />
@@ -244,7 +227,7 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>sjmisc</span>)
 
 <span class='co'># compute standard error for vector</span>
-<span class='fu'>se</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] 0.1074613</div><div class='input'>
+<span class='fu'>se</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] 0.09589874</div><div class='input'>
 <span class='co'># compute standard error for each variable in a data frame</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>efc</span>)
 <span class='fu'>se</span>(<span class='no'>efc</span>[, <span class='fl'>1</span>:<span class='fl'>3</span>])</div><div class='output co'>#&gt;    c12hour   e15relat     e16sex 
@@ -329,17 +312,17 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
 #&gt; 4   severely dependent 0.33740289 0.015752039</div><div class='input'>
 <span class='co'># including weights</span>
 <span class='no'>efc</span>$<span class='no'>weights</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>efc</span>), <span class='fl'>1</span>, <span class='fl'>.25</span>)
-<span class='fu'>se</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/xtabs'>xtabs</a></span>(<span class='no'>efc</span>$<span class='no'>weights</span> ~ <span class='no'>efc</span>$<span class='no'>e42dep</span>))</div><div class='output co'>#&gt;                  value proportion  std.error
-#&gt; 1          independent 0.07898613 0.00900256
-#&gt; 2   slightly dependent 0.24649213 0.01438477
-#&gt; 3 moderately dependent 0.33359206 0.01573749
-#&gt; 4   severely dependent 0.34092968 0.01582180</div><div class='input'>
+<span class='fu'>se</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/xtabs'>xtabs</a></span>(<span class='no'>efc</span>$<span class='no'>weights</span> ~ <span class='no'>efc</span>$<span class='no'>e42dep</span>))</div><div class='output co'>#&gt;                  value proportion   std.error
+#&gt; 1          independent 0.07061821 0.008552969
+#&gt; 2   slightly dependent 0.25359865 0.014525167
+#&gt; 3 moderately dependent 0.33761265 0.015787989
+#&gt; 4   severely dependent 0.33817049 0.015794372</div><div class='input'>
 <span class='co'># compute standard error from regression coefficient and p-value</span>
 <span class='fu'>se</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>estimate</span> <span class='kw'>=</span> <span class='fl'>.3</span>, <span class='kw'>p.value</span> <span class='kw'>=</span> <span class='fl'>.002</span>))</div><div class='output co'>#&gt; [1] 0.09708008</div><div class='input'>
 </div></span><span class='co'># NOT RUN {</span>
 <span class='co'># compute standard error of ICC for the linear mixed model</span>
-<span class='fu'><a href='icc.html'>icc</a></span>(<span class='no'>fit</span>)
-<span class='fu'>se</span>(<span class='fu'><a href='icc.html'>icc</a></span>(<span class='no'>fit</span>))
+<span class='fu'><a href='overdisp.html'>icc</a></span>(<span class='no'>fit</span>)
+<span class='fu'>se</span>(<span class='fu'><a href='overdisp.html'>icc</a></span>(<span class='no'>fit</span>))
 
 <span class='co'># the standard error for the ICC can be computed manually in this way,</span>
 <span class='co'># taking the fitted model example from above</span>
@@ -352,7 +335,7 @@ obtained by the <code><a href='icc.html'>icc</a></code>-function.</p></td>
   <span class='co'># and compute ICC for each "bootstrapped" regression</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(
     <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span>(<span class='no'>strap</span>, ~<span class='fu'><a href='https://www.rdocumentation.org/packages/lme4/topics/lmer'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>.x</span>)),
-    <span class='kw'>icc</span> <span class='kw'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span>(<span class='no'>models</span>, ~<span class='fu'><a href='icc.html'>icc</a></span>(<span class='no'>.x</span>))
+    <span class='kw'>icc</span> <span class='kw'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span>(<span class='no'>models</span>, ~<span class='fu'><a href='overdisp.html'>icc</a></span>(<span class='no'>.x</span>))
   )
 
 <span class='co'># now compute SE and p-values for the bootstrapped ICC, values</span>

@@ -74,8 +74,8 @@ tidy_stan(m3)
 
 Additional statistics in the output are:
 
-  * standard errors (which are actually median absolute deviations)
-  * ratio of effective numbers of samples, *neff_ratio*, (i.e. effective number of samples divided by total number of samples); this ratio ranges from 0 to 1, and should be close to 1; the closer this ratio comes to zero means that the chains may be inefficient, but possibly still okay
+  * Standard errors (which are actually median absolute deviations, when `typical = "median"`, and standard deviations for `typical = "mean"`).
+  * The number of effective samples, *ESS*. Effective Sample Size should be as large as possible, although for most applications, an effective sample size greater than 1,000 is sufficient for stable estimates (Bürkner, 2017). The ESS corresponds to the number of independent samples with the same estimation power as the N autocorrelated samples. It is is a measure of "how much independent information there is in autocorrelated chains" (Kruschke 2015, p182-3).
   * Rhat statistics; when Rhat is above 1, it usually indicates that the chain has not yet converged, indicating that the drawn samples might not be trustworthy; drawing more iteration may solve this issue
   * Monte Carlo Standard Error (_mcse_);
 
@@ -85,11 +85,19 @@ By default, the "estimate" is the median of the posterior distribution, but this
 tidy_stan(m3, typical = "mean")
 ```
 
-To also show random effects of multilevel models, use the `type`-argument.
+To also show random effects of multilevel models, use the `effects`-argument.
 
 ```{r}
 # printing fixed and random effects of multilevel model
-tidy_stan(m3, type = "all")
+tidy_stan(m3, effects = "all")
+```
+
+If a model has several components, like zero-inflated models, use the `component`-argument to decide whether to display all components (default), or only specific parts.
+
+```{r}
+# printing fixed and random effects of multilevel model, 
+# only zero-inflated model part.
+tidy_stan(m3, effects = "all", component = "zero_inflated")
 ```
 
 By default, 89%-HDI are computed (a convention following _McElreath 2015_), but other or even multiple HDI can be computed using the `prob` argument.
@@ -139,3 +147,9 @@ mediation(m2, typical = "mean", prob = .95) %>% print(digits = 4)
 ```
 
 As you can see, the results are similar to what the _mediation_ package produces for non-Bayesian models.
+
+# References
+
+Bürkner, P. C. (2017). brms: An R package for Bayesian multilevel models using Stan. Journal of Statistical Software, 80(1), 1-28
+
+Kruschke, J. (2014). Doing Bayesian data analysis: A tutorial with R, JAGS, and Stan. Academic Press.

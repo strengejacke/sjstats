@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check overdispersion of GL(M)M's — overdisp • sjstats</title>
+<title>Deprecated functions — overdisp • sjstats</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,9 @@
 
 
 
-<meta property="og:title" content="Check overdispersion of GL(M)M's — overdisp" />
+<meta property="og:title" content="Deprecated functions — overdisp" />
 
-<meta property="og:description" content="overdisp() checks generalized linear (mixed) models for
-             overdispersion, while zero_count() checks whether models
-             from Poisson-families are over- or underfitting zero-counts in
-             the outcome." />
+<meta property="og:description" content="A list of deprecated functions." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -68,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
       </span>
     </div>
 
@@ -125,121 +122,99 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check overdispersion of GL(M)M's</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/overdisp.R'><code>R/overdisp.R</code></a></small>
+    <h1>Deprecated functions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/Deprecated.R'><code>R/Deprecated.R</code></a></small>
     <div class="hidden name"><code>overdisp.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>overdisp()</code> checks generalized linear (mixed) models for
-             overdispersion, while <code>zero_count()</code> checks whether models
-             from Poisson-families are over- or underfitting zero-counts in
-             the outcome.</p>
+    <p>A list of deprecated functions.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>overdisp</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='fu'>zero_count</span>(<span class='no'>x</span>, <span class='kw'>tolerance</span> <span class='kw'>=</span> <span class='fl'>0.05</span>)</pre>
+<span class='fu'>zero_count</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>converge_ok</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>is_singular</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>reliab_test</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>split_half</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>cronb</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>difficulty</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>mic</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>pca</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>pca_rotate</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>n_eff</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>mcse</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>pred_vars</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>model_family</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>model_frame</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>resp_val</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>resp_var</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>grp_var</span>(<span class='no'>x</span>)
+
+<span class='fu'>re_grp_var</span>(<span class='no'>x</span>)
+
+<span class='fu'>var_names</span>(<span class='no'>x</span>)
+
+<span class='fu'>pred_accuracy</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>outliers</span>(<span class='no'>x</span>)
+
+<span class='fu'>heteroskedastic</span>(<span class='no'>x</span>)
+
+<span class='fu'>autocorrelation</span>(<span class='no'>x</span>)
+
+<span class='fu'>normality</span>(<span class='no'>x</span>)
+
+<span class='fu'>multicollin</span>(<span class='no'>x</span>)
+
+<span class='fu'>check_assumptions</span>(<span class='no'>x</span>)
+
+<span class='fu'>r2</span>(<span class='no'>x</span>)
+
+<span class='fu'>icc</span>(<span class='no'>x</span>)
+
+<span class='fu'>hdi</span>(<span class='no'>x</span>)
+
+<span class='fu'>rope</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Fitted model of class <code>merMod</code>, <code>glmmTMB</code>, <code>glm</code>,
-or <code>glm.nb</code> (package <span class="pkg">MASS</span>).</p></td>
+      <td><p>An object.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Currently not used.</p></td>
     </tr>
-    <tr>
-      <th>tolerance</th>
-      <td><p>The tolerance for the ratio of observed and predicted
-zeros to considered as over- or underfitting zero-counts. A ratio
-between 1 +/- <code>tolerance</code> is considered as OK, while a ratio
-beyond or below this treshold would indicate over- or underfitting.</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>For <code>overdisp()</code>, information on the overdispersion test; for
-        <code>zero_count()</code>, the amount of predicted and observed zeros in
-        the outcome, as well as the ratio between these two values.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>For <code>merMod</code>- and <code>glmmTMB</code>-objects, <code>overdisp()</code> is
-         based on the code in the <a href='http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html'>GLMM FAQ</a>,
-         section <em>How can I deal with overdispersion in GLMMs?</em>.
-         Note that this function only returns an <em>approximate</em> estimate
-         of an overdispersion parameter, and is probably inaccurate for
-         zero-inflated mixed models (fitted with <code>glmmTMB</code>).
-         <br /> <br />
-         The same code as above for mixed models is also used to check
-         overdispersion for negative binomial models.
-         <br /> <br />
-         For Poisson-models, the overdispersion test is based on the code
-         from Gelman and Hill (2007), page 115.</p>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>For overdispersoion test, a p-value &lt; .05 indicates overdispersion.
-      <br /> <br />
-      For <code>zero_count()</code>, a model that is underfitting zero-counts
-      indicates a zero-inflation in the data, i.e. it is recommended to
-      use negative binomial or zero-inflated models then.</p>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Bolker B et al. (2017): <a href='http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html'>GLMM FAQ.</a>
- <br /> <br />
- Gelman A, Hill J (2007) Data Analysis Using Regression and Multilevel/Hierarchical Models. Cambridge, New York: Cambridge University Press</p>
+    <p>Nothing.</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>sjmisc</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>efc</span>)
-
-<span class='co'># response has many zero-counts, Poisson models</span>
-<span class='co'># might be overdispersed</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/barplot'>barplot</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>efc</span>$<span class='no'>tot_sc_e</span>))</div><div class='img'><img src='overdisp-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>tot_sc_e</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>e42dep</span> + <span class='no'>c160age</span>,
-           <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='no'>poisson</span>)
-<span class='fu'>overdisp</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span style='color: #0000BB;'>
-#&gt; # Overdispersion test
-#&gt; 
-#&gt; </span><span>       dispersion ratio = 1.5485
-#&gt;   Pearson's Chi-Squared = 1371.9645
-#&gt;                 p-value = 0.0000
-#&gt; </div><div class='output co'>#&gt; <span class='message'>Overdispersion detected.</span></div><div class='input'><span class='fu'>zero_count</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
-#&gt; # Zero-Count overfitting
-#&gt; 
-#&gt; </span><span>   Observed zero-counts: 397
-#&gt;   Predicted zero-counts: 338
-#&gt;                   Ratio: 0.85
-#&gt; </div><div class='output co'>#&gt; <span class='message'>Model is underfitting zero-counts (probable zero-inflation).</span></div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>lme4</span>)
-<span class='no'>efc</span>$<span class='no'>e15relat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sjmisc/topics/to_factor'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>e15relat</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/lme4/topics/glmer'>glmer</a></span>(<span class='no'>tot_sc_e</span> ~ <span class='no'>neg_c_7</span> + <span class='no'>e42dep</span> + <span class='no'>c160age</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>e15relat</span>),
-             <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='no'>poisson</span>)
-<span class='fu'>overdisp</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
-#&gt; # Overdispersion test
-#&gt; 
-#&gt; </span><span>       dispersion ratio = 1.5282
-#&gt;   Pearson's Chi-Squared = 1350.8975
-#&gt;                 p-value = 0.0000
-#&gt; </div><div class='output co'>#&gt; <span class='message'>Overdispersion detected.</span></div><div class='input'><span class='fu'>zero_count</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
-#&gt; # Zero-Count overfitting
-#&gt; 
-#&gt; </span><span>   Observed zero-counts: 396
-#&gt;   Predicted zero-counts: 339
-#&gt;                   Ratio: 0.86
-#&gt; </div><div class='output co'>#&gt; <span class='message'>Model is underfitting zero-counts (probable zero-inflation).</span></div><div class='input'>
-</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -247,15 +222,7 @@ beyond or below this treshold would indicate over- or underfitting.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#note">Note</a></li>
-
-      <li><a href="#references">References</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

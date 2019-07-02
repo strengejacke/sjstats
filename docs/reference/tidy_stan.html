@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
       </span>
     </div>
 
@@ -134,7 +134,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>tidy_stan</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.89</span>, <span class='kw'>typical</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>, <span class='st'>"all"</span>), <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
+  <span class='kw'>effects</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"all"</span>, <span class='st'>"fixed"</span>, <span class='st'>"random"</span>), <span class='kw'>component</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"all"</span>,
+  <span class='st'>"conditional"</span>, <span class='st'>"zero_inflated"</span>, <span class='st'>"zi"</span>), <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,7 +147,7 @@
     <tr>
       <th>prob</th>
       <td><p>Vector of scalars between 0 and 1, indicating the mass within
-the credible interval that is to be estimated. See <code><a href='hdi.html'>hdi</a></code>.</p></td>
+the credible interval that is to be estimated.</p></td>
     </tr>
     <tr>
       <th>typical</th>
@@ -157,15 +158,21 @@ for possible values for this argument.</p></td>
     <tr>
       <th>trans</th>
       <td><p>Name of a function or character vector naming a function, used
-to apply transformations on the estimate and HDI-values. The
-values for standard errors are <em>not</em> transformed!</p></td>
+to apply transformations on the estimates and uncertainty intervals. The
+values for standard errors are <em>not</em> transformed! If <code>trans</code>
+is not <code>NULL</code>, <em>credible intervals</em> instead of <em>HDI</em>
+are computed, due to the possible asymmetry of the HDI.</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>For mixed effects models, specify the type of effects that should
-be returned. <code>type = "fixed"</code> returns fixed effects only,
-<code>type = "random"</code> the random effects and <code>type = "all"</code> returns
-both fixed and random effects.</p></td>
+      <th>effects</th>
+      <td><p>Should results for fixed effects, random effects or both be returned?
+Only applies to mixed models. May be abbreviated.</p></td>
+    </tr>
+    <tr>
+      <th>component</th>
+      <td><p>Should results for all parameters, parameters for the conditional model
+or the zero-inflated part of the model be returned? May be abbreviated. Only
+applies to <span class="pkg">brms</span>-models.</p></td>
     </tr>
     <tr>
       <th>digits</th>
@@ -183,7 +190,7 @@ both fixed and random effects.</p></td>
 
     <p>The returned data frame has an additonal class-attribute,
    <code>tidy_stan</code>, to pass the result to its own <code><a href='https://www.rdocumentation.org/packages/base/topics/print'>print()</a></code>-method.
-   The <code><a href='https://www.rdocumentation.org/packages/base/topics/print'>print()</a></code>-method create a cleaner output, especially for multilevel,
+   The <code><a href='https://www.rdocumentation.org/packages/base/topics/print'>print()</a></code>-method creates a cleaner output, especially for multilevel,
    zero-inflated or multivariate response models, where - for instance -
    the conditional part of a model is printed separately from the zero-inflated
    part, or random and fixed effects are printed separately.
@@ -193,17 +200,13 @@ both fixed and random effects.</p></td>
            default the posterior median; other statistics are also possible,
            see argument <code>typical</code>).</p></li>
 <li><p>The standard error (which is actually the <em>median absolute deviation</em>).</p></li>
-<li><p>The HDI (see <code><a href='hdi.html'>hdi</a></code>). Computation for HDI is based on the
+<li><p>The HDI. Computation for HDI is based on the
        code from Kruschke 2015, pp. 727f.</p></li>
-<li><p>The ratio of effective numbers of samples, <em>neff_ratio</em>, (i.e.
-       effective number of samples divided by total number of samples).
-       This ratio ranges from 0 to 1, and should be close to 1. The closer
-       this ratio comes to zero means that the chains may be inefficient,
-       but possibly still okay.</p></li>
+<li><p>The effective numbers of samples, <em>ESS</em>.</p></li>
 <li><p>The Rhat statistics. When Rhat is above 1, it usually indicates that
        the chain has not yet converged, indicating that the drawn samples
        might not be trustworthy. Drawing more iteration may solve this issue.</p></li>
-<li><p>The Monte Carlo standard error (see <code><a href='hdi.html'>mcse</a></code>). It is defined
+<li><p>The Monte Carlo standard error (see <code><a href='overdisp.html'>mcse</a></code>). It is defined
        as standard deviation of the chains divided by their effective sample
        size and &#8220;provides a quantitative suggestion of how big the
        estimation noise is&#8221; (<em>Kruschke 2015, p.187</em>).</p></li>

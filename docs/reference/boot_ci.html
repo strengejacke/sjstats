@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
       </span>
     </div>
 
@@ -165,9 +165,9 @@ You may also use functions like <code>:</code> or tidyselect's
       <th>method</th>
       <td><p>Character vector, indicating if confidence intervals should be
 based on bootstrap standard error, multiplied by the value of the
-quantile function of the t distribution (default), or on sample
-quantiles of the bootstrapped values. See 'Details'. May be
-abbreviated.</p></td>
+quantile function of the t-distribution (default), or on sample
+quantiles of the bootstrapped values. See 'Details' in <code>boot_ci()</code>.
+May be abbreviated.</p></td>
     </tr>
     <tr>
       <th>ci.lvl</th>
@@ -225,23 +225,23 @@ abbreviated.</p></td>
 
 <span class='co'># get bootstrapped confidence intervals</span>
 <span class='fu'>boot_ci</span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt;   term conf.low conf.high
-#&gt; 1    x 1.318996  1.786235</div><div class='input'>
+#&gt; 1    x 1.320903   1.77407</div><div class='input'>
 <span class='co'># compare with model fit</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>lm</a></span>(<span class='no'>neg_c_7</span> ~ <span class='no'>e42dep</span> + <span class='no'>c161sex</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/confint'>confint</a></span>(<span class='no'>fit</span>)[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    2.5 %   97.5 % 
 #&gt; 1.292945 1.796430 </div><div class='input'>
 <span class='co'># alternative function calls.</span>
 <span class='fu'>boot_ci</span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt;   term conf.low conf.high
-#&gt; 1    x 1.318996  1.786235</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>)</div><div class='output co'>#&gt;         term conf.low conf.high
-#&gt; 1 dependency 1.318996  1.786235</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>, <span class='no'>gender</span>)</div><div class='output co'>#&gt;         term  conf.low conf.high
-#&gt; 1 dependency  1.318996 1.7862353
-#&gt; 2     gender -0.149546 0.9990989</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>, <span class='no'>gender</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"q"</span>)</div><div class='output co'>#&gt;         term    conf.low conf.high
-#&gt; 1 dependency  1.31822185 1.7599779
-#&gt; 2     gender -0.08593727 0.9855724</div><div class='input'>
+#&gt; 1    x 1.320903   1.77407</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>)</div><div class='output co'>#&gt;         term conf.low conf.high
+#&gt; 1 dependency 1.320903   1.77407</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>, <span class='no'>gender</span>)</div><div class='output co'>#&gt;         term   conf.low conf.high
+#&gt; 1 dependency  1.3209034 1.7740701
+#&gt; 2     gender -0.1016646 0.9788897</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>, <span class='no'>gender</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"q"</span>)</div><div class='output co'>#&gt;         term    conf.low conf.high
+#&gt; 1 dependency  1.30501832  1.763890
+#&gt; 2     gender -0.07012629  0.916922</div><div class='input'>
 
 <span class='co'># compare coefficients</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt; [1] 1.552616</div><div class='input'><span class='fu'>boot_est</span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt;   term estimate
-#&gt; 1    x 1.552616</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/coef'>coef</a></span>(<span class='no'>fit</span>)[<span class='fl'>2</span>]</div><div class='output co'>#&gt;   e42dep 
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt; [1] 1.547487</div><div class='input'><span class='fu'>boot_est</span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt;   term estimate
+#&gt; 1    x 1.547487</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/coef'>coef</a></span>(<span class='no'>fit</span>)[<span class='fl'>2</span>]</div><div class='output co'>#&gt;   e42dep 
 #&gt; 1.544687 </div><div class='input'>
 
 <span class='co'># bootstrap() and boot_ci() work fine within pipe-chains</span>
@@ -252,10 +252,10 @@ abbreviated.</p></td>
     <span class='kw'>dependency</span> <span class='kw'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span>(<span class='no'>models</span>, ~<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/coef'>coef</a></span>(<span class='no'>.x</span>)[<span class='fl'>2</span>])
   ) <span class='kw'>%&gt;%</span>
   <span class='fu'>boot_ci</span>(<span class='no'>dependency</span>)</div><div class='output co'>#&gt;         term conf.low conf.high
-#&gt; 1 dependency 1.311035  1.839378</div><div class='input'>
+#&gt; 1 dependency 1.263093  1.779068</div><div class='input'>
 <span class='co'># check p-value</span>
 <span class='fu'>boot_p</span>(<span class='no'>bs</span>$<span class='no'>gender</span>)</div><div class='output co'>#&gt;   term   p.value
-#&gt; 1    x 0.1453955</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>fit</span>)$<span class='no'>coefficients</span>[<span class='fl'>3</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
+#&gt; 1    x 0.1103975</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>fit</span>)$<span class='no'>coefficients</span>[<span class='fl'>3</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
 #&gt;  0.4339069  0.2818786  1.5393398  0.1240780 </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># 'spread_coef()' from the 'sjmisc'-package makes it easy to generate</span>

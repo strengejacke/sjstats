@@ -66,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
       </span>
     </div>
 
@@ -184,21 +184,21 @@ used for rounding the weighted values. By default, this value is
     <pre class="examples"><div class='input'><span class='no'>v</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>4</span>, <span class='fl'>20</span>, <span class='fl'>TRUE</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>v</span>)</div><div class='output co'>#&gt; v
 #&gt; 1 2 3 4 
-#&gt; 5 6 5 4 </div><div class='input'><span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/MathFun'>abs</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>20</span>))
+#&gt; 8 4 6 2 </div><div class='input'><span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/MathFun'>abs</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>20</span>))
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'>weight</span>(<span class='no'>v</span>, <span class='no'>w</span>))</div><div class='output co'>#&gt; 
 #&gt; 1 2 3 4 
-#&gt; 4 5 5 3 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'>weight2</span>(<span class='no'>v</span>, <span class='no'>w</span>))</div><div class='output co'>#&gt; 
+#&gt; 5 5 3 2 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'>weight2</span>(<span class='no'>v</span>, <span class='no'>w</span>))</div><div class='output co'>#&gt; 
 #&gt; 1 2 3 4 
-#&gt; 4 5 5 3 </div><div class='input'>
+#&gt; 5 5 3 2 </div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>1</span>)
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>20</span>)
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; x
 #&gt; a b c d e 
-#&gt; 2 6 2 6 4 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'>weight</span>(<span class='no'>x</span>, <span class='no'>w</span>))</div><div class='output co'>#&gt; 
-#&gt; a b c d e 
-#&gt; 1 3 1 4 1 </div><div class='input'>
+#&gt; 6 4 3 1 6 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'>weight</span>(<span class='no'>x</span>, <span class='no'>w</span>))</div><div class='output co'>#&gt; 
+#&gt; a b c e 
+#&gt; 3 3 2 3 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

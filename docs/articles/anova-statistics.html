@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
       <h1>Statistics for Anova Tables</h1>
                         <h4 class="author">Daniel Lüdecke</h4>
             
-            <h4 class="date">2019-03-15</h4>
+            <h4 class="date">2019-07-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/vignettes/anova-statistics.Rmd"><code>vignettes/anova-statistics.Rmd</code></a></small>
       <div class="hidden name"><code>anova-statistics.Rmd</code></div>
@@ -181,19 +181,19 @@
 <a href="#complete-statistical-table-output" class="anchor"></a>Complete Statistical Table Output</h1>
 <p>The <code><a href="../reference/eta_sq.html">anova_stats()</a></code> function takes a model input and computes a comprehensive summary, including the above effect size measures, returned as tidy data frame:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">anova_stats</a></span>(fit)</a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="co">#&gt;                  term  df      sumsq     meansq statistic p.value etasq partial.etasq omegasq partial.omegasq cohens.f power</span></a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; 1   as.factor(e42dep)   3  577756.33 192585.444   108.786   0.000 0.266         0.281   0.263           0.278    0.626  1.00</span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt; 2 as.factor(c172code)   2   11722.05   5861.024     3.311   0.037 0.005         0.008   0.004           0.005    0.089  0.63</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; 3             c160age   1  105169.60 105169.595    59.408   0.000 0.048         0.066   0.048           0.065    0.267  1.00</span></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt; 4           Residuals 834 1476436.34   1770.307        NA      NA    NA            NA      NA              NA       NA    NA</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-2" title="2"><span class="co">#&gt;                  term  df      sumsq     meansq statistic p.value etasq partial.etasq omegasq partial.omegasq epsilonsq cohens.f power</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; 1   as.factor(e42dep)   3  577756.33 192585.444   108.786   0.000 0.266         0.281   0.263           0.278     0.264    0.626  1.00</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt; 2 as.factor(c172code)   2   11722.05   5861.024     3.311   0.037 0.005         0.008   0.004           0.005     0.004    0.089  0.63</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; 3             c160age   1  105169.60 105169.595    59.408   0.000 0.048         0.066   0.048           0.065     0.048    0.267  1.00</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt; 4           Residuals 834 1476436.34   1770.307        NA      NA    NA            NA      NA              NA        NA       NA    NA</span></a></code></pre></div>
 <p>Like the other functions, the input may also be an object of class <code>anova</code>, so you can also use model fits from the <em>car</em> package, which allows fitting Anova’s with different types of sum of squares:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">anova_stats</a></span>(car<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/car/topics/Anova">Anova</a></span>(fit, <span class="dt">type =</span> <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt;                  term       sumsq     meansq  df statistic p.value etasq partial.etasq omegasq partial.omegasq cohens.f power</span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt; 1         (Intercept)   26851.070  26851.070   1    15.167   0.000 0.013         0.018   0.012           0.017    0.135 0.973</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt; 2   as.factor(e42dep)  426461.571 142153.857   3    80.299   0.000 0.209         0.224   0.206           0.220    0.537 1.000</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; 3 as.factor(c172code)    7352.049   3676.025   2     2.076   0.126 0.004         0.005   0.002           0.003    0.071 0.429</span></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; 4             c160age  105169.595 105169.595   1    59.408   0.000 0.051         0.066   0.051           0.065    0.267 1.000</span></a>
-<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt; 5           Residuals 1476436.343   1770.307 834        NA      NA    NA            NA      NA              NA       NA    NA</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt;                  term       sumsq     meansq  df statistic p.value etasq partial.etasq omegasq partial.omegasq epsilonsq cohens.f power</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt; 1         (Intercept)   26851.070  26851.070   1    15.167   0.000 0.013         0.018   0.012           0.017     0.012    0.135 0.973</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt; 2   as.factor(e42dep)  426461.571 142153.857   3    80.299   0.000 0.209         0.224   0.206           0.220     0.206    0.537 1.000</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; 3 as.factor(c172code)    7352.049   3676.025   2     2.076   0.126 0.004         0.005   0.002           0.003     0.002    0.071 0.429</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; 4             c160age  105169.595 105169.595   1    59.408   0.000 0.051         0.066   0.051           0.065     0.051    0.267 1.000</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt; 5           Residuals 1476436.343   1770.307 834        NA      NA    NA            NA      NA              NA        NA       NA    NA</span></a></code></pre></div>
 </div>
 <div id="confidence-intervals" class="section level1">
 <h1 class="hasAnchor">
@@ -209,9 +209,9 @@
 <a class="sourceLine" id="cb9-7" title="7"><span class="co"># uses bootstrapping - here, for speed, just 100 samples</span></a>
 <a class="sourceLine" id="cb9-8" title="8"><span class="kw"><a href="../reference/eta_sq.html">omega_sq</a></span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">ci.lvl =</span> <span class="fl">.9</span>, <span class="dt">n =</span> <span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb9-9" title="9"><span class="co">#&gt;                  term partial.omegasq conf.low conf.high</span></a>
-<a class="sourceLine" id="cb9-10" title="10"><span class="co">#&gt; 1   as.factor(e42dep)           0.278    0.240     0.323</span></a>
-<a class="sourceLine" id="cb9-11" title="11"><span class="co">#&gt; 2 as.factor(c172code)           0.005   -0.003     0.020</span></a>
-<a class="sourceLine" id="cb9-12" title="12"><span class="co">#&gt; 3             c160age           0.065    0.038     0.093</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-10" title="10"><span class="co">#&gt; 1   as.factor(e42dep)           0.278    0.233     0.326</span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="co">#&gt; 2 as.factor(c172code)           0.005   -0.003     0.018</span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="co">#&gt; 3             c160age           0.065    0.036     0.091</span></a></code></pre></div>
 </div>
 <div id="references" class="section level1">
 <h1 class="hasAnchor">

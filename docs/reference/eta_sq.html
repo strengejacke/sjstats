@@ -32,9 +32,10 @@
 
 <meta property="og:title" content="Effect size statistics for anova — eta_sq" />
 
-<meta property="og:description" content="Returns the (partial) eta-squared, (partial) omega-squared statistic
-  or Cohen's F for all terms in an anovas. anova_stats() returns
-  a tidy summary, including all these statistics and power for each term." />
+<meta property="og:description" content="Returns the (partial) eta-squared, (partial) omega-squared,
+  epsilon-squared statistic or Cohen's F for all terms in an anovas.
+  anova_stats() returns a tidy summary, including all these statistics
+  and power for each term." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -67,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
       </span>
     </div>
 
@@ -131,15 +132,21 @@
 
     <div class="ref-description">
     
-    <p>Returns the (partial) eta-squared, (partial) omega-squared statistic
-  or Cohen's F for all terms in an anovas. <code>anova_stats()</code> returns
-  a tidy summary, including all these statistics and power for each term.</p>
+    <p>Returns the (partial) eta-squared, (partial) omega-squared,
+  epsilon-squared statistic or Cohen's F for all terms in an anovas.
+  <code>anova_stats()</code> returns a tidy summary, including all these statistics
+  and power for each term.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>eta_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>)
+    <pre class="usage"><span class='fu'>eta_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>))
 
-<span class='fu'>omega_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>)
+<span class='fu'>omega_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>))
+
+<span class='fu'>epsilon_sq</span>(<span class='no'>model</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dist"</span>,
+  <span class='st'>"quantile"</span>))
 
 <span class='fu'>cohens_f</span>(<span class='no'>model</span>)
 
@@ -167,6 +174,14 @@ frame with effect sizes including lower and upper confidence intervals.</p></td>
       <td><p>Number of bootstraps to be generated.</p></td>
     </tr>
     <tr>
+      <th>method</th>
+      <td><p>Character vector, indicating if confidence intervals should be
+based on bootstrap standard error, multiplied by the value of the
+quantile function of the t-distribution (default), or on sample
+quantiles of the bootstrapped values. See 'Details' in <code><a href='boot_ci.html'>boot_ci()</a></code>.
+May be abbreviated.</p></td>
+    </tr>
+    <tr>
       <th>digits</th>
       <td><p>Number of decimal points in the returned data frame.</p></td>
     </tr>
@@ -185,7 +200,12 @@ frame with effect sizes including lower and upper confidence intervals.</p></td>
   non-symmetry, confidence intervals are based on bootstrap-methods. In this
   case, <code>n</code> indicates the number of bootstrap samples to be drawn to
   compute the confidence intervals. Confidence intervals for partial
-  omega-squared is also based on bootstrapping.</p>
+  omega-squared and epsilon-squared is also based on bootstrapping.
+  <br /> <br />
+  Since bootstrapped confidence intervals are based on the bootstrap standard error
+  (i.e. <code>mean(x) +/- qt(.975, df = length(x) - 1) * sd(x))</code>, bounds of
+  the confidence interval may be negative. Use <code>method = "quantile"</code> to
+  make sure that the confidence intervals are always positive.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -217,16 +237,21 @@ frame with effect sizes including lower and upper confidence intervals.</p></td>
 #&gt; 1   as.factor(e42dep)         0.281    0.247     0.310
 #&gt; 2 as.factor(c172code)         0.008    0.001     0.016
 #&gt; 3             c160age         0.066    0.047     0.089</div><div class='input'>
-<span class='fu'>anova_stats</span>(<span class='kw pkg'>car</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/car/topics/Anova'>Anova</a></span>(<span class='no'>fit</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt;                  term       sumsq     meansq  df statistic p.value etasq
+<span class='fu'>anova_stats</span>(<span class='kw pkg'>car</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/car/topics/Anova'>Anova</a></span>(<span class='no'>fit</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='message'>Registered S3 methods overwritten by 'car':</span>
+#&gt; <span class='message'>  method                          from</span>
+#&gt; <span class='message'>  influence.merMod                lme4</span>
+#&gt; <span class='message'>  cooks.distance.influence.merMod lme4</span>
+#&gt; <span class='message'>  dfbeta.influence.merMod         lme4</span>
+#&gt; <span class='message'>  dfbetas.influence.merMod        lme4</span></div><div class='output co'>#&gt;                  term       sumsq     meansq  df statistic p.value etasq
 #&gt; 1   as.factor(e42dep)  426461.571 142153.857   3    80.299   0.000 0.212
 #&gt; 2 as.factor(c172code)    7352.049   3676.025   2     2.076   0.126 0.004
 #&gt; 3             c160age  105169.595 105169.595   1    59.408   0.000 0.052
 #&gt; 4           Residuals 1476436.343   1770.307 834        NA      NA    NA
-#&gt;   partial.etasq omegasq partial.omegasq cohens.f power
-#&gt; 1         0.224   0.209           0.221    0.537 1.000
-#&gt; 2         0.005   0.002           0.003    0.071 0.429
-#&gt; 3         0.066   0.051           0.065    0.267 1.000
-#&gt; 4            NA      NA              NA       NA    NA</div><div class='input'>
+#&gt;   partial.etasq omegasq partial.omegasq epsilonsq cohens.f power
+#&gt; 1         0.224   0.209           0.221     0.209    0.537 1.000
+#&gt; 2         0.005   0.002           0.003     0.002    0.071 0.429
+#&gt; 3         0.066   0.051           0.065     0.051    0.267 1.000
+#&gt; 4            NA      NA              NA        NA       NA    NA</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

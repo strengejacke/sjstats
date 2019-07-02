@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
       </span>
     </div>
 
@@ -290,11 +290,11 @@ or a character vector with the variable name.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># weighted sd and se ----</span>
 
-<span class='fu'>wtd_sd</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>))</div><div class='output co'>#&gt; [1] 0.8122863</div><div class='input'>
+<span class='fu'>wtd_sd</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>))</div><div class='output co'>#&gt; [1] 0.8498705</div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>efc</span>)
 <span class='fu'>wtd_sd</span>(<span class='no'>efc</span>[, <span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>efc</span>)))</div><div class='output co'>#&gt;    c12hour   e15relat     e16sex 
-#&gt; 50.2236821  2.0569434  0.4654878 </div><div class='input'><span class='fu'>wtd_se</span>(<span class='no'>efc</span>[, <span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>efc</span>)))</div><div class='output co'>#&gt;    c12hour   e15relat     e16sex 
-#&gt; 1.68858848 0.06873935 0.01573668 </div><div class='input'>
+#&gt; 51.7876181  2.0540843  0.4699551 </div><div class='input'><span class='fu'>wtd_se</span>(<span class='no'>efc</span>[, <span class='fl'>1</span>:<span class='fl'>3</span>], <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>efc</span>)))</div><div class='output co'>#&gt;    c12hour   e15relat     e16sex 
+#&gt; 1.66065784 0.06942749 0.01562877 </div><div class='input'>
 <span class='co'># svy_md ----</span>
 
 <span class='co'># median for variables from weighted survey designs</span>
@@ -315,27 +315,27 @@ or a character vector with the variable name.</p></td>
 <span class='no'>efc</span>$<span class='no'>weight</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/MathFun'>abs</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>efc</span>), <span class='fl'>1</span>, <span class='fl'>.3</span>))
 <span class='fu'>wtd_ttest</span>(<span class='no'>efc</span>, <span class='no'>e17age</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight</span>)</div><div class='output co'>#&gt; <span style='color: #0000BB;'>
 #&gt; One Sample t-test (two.sided)
-#&gt; </span><span style='color: #00BBBB;'># t=292.76  df=890  p-value=0.000
+#&gt; </span><span style='color: #00BBBB;'># t=292.68  df=890  p-value=0.000
 #&gt; 
-#&gt; </span><span>  mean of e17age: 79.222 [78.691  79.753]
+#&gt; </span><span>  mean of e17age: 79.189 [78.658  79.720]
 #&gt; </div><div class='input'><span class='fu'>wtd_ttest</span>(<span class='no'>efc</span>, <span class='no'>e17age</span>, <span class='no'>c160age</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
 #&gt; Two-Sample t-test (two.sided)
 #&gt; </span><span style='color: #00BBBB;'>
 #&gt; # comparison between e17age and c160age
-#&gt; # t=49.62  df=1469  p-value=0.000
+#&gt; # t=49.92  df=1469  p-value=0.000
 #&gt; 
-#&gt; </span><span>  mean of e17age    : 79.221
-#&gt;   mean of c160age   : 53.399
-#&gt;   difference of mean: 25.822 [24.801  26.843]
+#&gt; </span><span>  mean of e17age    : 79.187
+#&gt;   mean of c160age   : 53.208
+#&gt;   difference of mean: 25.980 [24.959  27.001]
 #&gt; </div><div class='input'><span class='fu'>wtd_ttest</span>(<span class='no'>e17age</span> ~ <span class='no'>e16sex</span> + <span class='no'>weight</span>, <span class='no'>efc</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
 #&gt; Two-Sample t-test (two.sided)
 #&gt; </span><span style='color: #00BBBB;'>
 #&gt; # comparison of e17age by e16sex
-#&gt; # t=-7.86  df=598  p-value=0.000
+#&gt; # t=-7.46  df=604  p-value=0.000
 #&gt; 
-#&gt; </span><span>  mean in group [1] male  : 76.276
-#&gt;   mean in group [2] female: 80.618
-#&gt;   difference of mean      : -4.342 [-5.426  -3.257]
+#&gt; </span><span>  mean in group [1] male  : 76.401
+#&gt;   mean in group [2] female: 80.518
+#&gt;   difference of mean      : -4.117 [-5.201  -3.034]
 #&gt; </div><div class='input'>
 <span class='co'># weighted Mann-Whitney-U-test ----</span>
 
@@ -343,23 +343,23 @@ or a character vector with the variable name.</p></td>
 #&gt; Weighted Mann-Whitney-U test (two.sided)
 #&gt; </span><span style='color: #00BBBB;'>
 #&gt; # comparison of c12hour by c161sex
-#&gt; # Chisq=2.25  df=899  p-value=0.025
+#&gt; # Chisq=3.26  df=899  p-value=0.001
 #&gt; 
-#&gt; </span><span>  difference in mean rank score: 0.054
+#&gt; </span><span>  difference in mean rank score: 0.075
 #&gt; </div><div class='input'>
 <span class='co'># weighted Chi-squared-test ----</span>
 
 <span class='fu'>wtd_chisqtest</span>(<span class='no'>efc</span>, <span class='no'>c161sex</span>, <span class='no'>e16sex</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight</span>, <span class='kw'>correct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
 #&gt; # Measure of Association for Contingency Tables
 #&gt; </span><span>
-#&gt;   Chi-squared: 2.0244
-#&gt;           Phi: 0.0475
-#&gt;       p-value: 0.1548</div><div class='input'><span class='fu'>wtd_chisqtest</span>(<span class='no'>c172code</span> ~ <span class='no'>c161sex</span> + <span class='no'>weight</span>, <span class='no'>efc</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
+#&gt;   Chi-squared: 2.0566
+#&gt;           Phi: 0.0479
+#&gt;       p-value: 0.1515</div><div class='input'><span class='fu'>wtd_chisqtest</span>(<span class='no'>c172code</span> ~ <span class='no'>c161sex</span> + <span class='no'>weight</span>, <span class='no'>efc</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
 #&gt; # Measure of Association for Contingency Tables
 #&gt; </span><span>
-#&gt;   Chi-squared: 4.4437
-#&gt;    Cramer's V: 0.0728
-#&gt;       p-value: 0.1084</div><div class='input'>
+#&gt;   Chi-squared: 4.8005
+#&gt;    Cramer's V: 0.0758
+#&gt;       p-value: 0.0907</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Expected and relative table values — table_values • sjstats</title>
+<title>Summary of Bayesian multivariate-response mediation-models — mediation • sjstats</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Expected and relative table values — table_values" />
+<meta property="og:title" content="Summary of Bayesian multivariate-response mediation-models — mediation" />
 
-<meta property="og:description" content="This function calculates a table's cell, row and column percentages as
-               well as expected values and returns all results as lists of tables." />
+<meta property="og:description" content="mediation() is a short summary for multivariate-response
+  mediation-models." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -123,58 +123,89 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Expected and relative table values</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/sjStatistics.R'><code>R/sjStatistics.R</code></a></small>
-    <div class="hidden name"><code>table_values.Rd</code></div>
+    <h1>Summary of Bayesian multivariate-response mediation-models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/mediation.R'><code>R/mediation.R</code></a></small>
+    <div class="hidden name"><code>mediation.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function calculates a table's cell, row and column percentages as
-               well as expected values and returns all results as lists of tables.</p>
+    <p><code>mediation()</code> is a short summary for multivariate-response
+  mediation-models.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>table_values</span>(<span class='no'>tab</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
+    <pre class="usage"><span class='fu'>mediation</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>mediation</span>(<span class='no'>x</span>, <span class='no'>treatment</span>, <span class='no'>mediator</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>typical</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tab</th>
-      <td><p>Simple <code><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></code> or <code><a href='https://www.rdocumentation.org/packages/stats/topics/ftable'>ftable</a></code> of which
-cell, row and column percentages as well as expected values are calculated.
-Tables of class <code><a href='https://www.rdocumentation.org/packages/stats/topics/xtabs'>xtabs</a></code> and other will be coerced to
-<code>ftable</code> objects.</p></td>
+      <th>x</th>
+      <td><p>A <code>stanreg</code>, <code>stanfit</code>, or <code>brmsfit</code> object.</p></td>
     </tr>
     <tr>
-      <th>digits</th>
-      <td><p>Amount of digits for the table percentage values.</p></td>
+      <th>...</th>
+      <td><p>Not used.</p></td>
+    </tr>
+    <tr>
+      <th>treatment</th>
+      <td><p>Character, name of the treatment variable (or direct effect)
+in a (multivariate response) mediator-model. If missing, <code>mediation()</code>
+tries to find the treatment variable automatically, however, this may fail.</p></td>
+    </tr>
+    <tr>
+      <th>mediator</th>
+      <td><p>Character, name of the mediator variable in a (multivariate
+response) mediator-model. If missing, <code>mediation()</code> tries to find the
+treatment variable automatically, however, this may fail.</p></td>
+    </tr>
+    <tr>
+      <th>prob</th>
+      <td><p>Vector of scalars between 0 and 1, indicating the mass within
+the credible interval that is to be estimated.</p></td>
+    </tr>
+    <tr>
+      <th>typical</th>
+      <td><p>The typical value that will represent the Bayesian point estimate.
+By default, the posterior median is returned. See <code><a href='https://www.rdocumentation.org/packages/sjmisc/topics/typical_value'>typical_value</a></code>
+for possible values for this argument.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>(Invisibly) returns a list with four tables:</p><ol>
-<li><p><code>cell</code> a table with cell percentages of <code>tab</code></p></li>
-<li><p><code>row</code> a table with row percentages of <code>tab</code></p></li>
-<li><p><code>col</code> a table with column percentages of <code>tab</code></p></li>
-<li><p><code>expected</code> a table with expected values of <code>tab</code></p></li>
-</ol>
+    <p>A data frame with direct, indirect, mediator and
+  total effect of a multivariate-response mediation-model, as well as the
+  proportion mediated. The effect sizes are mean values of the posterior
+  samples.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p><code>mediation()</code> returns a data frame with information on the
+      <em>direct effect</em> (mean value of posterior samples from <code>treatment</code>
+      of the outcome model), <em>mediator effect</em> (mean value of posterior
+      samples from <code>mediator</code> of the outcome model), <em>indirect effect</em>
+      (mean value of the multiplication of the posterior samples from
+      <code>mediator</code> of the outcome model and the posterior samples from
+      <code>treatment</code> of the mediation model) and the total effect (mean
+      value of sums of posterior samples used for the direct and indirect
+      effect). The <em>proportion mediated</em> is the indirect effect divided
+      by the total effect.
+      <br /> <br />
+      For all values, the 90% HDIs are calculated by default. Use <code>prob</code>
+      to calculate a different interval.
+      <br /> <br />
+      The arguments <code>treatment</code> and <code>mediator</code> do not necessarily
+      need to be specified. If missing, <code>mediation()</code> tries to find the
+      treatment and mediator variable automatically. If this does not work,
+      specify these variables.</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>))
-<span class='co'># show expected values</span>
-<span class='fu'>table_values</span>(<span class='no'>tab</span>)$<span class='no'>expected</span></div><div class='output co'>#&gt;   A B C
-#&gt; A 4 8 3
-#&gt; B 4 8 3</div><div class='input'><span class='co'># show cell percentages</span>
-<span class='fu'>table_values</span>(<span class='no'>tab</span>)$<span class='no'>cell</span></div><div class='output co'>#&gt;        1     2     3
-#&gt;                     
-#&gt; 1  10.00 30.00 10.00
-#&gt; 2  13.33 26.67 10.00</div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -182,9 +213,9 @@ Tables of class <code><a href='https://www.rdocumentation.org/packages/stats/top
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+
+      <li><a href="#details">Details</a></li>
+          </ul>
 
   </div>
 </div>
