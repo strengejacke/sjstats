@@ -6,6 +6,10 @@
 * `design_effect()` is an alias for `deff()`.
 * `samplesize_mixed()` is an alias for `smpsize_lmm()`.
 
+## Changes to functions
+
+* `phi()` and `cramer()` can now compute confidence intervals.
+
 # sjstats 0.17.5
 
 ## New functions

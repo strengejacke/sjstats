@@ -27,11 +27,15 @@
 #' @param statistics Name of measure of association that should be computed. May
 #'          be one of \code{"auto"}, \code{"cramer"}, \code{"phi"}, \code{"spearman"},
 #'          \code{"kendall"}, \code{"pearson"} or \code{"fisher"}. See 'Details'.
+#' @param ci.lvl Scalar between 0 and 1. If not \code{NULL}, returns a data
+#'   frame including lower and upper confidence intervals.
 #' @param ... Other arguments, passed down to the statistic functions
 #'          \code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
 #'          \code{\link[stats]{cor.test}}.
 #'
 #' @inheritParams grpmean
+#' @inheritParams bootstrap
+#' @inheritParams boot_ci
 #'
 #' @return For \code{phi()}, the table's Phi value. For \code{cramer()}, the
 #'         table's Cramer's V.
@@ -74,7 +78,13 @@
 #' tab <- table(sample(1:2, 30, TRUE), sample(1:3, 30, TRUE))
 #' cramer(tab)
 #'
+#' # formula notation
 #' data(efc)
+#' cramer(e16sex ~ c161sex, data = efc)
+#'
+#' # bootstrapped confidence intervals
+#' cramer(e16sex ~ c161sex, data = efc, ci.lvl = .95, n = 100)
+#'
 #' # 2x2 table, compute Phi automatically
 #' xtab_statistics(efc, e16sex, c161sex)
 #'

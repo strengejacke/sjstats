@@ -1,0 +1,36 @@
+#' @title Design effects for two-level mixed models
+#' @name design_effect
+#'
+#' @description Compute the design effect (also called \emph{Variance Inflation Factor})
+#'              for mixed models with two-level design.
+#'
+#' @param n Average number of observations per grouping cluster (i.e. level-2 unit).
+#' @param icc Assumed intraclass correlation coefficient for multilevel-model.
+#'
+#' @return The design effect (Variance Inflation Factor) for the two-level model.
+#'
+#' @references Bland JM. 2000. Sample size in guidelines trials. Fam Pract. (17), 17-20.
+#'             \cr \cr
+#'             Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. An Overview of Variance Inflation Factors for Sample-Size Calculation. Evaluation and the Health Professions 26: 239-257. \doi{10.1177/0163278703255230}
+#'             \cr \cr
+#'             Snijders TAB. 2005. Power and Sample Size in Multilevel Linear Models. In: Everitt BS, Howell DC (Hrsg.). Encyclopedia of Statistics in Behavioral Science. Chichester, UK: John Wiley and Sons, Ltd. \doi{10.1002/0470013192.bsa492}
+#'             \cr \cr
+#'             Thompson DM, Fernald DH, Mold JW. 2012. Intraclass Correlation Coefficients Typical of Cluster-Randomized Studies: Estimates From the Robert Wood Johnson Prescription for Health Projects. The Annals of Family Medicine;10(3):235-40. \doi{10.1370/afm.1347}
+#'
+#' @details The formula for the design effect is simply \code{(1 + (n - 1) * icc)}.
+#'
+#' @examples
+#' # Design effect for two-level model with 30 observations per
+#' # cluster group (level-2 unit) and an assumed intraclass
+#' # correlation coefficient of 0.05.
+#' design_effect(n = 30)
+#'
+#' # Design effect for two-level model with 24 observation per cluster
+#' # group and an assumed intraclass correlation coefficient of 0.2.
+#' design_effect(n = 24, icc = 0.2)
+#'
+#' @export
+design_effect <- function(n, icc = 0.05) {
+  1 + (n - 1) * icc
+}
+
