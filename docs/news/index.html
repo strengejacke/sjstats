@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
       </span>
     </div>
 
@@ -124,47 +124,207 @@
       <small>Source: <a href='https://github.com/strengejacke/sjstats/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="sjstats-0174" class="section level1">
+    <div id="sjstats-0175" class="section level1">
 <h1 class="page-header">
-<a href="#sjstats-0174" class="anchor"></a>sjstats 0.17.4<small> Unreleased </small>
+<a href="#sjstats-0175" class="anchor"></a>sjstats 0.17.5<small> 2019-06-04 </small>
 </h1>
 <div id="general" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general" class="anchor"></a>General</h2>
 <ul>
-<li>Following models/objects are now supported by model-information functions like <code><a href="../reference/pred_vars.html">model_family()</a></code>, <code><a href="../reference/pred_vars.html">link_inverse()</a></code> or <code><a href="../reference/pred_vars.html">model_frame()</a></code>: <code>MixMod</code> (package <strong>GLMMadaptive</strong>), <strong>MCMCglmm</strong>, <code>mlogit</code> and <code>gmnl</code>.</li>
-<li>Reduce package dependencies.</li>
+<li>Minor revisions to meet the changes in the forthcoming update from <em>tidyr</em>.</li>
+<li>
+<code><a href="../reference/design_effect.html">design_effect()</a></code> is an alias for <code><a href="../reference/design_effect.html">deff()</a></code>.</li>
+<li>
+<code><a href="../reference/samplesize_mixed.html">samplesize_mixed()</a></code> is an alias for <code><a href="../reference/samplesize_mixed.html">smpsize_lmm()</a></code>.</li>
 </ul>
 </div>
+</div>
+    <div id="sjstats-0175-1" class="section level1">
+<h1 class="page-header">
+<a href="#sjstats-0175-1" class="anchor"></a>sjstats 0.17.5<small> 2019-06-04 </small>
+</h1>
 <div id="new-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-functions" class="anchor"></a>New functions</h2>
 <ul>
 <li>
-<code><a href="../reference/hdi.html">cred_int()</a></code>, to compute uncertainty intervals of Bayesian models. Mimics the behaviour and style of <code><a href="../reference/hdi.html">hdi()</a></code> and is thus a convenient complement to functions like <code>posterior_interval()</code>.</li>
+<code><a href="../reference/eta_sq.html">epsilon_sq()</a></code>, to compute epsilon-squared effect-size.</li>
+</ul>
+</div>
+<div id="deprecated-and-defunct" class="section level2">
+<h2 class="hasAnchor">
+<a href="#deprecated-and-defunct" class="anchor"></a>Deprecated and defunct</h2>
+<p><em>sjstats</em> is being re-structured, and many functions are re-implemented in new packages that are part of a new project called <strong>easystats</strong>. The aim of <strong>easystats</strong> is to provide a unifying and consistent framework to tame, discipline and harness the scary R statistics and their pesky models.</p>
+<p>Therefore, following functions are now deprecated:</p>
+<ul>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">insight::link_inverse()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">model_family()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/insight/topics/model_info">insight::model_info()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/insight/topics/get_data">insight::get_data()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">pred_vars()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/insight/topics/find_predictors">insight::find_predictors()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">re_grp_var()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/insight/topics/find_random">insight::find_random()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">grp_var()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/insight/topics/find_random">insight::find_random()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">resp_val()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/insight/topics/get_response">insight::get_response()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">resp_var()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/insight/topics/find_response">insight::find_response()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">var_names()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/insight/topics/clean_names">insight::clean_names()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">overdisp()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/check_overdispersion">performance::check_overdispersion()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">zero_count()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/check_zeroinflation">performance::check_zeroinflation()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">converge_ok()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/check_convergence">performance::check_convergence()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">is_singular()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/check_singularity">performance::check_singularity()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">reliab_test()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/item_reliability">performance::item_reliability()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">split_half()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/item_split_half">performance::item_split_half()</a></code>
+</li>
+<li>
+<code>predictive_accurarcy()</code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/performance_accuracy">performance::performance_accuracy()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">cronb()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/cronbachs_alpha">performance::cronbachs_alpha()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">difficulty()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/item_difficulty">performance::item_difficulty()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">mic()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/item_intercor">performance::item_intercor()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">pca()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/principal_components">performance::principal_components()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">pca_rotate()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/principal_components">performance::principal_components()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">r2()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/r2">performance::r2()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">icc()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/icc">performance::icc()</a></code>
+</li>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/performance/topics/performance_rmse">rmse()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/performance_rmse">performance::rmse()</a></code>
+</li>
+<li>
+<code>rse()</code>, please use <code>performance::rse()</code>
+</li>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/performance/topics/performance_mse">mse()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/performance_mse">performance::mse()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">hdi()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/bayestestR/topics/hdi">bayestestR::hdi()</a></code>
+</li>
+<li>
+<code>cred_int()</code>, please use <code><a href="https://www.rdocumentation.org/packages/bayestestR/topics/ci">bayestestR::ci()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">rope()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/bayestestR/topics/rope">bayestestR::rope()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">n_eff()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/bayestestR/topics/effective_sample">bayestestR::effective_sample()</a></code>
+</li>
+<li>
+<code>equi_test()</code>, please use <code><a href="https://www.rdocumentation.org/packages/bayestestR/topics/equivalence_test">bayestestR::equivalence_test()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">multicollin()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/check_collinearity">performance::check_collinearity()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">normality()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/check_normality">performance::check_normality()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">autocorrelation()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/check_autocorrelation">performance::check_autocorrelation()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">heteroskedastic()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/check_heteroscedasticity">performance::check_heteroscedasticity()</a></code>
+</li>
+<li>
+<code><a href="../reference/overdisp.html">outliers()</a></code>, please use <code><a href="https://www.rdocumentation.org/packages/performance/topics/check_outliers">performance::check_outliers()</a></code>
+</li>
 </ul>
 </div>
 <div id="changes-to-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-to-functions" class="anchor"></a>Changes to functions</h2>
 <ul>
-<li>
-<code><a href="../reference/hdi.html">equi_test()</a></code> now finds better defaults for models with binomial outcome (like logistic regression models).</li>
-<li>
-<code><a href="../reference/cod.html">r2()</a></code> for mixed models now also should work properly for mixed models fitted with <strong>rstanarm</strong>.</li>
-<li>
-<code><a href="../reference/eta_sq.html">anova_stats()</a></code> and alike (e.g. <code><a href="../reference/eta_sq.html">eta_sq()</a></code>) now all preserve original term names.</li>
-<li>
-<code><a href="../reference/pred_vars.html">model_family()</a></code> now returns <code>$is_count = TRUE</code>, when model is a count-model, and <code>$is_beta = TRUE</code> for models with beta-family.</li>
-<li>
-<code><a href="../reference/pred_vars.html">pred_vars()</a></code> checks that return value has only unique values.</li>
-<li>
-<code><a href="../reference/pred_vars.html">pred_vars()</a></code> gets a <code>zi</code>-argument to return the variables from a model’s zero-inflation-formula.</li>
+<li>Anova-stats functions (like <code><a href="../reference/eta_sq.html">eta_sq()</a></code>) get a <code>method</code>-argument to define the method for computing confidence intervals from bootstrapping.</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>In some situations, <code><a href="../reference/samplesize_mixed.html">smpsize_lmm()</a></code> could result in negative sample-size recommendations. This was fixed, and a warning is now shown indicating that the parameters for the power-calculation should be modified.</li>
+<li>Fixed issue with wrong calculated effect size <code>r</code> in <code><a href="../reference/mwu.html">mwu()</a></code> if group-factor contained more than two groups.</li>
+</ul>
+</div>
+</div>
+    <div id="sjstats-0174" class="section level1">
+<h1 class="page-header">
+<a href="#sjstats-0174" class="anchor"></a>sjstats 0.17.4<small> 2019-03-15 </small>
+</h1>
+<div id="general-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general-1" class="anchor"></a>General</h2>
+<ul>
+<li>Following models/objects are now supported by model-information functions like <code><a href="../reference/overdisp.html">model_family()</a></code>, <code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> or <code><a href="../reference/overdisp.html">model_frame()</a></code>: <code>MixMod</code> (package <strong>GLMMadaptive</strong>), <strong>MCMCglmm</strong>, <code>mlogit</code> and <code>gmnl</code>.</li>
+<li>Reduce package dependencies.</li>
+</ul>
+</div>
+<div id="new-functions-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-1" class="anchor"></a>New functions</h2>
+<ul>
+<li>
+<code>cred_int()</code>, to compute uncertainty intervals of Bayesian models. Mimics the behaviour and style of <code><a href="../reference/overdisp.html">hdi()</a></code> and is thus a convenient complement to functions like <code>posterior_interval()</code>.</li>
+</ul>
+</div>
+<div id="changes-to-functions-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-functions-1" class="anchor"></a>Changes to functions</h2>
+<ul>
+<li>
+<code>equi_test()</code> now finds better defaults for models with binomial outcome (like logistic regression models).</li>
+<li>
+<code><a href="../reference/overdisp.html">r2()</a></code> for mixed models now also should work properly for mixed models fitted with <strong>rstanarm</strong>.</li>
+<li>
+<code><a href="../reference/eta_sq.html">anova_stats()</a></code> and alike (e.g. <code><a href="../reference/eta_sq.html">eta_sq()</a></code>) now all preserve original term names.</li>
+<li>
+<code><a href="../reference/overdisp.html">model_family()</a></code> now returns <code>$is_count = TRUE</code>, when model is a count-model, and <code>$is_beta = TRUE</code> for models with beta-family.</li>
+<li>
+<code><a href="../reference/overdisp.html">pred_vars()</a></code> checks that return value has only unique values.</li>
+<li>
+<code><a href="../reference/overdisp.html">pred_vars()</a></code> gets a <code>zi</code>-argument to return the variables from a model’s zero-inflation-formula.</li>
+</ul>
+</div>
+<div id="bug-fixes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix minor issues in <code><a href="../reference/wtd_sd.html">wtd_sd()</a></code> and <code><a href="../reference/wtd_sd.html">wtd_mean()</a></code> when weight was <code>NULL</code> (which usually shoudln’t be the case anyway).</li>
 <li>Fix potential issue with <code><a href="https://www.rdocumentation.org/packages/base/topics/deparse">deparse()</a></code>, cutting off very long formulas in various functions.</li>
@@ -176,70 +336,11 @@
 <h1 class="page-header">
 <a href="#sjstats-0173" class="anchor"></a>sjstats 0.17.3<small> 2019-01-07 </small>
 </h1>
-<div id="general-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#general-1" class="anchor"></a>General</h2>
-<ul>
-<li>Export <code><a href="https://dplyr.tidyverse.org/reference/n.html">dplyr::n()</a></code>, to meet forthcoming changes in dplyr 0.8.0.</li>
-</ul>
-</div>
-<div id="changes-to-functions-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-to-functions-1" class="anchor"></a>Changes to functions</h2>
-<ul>
-<li>
-<code><a href="../reference/boot_ci.html">boot_ci()</a></code> gets a <code>ci.lvl</code>-argument.</li>
-<li>The <code>rotation</code>-argument in <code><a href="../reference/pca.html">pca_rotate()</a></code> now supports all rotations from <code><a href="https://www.rdocumentation.org/packages/psych/topics/principal">psych::principal()</a></code>.</li>
-<li>
-<code><a href="../reference/pred_vars.html">pred_vars()</a></code> gets a <code>fe.only</code>-argument to return only fixed effects terms from mixed models, and a <code>disp</code>-argument to return the variables from a model’s dispersion-formula.</li>
-<li>
-<code><a href="../reference/icc.html">icc()</a></code> for Bayesian models gets a <code>adjusted</code>-argument, to calculate adjusted and conditional ICC (however, only for Gaussian models).</li>
-<li>For <code><a href="../reference/icc.html">icc()</a></code> for non-Gaussian Bayes-models, a message is printed that recommends setting argument <code>ppd</code> to <code>TRUE</code>.</li>
-<li>
-<code><a href="../reference/pred_vars.html">resp_val()</a></code> and <code><a href="../reference/pred_vars.html">resp_var()</a></code> now also work for <strong>brms</strong>-models with additional response information (like <code>trial()</code> in formula).</li>
-<li>
-<code><a href="../reference/pred_vars.html">resp_var()</a></code> gets a <code>combine</code>-argument, to return either the name of the matrix-column or the original variable names for matrix-columns.</li>
-<li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code> now also returns the original variables for matrix-column-variables.</li>
-<li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code> now also returns the variable from the dispersion-formula of <strong>glmmTMB</strong>-models.</li>
-<li>
-<code><a href="../reference/pred_vars.html">model_family()</a></code> and <code><a href="../reference/pred_vars.html">link_inverse()</a></code> now supports <strong>glmmPQL</strong>, <strong>felm</strong> and <strong>lm_robust</strong>-models.</li>
-<li>
-<code><a href="../reference/eta_sq.html">anova_stats()</a></code> and alike (<code>omeqa_sq()</code> etc.) now support gam-models from package <strong>gam</strong>.</li>
-<li>
-<code><a href="../reference/p_value.html">p_value()</a></code> now supports objects of class <code>svyolr</code>.</li>
-</ul>
-</div>
-<div id="bug-fixes-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
-<ul>
-<li>Fix issue with <code><a href="../reference/se.html">se()</a></code> and <code><a href="../reference/re_var.html">get_re_var()</a></code> for objects returned by <code><a href="../reference/icc.html">icc()</a></code>.</li>
-<li>Fix issue with <code><a href="../reference/icc.html">icc()</a></code> for Stan-models.</li>
-<li>
-<code><a href="../reference/pred_vars.html">var_names()</a></code> did not clear terms with log-log transformation, e.g. <code><a href="https://www.rdocumentation.org/packages/base/topics/Log">log(log(y))</a></code>.</li>
-<li>Fix issue in <code><a href="../reference/pred_vars.html">model_frame()</a></code> for models with splines with only one column.</li>
-</ul>
-</div>
-</div>
-    <div id="sjstats-0172" class="section level1">
-<h1 class="page-header">
-<a href="#sjstats-0172" class="anchor"></a>sjstats 0.17.2<small> 2018-11-15 </small>
-</h1>
 <div id="general-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-2" class="anchor"></a>General</h2>
 <ul>
-<li>Revised help-files for <code><a href="../reference/cod.html">r2()</a></code> and <code><a href="../reference/icc.html">icc()</a></code>, also by adding more references.</li>
-</ul>
-</div>
-<div id="new-functions-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-functions-1" class="anchor"></a>New functions</h2>
-<ul>
-<li>
-<code><a href="../reference/pred_vars.html">re_grp_var()</a></code> to find group factors of random effects in mixed models.</li>
+<li>Export <code><a href="https://dplyr.tidyverse.org/reference/n.html">dplyr::n()</a></code>, to meet forthcoming changes in dplyr 0.8.0.</li>
 </ul>
 </div>
 <div id="changes-to-functions-2" class="section level2">
@@ -247,23 +348,82 @@
 <a href="#changes-to-functions-2" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
-<code><a href="../reference/eta_sq.html">omega_sq()</a></code> and <code><a href="../reference/eta_sq.html">eta_sq()</a></code> give more informative messages when using non-supported objects.</li>
+<code><a href="../reference/boot_ci.html">boot_ci()</a></code> gets a <code>ci.lvl</code>-argument.</li>
+<li>The <code>rotation</code>-argument in <code><a href="../reference/overdisp.html">pca_rotate()</a></code> now supports all rotations from <code><a href="https://www.rdocumentation.org/packages/psych/topics/principal">psych::principal()</a></code>.</li>
 <li>
-<code><a href="../reference/cod.html">r2()</a></code> and <code><a href="../reference/icc.html">icc()</a></code> give more informative warnings and messages.</li>
+<code><a href="../reference/overdisp.html">pred_vars()</a></code> gets a <code>fe.only</code>-argument to return only fixed effects terms from mixed models, and a <code>disp</code>-argument to return the variables from a model’s dispersion-formula.</li>
 <li>
-<code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> supports printing simplex parameters of monotonic effects of <strong>brms</strong> models.</li>
+<code><a href="../reference/overdisp.html">icc()</a></code> for Bayesian models gets a <code>adjusted</code>-argument, to calculate adjusted and conditional ICC (however, only for Gaussian models).</li>
+<li>For <code><a href="../reference/overdisp.html">icc()</a></code> for non-Gaussian Bayes-models, a message is printed that recommends setting argument <code>ppd</code> to <code>TRUE</code>.</li>
 <li>
-<code><a href="../reference/grpmean.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code> get a <code>file</code> and <code>encoding</code> argument, to save the HTML output as file.</li>
+<code><a href="../reference/overdisp.html">resp_val()</a></code> and <code><a href="../reference/overdisp.html">resp_var()</a></code> now also work for <strong>brms</strong>-models with additional response information (like <code>trial()</code> in formula).</li>
+<li>
+<code><a href="../reference/overdisp.html">resp_var()</a></code> gets a <code>combine</code>-argument, to return either the name of the matrix-column or the original variable names for matrix-columns.</li>
+<li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code> now also returns the original variables for matrix-column-variables.</li>
+<li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code> now also returns the variable from the dispersion-formula of <strong>glmmTMB</strong>-models.</li>
+<li>
+<code><a href="../reference/overdisp.html">model_family()</a></code> and <code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> now supports <strong>glmmPQL</strong>, <strong>felm</strong> and <strong>lm_robust</strong>-models.</li>
+<li>
+<code><a href="../reference/eta_sq.html">anova_stats()</a></code> and alike (<code>omeqa_sq()</code> etc.) now support gam-models from package <strong>gam</strong>.</li>
+<li>
+<code><a href="../reference/p_value.html">p_value()</a></code> now supports objects of class <code>svyolr</code>.</li>
 </ul>
 </div>
 <div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
+<li>Fix issue with <code><a href="../reference/se.html">se()</a></code> and <code>get_re_var()</code> for objects returned by <code><a href="../reference/overdisp.html">icc()</a></code>.</li>
+<li>Fix issue with <code><a href="../reference/overdisp.html">icc()</a></code> for Stan-models.</li>
 <li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code> now correctly names the offset-columns for terms provided as <code>offset</code>-argument (i.e. for models where the offset was not specified inside the formula).</li>
+<code><a href="../reference/overdisp.html">var_names()</a></code> did not clear terms with log-log transformation, e.g. <code><a href="https://www.rdocumentation.org/packages/base/topics/Log">log(log(y))</a></code>.</li>
+<li>Fix issue in <code><a href="../reference/overdisp.html">model_frame()</a></code> for models with splines with only one column.</li>
+</ul>
+</div>
+</div>
+    <div id="sjstats-0172" class="section level1">
+<h1 class="page-header">
+<a href="#sjstats-0172" class="anchor"></a>sjstats 0.17.2<small> 2018-11-15 </small>
+</h1>
+<div id="general-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general-3" class="anchor"></a>General</h2>
+<ul>
+<li>Revised help-files for <code><a href="../reference/overdisp.html">r2()</a></code> and <code><a href="../reference/overdisp.html">icc()</a></code>, also by adding more references.</li>
+</ul>
+</div>
+<div id="new-functions-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-2" class="anchor"></a>New functions</h2>
+<ul>
+<li>
+<code><a href="../reference/overdisp.html">re_grp_var()</a></code> to find group factors of random effects in mixed models.</li>
+</ul>
+</div>
+<div id="changes-to-functions-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-functions-3" class="anchor"></a>Changes to functions</h2>
+<ul>
+<li>
+<code><a href="../reference/eta_sq.html">omega_sq()</a></code> and <code><a href="../reference/eta_sq.html">eta_sq()</a></code> give more informative messages when using non-supported objects.</li>
+<li>
+<code><a href="../reference/overdisp.html">r2()</a></code> and <code><a href="../reference/overdisp.html">icc()</a></code> give more informative warnings and messages.</li>
+<li>
+<code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> supports printing simplex parameters of monotonic effects of <strong>brms</strong> models.</li>
+<li>
+<code><a href="../reference/grpmean.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code> get a <code>file</code> and <code>encoding</code> argument, to save the HTML output as file.</li>
+</ul>
+</div>
+<div id="bug-fixes-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code> now correctly names the offset-columns for terms provided as <code>offset</code>-argument (i.e. for models where the offset was not specified inside the formula).</li>
 <li>Fixed issue with <code>weights</code>-argument in <code><a href="../reference/grpmean.html">grpmean()</a></code> when variable name was passed as character vector.</li>
-<li>Fixed issue with <code><a href="../reference/cod.html">r2()</a></code> for <strong>glmmTMB</strong> models with <code>ar1</code> random effects structure.</li>
+<li>Fixed issue with <code><a href="../reference/overdisp.html">r2()</a></code> for <strong>glmmTMB</strong> models with <code>ar1</code> random effects structure.</li>
 </ul>
 </div>
 </div>
@@ -271,9 +431,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0171" class="anchor"></a>sjstats 0.17.1<small> 2018-10-02 </small>
 </h1>
-<div id="new-functions-2" class="section level2">
+<div id="new-functions-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-2" class="anchor"></a>New functions</h2>
+<a href="#new-functions-3" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/wtd_sd.html">wtd_chisqtest()</a></code> to compute a weighted Chi-squared test.</li>
@@ -283,26 +443,26 @@
 <code><a href="../reference/wtd_sd.html">wtd_cor()</a></code> to compute weighted correlation coefficients of variables.</li>
 </ul>
 </div>
-<div id="changes-to-functions-3" class="section level2">
+<div id="changes-to-functions-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-3" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-4" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
-<code><a href="../reference/hdi.html">mediation()</a></code> can now cope with models from different families, e.g. if the moderator or outcome is binary, while the treatment-effect is continuous.</li>
+<code><a href="../reference/mediation.html">mediation()</a></code> can now cope with models from different families, e.g. if the moderator or outcome is binary, while the treatment-effect is continuous.</li>
 <li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code>, <code><a href="../reference/pred_vars.html">link_inverse()</a></code>, <code><a href="../reference/pred_vars.html">pred_vars()</a></code>, <code><a href="../reference/pred_vars.html">resp_var()</a></code>, <code><a href="../reference/pred_vars.html">resp_val()</a></code>, <code><a href="../reference/cod.html">r2()</a></code> and <code><a href="../reference/pred_vars.html">model_family()</a></code> now support <code>clm2</code>-objects from package <strong>ordinal</strong>.</li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code>, <code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code>, <code><a href="../reference/overdisp.html">pred_vars()</a></code>, <code><a href="../reference/overdisp.html">resp_var()</a></code>, <code><a href="../reference/overdisp.html">resp_val()</a></code>, <code><a href="../reference/overdisp.html">r2()</a></code> and <code><a href="../reference/overdisp.html">model_family()</a></code> now support <code>clm2</code>-objects from package <strong>ordinal</strong>.</li>
 <li>
 <code><a href="../reference/eta_sq.html">anova_stats()</a></code> gives a more informative message for non-supported models or ANOVA-options.</li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level2">
+<div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed issue with <code><a href="../reference/pred_vars.html">model_family()</a></code> and <code><a href="../reference/pred_vars.html">link_inverse()</a></code> for models fitted with <code><a href="https://www.rdocumentation.org/packages/pscl/topics/hurdle">pscl::hurdle()</a></code> or <code><a href="https://www.rdocumentation.org/packages/pscl/topics/zeroinfl">pscl::zeroinfl()</a></code>.</li>
+<li>Fixed issue with <code><a href="../reference/overdisp.html">model_family()</a></code> and <code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> for models fitted with <code><a href="https://www.rdocumentation.org/packages/pscl/topics/hurdle">pscl::hurdle()</a></code> or <code><a href="https://www.rdocumentation.org/packages/pscl/topics/zeroinfl">pscl::zeroinfl()</a></code>.</li>
 <li>Fixed issue with wrong title in <code><a href="../reference/grpmean.html">grpmean()</a></code> for grouped data frames, when grouping variable was an unlabelled factor.</li>
-<li>Fix issue with <code><a href="../reference/pred_vars.html">model_frame()</a></code> for <strong>coxph</strong>-models with polynomial or spline-terms.</li>
-<li>Fix issue with <code><a href="../reference/hdi.html">mediation()</a></code> for logical variables.</li>
+<li>Fix issue with <code><a href="../reference/overdisp.html">model_frame()</a></code> for <strong>coxph</strong>-models with polynomial or spline-terms.</li>
+<li>Fix issue with <code><a href="../reference/mediation.html">mediation()</a></code> for logical variables.</li>
 </ul>
 </div>
 </div>
@@ -310,74 +470,11 @@
 <h1 class="page-header">
 <a href="#sjstats-0170" class="anchor"></a>sjstats 0.17.0<small> 2018-08-20 </small>
 </h1>
-<div id="general-3" class="section level2">
-<h2 class="hasAnchor">
-<a href="#general-3" class="anchor"></a>General</h2>
-<ul>
-<li>Reduce package dependencies.</li>
-</ul>
-</div>
-<div id="new-functions-3" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-functions-3" class="anchor"></a>New functions</h2>
-<ul>
-<li>
-<code><a href="../reference/wtd_sd.html">wtd_ttest()</a></code> to compute a weighted t-test.</li>
-<li>
-<code><a href="../reference/wtd_sd.html">wtd_mwu()</a></code> to compute a weighted Mann-Whitney-U or Kruskal-Wallis test.</li>
-</ul>
-</div>
-<div id="changes-to-functions-4" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-to-functions-4" class="anchor"></a>Changes to functions</h2>
-<ul>
-<li>
-<code><a href="../reference/robust.html">robust()</a></code> was revised, getting more arguments to specify different types of covariance-matrix estimation, and handling these more flexible.</li>
-<li>Improved <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code>-method for <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for <em>brmsfit</em>-objects with categorical-families.</li>
-<li>
-<code><a href="../reference/se.html">se()</a></code> now also computes standard errors for relative frequencies (proportions) of a vector.</li>
-<li>
-<code><a href="../reference/cod.html">r2()</a></code> now also computes r-squared values for <em>glmmTMB</em>-models from <code>genpois</code>-families.</li>
-<li>
-<code><a href="../reference/cod.html">r2()</a></code> gives more precise warnings for non-supported model-families.</li>
-<li>
-<code><a href="../reference/xtab_statistics.html">xtab_statistics()</a></code> gets a <code>weights</code>-argument, to compute measures of association for contingency tables for weighted data.</li>
-<li>The <code>statistics</code>-argument in <code><a href="../reference/xtab_statistics.html">xtab_statistics()</a></code> gets a <code>"fisher"</code>-option, to force Fisher’s Exact Test to be used.</li>
-<li>Improved variance calculation in <code><a href="../reference/icc.html">icc()</a></code> for generalized linear mixed models with Poisson or negative binomial families.</li>
-<li>
-<code><a href="../reference/icc.html">icc()</a></code> gets an <code>adjusted</code>-argument, to calculate the adjusted and conditional ICC for mixed models.</li>
-<li>To get consistent argument names accross functions, argument <code>weight.by</code> is now deprecated and renamed into <code>weights</code>.</li>
-</ul>
-</div>
-<div id="bug-fixes-4" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
-<ul>
-<li>Fix issues with effect size computation for repeated-measure Anova when using bootstrapping to compute confidence intervals.</li>
-<li>
-<code><a href="../reference/grpmean.html">grpmean()</a></code> now also adjusts the <code>n</code>-columm for weighted data.</li>
-<li>
-<code><a href="../reference/icc.html">icc()</a></code>, <code><a href="../reference/re_var.html">re_var()</a></code> and <code><a href="../reference/re_var.html">get_re_var()</a></code> now correctly compute the random-effect-variances for models with multiple random slopes per random effect term (e.g., <code>(1 + rs1 + rs2 | grp)</code>).</li>
-<li>Fix issues in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, <code><a href="../reference/hdi.html">mcse()</a></code>, <code><a href="../reference/hdi.html">hdi()</a></code> and <code><a href="../reference/hdi.html">n_eff()</a></code> for <code>stan_polr()</code>-models.</li>
-<li>Plotting <code><a href="../reference/hdi.html">equi_test()</a></code> did not work for intercept-only models.</li>
-</ul>
-</div>
-</div>
-    <div id="sjstats-0160" class="section level1">
-<h1 class="page-header">
-<a href="#sjstats-0160" class="anchor"></a>sjstats 0.16.0<small> 2018-07-10 </small>
-</h1>
 <div id="general-4" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-4" class="anchor"></a>General</h2>
 <ul>
-<li>The S3-generics for functions like <code><a href="../reference/hdi.html">hdi()</a></code>, <code><a href="../reference/hdi.html">rope()</a></code>, <code><a href="../reference/hdi.html">equi_test()</a></code> etc. are now more generic, and function usage for each supported object is now included in the documentation.</li>
-<li>Following functions are now S3-generic: <code><a href="../reference/icc.html">icc()</a></code>, <code><a href="../reference/cod.html">r2()</a></code>, <code><a href="../reference/p_value.html">p_value()</a></code>, <code><a href="../reference/se.html">se()</a></code>, and <code><a href="../reference/std_beta.html">std_beta()</a></code>.</li>
-<li>Added <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code>-methods for some more functions, for a clearer output.</li>
-<li>Revised <code><a href="../reference/cod.html">r2()</a></code> for mixed models (packages <strong>lme4</strong>, <strong>glmmTMB</strong>). The r-squared value should be much more precise now, and reports the marginal and conditional r-squared values.</li>
-<li>Reduced package dependencies and removed <em>apaTables</em> and <em>MBESS</em> from suggested packages</li>
-<li>
-<code>stanmvreg</code>-models are now supported by many functions.</li>
+<li>Reduce package dependencies.</li>
 </ul>
 </div>
 <div id="new-functions-4" class="section level2">
@@ -385,13 +482,9 @@
 <a href="#new-functions-4" class="anchor"></a>New functions</h2>
 <ul>
 <li>
-<code><a href="../reference/rmse.html">binned_resid()</a></code> to plot binned residuals for logistic regression models.</li>
+<code><a href="../reference/wtd_sd.html">wtd_ttest()</a></code> to compute a weighted t-test.</li>
 <li>
-<code><a href="../reference/rmse.html">error_rate()</a></code> to compute model quality for logistic regression models.</li>
-<li>
-<code><a href="../reference/auto_prior.html">auto_prior()</a></code> to quickly create automatically adjusted priors for brms-models.</li>
-<li>
-<code><a href="../reference/reliab_test.html">difficulty()</a></code> to compute the item difficulty.</li>
+<code><a href="../reference/wtd_sd.html">wtd_mwu()</a></code> to compute a weighted Mann-Whitney-U or Kruskal-Wallis test.</li>
 </ul>
 </div>
 <div id="changes-to-functions-5" class="section level2">
@@ -399,47 +492,52 @@
 <a href="#changes-to-functions-5" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
-<code><a href="../reference/icc.html">icc()</a></code> gets a <code>ppd</code>-argument for Stan-models (<em>brmsfit</em> and <em>stanreg</em>), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.</li>
-<li>For Stan-models (<em>brmsfit</em> and <em>stanreg</em>), <code><a href="../reference/icc.html">icc()</a></code> now also computes the HDI for the ICC and random-effect variances. Use the <code>prob</code>-argument to specify the limits of this interval.</li>
+<code><a href="../reference/robust.html">robust()</a></code> was revised, getting more arguments to specify different types of covariance-matrix estimation, and handling these more flexible.</li>
+<li>Improved <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code>-method for <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for <em>brmsfit</em>-objects with categorical-families.</li>
 <li>
-<code><a href="../reference/pred_vars.html">link_inverse()</a></code> and <code><a href="../reference/pred_vars.html">model_family()</a></code> now support <em>clmm</em>-models (package <em>ordinal</em>) and <em>glmRob</em> and <em>lmRob</em>-models (package <em>robust</em>).</li>
+<code><a href="../reference/se.html">se()</a></code> now also computes standard errors for relative frequencies (proportions) of a vector.</li>
 <li>
-<code><a href="../reference/pred_vars.html">model_family()</a></code> gets a <code>multi.resp</code>-argument, to return a list of family-informations for multivariate-response models (of class <code>brmsfit</code> or <code>stanmvreg</code>).</li>
+<code><a href="../reference/overdisp.html">r2()</a></code> now also computes r-squared values for <em>glmmTMB</em>-models from <code>genpois</code>-families.</li>
 <li>
-<code><a href="../reference/pred_vars.html">link_inverse()</a></code> gets a <code>multi.resp</code>-argument, to return a list of link-inverse-functions for multivariate-response models (of class <code>brmsfit</code> or <code>stanmvreg</code>).</li>
+<code><a href="../reference/overdisp.html">r2()</a></code> gives more precise warnings for non-supported model-families.</li>
 <li>
-<code><a href="../reference/p_value.html">p_value()</a></code> now supports <em>rlm</em>-models (package <em>MASS</em>).</li>
+<code><a href="../reference/xtab_statistics.html">xtab_statistics()</a></code> gets a <code>weights</code>-argument, to compute measures of association for contingency tables for weighted data.</li>
+<li>The <code>statistics</code>-argument in <code><a href="../reference/xtab_statistics.html">xtab_statistics()</a></code> gets a <code>"fisher"</code>-option, to force Fisher’s Exact Test to be used.</li>
+<li>Improved variance calculation in <code><a href="../reference/overdisp.html">icc()</a></code> for generalized linear mixed models with Poisson or negative binomial families.</li>
 <li>
-<code><a href="../reference/check_assumptions.html">check_assumptions()</a></code> for single models with <code>as.logical = FALSE</code> now has a nice print-method.</li>
-<li>
-<code><a href="../reference/eta_sq.html">eta_sq()</a></code> and <code><a href="../reference/eta_sq.html">omega_sq()</a></code> now also work for repeated-measure Anovas, i.e. Anova with error term (requires broom &gt; 0.4.5).</li>
+<code><a href="../reference/overdisp.html">icc()</a></code> gets an <code>adjusted</code>-argument, to calculate the adjusted and conditional ICC for mixed models.</li>
+<li>To get consistent argument names accross functions, argument <code>weight.by</code> is now deprecated and renamed into <code>weights</code>.</li>
 </ul>
 </div>
 <div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
+<li>Fix issues with effect size computation for repeated-measure Anova when using bootstrapping to compute confidence intervals.</li>
 <li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code> and <code><a href="../reference/pred_vars.html">var_names()</a></code> now correctly cleans nested patterns like <code><a href="https://www.rdocumentation.org/packages/stats/topics/offset">offset(log(x + 10))</a></code> from column names.</li>
+<code><a href="../reference/grpmean.html">grpmean()</a></code> now also adjusts the <code>n</code>-columm for weighted data.</li>
 <li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code> now returns proper column names from <em>gamm4</em> models.</li>
-<li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code> did not work when the model frame had spline-terms and weights.</li>
-<li>Fix issue in <code><a href="../reference/robust.html">robust()</a></code> when <code>exponentiate = TRUE</code> and <code>conf.int = FALSE</code>.</li>
-<li>
-<code><a href="../reference/reliab_test.html">reliab_test()</a></code> returned an error when the provided data frame has less than three columns, instead of returning <code>NULL</code>.</li>
+<code><a href="../reference/overdisp.html">icc()</a></code>, <code>re_var()</code> and <code>get_re_var()</code> now correctly compute the random-effect-variances for models with multiple random slopes per random effect term (e.g., <code>(1 + rs1 + rs2 | grp)</code>).</li>
+<li>Fix issues in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, <code><a href="../reference/overdisp.html">mcse()</a></code>, <code><a href="../reference/overdisp.html">hdi()</a></code> and <code><a href="../reference/overdisp.html">n_eff()</a></code> for <code>stan_polr()</code>-models.</li>
+<li>Plotting <code>equi_test()</code> did not work for intercept-only models.</li>
 </ul>
 </div>
 </div>
-    <div id="sjstats-0150" class="section level1">
+    <div id="sjstats-0160" class="section level1">
 <h1 class="page-header">
-<a href="#sjstats-0150" class="anchor"></a>sjstats 0.15.0<small> 2018-06-06 </small>
+<a href="#sjstats-0160" class="anchor"></a>sjstats 0.16.0<small> 2018-07-10 </small>
 </h1>
 <div id="general-5" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-5" class="anchor"></a>General</h2>
 <ul>
-<li>Added new Vignette <em>Statistics for Bayesian Models</em>.</li>
+<li>The S3-generics for functions like <code><a href="../reference/overdisp.html">hdi()</a></code>, <code><a href="../reference/overdisp.html">rope()</a></code>, <code>equi_test()</code> etc. are now more generic, and function usage for each supported object is now included in the documentation.</li>
+<li>Following functions are now S3-generic: <code><a href="../reference/overdisp.html">icc()</a></code>, <code><a href="../reference/overdisp.html">r2()</a></code>, <code><a href="../reference/p_value.html">p_value()</a></code>, <code><a href="../reference/se.html">se()</a></code>, and <code><a href="../reference/std_beta.html">std_beta()</a></code>.</li>
+<li>Added <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code>-methods for some more functions, for a clearer output.</li>
+<li>Revised <code><a href="../reference/overdisp.html">r2()</a></code> for mixed models (packages <strong>lme4</strong>, <strong>glmmTMB</strong>). The r-squared value should be much more precise now, and reports the marginal and conditional r-squared values.</li>
+<li>Reduced package dependencies and removed <em>apaTables</em> and <em>MBESS</em> from suggested packages</li>
+<li>
+<code>stanmvreg</code>-models are now supported by many functions.</li>
 </ul>
 </div>
 <div id="new-functions-5" class="section level2">
@@ -447,9 +545,13 @@
 <a href="#new-functions-5" class="anchor"></a>New functions</h2>
 <ul>
 <li>
-<code><a href="../reference/hdi.html">equi_test()</a></code> to test if parameter values in Bayesian estimation should be accepted or rejected.</li>
+<code>binned_resid()</code> to plot binned residuals for logistic regression models.</li>
 <li>
-<code><a href="../reference/hdi.html">mediation()</a></code> to print a summary of a mediation analysis from multivariate response models fitted with <em>brms</em>.</li>
+<code>error_rate()</code> to compute model quality for logistic regression models.</li>
+<li>
+<code><a href="../reference/auto_prior.html">auto_prior()</a></code> to quickly create automatically adjusted priors for brms-models.</li>
+<li>
+<code><a href="../reference/overdisp.html">difficulty()</a></code> to compute the item difficulty.</li>
 </ul>
 </div>
 <div id="changes-to-functions-6" class="section level2">
@@ -457,24 +559,82 @@
 <a href="#changes-to-functions-6" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
-<code><a href="../reference/pred_vars.html">link_inverse()</a></code> now also returns the link-inverse function for cumulative-family <em>brms</em>-models.</li>
+<code><a href="../reference/overdisp.html">icc()</a></code> gets a <code>ppd</code>-argument for Stan-models (<em>brmsfit</em> and <em>stanreg</em>), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.</li>
+<li>For Stan-models (<em>brmsfit</em> and <em>stanreg</em>), <code><a href="../reference/overdisp.html">icc()</a></code> now also computes the HDI for the ICC and random-effect variances. Use the <code>prob</code>-argument to specify the limits of this interval.</li>
 <li>
-<code><a href="../reference/pred_vars.html">model_family()</a></code> now also returns an <code>is_ordinal</code>-element with information if the model is ordinal resp. a cumulative link model.</li>
-<li>Functions that access model information (like <code><a href="../reference/pred_vars.html">model_family()</a></code>) now better support <code>vglm</code>-models (package <em>VGAM</em>).</li>
+<code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> and <code><a href="../reference/overdisp.html">model_family()</a></code> now support <em>clmm</em>-models (package <em>ordinal</em>) and <em>glmRob</em> and <em>lmRob</em>-models (package <em>robust</em>).</li>
 <li>
-<code><a href="../reference/cod.html">r2()</a></code> now also calculates the standard error for <em>brms</em> or <em>stanreg</em> models.</li>
+<code><a href="../reference/overdisp.html">model_family()</a></code> gets a <code>multi.resp</code>-argument, to return a list of family-informations for multivariate-response models (of class <code>brmsfit</code> or <code>stanmvreg</code>).</li>
 <li>
-<code><a href="../reference/cod.html">r2()</a></code> gets a <code>loo</code>-argument to calculate LOO-adjusted rsquared values for <em>brms</em> or <em>stanreg</em> models. This measure comes conceptionally closer to an adjusted r-squared measure.</li>
-<li>Effect sizes (<code><a href="../reference/eta_sq.html">anova_stats()</a></code>, <code><a href="../reference/eta_sq.html">eta_sq()</a></code> etc.) are now also computed for mixed models.</li>
-<li>To avoid confusion, <code><a href="../reference/hdi.html">n_eff()</a></code> now computes the number of effective samples, and no longer its ratio in relation to the total number of samples.</li>
-<li>The column name for the ratio of the number of effective samples in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> is now named <em>neff_ratio</em>, to avoid confusion.</li>
+<code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> gets a <code>multi.resp</code>-argument, to return a list of link-inverse-functions for multivariate-response models (of class <code>brmsfit</code> or <code>stanmvreg</code>).</li>
+<li>
+<code><a href="../reference/p_value.html">p_value()</a></code> now supports <em>rlm</em>-models (package <em>MASS</em>).</li>
+<li>
+<code><a href="../reference/overdisp.html">check_assumptions()</a></code> for single models with <code>as.logical = FALSE</code> now has a nice print-method.</li>
+<li>
+<code><a href="../reference/eta_sq.html">eta_sq()</a></code> and <code><a href="../reference/eta_sq.html">omega_sq()</a></code> now also work for repeated-measure Anovas, i.e. Anova with error term (requires broom &gt; 0.4.5).</li>
 </ul>
 </div>
 <div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed issue in <code><a href="../reference/se.html">se()</a></code> for <code><a href="../reference/icc.html">icc()</a></code>-objects, where random effect term could not be found.</li>
+<li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code> and <code><a href="../reference/overdisp.html">var_names()</a></code> now correctly cleans nested patterns like <code><a href="https://www.rdocumentation.org/packages/stats/topics/offset">offset(log(x + 10))</a></code> from column names.</li>
+<li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code> now returns proper column names from <em>gamm4</em> models.</li>
+<li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code> did not work when the model frame had spline-terms and weights.</li>
+<li>Fix issue in <code><a href="../reference/robust.html">robust()</a></code> when <code>exponentiate = TRUE</code> and <code>conf.int = FALSE</code>.</li>
+<li>
+<code><a href="../reference/overdisp.html">reliab_test()</a></code> returned an error when the provided data frame has less than three columns, instead of returning <code>NULL</code>.</li>
+</ul>
+</div>
+</div>
+    <div id="sjstats-0150" class="section level1">
+<h1 class="page-header">
+<a href="#sjstats-0150" class="anchor"></a>sjstats 0.15.0<small> 2018-06-06 </small>
+</h1>
+<div id="general-6" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general-6" class="anchor"></a>General</h2>
+<ul>
+<li>Added new Vignette <em>Statistics for Bayesian Models</em>.</li>
+</ul>
+</div>
+<div id="new-functions-6" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-6" class="anchor"></a>New functions</h2>
+<ul>
+<li>
+<code>equi_test()</code> to test if parameter values in Bayesian estimation should be accepted or rejected.</li>
+<li>
+<code><a href="../reference/mediation.html">mediation()</a></code> to print a summary of a mediation analysis from multivariate response models fitted with <em>brms</em>.</li>
+</ul>
+</div>
+<div id="changes-to-functions-7" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-functions-7" class="anchor"></a>Changes to functions</h2>
+<ul>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> now also returns the link-inverse function for cumulative-family <em>brms</em>-models.</li>
+<li>
+<code><a href="../reference/overdisp.html">model_family()</a></code> now also returns an <code>is_ordinal</code>-element with information if the model is ordinal resp. a cumulative link model.</li>
+<li>Functions that access model information (like <code><a href="../reference/overdisp.html">model_family()</a></code>) now better support <code>vglm</code>-models (package <em>VGAM</em>).</li>
+<li>
+<code><a href="../reference/overdisp.html">r2()</a></code> now also calculates the standard error for <em>brms</em> or <em>stanreg</em> models.</li>
+<li>
+<code><a href="../reference/overdisp.html">r2()</a></code> gets a <code>loo</code>-argument to calculate LOO-adjusted rsquared values for <em>brms</em> or <em>stanreg</em> models. This measure comes conceptionally closer to an adjusted r-squared measure.</li>
+<li>Effect sizes (<code><a href="../reference/eta_sq.html">anova_stats()</a></code>, <code><a href="../reference/eta_sq.html">eta_sq()</a></code> etc.) are now also computed for mixed models.</li>
+<li>To avoid confusion, <code><a href="../reference/overdisp.html">n_eff()</a></code> now computes the number of effective samples, and no longer its ratio in relation to the total number of samples.</li>
+<li>The column name for the ratio of the number of effective samples in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> is now named <em>neff_ratio</em>, to avoid confusion.</li>
+</ul>
+</div>
+<div id="bug-fixes-7" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed issue in <code><a href="../reference/se.html">se()</a></code> for <code><a href="../reference/overdisp.html">icc()</a></code>-objects, where random effect term could not be found.</li>
 <li>Fixed issue in <code><a href="../reference/se.html">se()</a></code> for <code>merMod</code>-objects.</li>
 <li>Fixed issue in <code><a href="../reference/p_value.html">p_value()</a></code> for mixed models with KR-approximation, which is now more accurate.</li>
 </ul>
@@ -484,9 +644,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0143" class="anchor"></a>sjstats 0.14.3<small> 2018-05-02 </small>
 </h1>
-<div id="general-6" class="section level2">
+<div id="general-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-6" class="anchor"></a>General</h2>
+<a href="#general-7" class="anchor"></a>General</h2>
 <ul>
 <li>Remove <em>tidyverse</em> from suggested packages, as requested by maintainers.</li>
 </ul>
@@ -499,38 +659,38 @@
 <code><a href="../reference/mwu.html">mwu()</a></code> now requires a data frame as first argument, followed by the names of the two variables to perform the Mann-Whitney-U-Test on.</li>
 </ul>
 </div>
-<div id="changes-to-functions-7" class="section level2">
+<div id="changes-to-functions-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-7" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-8" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> was improved especially for more complex multilevel models.</li>
 <li>Make <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for large <code>brmsfit</code>-objects (esp. with random effects) more efficient.</li>
-<li>Better <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code>-method for <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, <code><a href="../reference/hdi.html">hdi()</a></code>, <code><a href="../reference/hdi.html">rope()</a></code>, <code><a href="../reference/icc.html">icc()</a></code> and some other functions.</li>
+<li>Better <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code>-method for <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, <code><a href="../reference/overdisp.html">hdi()</a></code>, <code><a href="../reference/overdisp.html">rope()</a></code>, <code><a href="../reference/overdisp.html">icc()</a></code> and some other functions.</li>
 <li>
-<code><a href="../reference/pred_vars.html">link_inverse()</a></code> now also should return the link-inverse function for most (or some or all?) custom families of <em>brms</em>-models.</li>
+<code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> now also should return the link-inverse function for most (or some or all?) custom families of <em>brms</em>-models.</li>
 <li>The <code>weight.by</code>-arguments in <code><a href="../reference/grpmean.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code> now should be a variable name from a variable in <code>x</code>, and no longer a separate vector.</li>
 </ul>
 </div>
-<div id="new-functions-6" class="section level2">
+<div id="new-functions-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-6" class="anchor"></a>New functions</h2>
+<a href="#new-functions-7" class="anchor"></a>New functions</h2>
 <ul>
 <li>
-<code><a href="../reference/pred_vars.html">model_family()</a></code> to get model-information about family and link-functions. This function is intended to be “generic” and work with many different model objects, because not all packages provide a <code><a href="https://www.rdocumentation.org/packages/stats/topics/family">family()</a></code> function.</li>
+<code><a href="../reference/overdisp.html">model_family()</a></code> to get model-information about family and link-functions. This function is intended to be “generic” and work with many different model objects, because not all packages provide a <code><a href="https://www.rdocumentation.org/packages/stats/topics/family">family()</a></code> function.</li>
 </ul>
 </div>
-<div id="bug-fixes-7" class="section level2">
+<div id="bug-fixes-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-8" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix issue with <code><a href="../reference/eta_sq.html">omega_sq()</a></code>, <code><a href="../reference/eta_sq.html">eta_sq()</a></code> etc. when confidence intervals were computed with bootstrapping and the model-formula contained function calls like <code><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale()</a></code> or <code><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor()</a></code>.</li>
 <li>Fix issue with <code><a href="../reference/p_value.html">p_value()</a></code> for unconditional mixed models.</li>
 <li>Fix typo in <code><a href="../reference/xtab_statistics.html">xtab_statistics()</a></code>.</li>
-<li>Fix issue with wrong calculation of Nagelkerke’s r-squared value in <code><a href="../reference/cod.html">r2()</a></code>.</li>
+<li>Fix issue with wrong calculation of Nagelkerke’s r-squared value in <code><a href="../reference/overdisp.html">r2()</a></code>.</li>
 <li>Fix issue for factors with character leves in <code><a href="https://www.rdocumentation.org/packages/sjmisc/topics/typical_value">typical_value()</a></code>, when argument <code>fun</code> for factors was set to <code>mode</code>.</li>
-<li>Don’t show prior-samples in <code><a href="../reference/hdi.html">hdi()</a></code>, <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> etc. for <em>brmsfit</em>-objects.</li>
-<li>Fixed issues in <code><a href="../reference/pred_vars.html">model_frame()</a></code>with spline-terms when missing values were removed due to casewise deletion.</li>
+<li>Don’t show prior-samples in <code><a href="../reference/overdisp.html">hdi()</a></code>, <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> etc. for <em>brmsfit</em>-objects.</li>
+<li>Fixed issues in <code><a href="../reference/overdisp.html">model_frame()</a></code>with spline-terms when missing values were removed due to casewise deletion.</li>
 </ul>
 </div>
 </div>
@@ -538,9 +698,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0142" class="anchor"></a>sjstats 0.14.2<small> 2018-03-25 </small>
 </h1>
-<div id="general-7" class="section level2">
+<div id="general-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-7" class="anchor"></a>General</h2>
+<a href="#general-8" class="anchor"></a>General</h2>
 <ul>
 <li>Revise examples, vignettes and package description to make sure all used packages are available for CRAN checks on operating systems.</li>
 </ul>
@@ -550,32 +710,32 @@
 <h1 class="page-header">
 <a href="#sjstats-0142-1" class="anchor"></a>sjstats 0.14.2<small> 2018-03-25 </small>
 </h1>
-<div id="new-functions-7" class="section level2">
+<div id="new-functions-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-7" class="anchor"></a>New functions</h2>
+<a href="#new-functions-8" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code>residuals.svyglm.nb()</code> as S3-generic <code><a href="https://www.rdocumentation.org/packages/stats/topics/residuals">residuals()</a></code> method for objects fitted with <code><a href="../reference/svyglm.nb.html">svyglm.nb()</a></code>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-8" class="section level2">
+<div id="changes-to-functions-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-8" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-9" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
-<code><a href="../reference/icc.html">icc()</a></code> gets a <code>posterior</code>-argument, to compute ICC-values from <code>brmsfit</code>-objects, for the whole posterior distribution.</li>
+<code><a href="../reference/overdisp.html">icc()</a></code> gets a <code>posterior</code>-argument, to compute ICC-values from <code>brmsfit</code>-objects, for the whole posterior distribution.</li>
 <li>
-<code><a href="../reference/icc.html">icc()</a></code> now gives a warning when computed for random-slope-intercept models, to warn user about probably inappropriate inference.</li>
+<code><a href="../reference/overdisp.html">icc()</a></code> now gives a warning when computed for random-slope-intercept models, to warn user about probably inappropriate inference.</li>
 <li>
-<code><a href="../reference/cod.html">r2()</a></code> now computes Bayesian version of R-squared for <code>stanreg</code> and <code>brmsfit</code> objects.</li>
-<li>Argument <code>prob</code> in <code><a href="../reference/hdi.html">hdi()</a></code> now accepts a vector of scalars to compute HDIs for multiple probability tresholds at once.</li>
-<li>Argument <code>probs</code> in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> was renamed into <code>prob</code>, to be consistent with <code><a href="../reference/hdi.html">hdi()</a></code>.</li>
+<code><a href="../reference/overdisp.html">r2()</a></code> now computes Bayesian version of R-squared for <code>stanreg</code> and <code>brmsfit</code> objects.</li>
+<li>Argument <code>prob</code> in <code><a href="../reference/overdisp.html">hdi()</a></code> now accepts a vector of scalars to compute HDIs for multiple probability tresholds at once.</li>
+<li>Argument <code>probs</code> in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> was renamed into <code>prob</code>, to be consistent with <code><a href="../reference/overdisp.html">hdi()</a></code>.</li>
 <li>
 <code><a href="../reference/mwu.html">mwu()</a></code> gets an <code>out</code>-argument, to print output to console, or as HTML table in the viewer or web browser.</li>
 <li>
 <code><a href="../reference/scale_weights.html">scale_weights()</a></code> now also works if weights have missing values.</li>
 <li>
-<code><a href="../reference/hdi.html">hdi()</a></code> and <code><a href="../reference/hdi.html">rope()</a></code> get <code>data.frame</code>-methods.</li>
+<code><a href="../reference/overdisp.html">hdi()</a></code> and <code><a href="../reference/overdisp.html">rope()</a></code> get <code>data.frame</code>-methods.</li>
 <li>
 <code><a href="../reference/eta_sq.html">omega_sq()</a></code> and <code><a href="../reference/eta_sq.html">eta_sq()</a></code> get a <code>ci.lvl</code>-argument to compute confidence intervals for the effect size statistics.</li>
 <li>
@@ -586,15 +746,15 @@
 <code><a href="../reference/eta_sq.html">omega_sq()</a></code>, <code><a href="../reference/eta_sq.html">eta_sq()</a></code>, <code><a href="../reference/eta_sq.html">cohens_f()</a></code> and <code><a href="../reference/eta_sq.html">anova_stats()</a></code> now support <code>anova.rms</code>-objects from the <em>rms</em>-package.</li>
 </ul>
 </div>
-<div id="bug-fixes-8" class="section level2">
+<div id="bug-fixes-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-8" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-9" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fix unnecessary warning for tibbles in <code><a href="../reference/reliab_test.html">mic()</a></code>.</li>
-<li>Make sure that <code><a href="../reference/pred_vars.html">model_frame()</a></code> does not return duplicated column names.</li>
+<li>Fix unnecessary warning for tibbles in <code><a href="../reference/overdisp.html">mic()</a></code>.</li>
+<li>Make sure that <code><a href="../reference/overdisp.html">model_frame()</a></code> does not return duplicated column names.</li>
 <li>Fix issue in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> with incorrect <em>n_eff</em> statistics for <em>sigma</em> parameter in mixed models.</li>
 <li>Fix issue in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, which did not work when <code>probs</code> was of length greater than 2.</li>
-<li>Fix issue in <code><a href="../reference/icc.html">icc()</a></code> with <em>brmsfit</em>-models, which was broken probably due to internal changes in <em>brms</em>.</li>
+<li>Fix issue in <code><a href="../reference/overdisp.html">icc()</a></code> with <em>brmsfit</em>-models, which was broken probably due to internal changes in <em>brms</em>.</li>
 </ul>
 </div>
 </div>
@@ -602,32 +762,32 @@
 <h1 class="page-header">
 <a href="#sjstats-0141" class="anchor"></a>sjstats 0.14.1<small> 2018-02-04 </small>
 </h1>
-<div id="general-8" class="section level2">
+<div id="general-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-8" class="anchor"></a>General</h2>
+<a href="#general-9" class="anchor"></a>General</h2>
 <ul>
 <li>Remove unused imports.</li>
 <li>Cross refences from <code><a href="https://dplyr.tidyverse.org/reference/reexports.html">dplyr::select_helpers</a></code> were updated to <code><a href="https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers">tidyselect::select_helpers</a></code>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-9" class="section level2">
+<div id="changes-to-functions-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-9" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-10" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
-<code><a href="../reference/pred_vars.html">var_names()</a></code> now also cleans variable names from variables modeled with the <code>mi()</code> function (multiple imputation on the fly in <em>brms</em>).</li>
+<code><a href="../reference/overdisp.html">var_names()</a></code> now also cleans variable names from variables modeled with the <code>mi()</code> function (multiple imputation on the fly in <em>brms</em>).</li>
 <li>
-<code><a href="../reference/reliab_test.html">reliab_test()</a></code> gets an <code>out</code>-argument, to print output to console, or as HTML table in the viewer or web browser.</li>
+<code><a href="../reference/overdisp.html">reliab_test()</a></code> gets an <code>out</code>-argument, to print output to console, or as HTML table in the viewer or web browser.</li>
 </ul>
 </div>
-<div id="bug-fixes-9" class="section level2">
+<div id="bug-fixes-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-9" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-10" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fix issues with <code><a href="../reference/hdi.html">mcse()</a></code>, <code><a href="../reference/hdi.html">n_eff()</a></code> and <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> with more complex <em>brmsfit</em>-models.</li>
+<li>Fix issues with <code><a href="../reference/overdisp.html">mcse()</a></code>, <code><a href="../reference/overdisp.html">n_eff()</a></code> and <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> with more complex <em>brmsfit</em>-models.</li>
 <li>Fix issue in <code><a href="https://www.rdocumentation.org/packages/sjmisc/topics/typical_value">typical_value()</a></code> to prevent error for R-oldrel-Windows.</li>
 <li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code> now returns response values from models, which are in matrix form (bound with <code><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind()</a></code>), as is.</li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code> now returns response values from models, which are in matrix form (bound with <code><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind()</a></code>), as is.</li>
 <li>Fixed issues in <code><a href="../reference/grpmean.html">grpmean()</a></code>, where values instead of value labels were printed if some categories were not present in the data.</li>
 </ul>
 </div>
@@ -636,26 +796,26 @@
 <h1 class="page-header">
 <a href="#sjstats-0140" class="anchor"></a>sjstats 0.14.0<small> 2018-01-14 </small>
 </h1>
-<div id="general-9" class="section level2">
+<div id="general-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-9" class="anchor"></a>General</h2>
+<a href="#general-10" class="anchor"></a>General</h2>
 <ul>
 <li>Beautiful colored output for <code><a href="../reference/grpmean.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code>.</li>
 </ul>
 </div>
-<div id="new-functions-8" class="section level2">
+<div id="new-functions-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-8" class="anchor"></a>New functions</h2>
+<a href="#new-functions-9" class="anchor"></a>New functions</h2>
 <ul>
 <li>
-<code><a href="../reference/hdi.html">mcse()</a></code> to compute the Monte Carlo standard error for <code>stanreg</code>- and <code>brmsfit</code>-models.</li>
+<code><a href="../reference/overdisp.html">mcse()</a></code> to compute the Monte Carlo standard error for <code>stanreg</code>- and <code>brmsfit</code>-models.</li>
 <li>
-<code><a href="../reference/hdi.html">n_eff()</a></code> to compute the effective sample size for <code>stanreg</code>- and <code>brmsfit</code>-models.</li>
+<code><a href="../reference/overdisp.html">n_eff()</a></code> to compute the effective sample size for <code>stanreg</code>- and <code>brmsfit</code>-models.</li>
 </ul>
 </div>
-<div id="changes-to-functions-10" class="section level2">
+<div id="changes-to-functions-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-10" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-11" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/grpmean.html">grpmean()</a></code> now uses <code><a href="https://www.rdocumentation.org/packages/stats/topics/contrasts">contrasts()</a></code> from package <em>emmeans</em> to compute p-values, which correclty indicate whether the sub-group mean is significantly different from the total mean.</li>
@@ -664,17 +824,17 @@
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> now includes information on the Monte Carlo standard error.</li>
 <li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code>, <code><a href="../reference/p_value.html">p_value()</a></code> and <code><a href="../reference/pred_vars.html">link_inverse()</a></code> now support Zelig-relogit-models.</li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code>, <code><a href="../reference/p_value.html">p_value()</a></code> and <code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> now support Zelig-relogit-models.</li>
 <li>
 <code><a href="https://www.rdocumentation.org/packages/sjmisc/topics/typical_value">typical_value()</a></code> gets an explicit <code>weight.by</code>-argument.</li>
 </ul>
 </div>
-<div id="bug-fixes-10" class="section level2">
+<div id="bug-fixes-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-10" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-11" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code> did not work properly for variables that were standardized with <code><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale()</a></code>.</li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code> did not work properly for variables that were standardized with <code><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale()</a></code>.</li>
 <li>In certain cases, <code>weight.by</code>-argument did not work in <code><a href="../reference/grpmean.html">grpmean()</a></code>.</li>
 </ul>
 </div>
@@ -683,65 +843,12 @@
 <h1 class="page-header">
 <a href="#sjstats-0130" class="anchor"></a>sjstats 0.13.0<small> 2017-11-22 </small>
 </h1>
-<div id="general-10" class="section level2">
-<h2 class="hasAnchor">
-<a href="#general-10" class="anchor"></a>General</h2>
-<ul>
-<li>Remove deprecated <code>get_model_pval()</code>.</li>
-<li>Revised documentation for <code><a href="../reference/overdisp.html">overdisp()</a></code>.</li>
-</ul>
-</div>
-<div id="new-functions-9" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-functions-9" class="anchor"></a>New functions</h2>
-<ul>
-<li>
-<code><a href="../reference/scale_weights.html">scale_weights()</a></code> to rescale design weights for multilevel models.</li>
-<li>
-<code><a href="../reference/pca.html">pca()</a></code> and <code><a href="../reference/pca.html">pca_rotate()</a></code> to create tidy summaries of principal component analyses or rotated loadings matrices from PCA.</li>
-<li>
-<code><a href="../reference/gmd.html">gmd()</a></code> to compute Gini’s mean difference.</li>
-<li>
-<code><a href="../reference/is_prime.html">is_prime()</a></code> to check whether a number is a prime number or not.</li>
-</ul>
-</div>
-<div id="changes-to-functions-11" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-to-functions-11" class="anchor"></a>Changes to functions</h2>
-<ul>
-<li>
-<code><a href="../reference/pred_vars.html">link_inverse()</a></code> now supports <code>brmsfit</code>, <code>multinom</code> and <code>clm</code>-models.</li>
-<li>
-<code><a href="../reference/p_value.html">p_value()</a></code> now supports <code>polr</code> and <code>multinom</code>-models.</li>
-<li>
-<code><a href="../reference/overdisp.html">zero_count()</a></code> gets a <code>tolerance</code>-argument, to accept models with a ratio within a certain range of 1.</li>
-<li>
-<code><a href="../reference/pred_vars.html">var_names()</a></code> now also cleans variable names from variables modelled with the <code><a href="https://www.rdocumentation.org/packages/stats/topics/offset">offset()</a></code>, <code><a href="https://www.rdocumentation.org/packages/stats/topics/lag">lag()</a></code> or <code><a href="https://www.rdocumentation.org/packages/base/topics/diff">diff()</a></code> function.</li>
-<li>
-<code><a href="../reference/icc.html">icc()</a></code>, <code><a href="../reference/re_var.html">re_var()</a></code> and <code><a href="../reference/re_var.html">get_re_var()</a></code> now support <code>brmsfit</code>-objects (models fitted with the <em>brms</em>-package).</li>
-<li>For <code>fun = "weighted.mean"</code>, <code><a href="https://www.rdocumentation.org/packages/sjmisc/topics/typical_value">typical_value()</a></code> now checks if vector of weights is of same length as <code>x</code>.</li>
-<li>The print-method for <code><a href="../reference/grpmean.html">grpmean()</a></code> now also prints the overall p-value from the model.</li>
-</ul>
-</div>
-<div id="bug-fixes-11" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-11" class="anchor"></a>Bug fixes</h2>
-<ul>
-<li>
-<code><a href="../reference/pred_vars.html">resp_val()</a></code>, <code><a href="../reference/cv_error.html">cv_error()</a></code> and <code><a href="../reference/pred_accuracy.html">pred_accuracy()</a></code> did not work for formulas with transforming function for response terms, e.g. <code><a href="https://www.rdocumentation.org/packages/base/topics/Log">log(response)</a></code>.</li>
-</ul>
-</div>
-</div>
-    <div id="sjstats-0120" class="section level1">
-<h1 class="page-header">
-<a href="#sjstats-0120" class="anchor"></a>sjstats 0.12.0<small> 2017-10-16 </small>
-</h1>
 <div id="general-11" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-11" class="anchor"></a>General</h2>
 <ul>
-<li>Fixed examples, to resolve issues with CRAN package checks.</li>
-<li>More model objects supported in <code><a href="../reference/p_value.html">p_value()</a></code>.</li>
+<li>Remove deprecated <code>get_model_pval()</code>.</li>
+<li>Revised documentation for <code><a href="../reference/overdisp.html">overdisp()</a></code>.</li>
 </ul>
 </div>
 <div id="new-functions-10" class="section level2">
@@ -749,27 +856,80 @@
 <a href="#new-functions-10" class="anchor"></a>New functions</h2>
 <ul>
 <li>
-<code><a href="../reference/pred_vars.html">model_frame()</a></code> to get the model frame from model objects, also of those models that don’t have a S3-generic model.frame-function.</li>
+<code><a href="../reference/scale_weights.html">scale_weights()</a></code> to rescale design weights for multilevel models.</li>
 <li>
-<code><a href="../reference/pred_vars.html">var_names()</a></code> to get cleaned variable names from model objects.</li>
+<code><a href="../reference/overdisp.html">pca()</a></code> and <code><a href="../reference/overdisp.html">pca_rotate()</a></code> to create tidy summaries of principal component analyses or rotated loadings matrices from PCA.</li>
 <li>
-<code><a href="../reference/pred_vars.html">link_inverse()</a></code> to get the inverse link function from model objects.</li>
+<code><a href="../reference/gmd.html">gmd()</a></code> to compute Gini’s mean difference.</li>
+<li>
+<code><a href="../reference/is_prime.html">is_prime()</a></code> to check whether a number is a prime number or not.</li>
 </ul>
 </div>
 <div id="changes-to-functions-12" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes-to-functions-12" class="anchor"></a>Changes to functions</h2>
 <ul>
-<li>The <code>fun</code>-argument in <code><a href="https://www.rdocumentation.org/packages/sjmisc/topics/typical_value">typical_value()</a></code> can now also be a named vector, to apply different functions for numeric and categorical variables.</li>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> now supports <code>brmsfit</code>, <code>multinom</code> and <code>clm</code>-models.</li>
+<li>
+<code><a href="../reference/p_value.html">p_value()</a></code> now supports <code>polr</code> and <code>multinom</code>-models.</li>
+<li>
+<code><a href="../reference/overdisp.html">zero_count()</a></code> gets a <code>tolerance</code>-argument, to accept models with a ratio within a certain range of 1.</li>
+<li>
+<code><a href="../reference/overdisp.html">var_names()</a></code> now also cleans variable names from variables modelled with the <code><a href="https://www.rdocumentation.org/packages/stats/topics/offset">offset()</a></code>, <code><a href="https://www.rdocumentation.org/packages/stats/topics/lag">lag()</a></code> or <code><a href="https://www.rdocumentation.org/packages/base/topics/diff">diff()</a></code> function.</li>
+<li>
+<code><a href="../reference/overdisp.html">icc()</a></code>, <code>re_var()</code> and <code>get_re_var()</code> now support <code>brmsfit</code>-objects (models fitted with the <em>brms</em>-package).</li>
+<li>For <code>fun = "weighted.mean"</code>, <code><a href="https://www.rdocumentation.org/packages/sjmisc/topics/typical_value">typical_value()</a></code> now checks if vector of weights is of same length as <code>x</code>.</li>
+<li>The print-method for <code><a href="../reference/grpmean.html">grpmean()</a></code> now also prints the overall p-value from the model.</li>
 </ul>
 </div>
 <div id="bug-fixes-12" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-12" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed issue with specific model formulas in <code><a href="../reference/pred_vars.html">pred_vars()</a></code>.</li>
-<li>Fixed issue with specific model objects in <code><a href="../reference/pred_vars.html">resp_val()</a></code>.</li>
-<li>Fixed issue with nested models in <code><a href="../reference/re_var.html">re_var()</a></code>.</li>
+<li>
+<code><a href="../reference/overdisp.html">resp_val()</a></code>, <code><a href="../reference/cv_error.html">cv_error()</a></code> and <code><a href="../reference/overdisp.html">pred_accuracy()</a></code> did not work for formulas with transforming function for response terms, e.g. <code><a href="https://www.rdocumentation.org/packages/base/topics/Log">log(response)</a></code>.</li>
+</ul>
+</div>
+</div>
+    <div id="sjstats-0120" class="section level1">
+<h1 class="page-header">
+<a href="#sjstats-0120" class="anchor"></a>sjstats 0.12.0<small> 2017-10-16 </small>
+</h1>
+<div id="general-12" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general-12" class="anchor"></a>General</h2>
+<ul>
+<li>Fixed examples, to resolve issues with CRAN package checks.</li>
+<li>More model objects supported in <code><a href="../reference/p_value.html">p_value()</a></code>.</li>
+</ul>
+</div>
+<div id="new-functions-11" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-11" class="anchor"></a>New functions</h2>
+<ul>
+<li>
+<code><a href="../reference/overdisp.html">model_frame()</a></code> to get the model frame from model objects, also of those models that don’t have a S3-generic model.frame-function.</li>
+<li>
+<code><a href="../reference/overdisp.html">var_names()</a></code> to get cleaned variable names from model objects.</li>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> to get the inverse link function from model objects.</li>
+</ul>
+</div>
+<div id="changes-to-functions-13" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-functions-13" class="anchor"></a>Changes to functions</h2>
+<ul>
+<li>The <code>fun</code>-argument in <code><a href="https://www.rdocumentation.org/packages/sjmisc/topics/typical_value">typical_value()</a></code> can now also be a named vector, to apply different functions for numeric and categorical variables.</li>
+</ul>
+</div>
+<div id="bug-fixes-13" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-13" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed issue with specific model formulas in <code><a href="../reference/overdisp.html">pred_vars()</a></code>.</li>
+<li>Fixed issue with specific model objects in <code><a href="../reference/overdisp.html">resp_val()</a></code>.</li>
+<li>Fixed issue with nested models in <code>re_var()</code>.</li>
 </ul>
 </div>
 </div>
@@ -777,22 +937,22 @@
 <h1 class="page-header">
 <a href="#sjstats-0112" class="anchor"></a>sjstats 0.11.2<small> 2017-09-28 </small>
 </h1>
-<div id="new-functions-11" class="section level2">
+<div id="new-functions-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-11" class="anchor"></a>New functions</h2>
+<a href="#new-functions-12" class="anchor"></a>New functions</h2>
 <ul>
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> to return a tidy summary of Stan-models.</li>
 </ul>
 </div>
-<div id="changes-to-functions-13" class="section level2">
+<div id="changes-to-functions-14" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-13" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-14" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
-<code><a href="../reference/hdi.html">hdi()</a></code> and <code><a href="../reference/hdi.html">rope()</a></code> now also work for <code>brmsfit</code>-models, from package <em>brms</em>.</li>
+<code><a href="../reference/overdisp.html">hdi()</a></code> and <code><a href="../reference/overdisp.html">rope()</a></code> now also work for <code>brmsfit</code>-models, from package <em>brms</em>.</li>
 <li>
-<code><a href="../reference/hdi.html">hdi()</a></code> and <code><a href="../reference/hdi.html">rope()</a></code> now have a <code>type</code>-argument, to return fixed, random or all effects for mixed effects models.</li>
+<code><a href="../reference/overdisp.html">hdi()</a></code> and <code><a href="../reference/overdisp.html">rope()</a></code> now have a <code>type</code>-argument, to return fixed, random or all effects for mixed effects models.</li>
 </ul>
 </div>
 </div>
@@ -800,42 +960,21 @@
 <h1 class="page-header">
 <a href="#sjstats-0111" class="anchor"></a>sjstats 0.11.1<small> 2017-09-16 </small>
 </h1>
-<div id="changes-to-functions-14" class="section level2">
+<div id="changes-to-functions-15" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-14" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-15" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="https://www.rdocumentation.org/packages/sjmisc/topics/typical_value">typical_value()</a></code> gets a “zero”-option for the <code>fun</code>-argument.</li>
-<li>Changes to <code><a href="../reference/icc.html">icc()</a></code>, which used <code><a href="https://www.rdocumentation.org/packages/stats/topics/sigma">stats::sigma()</a></code> and thus required R-version 3.3 or higher. Now should depend on R 3.2 again.</li>
+<li>Changes to <code><a href="../reference/overdisp.html">icc()</a></code>, which used <code><a href="https://www.rdocumentation.org/packages/stats/topics/sigma">stats::sigma()</a></code> and thus required R-version 3.3 or higher. Now should depend on R 3.2 again.</li>
 <li>
 <code><a href="../reference/se.html">se()</a></code> now also supports <code>stanreg</code> and <code>stanfit</code> objects.</li>
 <li>
-<code><a href="../reference/hdi.html">hdi()</a></code> now also supports <code>stanfit</code>-objects.</li>
+<code><a href="../reference/overdisp.html">hdi()</a></code> now also supports <code>stanfit</code>-objects.</li>
 <li>
 <code><a href="../reference/std_beta.html">std_beta()</a></code> gets a <code>ci.lvl</code>-argument, to specify the level of the calculated confidence interval for standardized coefficients.</li>
 <li>
 <code>get_model_pval()</code> is now deprecated. Please use <code><a href="../reference/p_value.html">p_value()</a></code> instead.</li>
-</ul>
-</div>
-<div id="new-functions-12" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-functions-12" class="anchor"></a>New functions</h2>
-<ul>
-<li>
-<code><a href="../reference/hdi.html">rope()</a></code> to calculate the region of practical equivalence for MCMC samples.</li>
-</ul>
-</div>
-</div>
-    <div id="sjstats-0110" class="section level1">
-<h1 class="page-header">
-<a href="#sjstats-0110" class="anchor"></a>sjstats 0.11.0<small> 2017-08-21 </small>
-</h1>
-<div id="general-12" class="section level2">
-<h2 class="hasAnchor">
-<a href="#general-12" class="anchor"></a>General</h2>
-<ul>
-<li>Added vignettes for various functions.</li>
-<li>Fixed issue with latest tidyr-update on CRAN.</li>
 </ul>
 </div>
 <div id="new-functions-13" class="section level2">
@@ -843,9 +982,30 @@
 <a href="#new-functions-13" class="anchor"></a>New functions</h2>
 <ul>
 <li>
+<code><a href="../reference/overdisp.html">rope()</a></code> to calculate the region of practical equivalence for MCMC samples.</li>
+</ul>
+</div>
+</div>
+    <div id="sjstats-0110" class="section level1">
+<h1 class="page-header">
+<a href="#sjstats-0110" class="anchor"></a>sjstats 0.11.0<small> 2017-08-21 </small>
+</h1>
+<div id="general-13" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general-13" class="anchor"></a>General</h2>
+<ul>
+<li>Added vignettes for various functions.</li>
+<li>Fixed issue with latest tidyr-update on CRAN.</li>
+</ul>
+</div>
+<div id="new-functions-14" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-14" class="anchor"></a>New functions</h2>
+<ul>
+<li>
 <code><a href="../reference/grpmean.html">grpmean()</a></code> to compute mean values by groups (One-way Anova).</li>
 <li>
-<code><a href="../reference/hdi.html">hdi()</a></code> to compute high density intervals (HDI) for MCMC samples.</li>
+<code><a href="../reference/overdisp.html">hdi()</a></code> to compute high density intervals (HDI) for MCMC samples.</li>
 <li>
 <code><a href="../reference/find_beta.html">find_beta()</a></code> and <code><a href="../reference/find_beta.html">find_beta2()</a></code> to find the shape parameters of a Beta distribution.</li>
 <li>
@@ -859,6 +1019,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#sjstats-0175">0.17.5</a></li>
+        <li><a href="#sjstats-0175-1">0.17.5</a></li>
         <li><a href="#sjstats-0174">0.17.4</a></li>
         <li><a href="#sjstats-0173">0.17.3</a></li>
         <li><a href="#sjstats-0172">0.17.2</a></li>
