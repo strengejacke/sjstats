@@ -8,19 +8,12 @@ Authors@R: person("Daniel", "Lüdecke", role = c("aut", "cre"), email = "d.luede
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
              which are not directly provided by R's base or stats packages.
-             This package aims at providing, first, shortcuts for statistical
-             measures, which otherwise could only be calculated with additional
-             effort (like standard errors or root mean squared errors). Second,
-             these shortcut functions are generic (if appropriate), and can be
-             applied not only to vectors, but also to other objects as well
-             (e.g., the Coefficient of Variation can be computed for vectors,
-             linear models, or linear mixed models; the r2()-function returns
-             the r-squared value for 'lm', 'glm', 'merMod' and other model objects).
-             The focus of most functions lies on summary statistics or fit
-             measures for regression models, including generalized linear
-             models, mixed effects models and Bayesian models. However, some 
-             of the functions also deal with other statistical measures, 
-             like Cronbach's Alpha, Cramer's V, Phi etc.
+             This package aims at providing, first, shortcuts for statistical measures, 
+             which otherwise could only be calculated with additional effort 
+             (like Cramer's V, Phi, or effict size statistics like Eta or Omega squared), 
+             or for which currently no functions available. Second, another focus 
+             lies on weighted variants of common statistical measures and tests 
+             like weighted standard error, mean, t-test, correlation, and more.
 License: GPL-3
 Depends:
     R (>= 3.2),
