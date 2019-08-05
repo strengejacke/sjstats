@@ -12,19 +12,12 @@
 <script src="pkgdown.js"></script><meta property="og:title" content="Collection of Convenient Functions for Common Statistical Computations">
 <meta property="og:description" content="Collection of convenient functions for common statistical computations,
              which are not directly provided by R's base or stats packages.
-             This package aims at providing, first, shortcuts for statistical
-             measures, which otherwise could only be calculated with additional
-             effort (like standard errors or root mean squared errors). Second,
-             these shortcut functions are generic (if appropriate), and can be
-             applied not only to vectors, but also to other objects as well
-             (e.g., the Coefficient of Variation can be computed for vectors,
-             linear models, or linear mixed models; the r2()-function returns
-             the r-squared value for 'lm', 'glm', 'merMod' and other model objects).
-             The focus of most functions lies on summary statistics or fit
-             measures for regression models, including generalized linear
-             models, mixed effects models and Bayesian models. However, some 
-             of the functions also deal with other statistical measures, 
-             like Cronbach's Alpha, Cramer's V, Phi etc.">
+             This package aims at providing, first, shortcuts for statistical measures, 
+             which otherwise could only be calculated with additional effort 
+             (like Cramer's V, Phi, or effict size statistics like Eta or Omega squared), 
+             or for which currently no functions available. Second, another focus 
+             lies on weighted variants of common statistical measures and tests 
+             like weighted standard error, mean, t-test, correlation, and more.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -106,33 +99,14 @@
 </h1></div>
 
 <p>Collection of convenient functions for common statistical computations, which are not directly provided by R’s base or stats packages.</p>
-<p>This package aims at providing, <strong>first</strong>, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like standard errors, Cronbach’s Alpha or root mean squared errors), or for which currently no functions available.</p>
-<p><strong>Second</strong>, these shortcut functions are generic (if appropriate), and can be applied not only to vectors, but also to other objects as well (e.g., the Coefficient of Variation can be computed for vectors, linear models, or linear mixed models; the <code><a href="reference/overdisp.html">r2()</a></code>-function returns the r-squared value for <em>lm</em>, <em>glm</em>, <em>merMod</em>, <em>glmmTMB</em>, or <em>lme</em> and other objects).</p>
-<p>Most functions of this package are designed as <em>summary functions</em>, i.e. they do not transform the input vector; rather, they return a summary, which is sometimes a vector and sometimes a tidy data frame (where column names follow a common convention). The focus of most functions lies on summary statistics or fit measures for regression models, including generalized linear models, mixed effects models or Bayesian models. However, some of the functions deal with other statistical measures, like Cronbach’s Alpha, Cramer’s V, Phi etc.</p>
+<p>This package aims at providing, <strong>first</strong>, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like Cramer’s V, Phi, or effict size statistics like Eta or Omega squared), or for which currently no functions available.</p>
+<p><strong>Second</strong>, another focus lies on weighted variants of common statistical measures and tests like weighted standard error, mean, t-test, correlation, and more.</p>
 <p>The comprised tools include:</p>
 <ul>
-<li>For regression and mixed models: Coefficient of Variation, Root Mean Squared Error, Residual Standard Error, Coefficient of Discrimination, R-squared and pseudo-R-squared values, standardized beta values, p-values</li>
-<li>Especially for mixed models: Design effect, ICC, sample size calculation and convergence tests</li>
-<li>Especially for Bayesian models: Highest Density Interval, region of practical equivalence (rope), Monte Carlo Standard Errors, ratio of number of effective samples, mediation analysis, Test for Practical Equivalence</li>
-<li>Fit and accuracy measures for regression models: Overdispersion tests, accuracy of predictions, test/training-error comparisons, error rate and binned residual plots for logistic regression models</li>
-<li>For anova-tables: Eta-squared, Partial Eta-squared, Omega-squared and Partial Omega-squared statistics</li>
-</ul>
-<p>Furthermore, <em>sjstats</em> has functions to access information from model objects, which either support more model objects than their <em>stats</em> counterparts, or provide easy access to model attributes, like:</p>
-<ul>
-<li>
-<code><a href="reference/overdisp.html">model_frame()</a></code> to get the model frame,</li>
-<li>
-<code><a href="reference/overdisp.html">model_family()</a></code> to get information about the model family, link functions etc.,</li>
-<li>
-<code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> to get the link-inverse function,</li>
-<li>
-<code><a href="reference/overdisp.html">pred_vars()</a></code> and <code><a href="reference/overdisp.html">resp_var()</a></code> to get the names of either the dependent or independent variables, or</li>
-<li>
-<code><a href="reference/overdisp.html">var_names()</a></code> to get the “cleaned” variables names from a model object (cleaned means, things like <code>s()</code> or <code><a href="https://www.rdocumentation.org/packages/base/topics/Log">log()</a></code> are removed from the returned character vector with variable names.)</li>
-</ul>
-<p>Other statistics:</p>
-<ul>
-<li>Cramer’s V, Cronbach’s Alpha, Mean Inter-Item-Correlation, Mann-Whitney-U-Test, Item-scale reliability tests</li>
+<li>Especially for mixed models: design effect, sample size calculation</li>
+<li>Especially for Bayesian models: mediation analysis</li>
+<li>For anova-tables: Eta-squared, Partial Eta-squared, Omega-squared, Partial Omega-squared and Epsilon-squared statistics</li>
+<li>Weighted statistics and tests for: mean, median, standard error, standard deviation, correlation, Chi-squared test, t-test, Mann-Whitney-U-test</li>
 </ul>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
@@ -148,8 +122,6 @@
 <p>To install the latest development snapshot (see latest changes below), type following commands into the R console:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(devtools)</a>
 <a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"strengejacke/sjstats"</span>)</a></code></pre></div>
-<p>Please note the package dependencies when installing from GitHub. The GitHub version of this package may depend on latest GitHub versions of my other packages, so you may need to install those first, if you encounter any problems. Here’s the order for installing packages from GitHub:</p>
-<p><a href="https://github.com/strengejacke/sjlabelled">sjlabelled</a> → <a href="https://github.com/strengejacke/sjmisc">sjmisc</a> → <a href="https://github.com/strengejacke/sjstats">sjstats</a> → <a href="https://github.com/strengejacke/ggeffects">ggeffects</a> → <a href="https://github.com/strengejacke/sjPlot">sjPlot</a></p>
 </div>
 <div id="officiale-stable-release" class="section level3">
 <h3 class="hasAnchor">

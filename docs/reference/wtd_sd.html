@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Weighted statistics for tests and variables — wtd_sd • sjstats</title>
+<title>Weighted statistics for tests and variables — svy_md • sjstats</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Weighted statistics for tests and variables — wtd_sd" />
+<meta property="og:title" content="Weighted statistics for tests and variables — svy_md" />
 
 <meta property="og:description" content="Weighted statistics for variables
    
@@ -137,7 +137,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Weighted statistics for tests and variables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/weight.R'><code>R/weight.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/wtd_chisqtest.R'><code>R/wtd_chisqtest.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/wtd_ttest.R'><code>R/wtd_ttest.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/svy_median.R'><code>R/svy_median.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/wtd_chisqtest.R'><code>R/wtd_chisqtest.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/wtd_cor.R'><code>R/wtd_cor.R</code></a>, and 7 more</small>
     <div class="hidden name"><code>wtd_sd.Rd</code></div>
     </div>
 
@@ -161,15 +161,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>wtd_sd</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='fu'>wtd_mean</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='fu'>wtd_se</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='fu'>wtd_median</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='fu'>svy_md</span>(<span class='no'>x</span>, <span class='no'>design</span>)
+    <pre class="usage"><span class='fu'>svy_md</span>(<span class='no'>x</span>, <span class='no'>design</span>)
 
 <span class='fu'>wtd_chisqtest</span>(<span class='no'>data</span>, <span class='no'>...</span>)
 
@@ -178,6 +170,30 @@
 
 <span class='co'># S3 method for formula</span>
 <span class='fu'>wtd_chisqtest</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>)
+
+<span class='fu'>wtd_cor</span>(<span class='no'>data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>wtd_cor</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>weights</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for formula</span>
+<span class='fu'>wtd_cor</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)
+
+<span class='fu'>wtd_mean</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>wtd_median</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>wtd_mwu</span>(<span class='no'>data</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>wtd_mwu</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>grp</span>, <span class='no'>weights</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for formula</span>
+<span class='fu'>wtd_mwu</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>)
+
+<span class='fu'>wtd_sd</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>wtd_se</span>(<span class='no'>x</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>wtd_ttest</span>(<span class='no'>data</span>, <span class='no'>...</span>)
 
@@ -188,23 +204,7 @@
 
 <span class='co'># S3 method for formula</span>
 <span class='fu'>wtd_ttest</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"two.sided"</span>, <span class='st'>"less"</span>, <span class='st'>"greater"</span>), <span class='no'>...</span>)
-
-<span class='fu'>wtd_mwu</span>(<span class='no'>data</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for default</span>
-<span class='fu'>wtd_mwu</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>grp</span>, <span class='no'>weights</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for formula</span>
-<span class='fu'>wtd_mwu</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>)
-
-<span class='fu'>wtd_cor</span>(<span class='no'>data</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for default</span>
-<span class='fu'>wtd_cor</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>weights</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for formula</span>
-<span class='fu'>wtd_cor</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"two.sided"</span>, <span class='st'>"less"</span>, <span class='st'>"greater"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,12 +214,6 @@
       <td><p>(Numeric) vector or a data frame. For <code>svy_md()</code>, <code>wtd_ttest()</code>,
 <code>wtd_mwu()</code> and <code>wtd_chisqtest()</code> the bare (unquoted) variable
 name, or a character vector with the variable name.</p></td>
-    </tr>
-    <tr>
-      <th>weights</th>
-      <td><p>Bare (unquoted) variable name, or a character vector with
-the variable name of the numeric vector of weights. If <code>weights = NULL</code>,
-unweighted statistic is reported.</p></td>
     </tr>
     <tr>
       <th>design</th>
@@ -242,10 +236,26 @@ For <code>wtd_chisqtest()</code>, further arguments passed down to
 the variable name.</p></td>
     </tr>
     <tr>
+      <th>weights</th>
+      <td><p>Bare (unquoted) variable name, or a character vector with
+the variable name of the numeric vector of weights. If <code>weights = NULL</code>,
+unweighted statistic is reported.</p></td>
+    </tr>
+    <tr>
       <th>formula</th>
       <td><p>A formula of the form <code>lhs ~ rhs1 + rhs2</code> where <code>lhs</code> is a
 numeric variable giving the data values and <code>rhs1</code> a factor with two
 levels giving the corresponding groups and <code>rhs2</code> a variable with weights.</p></td>
+    </tr>
+    <tr>
+      <th>ci.lvl</th>
+      <td><p>Confidence level of the interval.</p></td>
+    </tr>
+    <tr>
+      <th>grp</th>
+      <td><p>Bare (unquoted) name of the cross-classifying variable, where
+<code>x</code> is grouped into the categories represented by <code>grp</code>,
+or a character vector with the variable name.</p></td>
     </tr>
     <tr>
       <th>mu</th>
@@ -257,20 +267,10 @@ means if you are performing a two sample test).</p></td>
       <td><p>Logical, whether to compute a paired t-test.</p></td>
     </tr>
     <tr>
-      <th>ci.lvl</th>
-      <td><p>Confidence level of the interval.</p></td>
-    </tr>
-    <tr>
       <th>alternative</th>
       <td><p>A character string specifying the alternative hypothesis,
 must be one of <code>"two.sided"</code> (default), <code>"greater"</code> or
 <code>"less"</code>. You can specify just the initial letter.</p></td>
-    </tr>
-    <tr>
-      <th>grp</th>
-      <td><p>Bare (unquoted) name of the cross-classifying variable, where
-<code>x</code> is grouped into the categories represented by <code>grp</code>,
-or a character vector with the variable name.</p></td>
     </tr>
     </table>
     
@@ -317,7 +317,7 @@ or a character vector with the variable name.</p></td>
 #&gt; One Sample t-test (two.sided)
 #&gt; </span><span style='color: #00BBBB;'># t=292.68  df=890  p-value=0.000
 #&gt; 
-#&gt; </span><span>  mean of e17age: 79.189 [78.658  79.720]
+#&gt; </span><span>  mean of e17age: 79.189 [78.658, 79.720]
 #&gt; </div><div class='input'><span class='fu'>wtd_ttest</span>(<span class='no'>efc</span>, <span class='no'>e17age</span>, <span class='no'>c160age</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
 #&gt; Two-Sample t-test (two.sided)
 #&gt; </span><span style='color: #00BBBB;'>
@@ -354,12 +354,7 @@ or a character vector with the variable name.</p></td>
 #&gt; </span><span>
 #&gt;   Chi-squared: 2.0566
 #&gt;           Phi: 0.0479
-#&gt;       p-value: 0.1515</div><div class='input'><span class='fu'>wtd_chisqtest</span>(<span class='no'>c172code</span> ~ <span class='no'>c161sex</span> + <span class='no'>weight</span>, <span class='no'>efc</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
-#&gt; # Measure of Association for Contingency Tables
-#&gt; </span><span>
-#&gt;   Chi-squared: 4.8005
-#&gt;    Cramer's V: 0.0758
-#&gt;       p-value: 0.0907</div><div class='input'>
+#&gt;       p-value: 0.1515</div><div class='input'><span class='fu'>wtd_chisqtest</span>(<span class='no'>c172code</span> ~ <span class='no'>c161sex</span> + <span class='no'>weight</span>, <span class='no'>efc</span>)</div><div class='output co'>#&gt; <span class='error'>Error in UseMethod("phi"): no applicable method for 'phi' applied to an object of class "ftable"</span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

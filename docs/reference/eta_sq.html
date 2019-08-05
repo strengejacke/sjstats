@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Effect size statistics for anova — eta_sq • sjstats</title>
+<title>Effect size statistics for anova — anova_stats • sjstats</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Effect size statistics for anova — eta_sq" />
+<meta property="og:title" content="Effect size statistics for anova — anova_stats" />
 
 <meta property="og:description" content="Returns the (partial) eta-squared, (partial) omega-squared,
   epsilon-squared statistic or Cohen's F for all terms in an anovas.
@@ -126,7 +126,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Effect size statistics for anova</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/eta_sq.R'><code>R/eta_sq.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/anova_stats.R'><code>R/anova_stats.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/cohens_f.R'><code>R/cohens_f.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/epsilon_sq.R'><code>R/epsilon_sq.R</code></a>, and 3 more</small>
     <div class="hidden name"><code>eta_sq.Rd</code></div>
     </div>
 
@@ -139,18 +139,18 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>eta_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>))
+    <pre class="usage"><span class='fu'>anova_stats</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 
-<span class='fu'>omega_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>))
+<span class='fu'>cohens_f</span>(<span class='no'>model</span>)
 
 <span class='fu'>epsilon_sq</span>(<span class='no'>model</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dist"</span>,
   <span class='st'>"quantile"</span>))
 
-<span class='fu'>cohens_f</span>(<span class='no'>model</span>)
+<span class='fu'>eta_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>))
 
-<span class='fu'>anova_stats</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
+<span class='fu'>omega_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,8 +161,8 @@
 models are coerced to <code><a href='https://www.rdocumentation.org/packages/stats/topics/anova'>anova</a></code>.</p></td>
     </tr>
     <tr>
-      <th>partial</th>
-      <td><p>Logical, if <code>TRUE</code>, the partial eta-squared is returned.</p></td>
+      <th>digits</th>
+      <td><p>Number of decimal points in the returned data frame.</p></td>
     </tr>
     <tr>
       <th>ci.lvl</th>
@@ -182,8 +182,8 @@ quantiles of the bootstrapped values. See 'Details' in <code><a href='boot_ci.ht
 May be abbreviated.</p></td>
     </tr>
     <tr>
-      <th>digits</th>
-      <td><p>Number of decimal points in the returned data frame.</p></td>
+      <th>partial</th>
+      <td><p>Logical, if <code>TRUE</code>, the partial eta-squared is returned.</p></td>
     </tr>
     </table>
     

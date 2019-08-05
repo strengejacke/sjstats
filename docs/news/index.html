@@ -139,6 +139,14 @@
 <code><a href="../reference/samplesize_mixed.html">samplesize_mixed()</a></code> is an alias for <code><a href="../reference/samplesize_mixed.html">smpsize_lmm()</a></code>.</li>
 </ul>
 </div>
+<div id="changes-to-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-functions" class="anchor"></a>Changes to functions</h2>
+<ul>
+<li>
+<code><a href="../reference/xtab_statistics.html">phi()</a></code> and <code><a href="../reference/xtab_statistics.html">cramer()</a></code> can now compute confidence intervals.</li>
+</ul>
+</div>
 </div>
     <div id="sjstats-0175-1" class="section level1">
 <h1 class="page-header">
@@ -268,9 +276,9 @@
 </li>
 </ul>
 </div>
-<div id="changes-to-functions" class="section level2">
+<div id="changes-to-functions-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-1" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>Anova-stats functions (like <code><a href="../reference/eta_sq.html">eta_sq()</a></code>) get a <code>method</code>-argument to define the method for computing confidence intervals from bootstrapping.</li>
 </ul>
@@ -304,9 +312,9 @@
 <code>cred_int()</code>, to compute uncertainty intervals of Bayesian models. Mimics the behaviour and style of <code><a href="../reference/overdisp.html">hdi()</a></code> and is thus a convenient complement to functions like <code>posterior_interval()</code>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-1" class="section level2">
+<div id="changes-to-functions-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-1" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-2" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code>equi_test()</code> now finds better defaults for models with binomial outcome (like logistic regression models).</li>
@@ -343,9 +351,9 @@
 <li>Export <code><a href="https://dplyr.tidyverse.org/reference/n.html">dplyr::n()</a></code>, to meet forthcoming changes in dplyr 0.8.0.</li>
 </ul>
 </div>
-<div id="changes-to-functions-2" class="section level2">
+<div id="changes-to-functions-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-2" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-3" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/boot_ci.html">boot_ci()</a></code> gets a <code>ci.lvl</code>-argument.</li>
@@ -402,9 +410,9 @@
 <code><a href="../reference/overdisp.html">re_grp_var()</a></code> to find group factors of random effects in mixed models.</li>
 </ul>
 </div>
-<div id="changes-to-functions-3" class="section level2">
+<div id="changes-to-functions-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-3" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-4" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/eta_sq.html">omega_sq()</a></code> and <code><a href="../reference/eta_sq.html">eta_sq()</a></code> give more informative messages when using non-supported objects.</li>
@@ -443,9 +451,9 @@
 <code><a href="../reference/wtd_sd.html">wtd_cor()</a></code> to compute weighted correlation coefficients of variables.</li>
 </ul>
 </div>
-<div id="changes-to-functions-4" class="section level2">
+<div id="changes-to-functions-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-4" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-5" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/mediation.html">mediation()</a></code> can now cope with models from different families, e.g. if the moderator or outcome is binary, while the treatment-effect is continuous.</li>
@@ -487,9 +495,9 @@
 <code><a href="../reference/wtd_sd.html">wtd_mwu()</a></code> to compute a weighted Mann-Whitney-U or Kruskal-Wallis test.</li>
 </ul>
 </div>
-<div id="changes-to-functions-5" class="section level2">
+<div id="changes-to-functions-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-5" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-6" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/robust.html">robust()</a></code> was revised, getting more arguments to specify different types of covariance-matrix estimation, and handling these more flexible.</li>
@@ -554,9 +562,9 @@
 <code><a href="../reference/overdisp.html">difficulty()</a></code> to compute the item difficulty.</li>
 </ul>
 </div>
-<div id="changes-to-functions-6" class="section level2">
+<div id="changes-to-functions-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-6" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-7" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/overdisp.html">icc()</a></code> gets a <code>ppd</code>-argument for Stan-models (<em>brmsfit</em> and <em>stanreg</em>), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.</li>
@@ -612,9 +620,9 @@
 <code><a href="../reference/mediation.html">mediation()</a></code> to print a summary of a mediation analysis from multivariate response models fitted with <em>brms</em>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-7" class="section level2">
+<div id="changes-to-functions-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-7" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-8" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> now also returns the link-inverse function for cumulative-family <em>brms</em>-models.</li>
@@ -659,9 +667,9 @@
 <code><a href="../reference/mwu.html">mwu()</a></code> now requires a data frame as first argument, followed by the names of the two variables to perform the Mann-Whitney-U-Test on.</li>
 </ul>
 </div>
-<div id="changes-to-functions-8" class="section level2">
+<div id="changes-to-functions-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-8" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-9" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> was improved especially for more complex multilevel models.</li>
@@ -718,9 +726,9 @@
 <code>residuals.svyglm.nb()</code> as S3-generic <code><a href="https://www.rdocumentation.org/packages/stats/topics/residuals">residuals()</a></code> method for objects fitted with <code><a href="../reference/svyglm.nb.html">svyglm.nb()</a></code>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-9" class="section level2">
+<div id="changes-to-functions-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-9" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-10" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/overdisp.html">icc()</a></code> gets a <code>posterior</code>-argument, to compute ICC-values from <code>brmsfit</code>-objects, for the whole posterior distribution.</li>
@@ -770,9 +778,9 @@
 <li>Cross refences from <code><a href="https://dplyr.tidyverse.org/reference/reexports.html">dplyr::select_helpers</a></code> were updated to <code><a href="https://www.rdocumentation.org/packages/tidyselect/topics/select_helpers">tidyselect::select_helpers</a></code>.</li>
 </ul>
 </div>
-<div id="changes-to-functions-10" class="section level2">
+<div id="changes-to-functions-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-10" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-11" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/overdisp.html">var_names()</a></code> now also cleans variable names from variables modeled with the <code>mi()</code> function (multiple imputation on the fly in <em>brms</em>).</li>
@@ -813,9 +821,9 @@
 <code><a href="../reference/overdisp.html">n_eff()</a></code> to compute the effective sample size for <code>stanreg</code>- and <code>brmsfit</code>-models.</li>
 </ul>
 </div>
-<div id="changes-to-functions-11" class="section level2">
+<div id="changes-to-functions-12" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-11" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-12" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/grpmean.html">grpmean()</a></code> now uses <code><a href="https://www.rdocumentation.org/packages/stats/topics/contrasts">contrasts()</a></code> from package <em>emmeans</em> to compute p-values, which correclty indicate whether the sub-group mean is significantly different from the total mean.</li>
@@ -865,9 +873,9 @@
 <code><a href="../reference/is_prime.html">is_prime()</a></code> to check whether a number is a prime number or not.</li>
 </ul>
 </div>
-<div id="changes-to-functions-12" class="section level2">
+<div id="changes-to-functions-13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-12" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-13" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> now supports <code>brmsfit</code>, <code>multinom</code> and <code>clm</code>-models.</li>
@@ -916,9 +924,9 @@
 <code><a href="https://www.rdocumentation.org/packages/insight/topics/link_inverse">link_inverse()</a></code> to get the inverse link function from model objects.</li>
 </ul>
 </div>
-<div id="changes-to-functions-13" class="section level2">
+<div id="changes-to-functions-14" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-13" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-14" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>The <code>fun</code>-argument in <code><a href="https://www.rdocumentation.org/packages/sjmisc/topics/typical_value">typical_value()</a></code> can now also be a named vector, to apply different functions for numeric and categorical variables.</li>
 </ul>
@@ -945,9 +953,9 @@
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> to return a tidy summary of Stan-models.</li>
 </ul>
 </div>
-<div id="changes-to-functions-14" class="section level2">
+<div id="changes-to-functions-15" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-14" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-15" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="../reference/overdisp.html">hdi()</a></code> and <code><a href="../reference/overdisp.html">rope()</a></code> now also work for <code>brmsfit</code>-models, from package <em>brms</em>.</li>
@@ -960,9 +968,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0111" class="anchor"></a>sjstats 0.11.1<small> 2017-09-16 </small>
 </h1>
-<div id="changes-to-functions-15" class="section level2">
+<div id="changes-to-functions-16" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-functions-15" class="anchor"></a>Changes to functions</h2>
+<a href="#changes-to-functions-16" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
 <code><a href="https://www.rdocumentation.org/packages/sjmisc/topics/typical_value">typical_value()</a></code> gets a “zero”-option for the <code>fun</code>-argument.</li>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Measures of association for contingency tables — phi • sjstats</title>
+<title>Measures of association for contingency tables — cramer • sjstats</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Measures of association for contingency tables — phi" />
+<meta property="og:title" content="Measures of association for contingency tables — cramer" />
 
 <meta property="og:description" content="This function calculates various measure of association for
              contingency tables and returns the statistic and p-value.
@@ -126,7 +126,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Measures of association for contingency tables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/phi.R'><code>R/phi.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/xtab_statistics.R'><code>R/xtab_statistics.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/cramer.R'><code>R/cramer.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/phi.R'><code>R/phi.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/xtab_statistics.R'><code>R/xtab_statistics.R</code></a></small>
     <div class="hidden name"><code>xtab_statistics.Rd</code></div>
     </div>
 
@@ -139,12 +139,13 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>phi</span>(<span class='no'>tab</span>)
-
-<span class='fu'>cramer</span>(<span class='no'>tab</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>cramer</span>(<span class='no'>tab</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for formula</span>
-<span class='fu'>cramer</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='no'>...</span>)
+<span class='fu'>cramer</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>), <span class='no'>...</span>)
+
+<span class='fu'>phi</span>(<span class='no'>tab</span>, <span class='no'>...</span>)
 
 <span class='fu'>xtab_statistics</span>(<span class='no'>data</span>, <span class='kw'>x1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>x2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>statistics</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"auto"</span>,
   <span class='st'>"cramer"</span>, <span class='st'>"phi"</span>, <span class='st'>"spearman"</span>, <span class='st'>"kendall"</span>, <span class='st'>"pearson"</span>, <span class='st'>"fisher"</span>),
@@ -179,6 +180,23 @@ or Pearson's product moment correlation coefficient, <code>data</code> needs
 to be a data frame. If <code>x1</code> and <code>x2</code> are not specified,
 the first two columns of the data frames are used as variables
 to compute the crosstab.</p></td>
+    </tr>
+    <tr>
+      <th>ci.lvl</th>
+      <td><p>Scalar between 0 and 1. If not <code>NULL</code>, returns a data
+frame including lower and upper confidence intervals.</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>Number of bootstraps to be generated.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>Character vector, indicating if confidence intervals should be
+based on bootstrap standard error, multiplied by the value of the
+quantile function of the t-distribution (default), or on sample
+quantiles of the bootstrapped values. See 'Details' in <code><a href='boot_ci.html'>boot_ci()</a></code>.
+May be abbreviated.</p></td>
     </tr>
     <tr>
       <th>x1</th>
@@ -249,8 +267,12 @@ weights that will be applied to weight all observations. Default is
 <span class='fu'>phi</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; [1] 0.1443376</div><div class='input'>
 <span class='co'># Cramer's V for nominal variables with more than 2 categories</span>
 <span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>))
-<span class='fu'>cramer</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; [1] 0.3795188</div><div class='input'>
+<span class='fu'>cramer</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; <span class='error'>Error in UseMethod("phi"): no applicable method for 'phi' applied to an object of class "ftable"</span></div><div class='input'>
+<span class='co'># formula notation</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>efc</span>)
+<span class='fu'>cramer</span>(<span class='no'>e16sex</span> ~ <span class='no'>c161sex</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)</div><div class='output co'>#&gt; <span class='error'>Error in UseMethod("phi"): no applicable method for 'phi' applied to an object of class "ftable"</span></div><div class='input'>
+<span class='co'># bootstrapped confidence intervals</span>
+<span class='fu'>cramer</span>(<span class='no'>e16sex</span> ~ <span class='no'>c161sex</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>.95</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='error'>Error in UseMethod("phi"): no applicable method for 'phi' applied to an object of class "ftable"</span></div><div class='input'>
 <span class='co'># 2x2 table, compute Phi automatically</span>
 <span class='fu'>xtab_statistics</span>(<span class='no'>efc</span>, <span class='no'>e16sex</span>, <span class='no'>c161sex</span>)</div><div class='output co'>#&gt; <span style='color: #0000BB;'>
 #&gt; # Measure of Association for Contingency Tables
@@ -259,12 +281,7 @@ weights that will be applied to weight all observations. Default is
 #&gt;           Phi: 0.0526
 #&gt;       p-value: 0.1351</div><div class='input'>
 <span class='co'># more dimensions than 2x2, compute Cramer's V automatically</span>
-<span class='fu'>xtab_statistics</span>(<span class='no'>efc</span>, <span class='no'>c172code</span>, <span class='no'>c161sex</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
-#&gt; # Measure of Association for Contingency Tables
-#&gt; </span><span>
-#&gt;   Chi-squared: 4.1085
-#&gt;    Cramer's V: 0.0699
-#&gt;       p-value: 0.1282</div><div class='input'>
+<span class='fu'>xtab_statistics</span>(<span class='no'>efc</span>, <span class='no'>c172code</span>, <span class='no'>c161sex</span>)</div><div class='output co'>#&gt; <span class='error'>Error in UseMethod("phi"): no applicable method for 'phi' applied to an object of class "ftable"</span></div><div class='input'>
 <span class='co'># ordinal data, use Kendall's tau</span>
 <span class='fu'>xtab_statistics</span>(<span class='no'>efc</span>, <span class='no'>e42dep</span>, <span class='no'>quol_5</span>, <span class='kw'>statistics</span> <span class='kw'>=</span> <span class='st'>"kendall"</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
 #&gt; # Measure of Association for Contingency Tables
