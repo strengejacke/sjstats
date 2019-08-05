@@ -50,8 +50,8 @@ dot_names <- function(dots) unname(unlist(lapply(dots, as.character)))
 get_grouped_data <- function(x) {
   # retain observations that are complete wrt grouping vars, then nest
   grps <- x %>%
-    dplyr::group_modify(~ filter(.x, complete.cases(.y))) %>%
-    nest()
+    dplyr::group_modify(~ dplyr::filter(.x, stats::complete.cases(.y))) %>%
+    tidyr::nest()
 
   # arrange data
   if (length(dplyr::group_vars(x)) == 1)
