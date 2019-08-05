@@ -28,6 +28,9 @@ options(width = 800)
 if (!requireNamespace("mediation", quietly = TRUE)) {
   warning("Package 'mediation' required for this vignette.", call. = FALSE)
 }
+if (!requireNamespace("httr", quietly = TRUE)) {
+  warning("Package 'mediation' required for this vignette.", call. = FALSE)
+}
 ```
 
 This vignettes demontrates those functions of the *sjstats*-package that deal especially with Bayesian models. *sjstats* provides following functions:

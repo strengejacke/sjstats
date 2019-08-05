@@ -20,6 +20,7 @@ This vignettes demontrates those functions of the *sjstats*-package that deal wi
 
 * `eta_sq()`
 * `omega_sq()`
+* `epsilon_sq()`
 * `cohens_f()`
 * `anova_stats()`
 
@@ -82,6 +83,20 @@ omega_sq(fit)
 
 ```{r}
 omega_sq(fit, partial = TRUE, n = 100)
+```
+
+# Epsilon Squared
+
+Espilon-squared is a less common measure of effect size. It is sometimes considered as an "adjusted r-squared" value. You can compute this effect size using `epsilon_sq()`.
+
+```{r}
+epsilon_sq(fit)
+```
+
+When the `ci.lvl`-argument is defined, bootstrapping is used to compute the confidence intervals.
+
+```{r}
+epsilon_sq(fit, ci.lvl = .95, n = 100)
 ```
 
 ## Cohen's F
