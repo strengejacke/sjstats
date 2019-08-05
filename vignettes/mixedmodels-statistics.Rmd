@@ -18,7 +18,7 @@ options(width = 800)
 
 This vignettes demontrates those functions of the *sjstats*-package that deal especially with mixed effects models. *sjstats* provides following functions:
 
-* `deff()` and `smpsize_lmm()`
+* `design_effect()` and `samplesize_mixed()`
 * `scale_weights()`
 
 Befor we start, we fit a simple linear mixed model:
@@ -39,40 +39,40 @@ m2 <- lmer(Reaction ~ Days + (1 | mygrp) + (1 | Subject), sleepstudy)
 
 ## Sample Size Calculation for Mixed Models
 
-The first two functions, `deff()` and `smpsize_lmm()`, can be used to approximately calculate the sample size in the context of power calculation. Calculating the sample size for simple linear models is pretty straightforward, however, for (linear) mixed models, statistical power is affected through the change of the variance of test statistics. This is what _Hsieh et al. (2003)_ call a _design effect_ (or variance inflation factor, VIF). Once this design effect is calculated, the sample size calculated for a standard design can be adjusted accordingly.
+The first two functions, `design_effect()` and `samplesize_mixed()`, can be used to approximately calculate the sample size in the context of power calculation. Calculating the sample size for simple linear models is pretty straightforward, however, for (linear) mixed models, statistical power is affected through the change of the variance of test statistics. This is what _Hsieh et al. (2003)_ call a _design effect_ (or variance inflation factor, VIF). Once this design effect is calculated, the sample size calculated for a standard design can be adjusted accordingly.
 
 ### Design Effect for Two-Level Mixed Models
 
-`deff()` computes this design effect for linear mixed models with two-level design. It requires the approximated average number of observations per grouping cluster (i.e. level-2 unit) and the assumed intraclass correlation coefficient (ICC) for the multilevel-model. Typically, the minimum assumed value for the ICC is _0.05_.
+`design_effect()` computes this design effect for linear mixed models with two-level design. It requires the approximated average number of observations per grouping cluster (i.e. level-2 unit) and the assumed intraclass correlation coefficient (ICC) for the multilevel-model. Typically, the minimum assumed value for the ICC is _0.05_.
 
 ```{r}
 # Design effect for two-level model with 30 observations per
 # cluster group (level-2 unit) and an assumed intraclass
 # correlation coefficient of 0.05.
-deff(n = 30)
+design_effect(n = 30)
 
 # Design effect for two-level model with 24 observation per cluster
 # group and an assumed intraclass correlation coefficient of 0.2.
-deff(n = 24, icc = 0.2)
+design_effect(n = 24, icc = 0.2)
 ```
 
 ### Calculating the Sample Size for Linear Mixed Models
 
-`smpsize_lmm()` combines the functions for power calculation from the **pwr**-package and design effect `deff()`. It computes an approximated sample size for linear mixed models (two-level-designs), based on power-calculation for standard design and adjusted for design effect for 2-level-designs.
+`samplesize_mixed()` combines the functions for power calculation from the **pwr**-package and design effect `design_effect()`. It computes an approximated sample size for linear mixed models (two-level-designs), based on power-calculation for standard design and adjusted for design effect for 2-level-designs.
 
 ```{r}
 # Sample size for multilevel model with 30 cluster groups and a small to
 # medium effect size (Cohen's d) of 0.3. 27 subjects per cluster and
 # hence a total sample size of about 802 observations is needed.
-smpsize_lmm(eff.size = .3, k = 30)
+samplesize_mixed(eff.size = .3, k = 30)
 
 # Sample size for multilevel model with 20 cluster groups and a medium
 # to large effect size for linear models of 0.2. Five subjects per cluster and
 # hence a total sample size of about 107 observations is needed.
-smpsize_lmm(eff.size = .2, df.n = 5, k = 20, power = .9)
+samplesize_mixed(eff.size = .2, df.n = 5, k = 20, power = .9)
 ```
 
-There are more ways to perform power calculations for multilevel models, however, most of these require very detailed knowledge about the sample characteristics and performing simulation studys. `smpsize_lmm()` is a more pragmatic alternative to these approaches.
+There are more ways to perform power calculations for multilevel models, however, most of these require very detailed knowledge about the sample characteristics and performing simulation studys. `samplesize_mixed()` is a more pragmatic alternative to these approaches.
 
 
 ## Rescale model weights for complex samples

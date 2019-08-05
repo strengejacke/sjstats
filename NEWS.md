@@ -1,5 +1,13 @@
 # sjstats 0.17.5
 
+## General
+
+* Minor revisions to meet the changes in the forthcoming update from *tidyr*.
+* `design_effect()` is an alias for `deff()`.
+* `samplesize_mixed()` is an alias for `smpsize_lmm()`.
+
+# sjstats 0.17.5
+
 ## New functions
 
 * `epsilon_sq()`, to compute epsilon-squared effect-size.

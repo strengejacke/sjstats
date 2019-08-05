@@ -15,6 +15,24 @@ overdisp <- function(x, ...) {
 }
 
 
+
+#' @rdname samplesize_mixed
+#' @export
+smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, n, icc = 0.05) {
+  .Deprecated("samplesize_mixed()")
+  samplesize_mixed(eff.size, df.n, power, sig.level, k = k, n, icc)
+}
+
+
+#' @rdname design_effect
+#' @export
+deff <- function(n, icc = 0.05) {
+  .Deprecated("design_effect()")
+  design_effect(n, icc)
+}
+
+
+
 #' @importFrom performance check_zeroinflation
 #' @rdname overdisp
 #' @export

@@ -1,5 +1,5 @@
 #' @title Sample size for linear mixed models
-#' @name smpsize_lmm
+#' @name samplesize_mixed
 #'
 #' @description Compute an approximated sample size for linear mixed models
 #'                (two-level-designs), based on power-calculation for standard
@@ -31,7 +31,7 @@
 #'          will be computed (using \code{\link[pwr]{pwr.f2.test}} of the
 #'          \pkg{pwr}-package). The sample size of the standard design
 #'          is then adjusted for the design effect of two-level-designs (see
-#'          \code{\link{deff}}). Thus, the sample size calculation is appropriate
+#'          \code{\link{design_effect}}). Thus, the sample size calculation is appropriate
 #'          in particular for two-level-designs (see \cite{Snijders 2005}). Models that
 #'          additionally include repeated measures (three-level-designs) may work
 #'          as well, however, the computed sample size may be less accurate.
@@ -40,16 +40,16 @@
 #' # Sample size for multilevel model with 30 cluster groups and a small to
 #' # medium effect size (Cohen's d) of 0.3. 27 subjects per cluster and
 #' # hence a total sample size of about 802 observations is needed.
-#' smpsize_lmm(eff.size = .3, k = 30)
+#' samplesize_mixed(eff.size = .3, k = 30)
 #'
 #' # Sample size for multilevel model with 20 cluster groups and a medium
 #' # to large effect size for linear models of 0.2. Five subjects per cluster and
 #' # hence a total sample size of about 107 observations is needed.
-#' smpsize_lmm(eff.size = .2, df.n = 5, k = 20, power = .9)
+#' samplesize_mixed(eff.size = .2, df.n = 5, k = 20, power = .9)
 #'
 #'
 #' @export
-smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, n, icc = 0.05) {
+samplesize_mixed <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, n, icc = 0.05) {
   if (!requireNamespace("pwr", quietly = TRUE)) {
     stop("Package `pwr` needed for this function to work. Please install it.", call. = FALSE)
   }
@@ -73,7 +73,7 @@ smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, n
   }
 
   # adjust standard design by design effect
-  total.n <- obs * deff(n = n, icc = icc)
+  total.n <- obs * design_effect(n = n, icc = icc)
 
 
   # sample size for each group and total n
@@ -86,7 +86,7 @@ smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, n
 
 
 #' @title Design effects for two-level mixed models
-#' @name deff
+#' @name design_effect
 #'
 #' @description Compute the design effect (also called \emph{Variance Inflation Factor})
 #'              for mixed models with two-level design.
@@ -110,14 +110,14 @@ smpsize_lmm <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, n
 #' # Design effect for two-level model with 30 observations per
 #' # cluster group (level-2 unit) and an assumed intraclass
 #' # correlation coefficient of 0.05.
-#' deff(n = 30)
+#' design_effect(n = 30)
 #'
 #' # Design effect for two-level model with 24 observation per cluster
 #' # group and an assumed intraclass correlation coefficient of 0.2.
-#' deff(n = 24, icc = 0.2)
+#' design_effect(n = 24, icc = 0.2)
 #'
 #' @export
-deff <- function(n, icc = 0.05) {
+design_effect <- function(n, icc = 0.05) {
   1 + (n - 1) * icc
 }
 
@@ -165,7 +165,7 @@ se_ybar <- function(fit) {
   icc <- tau.00 / tot_var
 
   # compute standard error of sample mean
-  se <- purrr::map_dbl(seq_len(length(m.cnt)), ~ sqrt((tot_var / stats::nobs(fit)) * deff(n = obs[.x], icc = icc[.x])))
+  se <- purrr::map_dbl(seq_len(length(m.cnt)), ~ sqrt((tot_var / stats::nobs(fit)) * design_effect(n = obs[.x], icc = icc[.x])))
 
   # give names for se, so user sees, which random effect has what impact
   names(se) <- names(m.cnt)
