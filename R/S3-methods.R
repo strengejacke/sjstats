@@ -604,7 +604,7 @@ print.sj_ttest <- function(x, ...) {
     cat(sprintf("  %s: %.3f\n", format(l2, width = slen), x$estimate[2]))
     cat(sprintf("  %s: %.3f [%.3f  %.3f]\n", format(l3, width = slen), x$estimate[1] - x$estimate[2], x$ci[1], x$ci[2]))
   } else {
-    cat(sprintf("  mean of %s: %.3f [%.3f  %.3f]\n", xn, x$estimate[1], x$ci[1], x$ci[2]))
+    cat(sprintf("  mean of %s: %.3f [%.3f, %.3f]\n", xn, x$estimate[1], x$ci[1], x$ci[2]))
   }
 
   cat("\n")
