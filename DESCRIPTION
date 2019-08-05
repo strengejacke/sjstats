@@ -46,6 +46,7 @@ Suggests:
     mediation,
     nlme,
     pbkrtest (>= 0.4-7),
+    pscl,
     pwr,
     sandwich,
     sjPlot,

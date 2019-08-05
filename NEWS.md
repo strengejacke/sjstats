@@ -6,6 +6,10 @@
 * `design_effect()` is an alias for `deff()`.
 * `samplesize_mixed()` is an alias for `smpsize_lmm()`.
 
+## New functions
+
+* `svyglm.zip()` to fit zero-inflated Poisson models for survey-designs.
+
 ## Changes to functions
 
 * `phi()` and `cramer()` can now compute confidence intervals.

@@ -38,6 +38,29 @@ print.svyglm.nb <- function(x, se = c("robust", "model"), digits = 4, ...) {
 
 
 
+#' @importFrom stats coef vcov pnorm
+#' @importFrom dplyr case_when
+#' @export
+print.svyglm.zip <- function(x, se = c("robust", "model"), digits = 4, ...) {
+  se <- match.arg(se)
+  sm <- tidy_svyglm.zip(x, digits, v_se = se)[-1, ]
+
+  pan <- dplyr::case_when(
+    sm$p.value < 0.001 ~ "<0.001 ***",
+    sm$p.value < 0.01 ~ sprintf("%.*f ** ", digits, sm$p.value),
+    sm$p.value < 0.05 ~ sprintf("%.*f *  ", digits, sm$p.value),
+    sm$p.value < 0.1 ~ sprintf("%.*f .  ", digits, sm$p.value),
+    TRUE ~  sprintf("%.*f    ", digits, sm$p.value)
+  )
+
+  sm$p.value <- pan
+  print(sm, ...)
+
+  message(sprintf("\nShowing %s standard errors on link-scale (untransformed).", se))
+}
+
+
+
 #' @importFrom stats qnorm coef pnorm vcov
 tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
   v_se <- match.arg(v_se)
@@ -62,10 +85,42 @@ tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
 
 
 
+#' @importFrom stats qnorm coef pnorm vcov
+tidy_svyglm.zip <- function(x, digits = 4, v_se = c("robust", "model")) {
+  v_se <- match.arg(v_se)
+
+  if (!isNamespaceLoaded("survey"))
+    requireNamespace("survey", quietly = TRUE)
+
+  # keep original value, not rounded
+  est <- stats::coef(x)
+  se <- sqrt(diag(stats::vcov(x, stderr = v_se)))
+
+  data_frame(
+    term = substring(names(stats::coef(x)), 5),
+    estimate = round(est, digits),
+    std.error = round(se, digits),
+    conf.low = round(exp(est - stats::qnorm(.975) * se), digits),
+    conf.high = round(exp(est + stats::qnorm(.975) * se), digits),
+    p.value = round(2 * stats::pnorm(abs(est / se), lower.tail = FALSE), digits)
+  )
+}
+
+
+
 #' @importFrom dplyr select
 #' @export
 model.frame.svyglm.nb <- function(formula, ...) {
   pred <- attr(formula, "nb.terms", exact = T)
+  dplyr::select(formula$design$variables, string_one_of(pattern = pred, x = colnames(formula$design$variables)))
+}
+
+
+
+#' @importFrom dplyr select
+#' @export
+model.frame.svyglm.zip <- function(formula, ...) {
+  pred <- attr(formula, "zip.terms", exact = T)
   dplyr::select(formula$design$variables, string_one_of(pattern = pred, x = colnames(formula$design$variables)))
 }
 
@@ -81,6 +136,13 @@ family.svyglm.nb <- function(object, ...) {
 #' @export
 formula.svyglm.nb <- function(x, ...) {
   attr(x, "nb.formula", exact = TRUE)
+}
+
+
+
+#' @export
+formula.svyglm.zip <- function(x, ...) {
+  attr(x, "zip.formula", exact = TRUE)
 }
 
 
