@@ -65,9 +65,9 @@
 #' odds_to_rr(fit)
 #'
 #' # replicate OR/RR for coefficient "sex" from above regression
-#' # p0 ~ 0.1324, or ~ 1.914
+#' # p0 ~ 0.1055, or ~ 1.914
 #' prop.table(table(mydf$y, mydf$sex))
-#' or_to_rr(1.914, 0.1324)
+#' or_to_rr(1.914, 0.1055)
 #'
 #' @importFrom stats coef confint model.frame
 #' @importFrom sjlabelled as_numeric
@@ -138,7 +138,7 @@ odds_to_rr <- function(fit) {
   if (is.numeric(data[[parameter]])) {
     mean(outcome)
   } else {
-    prop.table(table(outcome, data[[parameter]]))[1, 1]
+    prop.table(table(outcome, data[[parameter]]))[2, 1]
   }
 }
 
