@@ -15,8 +15,10 @@ or_to_rr(or, p0)
 
 \item{or}{Numeric, an odds ratio estimate.}
 
-\item{p0}{Numeric, proportion of the incidence in the outcome variable
-(base line risk).}
+\item{p0}{Numeric, the risk of having a positive outcome in the control or
+unexposed group (reference group), i.e. the number of outcome or "successes"
+in the control divided by the total number of observations in the control
+group.}
 }
 \value{
 A data frame with relative risks and lower/upper confidence interval for
@@ -34,11 +36,11 @@ This function extracts the odds ratios (exponentiated model coefficients)
            and their related confidence intervals, and transforms these values
            into relative risks (and their related confidence intervals).
            \cr \cr
-           The formula for transformation is based on Zhang and Yu (1998)
-           and Grant (2014):
+           The formula for transformation is based on Zhang and Yu (1998),
+           Wang (2013) and Grant (2014):
            \code{RR <- OR / (1 - P0 + (P0 * OR))}, where \code{OR} is the odds
            ratio and \code{P0} indicates the proportion of the incidence in
-           the outcome variable.
+           the outcome variable for the control group (reference group).
 }
 \examples{
 library(sjmisc)
@@ -56,22 +58,28 @@ data(efc)
 # create binary response
 y <- ifelse(efc$neg_c_7 < median(na.omit(efc$neg_c_7)), 0, 1)
 # create data frame for fitted model
-mydf <- data.frame(y = as.factor(y),
-                   sex = efc$c161sex,
-                   dep = to_factor(efc$e42dep),
-                   barthel = efc$barthtot,
-                   education = to_factor(efc$c172code))
+mydf <- data.frame(
+  y = as.factor(y),
+  sex = to_factor(efc$c161sex),
+  dep = to_factor(efc$e42dep),
+  barthel = efc$barthtot,
+  education = to_factor(efc$c172code)
+)
 # fit model
 fit <- glm(y ~., data = mydf, family = binomial(link = "logit"))
 # convert to relative risks
 odds_to_rr(fit)
 
 # replicate OR/RR for coefficient "sex" from above regression
-or_to_rr(1.913887, .5516)
+# p0 ~ 0.1324, or ~ 1.914
+prop.table(table(mydf$y, mydf$sex))
+or_to_rr(1.914, 0.1324)
 
 }
 \references{
-Zhang J, Yu KF. 1998. What's the Relative Risk? A Method of Correcting the Odds Ratio in Cohort Studies of Common Outcomes. JAMA; 280(19): 1690-1. \doi{10.1001/jama.280.19.1690}
-            \cr \cr
-            Grant RL. 2014. Converting an odds ratio to a range of plausible relative risks for better communication of research findings. BMJ 348:f7450. \doi{10.1136/bmj.f7450}
+Grant RL. 2014. Converting an odds ratio to a range of plausible relative risks for better communication of research findings. BMJ 348:f7450. \doi{10.1136/bmj.f7450}
+  \cr \cr
+  Wang Z. 2013. Converting Odds Ratio to Relative Risk in Cohort Studies with Partial Data Information. J Stat Soft 2013;55. \doi{10.18637/jss.v055.i05}
+  \cr \cr
+  Zhang J, Yu KF. 1998. What's the Relative Risk? A Method of Correcting the Odds Ratio in Cohort Studies of Common Outcomes. JAMA; 280(19): 1690-1. \doi{10.1001/jama.280.19.1690}
 }

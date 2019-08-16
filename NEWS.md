@@ -1,4 +1,4 @@
-# sjstats 0.17.5
+# sjstats 0.17.6
 
 ## General
 
@@ -13,6 +13,10 @@
 ## Changes to functions
 
 * `phi()` and `cramer()` can now compute confidence intervals.
+
+## Bug fixes
+
+* Fix bug with wrong computation in `odds_to_rr()`.
 
 # sjstats 0.17.5
 
