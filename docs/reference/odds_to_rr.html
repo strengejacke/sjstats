@@ -155,8 +155,10 @@
     </tr>
     <tr>
       <th>p0</th>
-      <td><p>Numeric, proportion of the incidence in the outcome variable
-(base line risk).</p></td>
+      <td><p>Numeric, the risk of having a positive outcome in the control or
+unexposed group (reference group), i.e. the number of outcome or "successes"
+in the control divided by the total number of observations in the control
+group.</p></td>
     </tr>
     </table>
     
@@ -173,17 +175,19 @@
            and their related confidence intervals, and transforms these values
            into relative risks (and their related confidence intervals).
            <br /> <br />
-           The formula for transformation is based on Zhang and Yu (1998)
-           and Grant (2014):
+           The formula for transformation is based on Zhang and Yu (1998),
+           Wang (2013) and Grant (2014):
            <code>RR &lt;- OR / (1 - P0 + (P0 * OR))</code>, where <code>OR</code> is the odds
            ratio and <code>P0</code> indicates the proportion of the incidence in
-           the outcome variable.</p>
+           the outcome variable for the control group (reference group).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Zhang J, Yu KF. 1998. What's the Relative Risk? A Method of Correcting the Odds Ratio in Cohort Studies of Common Outcomes. JAMA; 280(19): 1690-1. doi: <a href='https://doi.org/10.1001/jama.280.19.1690'>10.1001/jama.280.19.1690</a>
+    <p>Grant RL. 2014. Converting an odds ratio to a range of plausible relative risks for better communication of research findings. BMJ 348:f7450. doi: <a href='https://doi.org/10.1136/bmj.f7450'>10.1136/bmj.f7450</a>
     <br /> <br />
-            Grant RL. 2014. Converting an odds ratio to a range of plausible relative risks for better communication of research findings. BMJ 348:f7450. doi: <a href='https://doi.org/10.1136/bmj.f7450'>10.1136/bmj.f7450</a></p>
+  Wang Z. 2013. Converting Odds Ratio to Relative Risk in Cohort Studies with Partial Data Information. J Stat Soft 2013;55. doi: <a href='https://doi.org/10.18637/jss.v055.i05'>10.18637/jss.v055.i05</a>
+    <br /> <br />
+  Zhang J, Yu KF. 1998. What's the Relative Risk? A Method of Correcting the Odds Ratio in Cohort Studies of Common Outcomes. JAMA; 280(19): 1690-1. doi: <a href='https://doi.org/10.1001/jama.280.19.1690'>10.1001/jama.280.19.1690</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -194,33 +198,39 @@
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/lme4/topics/glmer'>glmer</a></span>(<span class='no'>Reaction.dicho</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
              <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='st'>"logit"</span>))
 <span class='co'># convert to relative risks</span>
-<span class='fu'>odds_to_rr</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;                     RR    lower.ci  upper.ci
-#&gt; (Intercept) 0.04308565 0.004411356 0.3597023
-#&gt; Days        1.41812942 1.212151446 1.5885357</div><div class='input'>
+<span class='fu'>odds_to_rr</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;     Parameter Odds Ratio Risk Ratio      CI_low   CI_high
+#&gt; 1 (Intercept) 0.02201714 0.04308565 0.004411356 0.3597023
+#&gt; 2        Days 2.43719045 1.41812942 1.212151446 1.5885357</div><div class='input'>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>efc</span>)
 <span class='co'># create binary response</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>efc</span>$<span class='no'>neg_c_7</span> <span class='kw'>&lt;</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/median'>median</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/na.fail'>na.omit</a></span>(<span class='no'>efc</span>$<span class='no'>neg_c_7</span>)), <span class='fl'>0</span>, <span class='fl'>1</span>)
 <span class='co'># create data frame for fitted model</span>
-<span class='no'>mydf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>as.factor</a></span>(<span class='no'>y</span>),
-                   <span class='kw'>sex</span> <span class='kw'>=</span> <span class='no'>efc</span>$<span class='no'>c161sex</span>,
-                   <span class='kw'>dep</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sjmisc/topics/to_factor'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>e42dep</span>),
-                   <span class='kw'>barthel</span> <span class='kw'>=</span> <span class='no'>efc</span>$<span class='no'>barthtot</span>,
-                   <span class='kw'>education</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sjmisc/topics/to_factor'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>c172code</span>))
+<span class='no'>mydf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(
+  <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>as.factor</a></span>(<span class='no'>y</span>),
+  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sjmisc/topics/to_factor'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>c161sex</span>),
+  <span class='kw'>dep</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sjmisc/topics/to_factor'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>e42dep</span>),
+  <span class='kw'>barthel</span> <span class='kw'>=</span> <span class='no'>efc</span>$<span class='no'>barthtot</span>,
+  <span class='kw'>education</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sjmisc/topics/to_factor'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>c172code</span>)
+)
 <span class='co'># fit model</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>y</span> ~<span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mydf</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
 <span class='co'># convert to relative risks</span>
-<span class='fu'>odds_to_rr</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>Waiting for profiling to be done...</span></div><div class='output co'>#&gt;                    RR  lower.ci  upper.ci
-#&gt; (Intercept) 1.0230093 0.4804412 1.4922066
-#&gt; sex         1.2748741 1.1265697 1.4048610
-#&gt; dep2        1.2100644 0.9105182 1.4697728
-#&gt; dep3        1.4387687 1.1925223 1.6182454
-#&gt; dep4        1.3695173 1.0275086 1.6049629
-#&gt; barthel     0.9865251 0.9822535 0.9906641
-#&gt; education2  1.1007470 0.9246644 1.2637281
-#&gt; education3  1.1254901 0.9072463 1.3216546</div><div class='input'>
+<span class='fu'>odds_to_rr</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>Waiting for profiling to be done...</span></div><div class='output co'>#&gt;     Parameter Odds Ratio Risk Ratio    CI_low   CI_high
+#&gt; 1 (Intercept)   2.014220  1.2942650 0.8005943 1.6101037
+#&gt; 2        sex2   1.913887  1.3686646 1.1632760 1.5625768
+#&gt; 3        dep2   1.624596  1.4468228 0.8511852 2.3180826
+#&gt; 4        dep3   3.080617  2.1859172 1.4029261 3.1216957
+#&gt; 5        dep4   2.484804  1.9230853 1.0500095 3.0354848
+#&gt; 6     barthel   0.970638  0.9865251 0.9822535 0.9906641
+#&gt; 7  education2   1.254234  1.1027736 0.9233955 1.2698368
+#&gt; 8  education3   1.327901  1.1280723 0.9057139 1.3294549</div><div class='input'>
 <span class='co'># replicate OR/RR for coefficient "sex" from above regression</span>
-<span class='fu'>or_to_rr</span>(<span class='fl'>1.913887</span>, <span class='fl'>.5516</span>)</div><div class='output co'>#&gt; [1] 1.272447</div><div class='input'>
+<span class='co'># p0 ~ .44, or ~ 1.914</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/prop.table'>prop.table</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>mydf</span>$<span class='no'>y</span>, <span class='no'>mydf</span>$<span class='no'>sex</span>))</div><div class='output co'>#&gt;    
+#&gt;             1         2
+#&gt;   0 0.1324355 0.3153760
+#&gt;   1 0.1054994 0.4466891</div><div class='input'><span class='fu'>or_to_rr</span>(<span class='fl'>1.914</span>, <span class='fl'>0.1055</span> / (<span class='fl'>.1324</span> + <span class='fl'>.1055</span>))</div><div class='output co'>#&gt; [1] 1.361962</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -184,12 +184,12 @@ used for rounding the weighted values. By default, this value is
     <pre class="examples"><div class='input'><span class='no'>v</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>4</span>, <span class='fl'>20</span>, <span class='fl'>TRUE</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>v</span>)</div><div class='output co'>#&gt; v
 #&gt; 1 2 3 4 
-#&gt; 8 4 6 2 </div><div class='input'><span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/MathFun'>abs</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>20</span>))
+#&gt; 3 6 5 6 </div><div class='input'><span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/MathFun'>abs</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>20</span>))
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'>weight</span>(<span class='no'>v</span>, <span class='no'>w</span>))</div><div class='output co'>#&gt; 
 #&gt; 1 2 3 4 
-#&gt; 5 5 3 2 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'>weight2</span>(<span class='no'>v</span>, <span class='no'>w</span>))</div><div class='output co'>#&gt; 
+#&gt; 2 5 5 3 </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='fu'>weight2</span>(<span class='no'>v</span>, <span class='no'>w</span>))</div><div class='output co'>#&gt; 
 #&gt; 1 2 3 4 
-#&gt; 5 5 3 2 </div><div class='input'>
+#&gt; 2 5 5 3 </div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>1</span>)
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>20</span>)
