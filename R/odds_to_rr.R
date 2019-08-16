@@ -138,7 +138,8 @@ odds_to_rr <- function(fit) {
   if (is.numeric(data[[parameter]])) {
     mean(outcome)
   } else {
-    prop.table(table(outcome, data[[parameter]]))[2, 1]
+    p <- prop.table(table(data[[parameter]]), outcome)
+    p[1, 2] / sum(p[1, ])
   }
 }
 
