@@ -71,9 +71,9 @@ fit <- glm(y ~., data = mydf, family = binomial(link = "logit"))
 odds_to_rr(fit)
 
 # replicate OR/RR for coefficient "sex" from above regression
-# p0 ~ 0.1055, or ~ 1.914
+# p0 ~ .44, or ~ 1.914
 prop.table(table(mydf$y, mydf$sex))
-or_to_rr(1.914, 0.1055)
+or_to_rr(1.914, 0.1055 / (.1324 + .1055))
 
 }
 \references{
