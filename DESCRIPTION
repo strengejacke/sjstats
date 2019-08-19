@@ -20,20 +20,20 @@ Depends:
     stats,
     utils
 Imports:
-    bayestestR (>= 0.2.2),
+    bayestestR (>= 0.2.5),
     broom,
     dplyr (>= 0.8.1),
     emmeans,
-    insight (>= 0.4.0),
+    insight (>= 0.4.1),
     lme4,
     magrittr,
     MASS,
     modelr,
-    performance (>= 0.2.0),
+    performance (>= 0.3.0),
     purrr,
     rlang,
     sjlabelled (>= 1.1.0),
-    sjmisc (>= 2.8.0),
+    sjmisc (>= 2.8.1),
     tidyr
 Suggests:
     brms,
