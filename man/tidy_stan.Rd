@@ -62,6 +62,10 @@ The returned data frame has an additonal class-attribute,
        code from Kruschke 2015, pp. 727f.
      }
      \item{
+       The Probability of Direction (pd), which is an index for "effect significance"
+       (see \cite{Makowski et al. 2019}).
+     }
+     \item{
        The effective numbers of samples, \emph{ESS}.
      }
      \item{
@@ -92,6 +96,8 @@ Kruschke JK. \emph{Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and St
 Gelman A, Carlin JB, Stern HS, Dunson DB, Vehtari A, Rubin DB. \emph{Bayesian data analysis} 3rd ed. Boca Raton: Chapman and Hall/CRC, 2013
 \cr \cr
 Gelman A, Rubin DB. \emph{Inference from iterative simulation using multiple sequences} Statistical Science 1992;7: 457-511
+\cr \cr
+Makowski D, Ben-Shachar MS, Lüdecke D. bayestestR: Describing Effects and their Uncertainty, Existence and Significance within the Bayesian Framework. Journal of Open Source Software 2019;4:1541. \doi{10.21105/joss.01541}
 \cr \cr
 McElreath R. \emph{Statistical Rethinking. A Bayesian Course with Examples in R and Stan} Chapman and Hall, 2015
 }

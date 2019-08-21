@@ -41,6 +41,10 @@
 #'        code from Kruschke 2015, pp. 727f.
 #'      }
 #'      \item{
+#'        The Probability of Direction (pd), which is an index for "effect significance"
+#'        (see \cite{Makowski et al. 2019}).
+#'      }
+#'      \item{
 #'        The effective numbers of samples, \emph{ESS}.
 #'      }
 #'      \item{
@@ -62,6 +66,8 @@
 #' \cr \cr
 #' Gelman A, Rubin DB. \emph{Inference from iterative simulation using multiple sequences} Statistical Science 1992;7: 457-511
 #' \cr \cr
+#' Makowski D, Ben-Shachar MS, Lüdecke D. bayestestR: Describing Effects and their Uncertainty, Existence and Significance within the Bayesian Framework. Journal of Open Source Software 2019;4:1541. \doi{10.21105/joss.01541}
+#' \cr \cr
 #' McElreath R. \emph{Statistical Rethinking. A Bayesian Course with Examples in R and Stan} Chapman and Hall, 2015
 #'
 #' @examples
@@ -76,7 +82,7 @@
 #' @importFrom stats mad formula sd
 #' @importFrom sjmisc is_empty trim seq_col typical_value
 #' @importFrom insight model_info get_parameters  is_multivariate print_parameters
-#' @importFrom bayestestR hdi ci effective_sample mcse
+#' @importFrom bayestestR hdi ci effective_sample mcse pd
 #' @export
 tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, effects = c("all", "fixed", "random"), component = c("all", "conditional", "zero_inflated", "zi"), digits = 2) {
 
@@ -145,6 +151,10 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, effects =
   out.mcse <- bayestestR::mcse(x, effects = effects, component = component)
 
 
+  # compute Probability of Direction ----
+  out.pd <- bayestestR::pd(x, effects = effects, component = component, method = "direct")
+
+
   # compute RHat ----
   out.rhat <- .rhat(x)
 
@@ -170,7 +180,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, effects =
     stringsAsFactors = FALSE
   )
 
-  out <- insight::print_parameters(x, out.parameters, out.hdi, out.ess, out.rhat, out.mcse)
+  out <- insight::print_parameters(x, out.parameters, out.hdi, out.pd, out.ess, out.rhat, out.mcse)
   class(out) <- c("tidy_stan", class(out))
   attr(out, "digits") <- digits
 

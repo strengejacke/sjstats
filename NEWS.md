@@ -14,6 +14,7 @@
 
 * `phi()` and `cramer()` can now compute confidence intervals.
 * `tidy_stan()` removes prior parameters from output.
+* `tidy_stan()` now also prints the probability of direction.
 
 ## Bug fixes
 

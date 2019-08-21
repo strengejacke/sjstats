@@ -255,6 +255,7 @@ print.tidy_stan <- function(x, ...) {
     i <- i[, -rem]
     colnames(i)[1] <- "Parameter"
     i$ESS <- as.character(i$ESS)
+    i$pd <- sprintf("%.1f%%", 100 * i$pd)
     i[] <- lapply(i, function(.j) {
       if (is.numeric(.j)) .j <- sprintf("%.*f", digits, .j)
       .j
