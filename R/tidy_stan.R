@@ -99,7 +99,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, effects =
   }
 
   # get parameters ----
-  out.pars <- insight::get_parameters(x, effects = effects, component = component)
+  out.pars <- insight::get_parameters(x, effects = effects, component = component, parameters = "^(?!prior)")
 
   # compute HDI / ci ----
   if (!is.null(trans)) {
