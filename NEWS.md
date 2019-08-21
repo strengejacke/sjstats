@@ -13,6 +13,7 @@
 ## Changes to functions
 
 * `phi()` and `cramer()` can now compute confidence intervals.
+* `tidy_stan()` removes prior parameters from output.
 
 ## Bug fixes
 
