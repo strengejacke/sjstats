@@ -182,7 +182,7 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, effects =
 .rename_ci_column <- function(x, col_name) {
   x$CI_low <- format(x$CI_low, justify = "right")
   x$CI_high <- format(x$CI_high, justify = "right")
-  x$.ci <- sprintf("[%s %s]", x$CI_low, x$CI_high)
+  x$.ci <- sprintf("[%s, %s]", x$CI_low, x$CI_high)
   colnames(x)[ncol(x)] <- sprintf("%s(%g%%)", col_name, x$CI[1])
   x
 }
