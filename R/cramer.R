@@ -10,6 +10,13 @@ cramer.table <- function(tab, ...) {
   .cramer(tab)
 }
 
+
+#' @export
+cramer.ftable <- function(tab, ...) {
+  .cramer(tab)
+}
+
+
 #' @rdname xtab_statistics
 #' @export
 cramer.formula <- function(formula, data, ci.lvl = NULL, n = 1000, method = c("dist", "quantile"), ...) {

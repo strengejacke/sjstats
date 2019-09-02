@@ -4,6 +4,7 @@
 %   R/wtd_ttest.R
 \name{svy_md}
 \alias{svy_md}
+\alias{survey_median}
 \alias{wtd_chisqtest}
 \alias{wtd_chisqtest.default}
 \alias{wtd_chisqtest.formula}
@@ -23,6 +24,8 @@
 \title{Weighted statistics for tests and variables}
 \usage{
 svy_md(x, design)
+
+survey_median(x, design)
 
 wtd_chisqtest(data, ...)
 

@@ -22,5 +22,6 @@ svy_md <- function(x, design) {
 }
 
 
+#' @rdname wtd_sd
 #' @export
 survey_median <- svy_md

@@ -12,6 +12,12 @@ phi.table <- function(tab, ...) {
 
 
 #' @export
+phi.ftable <- function(tab, ...) {
+  .phi(tab)
+}
+
+
+#' @export
 phi.formula <- function(formula, data, ci.lvl = NULL, n = 1000, method = c("dist", "quantile"), ...) {
   terms <- all.vars(formula)
   tab <- table(data[[terms[1]]], data[[terms[2]]])
