@@ -17,7 +17,7 @@
 #'   for possible values for this argument.
 #' @inheritParams bayestestR::hdi
 #'
-#' @return A tidy data frame, summarizing \code{x}, with consistent column names.
+#' @return A data frame, summarizing \code{x}, with consistent column names.
 #'         To distinguish multiple HDI values, column names for the HDI get a suffix
 #'         when \code{prob} has more than one element.
 #'
@@ -42,7 +42,8 @@
 #'      }
 #'      \item{
 #'        The Probability of Direction (pd), which is an index for "effect significance"
-#'        (see \cite{Makowski et al. 2019}).
+#'        (see \cite{Makowski et al. 2019}). A value of 95\% or higher indicates a
+#'        "significant" (i.e. statistically clear) effect.
 #'      }
 #'      \item{
 #'        The effective numbers of samples, \emph{ESS}.
