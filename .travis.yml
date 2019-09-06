@@ -13,7 +13,7 @@ r:
 # Copied from broom
 sudo: required
 cache: packages
-bioc_required: true
+bioc_required: false
 warnings_are_errors: false
 
 env:
