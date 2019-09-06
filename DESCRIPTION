@@ -3,14 +3,14 @@ Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
 Version: 0.17.6
-Date: 2019-09-05
+Date: 2019-09-06
 Authors@R: person("Daniel", "Lüdecke", role = c("aut", "cre"), email = "d.luedecke@uke.de", comment = c(ORCID = "0000-0002-8895-3206"))
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
              which are not directly provided by R's base or stats packages.
              This package aims at providing, first, shortcuts for statistical measures, 
              which otherwise could only be calculated with additional effort 
-             (like Cramer's V, Phi, or effict size statistics like Eta or Omega squared), 
+             (like Cramer's V, Phi, or effect size statistics like Eta or Omega squared), 
              or for which currently no functions available. Second, another focus 
              lies on weighted variants of common statistical measures and tests 
              like weighted standard error, mean, t-test, correlation, and more.
@@ -22,11 +22,12 @@ Imports:
     broom,
     dplyr (>= 0.8.1),
     emmeans,
-    insight (>= 0.5.0),
+    insight (>= 0.4.1),
     lme4,
     magrittr,
     MASS,
     modelr,
+    parameters (>= 0.1.0),
     performance (>= 0.3.0),
     purrr,
     rlang,

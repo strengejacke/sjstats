@@ -105,21 +105,21 @@ mic <- function(x, ...) {
 }
 
 
-#' @importFrom performance principal_components
+#' @importFrom parameters principal_components
 #' @rdname overdisp
 #' @export
 pca <- function(x, ...) {
-  .Deprecated("performance::principal_components()")
-  performance::principal_components(x)
+  .Deprecated("parameters::principal_components()")
+  parameters::principal_components(x)
 }
 
 
-#' @importFrom performance principal_components
+#' @importFrom parameters principal_components
 #' @rdname overdisp
 #' @export
 pca_rotate <- function(x, ...) {
-  .Deprecated("performance::principal_components()")
-  performance::principal_components(x, rotation = "varimax")
+  .Deprecated("parameters::principal_components()")
+  parameters::principal_components(x, rotation = "varimax")
 }
 
 
