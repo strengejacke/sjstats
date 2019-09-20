@@ -5,34 +5,18 @@
 \alias{zero_count}
 \alias{converge_ok}
 \alias{is_singular}
-\alias{reliab_test}
-\alias{split_half}
 \alias{cronb}
-\alias{difficulty}
-\alias{mic}
 \alias{pca}
 \alias{pca_rotate}
 \alias{n_eff}
 \alias{mcse}
-\alias{pred_vars}
-\alias{model_family}
-\alias{model_frame}
-\alias{resp_val}
-\alias{resp_var}
-\alias{grp_var}
-\alias{re_grp_var}
-\alias{var_names}
 \alias{pred_accuracy}
-\alias{outliers}
-\alias{heteroskedastic}
-\alias{autocorrelation}
-\alias{normality}
-\alias{multicollin}
-\alias{check_assumptions}
 \alias{r2}
 \alias{icc}
 \alias{hdi}
 \alias{rope}
+\alias{p_value}
+\alias{se}
 \title{Deprecated functions}
 \usage{
 overdisp(x, ...)
@@ -43,15 +27,7 @@ converge_ok(x, ...)
 
 is_singular(x, ...)
 
-reliab_test(x, ...)
-
-split_half(x, ...)
-
 cronb(x, ...)
-
-difficulty(x, ...)
-
-mic(x, ...)
 
 pca(x, ...)
 
@@ -61,35 +37,7 @@ n_eff(x, ...)
 
 mcse(x, ...)
 
-pred_vars(x, ...)
-
-model_family(x, ...)
-
-model_frame(x, ...)
-
-resp_val(x, ...)
-
-resp_var(x, ...)
-
-grp_var(x)
-
-re_grp_var(x)
-
-var_names(x)
-
 pred_accuracy(x, ...)
-
-outliers(x)
-
-heteroskedastic(x)
-
-autocorrelation(x)
-
-normality(x)
-
-multicollin(x)
-
-check_assumptions(x)
 
 r2(x)
 
@@ -98,6 +46,10 @@ icc(x)
 hdi(x)
 
 rope(x)
+
+p_value(x, ...)
+
+se(x, ...)
 }
 \arguments{
 \item{x}{An object.}

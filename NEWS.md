@@ -1,3 +1,14 @@
+# sjstats 0.17.7
+
+## Deprecated and defunct
+
+_sjstats_ is being re-structured, and many functions are re-implemented in new packages that are part of a new project called **easystats**. The aim of **easystats** is to provide a unifying and consistent framework to tame, discipline and harness the scary R statistics and their pesky models.
+
+Therefore, following functions are now deprecated:
+
+* `p_value()`, please use `parameters::p_value()`
+* `se()`, please use `parameters::standard_error()`
+
 # sjstats 0.17.6
 
 ## General
