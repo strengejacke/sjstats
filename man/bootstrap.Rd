@@ -80,8 +80,6 @@ bs <- efc \%>\%
 
 # bootstrapped standard error
 boot_se(bs, c12hour)
-# standard error of original variable
-se(efc$c12hour)
 
 }
 \seealso{
