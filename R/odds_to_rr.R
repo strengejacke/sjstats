@@ -82,7 +82,7 @@ odds_to_rr <- function(fit) {
 
   # get model estimates
   est <- insight::get_parameters(fit)
-  est$estimate <- exp(est$estimate)
+  est[[2]] <- exp(est[[2]])
 
   # get confidence intervals
   if (is_merMod(fit))
@@ -104,7 +104,7 @@ odds_to_rr <- function(fit) {
 
   P0 <- c()
   for (i in 1:nrow(est)) {
-    P0 <- c(P0, .baseline_risk_for_predictor(modfram, outcome, est$parameter[i]))
+    P0 <- c(P0, .baseline_risk_for_predictor(modfram, outcome, est[[1]][i]))
   }
 
   # compute relative risks for estimate and confidence intervals
