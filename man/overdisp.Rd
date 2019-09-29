@@ -3,53 +3,32 @@
 \name{overdisp}
 \alias{overdisp}
 \alias{zero_count}
-\alias{converge_ok}
-\alias{is_singular}
-\alias{cronb}
 \alias{pca}
 \alias{pca_rotate}
-\alias{n_eff}
-\alias{mcse}
-\alias{pred_accuracy}
 \alias{r2}
 \alias{icc}
-\alias{hdi}
-\alias{rope}
 \alias{p_value}
 \alias{se}
+\alias{std_beta}
 \title{Deprecated functions}
 \usage{
 overdisp(x, ...)
 
 zero_count(x, ...)
 
-converge_ok(x, ...)
-
-is_singular(x, ...)
-
-cronb(x, ...)
-
 pca(x, ...)
 
 pca_rotate(x, ...)
-
-n_eff(x, ...)
-
-mcse(x, ...)
-
-pred_accuracy(x, ...)
 
 r2(x)
 
 icc(x)
 
-hdi(x)
-
-rope(x)
-
 p_value(x, ...)
 
 se(x, ...)
+
+std_beta(x, ...)
 }
 \arguments{
 \item{x}{An object.}
