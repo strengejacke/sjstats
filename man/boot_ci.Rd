@@ -30,6 +30,8 @@ based on bootstrap standard error, multiplied by the value of the
 quantile function of the t-distribution (default), or on sample
 quantiles of the bootstrapped values. See 'Details' in \code{boot_ci()}.
 May be abbreviated.}
+
+\item{ci}{Numeric, the level of the confidence intervals.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with either bootstrap estimate,

@@ -84,5 +84,5 @@ se <- function(x, ...) {
 #' @export
 std_beta <- function(x, ...) {
   .Deprecated("parameters::parameters_standardize()")
-  parameters::parameters_standardize(x)
+  parameters::parameters_standardize(x, method = "smart")
 }
