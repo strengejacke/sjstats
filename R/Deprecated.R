@@ -70,19 +70,19 @@ p_value <- function(x, ...) {
 }
 
 
-#' @importFrom parameters se
+#' @importFrom parameters standard_error
 #' @rdname overdisp
 #' @export
 se <- function(x, ...) {
-  .Deprecated("parameters::se()")
-  parameters::se(x)
+  .Deprecated("parameters::standard_error()")
+  parameters::standard_error(x)
 }
 
 
-#' @importFrom parameters parameters_standardize
+#' @importFrom effectsize standardize_parameters
 #' @rdname overdisp
 #' @export
 std_beta <- function(x, ...) {
-  .Deprecated("parameters::parameters_standardize()")
-  parameters::parameters_standardize(x, method = "smart")
+  .Deprecated("effectsize::standardize_parameters()")
+  effectsize::standardize_parameters(x, method = "smart")
 }
