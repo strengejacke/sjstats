@@ -8,21 +8,32 @@
 
 <title>Get relative risks estimates from logistic regressions or odds ratio values — odds_to_rr • sjstats</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,14 +41,14 @@
 
 
 
-<meta property="og:title" content="Get relative risks estimates from logistic regressions or odds ratio values — odds_to_rr" />
 
+<meta property="og:title" content="Get relative risks estimates from logistic regressions or odds ratio values — odds_to_rr" />
 <meta property="og:description" content="odds_to_rr() converts odds ratios from a logistic regression
                model (including mixed models) into relative risks; or_to_rr()
                converts a single odds ratio estimate into a relative risk estimate." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -49,6 +60,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -67,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.6.9000</span>
       </span>
     </div>
 
@@ -75,7 +87,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -104,11 +116,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/strengejacke/sjstats">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -119,6 +130,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -130,17 +142,15 @@
     </div>
 
     <div class="ref-description">
-    
     <p><code>odds_to_rr()</code> converts odds ratios from a logistic regression
                model (including mixed models) into relative risks; <code>or_to_rr()</code>
                converts a single odds ratio estimate into a relative risk estimate.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>odds_to_rr</span>(<span class='no'>fit</span>)
 
 <span class='fu'>or_to_rr</span>(<span class='no'>or</span>, <span class='no'>p0</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -161,13 +171,12 @@ in the control divided by the total number of observations in the control
 group.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data frame with relative risks and lower/upper confidence interval for
           the relative risks estimates; for <code>or_to_rr()</code>, the risk ratio
           estimate.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function extracts the odds ratios (exponentiated model coefficients)
@@ -180,41 +189,41 @@ group.</p></td>
            <code>RR &lt;- OR / (1 - P0 + (P0 * OR))</code>, where <code>OR</code> is the odds
            ratio and <code>P0</code> indicates the proportion of the incidence in
            the outcome variable for the control group (reference group).</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Grant RL. 2014. Converting an odds ratio to a range of plausible relative risks for better communication of research findings. BMJ 348:f7450. doi: <a href='https://doi.org/10.1136/bmj.f7450'>10.1136/bmj.f7450</a>
-    <br /> <br />
+
+  <br /> <br />
   Wang Z. 2013. Converting Odds Ratio to Relative Risk in Cohort Studies with Partial Data Information. J Stat Soft 2013;55. doi: <a href='https://doi.org/10.18637/jss.v055.i05'>10.18637/jss.v055.i05</a>
-    <br /> <br />
+
+  <br /> <br />
   Zhang J, Yu KF. 1998. What's the Relative Risk? A Method of Correcting the Odds Ratio in Cohort Studies of Common Outcomes. JAMA; 280(19): 1690-1. doi: <a href='https://doi.org/10.1001/jama.280.19.1690'>10.1001/jama.280.19.1690</a></p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>sjmisc</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>lme4</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='input'><span class='co'># create binary response</span>
-<span class='no'>sleepstudy</span>$<span class='no'>Reaction.dicho</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sjmisc/topics/dicho'>dicho</a></span>(<span class='no'>sleepstudy</span>$<span class='no'>Reaction</span>, <span class='kw'>dich.by</span> <span class='kw'>=</span> <span class='st'>"median"</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sjmisc</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='input'><span class='co'># create binary response</span>
+<span class='no'>sleepstudy</span>$<span class='no'>Reaction.dicho</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sjmisc/man/dicho.html'>dicho</a></span>(<span class='no'>sleepstudy</span>$<span class='no'>Reaction</span>, <span class='kw'>dich.by</span> <span class='kw'>=</span> <span class='st'>"median"</span>)
 <span class='co'># fit model</span>
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/lme4/topics/glmer'>glmer</a></span>(<span class='no'>Reaction.dicho</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
-             <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='st'>"logit"</span>))
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>glmer</a></span>(<span class='no'>Reaction.dicho</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
+             <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='st'>"logit"</span>))
 <span class='co'># convert to relative risks</span>
 <span class='fu'>odds_to_rr</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt;     Parameter Odds Ratio Risk Ratio      CI_low   CI_high
 #&gt; 1 (Intercept) 0.02201714 0.04308565 0.004411356 0.3597023
 #&gt; 2        Days 2.43719045 1.41812942 1.212151446 1.5885357</div><div class='input'>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>efc</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
 <span class='co'># create binary response</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>efc</span>$<span class='no'>neg_c_7</span> <span class='kw'>&lt;</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/median'>median</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/na.fail'>na.omit</a></span>(<span class='no'>efc</span>$<span class='no'>neg_c_7</span>)), <span class='fl'>0</span>, <span class='fl'>1</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>efc</span>$<span class='no'>neg_c_7</span> <span class='kw'>&lt;</span> <span class='fu'><a href='https://rdrr.io/r/stats/median.html'>median</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span>(<span class='no'>efc</span>$<span class='no'>neg_c_7</span>)), <span class='fl'>0</span>, <span class='fl'>1</span>)
 <span class='co'># create data frame for fitted model</span>
-<span class='no'>mydf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(
-  <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>as.factor</a></span>(<span class='no'>y</span>),
-  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sjmisc/topics/to_factor'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>c161sex</span>),
-  <span class='kw'>dep</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sjmisc/topics/to_factor'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>e42dep</span>),
+<span class='no'>mydf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
+  <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='no'>y</span>),
+  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/sjmisc/man/to_factor.html'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>c161sex</span>),
+  <span class='kw'>dep</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/sjmisc/man/to_factor.html'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>e42dep</span>),
   <span class='kw'>barthel</span> <span class='kw'>=</span> <span class='no'>efc</span>$<span class='no'>barthtot</span>,
-  <span class='kw'>education</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sjmisc/topics/to_factor'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>c172code</span>)
+  <span class='kw'>education</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/sjmisc/man/to_factor.html'>to_factor</a></span>(<span class='no'>efc</span>$<span class='no'>c172code</span>)
 )
 <span class='co'># fit model</span>
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>y</span> ~<span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mydf</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>y</span> ~<span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mydf</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"logit"</span>))
 <span class='co'># convert to relative risks</span>
 <span class='fu'>odds_to_rr</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='message'>Waiting for profiling to be done...</span></div><div class='output co'>#&gt;     Parameter Odds Ratio Risk Ratio    CI_low   CI_high
 #&gt; 1 (Intercept)   2.014220  1.2942650 0.8005943 1.6101037
@@ -227,7 +236,7 @@ group.</p></td>
 #&gt; 8  education3   1.327901  1.1280723 0.9057139 1.3294549</div><div class='input'>
 <span class='co'># replicate OR/RR for coefficient "sex" from above regression</span>
 <span class='co'># p0 ~ .44, or ~ 1.914</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/prop.table'>prop.table</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>mydf</span>$<span class='no'>y</span>, <span class='no'>mydf</span>$<span class='no'>sex</span>))</div><div class='output co'>#&gt;    
+<span class='fu'><a href='https://rdrr.io/r/base/prop.table.html'>prop.table</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>mydf</span>$<span class='no'>y</span>, <span class='no'>mydf</span>$<span class='no'>sex</span>))</div><div class='output co'>#&gt;    
 #&gt;             1         2
 #&gt;   0 0.1324355 0.3153760
 #&gt;   1 0.1054994 0.4466891</div><div class='input'><span class='fu'>or_to_rr</span>(<span class='fl'>1.914</span>, <span class='fl'>0.1055</span> / (<span class='fl'>.1324</span> + <span class='fl'>.1055</span>))</div><div class='output co'>#&gt; [1] 1.361962</div><div class='input'>
@@ -237,18 +246,15 @@ group.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -256,13 +262,16 @@ group.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

@@ -8,7 +8,7 @@ Therefore, following functions are now deprecated:
 
 * `p_value()`, please use `parameters::p_value()`
 * `se()`, please use `parameters::standard_error()`
-* `std_beta()`, please use `parameters::parameters_standardize()`
+* `std_beta()`, please use `effectsize::standardize_parameters()`
 
 # sjstats 0.17.6
 
