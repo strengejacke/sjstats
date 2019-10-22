@@ -75,7 +75,7 @@ p_value <- function(x, ...) {
 #' @export
 se <- function(x, ...) {
   .Deprecated("parameters::se()")
-  parameters::se(x)
+  parameters::standard_error(x)
 }
 
 
