@@ -63,8 +63,8 @@ Therefore, following functions are now deprecated:
 * `cronb()`, please use `performance::cronbachs_alpha()`
 * `difficulty()`, please use `performance::item_difficulty()`
 * `mic()`, please use `performance::item_intercor()`
-* `pca()`, please use `performance::principal_components()`
-* `pca_rotate()`, please use `performance::principal_components()`
+* `pca()`, please use `parameters::principal_components()`
+* `pca_rotate()`, please use `parameters::principal_components()`
 * `r2()`, please use `performance::r2()`
 * `icc()`, please use `performance::icc()`
 * `rmse()`, please use `performance::rmse()`

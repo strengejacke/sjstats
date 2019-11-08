@@ -61,12 +61,16 @@ icc <- function(x) {
 }
 
 
-#' @importFrom parameters p_value
+#' @importFrom parameters p_value standard_error
 #' @rdname overdisp
 #' @export
 p_value <- function(x, ...) {
   .Deprecated("parameters::p_value()")
-  parameters::p_value(x)
+  pv <- parameters::p_value(x)
+  se <- parameters::standard_error(x)
+  out <- merge(pv, se, by = "Parameter")
+  colnames(out) <- c("term", "p.value", "std.error")
+  out
 }
 
 
