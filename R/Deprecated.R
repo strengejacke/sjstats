@@ -81,12 +81,3 @@ se <- function(x, ...) {
   .Deprecated("parameters::standard_error()")
   parameters::standard_error(x)
 }
-
-
-#' @importFrom effectsize standardize_parameters
-#' @rdname overdisp
-#' @export
-std_beta <- function(x, ...) {
-  .Deprecated("effectsize::standardize_parameters()")
-  effectsize::standardize_parameters(x, method = "smart")
-}

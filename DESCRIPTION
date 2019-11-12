@@ -21,7 +21,6 @@ Imports:
     bayestestR (>= 0.4.0),
     broom,
     dplyr (>= 0.8.1),
-    effectsize,
     emmeans,
     insight (>= 0.6.0),
     lme4,

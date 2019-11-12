@@ -9,7 +9,6 @@
 \alias{icc}
 \alias{p_value}
 \alias{se}
-\alias{std_beta}
 \title{Deprecated functions}
 \usage{
 overdisp(x, ...)
@@ -27,8 +26,6 @@ icc(x)
 p_value(x, ...)
 
 se(x, ...)
-
-std_beta(x, ...)
 }
 \arguments{
 \item{x}{An object.}
