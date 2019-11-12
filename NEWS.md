@@ -10,6 +10,10 @@ Therefore, following functions are now deprecated:
 * `se()`, please use `parameters::standard_error()`
 * `std_beta()`, please use `effectsize::standardize_parameters()`
 
+## General
+
+* Revise some functions to cope with the forthcoming _insight_ update.
+
 # sjstats 0.17.6
 
 ## General
