@@ -6,3 +6,4 @@
 ^paper.*$
 ^LICENSE
 ^_pkgdown\.yml$
+^pkgdown$

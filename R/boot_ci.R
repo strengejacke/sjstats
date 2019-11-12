@@ -7,7 +7,7 @@
 #'
 #' @param data A data frame that containts the vector with bootstrapped
 #'          estimates, or directly the vector (see 'Examples').
-#' @param ci Numeric, the level of the confidence intervals.
+#' @param ci.lvl Numeric, the level of the confidence intervals.
 #' @param ... Optional, unquoted names of variables with bootstrapped estimates.
 #'          Required, if either \code{data} is a data frame (and no vector),
 #'          and only selected variables from \code{data} should be processed.
