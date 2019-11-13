@@ -85,5 +85,6 @@ samplesize_mixed <- function(eff.size, df.n = NULL, power = .8, sig.level = .05,
 }
 
 
+#' @rdname samplesize_mixed
 #' @export
 smpsize_lmm <- samplesize_mixed
