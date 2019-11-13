@@ -83,3 +83,7 @@ samplesize_mixed <- function(eff.size, df.n = NULL, power = .8, sig.level = .05,
   names(smpsz) <- c("Subjects per Cluster", "Total Sample Size")
   smpsz
 }
+
+
+#' @export
+smpsize_lmm <- samplesize_mixed

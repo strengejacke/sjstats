@@ -65,7 +65,8 @@ icc <- function(x) {
 #' @rdname overdisp
 #' @export
 p_value <- function(x, ...) {
-  .Deprecated("parameters::p_value()")
+  # .Deprecated("parameters::p_value()")
+  message("'p_value()' is deprecated. Use 'parameters::p_value()' instead.")
   pv <- parameters::p_value(x)
   se <- parameters::standard_error(x)
   out <- merge(pv, se, by = "Parameter")
