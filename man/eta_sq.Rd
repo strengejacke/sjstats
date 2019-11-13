@@ -13,14 +13,23 @@ anova_stats(model, digits = 3)
 
 cohens_f(model)
 
-epsilon_sq(model, ci.lvl = NULL, n = 1000, method = c("dist",
-  "quantile"))
+epsilon_sq(model, ci.lvl = NULL, n = 1000, method = c("dist", "quantile"))
 
-eta_sq(model, partial = FALSE, ci.lvl = NULL, n = 1000,
-  method = c("dist", "quantile"))
+eta_sq(
+  model,
+  partial = FALSE,
+  ci.lvl = NULL,
+  n = 1000,
+  method = c("dist", "quantile")
+)
 
-omega_sq(model, partial = FALSE, ci.lvl = NULL, n = 1000,
-  method = c("dist", "quantile"))
+omega_sq(
+  model,
+  partial = FALSE,
+  ci.lvl = NULL,
+  n = 1000,
+  method = c("dist", "quantile")
+)
 }
 \arguments{
 \item{model}{A fitted anova-model of class \code{aov} or \code{anova}. Other

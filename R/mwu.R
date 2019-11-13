@@ -50,10 +50,10 @@ mwu <- function(data,
 
   out <- match.arg(out)
 
-  if (out != "txt" && !requireNamespace("sjPlot", quietly = TRUE)) {
-    message("Package `sjPlot` needs to be loaded to print HTML tables.")
-    out <- "txt"
-  }
+  # if (out != "txt" && !requireNamespace("sjPlot", quietly = TRUE)) {
+  #   message("Package `sjPlot` needs to be loaded to print HTML tables.")
+  #   out <- "txt"
+  # }
 
   if (!requireNamespace("coin", quietly = TRUE)) {
     stop("Package `coin` needs to be installed to compute the Mann-Whitney-U test.", call. = FALSE)

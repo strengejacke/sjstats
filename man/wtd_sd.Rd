@@ -55,12 +55,27 @@ wtd_se(x, weights = NULL)
 
 wtd_ttest(data, ...)
 
-\method{wtd_ttest}{default}(data, x, y = NULL, weights, mu = 0,
-  paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less",
-  "greater"), ...)
+\method{wtd_ttest}{default}(
+  data,
+  x,
+  y = NULL,
+  weights,
+  mu = 0,
+  paired = FALSE,
+  ci.lvl = 0.95,
+  alternative = c("two.sided", "less", "greater"),
+  ...
+)
 
-\method{wtd_ttest}{formula}(formula, data, mu = 0, paired = FALSE,
-  ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...)
+\method{wtd_ttest}{formula}(
+  formula,
+  data,
+  mu = 0,
+  paired = FALSE,
+  ci.lvl = 0.95,
+  alternative = c("two.sided", "less", "greater"),
+  ...
+)
 }
 \arguments{
 \item{x}{(Numeric) vector or a data frame. For \code{svy_md()}, \code{wtd_ttest()},
