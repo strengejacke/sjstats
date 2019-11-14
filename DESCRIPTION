@@ -49,6 +49,7 @@ Suggests:
     pscl,
     pwr,
     sandwich,
+    sjPlot,
     survey,
     rstan,
     rstanarm,
