@@ -9,14 +9,25 @@
 \usage{
 cramer(tab, ...)
 
-\method{cramer}{formula}(formula, data, ci.lvl = NULL, n = 1000,
-  method = c("dist", "quantile"), ...)
+\method{cramer}{formula}(
+  formula,
+  data,
+  ci.lvl = NULL,
+  n = 1000,
+  method = c("dist", "quantile"),
+  ...
+)
 
 phi(tab, ...)
 
-xtab_statistics(data, x1 = NULL, x2 = NULL, statistics = c("auto",
-  "cramer", "phi", "spearman", "kendall", "pearson", "fisher"),
-  weights = NULL, ...)
+xtab_statistics(
+  data,
+  x1 = NULL,
+  x2 = NULL,
+  statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson", "fisher"),
+  weights = NULL,
+  ...
+)
 }
 \arguments{
 \item{tab}{A \code{\link{table}} or \code{\link[stats]{ftable}}. Tables of class
