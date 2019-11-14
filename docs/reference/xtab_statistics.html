@@ -152,14 +152,25 @@
     <pre class="usage"><span class='fu'>cramer</span>(<span class='no'>tab</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for formula</span>
-<span class='fu'>cramer</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>), <span class='no'>...</span>)
+<span class='fu'>cramer</span>(
+  <span class='no'>formula</span>,
+  <span class='no'>data</span>,
+  <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>),
+  <span class='no'>...</span>
+)
 
 <span class='fu'>phi</span>(<span class='no'>tab</span>, <span class='no'>...</span>)
 
-<span class='fu'>xtab_statistics</span>(<span class='no'>data</span>, <span class='kw'>x1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>x2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>statistics</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"auto"</span>,
-  <span class='st'>"cramer"</span>, <span class='st'>"phi"</span>, <span class='st'>"spearman"</span>, <span class='st'>"kendall"</span>, <span class='st'>"pearson"</span>, <span class='st'>"fisher"</span>),
-  <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>xtab_statistics</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>x1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>x2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>statistics</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"auto"</span>, <span class='st'>"cramer"</span>, <span class='st'>"phi"</span>, <span class='st'>"spearman"</span>, <span class='st'>"kendall"</span>, <span class='st'>"pearson"</span>, <span class='st'>"fisher"</span>),
+  <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

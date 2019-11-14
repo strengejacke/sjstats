@@ -143,9 +143,15 @@
     <p>Returns a tidy summary output for stan models.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tidy_stan</span>(<span class='no'>x</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.89</span>, <span class='kw'>typical</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>effects</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"all"</span>, <span class='st'>"fixed"</span>, <span class='st'>"random"</span>), <span class='kw'>component</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"all"</span>,
-  <span class='st'>"conditional"</span>, <span class='st'>"zero_inflated"</span>, <span class='st'>"zi"</span>), <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
+    <pre class="usage"><span class='fu'>tidy_stan</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.89</span>,
+  <span class='kw'>typical</span> <span class='kw'>=</span> <span class='st'>"median"</span>,
+  <span class='kw'>trans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>effects</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"all"</span>, <span class='st'>"fixed"</span>, <span class='st'>"random"</span>),
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"all"</span>, <span class='st'>"conditional"</span>, <span class='st'>"zero_inflated"</span>, <span class='st'>"zi"</span>),
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

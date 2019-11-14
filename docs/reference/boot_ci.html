@@ -180,7 +180,7 @@ quantiles of the bootstrapped values. See 'Details' in <code>boot_ci()</code>.
 May be abbreviated.</p></td>
     </tr>
     <tr>
-      <th>ci</th>
+      <th>ci.lvl</th>
       <td><p>Numeric, the level of the confidence intervals.</p></td>
     </tr>
     </table>
@@ -269,28 +269,28 @@ May be abbreviated.</p></td>
 <span class='co'># bootstrapped statistics like confidence intervals or p-values</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sjmisc</span>)
-<span class='no'>efc</span> <span class='kw'>%&gt;%</span>
+<span class='no'>efc</span>
   <span class='co'># generate bootstrap replicates</span>
-  <span class='fu'><a href='bootstrap.html'>bootstrap</a></span>(<span class='fl'>100</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='bootstrap.html'>bootstrap</a></span>(<span class='fl'>100</span>)
   <span class='co'># apply lm to all bootstrapped data sets</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(
     <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span>(<span class='no'>strap</span>, ~<span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(<span class='no'>neg_c_7</span> ~ <span class='no'>e42dep</span> + <span class='no'>c161sex</span> + <span class='no'>c172code</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>.x</span>))
-  ) <span class='kw'>%&gt;%</span>
+  )
   <span class='co'># spread model coefficient for all 100 models</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sjmisc/man/spread_coef.html'>spread_coef</a></span>(<span class='no'>models</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sjmisc/man/spread_coef.html'>spread_coef</a></span>(<span class='no'>models</span>)
   <span class='co'># compute the CI for all bootstrapped model coefficients</span>
   <span class='fu'>boot_ci</span>(<span class='no'>e42dep</span>, <span class='no'>c161sex</span>, <span class='no'>c172code</span>)
 
 <span class='co'># or...</span>
-<span class='no'>efc</span> <span class='kw'>%&gt;%</span>
+<span class='no'>efc</span>
   <span class='co'># generate bootstrap replicates</span>
-  <span class='fu'><a href='bootstrap.html'>bootstrap</a></span>(<span class='fl'>100</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='bootstrap.html'>bootstrap</a></span>(<span class='fl'>100</span>)
   <span class='co'># apply lm to all bootstrapped data sets</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(
     <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span>(<span class='no'>strap</span>, ~<span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(<span class='no'>neg_c_7</span> ~ <span class='no'>e42dep</span> + <span class='no'>c161sex</span> + <span class='no'>c172code</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>.x</span>))
-  ) <span class='kw'>%&gt;%</span>
+  )
   <span class='co'># spread model coefficient for all 100 models</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sjmisc/man/spread_coef.html'>spread_coef</a></span>(<span class='no'>models</span>, <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sjmisc/man/spread_coef.html'>spread_coef</a></span>(<span class='no'>models</span>, <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
   <span class='co'># compute the CI for all bootstrapped model coefficients</span>
   <span class='fu'>boot_ci</span>()}</div></pre>
   </div>

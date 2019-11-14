@@ -153,14 +153,23 @@
 
 <span class='fu'>cohens_f</span>(<span class='no'>model</span>)
 
-<span class='fu'>epsilon_sq</span>(<span class='no'>model</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>,
-  <span class='st'>"quantile"</span>))
+<span class='fu'>epsilon_sq</span>(<span class='no'>model</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>))
 
-<span class='fu'>eta_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>))
+<span class='fu'>eta_sq</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>)
+)
 
-<span class='fu'>omega_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>))</pre>
+<span class='fu'>omega_sq</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
