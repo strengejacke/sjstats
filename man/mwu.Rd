@@ -4,15 +4,8 @@
 \alias{mwu}
 \title{Mann-Whitney-U-Test}
 \usage{
-mwu(
-  data,
-  x,
-  grp,
-  distribution = "asymptotic",
-  out = c("txt", "viewer", "browser"),
-  encoding = "UTF-8",
-  file = NULL
-)
+mwu(data, x, grp, distribution = "asymptotic", out = c("txt", "viewer",
+  "browser"), encoding = "UTF-8", file = NULL)
 }
 \arguments{
 \item{data}{A data frame.}
