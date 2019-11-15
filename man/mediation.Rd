@@ -7,7 +7,8 @@
 \usage{
 mediation(x, ...)
 
-\method{mediation}{brmsfit}(x, treatment, mediator, prob = 0.9, typical = "median", ...)
+\method{mediation}{brmsfit}(x, treatment, mediator, prob = 0.9,
+  typical = "median", ...)
 }
 \arguments{
 \item{x}{A \code{stanreg}, \code{stanfit}, or \code{brmsfit} object.}
