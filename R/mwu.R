@@ -13,7 +13,7 @@
 #'          May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
 #'          (default). See \code{\link[coin]{wilcox_test}} for details.
 #'
-#' @inheritParams wtd_se
+#' @inheritParams weighted_sd
 #' @inheritParams grpmean
 #'
 #' @return (Invisibly) returns a data frame with U, p and Z-values for each group-comparison
@@ -200,3 +200,8 @@ mwu <- function(data,
 
   ret.df
 }
+
+
+#' @rdname mwu
+#' @export
+mannwhitney <- mwu

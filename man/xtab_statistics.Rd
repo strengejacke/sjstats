@@ -5,18 +5,39 @@
 \alias{cramer.formula}
 \alias{phi}
 \alias{xtab_statistics}
+\alias{crosstable_statistics}
 \title{Measures of association for contingency tables}
 \usage{
 cramer(tab, ...)
 
-\method{cramer}{formula}(formula, data, ci.lvl = NULL, n = 1000,
-  method = c("dist", "quantile"), ...)
+\method{cramer}{formula}(
+  formula,
+  data,
+  ci.lvl = NULL,
+  n = 1000,
+  method = c("dist", "quantile"),
+  ...
+)
 
 phi(tab, ...)
 
-xtab_statistics(data, x1 = NULL, x2 = NULL, statistics = c("auto",
-  "cramer", "phi", "spearman", "kendall", "pearson", "fisher"),
-  weights = NULL, ...)
+xtab_statistics(
+  data,
+  x1 = NULL,
+  x2 = NULL,
+  statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson", "fisher"),
+  weights = NULL,
+  ...
+)
+
+crosstable_statistics(
+  data,
+  x1 = NULL,
+  x2 = NULL,
+  statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson", "fisher"),
+  weights = NULL,
+  ...
+)
 }
 \arguments{
 \item{tab}{A \code{\link{table}} or \code{\link[stats]{ftable}}. Tables of class
@@ -69,7 +90,7 @@ weights that will be applied to weight all observations. Default is
 For \code{phi()}, the table's Phi value. For \code{cramer()}, the
         table's Cramer's V.
         \cr \cr
-        For \code{xtab_statistics()}, a list with following components:
+        For \code{crosstable_statistics()}, a list with following components:
         \describe{
           \item{\code{estimate}}{the value of the estimated measure of association.}
           \item{\code{p.value}}{the p-value for the test.}
@@ -122,16 +143,16 @@ cramer(e16sex ~ c161sex, data = efc)
 cramer(e16sex ~ c161sex, data = efc, ci.lvl = .95, n = 100)
 
 # 2x2 table, compute Phi automatically
-xtab_statistics(efc, e16sex, c161sex)
+crosstable_statistics(efc, e16sex, c161sex)
 
 # more dimensions than 2x2, compute Cramer's V automatically
-xtab_statistics(efc, c172code, c161sex)
+crosstable_statistics(efc, c172code, c161sex)
 
 # ordinal data, use Kendall's tau
-xtab_statistics(efc, e42dep, quol_5, statistics = "kendall")
+crosstable_statistics(efc, e42dep, quol_5, statistics = "kendall")
 
 # calcilate Spearman's rho, with continuity correction
-xtab_statistics(efc,
+crosstable_statistics(efc,
   e42dep,
   quol_5,
   statistics = "spearman",

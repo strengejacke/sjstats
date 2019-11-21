@@ -1,0 +1,76 @@
+authors:
+  Daniel Lüdecke:
+    href: https://github.com/strengejacke
+
+template:
+  params:
+    bootswatch: cosmo
+
+reference:
+- title: "Bootstrapping"
+  contents:
+  - bootstrap
+  - boot_ci
+
+- title: "Effect Size Statistics for Anova"
+  contents:
+  - anova_stats
+
+- title: "Statistics for Crosstables"
+  contents:
+  - crosstable_statistics
+  - table_values
+
+- title: "Weighted Statistics"
+  contents:
+  - weight
+  - weighted_ttest
+
+- title: "Other (Summary) Statistics"
+  contents:
+  - gmd
+  - mannwhitney
+  - mean_n
+  - means_by_group
+  - var_pop
+
+- title: "Tools for Regression Models"
+  contents:
+  - chisq_gof
+  - cv
+  - cv_error
+
+- title: "Tools for Mixed Models"
+  contents:
+  - design_effect
+  - samplesize_mixed
+  - scale_weights
+  - se_ybar
+
+- title: "Tools for Bayesian Models"
+  contents:
+  - auto_prior
+  - tidy_stan
+  - mediation
+
+- title: "Find Parameters of Distribution"
+  contents:
+  - find_beta
+
+navbar:
+  type: default
+  left:
+  - icon: fa-home fa-lg
+    href: index.html
+  - text: News
+    href: news/index.html
+  - text: Reference
+    href: reference/index.html
+  - text: Documentation
+    menu:
+      - text: 'Statistics for Anova Tables'
+        href: articles/anova-statistics.html
+      - text: 'Statistics for Bayesian Models'
+        href: articles/bayesian-statistics.html
+      - text: 'Statistics for Mixed Effects Models'
+        href: articles/mixedmodels-statistics.html

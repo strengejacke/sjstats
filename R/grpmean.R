@@ -247,8 +247,8 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
     summarise(
       mean = sprintf("%.*f", digits, stats::weighted.mean(.data$dv, w = .data$weight.by, na.rm = TRUE)),
       N = round(sum(.data$weight.by)),
-      std.dev = sprintf("%.*f", digits, wtd_sd(.data$dv, .data$weight.by)),
-      std.error = sprintf("%.*f", digits, wtd_se(.data$dv, .data$weight.by))
+      std.dev = sprintf("%.*f", digits, weighted_sd(.data$dv, .data$weight.by)),
+      std.error = sprintf("%.*f", digits, weighted_se(.data$dv, .data$weight.by))
     ) %>%
     mutate(p.value = pval) %>%
     dplyr::select(-.data$grp)
@@ -259,8 +259,8 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
     data_frame(
       mean = sprintf("%.*f", digits, stats::weighted.mean(mydf$dv, w = mydf$weight.by, na.rm = TRUE)),
       N = nrow(mydf),
-      std.dev = sprintf("%.*f", digits, wtd_sd(mydf$dv, mydf$weight.by)),
-      std.error = sprintf("%.*f", digits, wtd_se(mydf$dv, mydf$weight.by)),
+      std.dev = sprintf("%.*f", digits, weighted_sd(mydf$dv, mydf$weight.by)),
+      std.error = sprintf("%.*f", digits, weighted_se(mydf$dv, mydf$weight.by)),
       p.value = ""
     )
   )
@@ -339,3 +339,8 @@ get_title_part <- function(x, grps, level, i) {
   # generate title
   c(t1, t2)
 }
+
+
+#' @rdname grpmean
+#' @export
+means_by_group <- grpmean

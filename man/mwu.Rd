@@ -2,10 +2,28 @@
 % Please edit documentation in R/mwu.R
 \name{mwu}
 \alias{mwu}
+\alias{mannwhitney}
 \title{Mann-Whitney-U-Test}
 \usage{
-mwu(data, x, grp, distribution = "asymptotic", out = c("txt", "viewer",
-  "browser"), encoding = "UTF-8", file = NULL)
+mwu(
+  data,
+  x,
+  grp,
+  distribution = "asymptotic",
+  out = c("txt", "viewer", "browser"),
+  encoding = "UTF-8",
+  file = NULL
+)
+
+mannwhitney(
+  data,
+  x,
+  grp,
+  distribution = "asymptotic",
+  out = c("txt", "viewer", "browser"),
+  encoding = "UTF-8",
+  file = NULL
+)
 }
 \arguments{
 \item{data}{A data frame.}

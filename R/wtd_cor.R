@@ -1,13 +1,13 @@
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_cor <- function(data, ...) {
-  UseMethod("wtd_cor")
+weighted_correlation <- function(data, ...) {
+  UseMethod("weighted_correlation")
 }
 
 
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_cor.default <- function(data, x, y, weights, ci.lvl = .95, ...) {
+weighted_correlation.default <- function(data, x, y, weights, ci.lvl = .95, ...) {
   if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
     stop("'ci.lvl' must be a single number between 0 and 1")
 
@@ -31,13 +31,13 @@ wtd_cor.default <- function(data, x, y, weights, ci.lvl = .95, ...) {
   yv <- dat[[y.name]]
   wv <- dat[[w.name]]
 
-  wtd_cor_helper(xv, yv, wv, ci.lvl)
+  weighted_correlation_helper(xv, yv, wv, ci.lvl)
 }
 
 
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_cor.formula <- function(formula, data, ci.lvl = .95, ...) {
+weighted_correlation.formula <- function(formula, data, ci.lvl = .95, ...) {
 
   if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
     stop("'ci.lvl' must be a single number between 0 and 1")
@@ -57,18 +57,18 @@ wtd_cor.formula <- function(formula, data, ci.lvl = .95, ...) {
   yv <- dat[[vars[2]]]
   wv <- dat[[vars[3]]]
 
-  wtd_cor_helper(xv, yv, wv, ci.lvl)
+  weighted_correlation_helper(xv, yv, wv, ci.lvl)
 }
 
 
 #' @importFrom stats cor.test
-wtd_cor_helper <- function(xv, yv, wv, ci.lvl) {
+weighted_correlation_helper <- function(xv, yv, wv, ci.lvl) {
 
-  x <- xv - wtd_mean(xv, weights = wv)
-  y <- yv - wtd_mean(yv, weights = wv)
+  x <- xv - weighted_mean(xv, weights = wv)
+  y <- yv - weighted_mean(yv, weights = wv)
 
-  x <- x / wtd_sd(x, weights = wv)
-  y <- y / wtd_sd(y, weights = wv)
+  x <- x / weighted_sd(x, weights = wv)
+  y <- y / weighted_sd(y, weights = wv)
 
   results <- stats::coef(summary(stats::lm(y ~ x, weights = wv)))[2, ]
 

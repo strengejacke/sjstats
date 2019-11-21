@@ -1,4 +1,4 @@
-wtd_var <- function(x, w) {
+weighted_variance <- function(x, w) {
   if (is.null(w)) w <- rep(1, length(x))
 
   x[is.na(w)] <- NA

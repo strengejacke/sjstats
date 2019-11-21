@@ -1,14 +1,14 @@
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_mwu <- function(data, ...) {
-  UseMethod("wtd_mwu")
+weighted_mannwhitney <- function(data, ...) {
+  UseMethod("weighted_mannwhitney")
 }
 
 
 #' @importFrom dplyr select
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_mwu.default <- function(data, x, grp, weights, ...) {
+weighted_mannwhitney.default <- function(data, x, grp, weights, ...) {
   x.name <- deparse(substitute(x))
   g.name <- deparse(substitute(grp))
   w.name <- deparse(substitute(weights))
@@ -20,24 +20,24 @@ wtd_mwu.default <- function(data, x, grp, weights, ...) {
   dat <- suppressMessages(dplyr::select(data, !! vars))
   dat <- na.omit(dat)
 
-  wtd_mwu_helper(dat)
+  weighted_mannwhitney_helper(dat)
 }
 
 
 #' @importFrom dplyr select
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_mwu.formula <- function(formula, data, ...) {
+weighted_mannwhitney.formula <- function(formula, data, ...) {
   vars <- all.vars(formula)
 
   # get data
   dat <- suppressMessages(dplyr::select(data, !! vars))
   dat <- na.omit(dat)
 
-  wtd_mwu_helper(dat)
+  weighted_mannwhitney_helper(dat)
 }
 
-wtd_mwu_helper <- function(dat, vars) {
+weighted_mannwhitney_helper <- function(dat, vars) {
   # check if pkg survey is available
   if (!requireNamespace("survey", quietly = TRUE)) {
     stop("Package `survey` needed to for this function to work. Please install it.", call. = FALSE)

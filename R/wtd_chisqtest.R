@@ -1,13 +1,13 @@
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_chisqtest <- function(data, ...) {
-  UseMethod("wtd_chisqtest")
+weighted_chisqtest <- function(data, ...) {
+  UseMethod("weighted_chisqtest")
 }
 
 #' @importFrom dplyr select
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_chisqtest.default <- function(data, x, y, weights, ...) {
+weighted_chisqtest.default <- function(data, x, y, weights, ...) {
   x.name <- deparse(substitute(x))
   y.name <- deparse(substitute(y))
   w.name <- deparse(substitute(weights))
@@ -30,9 +30,9 @@ wtd_chisqtest.default <- function(data, x, y, weights, ...) {
 
 
 #' @importFrom stats xtabs
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_chisqtest.formula <- function(formula, data, ...) {
+weighted_chisqtest.formula <- function(formula, data, ...) {
   vars <- all.vars(formula)
 
   if (length(vars) < 3) {

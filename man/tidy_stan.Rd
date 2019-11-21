@@ -4,9 +4,15 @@
 \alias{tidy_stan}
 \title{Tidy summary output for stan models}
 \usage{
-tidy_stan(x, prob = 0.89, typical = "median", trans = NULL,
-  effects = c("all", "fixed", "random"), component = c("all",
-  "conditional", "zero_inflated", "zi"), digits = 2)
+tidy_stan(
+  x,
+  prob = 0.89,
+  typical = "median",
+  trans = NULL,
+  effects = c("all", "fixed", "random"),
+  component = c("all", "conditional", "zero_inflated", "zi"),
+  digits = 2
+)
 }
 \arguments{
 \item{x}{A \code{stanreg}, \code{stanfit} or \code{brmsfit} object.}

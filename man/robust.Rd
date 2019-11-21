@@ -5,13 +5,23 @@
 \alias{svy}
 \title{Robust standard errors for regression models}
 \usage{
-robust(x, vcov.fun = "vcovHC", vcov.type = c("HC3", "const", "HC",
-  "HC0", "HC1", "HC2", "HC4", "HC4m", "HC5"), vcov.args = NULL,
-  conf.int = FALSE, exponentiate = FALSE)
+robust(
+  x,
+  vcov.fun = "vcovHC",
+  vcov.type = c("HC3", "const", "HC", "HC0", "HC1", "HC2", "HC4", "HC4m", "HC5"),
+  vcov.args = NULL,
+  conf.int = FALSE,
+  exponentiate = FALSE
+)
 
-svy(x, vcov.fun = "vcovHC", vcov.type = c("HC1", "const", "HC", "HC0",
-  "HC3", "HC2", "HC4", "HC4m", "HC5"), vcov.args = NULL,
-  conf.int = FALSE, exponentiate = FALSE)
+svy(
+  x,
+  vcov.fun = "vcovHC",
+  vcov.type = c("HC1", "const", "HC", "HC0", "HC3", "HC2", "HC4", "HC4m", "HC5"),
+  vcov.args = NULL,
+  conf.int = FALSE,
+  exponentiate = FALSE
+)
 }
 \arguments{
 \item{x}{A fitted model of any class that is supported by the \code{vcov*()}-functions

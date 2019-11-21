@@ -1,14 +1,14 @@
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @importFrom stats pt qt weighted.mean setNames
 #' @importFrom sjmisc is_empty
 #' @export
-wtd_ttest <- function(data, ...) {
-  UseMethod("wtd_ttest")
+weighted_ttest <- function(data, ...) {
+  UseMethod("weighted_ttest")
 }
 
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...) {
+weighted_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...) {
 
   if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
     stop("'ci.lvl' must be a single number between 0 and 1")
@@ -48,13 +48,13 @@ wtd_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = FALSE
 
   nx <- ny <- nrow(dat)
 
-  wtd_ttest_helper(xv, yv, wx, wy, nx, ny, mu, paired, alternative, ci.lvl, x.name, y.name, NULL)
+  weighted_ttest_helper(xv, yv, wx, wy, nx, ny, mu, paired, alternative, ci.lvl, x.name, y.name, NULL)
 }
 
 
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_ttest.formula <- function(formula, data, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...) {
+weighted_ttest.formula <- function(formula, data, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...) {
 
   if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
     stop("'ci.lvl' must be a single number between 0 and 1")
@@ -106,23 +106,23 @@ wtd_ttest.formula <- function(formula, data, mu = 0, paired = FALSE, ci.lvl = 0.
     drop.unused = TRUE
   )
 
-  wtd_ttest_helper(xv, yv, wx, wy, nx, ny, mu, paired, alternative, ci.lvl, vars[1], vars[2], labs)
+  weighted_ttest_helper(xv, yv, wx, wy, nx, ny, mu, paired, alternative, ci.lvl, vars[1], vars[2], labs)
 }
 
 
-wtd_ttest_helper <- function(xv, yv, wx, wy, nx, ny, mu, paired, alternative, ci.lvl, x.name, y.name, group.name) {
+weighted_ttest_helper <- function(xv, yv, wx, wy, nx, ny, mu, paired, alternative, ci.lvl, x.name, y.name, group.name) {
   if (paired) {
     xv <- xv - yv
     yv <- NULL
   }
 
   mu.x.w <- stats::weighted.mean(xv, wx)
-  var.x.w <- wtd_sd(xv, wx)^2
+  var.x.w <- weighted_sd(xv, wx)^2
   se.x <- sqrt(var.x.w / nx)
 
   if (!is.null(yv)) {
     mu.y.w <- stats::weighted.mean(yv, wy)
-    var.y.w <- wtd_sd(yv, wy)^2
+    var.y.w <- weighted_sd(yv, wy)^2
     se.y <- sqrt(var.y.w / ny)
 
     se <- sqrt(se.x^2 + se.y^2)

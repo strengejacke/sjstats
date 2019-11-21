@@ -2,10 +2,30 @@
 % Please edit documentation in R/grpmean.R
 \name{grpmean}
 \alias{grpmean}
+\alias{means_by_group}
 \title{Summary of mean values by group}
 \usage{
-grpmean(x, dv, grp, weights = NULL, digits = 2, out = c("txt",
-  "viewer", "browser"), encoding = "UTF-8", file = NULL)
+grpmean(
+  x,
+  dv,
+  grp,
+  weights = NULL,
+  digits = 2,
+  out = c("txt", "viewer", "browser"),
+  encoding = "UTF-8",
+  file = NULL
+)
+
+means_by_group(
+  x,
+  dv,
+  grp,
+  weights = NULL,
+  digits = 2,
+  out = c("txt", "viewer", "browser"),
+  encoding = "UTF-8",
+  file = NULL
+)
 }
 \arguments{
 \item{x}{A (grouped) data frame.}

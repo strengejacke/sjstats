@@ -1,23 +1,23 @@
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @export
-wtd_median <- function(x, weights = NULL) {
-  UseMethod("wtd_median")
+weighted_median <- function(x, weights = NULL) {
+  UseMethod("weighted_median")
 }
 
 #' @export
-wtd_median.default <- function(x, weights = NULL) {
-  wtd_md_helper(x, w = weights, p = 0.5)
+weighted_median.default <- function(x, weights = NULL) {
+  weighted_md_helper(x, w = weights, p = 0.5)
 }
 
 #' @importFrom purrr map_dbl
 #' @importFrom dplyr select_if
 #' @export
-wtd_median.data.frame <- function(x, weights = NULL) {
+weighted_median.data.frame <- function(x, weights = NULL) {
   dplyr::select_if(x, is.numeric) %>%
-    purrr::map_dbl(~ wtd_md_helper(.x, w = weights, p = 0.5))
+    purrr::map_dbl(~ weighted_md_helper(.x, w = weights, p = 0.5))
 }
 
-wtd_md_helper <- function(x, w, p = .5) {
+weighted_md_helper <- function(x, w, p = .5) {
   if (is.null(w)) w <- rep(1, length(x))
 
   x[is.na(w)] <- NA

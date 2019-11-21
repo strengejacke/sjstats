@@ -1,7 +1,7 @@
-#' @rdname wtd_sd
+#' @rdname weighted_sd
 #' @importFrom stats as.formula
 #' @export
-svy_md <- function(x, design) {
+survey_median <- function(x, design) {
   # check if pkg survey is available
   if (!requireNamespace("survey", quietly = TRUE)) {
     stop("Package `survey` needed to for this function to work. Please install it.", call. = FALSE)
@@ -20,8 +20,3 @@ svy_md <- function(x, design) {
     )
   )
 }
-
-
-#' @rdname wtd_sd
-#' @export
-survey_median <- svy_md

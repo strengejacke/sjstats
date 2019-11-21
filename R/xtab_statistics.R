@@ -40,7 +40,7 @@
 #' @return For \code{phi()}, the table's Phi value. For \code{cramer()}, the
 #'         table's Cramer's V.
 #'         \cr \cr
-#'         For \code{xtab_statistics()}, a list with following components:
+#'         For \code{crosstable_statistics()}, a list with following components:
 #'         \describe{
 #'           \item{\code{estimate}}{the value of the estimated measure of association.}
 #'           \item{\code{p.value}}{the p-value for the test.}
@@ -86,16 +86,16 @@
 #' cramer(e16sex ~ c161sex, data = efc, ci.lvl = .95, n = 100)
 #'
 #' # 2x2 table, compute Phi automatically
-#' xtab_statistics(efc, e16sex, c161sex)
+#' crosstable_statistics(efc, e16sex, c161sex)
 #'
 #' # more dimensions than 2x2, compute Cramer's V automatically
-#' xtab_statistics(efc, c172code, c161sex)
+#' crosstable_statistics(efc, c172code, c161sex)
 #'
 #' # ordinal data, use Kendall's tau
-#' xtab_statistics(efc, e42dep, quol_5, statistics = "kendall")
+#' crosstable_statistics(efc, e42dep, quol_5, statistics = "kendall")
 #'
 #' # calcilate Spearman's rho, with continuity correction
-#' xtab_statistics(efc,
+#' crosstable_statistics(efc,
 #'   e42dep,
 #'   quol_5,
 #'   statistics = "spearman",
@@ -250,3 +250,7 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
     fisher = use.fisher
   ))
 }
+
+#' @rdname xtab_statistics
+#' @export
+crosstable_statistics <- xtab_statistics
