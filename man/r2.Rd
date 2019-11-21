@@ -5,6 +5,7 @@
 \alias{icc}
 \alias{p_value}
 \alias{se}
+\alias{cohens_f}
 \title{Deprecated functions}
 \usage{
 r2(x)
@@ -15,7 +16,7 @@ p_value(x, ...)
 
 se(x, ...)
 
-se(x, ...)
+cohens_f(x, ...)
 }
 \arguments{
 \item{x}{An object.}

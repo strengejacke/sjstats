@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -84,16 +84,19 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Documentation
      
     <span class="caret"></span>
   </a>
@@ -108,9 +111,6 @@
       <a href="../articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -139,7 +139,7 @@
 
     <div id="sjstats-0177" class="section level1">
 <h1 class="page-header">
-<a href="#sjstats-0177" class="anchor"></a>sjstats 0.17.7<small> Unreleased </small>
+<a href="#sjstats-0177" class="anchor"></a>sjstats 0.17.7<small> 2019-11-14 </small>
 </h1>
 <div id="deprecated-and-defunct" class="section level2">
 <h2 class="hasAnchor">
@@ -148,10 +148,10 @@
 <p>Therefore, following functions are now deprecated:</p>
 <ul>
 <li>
-<code><a href="../reference/overdisp.html">p_value()</a></code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/p_value.html">parameters::p_value()</a></code>
+<code><a href="../reference/r2.html">p_value()</a></code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/p_value.html">parameters::p_value()</a></code>
 </li>
 <li>
-<code><a href="../reference/overdisp.html">se()</a></code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/standard_error.html">parameters::standard_error()</a></code>
+<code><a href="../reference/r2.html">se()</a></code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/standard_error.html">parameters::standard_error()</a></code>
 </li>
 </ul>
 </div>
@@ -252,10 +252,10 @@
 <code>var_names()</code>, please use <code><a href="https://rdrr.io/pkg/insight/man/clean_names.html">insight::clean_names()</a></code>
 </li>
 <li>
-<code><a href="../reference/overdisp.html">overdisp()</a></code>, please use <code><a href="https://rdrr.io/pkg/performance/man/check_overdispersion.html">performance::check_overdispersion()</a></code>
+<code>overdisp()</code>, please use <code><a href="https://rdrr.io/pkg/performance/man/check_overdispersion.html">performance::check_overdispersion()</a></code>
 </li>
 <li>
-<code><a href="../reference/overdisp.html">zero_count()</a></code>, please use <code><a href="https://rdrr.io/pkg/performance/man/check_zeroinflation.html">performance::check_zeroinflation()</a></code>
+<code>zero_count()</code>, please use <code><a href="https://rdrr.io/pkg/performance/man/check_zeroinflation.html">performance::check_zeroinflation()</a></code>
 </li>
 <li>
 <code>converge_ok()</code>, please use <code><a href="https://rdrr.io/pkg/performance/man/check_convergence.html">performance::check_convergence()</a></code>
@@ -282,16 +282,16 @@
 <code>mic()</code>, please use <code><a href="https://rdrr.io/pkg/performance/man/item_intercor.html">performance::item_intercor()</a></code>
 </li>
 <li>
-<code><a href="../reference/overdisp.html">pca()</a></code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/principal_components.html">parameters::principal_components()</a></code>
+<code>pca()</code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/principal_components.html">parameters::principal_components()</a></code>
 </li>
 <li>
-<code><a href="../reference/overdisp.html">pca_rotate()</a></code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/principal_components.html">parameters::principal_components()</a></code>
+<code>pca_rotate()</code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/principal_components.html">parameters::principal_components()</a></code>
 </li>
 <li>
-<code><a href="../reference/overdisp.html">r2()</a></code>, please use <code><a href="https://rdrr.io/pkg/performance/man/r2.html">performance::r2()</a></code>
+<code><a href="../reference/r2.html">r2()</a></code>, please use <code><a href="https://rdrr.io/pkg/performance/man/r2.html">performance::r2()</a></code>
 </li>
 <li>
-<code><a href="../reference/overdisp.html">icc()</a></code>, please use <code><a href="https://rdrr.io/pkg/performance/man/icc.html">performance::icc()</a></code>
+<code><a href="../reference/r2.html">icc()</a></code>, please use <code><a href="https://rdrr.io/pkg/performance/man/icc.html">performance::icc()</a></code>
 </li>
 <li>
 <code><a href="https://rdrr.io/pkg/performance/man/performance_rmse.html">rmse()</a></code>, please use <code><a href="https://rdrr.io/pkg/performance/man/performance_rmse.html">performance::rmse()</a></code>
@@ -377,7 +377,7 @@
 <li>
 <code>equi_test()</code> now finds better defaults for models with binomial outcome (like logistic regression models).</li>
 <li>
-<code><a href="../reference/overdisp.html">r2()</a></code> for mixed models now also should work properly for mixed models fitted with <strong>rstanarm</strong>.</li>
+<code><a href="../reference/r2.html">r2()</a></code> for mixed models now also should work properly for mixed models fitted with <strong>rstanarm</strong>.</li>
 <li>
 <code><a href="../reference/eta_sq.html">anova_stats()</a></code> and alike (e.g. <code><a href="../reference/eta_sq.html">eta_sq()</a></code>) now all preserve original term names.</li>
 <li>
@@ -392,7 +392,7 @@
 <h2 class="hasAnchor">
 <a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fix minor issues in <code><a href="../reference/wtd_sd.html">wtd_sd()</a></code> and <code><a href="../reference/wtd_sd.html">wtd_mean()</a></code> when weight was <code>NULL</code> (which usually shoudln’t be the case anyway).</li>
+<li>Fix minor issues in <code>wtd_sd()</code> and <code>wtd_mean()</code> when weight was <code>NULL</code> (which usually shoudln’t be the case anyway).</li>
 <li>Fix potential issue with <code><a href="https://rdrr.io/r/base/deparse.html">deparse()</a></code>, cutting off very long formulas in various functions.</li>
 <li>Fix encoding issues in help-files.</li>
 </ul>
@@ -415,12 +415,12 @@
 <ul>
 <li>
 <code><a href="../reference/boot_ci.html">boot_ci()</a></code> gets a <code>ci.lvl</code>-argument.</li>
-<li>The <code>rotation</code>-argument in <code><a href="../reference/overdisp.html">pca_rotate()</a></code> now supports all rotations from <code><a href="https://rdrr.io/pkg/psych/man/principal.html">psych::principal()</a></code>.</li>
+<li>The <code>rotation</code>-argument in <code>pca_rotate()</code> now supports all rotations from <code><a href="https://rdrr.io/pkg/psych/man/principal.html">psych::principal()</a></code>.</li>
 <li>
 <code>pred_vars()</code> gets a <code>fe.only</code>-argument to return only fixed effects terms from mixed models, and a <code>disp</code>-argument to return the variables from a model’s dispersion-formula.</li>
 <li>
-<code><a href="../reference/overdisp.html">icc()</a></code> for Bayesian models gets a <code>adjusted</code>-argument, to calculate adjusted and conditional ICC (however, only for Gaussian models).</li>
-<li>For <code><a href="../reference/overdisp.html">icc()</a></code> for non-Gaussian Bayes-models, a message is printed that recommends setting argument <code>ppd</code> to <code>TRUE</code>.</li>
+<code><a href="../reference/r2.html">icc()</a></code> for Bayesian models gets a <code>adjusted</code>-argument, to calculate adjusted and conditional ICC (however, only for Gaussian models).</li>
+<li>For <code><a href="../reference/r2.html">icc()</a></code> for non-Gaussian Bayes-models, a message is printed that recommends setting argument <code>ppd</code> to <code>TRUE</code>.</li>
 <li>
 <code>resp_val()</code> and <code>resp_var()</code> now also work for <strong>brms</strong>-models with additional response information (like <code>trial()</code> in formula).</li>
 <li>
@@ -434,15 +434,15 @@
 <li>
 <code><a href="../reference/eta_sq.html">anova_stats()</a></code> and alike (<code>omeqa_sq()</code> etc.) now support gam-models from package <strong>gam</strong>.</li>
 <li>
-<code><a href="../reference/overdisp.html">p_value()</a></code> now supports objects of class <code>svyolr</code>.</li>
+<code><a href="../reference/r2.html">p_value()</a></code> now supports objects of class <code>svyolr</code>.</li>
 </ul>
 </div>
 <div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fix issue with <code><a href="../reference/overdisp.html">se()</a></code> and <code>get_re_var()</code> for objects returned by <code><a href="../reference/overdisp.html">icc()</a></code>.</li>
-<li>Fix issue with <code><a href="../reference/overdisp.html">icc()</a></code> for Stan-models.</li>
+<li>Fix issue with <code><a href="../reference/r2.html">se()</a></code> and <code>get_re_var()</code> for objects returned by <code><a href="../reference/r2.html">icc()</a></code>.</li>
+<li>Fix issue with <code><a href="../reference/r2.html">icc()</a></code> for Stan-models.</li>
 <li>
 <code>var_names()</code> did not clear terms with log-log transformation, e.g. <code><a href="https://rdrr.io/r/base/Log.html">log(log(y))</a></code>.</li>
 <li>Fix issue in <code>model_frame()</code> for models with splines with only one column.</li>
@@ -457,7 +457,7 @@
 <h2 class="hasAnchor">
 <a href="#general-4" class="anchor"></a>General</h2>
 <ul>
-<li>Revised help-files for <code><a href="../reference/overdisp.html">r2()</a></code> and <code><a href="../reference/overdisp.html">icc()</a></code>, also by adding more references.</li>
+<li>Revised help-files for <code><a href="../reference/r2.html">r2()</a></code> and <code><a href="../reference/r2.html">icc()</a></code>, also by adding more references.</li>
 </ul>
 </div>
 <div id="new-functions-3" class="section level2">
@@ -475,7 +475,7 @@
 <li>
 <code><a href="../reference/eta_sq.html">omega_sq()</a></code> and <code><a href="../reference/eta_sq.html">eta_sq()</a></code> give more informative messages when using non-supported objects.</li>
 <li>
-<code><a href="../reference/overdisp.html">r2()</a></code> and <code><a href="../reference/overdisp.html">icc()</a></code> give more informative warnings and messages.</li>
+<code><a href="../reference/r2.html">r2()</a></code> and <code><a href="../reference/r2.html">icc()</a></code> give more informative warnings and messages.</li>
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> supports printing simplex parameters of monotonic effects of <strong>brms</strong> models.</li>
 <li>
@@ -489,7 +489,7 @@
 <li>
 <code>model_frame()</code> now correctly names the offset-columns for terms provided as <code>offset</code>-argument (i.e. for models where the offset was not specified inside the formula).</li>
 <li>Fixed issue with <code>weights</code>-argument in <code><a href="../reference/grpmean.html">grpmean()</a></code> when variable name was passed as character vector.</li>
-<li>Fixed issue with <code><a href="../reference/overdisp.html">r2()</a></code> for <strong>glmmTMB</strong> models with <code>ar1</code> random effects structure.</li>
+<li>Fixed issue with <code><a href="../reference/r2.html">r2()</a></code> for <strong>glmmTMB</strong> models with <code>ar1</code> random effects structure.</li>
 </ul>
 </div>
 </div>
@@ -502,11 +502,11 @@
 <a href="#new-functions-4" class="anchor"></a>New functions</h2>
 <ul>
 <li>
-<code><a href="../reference/wtd_sd.html">wtd_chisqtest()</a></code> to compute a weighted Chi-squared test.</li>
+<code>wtd_chisqtest()</code> to compute a weighted Chi-squared test.</li>
 <li>
-<code><a href="../reference/wtd_sd.html">wtd_median()</a></code> to compute the weighted median of variables.</li>
+<code>wtd_median()</code> to compute the weighted median of variables.</li>
 <li>
-<code><a href="../reference/wtd_sd.html">wtd_cor()</a></code> to compute weighted correlation coefficients of variables.</li>
+<code>wtd_cor()</code> to compute weighted correlation coefficients of variables.</li>
 </ul>
 </div>
 <div id="changes-to-functions-5" class="section level2">
@@ -516,7 +516,7 @@
 <li>
 <code><a href="../reference/mediation.html">mediation()</a></code> can now cope with models from different families, e.g. if the moderator or outcome is binary, while the treatment-effect is continuous.</li>
 <li>
-<code>model_frame()</code>, <code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code>, <code>pred_vars()</code>, <code>resp_var()</code>, <code>resp_val()</code>, <code><a href="../reference/overdisp.html">r2()</a></code> and <code>model_family()</code> now support <code>clm2</code>-objects from package <strong>ordinal</strong>.</li>
+<code>model_frame()</code>, <code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code>, <code>pred_vars()</code>, <code>resp_var()</code>, <code>resp_val()</code>, <code><a href="../reference/r2.html">r2()</a></code> and <code>model_family()</code> now support <code>clm2</code>-objects from package <strong>ordinal</strong>.</li>
 <li>
 <code><a href="../reference/eta_sq.html">anova_stats()</a></code> gives a more informative message for non-supported models or ANOVA-options.</li>
 </ul>
@@ -548,9 +548,9 @@
 <a href="#new-functions-5" class="anchor"></a>New functions</h2>
 <ul>
 <li>
-<code><a href="../reference/wtd_sd.html">wtd_ttest()</a></code> to compute a weighted t-test.</li>
+<code>wtd_ttest()</code> to compute a weighted t-test.</li>
 <li>
-<code><a href="../reference/wtd_sd.html">wtd_mwu()</a></code> to compute a weighted Mann-Whitney-U or Kruskal-Wallis test.</li>
+<code>wtd_mwu()</code> to compute a weighted Mann-Whitney-U or Kruskal-Wallis test.</li>
 </ul>
 </div>
 <div id="changes-to-functions-6" class="section level2">
@@ -561,17 +561,17 @@
 <code><a href="../reference/robust.html">robust()</a></code> was revised, getting more arguments to specify different types of covariance-matrix estimation, and handling these more flexible.</li>
 <li>Improved <code><a href="https://rdrr.io/r/base/print.html">print()</a></code>-method for <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for <em>brmsfit</em>-objects with categorical-families.</li>
 <li>
-<code><a href="../reference/overdisp.html">se()</a></code> now also computes standard errors for relative frequencies (proportions) of a vector.</li>
+<code><a href="../reference/r2.html">se()</a></code> now also computes standard errors for relative frequencies (proportions) of a vector.</li>
 <li>
-<code><a href="../reference/overdisp.html">r2()</a></code> now also computes r-squared values for <em>glmmTMB</em>-models from <code>genpois</code>-families.</li>
+<code><a href="../reference/r2.html">r2()</a></code> now also computes r-squared values for <em>glmmTMB</em>-models from <code>genpois</code>-families.</li>
 <li>
-<code><a href="../reference/overdisp.html">r2()</a></code> gives more precise warnings for non-supported model-families.</li>
+<code><a href="../reference/r2.html">r2()</a></code> gives more precise warnings for non-supported model-families.</li>
 <li>
 <code><a href="../reference/xtab_statistics.html">xtab_statistics()</a></code> gets a <code>weights</code>-argument, to compute measures of association for contingency tables for weighted data.</li>
 <li>The <code>statistics</code>-argument in <code><a href="../reference/xtab_statistics.html">xtab_statistics()</a></code> gets a <code>"fisher"</code>-option, to force Fisher’s Exact Test to be used.</li>
-<li>Improved variance calculation in <code><a href="../reference/overdisp.html">icc()</a></code> for generalized linear mixed models with Poisson or negative binomial families.</li>
+<li>Improved variance calculation in <code><a href="../reference/r2.html">icc()</a></code> for generalized linear mixed models with Poisson or negative binomial families.</li>
 <li>
-<code><a href="../reference/overdisp.html">icc()</a></code> gets an <code>adjusted</code>-argument, to calculate the adjusted and conditional ICC for mixed models.</li>
+<code><a href="../reference/r2.html">icc()</a></code> gets an <code>adjusted</code>-argument, to calculate the adjusted and conditional ICC for mixed models.</li>
 <li>To get consistent argument names accross functions, argument <code>weight.by</code> is now deprecated and renamed into <code>weights</code>.</li>
 </ul>
 </div>
@@ -583,7 +583,7 @@
 <li>
 <code><a href="../reference/grpmean.html">grpmean()</a></code> now also adjusts the <code>n</code>-columm for weighted data.</li>
 <li>
-<code><a href="../reference/overdisp.html">icc()</a></code>, <code>re_var()</code> and <code>get_re_var()</code> now correctly compute the random-effect-variances for models with multiple random slopes per random effect term (e.g., <code>(1 + rs1 + rs2 | grp)</code>).</li>
+<code><a href="../reference/r2.html">icc()</a></code>, <code>re_var()</code> and <code>get_re_var()</code> now correctly compute the random-effect-variances for models with multiple random slopes per random effect term (e.g., <code>(1 + rs1 + rs2 | grp)</code>).</li>
 <li>Fix issues in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, <code>mcse()</code>, <code>hdi()</code> and <code>n_eff()</code> for <code>stan_polr()</code>-models.</li>
 <li>Plotting <code>equi_test()</code> did not work for intercept-only models.</li>
 </ul>
@@ -598,9 +598,9 @@
 <a href="#general-6" class="anchor"></a>General</h2>
 <ul>
 <li>The S3-generics for functions like <code>hdi()</code>, <code>rope()</code>, <code>equi_test()</code> etc. are now more generic, and function usage for each supported object is now included in the documentation.</li>
-<li>Following functions are now S3-generic: <code><a href="../reference/overdisp.html">icc()</a></code>, <code><a href="../reference/overdisp.html">r2()</a></code>, <code><a href="../reference/overdisp.html">p_value()</a></code>, <code><a href="../reference/overdisp.html">se()</a></code>, and <code><a href="../reference/std_beta.html">std_beta()</a></code>.</li>
+<li>Following functions are now S3-generic: <code><a href="../reference/r2.html">icc()</a></code>, <code><a href="../reference/r2.html">r2()</a></code>, <code><a href="../reference/r2.html">p_value()</a></code>, <code><a href="../reference/r2.html">se()</a></code>, and <code><a href="../reference/std_beta.html">std_beta()</a></code>.</li>
 <li>Added <code><a href="https://rdrr.io/r/base/print.html">print()</a></code>-methods for some more functions, for a clearer output.</li>
-<li>Revised <code><a href="../reference/overdisp.html">r2()</a></code> for mixed models (packages <strong>lme4</strong>, <strong>glmmTMB</strong>). The r-squared value should be much more precise now, and reports the marginal and conditional r-squared values.</li>
+<li>Revised <code><a href="../reference/r2.html">r2()</a></code> for mixed models (packages <strong>lme4</strong>, <strong>glmmTMB</strong>). The r-squared value should be much more precise now, and reports the marginal and conditional r-squared values.</li>
 <li>Reduced package dependencies and removed <em>apaTables</em> and <em>MBESS</em> from suggested packages</li>
 <li>
 <code>stanmvreg</code>-models are now supported by many functions.</li>
@@ -625,8 +625,8 @@
 <a href="#changes-to-functions-7" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
-<code><a href="../reference/overdisp.html">icc()</a></code> gets a <code>ppd</code>-argument for Stan-models (<em>brmsfit</em> and <em>stanreg</em>), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.</li>
-<li>For Stan-models (<em>brmsfit</em> and <em>stanreg</em>), <code><a href="../reference/overdisp.html">icc()</a></code> now also computes the HDI for the ICC and random-effect variances. Use the <code>prob</code>-argument to specify the limits of this interval.</li>
+<code><a href="../reference/r2.html">icc()</a></code> gets a <code>ppd</code>-argument for Stan-models (<em>brmsfit</em> and <em>stanreg</em>), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.</li>
+<li>For Stan-models (<em>brmsfit</em> and <em>stanreg</em>), <code><a href="../reference/r2.html">icc()</a></code> now also computes the HDI for the ICC and random-effect variances. Use the <code>prob</code>-argument to specify the limits of this interval.</li>
 <li>
 <code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code> and <code>model_family()</code> now support <em>clmm</em>-models (package <em>ordinal</em>) and <em>glmRob</em> and <em>lmRob</em>-models (package <em>robust</em>).</li>
 <li>
@@ -634,7 +634,7 @@
 <li>
 <code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code> gets a <code>multi.resp</code>-argument, to return a list of link-inverse-functions for multivariate-response models (of class <code>brmsfit</code> or <code>stanmvreg</code>).</li>
 <li>
-<code><a href="../reference/overdisp.html">p_value()</a></code> now supports <em>rlm</em>-models (package <em>MASS</em>).</li>
+<code><a href="../reference/r2.html">p_value()</a></code> now supports <em>rlm</em>-models (package <em>MASS</em>).</li>
 <li>
 <code>check_assumptions()</code> for single models with <code>as.logical = FALSE</code> now has a nice print-method.</li>
 <li>
@@ -688,9 +688,9 @@
 <code>model_family()</code> now also returns an <code>is_ordinal</code>-element with information if the model is ordinal resp. a cumulative link model.</li>
 <li>Functions that access model information (like <code>model_family()</code>) now better support <code>vglm</code>-models (package <em>VGAM</em>).</li>
 <li>
-<code><a href="../reference/overdisp.html">r2()</a></code> now also calculates the standard error for <em>brms</em> or <em>stanreg</em> models.</li>
+<code><a href="../reference/r2.html">r2()</a></code> now also calculates the standard error for <em>brms</em> or <em>stanreg</em> models.</li>
 <li>
-<code><a href="../reference/overdisp.html">r2()</a></code> gets a <code>loo</code>-argument to calculate LOO-adjusted rsquared values for <em>brms</em> or <em>stanreg</em> models. This measure comes conceptionally closer to an adjusted r-squared measure.</li>
+<code><a href="../reference/r2.html">r2()</a></code> gets a <code>loo</code>-argument to calculate LOO-adjusted rsquared values for <em>brms</em> or <em>stanreg</em> models. This measure comes conceptionally closer to an adjusted r-squared measure.</li>
 <li>Effect sizes (<code><a href="../reference/eta_sq.html">anova_stats()</a></code>, <code><a href="../reference/eta_sq.html">eta_sq()</a></code> etc.) are now also computed for mixed models.</li>
 <li>To avoid confusion, <code>n_eff()</code> now computes the number of effective samples, and no longer its ratio in relation to the total number of samples.</li>
 <li>The column name for the ratio of the number of effective samples in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> is now named <em>neff_ratio</em>, to avoid confusion.</li>
@@ -700,9 +700,9 @@
 <h2 class="hasAnchor">
 <a href="#bug-fixes-8" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed issue in <code><a href="../reference/overdisp.html">se()</a></code> for <code><a href="../reference/overdisp.html">icc()</a></code>-objects, where random effect term could not be found.</li>
-<li>Fixed issue in <code><a href="../reference/overdisp.html">se()</a></code> for <code>merMod</code>-objects.</li>
-<li>Fixed issue in <code><a href="../reference/overdisp.html">p_value()</a></code> for mixed models with KR-approximation, which is now more accurate.</li>
+<li>Fixed issue in <code><a href="../reference/r2.html">se()</a></code> for <code><a href="../reference/r2.html">icc()</a></code>-objects, where random effect term could not be found.</li>
+<li>Fixed issue in <code><a href="../reference/r2.html">se()</a></code> for <code>merMod</code>-objects.</li>
+<li>Fixed issue in <code><a href="../reference/r2.html">p_value()</a></code> for mixed models with KR-approximation, which is now more accurate.</li>
 </ul>
 </div>
 </div>
@@ -731,7 +731,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel Lüdecke.</p>
+  <p>Developed by <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>.</p>
 </div>
 
 <div class="pkgdown">

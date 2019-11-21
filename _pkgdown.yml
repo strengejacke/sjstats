@@ -62,6 +62,13 @@ reference:
   contents:
   - find_beta
 
+- title: "Miscellaneous"
+  contents:
+  - inequ_trend
+  - is_prime
+  - odds_to_rr
+  - prop
+
 navbar:
   type: default
   left:

@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -109,16 +109,19 @@ Cramer's V, Cronbach's Alpha, Mean Inter-Item-Correlation, Mann-Whitney-U-Test, 
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Documentation
      
     <span class="caret"></span>
   </a>
@@ -133,9 +136,6 @@ Cramer's V, Cronbach's Alpha, Mean Inter-Item-Correlation, Mann-Whitney-U-Test, 
       <a href="../articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -166,7 +166,7 @@ Cramer's V, Cronbach's Alpha, Mean Inter-Item-Correlation, Mann-Whitney-U-Test, 
     <div class="ref-description">
     <p>Collection of convenient functions for common statistical computations, which are not directly provided by R's base or stats packages.</p>
 <p>This package aims at providing, first, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like standard errors or root mean squared errors).</p>
-<p>Second, these shortcut functions are generic (if appropriate), and can be applied not only to vectors, but also to other objects as well (e.g., the Coefficient of Variation can be computed for vectors, linear models, or linear mixed models; the <code><a href='overdisp.html'>r2()</a></code>-function returns the r-squared value for <code>lm</code>, <code>glm</code>, <code>merMod</code>, <code>glmmTMB</code>, or <code>lme</code> and other objects).</p>
+<p>Second, these shortcut functions are generic (if appropriate), and can be applied not only to vectors, but also to other objects as well (e.g., the Coefficient of Variation can be computed for vectors, linear models, or linear mixed models; the <code><a href='r2.html'>r2()</a></code>-function returns the r-squared value for <code>lm</code>, <code>glm</code>, <code>merMod</code>, <code>glmmTMB</code>, or <code>lme</code> and other objects).</p>
 <p>Most functions of this package are designed as <em>summary functions</em>, i.e. they do not transform the input vector; rather, they return a summary, which is sometimes a vector and sometimes a <a href='https://cran.r-project.org/package=broom/vignettes/broom.html'>tidy data frame</a>. he focus of most functions lies on summary statistics or fit measures for regression models, including generalized linear models, mixed effects models or Bayesian models. However, some of the functions deal with other statistical measures, like Cronbach's Alpha, Cramer's V, Phi etc.</p>
 <p>The comprised tools include:</p><ul>
 <li><p>For regression and mixed models: Coefficient of Variation, Root Mean Squared Error, Residual Standard Error, Coefficient of Discrimination, R-squared and pseudo-R-squared values, standardized beta values</p></li>
@@ -206,7 +206,7 @@ Cramer's V, Cronbach's Alpha, Mean Inter-Item-Correlation, Mann-Whitney-U-Test, 
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel Lüdecke.</p>
+  <p>Developed by <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>.</p>
 </div>
 
 <div class="pkgdown">
