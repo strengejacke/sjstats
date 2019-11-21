@@ -21,7 +21,6 @@ This vignettes demontrates those functions of the *sjstats*-package that deal wi
 * `eta_sq()`
 * `omega_sq()`
 * `epsilon_sq()`
-* `cohens_f()`
 * `anova_stats()`
 
 Befor we start, we fit a simple model:
@@ -97,14 +96,6 @@ When the `ci.lvl`-argument is defined, bootstrapping is used to compute the conf
 
 ```{r}
 epsilon_sq(fit, ci.lvl = .95, n = 100)
-```
-
-## Cohen's F
-
-Finally, `cohens_f()` computes Cohen's F effect size for all independent variables in the model:
-
-```{r}
-cohens_f(fit)
 ```
 
 # Complete Statistical Table Output

@@ -45,7 +45,7 @@ se <- function(x, ...) {
 #' @importFrom effectsize cohens_f
 #' @rdname r2
 #' @export
-se <- function(x, ...) {
+cohens_f <- function(x, ...) {
   .Deprecated("effectsize::cohens_f()")
   effectsize::cohens_f(x)
 }
