@@ -1,5 +1,5 @@
 #' @title Measures of association for contingency tables
-#' @name xtab_statistics
+#' @name crosstable_statistics
 #'
 #' @description This function calculates various measure of association for
 #'              contingency tables and returns the statistic and p-value.
@@ -33,7 +33,7 @@
 #'          \code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
 #'          \code{\link[stats]{cor.test}}.
 #'
-#' @inheritParams grpmean
+#' @inheritParams means_by_group
 #' @inheritParams bootstrap
 #' @inheritParams boot_ci
 #'
@@ -108,7 +108,7 @@
 #' @importFrom MASS loglm
 #' @importFrom rlang quo_name enquo
 #' @export
-xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson", "fisher"), weights = NULL, ...) {
+crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson", "fisher"), weights = NULL, ...) {
   # match arguments
   statistics <- match.arg(statistics)
 
@@ -251,6 +251,6 @@ xtab_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "
   ))
 }
 
-#' @rdname xtab_statistics
+#' @rdname crosstable_statistics
 #' @export
-crosstable_statistics <- xtab_statistics
+xtab_statistics <- crosstable_statistics

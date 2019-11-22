@@ -4,8 +4,8 @@
 \alias{cramer}
 \alias{cramer.formula}
 \alias{phi}
-\alias{xtab_statistics}
 \alias{crosstable_statistics}
+\alias{xtab_statistics}
 \title{Measures of association for contingency tables}
 \usage{
 cramer(tab, ...)
@@ -21,7 +21,7 @@ cramer(tab, ...)
 
 phi(tab, ...)
 
-xtab_statistics(
+crosstable_statistics(
   data,
   x1 = NULL,
   x2 = NULL,
@@ -30,7 +30,7 @@ xtab_statistics(
   ...
 )
 
-crosstable_statistics(
+xtab_statistics(
   data,
   x1 = NULL,
   x2 = NULL,

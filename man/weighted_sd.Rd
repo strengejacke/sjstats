@@ -16,6 +16,7 @@
 \alias{weighted_mannwhitney.default}
 \alias{weighted_mannwhitney.formula}
 \alias{weighted_sd}
+\alias{wtd_sd}
 \alias{weighted_se}
 \alias{weighted_ttest}
 \alias{weighted_ttest.default}
@@ -47,6 +48,8 @@ weighted_mannwhitney(data, ...)
 \method{weighted_mannwhitney}{formula}(formula, data, ...)
 
 weighted_sd(x, weights = NULL)
+
+wtd_sd(x, weights = NULL)
 
 weighted_se(x, weights = NULL)
 
@@ -132,8 +135,8 @@ The weighted (test) statistic.
   Chi-squared test for contigency tables.
 }
 \note{
-\code{weighted_chisq()} is a convenient wrapper for \code{\link{xtab_statistics}}.
-   For a weighted one-way Anova, use \code{grpmean()} with
+\code{weighted_chisq()} is a convenient wrapper for \code{\link{crosstable_statistics}}.
+   For a weighted one-way Anova, use \code{means_by_group()} with
    \code{weights}-argument.
    \cr \cr
    \code{weighted_ttest()} assumes unequal variance between the two groups.

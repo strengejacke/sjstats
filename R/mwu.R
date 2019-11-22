@@ -14,7 +14,7 @@
 #'          (default). See \code{\link[coin]{wilcox_test}} for details.
 #'
 #' @inheritParams weighted_sd
-#' @inheritParams grpmean
+#' @inheritParams means_by_group
 #'
 #' @return (Invisibly) returns a data frame with U, p and Z-values for each group-comparison
 #'         as well as effect-size r; additionally, group-labels and groups' n's are

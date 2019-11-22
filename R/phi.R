@@ -1,4 +1,4 @@
-#' @rdname xtab_statistics
+#' @rdname crosstable_statistics
 #' @export
 phi <- function(tab, ...) {
   UseMethod("phi")

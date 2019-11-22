@@ -44,8 +44,8 @@
 #'
 #' @return The weighted (test) statistic.
 #'
-#' @note \code{weighted_chisq()} is a convenient wrapper for \code{\link{xtab_statistics}}.
-#'    For a weighted one-way Anova, use \code{grpmean()} with
+#' @note \code{weighted_chisq()} is a convenient wrapper for \code{\link{crosstable_statistics}}.
+#'    For a weighted one-way Anova, use \code{means_by_group()} with
 #'    \code{weights}-argument.
 #'    \cr \cr
 #'    \code{weighted_ttest()} assumes unequal variance between the two groups.
@@ -95,6 +95,11 @@
 weighted_sd <- function(x, weights = NULL) {
   UseMethod("weighted_sd")
 }
+
+
+#' @rdname weighted_sd
+#' @export
+wtd_sd <- weighted_sd
 
 
 #' @export

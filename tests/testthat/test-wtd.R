@@ -6,38 +6,38 @@ if (require("testthat") && require("sjstats")) {
   efc$weight <- abs(rnorm(nrow(efc), 1, .3))
 
   test_that("wtd", {
-    expect_equal(wtd_sd(efc$c12hour, weights = efc$weight), 51.18224, tolerance = 1e-5)
-    expect_equal(wtd_sd(efc$c12hour, weights = NULL), 50.80504, tolerance = 1e-5)
+    expect_equal(weighted_sd(efc$c12hour, weights = efc$weight), 51.18224, tolerance = 1e-5)
+    expect_equal(weighted_sd(efc$c12hour, weights = NULL), 50.80504, tolerance = 1e-5)
 
-    expect_equal(wtd_mean(efc$c12hour, weights = efc$weight), 42.80723, tolerance = 1e-5)
-    expect_equal(wtd_mean(efc$c12hour, weights = NULL), 42.39911, tolerance = 1e-5)
+    expect_equal(weighted_mean(efc$c12hour, weights = efc$weight), 42.80723, tolerance = 1e-5)
+    expect_equal(weighted_mean(efc$c12hour, weights = NULL), 42.39911, tolerance = 1e-5)
 
-    expect_equal(wtd_se(efc$c12hour, weights = efc$weight), 1.704182, tolerance = 1e-5)
-    expect_equal(wtd_se(efc$c12hour, weights = NULL), 1.691623, tolerance = 1e-5)
+    expect_equal(weighted_se(efc$c12hour, weights = efc$weight), 1.704182, tolerance = 1e-5)
+    expect_equal(weighted_se(efc$c12hour, weights = NULL), 1.691623, tolerance = 1e-5)
 
-    expect_equal(wtd_median(efc$c12hour, weights = efc$weight), 20, tolerance = 1e-5)
-    expect_equal(wtd_median(efc$c12hour, weights = NULL), 20, tolerance = 1e-5)
+    expect_equal(weighted_median(efc$c12hour, weights = efc$weight), 20, tolerance = 1e-5)
+    expect_equal(weighted_median(efc$c12hour, weights = NULL), 20, tolerance = 1e-5)
   })
 
-  test_that("wtd_chisqtest", {
-    w <- wtd_chisqtest(efc, c161sex, c172code, weights = weight)
+  test_that("weighted_chisqtest", {
+    w <- weighted_chisqtest(efc, c161sex, c172code, weights = weight)
     expect_equal(w$estimate, 0.06668895, tolerance = 1e-5)
     expect_equal(w$p.value, 0.1517221, tolerance = 1e-5)
 
-    w <- wtd_chisqtest(c161sex ~ c172code + weight, efc)
+    w <- weighted_chisqtest(c161sex ~ c172code + weight, efc)
     expect_equal(w$estimate, 0.06668895, tolerance = 1e-5)
     expect_equal(w$p.value, 0.1517221, tolerance = 1e-5)
   })
 
-  test_that("wtd_mwu", {
-    wtd_mwu(efc, c12hour, c161sex, weights = weight)
-    wtd_mwu(c12hour ~ c161sex + weight, efc)
+  test_that("weighted_mannwhitney", {
+    weighted_mannwhitney(efc, c12hour, c161sex, weights = weight)
+    weighted_mannwhitney(c12hour ~ c161sex + weight, efc)
   })
 
-  test_that("wtd_ttest", {
-    wtd_ttest(efc, e17age, weights = weight)
-    wtd_ttest(efc, e17age, c160age, weights = weight)
-    wtd_ttest(e17age ~ e16sex + weight, efc)
-    wtd_ttest(efc, e17age, c160age, weights = weight, ci.lvl = .8)
+  test_that("weighted_ttest", {
+    weighted_ttest(efc, e17age, weights = weight)
+    weighted_ttest(efc, e17age, c160age, weights = weight)
+    weighted_ttest(e17age ~ e16sex + weight, efc)
+    weighted_ttest(efc, e17age, c160age, weights = weight, ci.lvl = .8)
   })
 }

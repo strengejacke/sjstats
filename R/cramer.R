@@ -1,4 +1,4 @@
-#' @rdname xtab_statistics
+#' @rdname crosstable_statistics
 #' @export
 cramer <- function(tab, ...) {
   UseMethod("cramer")
@@ -17,7 +17,7 @@ cramer.ftable <- function(tab, ...) {
 }
 
 
-#' @rdname xtab_statistics
+#' @rdname crosstable_statistics
 #' @export
 cramer.formula <- function(formula, data, ci.lvl = NULL, n = 1000, method = c("dist", "quantile"), ...) {
   terms <- all.vars(formula)

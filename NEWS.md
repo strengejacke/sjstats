@@ -1,3 +1,20 @@
+# sjstats 0.17.8
+
+## Deprecated and defunct
+
+_sjstats_ is being re-structured, and many functions are re-implemented in new packages that are part of a new project called **easystats**.
+
+Therefore, following functions are now deprecated:
+
+* `cohens_f()`, please use `effectsize::cohens_f()`
+
+## General
+
+* Functions for weighted statistics with prefix `wtd_*()` have been renamed to `weighted_*()`.
+* `svy_md()` was renamed to `survey_median()`.
+* `mannwhitney()` is an alias for `mwu()`.
+* `means_by_group()` is an alias for `grpmean()`.
+
 # sjstats 0.17.7
 
 ## Deprecated and defunct
@@ -20,6 +37,7 @@ Therefore, following functions are now deprecated:
 * Minor revisions to meet the changes in the forthcoming update from *tidyr*.
 * `design_effect()` is an alias for `deff()`.
 * `samplesize_mixed()` is an alias for `smpsize_lmm()`.
+* `crosstable_statistics()` is an alias for `xtab_statistics()`.
 
 ## New functions
 

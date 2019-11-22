@@ -25,7 +25,7 @@ weighted_chisqtest.default <- function(data, x, y, weights, ...) {
   dat <- na.omit(dat)
 
   colnames(dat)[3] <- ".weights"
-  xtab_statistics(data = dat, statistics = "auto", weights = ".weights", ...)
+  crosstable_statistics(data = dat, statistics = "auto", weights = ".weights", ...)
 }
 
 
@@ -42,5 +42,5 @@ weighted_chisqtest.formula <- function(formula, data, ...) {
 
   tab <- as.table(round(stats::xtabs(data[[vars[3]]] ~ data[[vars[1]]] + data[[vars[2]]])))
   class(tab) <- "table"
-  xtab_statistics(data = tab, statistics = "auto", weights = NULL, ...)
+  crosstable_statistics(data = tab, statistics = "auto", weights = NULL, ...)
 }

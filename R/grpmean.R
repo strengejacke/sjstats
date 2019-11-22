@@ -1,5 +1,5 @@
 #' @title Summary of mean values by group
-#' @name grpmean
+#' @name means_by_group
 #'
 #' @description Computes mean, sd and se for each sub-group (indicated by \code{grp})
 #'                of \code{dv}.
@@ -26,7 +26,7 @@
 #'    results should be plotted (\code{out = "plot"}, only applies to certain
 #'    functions). May be abbreviated.
 #'
-#' @return For non-grouped data frames, \code{grpmean()} returns a data frame with
+#' @return For non-grouped data frames, \code{means_by_group()} returns a data frame with
 #'   following columns: \code{term}, \code{mean}, \code{N}, \code{std.dev},
 #'   \code{std.error} and \code{p.value}. For grouped data frames, returns
 #'   a list of such data frames.
@@ -39,20 +39,20 @@
 #'
 #' @examples
 #' data(efc)
-#' grpmean(efc, c12hour, e42dep)
+#' means_by_group(efc, c12hour, e42dep)
 #'
 #' data(iris)
-#' grpmean(iris, Sepal.Width, Species)
+#' means_by_group(iris, Sepal.Width, Species)
 #'
 #' # also works for grouped data frames
 #' library(dplyr)
 #' efc %>%
 #'   group_by(c172code) %>%
-#'   grpmean(c12hour, e42dep)
+#'   means_by_group(c12hour, e42dep)
 #'
 #' # weighting
 #' efc$weight <- abs(rnorm(n = nrow(efc), mean = 1, sd = .5))
-#' grpmean(efc, c12hour, e42dep, weights = weight)
+#' means_by_group(efc, c12hour, e42dep, weights = weight)
 #'
 #' @importFrom sjlabelled get_label drop_labels get_labels
 #' @importFrom stats lm na.omit sd weighted.mean
@@ -60,14 +60,14 @@
 #' @importFrom sjmisc to_value is_empty
 #' @importFrom rlang enquo .data quo_name
 #' @export
-grpmean <- function(x,
-                    dv,
-                    grp,
-                    weights = NULL,
-                    digits = 2,
-                    out = c("txt", "viewer", "browser"),
-                    encoding = "UTF-8",
-                    file = NULL) {
+means_by_group <- function(x,
+                          dv,
+                          grp,
+                          weights = NULL,
+                          digits = 2,
+                          out = c("txt", "viewer", "browser"),
+                          encoding = "UTF-8",
+                          file = NULL) {
 
   out <- match.arg(out)
 
@@ -125,7 +125,7 @@ grpmean <- function(x,
       tmp <- sjlabelled::copy_labels(grps$data[[i]], x)
 
       # get grouped means table
-      dummy <- grpmean_helper(
+      dummy <- means_by_group_helper(
         x = tmp,
         dv = dv.name,
         grp = grp.name,
@@ -149,7 +149,7 @@ grpmean <- function(x,
       class(dataframes) <- c("sjt_grpmeans", "list")
 
   } else {
-    dataframes <- grpmean_helper(
+    dataframes <- means_by_group_helper(
       x = x,
       dv = dv.name,
       grp = grp.name,
@@ -182,7 +182,7 @@ grpmean <- function(x,
 #' @importFrom dplyr pull select n_distinct
 #' @importFrom purrr map_chr
 #' @importFrom rlang .data
-grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCountLabel, varGrpLabel) {
+means_by_group_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCountLabel, varGrpLabel) {
   # copy vectors from data frame
   dv <- x[[dv]]
   grp <- x[[grp]]
@@ -225,7 +225,7 @@ grpmean_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCount
   ## TODO
   # efc %>%
   #   group_by(c172code, c161sex) %>%
-  #   grpmean(c12hour, e42dep)
+  #   means_by_group(c12hour, e42dep)
 
 
   # check if value labels length matches group count
@@ -341,6 +341,6 @@ get_title_part <- function(x, grps, level, i) {
 }
 
 
-#' @rdname grpmean
+#' @rdname means_by_group
 #' @export
-means_by_group <- grpmean
+grpmean <- means_by_group
