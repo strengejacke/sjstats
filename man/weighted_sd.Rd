@@ -78,9 +78,12 @@ weighted_ttest(data, ...)
 )
 }
 \arguments{
-\item{x}{(Numeric) vector or a data frame. For \code{svy_md()}, \code{weighted_ttest()},
+\item{x}{(Numeric) vector or a data frame. For \code{survey_median()}, \code{weighted_ttest()},
 \code{weighted_mannwhitney()} and \code{weighted_chisqtest()} the bare (unquoted) variable
 name, or a character vector with the variable name.}
+
+\item{design}{An object of class \code{\link[survey]{svydesign}}, providing
+a specification of the survey design.}
 
 \item{data}{A data frame.}
 
@@ -122,7 +125,7 @@ The weighted (test) statistic.
   \cr \cr
   \code{weighted_sd()}, \code{weighted_se()}, \code{weighted_mean()} and \code{weighted_median()}
   compute weighted standard deviation, standard error, mean or median for a
-  variable or for all variables of a data frame. \code{svy_md()} computes the
+  variable or for all variables of a data frame. \code{survey_median()} computes the
   median for a variable in a survey-design (see \code{\link[survey]{svydesign}}).
   \code{weighted_correlation()} computes a weighted correlation for a two-sided alternative
   hypothesis.
@@ -150,7 +153,7 @@ data(efc)
 weighted_sd(efc[, 1:3], runif(n = nrow(efc)))
 weighted_se(efc[, 1:3], runif(n = nrow(efc)))
 
-# svy_md ----
+# survey_median ----
 
 # median for variables from weighted survey designs
 library(survey)
@@ -164,8 +167,8 @@ des <- svydesign(
   data = nhanes_sample
 )
 
-svy_md(total, des)
-svy_md("total", des)
+survey_median(total, des)
+survey_median("total", des)
 
 # weighted t-test ----
 

@@ -4,7 +4,7 @@
 #'   \cr \cr
 #'   \code{weighted_sd()}, \code{weighted_se()}, \code{weighted_mean()} and \code{weighted_median()}
 #'   compute weighted standard deviation, standard error, mean or median for a
-#'   variable or for all variables of a data frame. \code{svy_md()} computes the
+#'   variable or for all variables of a data frame. \code{survey_median()} computes the
 #'   median for a variable in a survey-design (see \code{\link[survey]{svydesign}}).
 #'   \code{weighted_correlation()} computes a weighted correlation for a two-sided alternative
 #'   hypothesis.
@@ -16,7 +16,7 @@
 #'   (for more than two groups). \code{weighted_chisqtest()} computes a weighted
 #'   Chi-squared test for contigency tables.
 #'
-#' @param x (Numeric) vector or a data frame. For \code{svy_md()}, \code{weighted_ttest()},
+#' @param x (Numeric) vector or a data frame. For \code{survey_median()}, \code{weighted_ttest()},
 #'    \code{weighted_mannwhitney()} and \code{weighted_chisqtest()} the bare (unquoted) variable
 #'    name, or a character vector with the variable name.
 #' @param weights Bare (unquoted) variable name, or a character vector with
@@ -42,6 +42,8 @@
 #'   For \code{weighted_chisqtest()}, further arguments passed down to
 #'   \code{\link[stats]{chisq.test}}.
 #'
+#' @inheritParams svyglm.nb
+#'
 #' @return The weighted (test) statistic.
 #'
 #' @note \code{weighted_chisq()} is a convenient wrapper for \code{\link{crosstable_statistics}}.
@@ -59,7 +61,7 @@
 #' weighted_sd(efc[, 1:3], runif(n = nrow(efc)))
 #' weighted_se(efc[, 1:3], runif(n = nrow(efc)))
 #'
-#' # svy_md ----
+#' # survey_median ----
 #'
 #' # median for variables from weighted survey designs
 #' library(survey)
@@ -73,8 +75,8 @@
 #'   data = nhanes_sample
 #' )
 #'
-#' svy_md(total, des)
-#' svy_md("total", des)
+#' survey_median(total, des)
+#' survey_median("total", des)
 #'
 #' # weighted t-test ----
 #'
