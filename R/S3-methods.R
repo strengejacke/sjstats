@@ -472,6 +472,7 @@ print.sj_grpmean <- function(x, ...) {
 }
 
 
+#' @importFrom insight format_table print_color
 print_grpmean <- function(x, ...) {
   # headline
   insight::print_color(sprintf(
