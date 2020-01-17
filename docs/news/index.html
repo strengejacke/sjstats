@@ -137,13 +137,49 @@
       <small>Source: <a href='https://github.com/strengejacke/sjstats/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="sjstats-0177" class="section level1">
+    <div id="sjstats-0178" class="section level1">
 <h1 class="page-header">
-<a href="#sjstats-0177" class="anchor"></a>sjstats 0.17.7<small> 2019-11-14 </small>
+<a href="#sjstats-0178" class="anchor"></a>sjstats 0.17.8<small> Unreleased </small>
 </h1>
 <div id="deprecated-and-defunct" class="section level2">
 <h2 class="hasAnchor">
 <a href="#deprecated-and-defunct" class="anchor"></a>Deprecated and defunct</h2>
+<p><em>sjstats</em> is being re-structured, and many functions are re-implemented in new packages that are part of a new project called <strong>easystats</strong>.</p>
+<p>Therefore, following functions are now deprecated:</p>
+<ul>
+<li>
+<code><a href="../reference/r2.html">cohens_f()</a></code>, please use <code><a href="https://rdrr.io/pkg/effectsize/man/eta_squared.html">effectsize::cohens_f()</a></code>.</li>
+<li>
+<code><a href="../reference/r2.html">std_beta()</a></code>, please use <code><a href="https://rdrr.io/pkg/effectsize/man/standardize_parameters.html">effectsize::standardize_parameters()</a></code>.</li>
+<li>
+<code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/model_parameters.html">parameters::model_parameters()</a></code>.</li>
+<li>
+<code><a href="../reference/scale_weights.html">scale_weights()</a></code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/rescale_weights.html">parameters::rescale_weights()</a></code>.</li>
+<li>
+<code><a href="../reference/r2.html">robust()</a></code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/standard_error.html">parameters::standard_error_robust()</a></code>.</li>
+</ul>
+</div>
+<div id="general" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general" class="anchor"></a>General</h2>
+<ul>
+<li>Functions for weighted statistics with prefix <code>wtd_*()</code> have been renamed to <code>weighted_*()</code>.</li>
+<li>
+<code>svy_md()</code> was renamed to <code><a href="../reference/weighted_sd.html">survey_median()</a></code>.</li>
+<li>
+<code><a href="../reference/mwu.html">mannwhitney()</a></code> is an alias for <code><a href="../reference/mwu.html">mwu()</a></code>.</li>
+<li>
+<code><a href="../reference/means_by_group.html">means_by_group()</a></code> is an alias for <code><a href="../reference/means_by_group.html">grpmean()</a></code>.</li>
+</ul>
+</div>
+</div>
+    <div id="sjstats-0177" class="section level1">
+<h1 class="page-header">
+<a href="#sjstats-0177" class="anchor"></a>sjstats 0.17.7<small> 2019-11-14 </small>
+</h1>
+<div id="deprecated-and-defunct-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#deprecated-and-defunct-1" class="anchor"></a>Deprecated and defunct</h2>
 <p><em>sjstats</em> is being re-structured, and many functions are re-implemented in new packages that are part of a new project called <strong>easystats</strong>. The aim of <strong>easystats</strong> is to provide a unifying and consistent framework to tame, discipline and harness the scary R statistics and their pesky models.</p>
 <p>Therefore, following functions are now deprecated:</p>
 <ul>
@@ -155,9 +191,9 @@
 </li>
 </ul>
 </div>
-<div id="general" class="section level2">
+<div id="general-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general" class="anchor"></a>General</h2>
+<a href="#general-1" class="anchor"></a>General</h2>
 <ul>
 <li>Revise some functions to cope with the forthcoming <em>insight</em> update.</li>
 </ul>
@@ -167,15 +203,17 @@
 <h1 class="page-header">
 <a href="#sjstats-0176" class="anchor"></a>sjstats 0.17.6<small> 2019-09-08 </small>
 </h1>
-<div id="general-1" class="section level2">
+<div id="general-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-1" class="anchor"></a>General</h2>
+<a href="#general-2" class="anchor"></a>General</h2>
 <ul>
 <li>Minor revisions to meet the changes in the forthcoming update from <em>tidyr</em>.</li>
 <li>
 <code><a href="../reference/design_effect.html">design_effect()</a></code> is an alias for <code>deff()</code>.</li>
 <li>
 <code><a href="../reference/samplesize_mixed.html">samplesize_mixed()</a></code> is an alias for <code><a href="../reference/samplesize_mixed.html">smpsize_lmm()</a></code>.</li>
+<li>
+<code><a href="../reference/crosstable_statistics.html">crosstable_statistics()</a></code> is an alias for <code><a href="../reference/crosstable_statistics.html">xtab_statistics()</a></code>.</li>
 </ul>
 </div>
 <div id="new-functions" class="section level2">
@@ -191,7 +229,7 @@
 <a href="#changes-to-functions" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
-<code><a href="../reference/xtab_statistics.html">phi()</a></code> and <code><a href="../reference/xtab_statistics.html">cramer()</a></code> can now compute confidence intervals.</li>
+<code><a href="../reference/crosstable_statistics.html">phi()</a></code> and <code><a href="../reference/crosstable_statistics.html">cramer()</a></code> can now compute confidence intervals.</li>
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> removes prior parameters from output.</li>
 <li>
@@ -218,9 +256,9 @@
 <code><a href="../reference/eta_sq.html">epsilon_sq()</a></code>, to compute epsilon-squared effect-size.</li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-1" class="section level2">
+<div id="deprecated-and-defunct-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deprecated-and-defunct-1" class="anchor"></a>Deprecated and defunct</h2>
+<a href="#deprecated-and-defunct-2" class="anchor"></a>Deprecated and defunct</h2>
 <p><em>sjstats</em> is being re-structured, and many functions are re-implemented in new packages that are part of a new project called <strong>easystats</strong>. The aim of <strong>easystats</strong> is to provide a unifying and consistent framework to tame, discipline and harness the scary R statistics and their pesky models.</p>
 <p>Therefore, following functions are now deprecated:</p>
 <ul>
@@ -354,9 +392,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0174" class="anchor"></a>sjstats 0.17.4<small> 2019-03-15 </small>
 </h1>
-<div id="general-2" class="section level2">
+<div id="general-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-2" class="anchor"></a>General</h2>
+<a href="#general-3" class="anchor"></a>General</h2>
 <ul>
 <li>Following models/objects are now supported by model-information functions like <code>model_family()</code>, <code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code> or <code>model_frame()</code>: <code>MixMod</code> (package <strong>GLMMadaptive</strong>), <strong>MCMCglmm</strong>, <code>mlogit</code> and <code>gmnl</code>.</li>
 <li>Reduce package dependencies.</li>
@@ -392,7 +430,7 @@
 <h2 class="hasAnchor">
 <a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fix minor issues in <code>wtd_sd()</code> and <code>wtd_mean()</code> when weight was <code>NULL</code> (which usually shoudln’t be the case anyway).</li>
+<li>Fix minor issues in <code><a href="../reference/weighted_sd.html">wtd_sd()</a></code> and <code>wtd_mean()</code> when weight was <code>NULL</code> (which usually shoudln’t be the case anyway).</li>
 <li>Fix potential issue with <code><a href="https://rdrr.io/r/base/deparse.html">deparse()</a></code>, cutting off very long formulas in various functions.</li>
 <li>Fix encoding issues in help-files.</li>
 </ul>
@@ -402,9 +440,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0173" class="anchor"></a>sjstats 0.17.3<small> 2019-01-07 </small>
 </h1>
-<div id="general-3" class="section level2">
+<div id="general-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-3" class="anchor"></a>General</h2>
+<a href="#general-4" class="anchor"></a>General</h2>
 <ul>
 <li>Export <code><a href="https://dplyr.tidyverse.org/reference/n.html">dplyr::n()</a></code>, to meet forthcoming changes in dplyr 0.8.0.</li>
 </ul>
@@ -453,9 +491,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0172" class="anchor"></a>sjstats 0.17.2<small> 2018-11-15 </small>
 </h1>
-<div id="general-4" class="section level2">
+<div id="general-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-4" class="anchor"></a>General</h2>
+<a href="#general-5" class="anchor"></a>General</h2>
 <ul>
 <li>Revised help-files for <code><a href="../reference/r2.html">r2()</a></code> and <code><a href="../reference/r2.html">icc()</a></code>, also by adding more references.</li>
 </ul>
@@ -479,7 +517,7 @@
 <li>
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> supports printing simplex parameters of monotonic effects of <strong>brms</strong> models.</li>
 <li>
-<code><a href="../reference/grpmean.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code> get a <code>file</code> and <code>encoding</code> argument, to save the HTML output as file.</li>
+<code><a href="../reference/means_by_group.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code> get a <code>file</code> and <code>encoding</code> argument, to save the HTML output as file.</li>
 </ul>
 </div>
 <div id="bug-fixes-4" class="section level2">
@@ -488,7 +526,7 @@
 <ul>
 <li>
 <code>model_frame()</code> now correctly names the offset-columns for terms provided as <code>offset</code>-argument (i.e. for models where the offset was not specified inside the formula).</li>
-<li>Fixed issue with <code>weights</code>-argument in <code><a href="../reference/grpmean.html">grpmean()</a></code> when variable name was passed as character vector.</li>
+<li>Fixed issue with <code>weights</code>-argument in <code><a href="../reference/means_by_group.html">grpmean()</a></code> when variable name was passed as character vector.</li>
 <li>Fixed issue with <code><a href="../reference/r2.html">r2()</a></code> for <strong>glmmTMB</strong> models with <code>ar1</code> random effects structure.</li>
 </ul>
 </div>
@@ -526,7 +564,7 @@
 <a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed issue with <code>model_family()</code> and <code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code> for models fitted with <code><a href="https://rdrr.io/pkg/pscl/man/hurdle.html">pscl::hurdle()</a></code> or <code><a href="https://rdrr.io/pkg/pscl/man/zeroinfl.html">pscl::zeroinfl()</a></code>.</li>
-<li>Fixed issue with wrong title in <code><a href="../reference/grpmean.html">grpmean()</a></code> for grouped data frames, when grouping variable was an unlabelled factor.</li>
+<li>Fixed issue with wrong title in <code><a href="../reference/means_by_group.html">grpmean()</a></code> for grouped data frames, when grouping variable was an unlabelled factor.</li>
 <li>Fix issue with <code>model_frame()</code> for <strong>coxph</strong>-models with polynomial or spline-terms.</li>
 <li>Fix issue with <code><a href="../reference/mediation.html">mediation()</a></code> for logical variables.</li>
 </ul>
@@ -536,9 +574,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0170" class="anchor"></a>sjstats 0.17.0<small> 2018-08-20 </small>
 </h1>
-<div id="general-5" class="section level2">
+<div id="general-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-5" class="anchor"></a>General</h2>
+<a href="#general-6" class="anchor"></a>General</h2>
 <ul>
 <li>Reduce package dependencies.</li>
 </ul>
@@ -558,7 +596,7 @@
 <a href="#changes-to-functions-6" class="anchor"></a>Changes to functions</h2>
 <ul>
 <li>
-<code><a href="../reference/robust.html">robust()</a></code> was revised, getting more arguments to specify different types of covariance-matrix estimation, and handling these more flexible.</li>
+<code><a href="../reference/r2.html">robust()</a></code> was revised, getting more arguments to specify different types of covariance-matrix estimation, and handling these more flexible.</li>
 <li>Improved <code><a href="https://rdrr.io/r/base/print.html">print()</a></code>-method for <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> for <em>brmsfit</em>-objects with categorical-families.</li>
 <li>
 <code><a href="../reference/r2.html">se()</a></code> now also computes standard errors for relative frequencies (proportions) of a vector.</li>
@@ -567,8 +605,8 @@
 <li>
 <code><a href="../reference/r2.html">r2()</a></code> gives more precise warnings for non-supported model-families.</li>
 <li>
-<code><a href="../reference/xtab_statistics.html">xtab_statistics()</a></code> gets a <code>weights</code>-argument, to compute measures of association for contingency tables for weighted data.</li>
-<li>The <code>statistics</code>-argument in <code><a href="../reference/xtab_statistics.html">xtab_statistics()</a></code> gets a <code>"fisher"</code>-option, to force Fisher’s Exact Test to be used.</li>
+<code><a href="../reference/crosstable_statistics.html">xtab_statistics()</a></code> gets a <code>weights</code>-argument, to compute measures of association for contingency tables for weighted data.</li>
+<li>The <code>statistics</code>-argument in <code><a href="../reference/crosstable_statistics.html">xtab_statistics()</a></code> gets a <code>"fisher"</code>-option, to force Fisher’s Exact Test to be used.</li>
 <li>Improved variance calculation in <code><a href="../reference/r2.html">icc()</a></code> for generalized linear mixed models with Poisson or negative binomial families.</li>
 <li>
 <code><a href="../reference/r2.html">icc()</a></code> gets an <code>adjusted</code>-argument, to calculate the adjusted and conditional ICC for mixed models.</li>
@@ -581,7 +619,7 @@
 <ul>
 <li>Fix issues with effect size computation for repeated-measure Anova when using bootstrapping to compute confidence intervals.</li>
 <li>
-<code><a href="../reference/grpmean.html">grpmean()</a></code> now also adjusts the <code>n</code>-columm for weighted data.</li>
+<code><a href="../reference/means_by_group.html">grpmean()</a></code> now also adjusts the <code>n</code>-columm for weighted data.</li>
 <li>
 <code><a href="../reference/r2.html">icc()</a></code>, <code>re_var()</code> and <code>get_re_var()</code> now correctly compute the random-effect-variances for models with multiple random slopes per random effect term (e.g., <code>(1 + rs1 + rs2 | grp)</code>).</li>
 <li>Fix issues in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code>, <code>mcse()</code>, <code>hdi()</code> and <code>n_eff()</code> for <code>stan_polr()</code>-models.</li>
@@ -593,12 +631,12 @@
 <h1 class="page-header">
 <a href="#sjstats-0160" class="anchor"></a>sjstats 0.16.0<small> 2018-07-10 </small>
 </h1>
-<div id="general-6" class="section level2">
+<div id="general-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-6" class="anchor"></a>General</h2>
+<a href="#general-7" class="anchor"></a>General</h2>
 <ul>
 <li>The S3-generics for functions like <code>hdi()</code>, <code>rope()</code>, <code>equi_test()</code> etc. are now more generic, and function usage for each supported object is now included in the documentation.</li>
-<li>Following functions are now S3-generic: <code><a href="../reference/r2.html">icc()</a></code>, <code><a href="../reference/r2.html">r2()</a></code>, <code><a href="../reference/r2.html">p_value()</a></code>, <code><a href="../reference/r2.html">se()</a></code>, and <code><a href="../reference/std_beta.html">std_beta()</a></code>.</li>
+<li>Following functions are now S3-generic: <code><a href="../reference/r2.html">icc()</a></code>, <code><a href="../reference/r2.html">r2()</a></code>, <code><a href="../reference/r2.html">p_value()</a></code>, <code><a href="../reference/r2.html">se()</a></code>, and <code><a href="../reference/r2.html">std_beta()</a></code>.</li>
 <li>Added <code><a href="https://rdrr.io/r/base/print.html">print()</a></code>-methods for some more functions, for a clearer output.</li>
 <li>Revised <code><a href="../reference/r2.html">r2()</a></code> for mixed models (packages <strong>lme4</strong>, <strong>glmmTMB</strong>). The r-squared value should be much more precise now, and reports the marginal and conditional r-squared values.</li>
 <li>Reduced package dependencies and removed <em>apaTables</em> and <em>MBESS</em> from suggested packages</li>
@@ -651,7 +689,7 @@
 <code>model_frame()</code> now returns proper column names from <em>gamm4</em> models.</li>
 <li>
 <code>model_frame()</code> did not work when the model frame had spline-terms and weights.</li>
-<li>Fix issue in <code><a href="../reference/robust.html">robust()</a></code> when <code>exponentiate = TRUE</code> and <code>conf.int = FALSE</code>.</li>
+<li>Fix issue in <code><a href="../reference/r2.html">robust()</a></code> when <code>exponentiate = TRUE</code> and <code>conf.int = FALSE</code>.</li>
 <li>
 <code>reliab_test()</code> returned an error when the provided data frame has less than three columns, instead of returning <code>NULL</code>.</li>
 </ul>
@@ -661,9 +699,9 @@
 <h1 class="page-header">
 <a href="#sjstats-0150" class="anchor"></a>sjstats 0.15.0<small> 2018-06-06 </small>
 </h1>
-<div id="general-7" class="section level2">
+<div id="general-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-7" class="anchor"></a>General</h2>
+<a href="#general-8" class="anchor"></a>General</h2>
 <ul>
 <li>Added new Vignette <em>Statistics for Bayesian Models</em>.</li>
 </ul>
@@ -712,6 +750,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#sjstats-0178">0.17.8</a></li>
         <li><a href="#sjstats-0177">0.17.7</a></li>
         <li><a href="#sjstats-0176">0.17.6</a></li>
         <li><a href="#sjstats-0175">0.17.5</a></li>

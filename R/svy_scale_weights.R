@@ -65,6 +65,8 @@
 #' @export
 scale_weights <- function(x, cluster.id, pweight) {
 
+  message("This function will be removed in a future update. There's an enhanced implementation in 'parameters::rescale_weights()' that should be used instead.")
+
   # quote cluster.id and get name as string
 
   quo.id <- dplyr::enquo(cluster.id)

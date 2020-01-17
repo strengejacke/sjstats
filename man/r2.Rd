@@ -6,6 +6,8 @@
 \alias{p_value}
 \alias{se}
 \alias{cohens_f}
+\alias{std_beta}
+\alias{robust}
 \title{Deprecated functions}
 \usage{
 r2(x)
@@ -17,6 +19,10 @@ p_value(x, ...)
 se(x, ...)
 
 cohens_f(x, ...)
+
+std_beta(x, ...)
+
+robust(x, ...)
 }
 \arguments{
 \item{x}{An object.}

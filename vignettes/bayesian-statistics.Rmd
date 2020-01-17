@@ -1,5 +1,5 @@
 ---
-title: "Statistics for Bayesian Models"
+title: "Summary of Mediation Analysis using Bayesian Regression Models"
 author: "Daniel Lüdecke"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -7,7 +7,7 @@ output: rmarkdown::html_vignette
 
 <!--
 vignette: >
-  %\VignetteIndexEntry{Statistics for Bayesian Models}
+  %\VignetteIndexEntry{Summary of Mediation Analysis using Bayesian Regression Models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 -->
@@ -29,16 +29,11 @@ if (!requireNamespace("mediation", quietly = TRUE)) {
   warning("Package 'mediation' required for this vignette.", call. = FALSE)
 }
 if (!requireNamespace("httr", quietly = TRUE)) {
-  warning("Package 'mediation' required for this vignette.", call. = FALSE)
+  warning("Package 'httr' required for this vignette.", call. = FALSE)
 }
 ```
 
-This vignettes demontrates those functions of the *sjstats*-package that deal especially with Bayesian models. *sjstats* provides following functions:
-
-* `tidy_stan()`
-* `mediation()`
-
-Befor we start, we fit some models, including a mediation-object from the _mediation_-package, which we use for comparison with _brms_. The functions work with `brmsfit`, `stanreg` and `stanfit`-objects.
+This vignettes demontrates the `mediation()`-function in **sjstats**. Before we start, we fit some models, including a mediation-object from the _mediation_-package, which we use for comparison with _brms_.
 
 ```{r}
 library(sjstats)
@@ -55,75 +50,21 @@ b2 <- lm(depress2 ~ treat + job_seek + econ_hard + sex + age, data = jobs)
 
 # mediation analysis, for comparison with brms
 m1 <- mediate(b1, b2, sims = 1000, treat = "treat", mediator = "job_seek")
-
-# load Bayesian models
-m2 <- insight::download_model("brms_mv_6")
-m3 <- insight::download_model("brms_zi_2")
 ```
-
-
-## Tidy Summary of Bayesian Models
-
-`tidy_stan()` is no substitute, but rather a convenient alternative to `summary()`. The major differences are: `tidy_stan()`...
-
-  * focusses on the parameter values (estimates) and gives no information on samples, data, or formula
-  * calculates the HDI rather than equi-tailed intervals
-  * separates different model parts, e.g. random from fixed effects, or conditional from zero-inflated models
-  * and prints everything nicely
-
-```{r}
-tidy_stan(m3)
-```
-
-Additional statistics in the output are:
-
-  * Standard errors (which are actually median absolute deviations, when `typical = "median"`, and standard deviations for `typical = "mean"`).
-  * The number of effective samples, *ESS*. Effective Sample Size should be as large as possible, although for most applications, an effective sample size greater than 1,000 is sufficient for stable estimates (Bürkner, 2017). The ESS corresponds to the number of independent samples with the same estimation power as the N autocorrelated samples. It is is a measure of "how much independent information there is in autocorrelated chains" (Kruschke 2015, p182-3).
-  * Rhat statistics; when Rhat is above 1, it usually indicates that the chain has not yet converged, indicating that the drawn samples might not be trustworthy; drawing more iteration may solve this issue
-  * Monte Carlo Standard Error (_mcse_);
-
-By default, the "estimate" is the median of the posterior distribution, but this can be changed with the `typical`-argument.
-
-```{r}
-tidy_stan(m3, typical = "mean")
-```
-
-To also show random effects of multilevel models, use the `effects`-argument.
-
-```{r}
-# printing fixed and random effects of multilevel model
-tidy_stan(m3, effects = "all")
-```
-
-If a model has several components, like zero-inflated models, use the `component`-argument to decide whether to display all components (default), or only specific parts.
-
-```{r}
-# printing fixed and random effects of multilevel model, 
-# only zero-inflated model part.
-tidy_stan(m3, effects = "all", component = "zero_inflated")
-```
-
-By default, 89%-HDI are computed (a convention following _McElreath 2015_), but other or even multiple HDI can be computed using the `prob` argument.
-
-```{r}
-# two different HDI for multivariate response model
-tidy_stan(m2, prob = c(.5, .95))
-```
-
-## Summary of Mediation Analysis
-
-`mediation()` is another summary function, especially for mediation analysis, i.e. for multivariate response models with casual mediation effects.
-
-Let us recall the models:
-
 ```{r eval=FALSE}
+# Fit Bayesian mediation model
 f1 <- bf(job_seek ~ treat + econ_hard + sex + age)
 f2 <- bf(depress2 ~ treat + job_seek + econ_hard + sex + age)
 
 m2 <- brm(f1 + f2 + set_rescor(FALSE), data = jobs, cores = 4)
 ```
+```{r echo=FALSE}
+m2 <- insight::download_model("brms_mv_6")
+```
 
-Here, _treat_ is the treatment effect, *job_seek* is the mediator effect, _f1_ describes the mediator model and _f2_ describes the outcome model.
+`mediation()` is a summary function, especially for mediation analysis, i.e. for multivariate response models with casual mediation effects.
+
+In the model _m2_, _treat_ is the treatment effect, *job_seek* is the mediator effect, _f1_ describes the mediator model and _f2_ describes the outcome model.
 
 `mediation()` returns a data frame with information on the _direct effect_ (median value of posterior samples from treatment of the outcome model), _mediator effect_ (median value of posterior samples from mediator of the outcome model), _indirect effect_ (median value of the multiplication of the posterior samples from mediator of the outcome model and the posterior samples from treatment of the mediation model) and the _total effect_ (median value of sums of posterior samples used for the direct and indirect effect). The _proportion mediated_ is the indirect effect divided by the total effect. 
 
@@ -154,5 +95,3 @@ As you can see, the results are similar to what the _mediation_ package produces
 # References
 
 Bürkner, P. C. (2017). brms: An R package for Bayesian multilevel models using Stan. Journal of Statistical Software, 80(1), 1-28
-
-Kruschke, J. (2014). Doing Bayesian data analysis: A tutorial with R, JAGS, and Stan. Academic Press.

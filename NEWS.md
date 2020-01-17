@@ -6,7 +6,11 @@ _sjstats_ is being re-structured, and many functions are re-implemented in new p
 
 Therefore, following functions are now deprecated:
 
-* `cohens_f()`, please use `effectsize::cohens_f()`
+* `cohens_f()`, please use `effectsize::cohens_f()`.
+* `std_beta()`, please use `effectsize::standardize_parameters()`.
+* `tidy_stan()`, please use `parameters::model_parameters()`.
+* `scale_weights()`, please use `parameters::rescale_weights()`.
+* `robust()`, please use `parameters::standard_error_robust()`.
 
 ## General
 

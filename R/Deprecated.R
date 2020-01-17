@@ -49,3 +49,21 @@ cohens_f <- function(x, ...) {
   .Deprecated("effectsize::cohens_f()")
   effectsize::cohens_f(x)
 }
+
+
+#' @importFrom effectsize standardize_parameters
+#' @rdname r2
+#' @export
+std_beta <- function(x, ...) {
+  .Deprecated("effectsize::standardize_parameters()")
+  effectsize::standardize_parameters(x, ...)
+}
+
+
+#' @importFrom parameters standard_error_robust
+#' @rdname r2
+#' @export
+robust <- function(x, ...) {
+  .Deprecated("parameters::standard_error_robust()")
+  parameters::standard_error_robust(x, ...)
+}

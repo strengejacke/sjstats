@@ -49,13 +49,11 @@ reference:
   contents:
   - design_effect
   - samplesize_mixed
-  - scale_weights
   - se_ybar
 
 - title: "Tools for Bayesian Models"
   contents:
   - auto_prior
-  - tidy_stan
   - mediation
 
 - title: "Find Parameters of Distribution"

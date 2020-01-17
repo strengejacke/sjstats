@@ -191,7 +191,7 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
 <span class='fu'>cv_error</span>(<span class='no'>efc</span>, <span class='no'>neg_c_7</span> ~ <span class='no'>barthtot</span> + <span class='no'>c161sex</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: unnest() has a new interface. See ?unnest for details.</span>
 #&gt; <span class='warning'>Try `df %&gt;% unnest(c(predicted, residuals))`, with `mutate()` if needed</span></div><div class='output co'>#&gt;                          model train.error test.error
-#&gt; 1 neg_c_7 ~ barthtot + c161sex      3.5063     3.5271</div><div class='input'>
+#&gt; 1 neg_c_7 ~ barthtot + c161sex      3.5065      3.519</div><div class='input'>
 <span class='fu'>cv_compare</span>(<span class='no'>efc</span>, <span class='kw'>formulas</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
   <span class='no'>neg_c_7</span> ~ <span class='no'>barthtot</span> + <span class='no'>c161sex</span>,
   <span class='no'>neg_c_7</span> ~ <span class='no'>barthtot</span> + <span class='no'>c161sex</span> + <span class='no'>e42dep</span>,
@@ -200,9 +200,9 @@
 #&gt; <span class='warning'>Try `df %&gt;% unnest(c(predicted, residuals))`, with `mutate()` if needed</span></div><div class='output co'>#&gt; <span class='warning'>Warning: unnest() has a new interface. See ?unnest for details.</span>
 #&gt; <span class='warning'>Try `df %&gt;% unnest(c(predicted, residuals))`, with `mutate()` if needed</span></div><div class='output co'>#&gt; <span class='warning'>Warning: unnest() has a new interface. See ?unnest for details.</span>
 #&gt; <span class='warning'>Try `df %&gt;% unnest(c(predicted, residuals))`, with `mutate()` if needed</span></div><div class='output co'>#&gt;                                   model train.error test.error
-#&gt; 1          neg_c_7 ~ barthtot + c161sex      3.5064     3.5178
-#&gt; 2 neg_c_7 ~ barthtot + c161sex + e42dep      3.4868     3.5048
-#&gt; 3          neg_c_7 ~ barthtot + c12hour      3.5026     3.5248</div><div class='input'>
+#&gt; 1          neg_c_7 ~ barthtot + c161sex      3.5066     3.5223
+#&gt; 2 neg_c_7 ~ barthtot + c161sex + e42dep      3.4865     3.5089
+#&gt; 3          neg_c_7 ~ barthtot + c12hour      3.5028     3.5205</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

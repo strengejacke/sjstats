@@ -91,6 +91,8 @@ tidy_stan <- function(x, prob = .89, typical = "median", trans = NULL, effects =
   if (!inherits(x, c("stanreg", "stanfit", "brmsfit")))
     stop("`x` needs to be a stanreg- or brmsfit-object.", call. = F)
 
+  .Deprecated("parameters::model_parameters()")
+
   # check arguments
   effects <- match.arg(effects)
   component <- match.arg(component)
