@@ -480,8 +480,8 @@ print_grpmean <- function(x, ...) {
     attr(x, "grp.label", exact = TRUE)
   ), "blue")
 
-  # means
-  print(as.data.frame(x), ...)
+  colnames(x) <- c("Category", "Mean", "N", "SD", "SE", "p")
+  cat(insight::format_table(x))
 
   # statistics
   cat(sprintf(

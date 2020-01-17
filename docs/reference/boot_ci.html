@@ -232,23 +232,23 @@ May be abbreviated.</p></td>
 
 <span class='co'># get bootstrapped confidence intervals</span>
 <span class='fu'>boot_ci</span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt;   term conf.low conf.high
-#&gt; 1    x 1.320903   1.77407</div><div class='input'>
+#&gt; 1    x 1.318902  1.775536</div><div class='input'>
 <span class='co'># compare with model fit</span>
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(<span class='no'>neg_c_7</span> ~ <span class='no'>e42dep</span> + <span class='no'>c161sex</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)
 <span class='fu'><a href='https://rdrr.io/r/stats/confint.html'>confint</a></span>(<span class='no'>fit</span>)[<span class='fl'>2</span>, ]</div><div class='output co'>#&gt;    2.5 %   97.5 % 
 #&gt; 1.292945 1.796430 </div><div class='input'>
 <span class='co'># alternative function calls.</span>
 <span class='fu'>boot_ci</span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt;   term conf.low conf.high
-#&gt; 1    x 1.320903   1.77407</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>)</div><div class='output co'>#&gt;         term conf.low conf.high
-#&gt; 1 dependency 1.320903   1.77407</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>, <span class='no'>gender</span>)</div><div class='output co'>#&gt;         term   conf.low conf.high
-#&gt; 1 dependency  1.3209034 1.7740701
-#&gt; 2     gender -0.1016646 0.9788897</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>, <span class='no'>gender</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"q"</span>)</div><div class='output co'>#&gt;         term    conf.low conf.high
-#&gt; 1 dependency  1.30501832  1.763890
-#&gt; 2     gender -0.07012629  0.916922</div><div class='input'>
+#&gt; 1    x 1.318902  1.775536</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>)</div><div class='output co'>#&gt;         term conf.low conf.high
+#&gt; 1 dependency 1.318902  1.775536</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>, <span class='no'>gender</span>)</div><div class='output co'>#&gt;         term   conf.low conf.high
+#&gt; 1 dependency  1.3189022 1.7755358
+#&gt; 2     gender -0.1115132 0.9899136</div><div class='input'><span class='fu'>boot_ci</span>(<span class='no'>bs</span>, <span class='no'>dependency</span>, <span class='no'>gender</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"q"</span>)</div><div class='output co'>#&gt;         term    conf.low conf.high
+#&gt; 1 dependency  1.29482618 1.7713601
+#&gt; 2     gender -0.06902942 0.9520724</div><div class='input'>
 
 <span class='co'># compare coefficients</span>
-<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt; [1] 1.547487</div><div class='input'><span class='fu'>boot_est</span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt;   term estimate
-#&gt; 1    x 1.547487</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span>(<span class='no'>fit</span>)[<span class='fl'>2</span>]</div><div class='output co'>#&gt;   e42dep 
+<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt; [1] 1.547219</div><div class='input'><span class='fu'>boot_est</span>(<span class='no'>bs</span>$<span class='no'>dependency</span>)</div><div class='output co'>#&gt;   term estimate
+#&gt; 1    x 1.547219</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span>(<span class='no'>fit</span>)[<span class='fl'>2</span>]</div><div class='output co'>#&gt;   e42dep 
 #&gt; 1.544687 </div><div class='input'>
 
 <span class='co'># bootstrap() and boot_ci() work fine within pipe-chains</span>
@@ -259,10 +259,10 @@ May be abbreviated.</p></td>
     <span class='kw'>dependency</span> <span class='kw'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span>(<span class='no'>models</span>, ~<span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span>(<span class='no'>.x</span>)[<span class='fl'>2</span>])
   ) <span class='kw'>%&gt;%</span>
   <span class='fu'>boot_ci</span>(<span class='no'>dependency</span>)</div><div class='output co'>#&gt;         term conf.low conf.high
-#&gt; 1 dependency 1.263093  1.779068</div><div class='input'>
+#&gt; 1 dependency 1.262788  1.779017</div><div class='input'>
 <span class='co'># check p-value</span>
 <span class='fu'>boot_p</span>(<span class='no'>bs</span>$<span class='no'>gender</span>)</div><div class='output co'>#&gt;   term   p.value
-#&gt; 1    x 0.1103975</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>fit</span>)$<span class='no'>coefficients</span>[<span class='fl'>3</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
+#&gt; 1    x 0.1167397</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>fit</span>)$<span class='no'>coefficients</span>[<span class='fl'>3</span>, ]</div><div class='output co'>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
 #&gt;  0.4339069  0.2818786  1.5393398  0.1240780 </div><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># 'spread_coef()' from the 'sjmisc'-package makes it easy to generate</span>
