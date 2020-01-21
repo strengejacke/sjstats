@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.8</span>
       </span>
     </div>
 
@@ -212,7 +212,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; 
 #&gt; Coefficients:
 #&gt; (Intercept)       e42dep      c161sex  
-#&gt;      7.0402       1.4148       0.3837  
+#&gt;      6.9036       1.4385       0.4329  
 #&gt; 
 #&gt; 
 #&gt; [[2]]
@@ -222,7 +222,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; 
 #&gt; Coefficients:
 #&gt; (Intercept)       e42dep      c161sex  
-#&gt;      7.7953       1.3868      -0.1018  
+#&gt;      7.8918       1.3693      -0.1371  
 #&gt; 
 #&gt; 
 #&gt; [[3]]
@@ -232,7 +232,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; 
 #&gt; Coefficients:
 #&gt; (Intercept)       e42dep      c161sex  
-#&gt;      7.7452       1.3291       0.1631  
+#&gt;      7.7762       1.3265       0.1469  
 #&gt; 
 #&gt; 
 #&gt; [[4]]
@@ -242,7 +242,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; 
 #&gt; Coefficients:
 #&gt; (Intercept)       e42dep      c161sex  
-#&gt;      5.4564       1.7057       0.7445  
+#&gt;      5.4334       1.7106       0.7536  
 #&gt; 
 #&gt; 
 #&gt; [[5]]
@@ -252,7 +252,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 #&gt; 
 #&gt; Coefficients:
 #&gt; (Intercept)       e42dep      c161sex  
-#&gt;      6.2984       1.5615       0.5302  
+#&gt;      6.3228       1.5540       0.5277  
 #&gt; 
 #&gt; </div><div class='input'>
 <span class='co'># generate bootstrap samples with 600 observations for each sample</span>
@@ -271,32 +271,22 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 
 <span class='co'># or as tidyverse-approach</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
+#&gt; <span class='message'>Attaching package: 'dplyr'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:sjlabelled’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    as_label</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:car’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    recode</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>purrr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘purrr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
+#&gt; <span class='message'>Attaching package: 'purrr'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:sjmisc':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    is_null</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:sjmisc’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    is_empty</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:car’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    some</span></div><div class='input'><span class='no'>bs</span> <span class='kw'>&lt;-</span> <span class='no'>efc</span> <span class='kw'>%&gt;%</span>
+#&gt; <span class='message'>    is_empty</span></div><div class='input'><span class='no'>bs</span> <span class='kw'>&lt;-</span> <span class='no'>efc</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>bootstrap</span>(<span class='fl'>100</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(
     <span class='kw'>c12hour</span> <span class='kw'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span>(<span class='no'>strap</span>, ~<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>.x</span>)$<span class='no'>c12hour</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
   )
 
 <span class='co'># bootstrapped standard error</span>
-<span class='fu'><a href='boot_ci.html'>boot_se</a></span>(<span class='no'>bs</span>, <span class='no'>c12hour</span>)</div><div class='output co'>#&gt;      term  std.err
-#&gt; 1 c12hour 1.640747</div><div class='input'>
+<span class='fu'><a href='boot_ci.html'>boot_se</a></span>(<span class='no'>bs</span>, <span class='no'>c12hour</span>)</div><div class='output co'>#&gt;      term std.err
+#&gt; 1 c12hour  1.6688</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

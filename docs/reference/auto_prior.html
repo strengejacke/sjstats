@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.8</span>
       </span>
     </div>
 
@@ -207,7 +207,9 @@ returned <code>brmsprior</code>-object.</p></td>
 <span class='no'>mf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/formula.html'>formula</a></span>(<span class='no'>neg_c_7</span> ~ <span class='no'>c161sex</span> + <span class='no'>c160age</span> + <span class='no'>c172code</span>)
 
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"brms"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-  <span class='fu'>auto_prior</span>(<span class='no'>mf</span>, <span class='no'>efc</span>, <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;              prior     class          coef group resp dpar nlpar bound
+  <span class='fu'>auto_prior</span>(<span class='no'>mf</span>, <span class='no'>efc</span>, <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'xts':</span>
+#&gt; <span class='message'>  method     from</span>
+#&gt; <span class='message'>  as.zoo.xts zoo </span></div><div class='output co'>#&gt;              prior     class          coef group resp dpar nlpar bound
 #&gt; 1 normal(0, 38.96) Intercept                                          
 #&gt; 2  normal(0, 9.74)         b c161sexFemale                            
 #&gt; 3  normal(0, 0.73)         b       c160age                            

@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.8</span>
       </span>
     </div>
 
@@ -251,7 +251,12 @@ May be abbreviated.</p></td>
 #&gt; 1   as.factor(e42dep)         0.281    0.247     0.310
 #&gt; 2 as.factor(c172code)         0.008    0.001     0.016
 #&gt; 3             c160age         0.066    0.047     0.089</div><div class='input'>
-<span class='fu'>anova_stats</span>(<span class='kw pkg'>car</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/car/man/Anova.html'>Anova</a></span>(<span class='no'>fit</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt;                  term       sumsq     meansq  df statistic p.value etasq
+<span class='fu'>anova_stats</span>(<span class='kw pkg'>car</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/car/man/Anova.html'>Anova</a></span>(<span class='no'>fit</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='message'>Registered S3 methods overwritten by 'car':</span>
+#&gt; <span class='message'>  method                          from</span>
+#&gt; <span class='message'>  influence.merMod                lme4</span>
+#&gt; <span class='message'>  cooks.distance.influence.merMod lme4</span>
+#&gt; <span class='message'>  dfbeta.influence.merMod         lme4</span>
+#&gt; <span class='message'>  dfbetas.influence.merMod        lme4</span></div><div class='output co'>#&gt;                  term       sumsq     meansq  df statistic p.value etasq
 #&gt; 1   as.factor(e42dep)  426461.571 142153.857   3    80.299   0.000 0.212
 #&gt; 2 as.factor(c172code)    7352.049   3676.025   2     2.076   0.126 0.004
 #&gt; 3             c160age  105169.595 105169.595   1    59.408   0.000 0.052

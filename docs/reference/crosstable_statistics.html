@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.8</span>
       </span>
     </div>
 
@@ -293,16 +293,16 @@ weights that will be applied to weight all observations. Default is
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Phi coefficient for 2x2 tables</span>
 <span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>), <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>))
-<span class='fu'>phi</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; [1] 0.1438235</div><div class='input'>
+<span class='fu'>phi</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; [1] 0.1336306</div><div class='input'>
 <span class='co'># Cramer's V for nominal variables with more than 2 categories</span>
 <span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>), <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='fl'>30</span>, <span class='fl'>TRUE</span>))
-<span class='fu'>cramer</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; [1] 0.1467348</div><div class='input'>
+<span class='fu'>cramer</span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; [1] 0.180269</div><div class='input'>
 <span class='co'># formula notation</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
 <span class='fu'>cramer</span>(<span class='no'>e16sex</span> ~ <span class='no'>c161sex</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>)</div><div class='output co'>#&gt; [1] 0.05258249</div><div class='input'>
 <span class='co'># bootstrapped confidence intervals</span>
 <span class='fu'>cramer</span>(<span class='no'>e16sex</span> ~ <span class='no'>c161sex</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>efc</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>.95</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt;       cramer    conf.low conf.high
-#&gt; 1 0.05258249 -0.00871977  0.112188</div><div class='input'>
+#&gt; 1 0.05258249 -0.00860759  0.111614</div><div class='input'>
 <span class='co'># 2x2 table, compute Phi automatically</span>
 <span class='fu'>crosstable_statistics</span>(<span class='no'>efc</span>, <span class='no'>e16sex</span>, <span class='no'>c161sex</span>)</div><div class='output co'>#&gt; <span style='color: #0000BB;'>
 #&gt; # Measure of Association for Contingency Tables
