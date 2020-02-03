@@ -1,3 +1,9 @@
+# sjstats 0.17.9
+
+## Bug fixes
+
+* Fixed documentation for `chisq_gof()`.
+
 # sjstats 0.17.8
 
 ## Deprecated and defunct
