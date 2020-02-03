@@ -16,9 +16,6 @@ for \code{prob}. Only used, when \code{x} is a vector, and not a
 \code{glm}-object.}
 
 \item{weights}{Vector with weights, used to weight \code{x}.}
-
-\item{...}{More fitted model objects, to compute multiple coefficients of
-variation at once.}
 }
 \value{
 For vectors, returns the object of the computed \code{\link[stats]{chisq.test}}.

@@ -11,8 +11,6 @@
 #'   for \code{prob}. Only used, when \code{x} is a vector, and not a
 #'   \code{glm}-object.
 #' @param weights Vector with weights, used to weight \code{x}.
-#' @param ... More fitted model objects, to compute multiple coefficients of
-#'   variation at once.
 #'
 #' @references
 #'   Hosmer, D. W., & Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley & Sons, Inc. \doi{10.1002/0471722146}
