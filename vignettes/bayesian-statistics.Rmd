@@ -25,11 +25,11 @@ knitr::opts_chunk$set(
 
 options(width = 800)
 
-if (!requireNamespace("mediation", quietly = TRUE)) {
-  warning("Package 'mediation' required for this vignette.", call. = FALSE)
-}
-if (!requireNamespace("httr", quietly = TRUE)) {
-  warning("Package 'httr' required for this vignette.", call. = FALSE)
+if (!requireNamespace("mediation", quietly = TRUE) ||
+    !requireNamespace("httr", quietly = TRUE) ||
+    !requireNamespace("brms", quietly = TRUE) ||
+    !requireNamespace("insight", quietly = TRUE)) {
+  knitr::opts_chunk$set(eval = FALSE)
 }
 ```
 
