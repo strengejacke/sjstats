@@ -3,6 +3,7 @@
 ## Bug fixes
 
 * Fixed documentation for `chisq_gof()`.
+* Fixed issue in `anova_stats()` with incorrect effect sizes for certain Anova types.
 
 # sjstats 0.17.8
 
