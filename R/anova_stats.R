@@ -10,7 +10,7 @@ anova_stats <- function(model, digits = 3) {
   # get tidy summary table
   aov.sum <- aov_stat_summary(model)
 
-  # compute all model statstics
+  # compute all model statistics
   etasq <- aov_stat_core(aov.sum, type = "eta")
   partial.etasq <- aov_stat_core(aov.sum, type = "peta")
   omegasq <- aov_stat_core(aov.sum, type = "omega")
@@ -108,12 +108,22 @@ aov_stat_summary <- function(model) {
   if (!obj_has_name(aov.sum, "meansq"))
     aov.sum <- sjmisc::add_variables(aov.sum, meansq = aov.sum$sumsq / aov.sum$df, .after = "sumsq")
 
+  intercept <- .which_intercept(aov.sum$term)
+  if (length(intercept) > 0) {
+    aov.sum <- aov.sum[-intercept, ]
+  }
+
   aov.sum
 }
 
 
 
 aov_stat_core <- function(aov.sum, type) {
+  intercept <- .which_intercept(aov.sum$term)
+  if (length(intercept) > 0) {
+    aov.sum <- aov.sum[-intercept, ]
+  }
+
   # get mean squared of residuals
   meansq.resid <- aov.sum[["meansq"]][nrow(aov.sum)]
   # get total sum of squares
@@ -166,4 +176,10 @@ aov_stat_core <- function(aov.sum, type) {
   names(aovstat) <- aov.sum[["term"]][1:n_terms]
 
   aovstat
+}
+
+
+
+.which_intercept <- function(x) {
+  which(tolower(x) %in% c("(intercept)_zi", "intercept (zero-inflated)", "intercept", "zi_intercept", "(intercept)", "b_intercept", "b_zi_intercept"))
 }
