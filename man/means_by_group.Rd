@@ -82,13 +82,13 @@ data(iris)
 means_by_group(iris, Sepal.Width, Species)
 
 # also works for grouped data frames
-library(dplyr)
-efc \%>\%
-  group_by(c172code) \%>\%
-  means_by_group(c12hour, e42dep)
+if (require("dplyr")) {
+  efc \%>\%
+    group_by(c172code) \%>\%
+    means_by_group(c12hour, e42dep)
+}
 
 # weighting
 efc$weight <- abs(rnorm(n = nrow(efc), mean = 1, sd = .5))
 means_by_group(efc, c12hour, e42dep, weights = weight)
-
 }

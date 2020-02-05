@@ -19,10 +19,10 @@ Compute the standard error for the sample mean for mixed models,
                (see \cite{Gelman and Hill 2007, 447ff}).
 }
 \examples{
-library(lme4)
-fit <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
-se_ybar(fit)
-
+if (require("lme4")) {
+  fit <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
+  se_ybar(fit)
+}
 }
 \references{
 Gelman A, Hill J. 2007. Data analysis using regression and multilevel/hierarchical models. Cambridge, New York: Cambridge University Press

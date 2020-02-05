@@ -64,19 +64,20 @@
 #' # survey_median ----
 #'
 #' # median for variables from weighted survey designs
-#' library(survey)
-#' data(nhanes_sample)
+#' if (require("survey")) {
+#'   data(nhanes_sample)
 #'
-#' des <- svydesign(
-#'   id = ~SDMVPSU,
-#'   strat = ~SDMVSTRA,
-#'   weights = ~WTINT2YR,
-#'   nest = TRUE,
-#'   data = nhanes_sample
-#' )
+#'   des <- svydesign(
+#'     id = ~SDMVPSU,
+#'     strat = ~SDMVSTRA,
+#'     weights = ~WTINT2YR,
+#'     nest = TRUE,
+#'     data = nhanes_sample
+#'   )
 #'
-#' survey_median(total, des)
-#' survey_median("total", des)
+#'   survey_median(total, des)
+#'   survey_median("total", des)
+#' }
 #'
 #' # weighted t-test ----
 #'

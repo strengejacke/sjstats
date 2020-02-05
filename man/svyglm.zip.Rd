@@ -30,28 +30,28 @@ An object of class \code{\link[survey]{svymle}} and \code{svyglm.zip},
 Code modified from https://notstatschat.rbind.io/2015/05/26/zero-inflated-poisson-from-complex-samples/.
 }
 \examples{
-library(survey)
-data(nhanes_sample)
-set.seed(123)
-nhanes_sample$malepartners <- rpois(nrow(nhanes_sample), 2)
-nhanes_sample$malepartners[sample(1:2992, 400)] <- 0
+if (require("survey")) {
+  data(nhanes_sample)
+  set.seed(123)
+  nhanes_sample$malepartners <- rpois(nrow(nhanes_sample), 2)
+  nhanes_sample$malepartners[sample(1:2992, 400)] <- 0
 
-# create survey design
-des <- svydesign(
-  id = ~SDMVPSU,
-  strat = ~SDMVSTRA,
-  weights = ~WTINT2YR,
-  nest = TRUE,
-  data = nhanes_sample
-)
+  # create survey design
+  des <- svydesign(
+    id = ~SDMVPSU,
+    strat = ~SDMVSTRA,
+    weights = ~WTINT2YR,
+    nest = TRUE,
+    data = nhanes_sample
+  )
 
-# fit negative binomial regression
-fit <- svyglm.zip(
-  malepartners ~ age + factor(RIDRETH1) | age + factor(RIDRETH1),
-  des
-)
+  # fit negative binomial regression
+  fit <- svyglm.zip(
+    malepartners ~ age + factor(RIDRETH1) | age + factor(RIDRETH1),
+    des
+  )
 
-# print coefficients and standard errors
-fit
-
+  # print coefficients and standard errors
+  fit
+}
 }

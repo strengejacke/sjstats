@@ -57,15 +57,15 @@ Rescaling is based on two methods: For \code{svywght_a}, the sample
 data(nhanes_sample)
 scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
 
-library(lme4)
-nhanes_sample <- scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
-glmer(
-  total ~ factor(RIAGENDR) * (log(age) + factor(RIDRETH1)) + (1 | SDMVPSU),
-  family = poisson(),
-  data = nhanes_sample,
-  weights = svywght_a
-)
-
+if (require("lme4")) {
+  nhanes_sample <- scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
+  glmer(
+    total ~ factor(RIAGENDR) * (log(age) + factor(RIDRETH1)) + (1 | SDMVPSU),
+    family = poisson(),
+    data = nhanes_sample,
+    weights = svywght_a
+  )
+}
 }
 \references{
 Carle AC. \emph{Fitting multilevel models in complex survey data with design weights: Recommendations} BMC Medical Research Methodology 2009, 9(49): 1-13

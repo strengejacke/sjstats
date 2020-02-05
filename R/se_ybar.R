@@ -13,10 +13,10 @@
 #' @references Gelman A, Hill J. 2007. Data analysis using regression and multilevel/hierarchical models. Cambridge, New York: Cambridge University Press
 #'
 #' @examples
-#' library(lme4)
-#' fit <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
-#' se_ybar(fit)
-#'
+#' if (require("lme4")) {
+#'   fit <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
+#'   se_ybar(fit)
+#' }
 #' @importFrom lme4 ngrps
 #' @importFrom stats nobs
 #' @importFrom purrr map_dbl

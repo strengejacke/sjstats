@@ -46,8 +46,6 @@
 #' # to large effect size for linear models of 0.2. Five subjects per cluster and
 #' # hence a total sample size of about 107 observations is needed.
 #' samplesize_mixed(eff.size = .2, df.n = 5, k = 20, power = .9)
-#'
-#'
 #' @export
 samplesize_mixed <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, n, icc = 0.05) {
   if (!requireNamespace("pwr", quietly = TRUE)) {

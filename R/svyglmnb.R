@@ -47,24 +47,24 @@ utils::globalVariables("scaled.weights")
 #' # This example reproduces the results from
 #' # Lumley 2010, figure E.7 (Appendix E, p256)
 #' # ------------------------------------------
-#' library(survey)
-#' data(nhanes_sample)
+#' if (require("survey")) {
+#'   data(nhanes_sample)
 #'
-#' # create survey design
-#' des <- svydesign(
-#'   id = ~SDMVPSU,
-#'   strat = ~SDMVSTRA,
-#'   weights = ~WTINT2YR,
-#'   nest = TRUE,
-#'   data = nhanes_sample
-#' )
+#'   # create survey design
+#'   des <- svydesign(
+#'     id = ~SDMVPSU,
+#'     strat = ~SDMVSTRA,
+#'     weights = ~WTINT2YR,
+#'     nest = TRUE,
+#'     data = nhanes_sample
+#'   )
 #'
-#' # fit negative binomial regression
-#' fit <- svyglm.nb(total ~ factor(RIAGENDR) * (log(age) + factor(RIDRETH1)), des)
+#'   # fit negative binomial regression
+#'   fit <- svyglm.nb(total ~ factor(RIAGENDR) * (log(age) + factor(RIDRETH1)), des)
 #'
-#' # print coefficients and standard errors
-#' fit
-#'
+#'   # print coefficients and standard errors
+#'   fit
+#' }
 #' @importFrom MASS glm.nb
 #' @importFrom stats weights update model.frame coef as.formula family
 #' @export

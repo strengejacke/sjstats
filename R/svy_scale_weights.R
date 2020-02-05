@@ -50,15 +50,15 @@
 #' data(nhanes_sample)
 #' scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
 #'
-#' library(lme4)
-#' nhanes_sample <- scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
-#' glmer(
-#'   total ~ factor(RIAGENDR) * (log(age) + factor(RIDRETH1)) + (1 | SDMVPSU),
-#'   family = poisson(),
-#'   data = nhanes_sample,
-#'   weights = svywght_a
-#' )
-#'
+#' if (require("lme4")) {
+#'   nhanes_sample <- scale_weights(nhanes_sample, SDMVSTRA, WTINT2YR)
+#'   glmer(
+#'     total ~ factor(RIAGENDR) * (log(age) + factor(RIDRETH1)) + (1 | SDMVPSU),
+#'     family = poisson(),
+#'     data = nhanes_sample,
+#'     weights = svywght_a
+#'   )
+#' }
 #' @importFrom dplyr group_by summarise n right_join enquo filter quo_name slice n
 #' @importFrom rlang .data
 #' @importFrom sjmisc is_empty
