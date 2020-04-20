@@ -3,8 +3,6 @@
 if (.runThisTest) {
 
   if (require("testthat") && require("sjstats")) {
-    context("sjstats, anova_stats")
-
     # fit linear model
     data(efc)
     m <- aov(
@@ -13,17 +11,17 @@ if (.runThisTest) {
     )
 
     test_that("eta_sq", {
-      eta_sq(m, partial = FALSE)
-      eta_sq(m, partial = TRUE)
-      eta_sq(m, partial = FALSE, ci.lvl = .5, n = 50)
-      eta_sq(m, partial = TRUE, ci.lvl = .6, n = 50)
+      expect_equal(eta_sq(m, partial = FALSE)$etasq, c(0.266, 0.005, 0.048), tolerance = 1e-2)
+      expect_equal(eta_sq(m, partial = TRUE)$partial.etasq, c(0.281, 0.008, 0.066), tolerance = 1e-2)
+      eta_sq(m, partial = FALSE, ci.lvl = .5)
+      eta_sq(m, partial = TRUE, ci.lvl = .6)
     })
 
     test_that("omega_sq", {
       omega_sq(m, partial = FALSE)
       omega_sq(m, partial = TRUE)
-      omega_sq(m, partial = FALSE, ci.lvl = .5, n = 50)
-      omega_sq(m, partial = TRUE, ci.lvl = .6, n = 50)
+      omega_sq(m, partial = FALSE, ci.lvl = .5)
+      omega_sq(m, partial = TRUE, ci.lvl = .6)
     })
 
     test_that("cohens_f", {
@@ -45,7 +43,7 @@ if (.runThisTest) {
     )
 
     test_that("omega_sq", {
-      omega_sq(fit, partial = TRUE, ci.lvl = 0.95, n = 50)
+      omega_sq(fit, partial = TRUE, ci.lvl = 0.95)
     })
 
     set.seed(123)
@@ -59,10 +57,10 @@ if (.runThisTest) {
     test_that("anova_stats", {
       anova_stats(m, digits = 3)
       anova_stats(m, digits = 5)
-      eta_sq(m, partial = TRUE, ci.lvl = 0.95, n = 10)
-      eta_sq(m, partial = FALSE, ci.lvl = 0.95, n = 10)
-      omega_sq(m, partial = TRUE, ci.lvl = 0.95, n = 10)
-      omega_sq(m, partial = FALSE, ci.lvl = 0.95, n = 10)
+      eta_sq(m, partial = TRUE, ci.lvl = 0.95)
+      eta_sq(m, partial = FALSE, ci.lvl = 0.95)
+      omega_sq(m, partial = TRUE, ci.lvl = 0.95)
+      omega_sq(m, partial = FALSE, ci.lvl = 0.95)
     })
   }
 
