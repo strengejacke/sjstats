@@ -10,42 +10,20 @@
 \usage{
 anova_stats(model, digits = 3)
 
-epsilon_sq(model, ci.lvl = NULL, n = 1000, method = c("dist", "quantile"))
+epsilon_sq(model, partial = FALSE, ci.lvl = NULL)
 
-eta_sq(
-  model,
-  partial = FALSE,
-  ci.lvl = NULL,
-  n = 1000,
-  method = c("dist", "quantile")
-)
+eta_sq(model, partial = FALSE, ci.lvl = NULL)
 
-omega_sq(
-  model,
-  partial = FALSE,
-  ci.lvl = NULL,
-  n = 1000,
-  method = c("dist", "quantile")
-)
+omega_sq(model, partial = FALSE, ci.lvl = NULL)
 }
 \arguments{
 \item{model}{A fitted anova-model of class \code{aov} or \code{anova}. Other
 models are coerced to \code{\link[stats]{anova}}.}
 
-\item{digits}{Number of decimal points in the returned data frame.}
+\item{partial}{Logical, if \code{TRUE}, the partial eta-squared is returned.}
 
 \item{ci.lvl}{Scalar between 0 and 1. If not \code{NULL}, returns a data
 frame with effect sizes including lower and upper confidence intervals.}
-
-\item{n}{Number of bootstraps to be generated.}
-
-\item{method}{Character vector, indicating if confidence intervals should be
-based on bootstrap standard error, multiplied by the value of the
-quantile function of the t-distribution (default), or on sample
-quantiles of the bootstrapped values. See 'Details' in \code{boot_ci()}.
-May be abbreviated.}
-
-\item{partial}{Logical, if \code{TRUE}, the partial eta-squared is returned.}
 }
 \value{
 A data frame with the term name(s) and effect size statistics; if
@@ -60,16 +38,7 @@ Returns the (partial) eta-squared, (partial) omega-squared,
   and power for each term.
 }
 \details{
-For \code{eta_sq()} (with \code{partial = FALSE}), due to
-  non-symmetry, confidence intervals are based on bootstrap-methods. In this
-  case, \code{n} indicates the number of bootstrap samples to be drawn to
-  compute the confidence intervals. Confidence intervals for partial
-  omega-squared and epsilon-squared is also based on bootstrapping.
-  \cr \cr
-  Since bootstrapped confidence intervals are based on the bootstrap standard error
-  (i.e. \code{mean(x) +/- qt(.975, df = length(x) - 1) * sd(x))}, bounds of
-  the confidence interval may be negative. Use \code{method = "quantile"} to
-  make sure that the confidence intervals are always positive.
+See details in \code{\link[effectsize]{eta_squared}}.
 }
 \examples{
 # load sample data
@@ -87,7 +56,6 @@ eta_sq(fit, partial = TRUE)
 eta_sq(fit, partial = TRUE, ci.lvl = .8)
 
 anova_stats(car::Anova(fit, type = 2))
-
 }
 \references{
 Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (\href{https://www.msu.edu/~levinet/eta\%20squared\%20hcr.pdf}{pdf})
