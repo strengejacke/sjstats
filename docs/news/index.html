@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@
 
 <meta property="og:title" content="Changelog" />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -62,7 +65,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -76,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.9.1</span>
       </span>
     </div>
 
@@ -115,7 +118,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/strengejacke/sjstats">
+  <a href="https://github.com/strengejacke/sjstats/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -133,12 +136,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
+      <h1 data-toc-skip>Changelog <small></small></h1>
       <small>Source: <a href='https://github.com/strengejacke/sjstats/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="sjstats-018" class="section level1">
+<h1 class="page-header" data-toc-text="0.18">
+<a href="#sjstats-018" class="anchor"></a>sjstats 0.18.<small> Unreleased </small>
+</h1>
+<div id="general" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general" class="anchor"></a>General</h2>
+<ul>
+<li>Effect size computation functions (like <code><a href="../reference/eta_sq.html">eta_sq()</a></code>) now internally call the related functions from the <em>effectsize</em> package.</li>
+<li>Remove packages from “Suggest” that have been removed from CRAN.</li>
+</ul>
+</div>
+</div>
+    <div id="sjstats-0179" class="section level1">
+<h1 class="page-header" data-toc-text="0.17.9">
+<a href="#sjstats-0179" class="anchor"></a>sjstats 0.17.9<small> 2020-02-06 </small>
+</h1>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed documentation for <code><a href="../reference/chisq_gof.html">chisq_gof()</a></code>.</li>
+<li>Fixed issue in <code><a href="../reference/eta_sq.html">anova_stats()</a></code> with incorrect effect sizes for certain Anova types (that included an intercept).</li>
+</ul>
+</div>
+</div>
     <div id="sjstats-0178" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.17.8">
 <a href="#sjstats-0178" class="anchor"></a>sjstats 0.17.8<small> 2020-01-21 </small>
 </h1>
 <div id="deprecated-and-defunct" class="section level2">
@@ -159,9 +188,9 @@
 <code><a href="../reference/r2.html">robust()</a></code>, please use <code><a href="https://rdrr.io/pkg/parameters/man/standard_error_robust.html">parameters::standard_error_robust()</a></code>.</li>
 </ul>
 </div>
-<div id="general" class="section level2">
+<div id="general-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general" class="anchor"></a>General</h2>
+<a href="#general-1" class="anchor"></a>General</h2>
 <ul>
 <li>Functions for weighted statistics with prefix <code>wtd_*()</code> have been renamed to <code>weighted_*()</code>.</li>
 <li>
@@ -174,7 +203,7 @@
 </div>
 </div>
     <div id="sjstats-0177" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.17.7">
 <a href="#sjstats-0177" class="anchor"></a>sjstats 0.17.7<small> 2019-11-14 </small>
 </h1>
 <div id="deprecated-and-defunct-1" class="section level2">
@@ -191,21 +220,21 @@
 </li>
 </ul>
 </div>
-<div id="general-1" class="section level2">
+<div id="general-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-1" class="anchor"></a>General</h2>
+<a href="#general-2" class="anchor"></a>General</h2>
 <ul>
 <li>Revise some functions to cope with the forthcoming <em>insight</em> update.</li>
 </ul>
 </div>
 </div>
     <div id="sjstats-0176" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.17.6">
 <a href="#sjstats-0176" class="anchor"></a>sjstats 0.17.6<small> 2019-09-08 </small>
 </h1>
-<div id="general-2" class="section level2">
+<div id="general-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-2" class="anchor"></a>General</h2>
+<a href="#general-3" class="anchor"></a>General</h2>
 <ul>
 <li>Minor revisions to meet the changes in the forthcoming update from <em>tidyr</em>.</li>
 <li>
@@ -236,16 +265,16 @@
 <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> now also prints the probability of direction.</li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix bug with wrong computation in <code><a href="../reference/odds_to_rr.html">odds_to_rr()</a></code>.</li>
 </ul>
 </div>
 </div>
     <div id="sjstats-0175" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.17.5">
 <a href="#sjstats-0175" class="anchor"></a>sjstats 0.17.5<small> 2019-06-04 </small>
 </h1>
 <div id="new-functions-1" class="section level2">
@@ -379,9 +408,9 @@
 <li>Anova-stats functions (like <code><a href="../reference/eta_sq.html">eta_sq()</a></code>) get a <code>method</code>-argument to define the method for computing confidence intervals from bootstrapping.</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>In some situations, <code><a href="../reference/samplesize_mixed.html">smpsize_lmm()</a></code> could result in negative sample-size recommendations. This was fixed, and a warning is now shown indicating that the parameters for the power-calculation should be modified.</li>
 <li>Fixed issue with wrong calculated effect size <code>r</code> in <code><a href="../reference/mwu.html">mwu()</a></code> if group-factor contained more than two groups.</li>
@@ -389,12 +418,12 @@
 </div>
 </div>
     <div id="sjstats-0174" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.17.4">
 <a href="#sjstats-0174" class="anchor"></a>sjstats 0.17.4<small> 2019-03-15 </small>
 </h1>
-<div id="general-3" class="section level2">
+<div id="general-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-3" class="anchor"></a>General</h2>
+<a href="#general-4" class="anchor"></a>General</h2>
 <ul>
 <li>Following models/objects are now supported by model-information functions like <code>model_family()</code>, <code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code> or <code>model_frame()</code>: <code>MixMod</code> (package <strong>GLMMadaptive</strong>), <strong>MCMCglmm</strong>, <code>mlogit</code> and <code>gmnl</code>.</li>
 <li>Reduce package dependencies.</li>
@@ -426,9 +455,9 @@
 <code>pred_vars()</code> gets a <code>zi</code>-argument to return the variables from a model’s zero-inflation-formula.</li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix minor issues in <code><a href="../reference/weighted_sd.html">wtd_sd()</a></code> and <code>wtd_mean()</code> when weight was <code>NULL</code> (which usually shoudln’t be the case anyway).</li>
 <li>Fix potential issue with <code><a href="https://rdrr.io/r/base/deparse.html">deparse()</a></code>, cutting off very long formulas in various functions.</li>
@@ -437,12 +466,12 @@
 </div>
 </div>
     <div id="sjstats-0173" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.17.3">
 <a href="#sjstats-0173" class="anchor"></a>sjstats 0.17.3<small> 2019-01-07 </small>
 </h1>
-<div id="general-4" class="section level2">
+<div id="general-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-4" class="anchor"></a>General</h2>
+<a href="#general-5" class="anchor"></a>General</h2>
 <ul>
 <li>Export <code><a href="https://dplyr.tidyverse.org/reference/n.html">dplyr::n()</a></code>, to meet forthcoming changes in dplyr 0.8.0.</li>
 </ul>
@@ -475,9 +504,9 @@
 <code><a href="../reference/r2.html">p_value()</a></code> now supports objects of class <code>svyolr</code>.</li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level2">
+<div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix issue with <code><a href="../reference/r2.html">se()</a></code> and <code>get_re_var()</code> for objects returned by <code><a href="../reference/r2.html">icc()</a></code>.</li>
 <li>Fix issue with <code><a href="../reference/r2.html">icc()</a></code> for Stan-models.</li>
@@ -488,12 +517,12 @@
 </div>
 </div>
     <div id="sjstats-0172" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.17.2">
 <a href="#sjstats-0172" class="anchor"></a>sjstats 0.17.2<small> 2018-11-15 </small>
 </h1>
-<div id="general-5" class="section level2">
+<div id="general-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-5" class="anchor"></a>General</h2>
+<a href="#general-6" class="anchor"></a>General</h2>
 <ul>
 <li>Revised help-files for <code><a href="../reference/r2.html">r2()</a></code> and <code><a href="../reference/r2.html">icc()</a></code>, also by adding more references.</li>
 </ul>
@@ -520,9 +549,9 @@
 <code><a href="../reference/means_by_group.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code> get a <code>file</code> and <code>encoding</code> argument, to save the HTML output as file.</li>
 </ul>
 </div>
-<div id="bug-fixes-4" class="section level2">
+<div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>
 <code>model_frame()</code> now correctly names the offset-columns for terms provided as <code>offset</code>-argument (i.e. for models where the offset was not specified inside the formula).</li>
@@ -532,7 +561,7 @@
 </div>
 </div>
     <div id="sjstats-0171" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.17.1">
 <a href="#sjstats-0171" class="anchor"></a>sjstats 0.17.1<small> 2018-10-02 </small>
 </h1>
 <div id="new-functions-4" class="section level2">
@@ -559,9 +588,9 @@
 <code><a href="../reference/eta_sq.html">anova_stats()</a></code> gives a more informative message for non-supported models or ANOVA-options.</li>
 </ul>
 </div>
-<div id="bug-fixes-5" class="section level2">
+<div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed issue with <code>model_family()</code> and <code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code> for models fitted with <code><a href="https://rdrr.io/pkg/pscl/man/hurdle.html">pscl::hurdle()</a></code> or <code><a href="https://rdrr.io/pkg/pscl/man/zeroinfl.html">pscl::zeroinfl()</a></code>.</li>
 <li>Fixed issue with wrong title in <code><a href="../reference/means_by_group.html">grpmean()</a></code> for grouped data frames, when grouping variable was an unlabelled factor.</li>
@@ -571,12 +600,12 @@
 </div>
 </div>
     <div id="sjstats-0170" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.17.0">
 <a href="#sjstats-0170" class="anchor"></a>sjstats 0.17.0<small> 2018-08-20 </small>
 </h1>
-<div id="general-6" class="section level2">
+<div id="general-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-6" class="anchor"></a>General</h2>
+<a href="#general-7" class="anchor"></a>General</h2>
 <ul>
 <li>Reduce package dependencies.</li>
 </ul>
@@ -613,9 +642,9 @@
 <li>To get consistent argument names accross functions, argument <code>weight.by</code> is now deprecated and renamed into <code>weights</code>.</li>
 </ul>
 </div>
-<div id="bug-fixes-6" class="section level2">
+<div id="bug-fixes-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix issues with effect size computation for repeated-measure Anova when using bootstrapping to compute confidence intervals.</li>
 <li>
@@ -627,142 +656,12 @@
 </ul>
 </div>
 </div>
-    <div id="sjstats-0160" class="section level1">
-<h1 class="page-header">
-<a href="#sjstats-0160" class="anchor"></a>sjstats 0.16.0<small> 2018-07-10 </small>
-</h1>
-<div id="general-7" class="section level2">
-<h2 class="hasAnchor">
-<a href="#general-7" class="anchor"></a>General</h2>
-<ul>
-<li>The S3-generics for functions like <code>hdi()</code>, <code>rope()</code>, <code>equi_test()</code> etc. are now more generic, and function usage for each supported object is now included in the documentation.</li>
-<li>Following functions are now S3-generic: <code><a href="../reference/r2.html">icc()</a></code>, <code><a href="../reference/r2.html">r2()</a></code>, <code><a href="../reference/r2.html">p_value()</a></code>, <code><a href="../reference/r2.html">se()</a></code>, and <code><a href="../reference/r2.html">std_beta()</a></code>.</li>
-<li>Added <code><a href="https://rdrr.io/r/base/print.html">print()</a></code>-methods for some more functions, for a clearer output.</li>
-<li>Revised <code><a href="../reference/r2.html">r2()</a></code> for mixed models (packages <strong>lme4</strong>, <strong>glmmTMB</strong>). The r-squared value should be much more precise now, and reports the marginal and conditional r-squared values.</li>
-<li>Reduced package dependencies and removed <em>apaTables</em> and <em>MBESS</em> from suggested packages</li>
-<li>
-<code>stanmvreg</code>-models are now supported by many functions.</li>
-</ul>
-</div>
-<div id="new-functions-6" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-functions-6" class="anchor"></a>New functions</h2>
-<ul>
-<li>
-<code>binned_resid()</code> to plot binned residuals for logistic regression models.</li>
-<li>
-<code>error_rate()</code> to compute model quality for logistic regression models.</li>
-<li>
-<code><a href="../reference/auto_prior.html">auto_prior()</a></code> to quickly create automatically adjusted priors for brms-models.</li>
-<li>
-<code>difficulty()</code> to compute the item difficulty.</li>
-</ul>
-</div>
-<div id="changes-to-functions-7" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-to-functions-7" class="anchor"></a>Changes to functions</h2>
-<ul>
-<li>
-<code><a href="../reference/r2.html">icc()</a></code> gets a <code>ppd</code>-argument for Stan-models (<em>brmsfit</em> and <em>stanreg</em>), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.</li>
-<li>For Stan-models (<em>brmsfit</em> and <em>stanreg</em>), <code><a href="../reference/r2.html">icc()</a></code> now also computes the HDI for the ICC and random-effect variances. Use the <code>prob</code>-argument to specify the limits of this interval.</li>
-<li>
-<code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code> and <code>model_family()</code> now support <em>clmm</em>-models (package <em>ordinal</em>) and <em>glmRob</em> and <em>lmRob</em>-models (package <em>robust</em>).</li>
-<li>
-<code>model_family()</code> gets a <code>multi.resp</code>-argument, to return a list of family-informations for multivariate-response models (of class <code>brmsfit</code> or <code>stanmvreg</code>).</li>
-<li>
-<code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code> gets a <code>multi.resp</code>-argument, to return a list of link-inverse-functions for multivariate-response models (of class <code>brmsfit</code> or <code>stanmvreg</code>).</li>
-<li>
-<code><a href="../reference/r2.html">p_value()</a></code> now supports <em>rlm</em>-models (package <em>MASS</em>).</li>
-<li>
-<code>check_assumptions()</code> for single models with <code>as.logical = FALSE</code> now has a nice print-method.</li>
-<li>
-<code><a href="../reference/eta_sq.html">eta_sq()</a></code> and <code><a href="../reference/eta_sq.html">omega_sq()</a></code> now also work for repeated-measure Anovas, i.e. Anova with error term (requires broom &gt; 0.4.5).</li>
-</ul>
-</div>
-<div id="bug-fixes-7" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
-<ul>
-<li>
-<code>model_frame()</code> and <code>var_names()</code> now correctly cleans nested patterns like <code><a href="https://rdrr.io/r/stats/offset.html">offset(log(x + 10))</a></code> from column names.</li>
-<li>
-<code>model_frame()</code> now returns proper column names from <em>gamm4</em> models.</li>
-<li>
-<code>model_frame()</code> did not work when the model frame had spline-terms and weights.</li>
-<li>Fix issue in <code><a href="../reference/r2.html">robust()</a></code> when <code>exponentiate = TRUE</code> and <code>conf.int = FALSE</code>.</li>
-<li>
-<code>reliab_test()</code> returned an error when the provided data frame has less than three columns, instead of returning <code>NULL</code>.</li>
-</ul>
-</div>
-</div>
-    <div id="sjstats-0150" class="section level1">
-<h1 class="page-header">
-<a href="#sjstats-0150" class="anchor"></a>sjstats 0.15.0<small> 2018-06-06 </small>
-</h1>
-<div id="general-8" class="section level2">
-<h2 class="hasAnchor">
-<a href="#general-8" class="anchor"></a>General</h2>
-<ul>
-<li>Added new Vignette <em>Statistics for Bayesian Models</em>.</li>
-</ul>
-</div>
-<div id="new-functions-7" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-functions-7" class="anchor"></a>New functions</h2>
-<ul>
-<li>
-<code>equi_test()</code> to test if parameter values in Bayesian estimation should be accepted or rejected.</li>
-<li>
-<code><a href="../reference/mediation.html">mediation()</a></code> to print a summary of a mediation analysis from multivariate response models fitted with <em>brms</em>.</li>
-</ul>
-</div>
-<div id="changes-to-functions-8" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-to-functions-8" class="anchor"></a>Changes to functions</h2>
-<ul>
-<li>
-<code><a href="https://rdrr.io/pkg/insight/man/link_inverse.html">link_inverse()</a></code> now also returns the link-inverse function for cumulative-family <em>brms</em>-models.</li>
-<li>
-<code>model_family()</code> now also returns an <code>is_ordinal</code>-element with information if the model is ordinal resp. a cumulative link model.</li>
-<li>Functions that access model information (like <code>model_family()</code>) now better support <code>vglm</code>-models (package <em>VGAM</em>).</li>
-<li>
-<code><a href="../reference/r2.html">r2()</a></code> now also calculates the standard error for <em>brms</em> or <em>stanreg</em> models.</li>
-<li>
-<code><a href="../reference/r2.html">r2()</a></code> gets a <code>loo</code>-argument to calculate LOO-adjusted rsquared values for <em>brms</em> or <em>stanreg</em> models. This measure comes conceptionally closer to an adjusted r-squared measure.</li>
-<li>Effect sizes (<code><a href="../reference/eta_sq.html">anova_stats()</a></code>, <code><a href="../reference/eta_sq.html">eta_sq()</a></code> etc.) are now also computed for mixed models.</li>
-<li>To avoid confusion, <code>n_eff()</code> now computes the number of effective samples, and no longer its ratio in relation to the total number of samples.</li>
-<li>The column name for the ratio of the number of effective samples in <code><a href="../reference/tidy_stan.html">tidy_stan()</a></code> is now named <em>neff_ratio</em>, to avoid confusion.</li>
-</ul>
-</div>
-<div id="bug-fixes-8" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-8" class="anchor"></a>Bug fixes</h2>
-<ul>
-<li>Fixed issue in <code><a href="../reference/r2.html">se()</a></code> for <code><a href="../reference/r2.html">icc()</a></code>-objects, where random effect term could not be found.</li>
-<li>Fixed issue in <code><a href="../reference/r2.html">se()</a></code> for <code>merMod</code>-objects.</li>
-<li>Fixed issue in <code><a href="../reference/r2.html">p_value()</a></code> for mixed models with KR-approximation, which is now more accurate.</li>
-</ul>
-</div>
-</div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#sjstats-0178">0.17.8</a></li>
-        <li><a href="#sjstats-0177">0.17.7</a></li>
-        <li><a href="#sjstats-0176">0.17.6</a></li>
-        <li><a href="#sjstats-0175">0.17.5</a></li>
-        <li><a href="#sjstats-0174">0.17.4</a></li>
-        <li><a href="#sjstats-0173">0.17.3</a></li>
-        <li><a href="#sjstats-0172">0.17.2</a></li>
-        <li><a href="#sjstats-0171">0.17.1</a></li>
-        <li><a href="#sjstats-0170">0.17.0</a></li>
-        <li><a href="#sjstats-0160">0.16.0</a></li>
-        <li><a href="#sjstats-0150">0.15.0</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -774,7 +673,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -249,7 +249,7 @@ Therefore, following functions are now deprecated:
 * The `statistics`-argument in `xtab_statistics()` gets a `"fisher"`-option, to force Fisher's Exact Test to be used.
 * Improved variance calculation in `icc()` for generalized linear mixed models with Poisson or negative binomial families.
 * `icc()` gets an `adjusted`-argument, to calculate the adjusted and conditional ICC for mixed models.
-* To get consistent argument names accross functions, argument `weight.by` is now deprecated and renamed into `weights`.
+* To get consistent argument names across functions, argument `weight.by` is now deprecated and renamed into `weights`.
 
 ## Bug fixes
 
@@ -258,68 +258,3 @@ Therefore, following functions are now deprecated:
 * `icc()`, `re_var()` and  `get_re_var()` now correctly compute the random-effect-variances for models with multiple random slopes per random effect term (e.g., `(1 + rs1 + rs2 | grp)`).
 * Fix issues in `tidy_stan()`, `mcse()`, `hdi()` and `n_eff()` for `stan_polr()`-models.
 * Plotting `equi_test()` did not work for intercept-only models.
-
-# sjstats 0.16.0
-
-## General
-
-* The S3-generics for functions like `hdi()`, `rope()`, `equi_test()` etc. are now more generic, and function usage for each supported object is now included in the documentation.
-* Following functions are now S3-generic: `icc()`, `r2()`, `p_value()`, `se()`, and `std_beta()`.
-* Added `print()`-methods for some more functions, for a clearer output.
-* Revised `r2()` for mixed models (packages **lme4**, **glmmTMB**). The r-squared value should be much more precise now, and reports the marginal and conditional r-squared values.
-* Reduced package dependencies and removed _apaTables_ and _MBESS_ from suggested packages
-* `stanmvreg`-models are now supported by many functions.
-
-## New functions
-
-* `binned_resid()` to plot binned residuals for logistic regression models.
-* `error_rate()` to compute model quality for logistic regression models.
-* `auto_prior()` to quickly create automatically adjusted priors for brms-models.
-* `difficulty()` to compute the item difficulty.
-
-## Changes to functions
-
-* `icc()` gets a `ppd`-argument for Stan-models (*brmsfit* and *stanreg*), which performs a variance decomposition based on the posterior predictive distribution. This is the recommended way for non-Gaussian models.
-* For Stan-models (*brmsfit* and *stanreg*), `icc()` now also computes the HDI for the ICC and random-effect variances. Use the `prob`-argument to specify the limits of this interval.
-* `link_inverse()` and `model_family()` now support _clmm_-models (package *ordinal*) and _glmRob_ and _lmRob_-models (package *robust*).
-* `model_family()` gets a `multi.resp`-argument, to return a list of family-informations for multivariate-response models (of class `brmsfit` or `stanmvreg`).
-* `link_inverse()` gets a `multi.resp`-argument, to return a list of link-inverse-functions for multivariate-response models (of class `brmsfit` or `stanmvreg`).
-* `p_value()` now supports _rlm_-models (package *MASS*).
-* `check_assumptions()` for single models with `as.logical = FALSE` now has a nice print-method.
-* `eta_sq()` and `omega_sq()` now also work for repeated-measure Anovas, i.e. Anova with error term (requires broom > 0.4.5).
-
-## Bug fixes
-
-* `model_frame()` and `var_names()` now correctly cleans nested patterns like `offset(log(x + 10))` from column names.
-* `model_frame()` now returns proper column names from _gamm4_ models.
-* `model_frame()` did not work when the model frame had spline-terms and weights.
-* Fix issue in `robust()` when `exponentiate = TRUE` and `conf.int = FALSE`.
-* `reliab_test()` returned an error when the provided data frame has less than three columns, instead of returning `NULL`.
-
-# sjstats 0.15.0
-
-## General
-
-* Added new Vignette _Statistics for Bayesian Models_.
-
-## New functions
-
-* `equi_test()` to test if parameter values in Bayesian estimation should be accepted or rejected.
-* `mediation()` to print a summary of a mediation analysis from multivariate response models fitted with _brms_.
-
-## Changes to functions
-
-* `link_inverse()` now also returns the link-inverse function for cumulative-family _brms_-models.
-* `model_family()` now also returns an `is_ordinal`-element with information if the model is ordinal resp. a cumulative link model.
-* Functions that access model information (like `model_family()`) now better support `vglm`-models (package _VGAM_).
-* `r2()` now also calculates the standard error for _brms_ or _stanreg_ models.
-* `r2()` gets a `loo`-argument to calculate LOO-adjusted rsquared values for _brms_ or _stanreg_ models. This measure comes conceptionally closer to an adjusted r-squared measure.
-* Effect sizes (`anova_stats()`, `eta_sq()` etc.) are now also computed for mixed models.
-* To avoid confusion, `n_eff()` now computes the number of effective samples, and no longer its ratio in relation to the total number of samples.
-* The column name for the ratio of the number of effective samples in `tidy_stan()` is now named *neff_ratio*, to avoid confusion.
-
-## Bug fixes
-
-* Fixed issue in `se()` for `icc()`-objects, where random effect term could not be found.
-* Fixed issue in `se()` for `merMod`-objects.
-* Fixed issue in `p_value()` for mixed models with KR-approximation, which is now more accurate.

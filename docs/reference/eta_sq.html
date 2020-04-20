@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -48,7 +52,6 @@
   anova_stats() returns a tidy summary, including all these statistics
   and power for each term." />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -66,7 +69,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -80,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.9.1</span>
       </span>
     </div>
 
@@ -119,7 +122,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/strengejacke/sjstats">
+  <a href="https://github.com/strengejacke/sjstats/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -138,7 +141,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Effect size statistics for anova</h1>
-    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/anova_stats.R'><code>R/anova_stats.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/epsilon_sq.R'><code>R/epsilon_sq.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/eta_sq.R'><code>R/eta_sq.R</code></a>, and 2 more</small>
+    <small class="dont-index">Source: <a href='https://github.com/strengejacke/sjstats/blob/master/R/anova_stats.R'><code>R/anova_stats.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/epsilon_sq.R'><code>R/epsilon_sq.R</code></a>, <a href='https://github.com/strengejacke/sjstats/blob/master/R/eta_sq.R'><code>R/eta_sq.R</code></a>, and 1 more</small>
     <div class="hidden name"><code>eta_sq.Rd</code></div>
     </div>
 
@@ -151,23 +154,11 @@
 
     <pre class="usage"><span class='fu'>anova_stats</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 
-<span class='fu'>epsilon_sq</span>(<span class='no'>model</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>))
+<span class='fu'>epsilon_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>eta_sq</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>)
-)
+<span class='fu'>eta_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>omega_sq</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dist"</span>, <span class='st'>"quantile"</span>)
-)</pre>
+<span class='fu'>omega_sq</span>(<span class='no'>model</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,29 +169,13 @@
 models are coerced to <code><a href='https://rdrr.io/r/stats/anova.html'>anova</a></code>.</p></td>
     </tr>
     <tr>
-      <th>digits</th>
-      <td><p>Number of decimal points in the returned data frame.</p></td>
+      <th>partial</th>
+      <td><p>Logical, if <code>TRUE</code>, the partial eta-squared is returned.</p></td>
     </tr>
     <tr>
       <th>ci.lvl</th>
       <td><p>Scalar between 0 and 1. If not <code>NULL</code>, returns a data
 frame with effect sizes including lower and upper confidence intervals.</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p>Number of bootstraps to be generated.</p></td>
-    </tr>
-    <tr>
-      <th>method</th>
-      <td><p>Character vector, indicating if confidence intervals should be
-based on bootstrap standard error, multiplied by the value of the
-quantile function of the t-distribution (default), or on sample
-quantiles of the bootstrapped values. See 'Details' in <code><a href='boot_ci.html'>boot_ci()</a></code>.
-May be abbreviated.</p></td>
-    </tr>
-    <tr>
-      <th>partial</th>
-      <td><p>Logical, if <code>TRUE</code>, the partial eta-squared is returned.</p></td>
     </tr>
     </table>
 
@@ -212,16 +187,7 @@ May be abbreviated.</p></td>
   data frame with all statistics is returned (excluding confidence intervals).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For <code>eta_sq()</code> (with <code>partial = FALSE</code>), due to
-  non-symmetry, confidence intervals are based on bootstrap-methods. In this
-  case, <code>n</code> indicates the number of bootstrap samples to be drawn to
-  compute the confidence intervals. Confidence intervals for partial
-  omega-squared and epsilon-squared is also based on bootstrapping.
-  <br /> <br />
-  Since bootstrapped confidence intervals are based on the bootstrap standard error
-  (i.e. <code>mean(x) +/- qt(.975, df = length(x) - 1) * sd(x))</code>, bounds of
-  the confidence interval may be negative. Use <code>method = "quantile"</code> to
-  make sure that the confidence intervals are always positive.</p>
+    <p>See details in <code><a href='https://rdrr.io/pkg/effectsize/man/eta_squared.html'>eta_squared</a></code>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Levine TR, Hullett CR (2002): Eta Squared, Partial Eta Squared, and Misreporting of Effect Size in Communication Research (<a href='https://www.msu.edu/~levinet/eta%20squared%20hcr.pdf'>pdf</a>)
@@ -248,7 +214,7 @@ May be abbreviated.</p></td>
 #&gt; 1   as.factor(e42dep)         0.281
 #&gt; 2 as.factor(c172code)         0.008
 #&gt; 3             c160age         0.066</div><div class='input'><span class='fu'>eta_sq</span>(<span class='no'>fit</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ci.lvl</span> <span class='kw'>=</span> <span class='fl'>.8</span>)</div><div class='output co'>#&gt;                  term partial.etasq conf.low conf.high
-#&gt; 1   as.factor(e42dep)         0.281    0.247     0.310
+#&gt; 1   as.factor(e42dep)         0.281    0.248     0.311
 #&gt; 2 as.factor(c172code)         0.008    0.001     0.016
 #&gt; 3             c160age         0.066    0.047     0.089</div><div class='input'>
 <span class='fu'>anova_stats</span>(<span class='kw pkg'>car</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/car/man/Anova.html'>Anova</a></span>(<span class='no'>fit</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='message'>Registered S3 methods overwritten by 'car':</span>
@@ -265,19 +231,12 @@ May be abbreviated.</p></td>
 #&gt; 1         0.224   0.209           0.221     0.209    0.537 1.000
 #&gt; 2         0.005   0.002           0.003     0.002    0.071 0.429
 #&gt; 3         0.066   0.051           0.065     0.051    0.267 1.000
-#&gt; 4            NA      NA              NA        NA       NA    NA</div><div class='input'>
-</div></pre>
+#&gt; 4            NA      NA              NA        NA       NA    NA</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#references">References</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -288,7 +247,7 @@ May be abbreviated.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

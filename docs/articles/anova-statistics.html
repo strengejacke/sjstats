@@ -12,20 +12,20 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Statistics for Anova Tables">
-<meta property="og:description" content="">
+<meta property="og:description" content="sjstats">
 <meta property="og:image" content="/logo.png">
-<meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.9.1</span>
       </span>
     </div>
 
@@ -77,7 +77,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/strengejacke/sjstats">
+  <a href="https://github.com/strengejacke/sjstats/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -92,13 +92,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="anova-statistics_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Statistics for Anova Tables</h1>
+      <h1 data-toc-skip>Statistics for Anova Tables</h1>
                         <h4 class="author">Daniel Lüdecke</h4>
             
-            <h4 class="date">2020-01-29</h4>
+            <h4 class="date">2020-04-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/vignettes/anova-statistics.Rmd"><code>vignettes/anova-statistics.Rmd</code></a></small>
       <div class="hidden name"><code>anova-statistics.Rmd</code></div>
@@ -118,114 +118,89 @@
 <li><code><a href="../reference/eta_sq.html">anova_stats()</a></code></li>
 </ul>
 <p>Befor we start, we fit a simple model:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sjstats)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="co"># load sample data</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(efc)</a>
-<a class="sourceLine" id="cb1-4" title="4"></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="co"># fit linear model</span></a>
-<a class="sourceLine" id="cb1-6" title="6">fit &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span>(</a>
-<a class="sourceLine" id="cb1-7" title="7">  c12hour <span class="op">~</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(e42dep) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(c172code) <span class="op">+</span><span class="st"> </span>c160age,</a>
-<a class="sourceLine" id="cb1-8" title="8">  <span class="dt">data =</span> efc</a>
-<a class="sourceLine" id="cb1-9" title="9">)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sjstats</span>)
+<span class="co"># load sample data</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">efc</span>)
+
+<span class="co"># fit linear model</span>
+<span class="no">fit</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span>(
+  <span class="no">c12hour</span> ~ <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="no">e42dep</span>) + <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="no">c172code</span>) + <span class="no">c160age</span>,
+  <span class="kw">data</span> <span class="kw">=</span> <span class="no">efc</span>
+)</pre></body></html></div>
 <p>All functions accept objects of class <code>aov</code> or <code>anova</code>, so you can also use model fits from the <em>car</em> package, which allows fitting Anova’s with different types of sum of squares. Other objects, like <code>lm</code>, will be coerced to <code>anova</code> internally.</p>
 <p>The following functions return the effect size statistic as named numeric vector, using the model’s term names.</p>
 <div id="eta-squared" class="section level2">
 <h2 class="hasAnchor">
 <a href="#eta-squared" class="anchor"></a>Eta-Squared</h2>
 <p>The eta-squared is the proportion of the total variability in the dependent variable that is accounted for by the variation in the independent variable. It is the ratio of the sum of squares for each group level to the total sum of squares. It can be interpreted as percentage of variance accounted for by a variable.</p>
-<p>For variables with 1 degree of freedeom (in the numerator), the square root of eta-squared is equal to the correlation coefficient <em>r</em>. For variables with more than 1 degree of freedom, eta-squared equals <em>R2</em>. This makes eta-squared easily interpretable. Furthermore, these effect sizes can easily be converted into effect size measures that can be, for instance, further processed in meta-analyses.</p>
+<p>For variables with 1 degree of freedom (in the numerator), the square root of eta-squared is equal to the correlation coefficient <em>r</em>. For variables with more than 1 degree of freedom, eta-squared equals <em>R2</em>. This makes eta-squared easily interpretable. Furthermore, these effect sizes can easily be converted into effect size measures that can be, for instance, further processed in meta-analyses.</p>
 <p>Eta-squared can be computed simply with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">eta_sq</a></span>(fit)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt;                  term etasq</span></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="co">#&gt; 1   as.factor(e42dep) 0.266</span></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt; 2 as.factor(c172code) 0.005</span></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt; 3             c160age 0.048</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/eta_sq.html">eta_sq</a></span>(<span class="no">fit</span>, <span class="kw">ci.lvl</span> <span class="kw">=</span> <span class="fl">.95</span>)
+<span class="co">#&gt;                  term etasq conf.low conf.high</span>
+<span class="co">#&gt; 1   as.factor(e42dep) 0.266    0.217     0.312</span>
+<span class="co">#&gt; 2 as.factor(c172code) 0.005    0.000     0.018</span>
+<span class="co">#&gt; 3             c160age 0.048    0.024     0.080</span></pre></body></html></div>
 </div>
 <div id="partial-eta-squared" class="section level2">
 <h2 class="hasAnchor">
 <a href="#partial-eta-squared" class="anchor"></a>Partial Eta-Squared</h2>
 <p>The partial eta-squared value is the ratio of the sum of squares for each group level to the sum of squares for each group level plus the residual sum of squares. It is more difficult to interpret, because its value strongly depends on the variability of the residuals. Partial eta-squared values should be reported with caution, and Levine and Hullett (2002) recommend reporting eta- or omega-squared rather than partial eta-squared.</p>
 <p>Use the <code>partial</code>-argument to compute partial eta-squared values:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">eta_sq</a></span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt;                  term partial.etasq</span></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt; 1   as.factor(e42dep)         0.281</span></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="co">#&gt; 2 as.factor(c172code)         0.008</span></a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="co">#&gt; 3             c160age         0.066</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/eta_sq.html">eta_sq</a></span>(<span class="no">fit</span>, <span class="kw">partial</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">ci.lvl</span> <span class="kw">=</span> <span class="fl">.95</span>)
+<span class="co">#&gt;                  term partial.etasq conf.low conf.high</span>
+<span class="co">#&gt; 1   as.factor(e42dep)         0.281    0.232     0.327</span>
+<span class="co">#&gt; 2 as.factor(c172code)         0.008    0.000     0.023</span>
+<span class="co">#&gt; 3             c160age         0.066    0.038     0.101</span></pre></body></html></div>
 </div>
 <div id="omega-squared" class="section level2">
 <h2 class="hasAnchor">
 <a href="#omega-squared" class="anchor"></a>Omega-Squared</h2>
 <p>While eta-squared estimates tend to be biased in certain situations, e.g. when the sample size is small or the independent variables have many group levels, omega-squared estimates are corrected for this bias.</p>
 <p>Omega-squared can be simply computed with:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">omega_sq</a></span>(fit)</a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="co">#&gt;                  term omegasq</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="co">#&gt; 1   as.factor(e42dep)   0.263</span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="co">#&gt; 2 as.factor(c172code)   0.004</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt; 3             c160age   0.048</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/eta_sq.html">omega_sq</a></span>(<span class="no">fit</span>, <span class="kw">ci.lvl</span> <span class="kw">=</span> <span class="fl">.95</span>)
+<span class="co">#&gt;                  term omegasq conf.low conf.high</span>
+<span class="co">#&gt; 1   as.factor(e42dep)   0.263    0.214     0.310</span>
+<span class="co">#&gt; 2 as.factor(c172code)   0.004   -0.002     0.016</span>
+<span class="co">#&gt; 3             c160age   0.048    0.023     0.078</span></pre></body></html></div>
 </div>
 <div id="partial-omega-squared" class="section level2">
 <h2 class="hasAnchor">
 <a href="#partial-omega-squared" class="anchor"></a>Partial Omega-Squared</h2>
 <p><code><a href="../reference/eta_sq.html">omega_sq()</a></code> also has a <code>partial</code>-argument to compute partial omega-squared values. Computing the partial omega-squared statistics is based on bootstrapping. In this case, use <code>n</code> to define the number of samples (1000 by default.)</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">omega_sq</a></span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">n =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt;                  term partial.omegasq</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; 1   as.factor(e42dep)           0.278</span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; 2 as.factor(c172code)           0.005</span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt; 3             c160age           0.065</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/eta_sq.html">omega_sq</a></span>(<span class="no">fit</span>, <span class="kw">partial</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">ci.lvl</span> <span class="kw">=</span> <span class="fl">.95</span>)
+<span class="co">#&gt;                  term partial.omegasq conf.low conf.high</span>
+<span class="co">#&gt; 1   as.factor(e42dep)           0.278    0.229     0.325</span>
+<span class="co">#&gt; 2 as.factor(c172code)           0.005   -0.002     0.020</span>
+<span class="co">#&gt; 3             c160age           0.065    0.036     0.100</span></pre></body></html></div>
 </div>
 </div>
 <div id="epsilon-squared" class="section level1">
 <h1 class="hasAnchor">
 <a href="#epsilon-squared" class="anchor"></a>Epsilon Squared</h1>
 <p>Espilon-squared is a less common measure of effect size. It is sometimes considered as an “adjusted r-squared” value. You can compute this effect size using <code><a href="../reference/eta_sq.html">epsilon_sq()</a></code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">epsilon_sq</a></span>(fit)</a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt;                  term epsilonsq</span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="co">#&gt; 1   as.factor(e42dep)     0.264</span></a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt; 2 as.factor(c172code)     0.004</span></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt; 3             c160age     0.048</span></a></code></pre></div>
-<p>When the <code>ci.lvl</code>-argument is defined, bootstrapping is used to compute the confidence intervals.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">epsilon_sq</a></span>(fit, <span class="dt">ci.lvl =</span> <span class="fl">.95</span>, <span class="dt">n =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="co">#&gt;                  term epsilonsq conf.low conf.high</span></a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; 1   as.factor(e42dep)     0.264    0.211     0.319</span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt; 2 as.factor(c172code)     0.004   -0.004     0.015</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; 3             c160age     0.048    0.025     0.072</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/eta_sq.html">epsilon_sq</a></span>(<span class="no">fit</span>, <span class="kw">ci.lvl</span> <span class="kw">=</span> <span class="fl">.95</span>)
+<span class="co">#&gt;                  term epsilonsq conf.low conf.high</span>
+<span class="co">#&gt; 1   as.factor(e42dep)     0.264    0.214     0.310</span>
+<span class="co">#&gt; 2 as.factor(c172code)     0.004   -0.002     0.016</span>
+<span class="co">#&gt; 3             c160age     0.048    0.023     0.079</span></pre></body></html></div>
 </div>
 <div id="complete-statistical-table-output" class="section level1">
 <h1 class="hasAnchor">
 <a href="#complete-statistical-table-output" class="anchor"></a>Complete Statistical Table Output</h1>
 <p>The <code><a href="../reference/eta_sq.html">anova_stats()</a></code> function takes a model input and computes a comprehensive summary, including the above effect size measures, returned as tidy data frame:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">anova_stats</a></span>(fit)</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt;                  term  df      sumsq     meansq statistic p.value etasq partial.etasq omegasq partial.omegasq epsilonsq cohens.f power</span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt; 1   as.factor(e42dep)   3  577756.33 192585.444   108.786   0.000 0.266         0.281   0.263           0.278     0.264    0.626  1.00</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt; 2 as.factor(c172code)   2   11722.05   5861.024     3.311   0.037 0.005         0.008   0.004           0.005     0.004    0.089  0.63</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; 3             c160age   1  105169.60 105169.595    59.408   0.000 0.048         0.066   0.048           0.065     0.048    0.267  1.00</span></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; 4           Residuals 834 1476436.34   1770.307        NA      NA    NA            NA      NA              NA        NA       NA    NA</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/eta_sq.html">anova_stats</a></span>(<span class="no">fit</span>)
+<span class="co">#&gt;                  term  df      sumsq     meansq statistic p.value etasq partial.etasq omegasq partial.omegasq epsilonsq cohens.f power</span>
+<span class="co">#&gt; 1   as.factor(e42dep)   3  577756.33 192585.444   108.786   0.000 0.266         0.281   0.263           0.278     0.264    0.626  1.00</span>
+<span class="co">#&gt; 2 as.factor(c172code)   2   11722.05   5861.024     3.311   0.037 0.005         0.008   0.004           0.005     0.004    0.089  0.63</span>
+<span class="co">#&gt; 3             c160age   1  105169.60 105169.595    59.408   0.000 0.048         0.066   0.048           0.065     0.048    0.267  1.00</span>
+<span class="co">#&gt; 4           Residuals 834 1476436.34   1770.307        NA      NA    NA            NA      NA              NA        NA       NA    NA</span></pre></body></html></div>
 <p>Like the other functions, the input may also be an object of class <code>anova</code>, so you can also use model fits from the <em>car</em> package, which allows fitting Anova’s with different types of sum of squares:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">anova_stats</a></span>(car<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/car/man/Anova.html">Anova</a></span>(fit, <span class="dt">type =</span> <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="co">#&gt;                  term       sumsq     meansq  df statistic p.value etasq partial.etasq omegasq partial.omegasq epsilonsq cohens.f power</span></a>
-<a class="sourceLine" id="cb9-3" title="3"><span class="co">#&gt; 1         (Intercept)   26851.070  26851.070   1    15.167   0.000 0.013         0.018   0.012           0.017     0.012    0.135 0.973</span></a>
-<a class="sourceLine" id="cb9-4" title="4"><span class="co">#&gt; 2   as.factor(e42dep)  426461.571 142153.857   3    80.299   0.000 0.209         0.224   0.206           0.220     0.206    0.537 1.000</span></a>
-<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt; 3 as.factor(c172code)    7352.049   3676.025   2     2.076   0.126 0.004         0.005   0.002           0.003     0.002    0.071 0.429</span></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="co">#&gt; 4             c160age  105169.595 105169.595   1    59.408   0.000 0.051         0.066   0.051           0.065     0.051    0.267 1.000</span></a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="co">#&gt; 5           Residuals 1476436.343   1770.307 834        NA      NA    NA            NA      NA              NA        NA       NA    NA</span></a></code></pre></div>
-</div>
-<div id="confidence-intervals" class="section level1">
-<h1 class="hasAnchor">
-<a href="#confidence-intervals" class="anchor"></a>Confidence Intervals</h1>
-<p><code><a href="../reference/eta_sq.html">eta_sq()</a></code> and <code><a href="../reference/eta_sq.html">omega_sq()</a></code> have a <code>ci.lvl</code>-argument, which - if not <code>NULL</code> - also computes a confidence interval.</p>
-<p>For eta-squared, i.e. <code><a href="../reference/eta_sq.html">eta_sq()</a></code> with <code>partial = FALSE</code>, due to non-symmetry, confidence intervals are based on bootstrap-methods. Confidence intervals for partial omega-squared, i.e. <code><a href="../reference/eta_sq.html">omega_sq()</a></code> with <code>partial = TRUE</code> - is also based on bootstrapping. In these cases, <code>n</code> indicates the number of bootstrap samples to be drawn to compute the confidence intervals.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="../reference/eta_sq.html">eta_sq</a></span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">ci.lvl =</span> <span class="fl">.8</span>)</a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="co">#&gt;                  term partial.etasq conf.low conf.high</span></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt; 1   as.factor(e42dep)         0.281    0.247     0.310</span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="co">#&gt; 2 as.factor(c172code)         0.008    0.001     0.016</span></a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="co">#&gt; 3             c160age         0.066    0.047     0.089</span></a>
-<a class="sourceLine" id="cb10-6" title="6"></a>
-<a class="sourceLine" id="cb10-7" title="7"><span class="co"># uses bootstrapping - here, for speed, just 100 samples</span></a>
-<a class="sourceLine" id="cb10-8" title="8"><span class="kw"><a href="../reference/eta_sq.html">omega_sq</a></span>(fit, <span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">ci.lvl =</span> <span class="fl">.9</span>, <span class="dt">n =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb10-9" title="9"><span class="co">#&gt;                  term partial.omegasq conf.low conf.high</span></a>
-<a class="sourceLine" id="cb10-10" title="10"><span class="co">#&gt; 1   as.factor(e42dep)           0.278    0.232     0.320</span></a>
-<a class="sourceLine" id="cb10-11" title="11"><span class="co">#&gt; 2 as.factor(c172code)           0.005   -0.002     0.019</span></a>
-<a class="sourceLine" id="cb10-12" title="12"><span class="co">#&gt; 3             c160age           0.065    0.038     0.097</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/eta_sq.html">anova_stats</a></span>(<span class="kw pkg">car</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/Anova.html">Anova</a></span>(<span class="no">fit</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="fl">3</span>))
+<span class="co">#&gt;                  term       sumsq     meansq  df statistic p.value etasq partial.etasq omegasq partial.omegasq epsilonsq cohens.f power</span>
+<span class="co">#&gt; 1   as.factor(e42dep)  426461.571 142153.857   3    80.299   0.000 0.212         0.224   0.209           0.221     0.209    0.537 1.000</span>
+<span class="co">#&gt; 2 as.factor(c172code)    7352.049   3676.025   2     2.076   0.126 0.004         0.005   0.002           0.003     0.002    0.071 0.429</span>
+<span class="co">#&gt; 3             c160age  105169.595 105169.595   1    59.408   0.000 0.052         0.066   0.051           0.065     0.051    0.267 1.000</span>
+<span class="co">#&gt; 4           Residuals 1476436.343   1770.307 834        NA      NA    NA            NA      NA              NA        NA       NA    NA</span></pre></body></html></div>
 </div>
 <div id="references" class="section level1">
 <h1 class="hasAnchor">
@@ -234,27 +209,11 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li>
-<a href="#effect-size-statistics-for-anova-tables">Effect Size Statistics for Anova Tables</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#eta-squared">Eta-Squared</a></li>
-      <li><a href="#partial-eta-squared">Partial Eta-Squared</a></li>
-      <li><a href="#omega-squared">Omega-Squared</a></li>
-      <li><a href="#partial-omega-squared">Partial Omega-Squared</a></li>
-      </ul>
-</li>
-      <li><a href="#epsilon-squared">Epsilon Squared</a></li>
-      <li><a href="#complete-statistical-table-output">Complete Statistical Table Output</a></li>
-      <li><a href="#confidence-intervals">Confidence Intervals</a></li>
-      <li><a href="#references">References</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -265,7 +224,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
