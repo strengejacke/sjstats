@@ -2,7 +2,7 @@ Package: sjstats
 Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
-Version: 0.17.9
+Version: 0.17.9.1
 Authors@R: person("Daniel", "Lüdecke", role = c("aut", "cre"), email = "d.luedecke@uke.de", comment = c(ORCID = "0000-0002-8895-3206"))
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -55,7 +55,6 @@ Suggests:
     rstan,
     rstanarm,
     VGAM,
-    Zelig,
     testthat
 URL: https://github.com/strengejacke/sjstats, https://strengejacke.github.io/sjstats
 BugReports: https://github.com/strengejacke/sjstats/issues
