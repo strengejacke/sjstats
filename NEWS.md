@@ -1,3 +1,10 @@
+# sjstats 0.18.
+
+## General
+
+* Effect size computation functions (like `eta_sq()`) now internally call the related functions from the *effectsize* package.
+* Remove packages from "Suggest" that have been removed from CRAN.
+
 # sjstats 0.17.9
 
 ## Bug fixes
