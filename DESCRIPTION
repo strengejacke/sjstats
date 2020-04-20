@@ -58,5 +58,5 @@ Suggests:
     testthat
 URL: https://github.com/strengejacke/sjstats, https://strengejacke.github.io/sjstats
 BugReports: https://github.com/strengejacke/sjstats/issues
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
