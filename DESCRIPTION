@@ -42,21 +42,14 @@ Suggests:
     coin,
     ggplot2,
     graphics,
-    httr,
-    knitr,
-    mediation,
     nlme,
-    pbkrtest (>= 0.4-7),
     pscl,
     pwr,
-    sandwich,
     sjPlot,
     survey,
     rstan,
     rstanarm,
-    VGAM,
     testthat
 URL: https://github.com/strengejacke/sjstats, https://strengejacke.github.io/sjstats
 BugReports: https://github.com/strengejacke/sjstats/issues
 RoxygenNote: 7.1.0
-VignetteBuilder: knitr
