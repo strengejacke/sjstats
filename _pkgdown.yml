@@ -76,11 +76,3 @@ navbar:
     href: news/index.html
   - text: Reference
     href: reference/index.html
-  - text: Documentation
-    menu:
-      - text: 'Statistics for Anova Tables'
-        href: articles/anova-statistics.html
-      - text: 'Statistics for Bayesian Models'
-        href: articles/bayesian-statistics.html
-      - text: 'Statistics for Mixed Effects Models'
-        href: articles/mixedmodels-statistics.html

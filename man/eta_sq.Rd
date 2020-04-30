@@ -20,6 +20,8 @@ omega_sq(model, partial = FALSE, ci.lvl = NULL)
 \item{model}{A fitted anova-model of class \code{aov} or \code{anova}. Other
 models are coerced to \code{\link[stats]{anova}}.}
 
+\item{digits}{Amount of digits for returned values.}
+
 \item{partial}{Logical, if \code{TRUE}, the partial eta-squared is returned.}
 
 \item{ci.lvl}{Scalar between 0 and 1. If not \code{NULL}, returns a data

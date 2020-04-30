@@ -10,6 +10,7 @@
 #' @param partial Logical, if \code{TRUE}, the partial eta-squared is returned.
 #' @param ci.lvl Scalar between 0 and 1. If not \code{NULL}, returns a data
 #'   frame with effect sizes including lower and upper confidence intervals.
+#' @param digits Amount of digits for returned values.
 #'
 #' @return A data frame with the term name(s) and effect size statistics; if
 #'   \code{ci.lvl} is not \code{NULL}, a data frame including lower and
