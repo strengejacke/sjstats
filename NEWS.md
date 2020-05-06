@@ -1,4 +1,4 @@
-# sjstats 0.18.
+# sjstats 0.18.0
 
 ## General
 

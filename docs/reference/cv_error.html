@@ -83,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.18.0</span>
       </span>
     </div>
 
@@ -100,24 +100,6 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Documentation
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/anova-statistics.html">Statistics for Anova Tables</a>
-    </li>
-    <li>
-      <a href="../articles/bayesian-statistics.html">Statistics for Bayesian Models</a>
-    </li>
-    <li>
-      <a href="../articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -183,7 +165,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>cv_error()</code> first generates cross-validated test-training pairs, using
-         <code><a href='https://rdrr.io/pkg/modelr/man/crossv_mc.html'>crossv_kfold</a></code> and then fits a linear model, which
+         <code><a href='https://modelr.tidyverse.org/reference/crossv_mc.html'>crossv_kfold</a></code> and then fits a linear model, which
          is described in <code>formula</code>, to the training data. Then, predictions
          for the test data are computed, based on the trained models.
          The <em>training error</em> is the mean value of the <code><a href='https://rdrr.io/pkg/performance/man/performance_rmse.html'>rmse</a></code> for
@@ -192,11 +174,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
-<span class='fu'>cv_error</span>(<span class='no'>efc</span>, <span class='no'>neg_c_7</span> ~ <span class='no'>barthtot</span> + <span class='no'>c161sex</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_data_frame()` is deprecated as of tibble 2.0.0.</span>
-#&gt; <span class='warning'>Please use `as_tibble()` instead.</span>
-#&gt; <span class='warning'>The signature and semantics have changed, see `?as_tibble`.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
-#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='output co'>#&gt; <span class='warning'>Warning: unnest() has a new interface. See ?unnest for details.</span>
+<span class='fu'>cv_error</span>(<span class='no'>efc</span>, <span class='no'>neg_c_7</span> ~ <span class='no'>barthtot</span> + <span class='no'>c161sex</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: unnest() has a new interface. See ?unnest for details.</span>
 #&gt; <span class='warning'>Try `df %&gt;% unnest(c(predicted, residuals))`, with `mutate()` if needed</span></div><div class='output co'>#&gt;                          model train.error test.error
 #&gt; 1 neg_c_7 ~ barthtot + c161sex      3.5065      3.519</div><div class='input'>
 <span class='fu'>cv_compare</span>(<span class='no'>efc</span>, <span class='kw'>formulas</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
@@ -210,7 +188,7 @@
 #&gt; 1          neg_c_7 ~ barthtot + c161sex      3.5066     3.5223
 #&gt; 2 neg_c_7 ~ barthtot + c161sex + e42dep      3.4865     3.5089
 #&gt; 3          neg_c_7 ~ barthtot + c12hour      3.5028     3.5205</div><div class='input'>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

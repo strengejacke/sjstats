@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.18.0</span>
       </span>
     </div>
 
@@ -99,24 +99,6 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Documentation
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/anova-statistics.html">Statistics for Anova Tables</a>
-    </li>
-    <li>
-      <a href="../articles/bayesian-statistics.html">Statistics for Bayesian Models</a>
-    </li>
-    <li>
-      <a href="../articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -239,7 +221,7 @@ group.</p></td>
 #&gt; 8  education3   1.327901  1.1280723 0.9057139 1.3294549</div><div class='input'>
 <span class='co'># replicate OR/RR for coefficient "sex" from above regression</span>
 <span class='co'># p0 ~ .44, or ~ 1.914</span>
-<span class='fu'><a href='https://rdrr.io/r/base/prop.table.html'>prop.table</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>mydf</span>$<span class='no'>y</span>, <span class='no'>mydf</span>$<span class='no'>sex</span>))</div><div class='output co'>#&gt;    
+<span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='no'>mydf</span>$<span class='no'>y</span>, <span class='no'>mydf</span>$<span class='no'>sex</span>))</div><div class='output co'>#&gt;    
 #&gt;             1         2
 #&gt;   0 0.1324355 0.3153760
 #&gt;   1 0.1054994 0.4466891</div><div class='input'><span class='fu'>or_to_rr</span>(<span class='fl'>1.914</span>, <span class='fl'>0.1055</span> / (<span class='fl'>.1324</span> + <span class='fl'>.1055</span>))</div><div class='output co'>#&gt; [1] 1.361962</div><div class='input'>

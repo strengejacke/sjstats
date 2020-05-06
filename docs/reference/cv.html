@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.18.0</span>
       </span>
     </div>
 
@@ -97,24 +97,6 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Documentation
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/anova-statistics.html">Statistics for Anova Tables</a>
-    </li>
-    <li>
-      <a href="../articles/bayesian-statistics.html">Statistics for Bayesian Models</a>
-    </li>
-    <li>
-      <a href="../articles/mixedmodels-statistics.html">Statistics for Mixed Effects Models</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -171,15 +153,7 @@ variation at once.</p></td>
     <p>The advantage of the cv is that it is unitless. This allows
         coefficient of variation to be compared to each other in ways
         that other measures, like standard deviations or root mean
-        squared residuals, cannot be.
-        <br /> <br />
-        &#8220;It is interesting to note the differences between a model's CV
-        and R-squared values. Both are unitless measures that are indicative
-        of model fit, but they define model fit in two different ways: CV
-        evaluates the relative closeness of the predictions to the actual
-        values while R-squared evaluates how much of the variability in the
-        actual values is explained by the model.&#8221;
-        <cite>(<a href='http://www.ats.ucla.edu/stat/mult_pkg/faq/general/coefficient_of_variation.htm'>source: UCLA-FAQ</a>)</cite></p>
+        squared residuals, cannot be.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
