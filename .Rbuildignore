@@ -7,3 +7,4 @@
 ^LICENSE
 ^_pkgdown\.yml$
 ^pkgdown$
+^.github$
