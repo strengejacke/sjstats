@@ -11,6 +11,7 @@
 \alias{omega_sq}
 \alias{scale_weights}
 \alias{tidy_stan}
+\alias{robust}
 \title{Deprecated functions}
 \usage{
 r2(x)
@@ -32,6 +33,8 @@ omega_sq(x, ...)
 scale_weights(x, ...)
 
 tidy_stan(x, ...)
+
+robust(x, ...)
 }
 \arguments{
 \item{x}{An object.}

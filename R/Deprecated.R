@@ -98,3 +98,12 @@ tidy_stan <- function(x, ...) {
   .Deprecated("parameters::model_parameters()")
   parameters::model_parameters(x, ...)
 }
+
+
+#' @importFrom parameters standard_error_robust
+#' @rdname r2
+#' @export
+robust <- function(x, ...) {
+  .Deprecated("parameters::standard_error_robust()")
+  parameters::standard_error_robust(x, ...)
+}
