@@ -42,7 +42,6 @@ Suggests:
     coin,
     ggplot2,
     graphics,
-    nlme,
     pscl,
     pwr,
     sjPlot,

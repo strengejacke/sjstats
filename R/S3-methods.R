@@ -1,13 +1,8 @@
-#' @importFrom stats formula
+#' @importFrom stats model.matrix
+#' @importFrom insight get_data
 #' @export
 model.matrix.gls <- function(object, ...) {
-  if (!requireNamespace("nlme"))
-    stop("Package `nlme` is required, please install it first.", call. = FALSE)
-
-  cbind(
-    `(Intercept)` = 1,
-    nlme::getData(object)[, all.vars(stats::formula(object))]
-  )
+  stats::model.matrix(object, data = insight::get_data(object))
 }
 
 
