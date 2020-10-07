@@ -81,3 +81,20 @@ omega_sq <- function(x, ...) {
   effectsize::omega_squared(x)
 }
 
+
+#' @importFrom parameters rescale_weights
+#' @rdname r2
+#' @export
+scale_weights <- function(x, ...) {
+  .Deprecated("parameters::rescale_weights()")
+  parameters::rescale_weights(x, ...)
+}
+
+
+#' @importFrom parameters model_parameters
+#' @rdname r2
+#' @export
+tidy_stan <- function(x, ...) {
+  .Deprecated("parameters::model_parameters()")
+  parameters::model_parameters(x, ...)
+}

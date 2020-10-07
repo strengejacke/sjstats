@@ -13,7 +13,7 @@ Therefore, following functions are now defunct:
 * `odds_to_rr()`, please use `effectsize::oddsratio_to_riskratio()`.
 * `std_beta()`, please use `effectsize::standardize_parameters()`.
 * `robust()`, please use `parameters::standard_error_robust()`.
-
+* `scale_weights()`, , please use `parameters::rescale_weights()`.
 
 ## General
 

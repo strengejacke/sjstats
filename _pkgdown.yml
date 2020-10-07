@@ -62,6 +62,15 @@ reference:
   - is_prime
   - prop
 
+- title: "Sample Data Sets"
+  contents:
+  - efc
+  - nhanes_sample
+
+- title: "Deprecated and Defunct"
+  contents:
+  - r2
+
 navbar:
   type: default
   left:
