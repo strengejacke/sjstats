@@ -1,3 +1,9 @@
+# sjstats 0.18.1
+
+## General
+
+* Improved printing for `weighted_mannwhitney()`.
+
 # sjstats 0.18.0
 
 ## General
