@@ -48,17 +48,20 @@ weighted_mannwhitney_helper <- function(dat, vars) {
 
   colnames(dat) <- c("x", "g", "w")
 
+  if (dplyr::n_distinct(dat$g, na.rm = TRUE) > 2) {
+    m <- "Weighted Kruskal-Wallis test"
+    method <- "KruskalWallis"
+  } else {
+    m <- "Weighted Mann-Whitney-U test"
+    method <- "wilcoxon"
+  }
+
   design <- survey::svydesign(ids = ~0, data = dat, weights = ~w)
-  mw <- survey::svyranktest(formula = x ~ g, design)
+  mw <- survey::svyranktest(formula = x ~ g, design, test = method)
 
   attr(mw, "x.name") <- x.name
   attr(mw, "group.name") <- group.name
   class(mw) <- c("sj_wmwu", "list")
-
-  if (dplyr::n_distinct(dat$g, na.rm = TRUE) > 2)
-    m <- "Weighted Kruskal-Wallis test"
-  else
-    m <- "Weighted Mann-Whitney-U test"
 
   mw$method <- m
 

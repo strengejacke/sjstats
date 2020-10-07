@@ -677,14 +677,13 @@ print.sj_ttest <- function(x, ...) {
 
 #' @export
 print.sj_wmwu <- function(x, ...) {
-  insight::print_color(sprintf("\n%s (%s)\n", x$method, x$alternative), "blue")
+  insight::print_color(sprintf("\n# %s\n", x$method), "blue")
 
   group <- attr(x, "group.name", exact = TRUE)
   xn <- attr(x, "x.name", exact = TRUE)
 
-  insight::print_color(sprintf("\n# comparison of %s by %s\n", xn, group), "cyan")
-  insight::print_color(sprintf("# Chisq=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$parameter), x$p.value), "cyan")
-  cat(sprintf("  difference in mean rank score: %.3f\n\n", x$estimate))
+  insight::print_color(sprintf("\n  comparison of %s by %s\n", xn, group), "cyan")
+  cat(sprintf("  Chisq=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$parameter), x$p.value))
 }
 
 
