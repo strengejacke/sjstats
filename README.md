@@ -11,8 +11,6 @@ This package aims at providing, **first**, shortcuts for statistical measures, w
 The comprised tools include:
 
 * Especially for mixed models: design effect, sample size calculation
-* Especially for Bayesian models: mediation analysis
-* For anova-tables: Eta-squared, Partial Eta-squared, Omega-squared, Partial Omega-squared and Epsilon-squared statistics
 * Weighted statistics and tests for: mean, median, standard error, standard deviation, correlation, Chi-squared test, t-test, Mann-Whitney-U-test
 
 ## Documentation
