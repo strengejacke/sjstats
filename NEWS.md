@@ -10,7 +10,7 @@ Therefore, following functions are now defunct:
 * `omega_sq()`, please use `effectsize::omega_squared()`.
 * `epsilon_sq()`, please use `effectsize::epsilon_squared()`.
 * `anova_stats()`, please use `effectsize::effectsize()`.
-* `odds_to_r()`, please use `effectsize::oddsratios_to_r()`.
+* `odds_to_rr()`, please use `effectsize::oddsratio_to_riskratio()`.
 * `std_beta()`, please use `effectsize::standardize_parameters()`.
 * `robust()`, please use `parameters::standard_error_robust()`.
 
