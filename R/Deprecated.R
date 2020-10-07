@@ -51,19 +51,33 @@ cohens_f <- function(x, ...) {
 }
 
 
-#' @importFrom effectsize standardize_parameters
+
+
+
+
+#' @importFrom effectsize eta_squared
 #' @rdname r2
 #' @export
-std_beta <- function(x, ...) {
-  .Deprecated("effectsize::standardize_parameters()")
-  effectsize::standardize_parameters(x, ...)
+eta_sq <- function(x, ...) {
+  .Deprecated("effectsize::eta_squared()")
+  effectsize::eta_squared(x)
 }
 
 
-#' @importFrom parameters standard_error_robust
+#' @importFrom effectsize epsilon_squared
 #' @rdname r2
 #' @export
-robust <- function(x, ...) {
-  .Deprecated("parameters::standard_error_robust()")
-  parameters::standard_error_robust(x, ...)
+epsilon_sq <- function(x, ...) {
+  .Deprecated("effectsize::epsilon_squared()")
+  effectsize::epsilon_squared(x)
 }
+
+
+#' @importFrom effectsize omega_squared
+#' @rdname r2
+#' @export
+omega_sq <- function(x, ...) {
+  .Deprecated("effectsize::omega_sqared()")
+  effectsize::omega_squared(x)
+}
+

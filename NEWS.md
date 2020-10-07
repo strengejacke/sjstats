@@ -1,5 +1,20 @@
 # sjstats 0.18.1
 
+## Deprecated and defunct
+
+_sjstats_ is being re-structured, and many functions are re-implemented in new packages that are part of a new project called **easystats**.
+
+Therefore, following functions are now defunct:
+
+* `eta_sq()`, please use `effectsize::eta_squared()`.
+* `omega_sq()`, please use `effectsize::omega_squared()`.
+* `epsilon_sq()`, please use `effectsize::epsilon_squared()`.
+* `anova_stats()`, please use `effectsize::effectsize()`.
+* `odds_to_r()`, please use `effectsize::oddsratios_to_r()`.
+* `std_beta()`, please use `effectsize::standardize_parameters()`.
+* `robust()`, please use `parameters::standard_error_robust()`.
+
+
 ## General
 
 * Improved printing for `weighted_mannwhitney()`.

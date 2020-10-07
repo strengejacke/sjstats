@@ -17,10 +17,6 @@ reference:
   - bootstrap
   - boot_ci
 
-- title: "Effect Size Statistics for Anova"
-  contents:
-  - anova_stats
-
 - title: "Statistics for Crosstables"
   contents:
   - crosstable_statistics
