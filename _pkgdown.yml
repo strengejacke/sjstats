@@ -50,7 +50,6 @@ reference:
 - title: "Tools for Bayesian Models"
   contents:
   - auto_prior
-  - mediation
 
 - title: "Find Parameters of Distribution"
   contents:
