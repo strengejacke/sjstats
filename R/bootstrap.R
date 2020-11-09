@@ -97,7 +97,7 @@ bootstrap <- function(data, n, size) {
   # add resample ID, may be used for other functions (like 'se()' for 'icc()')
   for (i in seq_len(length(strap))) strap[[i]]$resample.id <- i
 
-  # return tibble
+  # return daza frame
   data.frame(strap = I(strap))
 }
 

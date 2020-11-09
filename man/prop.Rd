@@ -30,9 +30,9 @@ percentage.}
 }
 \value{
 For one condition, a numeric value with the proportion of the values
-        inside a vector. For more than one condition, a tibble with one column
+        inside a vector. For more than one condition, a data frame with one column
         of conditions and one column with proportions. For grouped data frames,
-        returns a tibble with one column per group with grouping categories,
+        returns a data frame with one column per group with grouping categories,
         followed by one column with proportions per condition.
 }
 \description{
@@ -63,7 +63,7 @@ prop(efc, "e42dep == 1")
 props(efc, e17age > 70 & e17age < 80)
 
 # proportion of value 1 in e42dep, and all values greater
-# than 2 in e42dep, including missing values. will return a tibble
+# than 2 in e42dep, including missing values. will return a data frame
 prop(efc, e42dep == 1, e42dep > 2, na.rm = FALSE)
 
 # for factors or character vectors, use quoted or unquoted values

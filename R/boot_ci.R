@@ -12,14 +12,14 @@
 #'          Required, if either \code{data} is a data frame (and no vector),
 #'          and only selected variables from \code{data} should be processed.
 #'          You may also use functions like \code{:} or tidyselect's
-#'          \code{\link[tidyselect]{select_helpers}}.
+#'          \code{select_helpers()}.
 #' @param method Character vector, indicating if confidence intervals should be
 #'          based on bootstrap standard error, multiplied by the value of the
 #'          quantile function of the t-distribution (default), or on sample
 #'          quantiles of the bootstrapped values. See 'Details' in \code{boot_ci()}.
 #'          May be abbreviated.
 #'
-#' @return A \code{\link[tibble]{tibble}} with either bootstrap estimate,
+#' @return A data frame with either bootstrap estimate,
 #'         standard error, the lower and upper confidence intervals or the
 #'         p-value for all bootstrapped estimates.
 #'

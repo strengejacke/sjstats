@@ -23,7 +23,7 @@ estimates, or directly the vector (see 'Examples').}
 Required, if either \code{data} is a data frame (and no vector),
 and only selected variables from \code{data} should be processed.
 You may also use functions like \code{:} or tidyselect's
-\code{\link[tidyselect]{select_helpers}}.}
+\code{select_helpers()}.}
 
 \item{method}{Character vector, indicating if confidence intervals should be
 based on bootstrap standard error, multiplied by the value of the
@@ -34,7 +34,7 @@ May be abbreviated.}
 \item{ci.lvl}{Numeric, the level of the confidence intervals.}
 }
 \value{
-A \code{\link[tibble]{tibble}} with either bootstrap estimate,
+A data frame with either bootstrap estimate,
         standard error, the lower and upper confidence intervals or the
         p-value for all bootstrapped estimates.
 }
