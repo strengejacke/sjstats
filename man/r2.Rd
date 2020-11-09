@@ -12,6 +12,7 @@
 \alias{scale_weights}
 \alias{tidy_stan}
 \alias{robust}
+\alias{mediation}
 \title{Deprecated functions}
 \usage{
 r2(x)
@@ -35,6 +36,8 @@ scale_weights(x, ...)
 tidy_stan(x, ...)
 
 robust(x, ...)
+
+mediation(x, ...)
 }
 \arguments{
 \item{x}{An object.}

@@ -9,7 +9,6 @@
 \alias{rmse}
 \alias{ci}
 \alias{equivalence_test}
-\alias{mediation}
 \alias{link_inverse}
 \title{Objects exported from other packages}
 \keyword{internal}
@@ -18,7 +17,7 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{bayestestR}{\code{\link[bayestestR]{ci}}, \code{\link[bayestestR]{equivalence_test}}, \code{\link[bayestestR]{mediation}}}
+  \item{bayestestR}{\code{\link[bayestestR]{ci}}, \code{\link[bayestestR]{equivalence_test}}}
 
   \item{insight}{\code{\link[insight]{link_inverse}}}
 

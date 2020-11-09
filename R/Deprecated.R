@@ -107,3 +107,14 @@ robust <- function(x, ...) {
   .Deprecated("parameters::standard_error_robust()")
   parameters::standard_error_robust(x, ...)
 }
+
+
+#' @importFrom bayestestR mediation
+#' @rdname r2
+#' @export
+mediation <- function(x, ...) {
+  .Deprecated("bayestestR::mediation()")
+  bayestestR::mediation(x, ...)
+}
+
+
