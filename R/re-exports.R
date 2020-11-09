@@ -23,6 +23,10 @@ bayestestR::ci
 #' @export
 bayestestR::equivalence_test
 
+#' @importFrom bayestestR mediation
+#' @export
+bayestestR::mediation
+
 #' @importFrom insight link_inverse
 #' @export
 insight::link_inverse

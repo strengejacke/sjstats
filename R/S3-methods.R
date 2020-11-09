@@ -511,53 +511,6 @@ print.sj_grpmeans <- function(x, ...) {
 
 
 #' @export
-print.sj_mediation <- function(x, digits = 2, ...) {
-  insight::print_color("\n# Causal Mediation Analysis for Stan Model\n\n", "blue")
-  insight::print_color(sprintf(
-    "  Treatment: %s\n   Mediator: %s\n   Response: %s\n",
-    attr(x, "treatment", exact = TRUE),
-    attr(x, "mediator", exact = TRUE),
-    attr(x, "response", exact = TRUE)
-  ), "cyan")
-
-  cat("\n")
-
-  prop.med <- 100 * x[5, 2:4]
-  x <- x[c(1, 2, 4), ]
-
-  x$value <- format(round(x$value, digits = digits))
-  x$hdi.low <- format(round(x$hdi.low, digits = digits))
-  x$hdi.high <- format(round(x$hdi.high, digits = digits))
-  prop.med <- format(round(prop.med, digits = digits))
-
-  # ensure minimum width for column header
-  if (max(nchar(x$value)) < 8) x$value <- format(x$value, width = 8, justify = "right")
-
-  indent.width1 <- max(nchar(x$value)) + 17
-  indent.width2 <- max(nchar(x$hdi.low)) + max(nchar(x$hdi.high)) + 4
-
-  cat(sprintf(
-    "%s%s\n",
-    format("Estimate", width = indent.width1, justify = "right"),
-    format(sprintf("HDI (%i%%)", as.integer(100 * attr(x, "prob", exact = TRUE))), width = indent.width2, justify = "right")
-  ))
-
-  cat(sprintf("  Direct effect: %s [%s %s]\n", x$value[1], x$hdi.low[1], x$hdi.high[1]))
-  cat(sprintf("Indirect effect: %s [%s %s]\n", x$value[2], x$hdi.low[2], x$hdi.high[2]))
-  cat(sprintf("   Total effect: %s [%s %s]\n", x$value[3], x$hdi.low[3], x$hdi.high[3]))
-
-  insight::print_color(
-    sprintf(
-      "\nProportion mediated: %s%% [%s%% %s%%]\n",
-      prop.med[1], prop.med[2], prop.med[3])
-  , "red")
-
-  if (prop.med[1] < 0)
-    message("\nDirect and indirect effects have opposite directions. The proportion mediated is not meaningful.")
-}
-
-
-#' @export
 print.sj_pval <- function(x, digits = 3, summary = FALSE, ...) {
 
   if (summary) {

@@ -6,6 +6,7 @@ _sjstats_ is being re-structured, and many functions are re-implemented in new p
 
 Therefore, following functions are now defunct:
 
+* `mediation()`, , please use `bayestestR::mediation()`.
 * `eta_sq()`, please use `effectsize::eta_squared()`.
 * `omega_sq()`, please use `effectsize::omega_squared()`.
 * `epsilon_sq()`, please use `effectsize::epsilon_squared()`.
