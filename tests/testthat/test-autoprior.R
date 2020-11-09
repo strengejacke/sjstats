@@ -17,15 +17,15 @@ if (.runThisTest) {
 
     test_that("auto_prior", {
       mf <- formula(neg_c_7 ~ c161sex + c160age + c172code)
-      expect_is(auto_prior(mf, efc, TRUE), "brmsprior")
+      expect_s3_class(auto_prior(mf, efc, TRUE), "brmsprior")
 
       mf <- formula(neg_c_7 ~ c161sex + c160age + c172code + c12hour + e17age)
-      expect_is(auto_prior(mf, efc, TRUE), "brmsprior")
+      expect_s3_class(auto_prior(mf, efc, TRUE), "brmsprior")
       expect_error(auto_prior(mf, efc))
 
       mf <- formula(neg_c_7d ~ c161sex + c160age + c172code + e17age)
-      expect_is(auto_prior(mf, efc, FALSE), "brmsprior")
-      expect_is(auto_prior(mf, efc), "brmsprior")
+      expect_s3_class(auto_prior(mf, efc, FALSE), "brmsprior")
+      expect_s3_class(auto_prior(mf, efc), "brmsprior")
       expect_warning(auto_prior(mf, efc, TRUE))
     })
   }

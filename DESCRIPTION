@@ -51,3 +51,6 @@ Suggests:
 URL: https://github.com/strengejacke/sjstats, https://strengejacke.github.io/sjstats
 BugReports: https://github.com/strengejacke/sjstats/issues
 RoxygenNote: 7.1.1
+Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: watcher, parallel*
