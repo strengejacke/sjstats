@@ -467,7 +467,7 @@ print.sj_grpmean <- function(x, ...) {
 }
 
 
-#' @importFrom insight format_table print_color
+#' @importFrom insight export_table print_color
 print_grpmean <- function(x, ...) {
   # headline
   insight::print_color(sprintf(
@@ -477,7 +477,7 @@ print_grpmean <- function(x, ...) {
   ), "blue")
 
   colnames(x) <- c("Category", "Mean", "N", "SD", "SE", "p")
-  cat(insight::format_table(x))
+  cat(insight::export_table(x))
 
   # statistics
   cat(sprintf(
