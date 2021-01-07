@@ -297,19 +297,21 @@ weights that will be applied to weight all observations. Default is
 </div><div class='output co'>#&gt; <span style='color: #0000BB;'>
 #&gt; # Measure of Association for Contingency Tables
 #&gt; </span><span>
-#&gt;   Chi-squared: 2.2327
-#&gt;           Phi: 0.0526
-#&gt;            df: 1
-#&gt;       p-value: 0.1351</div><div class='input'>
+#&gt;    Chi-squared: 2.2327
+#&gt;            Phi: 0.0526
+#&gt;             df: 1
+#&gt;        p-value: 0.135
+#&gt;   Observations: 900</div><div class='input'>
 <span class='co'># more dimensions than 2x2, compute Cramer's V automatically</span>
 <span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>c172code</span>, <span class='va'>c161sex</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
 #&gt; # Measure of Association for Contingency Tables
 #&gt; </span><span>
-#&gt;   Chi-squared: 4.1085
-#&gt;    Cramer's V: 0.0699
-#&gt;            df: 2
-#&gt;       p-value: 0.1282</div><div class='input'>
+#&gt;    Chi-squared: 4.1085
+#&gt;     Cramer's V: 0.0699
+#&gt;             df: 2
+#&gt;        p-value: 0.128
+#&gt;   Observations: 841</div><div class='input'>
 <span class='co'># ordinal data, use Kendall's tau</span>
 <span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>e42dep</span>, <span class='va'>quol_5</span>, statistics <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
@@ -318,7 +320,8 @@ weights that will be applied to weight all observations. Default is
 #&gt;               z: -9.5951
 #&gt;   Kendall's tau: -0.2496
 #&gt;              df: 75
-#&gt;         p-value: &lt;0.001</div><div class='input'>
+#&gt;         p-value: &lt; .001***
+#&gt;    Observations: 896</div><div class='input'>
 <span class='co'># calcilate Spearman's rho, with continuity correction</span>
 <span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>,
   <span class='va'>e42dep</span>,
@@ -333,7 +336,8 @@ weights that will be applied to weight all observations. Default is
 #&gt;                S: 157974157.4198
 #&gt;   Spearman's rho: -0.3177
 #&gt;               df: 75
-#&gt;          p-value: &lt;0.001</div><div class='input'>
+#&gt;          p-value: &lt; .001***
+#&gt;     Observations: 896</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -366,25 +366,28 @@ must be one of <code>"two.sided"</code> (default), <code>"greater"</code> or
 </div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
 #&gt; # Measure of Association for Contingency Tables
 #&gt; </span><span>
-#&gt;   Chi-squared: 2.0566
-#&gt;           Phi: 0.0479
-#&gt;            df: 1
-#&gt;       p-value: 0.1515</div><div class='input'><span class='fu'>weighted_chisqtest</span><span class='op'>(</span><span class='va'>c172code</span> <span class='op'>~</span> <span class='va'>c161sex</span> <span class='op'>+</span> <span class='va'>weight</span>, <span class='va'>efc</span><span class='op'>)</span>
+#&gt;    Chi-squared: 2.0566
+#&gt;            Phi: 0.0479
+#&gt;             df: 1
+#&gt;        p-value: 0.152
+#&gt;   Observations: 895</div><div class='input'><span class='fu'>weighted_chisqtest</span><span class='op'>(</span><span class='va'>c172code</span> <span class='op'>~</span> <span class='va'>c161sex</span> <span class='op'>+</span> <span class='va'>weight</span>, <span class='va'>efc</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
 #&gt; # Measure of Association for Contingency Tables
 #&gt; </span><span>
-#&gt;   Chi-squared: 4.8005
-#&gt;    Cramer's V: 0.0758
-#&gt;            df: 2
-#&gt;       p-value: 0.0907</div><div class='input'>
+#&gt;    Chi-squared: 4.8005
+#&gt;     Cramer's V: 0.0758
+#&gt;             df: 2
+#&gt;        p-value: 0.091
+#&gt;   Observations: 835</div><div class='input'>
 <span class='co'># weighted Chi-squared-test for given probabilities ----</span>
 <span class='fu'>weighted_chisqtest</span><span class='op'>(</span><span class='va'>c172code</span> <span class='op'>~</span> <span class='va'>weight</span>, <span class='va'>efc</span>, p <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.33</span>, <span class='fl'>.33</span>, <span class='fl'>.34</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
 #&gt; # Weighted chi-squared test for given probabilities
 #&gt; 
-#&gt; </span><span>  Chi-squared: 280.2808
-#&gt;            df: 2
-#&gt;       p-value: &lt;0.001</div></span></pre>
+#&gt; </span><span>   Chi-squared: 280.2808
+#&gt;             df: 2
+#&gt;        p-value: &lt; .001***
+#&gt;   Observations: 908</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
