@@ -659,8 +659,9 @@ print.sj_wcor <- function(x, ...) {
 }
 
 
-#' @importFrom sjmisc round_num
+#' @importFrom insight export_table
 #' @export
 print.sj_anova_stat <- function(x, digits = 3, ...) {
-  print.data.frame(sjmisc::round_num(x, digits), ..., row.names = TRUE)
+  x$p.value <- insight::format_p(x$p.value, name = NULL)
+  cat(insight::export_table(x, digits = digits, protect_integers = TRUE))
 }

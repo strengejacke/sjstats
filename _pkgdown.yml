@@ -57,6 +57,7 @@ reference:
 
 - title: "Miscellaneous"
   contents:
+  - anova_stats
   - inequ_trend
   - is_prime
   - prop
