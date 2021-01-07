@@ -22,6 +22,8 @@ Therefore, following functions are now defunct:
 
 * `weighted_chisqtest()` can now be computed for given probabilities.
 
+* Updated imports.
+
 # sjstats 0.18.0
 
 ## General
