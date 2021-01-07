@@ -11,11 +11,6 @@ anova_stats(model, digits = 3)
 models are coerced to \code{\link[stats]{anova}}.}
 
 \item{digits}{Amount of digits for returned values.}
-
-\item{partial}{Logical, if \code{TRUE}, the partial eta-squared is returned.}
-
-\item{ci.lvl}{Scalar between 0 and 1. If not \code{NULL}, returns a data
-frame with effect sizes including lower and upper confidence intervals.}
 }
 \value{
 A data frame with all statistics is returned (excluding confidence intervals).

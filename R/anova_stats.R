@@ -7,9 +7,6 @@
 #'
 #' @param model A fitted anova-model of class \code{aov} or \code{anova}. Other
 #'   models are coerced to \code{\link[stats]{anova}}.
-#' @param partial Logical, if \code{TRUE}, the partial eta-squared is returned.
-#' @param ci.lvl Scalar between 0 and 1. If not \code{NULL}, returns a data
-#'   frame with effect sizes including lower and upper confidence intervals.
 #' @param digits Amount of digits for returned values.
 #'
 #' @return A data frame with all statistics is returned (excluding confidence intervals).
