@@ -22,6 +22,8 @@ Therefore, following functions are now defunct:
 
 * `weighted_chisqtest()` can now be computed for given probabilities.
 
+* `means_by_group()` now contains numeric values in the returned data frame. Value formatting is completely done insight the print-method.
+
 * Updated imports.
 
 # sjstats 0.18.0
