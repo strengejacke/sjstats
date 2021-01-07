@@ -146,7 +146,6 @@ The weighted (test) statistic.
 }
 \examples{
 # weighted sd and se ----
-
 weighted_sd(rnorm(n = 100, mean = 3), runif(n = 100))
 
 data(efc)
@@ -154,7 +153,6 @@ weighted_sd(efc[, 1:3], runif(n = nrow(efc)))
 weighted_se(efc[, 1:3], runif(n = nrow(efc)))
 
 # survey_median ----
-
 # median for variables from weighted survey designs
 if (require("survey")) {
   data(nhanes_sample)
@@ -172,18 +170,18 @@ if (require("survey")) {
 }
 
 # weighted t-test ----
-
 efc$weight <- abs(rnorm(nrow(efc), 1, .3))
 weighted_ttest(efc, e17age, weights = weight)
 weighted_ttest(efc, e17age, c160age, weights = weight)
 weighted_ttest(e17age ~ e16sex + weight, efc)
 
 # weighted Mann-Whitney-U-test ----
-
 weighted_mannwhitney(c12hour ~ c161sex + weight, efc)
 
 # weighted Chi-squared-test ----
-
 weighted_chisqtest(efc, c161sex, e16sex, weights = weight, correct = FALSE)
 weighted_chisqtest(c172code ~ c161sex + weight, efc)
+
+# weighted Chi-squared-test for given probabilities ----
+weighted_chisqtest(c172code ~ weight, efc, p = c(.33, .33, .34))
 }

@@ -62,3 +62,10 @@ get_grouped_data <- function(x) {
 
   grps
 }
+
+
+
+.compact_character <- function(x) {
+  x[!sapply(x, function(i) is.null(i) || nchar(i) == 0 || is.na(i) || any(i == "NULL", na.rm = TRUE))]
+}
+

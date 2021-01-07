@@ -450,6 +450,28 @@ print.sj_xtab_stat <- function(x, ...) {
   # print test statistic
   cat(sprintf("  %*s: %.4f\n", l, x$stat.name, x$statistic))
   cat(sprintf("  %*s: %.4f\n", l, x$method, x$estimate))
+  cat(sprintf("  %*s: %g\n", l, "df", x$df))
+
+  # check if p <.001
+  if (x$p.value < 0.001)
+    cat(sprintf("  %*s: <0.001\n", l, "p-value", x$p.value))
+  else
+    cat(sprintf("  %*s: %.4f\n", l, "p-value", x$p.value))
+}
+
+
+
+#' @export
+print.sj_xtab_stat2 <- function(x, ...) {
+  # get length of method name, to align output
+  l <- max(nchar(c(x$stat.name, "p-value")))
+
+  # headline
+  insight::print_color(paste0("\n# ", x$method, "\n\n"), "blue")
+
+  # print test statistic
+  cat(sprintf("  %*s: %.4f\n", l, x$stat.name, x$estimate))
+  cat(sprintf("  %*s: %g\n", l, "df", x$df))
 
   # check if p <.001
   if (x$p.value < 0.001)
