@@ -244,6 +244,7 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
     stat.name = names(test),
     stat.html = stat.html,
     df = (nrow(tab) - 1) * (ncol(tab) - 1),
+    n_obs = sum(tab, na.rm = TRUE),
     method = method,
     method.html = method.html,
     method.short = statistics,

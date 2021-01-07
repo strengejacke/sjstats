@@ -83,6 +83,7 @@ weighted_chisqtest.formula <- function(formula, data, ...) {
     stat.name = "Chi-squared",
     stat.html = "&chi;<sup>2</sup>",
     df = out$parameter,
+    n_obs = nrow(dat),
     method = "Weighted chi-squared test for given probabilities",
     method.html = "Weighted &chi;<sup>2</sup> test for given probabilities",
     method.short = "Chi-squared"

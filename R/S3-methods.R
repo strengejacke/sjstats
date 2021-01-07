@@ -379,17 +379,9 @@ print.sj_mwu <- function(x, ...) {
       )
     }
 
-    pval <- .dat[i, "p"]
-    if (pval < 0.001) {
-      pval <- 0.001
-      p.string <- "<"
-    } else {
-      p.string <- "="
-    }
-
     cat(sprintf(
-      "  U = %.3f, W = %.3f, p %s %.3f, Z = %.3f\n",
-      .dat[i, "u"], .dat[i, "w"], p.string, pval, .dat[i, "z"]
+      "  U = %.3f, W = %.3f, %s, Z = %.3f\n",
+      .dat[i, "u"], .dat[i, "w"], insight::format_p(.dat[i, "p"]), .dat[i, "z"]
     ))
 
     string_es <- "effect-size r"
@@ -415,14 +407,7 @@ print.sj_mwu <- function(x, ...) {
     kw <- stats::kruskal.test(x$data$dv, x$data$grp)
     cat(sprintf("chi-squared = %.3f\n", kw$statistic))
     cat(sprintf("df = %i\n", kw$parameter))
-    if (kw$p.value < 0.001) {
-      p  <- 0.001
-      p.string <- "<"
-    } else {
-      p <- kw$p.value
-      p.string <- "="
-    }
-    cat(sprintf("p %s %.3f\n", p.string, p))
+    cat(paste(insight::format_p(kw$p.value, stars = TRUE), "\n"))
   }
 }
 
@@ -433,10 +418,11 @@ print.sj_outliers <- function(x, ...) {
 }
 
 
+#' @importFrom insight format_p
 #' @export
 print.sj_xtab_stat <- function(x, ...) {
   # get length of method name, to align output
-  l <- max(nchar(c(x$method, x$stat.name, "p-value")))
+  l <- max(nchar(c(x$method, x$stat.name, "p-value", "Observations")))
 
   # headline
   insight::print_color("\n# Measure of Association for Contingency Tables\n", "blue")
@@ -451,12 +437,8 @@ print.sj_xtab_stat <- function(x, ...) {
   cat(sprintf("  %*s: %.4f\n", l, x$stat.name, x$statistic))
   cat(sprintf("  %*s: %.4f\n", l, x$method, x$estimate))
   cat(sprintf("  %*s: %g\n", l, "df", x$df))
-
-  # check if p <.001
-  if (x$p.value < 0.001)
-    cat(sprintf("  %*s: <0.001\n", l, "p-value", x$p.value))
-  else
-    cat(sprintf("  %*s: %.4f\n", l, "p-value", x$p.value))
+  cat(sprintf("  %*s: %s\n", l, "p-value", insight::format_p(x$p.value, stars = TRUE, name = NULL)))
+  cat(sprintf("  %*s: %g\n", l, "Observations", x$n_obs))
 }
 
 
@@ -464,7 +446,7 @@ print.sj_xtab_stat <- function(x, ...) {
 #' @export
 print.sj_xtab_stat2 <- function(x, ...) {
   # get length of method name, to align output
-  l <- max(nchar(c(x$stat.name, "p-value")))
+  l <- max(nchar(c(x$stat.name, "p-value", "Observations")))
 
   # headline
   insight::print_color(paste0("\n# ", x$method, "\n\n"), "blue")
@@ -472,12 +454,8 @@ print.sj_xtab_stat2 <- function(x, ...) {
   # print test statistic
   cat(sprintf("  %*s: %.4f\n", l, x$stat.name, x$estimate))
   cat(sprintf("  %*s: %g\n", l, "df", x$df))
-
-  # check if p <.001
-  if (x$p.value < 0.001)
-    cat(sprintf("  %*s: <0.001\n", l, "p-value", x$p.value))
-  else
-    cat(sprintf("  %*s: %.4f\n", l, "p-value", x$p.value))
+  cat(sprintf("  %*s: %s\n", l, "p-value", insight::format_p(x$p.value, stars = TRUE, name = NULL)))
+  cat(sprintf("  %*s: %g\n", l, "Observations", x$n_obs))
 }
 
 
