@@ -130,7 +130,6 @@ means_by_group <- function(x,
         dv = dv.name,
         grp = grp.name,
         weight.by = .weights,
-        digits = digits,
         value.labels = value.labels,
         varCountLabel = varCountLabel,
         varGrpLabel = varGrpLabel
@@ -154,7 +153,6 @@ means_by_group <- function(x,
       dv = dv.name,
       grp = grp.name,
       weight.by = .weights,
-      digits = digits,
       value.labels = value.labels,
       varCountLabel = varCountLabel,
       varGrpLabel = varGrpLabel
@@ -171,6 +169,7 @@ means_by_group <- function(x,
   attr(dataframes, "print") <- out
   attr(dataframes, "encoding") <- encoding
   attr(dataframes, "file") <- file
+  attr(dataframes, "digits") <- digits
 
   dataframes
 }
@@ -182,7 +181,7 @@ means_by_group <- function(x,
 #' @importFrom dplyr pull select n_distinct
 #' @importFrom purrr map_chr
 #' @importFrom rlang .data
-means_by_group_helper <- function(x, dv, grp, weight.by, digits, value.labels, varCountLabel, varGrpLabel) {
+means_by_group_helper <- function(x, dv, grp, weight.by, value.labels, varCountLabel, varGrpLabel) {
   # copy vectors from data frame
   dv <- x[[dv]]
   grp <- x[[grp]]
@@ -212,16 +211,6 @@ means_by_group_helper <- function(x, dv, grp, weight.by, digits, value.labels, v
     summary() %>%
     dplyr::pull("p.value")
 
-  # create string with p-values
-  pval <- purrr::map_chr(seq_len(length(means.p)), function(i) {
-    if (means.p[i] < 0.001) {
-      "<0.001"
-    } else {
-      sprintf("%.*f", digits, means.p[i])
-    }
-  })
-
-
   ## TODO
   # efc %>%
   #   group_by(c172code, c161sex) %>%
@@ -245,23 +234,23 @@ means_by_group_helper <- function(x, dv, grp, weight.by, digits, value.labels, v
   dat <- mydf %>%
     dplyr::group_by(.data$grp) %>%
     summarise(
-      mean = sprintf("%.*f", digits, stats::weighted.mean(.data$dv, w = .data$weight.by, na.rm = TRUE)),
+      mean = stats::weighted.mean(.data$dv, w = .data$weight.by, na.rm = TRUE),
       N = round(sum(.data$weight.by)),
-      std.dev = sprintf("%.*f", digits, weighted_sd(.data$dv, .data$weight.by)),
-      std.error = sprintf("%.*f", digits, weighted_se(.data$dv, .data$weight.by))
+      std.dev = weighted_sd(.data$dv, .data$weight.by),
+      std.error = weighted_se(.data$dv, .data$weight.by)
     ) %>%
-    mutate(p.value = pval) %>%
+    mutate(p.value = means.p) %>%
     dplyr::select(-.data$grp)
 
   # finally, add total-row
   dat <- dplyr::bind_rows(
     dat,
     data_frame(
-      mean = sprintf("%.*f", digits, stats::weighted.mean(mydf$dv, w = mydf$weight.by, na.rm = TRUE)),
+      mean = stats::weighted.mean(mydf$dv, w = mydf$weight.by, na.rm = TRUE),
       N = nrow(mydf),
-      std.dev = sprintf("%.*f", digits, weighted_sd(mydf$dv, mydf$weight.by)),
-      std.error = sprintf("%.*f", digits, weighted_se(mydf$dv, mydf$weight.by)),
-      p.value = ""
+      std.dev = weighted_sd(mydf$dv, mydf$weight.by),
+      std.error = weighted_se(mydf$dv, mydf$weight.by),
+      p.value = NA
     )
   )
 

@@ -1,6 +1,4 @@
 if (require("testthat") && require("sjstats")) {
-  context("sjstats, var_names")
-
   data(efc)
   set.seed(123)
   efc$weight <- abs(rnorm(nrow(efc), 1, .3))

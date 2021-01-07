@@ -463,18 +463,27 @@ print.sj_xtab_stat2 <- function(x, ...) {
 #' @export
 print.sj_grpmean <- function(x, ...) {
   cat("\n")
-  print_grpmean(x, ...)
+  print_grpmean(x, digits = attributes(x)$digits, ...)
 }
 
 
-#' @importFrom insight export_table print_color
-print_grpmean <- function(x, ...) {
+#' @importFrom insight export_table print_color format_value format_p
+print_grpmean <- function(x, digits = NULL, ...) {
   # headline
   insight::print_color(sprintf(
     "# Grouped Means for %s by %s\n\n",
     attr(x, "dv.label", exact = TRUE),
     attr(x, "grp.label", exact = TRUE)
   ), "blue")
+
+  if (is.null(digits)) {
+    digits <- 2
+  }
+
+  x$mean <- insight::format_value(x$mean, digits = digits)
+  x$std.dev <- insight::format_value(x$std.dev, digits = digits)
+  x$std.error <- insight::format_value(x$std.error, digits = digits)
+  x$p.value <- insight::format_p(x$p.value, name = NULL)
 
   colnames(x) <- c("Category", "Mean", "N", "SD", "SE", "p")
   cat(insight::export_table(x))
@@ -503,7 +512,7 @@ print.sj_grpmeans <- function(x, ...) {
     insight::print_color(sprintf("Grouped by:\n%s\n\n", grp), "cyan")
 
     # print grpmean-table
-    print_grpmean(dat, ...)
+    print_grpmean(dat, digits = attributes(x)$digits, ...)
 
     cat("\n\n")
   })
