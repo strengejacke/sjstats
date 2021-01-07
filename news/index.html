@@ -141,8 +141,6 @@
 <li>
 <code><a href="../reference/r2.html">epsilon_sq()</a></code>, please use <code><a href="https://easystats.github.io/effectsize/reference/eta_squared.html">effectsize::epsilon_squared()</a></code>.</li>
 <li>
-<code>anova_stats()</code>, please use <code><a href="https://easystats.github.io/effectsize/reference/effectsize.html">effectsize::effectsize()</a></code>.</li>
-<li>
 <code>odds_to_rr()</code>, please use <code><a href="https://easystats.github.io/effectsize/reference/oddsratio_to_riskratio.html">effectsize::oddsratio_to_riskratio()</a></code>.</li>
 <li>
 <code>std_beta()</code>, please use <code><a href="https://easystats.github.io/effectsize/reference/standardize_parameters.html">effectsize::standardize_parameters()</a></code>.</li>
@@ -185,7 +183,7 @@
 <a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed documentation for <code><a href="../reference/chisq_gof.html">chisq_gof()</a></code>.</li>
-<li>Fixed issue in <code>anova_stats()</code> with incorrect effect sizes for certain Anova types (that included an intercept).</li>
+<li>Fixed issue in <code><a href="../reference/anova_stats.html">anova_stats()</a></code> with incorrect effect sizes for certain Anova types (that included an intercept).</li>
 </ul>
 </div>
 </div>
@@ -469,7 +467,7 @@
 <li>
 <code><a href="../reference/r2.html">r2()</a></code> for mixed models now also should work properly for mixed models fitted with <strong>rstanarm</strong>.</li>
 <li>
-<code>anova_stats()</code> and alike (e.g. <code><a href="../reference/r2.html">eta_sq()</a></code>) now all preserve original term names.</li>
+<code><a href="../reference/anova_stats.html">anova_stats()</a></code> and alike (e.g. <code><a href="../reference/r2.html">eta_sq()</a></code>) now all preserve original term names.</li>
 <li>
 <code>model_family()</code> now returns <code>$is_count = TRUE</code>, when model is a count-model, and <code>$is_beta = TRUE</code> for models with beta-family.</li>
 <li>
@@ -522,7 +520,7 @@
 <li>
 <code>model_family()</code> and <code><a href="https://easystats.github.io/insight/reference/link_inverse.html">link_inverse()</a></code> now supports <strong>glmmPQL</strong>, <strong>felm</strong> and <strong>lm_robust</strong>-models.</li>
 <li>
-<code>anova_stats()</code> and alike (<code>omeqa_sq()</code> etc.) now support gam-models from package <strong>gam</strong>.</li>
+<code><a href="../reference/anova_stats.html">anova_stats()</a></code> and alike (<code>omeqa_sq()</code> etc.) now support gam-models from package <strong>gam</strong>.</li>
 <li>
 <code><a href="../reference/r2.html">p_value()</a></code> now supports objects of class <code>svyolr</code>.</li>
 </ul>
@@ -608,7 +606,7 @@
 <li>
 <code>model_frame()</code>, <code><a href="https://easystats.github.io/insight/reference/link_inverse.html">link_inverse()</a></code>, <code>pred_vars()</code>, <code>resp_var()</code>, <code>resp_val()</code>, <code><a href="../reference/r2.html">r2()</a></code> and <code>model_family()</code> now support <code>clm2</code>-objects from package <strong>ordinal</strong>.</li>
 <li>
-<code>anova_stats()</code> gives a more informative message for non-supported models or ANOVA-options.</li>
+<code><a href="../reference/anova_stats.html">anova_stats()</a></code> gives a more informative message for non-supported models or ANOVA-options.</li>
 </ul>
 </div>
 <div id="bug-fixes-6" class="section level2">
