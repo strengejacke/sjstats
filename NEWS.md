@@ -20,6 +20,8 @@ Therefore, following functions are now defunct:
 
 * Improved printing for `weighted_mannwhitney()`.
 
+* `weighted_chisqtest()` can now be computed for given probabilities.
+
 # sjstats 0.18.0
 
 ## General
