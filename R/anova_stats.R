@@ -35,7 +35,7 @@ anova_stats <- function(model, digits = 3) {
     stop("Package `pwr` needed for this function to work. Please install it.", call. = FALSE)
   }
 
-  .Deprecated("effectsize::effectsize()", package = "effectsize")
+  # .Deprecated("effectsize::effectsize()", package = "effectsize")
 
   # get tidy summary table
   aov.sum <- aov_stat_summary(model)
