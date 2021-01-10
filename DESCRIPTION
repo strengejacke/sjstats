@@ -2,7 +2,7 @@ Package: sjstats
 Type: Package
 Encoding: UTF-8
 Title: Collection of Convenient Functions for Common Statistical Computations
-Version: 0.18.0.1
+Version: 0.18.1
 Authors@R: person("Daniel", "Lüdecke", role = c("aut", "cre"), email = "d.luedecke@uke.de", comment = c(ORCID = "0000-0002-8895-3206"))
 Maintainer: Daniel Lüdecke <d.luedecke@uke.de>
 Description: Collection of convenient functions for common statistical computations,
@@ -20,7 +20,7 @@ Depends:
 Imports:
     bayestestR,
     broom,
-    dplyr (>= 0.8.1),
+    dplyr,
     effectsize,
     emmeans,
     insight,
@@ -48,9 +48,8 @@ Suggests:
     survey,
     rstan,
     testthat
-URL: https://github.com/strengejacke/sjstats, https://strengejacke.github.io/sjstats
+URL: https://strengejacke.github.io/sjstats/
 BugReports: https://github.com/strengejacke/sjstats/issues
 RoxygenNote: 7.1.1
 Config/testthat/edition: 3
 Config/testthat/parallel: true
-Config/testthat/start-first: watcher, parallel*
