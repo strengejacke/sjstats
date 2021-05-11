@@ -7,6 +7,10 @@
 \alias{epsilon_sq}
 \alias{omega_sq}
 \alias{scale_weights}
+\alias{robust}
+\alias{icc}
+\alias{p_value}
+\alias{se}
 \title{Deprecated functions}
 \usage{
 r2(x)
@@ -20,6 +24,14 @@ epsilon_sq(x, ...)
 omega_sq(x, ...)
 
 scale_weights(x, ...)
+
+robust(x, ...)
+
+icc(x)
+
+p_value(x, ...)
+
+se(x, ...)
 }
 \arguments{
 \item{x}{An object.}

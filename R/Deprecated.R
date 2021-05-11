@@ -52,3 +52,34 @@ scale_weights <- function(x, ...) {
   .Deprecated("parameters::rescale_weights()")
   parameters::rescale_weights(x, ...)
 }
+
+
+#' @rdname r2
+#' @export
+robust <- function(x, ...) {
+  .Deprecated("parameters::standard_error_robust()")
+  parameters::standard_error_robust(x, ...)
+}
+
+
+#' @rdname r2
+#' @export
+icc <- function(x) {
+  .Deprecated("performance::icc()")
+  performance::icc(x)
+}
+
+#' @rdname r2
+#' @export
+p_value <- function(x, ...) {
+  .Deprecated("parameters::p_value()")
+  parameters::p_value(x)
+}
+
+
+#' @rdname r2
+#' @export
+se <- function(x, ...) {
+  .Deprecated("parameters::standard_error()")
+  parameters::standard_error(x)
+}
