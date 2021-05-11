@@ -159,5 +159,4 @@ crosstable_statistics(efc,
   exact = FALSE,
   continuity = TRUE
 )
-
 }

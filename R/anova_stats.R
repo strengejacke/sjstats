@@ -27,8 +27,6 @@
 #' \dontrun{
 #' anova_stats(car::Anova(fit, type = 2))
 #' }
-#' @importFrom sjmisc add_columns round_num
-#' @importFrom stats anova
 #' @export
 anova_stats <- function(model, digits = 3) {
   if (!requireNamespace("pwr", quietly = TRUE)) {
@@ -83,7 +81,6 @@ anova_stats <- function(model, digits = 3) {
 
 
 
-#' @importFrom dplyr mutate
 #' @importFrom rlang .data
 aov_stat <- function(model, type) {
   aov.sum <- aov_stat_summary(model)
@@ -96,8 +93,6 @@ aov_stat <- function(model, type) {
 }
 
 
-#' @importFrom stats anova residuals
-#' @importFrom broom tidy
 aov_stat_summary <- function(model) {
   # check if we have a mixed model
   mm <- is_merMod(model)

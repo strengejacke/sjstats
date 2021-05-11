@@ -9,8 +9,6 @@ weighted_median.default <- function(x, weights = NULL) {
   weighted_md_helper(x, w = weights, p = 0.5)
 }
 
-#' @importFrom purrr map_dbl
-#' @importFrom dplyr select_if
 #' @export
 weighted_median.data.frame <- function(x, weights = NULL) {
   dplyr::select_if(x, is.numeric) %>%

@@ -93,9 +93,6 @@
 #'     c12hour > 20 & c12hour < 40,
 #'     n4pstu == 'Care Level 1' | n4pstu == 'Care Level 3'
 #'   )
-#'
-#' @importFrom dplyr bind_cols bind_rows
-#' @importFrom sjlabelled get_label get_labels as_numeric
 #' @export
 prop <- function(data, ..., weights = NULL, na.rm = TRUE, digits = 4) {
   # check argument

@@ -1,6 +1,4 @@
 #' @rdname weighted_sd
-#' @importFrom stats pt qt weighted.mean setNames
-#' @importFrom sjmisc is_empty
 #' @export
 weighted_ttest <- function(data, ...) {
   UseMethod("weighted_ttest")

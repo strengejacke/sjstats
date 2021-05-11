@@ -83,5 +83,4 @@ mf <- formula(neg_c_7d ~ c161sex + c160age + c172code + e17age)
 
 if (requireNamespace("brms", quietly = TRUE))
   auto_prior(mf, efc, FALSE)
-
 }

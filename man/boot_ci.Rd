@@ -146,7 +146,6 @@ efc \%>\%
   spread_coef(models, append = FALSE) \%>\%
   # compute the CI for all bootstrapped model coefficients
   boot_ci()}
-
 }
 \references{
 Carpenter J, Bithell J. Bootstrap confdence intervals: when, which, what? A practical guide for medical statisticians. Statist. Med. 2000; 19:1141-1164

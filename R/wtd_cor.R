@@ -61,7 +61,6 @@ weighted_correlation.formula <- function(formula, data, ci.lvl = .95, ...) {
 }
 
 
-#' @importFrom stats cor.test
 weighted_correlation_helper <- function(xv, yv, wv, ci.lvl) {
 
   x <- xv - weighted_mean(xv, weights = wv)

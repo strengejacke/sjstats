@@ -129,9 +129,6 @@
 #'   spread_coef(models, append = FALSE) %>%
 #'   # compute the CI for all bootstrapped model coefficients
 #'   boot_ci()}
-#'
-#' @importFrom stats qt quantile
-#' @importFrom dplyr quos
 #' @importFrom rlang .data
 #' @export
 boot_ci <- function(data, ..., method = c("dist", "quantile"), ci.lvl = .95) {
@@ -141,7 +138,7 @@ boot_ci <- function(data, ..., method = c("dist", "quantile"), ci.lvl = .95) {
   # evaluate arguments, generate data
   .dat <- get_dot_data(data, dplyr::quos(...))
 
-  # compute confidence intervalls for all values
+  # compute confidence intervals for all values
   transform_boot_result(lapply(.dat, function(x) {
     # check if method should be based on t-distribution of
     # bootstrap values or quantiles

@@ -15,7 +15,7 @@ Description: Collection of convenient functions for common statistical computati
              like weighted standard error, mean, t-test, correlation, and more.
 License: GPL-3
 Depends:
-    R (>= 3.5),
+    R (>= 3.4),
     utils
 Imports:
     bayestestR,

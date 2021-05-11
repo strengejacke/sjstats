@@ -108,5 +108,4 @@ efc \%>\%
     c12hour > 20 & c12hour < 40,
     n4pstu == 'Care Level 1' | n4pstu == 'Care Level 3'
   )
-
 }

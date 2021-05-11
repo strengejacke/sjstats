@@ -102,11 +102,6 @@
 #'   exact = FALSE,
 #'   continuity = TRUE
 #' )
-#'
-#' @importFrom stats fisher.test chisq.test cor.test ftable
-#' @importFrom dplyr case_when
-#' @importFrom MASS loglm
-#' @importFrom rlang quo_name enquo
 #' @export
 crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson", "fisher"), weights = NULL, ...) {
   # match arguments

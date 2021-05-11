@@ -70,10 +70,6 @@
 #'
 #' if (requireNamespace("brms", quietly = TRUE))
 #'   auto_prior(mf, efc, FALSE)
-#'
-#' @importFrom stats sd na.omit
-#' @importFrom dplyr select n_distinct
-#' @importFrom insight find_predictors find_response
 #' @export
 auto_prior <- function(formula, data, gaussian, locations = NULL) {
 
