@@ -49,8 +49,8 @@ omega_sq <- function(x, ...) {
 #' @rdname r2
 #' @export
 scale_weights <- function(x, ...) {
-  .Deprecated("parameters::rescale_weights()")
-  parameters::rescale_weights(x, ...)
+  .Deprecated("datawizard::rescale_weights()")
+  datawizard::rescale_weights(x, ...)
 }
 
 
