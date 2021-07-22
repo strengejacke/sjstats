@@ -69,9 +69,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -93,7 +99,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -136,7 +142,7 @@
              Kendall's tau and Pearson's r.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cramer</span><span class='op'>(</span><span class='va'>tab</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>cramer</span><span class='op'>(</span><span class='va'>tab</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for formula</span>
 <span class='fu'>cramer</span><span class='op'>(</span>
@@ -166,7 +172,7 @@
   statistics <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"auto"</span>, <span class='st'>"cramer"</span>, <span class='st'>"phi"</span>, <span class='st'>"spearman"</span>, <span class='st'>"kendall"</span>, <span class='st'>"pearson"</span>, <span class='st'>"fisher"</span><span class='op'>)</span>,
   weights <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -278,69 +284,76 @@ weights that will be applied to weight all observations. Default is
          two rows or columns, Cramer's V is calculated, else Phi).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Phi coefficient for 2x2 tables</span>
-<span class='va'>tab</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>phi</span><span class='op'>(</span><span class='va'>tab</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.04977376</div><div class='input'>
-<span class='co'># Cramer's V for nominal variables with more than 2 categories</span>
-<span class='va'>tab</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>cramer</span><span class='op'>(</span><span class='va'>tab</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.157634</div><div class='input'>
-<span class='co'># formula notation</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>
-<span class='fu'>cramer</span><span class='op'>(</span><span class='va'>e16sex</span> <span class='op'>~</span> <span class='va'>c161sex</span>, data <span class='op'>=</span> <span class='va'>efc</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.05258249</div><div class='input'>
-<span class='co'># bootstrapped confidence intervals</span>
-<span class='fu'>cramer</span><span class='op'>(</span><span class='va'>e16sex</span> <span class='op'>~</span> <span class='va'>c161sex</span>, data <span class='op'>=</span> <span class='va'>efc</span>, ci.lvl <span class='op'>=</span> <span class='fl'>.95</span>, n <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;       cramer     conf.low conf.high
-#&gt; 1 0.05258249 -0.004321533 0.1085876</div><div class='input'>
-<span class='co'># 2x2 table, compute Phi automatically</span>
-<span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>e16sex</span>, <span class='va'>c161sex</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #0000BB;'>
-#&gt; # Measure of Association for Contingency Tables
-#&gt; </span><span>
-#&gt;    Chi-squared: 2.2327
-#&gt;            Phi: 0.0526
-#&gt;             df: 1
-#&gt;        p-value: 0.135
-#&gt;   Observations: 900</div><div class='input'>
-<span class='co'># more dimensions than 2x2, compute Cramer's V automatically</span>
-<span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>c172code</span>, <span class='va'>c161sex</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
-#&gt; # Measure of Association for Contingency Tables
-#&gt; </span><span>
-#&gt;    Chi-squared: 4.1085
-#&gt;     Cramer's V: 0.0699
-#&gt;             df: 2
-#&gt;        p-value: 0.128
-#&gt;   Observations: 841</div><div class='input'>
-<span class='co'># ordinal data, use Kendall's tau</span>
-<span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>e42dep</span>, <span class='va'>quol_5</span>, statistics <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
-#&gt; # Measure of Association for Contingency Tables
-#&gt; </span><span>
-#&gt;               z: -9.5951
-#&gt;   Kendall's tau: -0.2496
-#&gt;              df: 75
-#&gt;         p-value: &lt; .001***
-#&gt;    Observations: 896</div><div class='input'>
-<span class='co'># calcilate Spearman's rho, with continuity correction</span>
-<span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>,
-  <span class='va'>e42dep</span>,
-  <span class='va'>quol_5</span>,
-  statistics <span class='op'>=</span> <span class='st'>"spearman"</span>,
-  exact <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  continuity <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>
-#&gt; # Measure of Association for Contingency Tables
-#&gt; </span><span>
-#&gt;                S: 157974157.4198
-#&gt;   Spearman's rho: -0.3177
-#&gt;               df: 75
-#&gt;          p-value: &lt; .001***
-#&gt;     Observations: 896</div><div class='input'>
-</div></span></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># Phi coefficient for 2x2 tables</span></span>
+<span class='r-in'><span class='va'>tab</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>phi</span><span class='op'>(</span><span class='va'>tab</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.04977376</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Cramer's V for nominal variables with more than 2 categories</span></span>
+<span class='r-in'><span class='va'>tab</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>cramer</span><span class='op'>(</span><span class='va'>tab</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.157634</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># formula notation</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>cramer</span><span class='op'>(</span><span class='va'>e16sex</span> <span class='op'>~</span> <span class='va'>c161sex</span>, data <span class='op'>=</span> <span class='va'>efc</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.05258249</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># bootstrapped confidence intervals</span></span>
+<span class='r-in'><span class='fu'>cramer</span><span class='op'>(</span><span class='va'>e16sex</span> <span class='op'>~</span> <span class='va'>c161sex</span>, data <span class='op'>=</span> <span class='va'>efc</span>, ci.lvl <span class='op'>=</span> <span class='fl'>.95</span>, n <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       cramer     conf.low conf.high</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 0.05258249 -0.004321533 0.1085876</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># 2x2 table, compute Phi automatically</span></span>
+<span class='r-in'><span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>e16sex</span>, <span class='va'>c161sex</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Measure of Association for Contingency Tables</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Chi-squared: 2.2327</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            Phi: 0.0526</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             df: 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        p-value: 0.135</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Observations: 900</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># more dimensions than 2x2, compute Cramer's V automatically</span></span>
+<span class='r-in'><span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>c172code</span>, <span class='va'>c161sex</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Measure of Association for Contingency Tables</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Chi-squared: 4.1085</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Cramer's V: 0.0699</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             df: 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        p-value: 0.128</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Observations: 841</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># ordinal data, use Kendall's tau</span></span>
+<span class='r-in'><span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>e42dep</span>, <span class='va'>quol_5</span>, statistics <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Measure of Association for Contingency Tables</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               z: -9.5951</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Kendall's tau: -0.2496</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              df: 75</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         p-value: &lt; .001***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Observations: 896</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># calcilate Spearman's rho, with continuity correction</span></span>
+<span class='r-in'><span class='fu'>crosstable_statistics</span><span class='op'>(</span><span class='va'>efc</span>,</span>
+<span class='r-in'>  <span class='va'>e42dep</span>,</span>
+<span class='r-in'>  <span class='va'>quol_5</span>,</span>
+<span class='r-in'>  statistics <span class='op'>=</span> <span class='st'>"spearman"</span>,</span>
+<span class='r-in'>  exact <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>  continuity <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Measure of Association for Contingency Tables</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                S: 157974157.4198</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Spearman's rho: -0.3177</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               df: 75</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          p-value: &lt; .001***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Observations: 896</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -352,11 +365,11 @@ weights that will be applied to weight all observations. Default is
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>.</p>
+  <p><p>Developed by <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -364,6 +377,8 @@ weights that will be applied to weight all observations. Default is
 
   
 
+
+  
 
   </body>
 </html>

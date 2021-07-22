@@ -67,9 +67,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -91,7 +97,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -132,7 +138,7 @@
                well as expected values and returns all results as lists of tables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>table_values</span><span class='op'>(</span><span class='va'>tab</span>, digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>table_values</span><span class='op'>(</span><span class='va'>tab</span>, digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,18 +167,20 @@ Tables of class <code><a href='https://rdrr.io/r/stats/xtabs.html'>xtabs</a></co
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>tab</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># show expected values</span>
-<span class='fu'>table_values</span><span class='op'>(</span><span class='va'>tab</span><span class='op'>)</span><span class='op'>$</span><span class='va'>expected</span>
-</div><div class='output co'>#&gt;   A B C
-#&gt; A 4 5 4
-#&gt; B 5 7 5</div><div class='input'><span class='co'># show cell percentages</span>
-<span class='fu'>table_values</span><span class='op'>(</span><span class='va'>tab</span><span class='op'>)</span><span class='op'>$</span><span class='va'>cell</span>
-</div><div class='output co'>#&gt;        1     2     3
-#&gt;                     
-#&gt; 1  16.67 10.00 13.33
-#&gt; 2  13.33 30.00 16.67</div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>tab</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='fl'>30</span>, <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># show expected values</span></span>
+<span class='r-in'><span class='fu'>table_values</span><span class='op'>(</span><span class='va'>tab</span><span class='op'>)</span><span class='op'>$</span><span class='va'>expected</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   A B C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> A 4 5 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> B 5 7 5</span>
+<span class='r-in'><span class='co'># show cell percentages</span></span>
+<span class='r-in'><span class='fu'>table_values</span><span class='op'>(</span><span class='va'>tab</span><span class='op'>)</span><span class='op'>$</span><span class='va'>cell</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        1     2     3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  16.67 10.00 13.33</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  13.33 30.00 16.67</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -184,11 +192,11 @@ Tables of class <code><a href='https://rdrr.io/r/stats/xtabs.html'>xtabs</a></co
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>.</p>
+  <p><p>Developed by <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -196,6 +204,8 @@ Tables of class <code><a href='https://rdrr.io/r/stats/xtabs.html'>xtabs</a></co
 
   
 
+
+  
 
   </body>
 </html>

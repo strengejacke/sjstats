@@ -67,9 +67,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -91,7 +97,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -132,7 +138,7 @@
              for mixed models with two-level design.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>design_effect</span><span class='op'>(</span><span class='va'>n</span>, icc <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>design_effect</span><span class='op'>(</span><span class='va'>n</span>, icc <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,16 +172,18 @@
             Thompson DM, Fernald DH, Mold JW. 2012. Intraclass Correlation Coefficients Typical of Cluster-Randomized Studies: Estimates From the Robert Wood Johnson Prescription for Health Projects. The Annals of Family Medicine;10(3):235-40. doi: <a href='https://doi.org/10.1370/afm.1347'>10.1370/afm.1347</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Design effect for two-level model with 30 observations per</span>
-<span class='co'># cluster group (level-2 unit) and an assumed intraclass</span>
-<span class='co'># correlation coefficient of 0.05.</span>
-<span class='fu'>design_effect</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 2.45</div><div class='input'>
-<span class='co'># Design effect for two-level model with 24 observation per cluster</span>
-<span class='co'># group and an assumed intraclass correlation coefficient of 0.2.</span>
-<span class='fu'>design_effect</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>24</span>, icc <span class='op'>=</span> <span class='fl'>0.2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 5.6</div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># Design effect for two-level model with 30 observations per</span></span>
+<span class='r-in'><span class='co'># cluster group (level-2 unit) and an assumed intraclass</span></span>
+<span class='r-in'><span class='co'># correlation coefficient of 0.05.</span></span>
+<span class='r-in'><span class='fu'>design_effect</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2.45</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Design effect for two-level model with 24 observation per cluster</span></span>
+<span class='r-in'><span class='co'># group and an assumed intraclass correlation coefficient of 0.2.</span></span>
+<span class='r-in'><span class='fu'>design_effect</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>24</span>, icc <span class='op'>=</span> <span class='fl'>0.2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5.6</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -187,11 +195,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>.</p>
+  <p><p>Developed by <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -199,6 +207,8 @@
 
   
 
+
+  
 
   </body>
 </html>

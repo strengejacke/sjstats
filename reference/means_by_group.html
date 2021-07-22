@@ -67,9 +67,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -91,7 +97,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -132,7 +138,7 @@
                of <code>dv</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>means_by_group</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>means_by_group</span><span class='op'>(</span>
   <span class='va'>x</span>,
   <span class='va'>dv</span>,
   <span class='va'>grp</span>,
@@ -152,7 +158,7 @@
   out <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"txt"</span>, <span class='st'>"viewer"</span>, <span class='st'>"browser"</span><span class='op'>)</span>,
   encoding <span class='op'>=</span> <span class='st'>"UTF-8"</span>,
   file <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,108 +220,112 @@ Only used when <code>out</code> is not <code>"txt"</code>.</p></td>
 
     <p>This function performs a One-Way-Anova with <code>dv</code> as dependent
   and <code>grp</code> as independent variable, by calling
-  <code><a href='https://rdrr.io/r/stats/lm.html'>lm(count ~ as.factor(grp))</a></code>. Then <code><a href='https://rdrr.io/pkg/emmeans/man/contrast.html'>contrast</a></code>
+  <code>lm(count ~ as.factor(grp))</code>. Then <code><a href='https://rdrr.io/pkg/emmeans/man/contrast.html'>contrast</a></code>
   is called to get p-values for each sub-group. P-values indicate whether
   each group-mean is significantly different from the total mean.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>
-<span class='fu'>means_by_group</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>c12hour</span>, <span class='va'>e42dep</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; <span style='color: #0000BB;'># Grouped Means for average number of hours of care per week by elder's dependency
-#&gt; 
-#&gt; </span><span>Category             |  Mean |   N |    SD |   SE |      p
-#&gt; ----------------------------------------------------------
-#&gt; independent          |  9.91 |  66 |  8.01 | 0.99 | &lt; .001
-#&gt; slightly dependent   | 17.54 | 225 | 17.74 | 1.18 | &lt; .001
-#&gt; moderately dependent | 34.52 | 306 | 41.54 | 2.37 |  0.983
-#&gt; severely dependent   | 75.90 | 304 | 61.72 | 3.54 | &lt; .001
-#&gt; Total                | 42.44 | 901 | 50.82 | 1.69 |       
-#&gt; 
-#&gt; Anova: R2=0.245; adj.R2=0.242; F=96.908; p=0.000</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
-<span class='fu'>means_by_group</span><span class='op'>(</span><span class='va'>iris</span>, <span class='va'>Sepal.Width</span>, <span class='va'>Species</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; </span><span style='color: #0000BB;'># Grouped Means for Sepal.Width by Species
-#&gt; 
-#&gt; </span><span>Category   | Mean |   N |   SD |   SE |      p
-#&gt; ----------------------------------------------
-#&gt; setosa     | 3.43 |  50 | 0.38 | 0.05 | &lt; .001
-#&gt; versicolor | 2.77 |  50 | 0.31 | 0.04 | &lt; .001
-#&gt; virginica  | 2.97 |  50 | 0.32 | 0.05 |  0.035
-#&gt; Total      | 3.06 | 150 | 0.44 | 0.04 |       
-#&gt; 
-#&gt; Anova: R2=0.401; adj.R2=0.393; F=49.160; p=0.000</div><div class='input'>
-<span class='co'># also works for grouped data frames</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://dplyr.tidyverse.org'>"dplyr"</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>efc</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>c172code</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>means_by_group</span><span class='op'>(</span><span class='va'>c12hour</span>, <span class='va'>e42dep</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; 
-#&gt; </span><span style='color: #00BBBB;'>Grouped by:
-#&gt; carer's level of education: low level of education
-#&gt; 
-#&gt; </span><span style='color: #0000BB;'># Grouped Means for average number of hours of care per week by elder's dependency
-#&gt; 
-#&gt; </span><span>Category             |  Mean |   N |    SD |   SE |      p
-#&gt; ----------------------------------------------------------
-#&gt; independent          | 16.33 |  12 | 10.74 | 3.10 |  0.024
-#&gt; slightly dependent   | 15.38 |  42 |  9.55 | 1.47 | &lt; .001
-#&gt; moderately dependent | 42.05 |  61 | 46.53 | 5.96 |  0.696
-#&gt; severely dependent   | 85.52 |  65 | 56.42 | 7.00 | &lt; .001
-#&gt; Total                | 49.81 | 180 | 52.24 | 3.89 |       
-#&gt; 
-#&gt; Anova: R2=0.307; adj.R2=0.295; F=25.955; p=0.000
-#&gt; 
-#&gt; 
-#&gt; </span><span style='color: #00BBBB;'>Grouped by:
-#&gt; carer's level of education: intermediate level of education
-#&gt; 
-#&gt; </span><span style='color: #0000BB;'># Grouped Means for average number of hours of care per week by elder's dependency
-#&gt; 
-#&gt; </span><span>Category             |  Mean |   N |    SD |   SE |      p
-#&gt; ----------------------------------------------------------
-#&gt; independent          |  7.96 |  45 |  3.91 | 0.58 | &lt; .001
-#&gt; slightly dependent   | 17.12 | 135 | 16.52 | 1.42 | &lt; .001
-#&gt; moderately dependent | 33.55 | 163 | 41.05 | 3.22 |  0.753
-#&gt; severely dependent   | 79.71 | 163 | 63.13 | 4.94 | &lt; .001
-#&gt; Total                | 41.76 | 506 | 51.42 | 2.29 |       
-#&gt; 
-#&gt; Anova: R2=0.284; adj.R2=0.280; F=66.374; p=0.000
-#&gt; 
-#&gt; 
-#&gt; </span><span style='color: #00BBBB;'>Grouped by:
-#&gt; carer's level of education: high level of education
-#&gt; 
-#&gt; </span><span style='color: #0000BB;'># Grouped Means for average number of hours of care per week by elder's dependency
-#&gt; 
-#&gt; </span><span>Category             |  Mean |   N |    SD |   SE |      p
-#&gt; ----------------------------------------------------------
-#&gt; independent          | 15.20 |   5 | 18.43 | 8.24 |  0.363
-#&gt; slightly dependent   | 18.08 |  39 | 12.98 | 2.08 |  0.146
-#&gt; moderately dependent | 28.42 |  62 | 35.64 | 4.53 |  0.670
-#&gt; severely dependent   | 63.38 |  50 | 62.69 | 8.87 | &lt; .001
-#&gt; Total                | 36.62 | 156 | 46.38 | 3.71 |       
-#&gt; 
-#&gt; Anova: R2=0.167; adj.R2=0.151; F=10.155; p=0.000
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># weighting</span>
-<span class='va'>efc</span><span class='op'>$</span><span class='va'>weight</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>, mean <span class='op'>=</span> <span class='fl'>1</span>, sd <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>means_by_group</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>c12hour</span>, <span class='va'>e42dep</span>, weights <span class='op'>=</span> <span class='va'>weight</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; </span><span style='color: #0000BB;'># Grouped Means for average number of hours of care per week by elder's dependency
-#&gt; 
-#&gt; </span><span>Category             |  Mean |   N |    SD |   SE |      p
-#&gt; ----------------------------------------------------------
-#&gt; independent          | 10.11 |  69 |  8.18 | 1.01 | &lt; .001
-#&gt; slightly dependent   | 18.45 | 218 | 20.62 | 1.37 | &lt; .001
-#&gt; moderately dependent | 35.08 | 312 | 42.33 | 2.42 |  0.874
-#&gt; severely dependent   | 75.07 | 307 | 62.00 | 3.56 | &lt; .001
-#&gt; Total                | 42.73 | 901 | 51.19 | 1.71 |       
-#&gt; 
-#&gt; Anova: R2=0.228; adj.R2=0.226; F=88.462; p=0.000</div></span></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>means_by_group</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>c12hour</span>, <span class='va'>e42dep</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Grouped Means for average number of hours of care per week by elder's dependency</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Category             |  Mean |   N |    SD |   SE |      p</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> independent          |  9.91 |  66 |  8.01 | 0.99 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> slightly dependent   | 17.54 | 225 | 17.74 | 1.18 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> moderately dependent | 34.52 | 306 | 41.54 | 2.37 |  0.983</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> severely dependent   | 75.90 | 304 | 61.72 | 3.54 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total                | 42.44 | 901 | 50.82 | 1.69 |       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anova: R2=0.245; adj.R2=0.242; F=96.908; p=0.000</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>means_by_group</span><span class='op'>(</span><span class='va'>iris</span>, <span class='va'>Sepal.Width</span>, <span class='va'>Species</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Grouped Means for Sepal.Width by Species</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Category   | Mean |   N |   SD |   SE |      p</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> setosa     | 3.43 |  50 | 0.38 | 0.05 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> versicolor | 2.77 |  50 | 0.31 | 0.04 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> virginica  | 2.97 |  50 | 0.32 | 0.05 |  0.035</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total      | 3.06 | 150 | 0.44 | 0.04 |       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anova: R2=0.401; adj.R2=0.393; F=49.160; p=0.000</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># also works for grouped data frames</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://dplyr.tidyverse.org'>"dplyr"</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>efc</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>c172code</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>means_by_group</span><span class='op'>(</span><span class='va'>c12hour</span>, <span class='va'>e42dep</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>Grouped by:</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>carer's level of education: low level of education</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Grouped Means for average number of hours of care per week by elder's dependency</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Category             |  Mean |   N |    SD |   SE |      p</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> independent          | 16.33 |  12 | 10.74 | 3.10 |  0.024</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> slightly dependent   | 15.38 |  42 |  9.55 | 1.47 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> moderately dependent | 42.05 |  61 | 46.53 | 5.96 |  0.696</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> severely dependent   | 85.52 |  65 | 56.42 | 7.00 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total                | 49.81 | 180 | 52.24 | 3.89 |       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anova: R2=0.307; adj.R2=0.295; F=25.955; p=0.000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>Grouped by:</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>carer's level of education: intermediate level of education</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Grouped Means for average number of hours of care per week by elder's dependency</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Category             |  Mean |   N |    SD |   SE |      p</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> independent          |  7.96 |  45 |  3.91 | 0.58 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> slightly dependent   | 17.12 | 135 | 16.52 | 1.42 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> moderately dependent | 33.55 | 163 | 41.05 | 3.22 |  0.753</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> severely dependent   | 79.71 | 163 | 63.13 | 4.94 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total                | 41.76 | 506 | 51.42 | 2.29 |       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anova: R2=0.284; adj.R2=0.280; F=66.374; p=0.000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>Grouped by:</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>carer's level of education: high level of education</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Grouped Means for average number of hours of care per week by elder's dependency</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Category             |  Mean |   N |    SD |   SE |      p</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> independent          | 15.20 |   5 | 18.43 | 8.24 |  0.363</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> slightly dependent   | 18.08 |  39 | 12.98 | 2.08 |  0.146</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> moderately dependent | 28.42 |  62 | 35.64 | 4.53 |  0.670</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> severely dependent   | 63.38 |  50 | 62.69 | 8.87 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total                | 36.62 | 156 | 46.38 | 3.71 |       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anova: R2=0.167; adj.R2=0.151; F=10.155; p=0.000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># weighting</span></span>
+<span class='r-in'><span class='va'>efc</span><span class='op'>$</span><span class='va'>weight</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>, mean <span class='op'>=</span> <span class='fl'>1</span>, sd <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>means_by_group</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>c12hour</span>, <span class='va'>e42dep</span>, weights <span class='op'>=</span> <span class='va'>weight</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Grouped Means for average number of hours of care per week by elder's dependency</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Category             |  Mean |   N |    SD |   SE |      p</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> independent          | 10.11 |  69 |  8.18 | 1.01 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> slightly dependent   | 18.45 | 218 | 20.62 | 1.37 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> moderately dependent | 35.08 | 312 | 42.33 | 2.42 |  0.874</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> severely dependent   | 75.07 | 307 | 62.00 | 3.56 | &lt; .001</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total                | 42.73 | 901 | 51.19 | 1.71 |       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Anova: R2=0.228; adj.R2=0.226; F=88.462; p=0.000</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -327,11 +337,11 @@ Only used when <code>out</code> is not <code>"txt"</code>.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>.</p>
+  <p><p>Developed by <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -339,6 +349,8 @@ Only used when <code>out</code> is not <code>"txt"</code>.</p></td>
 
   
 
+
+  
 
   </body>
 </html>

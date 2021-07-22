@@ -72,9 +72,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -96,7 +102,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -142,7 +148,7 @@
                and group-rank-means.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mwu</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>mwu</span><span class='op'>(</span>
   <span class='va'>data</span>,
   <span class='va'>x</span>,
   <span class='va'>grp</span>,
@@ -160,7 +166,7 @@
   out <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"txt"</span>, <span class='st'>"viewer"</span>, <span class='st'>"browser"</span><span class='op'>)</span>,
   encoding <span class='op'>=</span> <span class='st'>"UTF-8"</span>,
   file <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -224,54 +230,55 @@ Only used when <code>out</code> is not <code>"txt"</code>.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>
-<span class='co'># Mann-Whitney-U-Tests for elder's age by elder's dependency.</span>
-<span class='fu'>mwu</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>e17age</span>, <span class='va'>e42dep</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #0000BB;'>
-#&gt; # Mann-Whitney-U-Test
-#&gt; 
-#&gt; </span><span style='color: #00BBBB;'>Groups 1 = independent (n = 65) | 2 = slightly dependent (n = 224):
-#&gt; </span><span>  U = 7635.000, W = 5490.000, p = 0.003, Z = -3.020
-#&gt;   effect-size r =   0.178
-#&gt;    rank-mean(1) = 117.46
-#&gt;    rank-mean(2) = 152.99
-#&gt; 
-#&gt; </span><span style='color: #00BBBB;'>Groups 1 = independent (n = 65) | 3 = moderately dependent (n = 304):
-#&gt; </span><span>  U = 8692.000, W = 6547.000, p &lt; .001, Z = -4.273
-#&gt;   effect-size r =   0.222
-#&gt;    rank-mean(1) = 133.72
-#&gt;    rank-mean(3) = 195.96
-#&gt; 
-#&gt; </span><span style='color: #00BBBB;'>Groups 1 = independent (n = 65) | 4 = severely dependent (n = 297):
-#&gt; </span><span>  U = 7905.500, W = 5760.500, p &lt; .001, Z = -5.096
-#&gt;   effect-size r =   0.268
-#&gt;    rank-mean(1) = 121.62
-#&gt;    rank-mean(4) = 194.60
-#&gt; 
-#&gt; </span><span style='color: #00BBBB;'>Groups 2 = slightly dependent (n = 224) | 3 = moderately dependent (n = 304):
-#&gt; </span><span>  U = 54664.500, W = 29464.500, p = 0.008, Z = -2.647
-#&gt;   effect-size r =   0.115
-#&gt;    rank-mean(2) = 244.04
-#&gt;    rank-mean(3) = 279.58
-#&gt; 
-#&gt; </span><span style='color: #00BBBB;'>Groups 2 = slightly dependent (n = 224) | 4 = severely dependent (n = 297):
-#&gt; </span><span>  U = 51007.500, W = 25807.500, p &lt; .001, Z = -4.386
-#&gt;   effect-size r =   0.192
-#&gt;    rank-mean(2) = 227.71
-#&gt;    rank-mean(4) = 286.11
-#&gt; 
-#&gt; </span><span style='color: #00BBBB;'>Groups 3 = moderately dependent (n = 304) | 4 = severely dependent (n = 297):
-#&gt; </span><span>  U = 87819.500, W = 41459.500, p = 0.083, Z = -1.732
-#&gt;   effect-size r =   0.071
-#&gt;    rank-mean(3) = 288.88
-#&gt;    rank-mean(4) = 313.41
-#&gt; 
-#&gt; </span><span style='color: #0000BB;'># Kruskal-Wallis-Test
-#&gt; 
-#&gt; </span><span>chi-squared = 38.476
-#&gt; df = 3
-#&gt; p &lt; .001*** </div><div class='input'>
-</div></span></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># Mann-Whitney-U-Tests for elder's age by elder's dependency.</span></span>
+<span class='r-in'><span class='fu'>mwu</span><span class='op'>(</span><span class='va'>efc</span>, <span class='va'>e17age</span>, <span class='va'>e42dep</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Mann-Whitney-U-Test</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>Groups 1 = independent (n = 65) | 2 = slightly dependent (n = 224):</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   U = 7635.000, W = 5490.000, p = 0.003, Z = -3.020</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   effect-size r =   0.178</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(1) = 117.46</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(2) = 152.99</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>Groups 1 = independent (n = 65) | 3 = moderately dependent (n = 304):</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   U = 8692.000, W = 6547.000, p &lt; .001, Z = -4.273</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   effect-size r =   0.222</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(1) = 133.72</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(3) = 195.96</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>Groups 1 = independent (n = 65) | 4 = severely dependent (n = 297):</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   U = 7905.500, W = 5760.500, p &lt; .001, Z = -5.096</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   effect-size r =   0.268</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(1) = 121.62</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(4) = 194.60</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>Groups 2 = slightly dependent (n = 224) | 3 = moderately dependent (n = 304):</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   U = 54664.500, W = 29464.500, p = 0.008, Z = -2.647</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   effect-size r =   0.115</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(2) = 244.04</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(3) = 279.58</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>Groups 2 = slightly dependent (n = 224) | 4 = severely dependent (n = 297):</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   U = 51007.500, W = 25807.500, p &lt; .001, Z = -4.386</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   effect-size r =   0.192</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(2) = 227.71</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(4) = 286.11</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>Groups 3 = moderately dependent (n = 304) | 4 = severely dependent (n = 297):</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   U = 87819.500, W = 41459.500, p = 0.083, Z = -1.732</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   effect-size r =   0.071</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(3) = 288.88</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    rank-mean(4) = 313.41</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Kruskal-Wallis-Test</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> chi-squared = 38.476</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> df = 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p &lt; .001*** </span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -283,11 +290,11 @@ Only used when <code>out</code> is not <code>"txt"</code>.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>.</p>
+  <p><p>Developed by <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -295,6 +302,8 @@ Only used when <code>out</code> is not <code>"txt"</code>.</p></td>
 
   
 
+
+  
 
   </body>
 </html>

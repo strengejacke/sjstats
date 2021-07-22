@@ -70,9 +70,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -94,7 +100,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -138,7 +144,7 @@
                by <code><a href='https://rdrr.io/pkg/pscl/man/zeroinfl.html'>zeroinfl</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>svyglm.zip</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>design</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>svyglm.zip</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>design</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -168,43 +174,46 @@ a specification of the survey design.</p></td>
     <p>Code modified from https://notstatschat.rbind.io/2015/05/26/zero-inflated-poisson-from-complex-samples/.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='http://r-survey.r-forge.r-project.org/survey/'>"survey"</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>nhanes_sample</span><span class='op'>)</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
-  <span class='va'>nhanes_sample</span><span class='op'>$</span><span class='va'>malepartners</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>nhanes_sample</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span>
-  <span class='va'>nhanes_sample</span><span class='op'>$</span><span class='va'>malepartners</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2992</span>, <span class='fl'>400</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>0</span>
-
-  <span class='co'># create survey design</span>
-  <span class='va'>des</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survey/man/svydesign.html'>svydesign</a></span><span class='op'>(</span>
-    id <span class='op'>=</span> <span class='op'>~</span><span class='va'>SDMVPSU</span>,
-    strat <span class='op'>=</span> <span class='op'>~</span><span class='va'>SDMVSTRA</span>,
-    weights <span class='op'>=</span> <span class='op'>~</span><span class='va'>WTINT2YR</span>,
-    nest <span class='op'>=</span> <span class='cn'>TRUE</span>,
-    data <span class='op'>=</span> <span class='va'>nhanes_sample</span>
-  <span class='op'>)</span>
-
-  <span class='co'># fit negative binomial regression</span>
-  <span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'>svyglm.zip</span><span class='op'>(</span>
-    <span class='va'>malepartners</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>RIDRETH1</span><span class='op'>)</span> <span class='op'>|</span> <span class='va'>age</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>RIDRETH1</span><span class='op'>)</span>,
-    <span class='va'>des</span>
-  <span class='op'>)</span>
-
-  <span class='co'># print coefficients and standard errors</span>
-  <span class='va'>fit</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: non-integer #successes in a binomial glm!</span></div><div class='output co'>#&gt;                    term estimate std.error conf.low conf.high    p.value
-#&gt; 2                   age   0.0149    0.0354   0.9469    1.0879 0.6745    
-#&gt; 3     factor(RIDRETH1)2   0.0185    0.0754   0.8787    1.1810 0.8062    
-#&gt; 4     factor(RIDRETH1)3  -0.0449    0.0284   0.9043    1.0107 0.1133    
-#&gt; 5     factor(RIDRETH1)4  -0.0240    0.0276   0.9250    1.0305 0.3843    
-#&gt; 6     factor(RIDRETH1)5   0.0371    0.0617   0.9197    1.1712 0.5470    
-#&gt; 7        tp.(Intercept)  -1.6694    0.4717   0.0747    0.4748 &lt;0.001 ***
-#&gt; 8                tp.age  -0.0333    0.2831   0.5553    1.6848 0.9064    
-#&gt; 9  tp.factor(RIDRETH1)2   0.1548    0.2571   0.7053    1.9323 0.5472    
-#&gt; 10 tp.factor(RIDRETH1)3  -0.3969    0.2111   0.4446    1.0169 0.0601 .  
-#&gt; 11 tp.factor(RIDRETH1)4  -0.2330    0.3050   0.4357    1.4402 0.4450    
-#&gt; 12 tp.factor(RIDRETH1)5  -0.3303    0.4744   0.2836    1.8214 0.4863    </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Showing robust standard errors on link-scale (untransformed).</span></div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='http://r-survey.r-forge.r-project.org/survey/'>"survey"</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>nhanes_sample</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='va'>nhanes_sample</span><span class='op'>$</span><span class='va'>malepartners</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>nhanes_sample</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='va'>nhanes_sample</span><span class='op'>$</span><span class='va'>malepartners</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2992</span>, <span class='fl'>400</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>0</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'># create survey design</span></span>
+<span class='r-in'>  <span class='va'>des</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survey/man/svydesign.html'>svydesign</a></span><span class='op'>(</span></span>
+<span class='r-in'>    id <span class='op'>=</span> <span class='op'>~</span><span class='va'>SDMVPSU</span>,</span>
+<span class='r-in'>    strat <span class='op'>=</span> <span class='op'>~</span><span class='va'>SDMVSTRA</span>,</span>
+<span class='r-in'>    weights <span class='op'>=</span> <span class='op'>~</span><span class='va'>WTINT2YR</span>,</span>
+<span class='r-in'>    nest <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>    data <span class='op'>=</span> <span class='va'>nhanes_sample</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'># fit negative binomial regression</span></span>
+<span class='r-in'>  <span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'>svyglm.zip</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>malepartners</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>RIDRETH1</span><span class='op'>)</span> <span class='op'>|</span> <span class='va'>age</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>RIDRETH1</span><span class='op'>)</span>,</span>
+<span class='r-in'>    <span class='va'>des</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>  <span class='co'># print coefficients and standard errors</span></span>
+<span class='r-in'>  <span class='va'>fit</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>non-integer #successes in a binomial glm!</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                    term estimate std.error conf.low conf.high    p.value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                   age   0.0149    0.0354   0.9469    1.0879 0.6745    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3     factor(RIDRETH1)2   0.0185    0.0754   0.8787    1.1810 0.8062    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4     factor(RIDRETH1)3  -0.0449    0.0284   0.9043    1.0107 0.1133    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5     factor(RIDRETH1)4  -0.0240    0.0276   0.9250    1.0305 0.3843    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6     factor(RIDRETH1)5   0.0371    0.0617   0.9197    1.1712 0.5470    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7        tp.(Intercept)  -1.6694    0.4717   0.0747    0.4748 &lt;0.001 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8                tp.age  -0.0333    0.2831   0.5553    1.6848 0.9064    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9  tp.factor(RIDRETH1)2   0.1548    0.2571   0.7053    1.9323 0.5472    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 tp.factor(RIDRETH1)3  -0.3969    0.2111   0.4446    1.0169 0.0601 .  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 tp.factor(RIDRETH1)4  -0.2330    0.3050   0.4357    1.4402 0.4450    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12 tp.factor(RIDRETH1)5  -0.3303    0.4744   0.2836    1.8214 0.4863    </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Showing robust standard errors on link-scale (untransformed).</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -216,11 +225,11 @@ a specification of the survey design.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>.</p>
+  <p><p>Developed by <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -228,6 +237,8 @@ a specification of the survey design.</p></td>
 
   
 
+
+  
 
   </body>
 </html>

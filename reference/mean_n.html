@@ -68,9 +68,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -92,7 +98,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -134,7 +140,7 @@
                values of a row are valid (and not <code>NA</code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>n</span>, digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>n</span>, digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,7 +172,7 @@ value. Negative values are allowed (see 'Details').</p></td>
     <p>Rounding to a negative number of <code>digits</code> means rounding to a power of
            ten, so for example mean_n(df, 3, digits = -2) rounds to the
            nearest hundred. <br /> <br />
-         For <code>n</code>, must be a numeric value from <code>0</code> to <code><a href='https://rdrr.io/r/base/nrow.html'>ncol(dat)</a></code>. If
+         For <code>n</code>, must be a numeric value from <code>0</code> to <code>ncol(dat)</code>. If
            a <em>row</em> in <code>dat</code> has at least <code>n</code> non-missing values, the
            row mean is returned. If <code>n</code> is a non-integer value from 0 to 1,
            <code>n</code> is considered to indicate the proportion of necessary non-missing
@@ -177,30 +183,36 @@ value. Negative values are allowed (see 'Details').</p></td>
     <p><a href='http://r4stats.com/2014/09/03/adding-the-spss-mean-n-function-to-r/'>r4stats.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>c1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='cn'>NA</span>,<span class='fl'>4</span><span class='op'>)</span>,
-                  c2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='fl'>2</span>,<span class='cn'>NA</span>,<span class='fl'>5</span><span class='op'>)</span>,
-                  c3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='fl'>4</span>,<span class='cn'>NA</span>,<span class='cn'>NA</span><span class='op'>)</span>,
-                  c4 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>7</span>,<span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># needs at least 4 non-missing values per row</span>
-<span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>4</span><span class='op'>)</span> <span class='co'># 1 valid return value</span>
-</div><div class='output co'>#&gt; [1]   NA 2.75   NA   NA</div><div class='input'>
-<span class='co'># needs at least 3 non-missing values per row</span>
-<span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>3</span><span class='op'>)</span> <span class='co'># 2 valid return values</span>
-</div><div class='output co'>#&gt; [1]   NA 2.75   NA 5.67</div><div class='input'>
-<span class='co'># needs at least 2 non-missing values per row</span>
-<span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 1.50 2.75   NA 5.67</div><div class='input'>
-<span class='co'># needs at least 1 non-missing value per row</span>
-<span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>1</span><span class='op'>)</span> <span class='co'># all means are shown</span>
-</div><div class='output co'>#&gt; [1] 1.50 2.75 7.00 5.67</div><div class='input'>
-<span class='co'># needs at least 50% of non-missing values per row</span>
-<span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>.5</span><span class='op'>)</span> <span class='co'># 3 valid return values</span>
-</div><div class='output co'>#&gt; [1] 1.50 2.75   NA 5.67</div><div class='input'>
-<span class='co'># needs at least 75% of non-missing values per row</span>
-<span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>.75</span><span class='op'>)</span> <span class='co'># 2 valid return values</span>
-</div><div class='output co'>#&gt; [1]   NA 2.75   NA 5.67</div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>c1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='cn'>NA</span>,<span class='fl'>4</span><span class='op'>)</span>,</span>
+<span class='r-in'>                  c2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='fl'>2</span>,<span class='cn'>NA</span>,<span class='fl'>5</span><span class='op'>)</span>,</span>
+<span class='r-in'>                  c3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='fl'>4</span>,<span class='cn'>NA</span>,<span class='cn'>NA</span><span class='op'>)</span>,</span>
+<span class='r-in'>                  c4 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>7</span>,<span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># needs at least 4 non-missing values per row</span></span>
+<span class='r-in'><span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>4</span><span class='op'>)</span> <span class='co'># 1 valid return value</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]   NA 2.75   NA   NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># needs at least 3 non-missing values per row</span></span>
+<span class='r-in'><span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>3</span><span class='op'>)</span> <span class='co'># 2 valid return values</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]   NA 2.75   NA 5.67</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># needs at least 2 non-missing values per row</span></span>
+<span class='r-in'><span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.50 2.75   NA 5.67</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># needs at least 1 non-missing value per row</span></span>
+<span class='r-in'><span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>1</span><span class='op'>)</span> <span class='co'># all means are shown</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.50 2.75 7.00 5.67</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># needs at least 50% of non-missing values per row</span></span>
+<span class='r-in'><span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>.5</span><span class='op'>)</span> <span class='co'># 3 valid return values</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.50 2.75   NA 5.67</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># needs at least 75% of non-missing values per row</span></span>
+<span class='r-in'><span class='fu'>mean_n</span><span class='op'>(</span><span class='va'>dat</span>, <span class='fl'>.75</span><span class='op'>)</span> <span class='co'># 2 valid return values</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1]   NA 2.75   NA 5.67</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -212,11 +224,11 @@ value. Negative values are allowed (see 'Details').</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>.</p>
+  <p><p>Developed by <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -224,6 +236,8 @@ value. Negative values are allowed (see 'Details').</p></td>
 
   
 
+
+  
 
   </body>
 </html>
