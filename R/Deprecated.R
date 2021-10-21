@@ -9,7 +9,7 @@
 #'
 #' @export
 r2 <- function(x) {
-  .Deprecated("performance::r2()")
+  .Defunct("performance::r2()")
   performance::r2(x)
 }
 
@@ -17,7 +17,7 @@ r2 <- function(x) {
 #' @rdname r2
 #' @export
 cohens_f <- function(x, ...) {
-  .Deprecated("effectsize::cohens_f()")
+  .Defunct("effectsize::cohens_f()")
   effectsize::cohens_f(x)
 }
 
@@ -25,7 +25,7 @@ cohens_f <- function(x, ...) {
 #' @rdname r2
 #' @export
 eta_sq <- function(x, ...) {
-  .Deprecated("effectsize::eta_squared()")
+  .Defunct("effectsize::eta_squared()")
   effectsize::eta_squared(x)
 }
 
@@ -33,7 +33,7 @@ eta_sq <- function(x, ...) {
 #' @rdname r2
 #' @export
 epsilon_sq <- function(x, ...) {
-  .Deprecated("effectsize::epsilon_squared()")
+  .Defunct("effectsize::epsilon_squared()")
   effectsize::epsilon_squared(x)
 }
 
@@ -41,7 +41,7 @@ epsilon_sq <- function(x, ...) {
 #' @rdname r2
 #' @export
 omega_sq <- function(x, ...) {
-  .Deprecated("effectsize::omega_sqared()")
+  .Defunct("effectsize::omega_sqared()")
   effectsize::omega_squared(x)
 }
 
@@ -49,7 +49,7 @@ omega_sq <- function(x, ...) {
 #' @rdname r2
 #' @export
 scale_weights <- function(x, ...) {
-  .Deprecated("datawizard::rescale_weights()")
+  .Defunct("datawizard::rescale_weights()")
   datawizard::rescale_weights(x, ...)
 }
 
@@ -57,7 +57,7 @@ scale_weights <- function(x, ...) {
 #' @rdname r2
 #' @export
 robust <- function(x, ...) {
-  .Deprecated("parameters::standard_error_robust()")
+  .Defunct("parameters::standard_error_robust()")
   parameters::standard_error_robust(x, ...)
 }
 
@@ -65,14 +65,14 @@ robust <- function(x, ...) {
 #' @rdname r2
 #' @export
 icc <- function(x) {
-  .Deprecated("performance::icc()")
+  .Defunct("performance::icc()")
   performance::icc(x)
 }
 
 #' @rdname r2
 #' @export
 p_value <- function(x, ...) {
-  .Deprecated("parameters::p_value()")
+  .Defunct("parameters::p_value()")
   parameters::p_value(x)
 }
 
@@ -80,6 +80,6 @@ p_value <- function(x, ...) {
 #' @rdname r2
 #' @export
 se <- function(x, ...) {
-  .Deprecated("parameters::standard_error()")
+  .Defunct("parameters::standard_error()")
   parameters::standard_error(x)
 }
