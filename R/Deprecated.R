@@ -57,8 +57,8 @@ scale_weights <- function(x, ...) {
 #' @rdname r2
 #' @export
 robust <- function(x, ...) {
-  .Defunct("parameters::standard_error_robust()")
-  parameters::standard_error_robust(x, ...)
+  .Defunct("parameters::standard_error()")
+  parameters::standard_error(x, ...)
 }
 
 

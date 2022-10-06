@@ -1,3 +1,7 @@
+# sjstats 0.18.2
+
+* Fix issues with changes in forthcoming upstream packages.
+
 # sjstats 0.18.1
 
 ## Deprecated and defunct
