@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.2</span>
       </span>
     </div>
 
@@ -50,9 +50,12 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/strengejacke/sjstats/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.18.2" id="sjstats-0182">sjstats 0.18.2<a class="anchor" aria-label="anchor" href="#sjstats-0182"></a></h2>
+<ul><li>Fix issues with changes in forthcoming upstream packages.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.18.1" id="sjstats-0181">sjstats 0.18.1<small>2021-01-09</small><a class="anchor" aria-label="anchor" href="#sjstats-0181"></a></h2>
 <div class="section level3">
@@ -70,7 +73,7 @@
 <li>
 <code>odds_to_rr()</code>, please use <code><a href="https://easystats.github.io/effectsize/reference/oddsratio_to_riskratio.html" class="external-link">effectsize::oddsratio_to_riskratio()</a></code>.</li>
 <li>
-<code>std_beta()</code>, please use <code><a href="https://easystats.github.io/effectsize/reference/standardize_parameters.html" class="external-link">effectsize::standardize_parameters()</a></code>.</li>
+<code>std_beta()</code>, please use <code><a href="https://easystats.github.io/parameters/reference/standardize_parameters.html" class="external-link">effectsize::standardize_parameters()</a></code>.</li>
 <li>
 <code><a href="../reference/r2.html">robust()</a></code>, please use <code><a href="https://easystats.github.io/parameters/reference/standard_error_robust.html" class="external-link">parameters::standard_error_robust()</a></code>.</li>
 <li>
@@ -109,7 +112,7 @@
 <ul><li>
 <code><a href="../reference/r2.html">cohens_f()</a></code>, please use <code><a href="https://easystats.github.io/effectsize/reference/eta_squared.html" class="external-link">effectsize::cohens_f()</a></code>.</li>
 <li>
-<code>std_beta()</code>, please use <code><a href="https://easystats.github.io/effectsize/reference/standardize_parameters.html" class="external-link">effectsize::standardize_parameters()</a></code>.</li>
+<code>std_beta()</code>, please use <code><a href="https://easystats.github.io/parameters/reference/standardize_parameters.html" class="external-link">effectsize::standardize_parameters()</a></code>.</li>
 <li>
 <code>tidy_stan()</code>, please use <code><a href="https://easystats.github.io/parameters/reference/model_parameters.html" class="external-link">parameters::model_parameters()</a></code>.</li>
 <li>
@@ -143,8 +146,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="general-0-17-7">General<a class="anchor" aria-label="anchor" href="#general-0-17-7"></a></h3>
-<ul><li>Revise some functions to cope with the forthcoming <em>insight</em> update.</li>
-</ul></div>
+<ul><li>Revise some functions to cope with the forthcoming <em>insight</em> update.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.17.6" id="sjstats-0176">sjstats 0.17.6<small>2019-09-08</small><a class="anchor" aria-label="anchor" href="#sjstats-0176"></a></h2>
@@ -161,8 +163,7 @@
 <div class="section level3">
 <h3 id="new-functions-0-17-6">New functions<a class="anchor" aria-label="anchor" href="#new-functions-0-17-6"></a></h3>
 <ul><li>
-<code><a href="../reference/svyglm.zip.html">svyglm.zip()</a></code> to fit zero-inflated Poisson models for survey-designs.</li>
-</ul></div>
+<code><a href="../reference/svyglm.zip.html">svyglm.zip()</a></code> to fit zero-inflated Poisson models for survey-designs.</li></ul></div>
 <div class="section level3">
 <h3 id="changes-to-functions-0-17-6">Changes to functions<a class="anchor" aria-label="anchor" href="#changes-to-functions-0-17-6"></a></h3>
 <ul><li>
@@ -174,16 +175,14 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-17-6">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-17-6"></a></h3>
-<ul><li>Fix bug with wrong computation in <code>odds_to_rr()</code>.</li>
-</ul></div>
+<ul><li>Fix bug with wrong computation in <code>odds_to_rr()</code>.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.17.5" id="sjstats-0175">sjstats 0.17.5<small>2019-06-04</small><a class="anchor" aria-label="anchor" href="#sjstats-0175"></a></h2>
 <div class="section level3">
 <h3 id="new-functions-0-17-5">New functions<a class="anchor" aria-label="anchor" href="#new-functions-0-17-5"></a></h3>
 <ul><li>
-<code><a href="../reference/r2.html">epsilon_sq()</a></code>, to compute epsilon-squared effect-size.</li>
-</ul></div>
+<code><a href="../reference/r2.html">epsilon_sq()</a></code>, to compute epsilon-squared effect-size.</li></ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-0-17-5">Deprecated and defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-0-17-5"></a></h3>
 <p><em>sjstats</em> is being re-structured, and many functions are re-implemented in new packages that are part of a new project called <strong>easystats</strong>. The aim of <strong>easystats</strong> is to provide a unifying and consistent framework to tame, discipline and harness the scary R statistics and their pesky models.</p>
@@ -299,8 +298,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="changes-to-functions-0-17-5">Changes to functions<a class="anchor" aria-label="anchor" href="#changes-to-functions-0-17-5"></a></h3>
-<ul><li>Anova-stats functions (like <code><a href="../reference/r2.html">eta_sq()</a></code>) get a <code>method</code>-argument to define the method for computing confidence intervals from bootstrapping.</li>
-</ul></div>
+<ul><li>Anova-stats functions (like <code><a href="../reference/r2.html">eta_sq()</a></code>) get a <code>method</code>-argument to define the method for computing confidence intervals from bootstrapping.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-17-5">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-17-5"></a></h3>
 <ul><li>In some situations, <code><a href="../reference/samplesize_mixed.html">smpsize_lmm()</a></code> could result in negative sample-size recommendations. This was fixed, and a warning is now shown indicating that the parameters for the power-calculation should be modified.</li>
@@ -317,8 +315,7 @@
 <div class="section level3">
 <h3 id="new-functions-0-17-4">New functions<a class="anchor" aria-label="anchor" href="#new-functions-0-17-4"></a></h3>
 <ul><li>
-<code>cred_int()</code>, to compute uncertainty intervals of Bayesian models. Mimics the behaviour and style of <code>hdi()</code> and is thus a convenient complement to functions like <code>posterior_interval()</code>.</li>
-</ul></div>
+<code>cred_int()</code>, to compute uncertainty intervals of Bayesian models. Mimics the behaviour and style of <code>hdi()</code> and is thus a convenient complement to functions like <code>posterior_interval()</code>.</li></ul></div>
 <div class="section level3">
 <h3 id="changes-to-functions-0-17-4">Changes to functions<a class="anchor" aria-label="anchor" href="#changes-to-functions-0-17-4"></a></h3>
 <ul><li>
@@ -345,8 +342,7 @@
 <h2 class="page-header" data-toc-text="0.17.3" id="sjstats-0173">sjstats 0.17.3<small>2019-01-07</small><a class="anchor" aria-label="anchor" href="#sjstats-0173"></a></h2>
 <div class="section level3">
 <h3 id="general-0-17-3">General<a class="anchor" aria-label="anchor" href="#general-0-17-3"></a></h3>
-<ul><li>Export <code><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">dplyr::n()</a></code>, to meet forthcoming changes in dplyr 0.8.0.</li>
-</ul></div>
+<ul><li>Export <code><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">dplyr::n()</a></code>, to meet forthcoming changes in dplyr 0.8.0.</li></ul></div>
 <div class="section level3">
 <h3 id="changes-to-functions-0-17-3">Changes to functions<a class="anchor" aria-label="anchor" href="#changes-to-functions-0-17-3"></a></h3>
 <ul><li>
@@ -385,13 +381,11 @@
 <h2 class="page-header" data-toc-text="0.17.2" id="sjstats-0172">sjstats 0.17.2<small>2018-11-15</small><a class="anchor" aria-label="anchor" href="#sjstats-0172"></a></h2>
 <div class="section level3">
 <h3 id="general-0-17-2">General<a class="anchor" aria-label="anchor" href="#general-0-17-2"></a></h3>
-<ul><li>Revised help-files for <code><a href="../reference/r2.html">r2()</a></code> and <code><a href="../reference/r2.html">icc()</a></code>, also by adding more references.</li>
-</ul></div>
+<ul><li>Revised help-files for <code><a href="../reference/r2.html">r2()</a></code> and <code><a href="../reference/r2.html">icc()</a></code>, also by adding more references.</li></ul></div>
 <div class="section level3">
 <h3 id="new-functions-0-17-2">New functions<a class="anchor" aria-label="anchor" href="#new-functions-0-17-2"></a></h3>
 <ul><li>
-<code>re_grp_var()</code> to find group factors of random effects in mixed models.</li>
-</ul></div>
+<code>re_grp_var()</code> to find group factors of random effects in mixed models.</li></ul></div>
 <div class="section level3">
 <h3 id="changes-to-functions-0-17-2">Changes to functions<a class="anchor" aria-label="anchor" href="#changes-to-functions-0-17-2"></a></h3>
 <ul><li>
@@ -443,8 +437,7 @@
 <h2 class="page-header" data-toc-text="0.17.0" id="sjstats-0170">sjstats 0.17.0<small>2018-08-20</small><a class="anchor" aria-label="anchor" href="#sjstats-0170"></a></h2>
 <div class="section level3">
 <h3 id="general-0-17-0">General<a class="anchor" aria-label="anchor" href="#general-0-17-0"></a></h3>
-<ul><li>Reduce package dependencies.</li>
-</ul></div>
+<ul><li>Reduce package dependencies.</li></ul></div>
 <div class="section level3">
 <h3 id="new-functions-0-17-0">New functions<a class="anchor" aria-label="anchor" href="#new-functions-0-17-0"></a></h3>
 <ul><li>
@@ -496,7 +489,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

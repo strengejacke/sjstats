@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.2</span>
       </span>
     </div>
 
@@ -51,7 +51,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generate nonparametric bootstrap replications</h1>
-    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/R/bootstrap.R" class="external-link"><code>R/bootstrap.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/bootstrap.R" class="external-link"><code>R/bootstrap.R</code></a></small>
     <div class="hidden name"><code>bootstrap.Rd</code></div>
     </div>
 
@@ -60,26 +60,36 @@
              returns the bootstrapped data frames as list-variable.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">bootstrap</span><span class="op">(</span><span class="va">data</span>, <span class="va">n</span>, <span class="va">size</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">bootstrap</span><span class="op">(</span><span class="va">data</span>, <span class="va">n</span>, <span class="va">size</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>data</th>
-      <td><p>A data frame.</p></td>
-    </tr><tr><th>n</th>
-      <td><p>Number of bootstraps to be generated.</p></td>
-    </tr><tr><th>size</th>
-      <td><p>Optional, size of the bootstrap samples. May either be a number
-between 1 and <code>nrow(data)</code> or a value between 0 and 1 to sample
-a proportion of observations from <code>data</code> (see 'Examples').</p></td>
-    </tr></table></div>
+    <dl><dt>data</dt>
+<dd><p>A data frame.</p></dd>
 
-    <div id="ref-sections">
+
+<dt>n</dt>
+<dd><p>Number of bootstraps to be generated.</p></dd>
+
+
+<dt>size</dt>
+<dd><p>Optional, size of the bootstrap samples. May either be a number
+between 1 and <code>nrow(data)</code> or a value between 0 and 1 to sample
+a proportion of observations from <code>data</code> (see 'Examples').</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame with one column: a list-variable
-          <code>strap</code>, which contains resample-objects of class <code>sj_resample</code>.
-          These resample-objects are lists with three elements:</p><ol><li><p>the original data frame, <code>data</code></p></li>
+    
+
+<p>A data frame with one column: a list-variable</p>
+<p></p>
+<p><code>strap</code>, which contains resample-objects of class <code>sj_resample</code>.
+          These resample-objects are lists with three elements:</p>
+<p></p>
+<ol><li><p>the original data frame, <code>data</code></p></li>
 <li><p>the rownmumbers <code>id</code>, i.e. rownumbers of <code>data</code>, indicating the resampled rows with replacement</p></li>
 <li><p>the <code>resample.id</code>, indicating the index of the resample (i.e. the position of the <code>sj_resample</code>-object in the list <code>strap</code>)</p></li>
 </ol></div>
@@ -109,15 +119,14 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
     <div class="dont-index"><p><code><a href="boot_ci.html">boot_ci</a></code> to calculate confidence intervals from
            bootstrap samples.</p></div>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">efc</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># now run models for each bootstrapped sample</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">bs</span><span class="op">$</span><span class="va">strap</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">e42dep</span> <span class="op">+</span> <span class="va">c161sex</span>, data <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">efc</span>, <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># now run models for each bootstrapped sample</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">bs</span><span class="op">$</span><span class="va">strap</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">e42dep</span> <span class="op">+</span> <span class="va">c161sex</span>, data <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -125,7 +134,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       e42dep      c161sex  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    7.467760     1.565182     0.007414  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      6.7217       1.4854       0.5294  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
@@ -135,7 +144,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       e42dep      c161sex  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      5.7454       1.8083       0.4795  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      6.8244       1.5494       0.4017  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
@@ -145,7 +154,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       e42dep      c161sex  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     7.65750      1.35233      0.07798  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      6.1121       1.6200       0.6238  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
@@ -155,7 +164,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       e42dep      c161sex  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      6.6607       1.5033       0.3721  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      6.5247       1.5744       0.2904  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
@@ -165,37 +174,37 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       e42dep      c161sex  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      6.1220       1.6326       0.5296  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       5.294        1.791        0.694  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># generate bootstrap samples with 600 observations for each sample</span></span>
-<span class="r-in"><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">efc</span>, <span class="fl">5</span>, <span class="fl">600</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># generate bootstrap samples with 70% observations of the original sample size</span></span>
-<span class="r-in"><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">efc</span>, <span class="fl">5</span>, <span class="fl">.7</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># compute standard error for a simple vector from bootstraps</span></span>
-<span class="r-in"><span class="co"># use the `as.data.frame()`-method to get the resampled</span></span>
-<span class="r-in"><span class="co"># data frame</span></span>
-<span class="r-in"><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">efc</span>, <span class="fl">100</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">bs</span><span class="op">$</span><span class="va">c12hour</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">bs</span><span class="op">$</span><span class="va">strap</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">c12hour</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># or as tidyverse-approach</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="http://purrr.tidyverse.org" class="external-link">"purrr"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">bs</span> <span class="op">&lt;-</span> <span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">    <span class="fu">bootstrap</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span class="r-in">      c12hour <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dbl</a></span><span class="op">(</span><span class="va">strap</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">$</span><span class="va">c12hour</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co"># bootstrapped standard error</span></span>
-<span class="r-in">  <span class="fu"><a href="boot_ci.html">boot_se</a></span><span class="op">(</span><span class="va">bs</span>, <span class="va">c12hour</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># generate bootstrap samples with 600 observations for each sample</span></span></span>
+<span class="r-in"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">efc</span>, <span class="fl">5</span>, <span class="fl">600</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># generate bootstrap samples with 70% observations of the original sample size</span></span></span>
+<span class="r-in"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">efc</span>, <span class="fl">5</span>, <span class="fl">.7</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># compute standard error for a simple vector from bootstraps</span></span></span>
+<span class="r-in"><span><span class="co"># use the `as.data.frame()`-method to get the resampled</span></span></span>
+<span class="r-in"><span><span class="co"># data frame</span></span></span>
+<span class="r-in"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">efc</span>, <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bs</span><span class="op">$</span><span class="va">c12hour</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">bs</span><span class="op">$</span><span class="va">strap</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">c12hour</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># or as tidyverse-approach</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://purrr.tidyverse.org/" class="external-link">"purrr"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">bs</span> <span class="op">&lt;-</span> <span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>    <span class="fu">bootstrap</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      c12hour <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dbl</a></span><span class="op">(</span><span class="va">strap</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">$</span><span class="va">c12hour</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># bootstrapped standard error</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="boot_ci.html">boot_se</a></span><span class="op">(</span><span class="va">bs</span>, <span class="va">c12hour</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      term  std.err</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 c12hour 1.920276</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 c12hour 1.663036</span>
 </code></pre></div>
     </div>
   </div>
@@ -210,7 +219,7 @@ a proportion of observations from <code>data</code> (see 'Examples').</p></td>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

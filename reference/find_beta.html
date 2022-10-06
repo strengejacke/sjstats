@@ -22,7 +22,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.2</span>
       </span>
     </div>
 
@@ -55,7 +55,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Determining distribution parameters</h1>
-    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/R/find_beta.R" class="external-link"><code>R/find_beta.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/find_beta.R" class="external-link"><code>R/find_beta.R</code></a></small>
     <div class="hidden name"><code>find_beta.Rd</code></div>
     </div>
 
@@ -68,45 +68,62 @@
              or confidence intervals.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">find_beta</span><span class="op">(</span><span class="va">x1</span>, <span class="va">p1</span>, <span class="va">x2</span>, <span class="va">p2</span><span class="op">)</span>
-
-<span class="fu">find_beta2</span><span class="op">(</span><span class="va">x</span>, <span class="va">se</span>, <span class="va">ci</span>, <span class="va">n</span><span class="op">)</span>
-
-<span class="fu">find_cauchy</span><span class="op">(</span><span class="va">x1</span>, <span class="va">p1</span>, <span class="va">x2</span>, <span class="va">p2</span><span class="op">)</span>
-
-<span class="fu">find_normal</span><span class="op">(</span><span class="va">x1</span>, <span class="va">p1</span>, <span class="va">x2</span>, <span class="va">p2</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">find_beta</span><span class="op">(</span><span class="va">x1</span>, <span class="va">p1</span>, <span class="va">x2</span>, <span class="va">p2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">find_beta2</span><span class="op">(</span><span class="va">x</span>, <span class="va">se</span>, <span class="va">ci</span>, <span class="va">n</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">find_cauchy</span><span class="op">(</span><span class="va">x1</span>, <span class="va">p1</span>, <span class="va">x2</span>, <span class="va">p2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">find_normal</span><span class="op">(</span><span class="va">x1</span>, <span class="va">p1</span>, <span class="va">x2</span>, <span class="va">p2</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x1</th>
-      <td><p>Value for the first percentile.</p></td>
-    </tr><tr><th>p1</th>
-      <td><p>Probability of the first percentile.</p></td>
-    </tr><tr><th>x2</th>
-      <td><p>Value for the second percentile.</p></td>
-    </tr><tr><th>p2</th>
-      <td><p>Probability of the second percentile.</p></td>
-    </tr><tr><th>x</th>
-      <td><p>Numeric, a probability value between 0 and 1. Typically indicates
+    <dl><dt>x1</dt>
+<dd><p>Value for the first percentile.</p></dd>
+
+
+<dt>p1</dt>
+<dd><p>Probability of the first percentile.</p></dd>
+
+
+<dt>x2</dt>
+<dd><p>Value for the second percentile.</p></dd>
+
+
+<dt>p2</dt>
+<dd><p>Probability of the second percentile.</p></dd>
+
+
+<dt>x</dt>
+<dd><p>Numeric, a probability value between 0 and 1. Typically indicates
 a prevalence rate of an outcome of interest; Or an integer value
 with the number of observed events. In this case, specify <code>n</code>
-to indicate the toral number of observations.</p></td>
-    </tr><tr><th>se</th>
-      <td><p>The standard error of <code>x</code>. Either <code>se</code> or <code>ci</code> must
-be specified.</p></td>
-    </tr><tr><th>ci</th>
-      <td><p>The upper limit of the confidence interval of <code>x</code>. Either
-<code>se</code> or <code>ci</code> must be specified.</p></td>
-    </tr><tr><th>n</th>
-      <td><p>Numeric, number of total observations. Needs to be specified, if
-<code>x</code> is an integer (number of observed events), and no
-probability. See 'Examples'.</p></td>
-    </tr></table></div>
+to indicate the toral number of observations.</p></dd>
 
-    <div id="ref-sections">
+
+<dt>se</dt>
+<dd><p>The standard error of <code>x</code>. Either <code>se</code> or <code>ci</code> must
+be specified.</p></dd>
+
+
+<dt>ci</dt>
+<dd><p>The upper limit of the confidence interval of <code>x</code>. Either
+<code>se</code> or <code>ci</code> must be specified.</p></dd>
+
+
+<dt>n</dt>
+<dd><p>Numeric, number of total observations. Needs to be specified, if
+<code>x</code> is an integer (number of observed events), and no
+probability. See 'Examples'.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list of length two, with the two distribution parameters than can
+    
+
+<p>A list of length two, with the two distribution parameters than can
         be used to define the distribution, which (best) describes
         the shape for the given input parameters.</p>
     </div>
@@ -133,69 +150,68 @@ probability. See 'Examples'.</p></td>
     <h2>References</h2>
     <p>Cook JD. Determining distribution parameters from quantiles. 2010: Department of Biostatistics, Texas (<a href="https://www.johndcook.com/quantiles_parameters.pdf" class="external-link">PDF</a>)</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># example from blogpost:</span></span>
-<span class="r-in"><span class="co"># https://www.johndcook.com/blog/2010/01/31/parameters-from-percentiles/</span></span>
-<span class="r-in"><span class="co"># 10% of patients respond within 30 days of treatment</span></span>
-<span class="r-in"><span class="co"># and 80% respond within 90 days of treatment</span></span>
-<span class="r-in"><span class="fu">find_normal</span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">30</span>, p1 <span class="op">=</span> <span class="fl">.1</span>, x2 <span class="op">=</span> <span class="fl">90</span>, p2 <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># example from blogpost:</span></span></span>
+<span class="r-in"><span><span class="co"># https://www.johndcook.com/blog/2010/01/31/parameters-from-percentiles/</span></span></span>
+<span class="r-in"><span><span class="co"># 10% of patients respond within 30 days of treatment</span></span></span>
+<span class="r-in"><span><span class="co"># and 80% respond within 90 days of treatment</span></span></span>
+<span class="r-in"><span><span class="fu">find_normal</span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">30</span>, p1 <span class="op">=</span> <span class="fl">.1</span>, x2 <span class="op">=</span> <span class="fl">90</span>, p2 <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 53.78387</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 30.48026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">find_cauchy</span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">30</span>, p1 <span class="op">=</span> <span class="fl">.1</span>, x2 <span class="op">=</span> <span class="fl">90</span>, p2 <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">find_cauchy</span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">30</span>, p1 <span class="op">=</span> <span class="fl">.1</span>, x2 <span class="op">=</span> <span class="fl">90</span>, p2 <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $location</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 48.54102</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $scale</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 57.06339</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">parms</span> <span class="op">&lt;-</span> <span class="fu">find_normal</span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">30</span>, p1 <span class="op">=</span> <span class="fl">.1</span>, x2 <span class="op">=</span> <span class="fl">90</span>, p2 <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html" class="external-link">curve</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">dnorm</a></span><span class="op">(</span><span class="va">x</span>, mean <span class="op">=</span> <span class="va">parms</span><span class="op">$</span><span class="va">mean</span>, sd <span class="op">=</span> <span class="va">parms</span><span class="op">$</span><span class="va">sd</span><span class="op">)</span>,</span>
-<span class="r-in">  from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">200</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-plt"><img src="find_beta-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">parms</span> <span class="op">&lt;-</span> <span class="fu">find_cauchy</span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">30</span>, p1 <span class="op">=</span> <span class="fl">.1</span>, x2 <span class="op">=</span> <span class="fl">90</span>, p2 <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html" class="external-link">curve</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/stats/Cauchy.html" class="external-link">dcauchy</a></span><span class="op">(</span><span class="va">x</span>, location <span class="op">=</span> <span class="va">parms</span><span class="op">$</span><span class="va">location</span>, scale <span class="op">=</span> <span class="va">parms</span><span class="op">$</span><span class="va">scale</span><span class="op">)</span>,</span>
-<span class="r-in">  from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">200</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-plt"><img src="find_beta-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">find_beta2</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">.25</span>, ci <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">parms</span> <span class="op">&lt;-</span> <span class="fu">find_normal</span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">30</span>, p1 <span class="op">=</span> <span class="fl">.1</span>, x2 <span class="op">=</span> <span class="fl">90</span>, p2 <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html" class="external-link">curve</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">dnorm</a></span><span class="op">(</span><span class="va">x</span>, mean <span class="op">=</span> <span class="va">parms</span><span class="op">$</span><span class="va">mean</span>, sd <span class="op">=</span> <span class="va">parms</span><span class="op">$</span><span class="va">sd</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">200</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="find_beta-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">parms</span> <span class="op">&lt;-</span> <span class="fu">find_cauchy</span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">30</span>, p1 <span class="op">=</span> <span class="fl">.1</span>, x2 <span class="op">=</span> <span class="fl">90</span>, p2 <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html" class="external-link">curve</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/Cauchy.html" class="external-link">dcauchy</a></span><span class="op">(</span><span class="va">x</span>, location <span class="op">=</span> <span class="va">parms</span><span class="op">$</span><span class="va">location</span>, scale <span class="op">=</span> <span class="va">parms</span><span class="op">$</span><span class="va">scale</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">200</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="find_beta-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">find_beta2</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">.25</span>, ci <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $shape1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.860267</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $shape2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.93757</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu">find_beta2</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">.25</span>, ci <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html" class="external-link">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">dbeta</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">shapes</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">shapes</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-plt"><img src="find_beta-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># find Beta distribution for 3 events out of 20 observations</span></span>
-<span class="r-in"><span class="fu">find_beta2</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">3</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu">find_beta2</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">.25</span>, ci <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html" class="external-link">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">dbeta</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">shapes</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">shapes</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="find_beta-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># find Beta distribution for 3 events out of 20 observations</span></span></span>
+<span class="r-in"><span><span class="fu">find_beta2</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">3</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $shape1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.157811</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $shape2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 22.03272</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu">find_beta2</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">3</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html" class="external-link">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">dbeta</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">shapes</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">shapes</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-plt"><img src="find_beta-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu">find_beta2</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">3</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html" class="external-link">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">dbeta</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">shapes</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">shapes</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="find_beta-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -210,7 +226,7 @@ probability. See 'Examples'.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

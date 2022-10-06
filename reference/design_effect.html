@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.2</span>
       </span>
     </div>
 
@@ -51,7 +51,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Design effects for two-level mixed models</h1>
-    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/R/design_effect.R" class="external-link"><code>R/design_effect.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/design_effect.R" class="external-link"><code>R/design_effect.R</code></a></small>
     <div class="hidden name"><code>design_effect.Rd</code></div>
     </div>
 
@@ -60,20 +60,25 @@
              for mixed models with two-level design.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">design_effect</span><span class="op">(</span><span class="va">n</span>, icc <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">design_effect</span><span class="op">(</span><span class="va">n</span>, icc <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>n</th>
-      <td><p>Average number of observations per grouping cluster (i.e. level-2 unit).</p></td>
-    </tr><tr><th>icc</th>
-      <td><p>Assumed intraclass correlation coefficient for multilevel-model.</p></td>
-    </tr></table></div>
+    <dl><dt>n</dt>
+<dd><p>Average number of observations per grouping cluster (i.e. level-2 unit).</p></dd>
 
-    <div id="ref-sections">
+
+<dt>icc</dt>
+<dd><p>Assumed intraclass correlation coefficient for multilevel-model.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The design effect (Variance Inflation Factor) for the two-level model.</p>
+    
+
+<p>The design effect (Variance Inflation Factor) for the two-level model.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -83,29 +88,28 @@
     <h2>References</h2>
     <p>Bland JM. 2000. Sample size in guidelines trials. Fam Pract. (17), 17-20.
             <br><br>
-            Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. An Overview of Variance Inflation Factors for Sample-Size Calculation. Evaluation and the Health Professions 26: 239-257. doi: <a href="https://doi.org/10.1177/0163278703255230" class="external-link">10.1177/0163278703255230</a>
+            Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. An Overview of Variance Inflation Factors for Sample-Size Calculation. Evaluation and the Health Professions 26: 239-257. <a href="https://doi.org/10.1177/0163278703255230" class="external-link">doi:10.1177/0163278703255230</a>
 
             <br><br>
-            Snijders TAB. 2005. Power and Sample Size in Multilevel Linear Models. In: Everitt BS, Howell DC (Hrsg.). Encyclopedia of Statistics in Behavioral Science. Chichester, UK: John Wiley and Sons, Ltd. doi: <a href="https://doi.org/10.1002/0470013192.bsa492" class="external-link">10.1002/0470013192.bsa492</a>
+            Snijders TAB. 2005. Power and Sample Size in Multilevel Linear Models. In: Everitt BS, Howell DC (Hrsg.). Encyclopedia of Statistics in Behavioral Science. Chichester, UK: John Wiley and Sons, Ltd. <a href="https://doi.org/10.1002/0470013192.bsa492" class="external-link">doi:10.1002/0470013192.bsa492</a>
 
             <br><br>
-            Thompson DM, Fernald DH, Mold JW. 2012. Intraclass Correlation Coefficients Typical of Cluster-Randomized Studies: Estimates From the Robert Wood Johnson Prescription for Health Projects. The Annals of Family Medicine;10(3):235-40. doi: <a href="https://doi.org/10.1370/afm.1347" class="external-link">10.1370/afm.1347</a></p>
-    </div>
+            Thompson DM, Fernald DH, Mold JW. 2012. Intraclass Correlation Coefficients Typical of Cluster-Randomized Studies: Estimates From the Robert Wood Johnson Prescription for Health Projects. The Annals of Family Medicine;10(3):235-40. <a href="https://doi.org/10.1370/afm.1347" class="external-link">doi:10.1370/afm.1347</a></p>
     </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Design effect for two-level model with 30 observations per</span></span>
-<span class="r-in"><span class="co"># cluster group (level-2 unit) and an assumed intraclass</span></span>
-<span class="r-in"><span class="co"># correlation coefficient of 0.05.</span></span>
-<span class="r-in"><span class="fu">design_effect</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Design effect for two-level model with 30 observations per</span></span></span>
+<span class="r-in"><span><span class="co"># cluster group (level-2 unit) and an assumed intraclass</span></span></span>
+<span class="r-in"><span><span class="co"># correlation coefficient of 0.05.</span></span></span>
+<span class="r-in"><span><span class="fu">design_effect</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.45</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Design effect for two-level model with 24 observation per cluster</span></span>
-<span class="r-in"><span class="co"># group and an assumed intraclass correlation coefficient of 0.2.</span></span>
-<span class="r-in"><span class="fu">design_effect</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">24</span>, icc <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Design effect for two-level model with 24 observation per cluster</span></span></span>
+<span class="r-in"><span><span class="co"># group and an assumed intraclass correlation coefficient of 0.2.</span></span></span>
+<span class="r-in"><span><span class="fu">design_effect</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">24</span>, icc <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.6</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -120,7 +124,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

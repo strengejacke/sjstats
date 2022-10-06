@@ -21,7 +21,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.2</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Proportions of values in a vector</h1>
-    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/R/prop.R" class="external-link"><code>R/prop.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/prop.R" class="external-link"><code>R/prop.R</code></a></small>
     <div class="hidden name"><code>prop.Rd</code></div>
     </div>
 
@@ -66,36 +66,47 @@
                <code>prop()</code> and <code>props()</code> work with grouped data frames.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">prop</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span>, weights <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-
-<span class="fu">props</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prop</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span>, weights <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">props</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>data</th>
-      <td><p>A data frame. May also be a grouped data frame (see 'Examples').</p></td>
-    </tr><tr><th>...</th>
-      <td><p>One or more value pairs of comparisons (logical predicates). Put
+    <dl><dt>data</dt>
+<dd><p>A data frame. May also be a grouped data frame (see 'Examples').</p></dd>
+
+
+<dt>...</dt>
+<dd><p>One or more value pairs of comparisons (logical predicates). Put
 variable names the left-hand-side and values to match on the
 right hand side. Expressions may be quoted or unquoted. See
-'Examples'.</p></td>
-    </tr><tr><th>weights</th>
-      <td><p>Vector of weights that will be applied to weight all observations.
+'Examples'.</p></dd>
+
+
+<dt>weights</dt>
+<dd><p>Vector of weights that will be applied to weight all observations.
 Must be a vector of same length as the input vector. Default is
-<code>NULL</code>, so no weights are used.</p></td>
-    </tr><tr><th>na.rm</th>
-      <td><p>Logical, whether to remove NA values from the vector when the
+<code>NULL</code>, so no weights are used.</p></dd>
+
+
+<dt>na.rm</dt>
+<dd><p>Logical, whether to remove NA values from the vector when the
 proportion is calculated. <code>na.rm = FALSE</code> gives you the raw
 percentage of a value in a vector, <code>na.rm = TRUE</code> the valid
-percentage.</p></td>
-    </tr><tr><th>digits</th>
-      <td><p>Amount of digits for returned values.</p></td>
-    </tr></table></div>
+percentage.</p></dd>
 
-    <div id="ref-sections">
+
+<dt>digits</dt>
+<dd><p>Amount of digits for returned values.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>For one condition, a numeric value with the proportion of the values
+    
+
+<p>For one condition, a numeric value with the proportion of the values
         inside a vector. For more than one condition, a data frame with one column
         of conditions and one column with proportions. For grouped data frames,
         returns a data frame with one column per group with grouping categories,
@@ -110,81 +121,80 @@ percentage.</p></td>
          also processes comparisons, which are passed as character vector
          (see 'Examples').</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># proportion of value 1 in e42dep</span></span>
-<span class="r-in"><span class="fu">prop</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e42dep</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># proportion of value 1 in e42dep</span></span></span>
+<span class="r-in"><span><span class="fu">prop</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e42dep</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0733</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># expression may also be completely quoted</span></span>
-<span class="r-in"><span class="fu">prop</span><span class="op">(</span><span class="va">efc</span>, <span class="st">"e42dep == 1"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># expression may also be completely quoted</span></span></span>
+<span class="r-in"><span><span class="fu">prop</span><span class="op">(</span><span class="va">efc</span>, <span class="st">"e42dep == 1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0733</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># use "props()" for multiple logical statements</span></span>
-<span class="r-in"><span class="fu">props</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e17age</span> <span class="op">&gt;</span> <span class="fl">70</span> <span class="op">&amp;</span> <span class="va">e17age</span> <span class="op">&lt;</span> <span class="fl">80</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># use "props()" for multiple logical statements</span></span></span>
+<span class="r-in"><span><span class="fu">props</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e17age</span> <span class="op">&gt;</span> <span class="fl">70</span> <span class="op">&amp;</span> <span class="va">e17age</span> <span class="op">&lt;</span> <span class="fl">80</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3199</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># proportion of value 1 in e42dep, and all values greater</span></span>
-<span class="r-in"><span class="co"># than 2 in e42dep, including missing values. will return a data frame</span></span>
-<span class="r-in"><span class="fu">prop</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e42dep</span> <span class="op">==</span> <span class="fl">1</span>, <span class="va">e42dep</span> <span class="op">&gt;</span> <span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># proportion of value 1 in e42dep, and all values greater</span></span></span>
+<span class="r-in"><span><span class="co"># than 2 in e42dep, including missing values. will return a data frame</span></span></span>
+<span class="r-in"><span><span class="fu">prop</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e42dep</span> <span class="op">==</span> <span class="fl">1</span>, <span class="va">e42dep</span> <span class="op">&gt;</span> <span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   condition   prop</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 e42dep==1 0.0727</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  e42dep&gt;2 0.6718</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># for factors or character vectors, use quoted or unquoted values</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjmisc/" class="external-link">sjmisc</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># convert numeric to factor, using labels as factor levels</span></span>
-<span class="r-in"><span class="va">efc</span><span class="op">$</span><span class="va">e16sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://strengejacke.github.io/sjlabelled/reference/as_label.html" class="external-link">to_label</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e16sex</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">efc</span><span class="op">$</span><span class="va">n4pstu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://strengejacke.github.io/sjlabelled/reference/as_label.html" class="external-link">to_label</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">n4pstu</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># get proportion of female older persons</span></span>
-<span class="r-in"><span class="fu">prop</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e16sex</span> <span class="op">==</span> <span class="va">female</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># for factors or character vectors, use quoted or unquoted values</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjmisc/" class="external-link">sjmisc</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># convert numeric to factor, using labels as factor levels</span></span></span>
+<span class="r-in"><span><span class="va">efc</span><span class="op">$</span><span class="va">e16sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://strengejacke.github.io/sjlabelled/reference/as_label.html" class="external-link">to_label</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e16sex</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">efc</span><span class="op">$</span><span class="va">n4pstu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://strengejacke.github.io/sjlabelled/reference/as_label.html" class="external-link">to_label</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">n4pstu</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># get proportion of female older persons</span></span></span>
+<span class="r-in"><span><span class="fu">prop</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e16sex</span> <span class="op">==</span> <span class="va">female</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6715</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># get proportion of male older persons</span></span>
-<span class="r-in"><span class="fu">prop</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e16sex</span> <span class="op">==</span> <span class="st">"male"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># get proportion of male older persons</span></span></span>
+<span class="r-in"><span><span class="fu">prop</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e16sex</span> <span class="op">==</span> <span class="st">"male"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3285</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># "props()" needs quotes around non-numeric factor levels</span></span>
-<span class="r-in"><span class="fu">props</span><span class="op">(</span><span class="va">efc</span>,</span>
-<span class="r-in">  <span class="va">e17age</span> <span class="op">&gt;</span> <span class="fl">70</span> <span class="op">&amp;</span> <span class="va">e17age</span> <span class="op">&lt;</span> <span class="fl">80</span>,</span>
-<span class="r-in">  <span class="va">n4pstu</span> <span class="op">==</span> <span class="st">'Care Level 1'</span> <span class="op">|</span> <span class="va">n4pstu</span> <span class="op">==</span> <span class="st">'Care Level 3'</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># "props()" needs quotes around non-numeric factor levels</span></span></span>
+<span class="r-in"><span><span class="fu">props</span><span class="op">(</span><span class="va">efc</span>,</span></span>
+<span class="r-in"><span>  <span class="va">e17age</span> <span class="op">&gt;</span> <span class="fl">70</span> <span class="op">&amp;</span> <span class="va">e17age</span> <span class="op">&lt;</span> <span class="fl">80</span>,</span></span>
+<span class="r-in"><span>  <span class="va">n4pstu</span> <span class="op">==</span> <span class="st">'Care Level 1'</span> <span class="op">|</span> <span class="va">n4pstu</span> <span class="op">==</span> <span class="st">'Care Level 3'</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                               condition   prop</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                   e17age&gt;70&amp;e17age&lt;80 0.3199</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 n4pstu==CareLevel1|n4pstu==CareLevel3 0.3137</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># also works with pipe-chains</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">prop</span><span class="op">(</span><span class="va">e17age</span> <span class="op">&gt;</span> <span class="fl">70</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># also works with pipe-chains</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">prop</span><span class="op">(</span><span class="va">e17age</span> <span class="op">&gt;</span> <span class="fl">70</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8092</span>
-<span class="r-in"><span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">prop</span><span class="op">(</span><span class="va">e17age</span> <span class="op">&gt;</span> <span class="fl">70</span>, <span class="va">e16sex</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">prop</span><span class="op">(</span><span class="va">e17age</span> <span class="op">&gt;</span> <span class="fl">70</span>, <span class="va">e16sex</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   condition   prop</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 e17age&gt;70 0.8092</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 e16sex==1 0.0000</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># and with group_by</span></span>
-<span class="r-in"><span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">e16sex</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">prop</span><span class="op">(</span><span class="va">e42dep</span> <span class="op">&gt;</span> <span class="fl">2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># and with group_by</span></span></span>
+<span class="r-in"><span><span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">e16sex</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">prop</span><span class="op">(</span><span class="va">e42dep</span> <span class="op">&gt;</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   elder's gender e42dep&gt;2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           male   0.6847</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         female   0.6744</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">e42dep</span>, <span class="va">c161sex</span>, <span class="va">c172code</span>, <span class="va">e16sex</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">c161sex</span>, <span class="va">c172code</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">prop</span><span class="op">(</span><span class="va">e42dep</span> <span class="op">&gt;</span> <span class="fl">2</span>, <span class="va">e16sex</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">e42dep</span>, <span class="va">c161sex</span>, <span class="va">c172code</span>, <span class="va">e16sex</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">c161sex</span>, <span class="va">c172code</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">prop</span><span class="op">(</span><span class="va">e42dep</span> <span class="op">&gt;</span> <span class="fl">2</span>, <span class="va">e16sex</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> New names:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * . -&gt; ....1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * . -&gt; ....2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `.` -&gt; `....1`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `.` -&gt; `....2`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> New names:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * val.labels -&gt; val.labels...1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * val.labels -&gt; val.labels...2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `val.labels` -&gt; `val.labels...1`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `val.labels` -&gt; `val.labels...2`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   carer's gender      carer's level of education e42dep&gt;2 e16sex==1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           Male          low level of education   0.6829         0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5           Male intermediate level of education   0.6590         0</span>
@@ -192,22 +202,22 @@ percentage.</p></td>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4         Female          low level of education   0.7101         0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         Female intermediate level of education   0.5929         0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6         Female         high level of education   0.6881         0</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># same for "props()"</span></span>
-<span class="r-in"><span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">e42dep</span>, <span class="va">c161sex</span>, <span class="va">c172code</span>, <span class="va">c12hour</span>, <span class="va">n4pstu</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">c161sex</span>, <span class="va">c172code</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">props</span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">e42dep</span> <span class="op">&gt;</span> <span class="fl">2</span>,</span>
-<span class="r-in">    <span class="va">c12hour</span> <span class="op">&gt;</span> <span class="fl">20</span> <span class="op">&amp;</span> <span class="va">c12hour</span> <span class="op">&lt;</span> <span class="fl">40</span>,</span>
-<span class="r-in">    <span class="va">n4pstu</span> <span class="op">==</span> <span class="st">'Care Level 1'</span> <span class="op">|</span> <span class="va">n4pstu</span> <span class="op">==</span> <span class="st">'Care Level 3'</span></span>
-<span class="r-in">  <span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># same for "props()"</span></span></span>
+<span class="r-in"><span><span class="va">efc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">e42dep</span>, <span class="va">c161sex</span>, <span class="va">c172code</span>, <span class="va">c12hour</span>, <span class="va">n4pstu</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">c161sex</span>, <span class="va">c172code</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">props</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">e42dep</span> <span class="op">&gt;</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>    <span class="va">c12hour</span> <span class="op">&gt;</span> <span class="fl">20</span> <span class="op">&amp;</span> <span class="va">c12hour</span> <span class="op">&lt;</span> <span class="fl">40</span>,</span></span>
+<span class="r-in"><span>    <span class="va">n4pstu</span> <span class="op">==</span> <span class="st">'Care Level 1'</span> <span class="op">|</span> <span class="va">n4pstu</span> <span class="op">==</span> <span class="st">'Care Level 3'</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> New names:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * . -&gt; ....1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * . -&gt; ....2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `.` -&gt; `....1`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `.` -&gt; `....2`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> New names:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * val.labels -&gt; val.labels...1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * val.labels -&gt; val.labels...2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `val.labels` -&gt; `val.labels...1`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `val.labels` -&gt; `val.labels...2`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   carer's gender      carer's level of education e42dep&gt;2 c12hour&gt;20&amp;c12hour&lt;40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           Male          low level of education   0.6829                0.2439</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5           Male intermediate level of education   0.6590                0.1756</span>
@@ -236,7 +246,7 @@ percentage.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

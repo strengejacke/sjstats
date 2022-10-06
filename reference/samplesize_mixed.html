@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.2</span>
       </span>
     </div>
 
@@ -52,7 +52,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Sample size for linear mixed models</h1>
-    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/R/samplesize_mixed.R" class="external-link"><code>R/samplesize_mixed.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/samplesize_mixed.R" class="external-link"><code>R/samplesize_mixed.R</code></a></small>
     <div class="hidden name"><code>samplesize_mixed.Rd</code></div>
     </div>
 
@@ -62,49 +62,64 @@
                design and adjusted for design effect for 2-level-designs.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">samplesize_mixed</span><span class="op">(</span>
-  <span class="va">eff.size</span>,
-  df.n <span class="op">=</span> <span class="cn">NULL</span>,
-  power <span class="op">=</span> <span class="fl">0.8</span>,
-  sig.level <span class="op">=</span> <span class="fl">0.05</span>,
-  <span class="va">k</span>,
-  <span class="va">n</span>,
-  icc <span class="op">=</span> <span class="fl">0.05</span>
-<span class="op">)</span>
-
-<span class="fu">smpsize_lmm</span><span class="op">(</span>
-  <span class="va">eff.size</span>,
-  df.n <span class="op">=</span> <span class="cn">NULL</span>,
-  power <span class="op">=</span> <span class="fl">0.8</span>,
-  sig.level <span class="op">=</span> <span class="fl">0.05</span>,
-  <span class="va">k</span>,
-  <span class="va">n</span>,
-  icc <span class="op">=</span> <span class="fl">0.05</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">samplesize_mixed</span><span class="op">(</span></span>
+<span>  <span class="va">eff.size</span>,</span>
+<span>  df.n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  power <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  sig.level <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  <span class="va">k</span>,</span>
+<span>  <span class="va">n</span>,</span>
+<span>  icc <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">smpsize_lmm</span><span class="op">(</span></span>
+<span>  <span class="va">eff.size</span>,</span>
+<span>  df.n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  power <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  sig.level <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  <span class="va">k</span>,</span>
+<span>  <span class="va">n</span>,</span>
+<span>  icc <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>eff.size</th>
-      <td><p>Effect size.</p></td>
-    </tr><tr><th>df.n</th>
-      <td><p>Optional argument for the degrees of freedom for numerator. See 'Details'.</p></td>
-    </tr><tr><th>power</th>
-      <td><p>Power of test (1 minus Type II error probability).</p></td>
-    </tr><tr><th>sig.level</th>
-      <td><p>Significance level (Type I error probability).</p></td>
-    </tr><tr><th>k</th>
-      <td><p>Number of cluster groups (level-2-unit) in multilevel-design.</p></td>
-    </tr><tr><th>n</th>
-      <td><p>Optional, number of observations per cluster groups
-(level-2-unit) in multilevel-design.</p></td>
-    </tr><tr><th>icc</th>
-      <td><p>Expected intraclass correlation coefficient for multilevel-model.</p></td>
-    </tr></table></div>
+    <dl><dt>eff.size</dt>
+<dd><p>Effect size.</p></dd>
 
-    <div id="ref-sections">
+
+<dt>df.n</dt>
+<dd><p>Optional argument for the degrees of freedom for numerator. See 'Details'.</p></dd>
+
+
+<dt>power</dt>
+<dd><p>Power of test (1 minus Type II error probability).</p></dd>
+
+
+<dt>sig.level</dt>
+<dd><p>Significance level (Type I error probability).</p></dd>
+
+
+<dt>k</dt>
+<dd><p>Number of cluster groups (level-2-unit) in multilevel-design.</p></dd>
+
+
+<dt>n</dt>
+<dd><p>Optional, number of observations per cluster groups
+(level-2-unit) in multilevel-design.</p></dd>
+
+
+<dt>icc</dt>
+<dd><p>Expected intraclass correlation coefficient for multilevel-model.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list with two values: The number of subjects per cluster, and the
+    
+
+<p>A list with two values: The number of subjects per cluster, and the
           total sample size for the linear mixed model.</p>
     </div>
     <div id="details">
@@ -126,30 +141,29 @@
     <h2>References</h2>
     <p>Cohen J. 1988. Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.
             <br><br>
-            Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. An Overview of Variance Inflation Factors for Sample-Size Calculation. Evaluation and the Health Professions 26: 239-257. doi: <a href="https://doi.org/10.1177/0163278703255230" class="external-link">10.1177/0163278703255230</a>
+            Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. An Overview of Variance Inflation Factors for Sample-Size Calculation. Evaluation and the Health Professions 26: 239-257. <a href="https://doi.org/10.1177/0163278703255230" class="external-link">doi:10.1177/0163278703255230</a>
 
             <br><br>
-            Snijders TAB. 2005. Power and Sample Size in Multilevel Linear Models. In: Everitt BS, Howell DC (Hrsg.). Encyclopedia of Statistics in Behavioral Science. Chichester, UK: John Wiley and Sons, Ltd. doi: <a href="https://doi.org/10.1002/0470013192.bsa492" class="external-link">10.1002/0470013192.bsa492</a></p>
-    </div>
+            Snijders TAB. 2005. Power and Sample Size in Multilevel Linear Models. In: Everitt BS, Howell DC (Hrsg.). Encyclopedia of Statistics in Behavioral Science. Chichester, UK: John Wiley and Sons, Ltd. <a href="https://doi.org/10.1002/0470013192.bsa492" class="external-link">doi:10.1002/0470013192.bsa492</a></p>
     </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Sample size for multilevel model with 30 cluster groups and a small to</span></span>
-<span class="r-in"><span class="co"># medium effect size (Cohen's d) of 0.3. 27 subjects per cluster and</span></span>
-<span class="r-in"><span class="co"># hence a total sample size of about 802 observations is needed.</span></span>
-<span class="r-in"><span class="fu">samplesize_mixed</span><span class="op">(</span>eff.size <span class="op">=</span> <span class="fl">.3</span>, k <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Sample size for multilevel model with 30 cluster groups and a small to</span></span></span>
+<span class="r-in"><span><span class="co"># medium effect size (Cohen's d) of 0.3. 27 subjects per cluster and</span></span></span>
+<span class="r-in"><span><span class="co"># hence a total sample size of about 802 observations is needed.</span></span></span>
+<span class="r-in"><span><span class="fu">samplesize_mixed</span><span class="op">(</span>eff.size <span class="op">=</span> <span class="fl">.3</span>, k <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Subjects per Cluster`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Total Sample Size`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 802</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Sample size for multilevel model with 20 cluster groups and a medium</span></span>
-<span class="r-in"><span class="co"># to large effect size for linear models of 0.2. Five subjects per cluster and</span></span>
-<span class="r-in"><span class="co"># hence a total sample size of about 107 observations is needed.</span></span>
-<span class="r-in"><span class="fu">samplesize_mixed</span><span class="op">(</span>eff.size <span class="op">=</span> <span class="fl">.2</span>, df.n <span class="op">=</span> <span class="fl">5</span>, k <span class="op">=</span> <span class="fl">20</span>, power <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Sample size for multilevel model with 20 cluster groups and a medium</span></span></span>
+<span class="r-in"><span><span class="co"># to large effect size for linear models of 0.2. Five subjects per cluster and</span></span></span>
+<span class="r-in"><span><span class="co"># hence a total sample size of about 107 observations is needed.</span></span></span>
+<span class="r-in"><span><span class="fu">samplesize_mixed</span><span class="op">(</span>eff.size <span class="op">=</span> <span class="fl">.2</span>, df.n <span class="op">=</span> <span class="fl">5</span>, k <span class="op">=</span> <span class="fl">20</span>, power <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Subjects per Cluster`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -170,7 +184,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

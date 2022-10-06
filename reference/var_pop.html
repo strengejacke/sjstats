@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.2</span>
       </span>
     </div>
 
@@ -50,7 +50,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate population variance and standard deviation</h1>
-    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/R/var_pop.R" class="external-link"><code>R/var_pop.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/var_pop.R" class="external-link"><code>R/var_pop.R</code></a></small>
     <div class="hidden name"><code>var_pop.Rd</code></div>
     </div>
 
@@ -58,20 +58,23 @@
     <p>Calculate the population variance or standard deviation of a vector.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">var_pop</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">sd_pop</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">var_pop</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sd_pop</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>(Numeric) vector.</p></td>
-    </tr></table></div>
+    <dl><dt>x</dt>
+<dd><p>(Numeric) vector.</p></dd>
 
-    <div id="ref-sections">
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The population variance or standard deviation of <code>x</code>.</p>
+    
+
+<p>The population variance or standard deviation of <code>x</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -79,26 +82,25 @@
            <code>var_pop()</code> returns the population variance. <code>sd_pop()</code>
            returns the standard deviation based on the population variance.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># sampling variance</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c12hour</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># sampling variance</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c12hour</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2581.152</span>
-<span class="r-in"><span class="co"># population variance</span></span>
-<span class="r-in"><span class="fu">var_pop</span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c12hour</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># population variance</span></span></span>
+<span class="r-in"><span><span class="fu">var_pop</span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c12hour</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2578.291</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># sampling sd</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c12hour</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># sampling sd</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c12hour</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50.80504</span>
-<span class="r-in"><span class="co"># population sd</span></span>
-<span class="r-in"><span class="fu">sd_pop</span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c12hour</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># population sd</span></span></span>
+<span class="r-in"><span><span class="fu">sd_pop</span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c12hour</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50.77687</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -113,7 +115,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

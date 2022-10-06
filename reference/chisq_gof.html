@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.2</span>
       </span>
     </div>
 
@@ -51,7 +51,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Compute model quality</h1>
-    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/R/gof.R" class="external-link"><code>R/gof.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/gof.R" class="external-link"><code>R/gof.R</code></a></small>
     <div class="hidden name"><code>chisq_gof.Rd</code></div>
     </div>
 
@@ -60,30 +60,39 @@
   goodness-of-fit-test.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">chisq_gof</span><span class="op">(</span><span class="va">x</span>, prob <span class="op">=</span> <span class="cn">NULL</span>, weights <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">chisq_gof</span><span class="op">(</span><span class="va">x</span>, prob <span class="op">=</span> <span class="cn">NULL</span>, weights <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>A numeric vector or a <code>glm</code>-object.</p></td>
-    </tr><tr><th>prob</th>
-      <td><p>Vector of probabilities (indicating the population probabilities)
+    <dl><dt>x</dt>
+<dd><p>A numeric vector or a <code>glm</code>-object.</p></dd>
+
+
+<dt>prob</dt>
+<dd><p>Vector of probabilities (indicating the population probabilities)
 of the same length as <code>x</code>'s amount of categories / factor levels.
 Use <code>nrow(table(x))</code> to determine the amount of necessary values
 for <code>prob</code>. Only used, when <code>x</code> is a vector, and not a
-<code>glm</code>-object.</p></td>
-    </tr><tr><th>weights</th>
-      <td><p>Vector with weights, used to weight <code>x</code>.</p></td>
-    </tr></table></div>
+<code>glm</code>-object.</p></dd>
 
-    <div id="ref-sections">
+
+<dt>weights</dt>
+<dd><p>Vector with weights, used to weight <code>x</code>.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>For vectors, returns the object of the computed <code><a href="https://rdrr.io/r/stats/chisq.test.html" class="external-link">chisq.test</a></code>.
+    
+
+<p>For vectors, returns the object of the computed <code><a href="https://rdrr.io/r/stats/chisq.test.html" class="external-link">chisq.test</a></code>.
     For <code>glm</code>-objects, an object of class <code>chisq_gof</code> with
-    following values: <code>p.value</code>, the p-value for the goodness-of-fit test;
-    <code>z.score</code>, the standardized z-score for the goodness-of-fit test;
-    <code>rss</code>, the residual sums of squares term and <code>chisq</code>, the pearson
+    following values: <code>p.value</code>, the p-value for the goodness-of-fit test;</p>
+<p></p>
+<p><code>z.score</code>, the standardized z-score for the goodness-of-fit test;</p>
+<p></p>
+<p><code>rss</code>, the residual sums of squares term and <code>chisq</code>, the pearson
     chi-squared statistic.</p>
     </div>
     <div id="details">
@@ -97,50 +106,49 @@ for <code>prob</code>. Only used, when <code>x</code> is a vector, and not a
     </div>
     <div id="references">
     <h2>References</h2>
-    <p>Hosmer, D. W., &amp; Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley &amp; Sons, Inc. doi: <a href="https://doi.org/10.1002/0471722146" class="external-link">10.1002/0471722146</a></p>
-    </div>
+    <p>Hosmer, D. W., &amp; Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley &amp; Sons, Inc. <a href="https://doi.org/10.1002/0471722146" class="external-link">doi:10.1002/0471722146</a></p>
     </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">efc</span><span class="op">$</span><span class="va">neg_c_7d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">neg_c_7</span> <span class="op">&lt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">neg_c_7</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">neg_c_7d</span> <span class="op">~</span> <span class="va">c161sex</span> <span class="op">+</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c172code</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">efc</span>,</span>
-<span class="r-in">  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># goodness-of-fit test for logistic regression</span></span>
-<span class="r-in"><span class="fu">chisq_gof</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">efc</span><span class="op">$</span><span class="va">neg_c_7d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">neg_c_7</span> <span class="op">&lt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">neg_c_7</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">neg_c_7d</span> <span class="op">~</span> <span class="va">c161sex</span> <span class="op">+</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c172code</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">efc</span>,</span></span>
+<span class="r-in"><span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># goodness-of-fit test for logistic regression</span></span></span>
+<span class="r-in"><span><span class="fu">chisq_gof</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Chi-squared Goodness-of-Fit Test</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Chi-squared Goodness-of-Fit Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Chi-squared: 852.765</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       z-score:   1.025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       p-value:   0.305</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Summary: model seems to fit well.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># goodness-of-fit test for vectors against probabilities</span></span>
-<span class="r-in"><span class="co"># differing from population</span></span>
-<span class="r-in"><span class="fu">chisq_gof</span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e42dep</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.22</span>,<span class="fl">0.28</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># goodness-of-fit test for vectors against probabilities</span></span></span>
+<span class="r-in"><span><span class="co"># differing from population</span></span></span>
+<span class="r-in"><span><span class="fu">chisq_gof</span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e42dep</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.22</span>,<span class="fl">0.28</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Chi-squared test for given probabilities</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  dummy</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> X-squared = 234.76, df = 3, p-value &lt; 2.2e-16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># equal to population</span></span>
-<span class="r-in"><span class="fu">chisq_gof</span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e42dep</span>, <span class="fu"><a href="https://rdrr.io/r/base/proportions.html" class="external-link">prop.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e42dep</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># equal to population</span></span></span>
+<span class="r-in"><span><span class="fu">chisq_gof</span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e42dep</span>, <span class="fu"><a href="https://rdrr.io/r/base/proportions.html" class="external-link">prop.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e42dep</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Chi-squared test for given probabilities</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  dummy</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> X-squared = 0, df = 3, p-value = 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -155,7 +163,7 @@ for <code>prob</code>. Only used, when <code>x</code> is a vector, and not a
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

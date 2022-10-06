@@ -20,7 +20,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.2</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Test and training error from model cross-validation</h1>
-    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/R/cv_error.R" class="external-link"><code>R/cv_error.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/cv_error.R" class="external-link"><code>R/cv_error.R</code></a></small>
     <div class="hidden name"><code>cv_error.Rd</code></div>
     </div>
 
@@ -64,26 +64,35 @@
          for each formula).</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">cv_error</span><span class="op">(</span><span class="va">data</span>, <span class="va">formula</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-
-<span class="fu">cv_compare</span><span class="op">(</span><span class="va">data</span>, <span class="va">formulas</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cv_error</span><span class="op">(</span><span class="va">data</span>, <span class="va">formula</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cv_compare</span><span class="op">(</span><span class="va">data</span>, <span class="va">formulas</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>data</th>
-      <td><p>A data frame.</p></td>
-    </tr><tr><th>formula</th>
-      <td><p>The formula to fit the linear model for the test and training data.</p></td>
-    </tr><tr><th>k</th>
-      <td><p>The number of folds for the kfold-crossvalidation.</p></td>
-    </tr><tr><th>formulas</th>
-      <td><p>A list of formulas, to fit linear models for the test and training data.</p></td>
-    </tr></table></div>
+    <dl><dt>data</dt>
+<dd><p>A data frame.</p></dd>
 
-    <div id="ref-sections">
+
+<dt>formula</dt>
+<dd><p>The formula to fit the linear model for the test and training data.</p></dd>
+
+
+<dt>k</dt>
+<dd><p>The number of folds for the kfold-crossvalidation.</p></dd>
+
+
+<dt>formulas</dt>
+<dd><p>A list of formulas, to fit linear models for the test and training data.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame with the root mean squared errors for the training and test data.</p>
+    
+
+<p>A data frame with the root mean squared errors for the training and test data.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -95,22 +104,21 @@
          all <em>trained</em> models; the <em>test error</em> is the rmse based on all
          residuals from the test data.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">cv_error</span><span class="op">(</span><span class="va">efc</span>, <span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c161sex</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">cv_error</span><span class="op">(</span><span class="va">efc</span>, <span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c161sex</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unnest() has a new interface. See ?unnest for details.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Try `df %&gt;% unnest(c(predicted, residuals))`, with `mutate()` if needed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          model train.error test.error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 neg_c_7 ~ barthtot + c161sex      3.5074     3.5162</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">cv_compare</span><span class="op">(</span><span class="va">efc</span>, formulas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c161sex</span>,</span>
-<span class="r-in">  <span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c161sex</span> <span class="op">+</span> <span class="va">e42dep</span>,</span>
-<span class="r-in">  <span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c12hour</span></span>
-<span class="r-in"><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 neg_c_7 ~ barthtot + c161sex      3.5069     3.5186</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">cv_compare</span><span class="op">(</span><span class="va">efc</span>, formulas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c161sex</span>,</span></span>
+<span class="r-in"><span>  <span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c161sex</span> <span class="op">+</span> <span class="va">e42dep</span>,</span></span>
+<span class="r-in"><span>  <span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c12hour</span></span></span>
+<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unnest() has a new interface. See ?unnest for details.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Try `df %&gt;% unnest(c(predicted, residuals))`, with `mutate()` if needed</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unnest() has a new interface. See ?unnest for details.</span>
@@ -118,10 +126,10 @@
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unnest() has a new interface. See ?unnest for details.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Try `df %&gt;% unnest(c(predicted, residuals))`, with `mutate()` if needed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   model train.error test.error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          neg_c_7 ~ barthtot + c161sex      3.5068     3.5218</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 neg_c_7 ~ barthtot + c161sex + e42dep      3.4872     3.5011</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          neg_c_7 ~ barthtot + c12hour      3.5035     3.5130</span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          neg_c_7 ~ barthtot + c161sex      3.5065     3.5223</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 neg_c_7 ~ barthtot + c161sex + e42dep      3.4859     3.5096</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          neg_c_7 ~ barthtot + c12hour      3.5024     3.5252</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -136,7 +144,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

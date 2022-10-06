@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.18.2</span>
       </span>
     </div>
 
@@ -52,7 +52,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Row means with min amount of valid values</h1>
-    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/master/R/mean_n.R" class="external-link"><code>R/mean_n.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/mean_n.R" class="external-link"><code>R/mean_n.R</code></a></small>
     <div class="hidden name"><code>mean_n.Rd</code></div>
     </div>
 
@@ -62,26 +62,35 @@
                values of a row are valid (and not <code>NA</code>).</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="va">n</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="va">n</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dat</th>
-      <td><p>A data frame with at least two columns, where row means are applied.</p></td>
-    </tr><tr><th>n</th>
-      <td><p>May either be</p><ul><li><p>a numeric value that indicates the amount of valid values per row to calculate the row mean;</p></li>
-<li><p>or a value between 0 and 1, indicating a proportion of valid values per row to calculate the row mean (see 'Details').</p></li>
-</ul><p>If a row's sum of valid values is less than <code>n</code>, <code>NA</code> will be returned as row mean value.</p></td>
-    </tr><tr><th>digits</th>
-      <td><p>Numeric value indicating the number of decimal places to be used for rounding mean
-value. Negative values are allowed (see 'Details').</p></td>
-    </tr></table></div>
+    <dl><dt>dat</dt>
+<dd><p>A data frame with at least two columns, where row means are applied.</p></dd>
 
-    <div id="ref-sections">
+
+<dt>n</dt>
+<dd><p>May either be</p><ul><li><p>a numeric value that indicates the amount of valid values per row to calculate the row mean;</p></li>
+<li><p>or a value between 0 and 1, indicating a proportion of valid values per row to calculate the row mean (see 'Details').</p></li>
+</ul><p>If a row's sum of valid values is less than <code>n</code>, <code>NA</code> will be returned as row mean value.</p></dd>
+
+
+<dt>digits</dt>
+<dd><p>Numeric value indicating the number of decimal places to be used for rounding mean
+value. Negative values are allowed (see 'Details').</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A vector with row mean values of <code>df</code> for those rows with at least <code>n</code>
-          valid values. Else, <code>NA</code> is returned.</p>
+    
+
+<p>A vector with row mean values of <code>df</code> for those rows with at least <code>n</code></p>
+
+
+<p>valid values. Else, <code>NA</code> is returned.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -99,39 +108,38 @@ value. Negative values are allowed (see 'Details').</p></td>
     <h2>References</h2>
     <p><a href="http://r4stats.com/2014/09/03/adding-the-spss-mean-n-function-to-r/" class="external-link">r4stats.com</a></p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>c1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="cn">NA</span>,<span class="fl">4</span><span class="op">)</span>,</span>
-<span class="r-in">                  c2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="fl">2</span>,<span class="cn">NA</span>,<span class="fl">5</span><span class="op">)</span>,</span>
-<span class="r-in">                  c3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="fl">4</span>,<span class="cn">NA</span>,<span class="cn">NA</span><span class="op">)</span>,</span>
-<span class="r-in">                  c4 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">7</span>,<span class="fl">8</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># needs at least 4 non-missing values per row</span></span>
-<span class="r-in"><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># 1 valid return value</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>c1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="cn">NA</span>,<span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  c2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="fl">2</span>,<span class="cn">NA</span>,<span class="fl">5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  c3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="fl">4</span>,<span class="cn">NA</span>,<span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  c4 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">7</span>,<span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># needs at least 4 non-missing values per row</span></span></span>
+<span class="r-in"><span><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># 1 valid return value</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]   NA 2.75   NA   NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># needs at least 3 non-missing values per row</span></span>
-<span class="r-in"><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">3</span><span class="op">)</span> <span class="co"># 2 valid return values</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># needs at least 3 non-missing values per row</span></span></span>
+<span class="r-in"><span><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">3</span><span class="op">)</span> <span class="co"># 2 valid return values</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]   NA 2.75   NA 5.67</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># needs at least 2 non-missing values per row</span></span>
-<span class="r-in"><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># needs at least 2 non-missing values per row</span></span></span>
+<span class="r-in"><span><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.50 2.75   NA 5.67</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># needs at least 1 non-missing value per row</span></span>
-<span class="r-in"><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">1</span><span class="op">)</span> <span class="co"># all means are shown</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># needs at least 1 non-missing value per row</span></span></span>
+<span class="r-in"><span><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">1</span><span class="op">)</span> <span class="co"># all means are shown</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.50 2.75 7.00 5.67</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># needs at least 50% of non-missing values per row</span></span>
-<span class="r-in"><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">.5</span><span class="op">)</span> <span class="co"># 3 valid return values</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># needs at least 50% of non-missing values per row</span></span></span>
+<span class="r-in"><span><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">.5</span><span class="op">)</span> <span class="co"># 3 valid return values</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.50 2.75   NA 5.67</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># needs at least 75% of non-missing values per row</span></span>
-<span class="r-in"><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">.75</span><span class="op">)</span> <span class="co"># 2 valid return values</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># needs at least 75% of non-missing values per row</span></span></span>
+<span class="r-in"><span><span class="fu">mean_n</span><span class="op">(</span><span class="va">dat</span>, <span class="fl">.75</span><span class="op">)</span> <span class="co"># 2 valid return values</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]   NA 2.75   NA 5.67</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -146,7 +154,7 @@ value. Negative values are allowed (see 'Details').</p></td>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>
