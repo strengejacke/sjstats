@@ -58,5 +58,5 @@ chisq_gof(efc$e42dep, prop.table(table(efc$e42dep)))
 
 }
 \references{
-Hosmer, D. W., & Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley & Sons, Inc. \doi{10.1002/0471722146}
+Hosmer, D. W., & Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley & Sons, Inc.
 }

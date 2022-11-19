@@ -27,7 +27,7 @@
 #'            values per row. E.g., if \code{n = .75}, a row must have at least \code{ncol(dat) * n}
 #'            non-missing values for the row mean to be calculated. See 'Examples'.
 #'
-#' @references \href{http://r4stats.com/2014/09/03/adding-the-spss-mean-n-function-to-r/}{r4stats.com}
+#' @references \href{https://r4stats.com/2014/09/03/adding-the-spss-mean-n-function-to-r/}{r4stats.com}
 #'
 #' @examples
 #' dat <- data.frame(c1 = c(1,2,NA,4),

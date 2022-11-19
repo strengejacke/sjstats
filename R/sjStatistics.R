@@ -27,7 +27,7 @@
 #' @export
 table_values <- function(tab, digits = 2) {
   # convert to ftable object
-  if (!inherits(tab, "ftable")) tab <- ftable(tab)
+  if (!inherits(tab, "ftable")) tab <- stats::ftable(tab)
   tab.cell <- round(100 * prop.table(tab), digits)
   tab.row <- round(100 * prop.table(tab, 1), digits)
   tab.col <- round(100 * prop.table(tab, 2), digits)

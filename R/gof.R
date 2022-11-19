@@ -13,7 +13,7 @@
 #' @param weights Vector with weights, used to weight \code{x}.
 #'
 #' @references
-#'   Hosmer, D. W., & Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley & Sons, Inc. \doi{10.1002/0471722146}
+#'   Hosmer, D. W., & Lemeshow, S. (2000). Applied Logistic Regression. Hoboken, NJ, USA: John Wiley & Sons, Inc.
 #'
 #' @details For vectors, this function is a convenient function for the
 #'         \code{chisq.test()}, performing goodness-of-fit test. For

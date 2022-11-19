@@ -30,10 +30,6 @@ devtools::install_github("strengejacke/sjstats")
 ### Officiale, stable release
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sjstats)](https://cran.r-project.org/package=sjstats)
-&#160;&#160;
-[![downloads](http://cranlogs.r-pkg.org/badges/sjstats)](https://cranlogs.r-pkg.org:443/)
-&#160;&#160;
-[![total](http://cranlogs.r-pkg.org/badges/grand-total/sjstats)](https://cranlogs.r-pkg.org:443/)
 
 To install the latest stable release from CRAN, type following command into the R console:
 
