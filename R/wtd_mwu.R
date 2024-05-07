@@ -67,3 +67,8 @@ weighted_mannwhitney_helper <- function(dat, vars) {
 
   mw
 }
+
+
+#' @rdname weighted_sd
+#' @export
+weighted_ranktest <- weighted_mannwhitney.formula

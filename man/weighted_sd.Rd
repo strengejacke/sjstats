@@ -15,6 +15,7 @@
 \alias{weighted_mannwhitney}
 \alias{weighted_mannwhitney.default}
 \alias{weighted_mannwhitney.formula}
+\alias{weighted_ranktest}
 \alias{weighted_sd}
 \alias{wtd_sd}
 \alias{weighted_se}
@@ -46,6 +47,8 @@ weighted_mannwhitney(data, ...)
 \method{weighted_mannwhitney}{default}(data, x, grp, weights, ...)
 
 \method{weighted_mannwhitney}{formula}(formula, data, ...)
+
+weighted_ranktest(formula, data, ...)
 
 weighted_sd(x, weights = NULL)
 
@@ -134,8 +137,8 @@ hypothesis.
 \cr \cr
 \code{weighted_ttest()} computes a weighted t-test, while \code{weighted_mannwhitney()}
 computes a weighted Mann-Whitney-U test or a Kruskal-Wallis test
-(for more than two groups). \code{weighted_chisqtest()} computes a weighted
-Chi-squared test for contigency tables.
+(for more than two groups). \code{weighted_ranktest()} is an alias for \code{weighted_mannwhitney()}.
+\code{weighted_chisqtest()} computes a weighted Chi-squared test for contingency tables.
 }
 \note{
 \code{weighted_chisq()} is a convenient wrapper for \code{\link{crosstable_statistics}}.

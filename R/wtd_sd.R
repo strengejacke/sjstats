@@ -13,8 +13,8 @@
 #'   \cr \cr
 #'   \code{weighted_ttest()} computes a weighted t-test, while \code{weighted_mannwhitney()}
 #'   computes a weighted Mann-Whitney-U test or a Kruskal-Wallis test
-#'   (for more than two groups). \code{weighted_chisqtest()} computes a weighted
-#'   Chi-squared test for contigency tables.
+#'   (for more than two groups). `weighted_ranktest()` is an alias for `weighted_mannwhitney()`.
+#'   \code{weighted_chisqtest()} computes a weighted Chi-squared test for contingency tables.
 #'
 #' @param x (Numeric) vector or a data frame. For \code{survey_median()}, \code{weighted_ttest()},
 #'    \code{weighted_mannwhitney()} and \code{weighted_chisqtest()} the bare (unquoted) variable
