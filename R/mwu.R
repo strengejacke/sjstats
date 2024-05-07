@@ -1,8 +1,8 @@
 #' @title Mann-Whitney-U-Test
 #' @name mwu
 #' @description This function performs a Mann-Whitney-U-Test (or Wilcoxon rank
-#' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()]`)
-#' comparing `x` by each group indicated by `grp`. `grp` has more than two
+#' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()`])
+#' comparing `x` by each group indicated by `grp`. If `grp` has more than two
 #' categories, a comparison between each combination of two groups is performed.
 #'
 #' The function reports U, p and Z-values as well as effect size r and group-rank-means.
@@ -91,7 +91,7 @@ mwu.default <- function(data,
   # length of value range
   cnt <- length(grp_values)
   labels <- sjlabelled::get_labels(
-    grp, attr.only = F, values = NULL, non.labelled = T
+    grp, attr.only = FALSE, values = NULL, non.labelled = TRUE
   )
 
   df <- data.frame()

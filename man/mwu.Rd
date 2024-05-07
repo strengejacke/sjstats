@@ -73,8 +73,8 @@ also included.
 }
 \description{
 This function performs a Mann-Whitney-U-Test (or Wilcoxon rank
-sum test for \emph{unpaired} samples, see \code{\link[=wilcox.test]{wilcox.test()}} and [\verb{coin::wilcox_test()]})
-comparing \code{x} by each group indicated by \code{grp}. \code{grp} has more than two
+sum test for \emph{unpaired} samples, see \code{\link[=wilcox.test]{wilcox.test()}} and \code{\link[coin:LocationTests]{coin::wilcox_test()}})
+comparing \code{x} by each group indicated by \code{grp}. If \code{grp} has more than two
 categories, a comparison between each combination of two groups is performed.
 
 The function reports U, p and Z-values as well as effect size r and group-rank-means.
