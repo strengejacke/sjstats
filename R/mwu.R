@@ -31,7 +31,13 @@
 #'
 #' @examples
 #' data(efc)
-#' # Mann-Whitney-U-Tests for elder's age by elder's dependency.
+#' # Mann-Whitney-U-Tests for elder's age by elder's sex.
+#' mwu(efc, e17age, e16sex)
+#'
+#' # using formula interface
+#' mwu(e17age ~ e16sex, efc)
+#'
+#' # Mann-Whitney-Tests for elder's age by each level elder's dependency.
 #' mwu(efc, e17age, e42dep)
 #'
 #' @importFrom stats na.omit wilcox.test kruskal.test
