@@ -14,9 +14,9 @@ The standard error of the sample mean of \code{fit}.
 }
 \description{
 Compute the standard error for the sample mean for mixed models,
-               regarding the extent to which clustering affects the standard errors.
-               May be used as part of the multilevel power calculation for cluster sampling
-               (see \cite{Gelman and Hill 2007, 447ff}).
+regarding the extent to which clustering affects the standard errors.
+May be used as part of the multilevel power calculation for cluster sampling
+(see \cite{Gelman and Hill 2007, 447ff}).
 }
 \examples{
 if (require("lme4")) {

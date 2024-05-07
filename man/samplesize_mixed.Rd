@@ -43,26 +43,26 @@ smpsize_lmm(
 }
 \value{
 A list with two values: The number of subjects per cluster, and the
-          total sample size for the linear mixed model.
+total sample size for the linear mixed model.
 }
 \description{
 Compute an approximated sample size for linear mixed models
-               (two-level-designs), based on power-calculation for standard
-               design and adjusted for design effect for 2-level-designs.
+(two-level-designs), based on power-calculation for standard
+design and adjusted for design effect for 2-level-designs.
 }
 \details{
 The sample size calculation is based on a power-calculation for the
-         standard design. If \code{df.n} is not specified, a power-calculation
-         for an unpaired two-sample t-test will be computed (using
-         \code{\link[pwr]{pwr.t.test}} of the \CRANpkg{pwr}-package).
-         If \code{df.n} is given, a power-calculation for general linear models
-         will be computed (using \code{\link[pwr]{pwr.f2.test}} of the
-         \pkg{pwr}-package). The sample size of the standard design
-         is then adjusted for the design effect of two-level-designs (see
-         \code{\link{design_effect}}). Thus, the sample size calculation is appropriate
-         in particular for two-level-designs (see \cite{Snijders 2005}). Models that
-         additionally include repeated measures (three-level-designs) may work
-         as well, however, the computed sample size may be less accurate.
+standard design. If \code{df.n} is not specified, a power-calculation
+for an unpaired two-sample t-test will be computed (using
+\code{\link[pwr]{pwr.t.test}} of the \CRANpkg{pwr}-package).
+If \code{df.n} is given, a power-calculation for general linear models
+will be computed (using \code{\link[pwr]{pwr.f2.test}} of the
+\pkg{pwr}-package). The sample size of the standard design
+is then adjusted for the design effect of two-level-designs (see
+\code{\link{design_effect}}). Thus, the sample size calculation is appropriate
+in particular for two-level-designs (see \cite{Snijders 2005}). Models that
+additionally include repeated measures (three-level-designs) may work
+as well, however, the computed sample size may be less accurate.
 }
 \examples{
 # Sample size for multilevel model with 30 cluster groups and a small to
@@ -77,8 +77,8 @@ samplesize_mixed(eff.size = .2, df.n = 5, k = 20, power = .9)
 }
 \references{
 Cohen J. 1988. Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.
-            \cr \cr
-            Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. An Overview of Variance Inflation Factors for Sample-Size Calculation. Evaluation and the Health Professions 26: 239-257.
-            \cr \cr
-            Snijders TAB. 2005. Power and Sample Size in Multilevel Linear Models. In: Everitt BS, Howell DC (Hrsg.). Encyclopedia of Statistics in Behavioral Science. Chichester, UK: John Wiley and Sons, Ltd.
+\cr \cr
+Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. An Overview of Variance Inflation Factors for Sample-Size Calculation. Evaluation and the Health Professions 26: 239-257.
+\cr \cr
+Snijders TAB. 2005. Power and Sample Size in Multilevel Linear Models. In: Everitt BS, Howell DC (Hrsg.). Encyclopedia of Statistics in Behavioral Science. Chichester, UK: John Wiley and Sons, Ltd.
 }

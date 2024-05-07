@@ -23,18 +23,18 @@ A data frame with the root mean squared errors for the training and test data.
 }
 \description{
 \code{cv_error()} computes the root mean squared error from a model fitted
-         to kfold cross-validated test-training-data. \code{cv_compare()}
-         does the same, for multiple formulas at once (by calling \code{cv_error()}
-         for each formula).
+to kfold cross-validated test-training-data. \code{cv_compare()}
+does the same, for multiple formulas at once (by calling \code{cv_error()}
+for each formula).
 }
 \details{
 \code{cv_error()} first generates cross-validated test-training pairs, using
-         \code{\link[modelr]{crossv_kfold}} and then fits a linear model, which
-         is described in \code{formula}, to the training data. Then, predictions
-         for the test data are computed, based on the trained models.
-         The \emph{training error} is the mean value of the \code{\link{rmse}} for
-         all \emph{trained} models; the \emph{test error} is the rmse based on all
-         residuals from the test data.
+\code{\link[modelr]{crossv_kfold}} and then fits a linear model, which
+is described in \code{formula}, to the training data. Then, predictions
+for the test data are computed, based on the trained models.
+The \emph{training error} is the mean value of the \code{\link{rmse}} for
+all \emph{trained} models; the \emph{test error} is the rmse based on all
+residuals from the test data.
 }
 \examples{
 data(efc)

@@ -25,27 +25,27 @@ A \code{brmsprior}-object.
 }
 \description{
 This function creates default priors for brms-regression
-  models, based on the same automatic prior-scale adjustment as in
-  \pkg{rstanarm}.
+models, based on the same automatic prior-scale adjustment as in
+\pkg{rstanarm}.
 }
 \details{
 \code{auto_prior()} is a small, convenient function to create
-  some default priors for brms-models with automatically adjusted prior
-  scales, in a similar way like \pkg{rstanarm} does. The default scale for
-  the intercept is 10, for coefficients 2.5. If the outcome is gaussian,
-  both scales are multiplied with \code{sd(y)}. Then, for categorical
-  variables, nothing more is changed. For numeric variables, the scales
-  are divided by the standard deviation of the related variable.
-  \cr \cr
-  All prior distributions are \emph{normal} distributions. \code{auto_prior()}
-  is intended to quickly create default priors with feasible scales. If
-  more precise definitions of priors is necessary, this needs to be done
-  directly with brms-functions like \code{set_prior()}.
+some default priors for brms-models with automatically adjusted prior
+scales, in a similar way like \pkg{rstanarm} does. The default scale for
+the intercept is 10, for coefficients 2.5. If the outcome is gaussian,
+both scales are multiplied with \code{sd(y)}. Then, for categorical
+variables, nothing more is changed. For numeric variables, the scales
+are divided by the standard deviation of the related variable.
+\cr \cr
+All prior distributions are \emph{normal} distributions. \code{auto_prior()}
+is intended to quickly create default priors with feasible scales. If
+more precise definitions of priors is necessary, this needs to be done
+directly with brms-functions like \code{set_prior()}.
 }
 \note{
 As \code{auto_prior()} also sets priors on the intercept, the model
-  formula used in \code{brms::brm()} must be rewritten to something like
-  \code{y ~ 0 + intercept ...}, see \code{\link[brms]{set_prior}}.
+formula used in \code{brms::brm()} must be rewritten to something like
+\code{y ~ 0 + intercept ...}, see \code{\link[brms]{set_prior}}.
 }
 \examples{
 library(sjmisc)

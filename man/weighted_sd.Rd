@@ -122,27 +122,27 @@ The weighted (test) statistic.
 }
 \description{
 \strong{Weighted statistics for variables}
-  \cr \cr
-  \code{weighted_sd()}, \code{weighted_se()}, \code{weighted_mean()} and \code{weighted_median()}
-  compute weighted standard deviation, standard error, mean or median for a
-  variable or for all variables of a data frame. \code{survey_median()} computes the
-  median for a variable in a survey-design (see \code{\link[survey]{svydesign}}).
-  \code{weighted_correlation()} computes a weighted correlation for a two-sided alternative
-  hypothesis.
-  \cr \cr
-  \strong{Weighted tests}
-  \cr \cr
-  \code{weighted_ttest()} computes a weighted t-test, while \code{weighted_mannwhitney()}
-  computes a weighted Mann-Whitney-U test or a Kruskal-Wallis test
-  (for more than two groups). \code{weighted_chisqtest()} computes a weighted
-  Chi-squared test for contigency tables.
+\cr \cr
+\code{weighted_sd()}, \code{weighted_se()}, \code{weighted_mean()} and \code{weighted_median()}
+compute weighted standard deviation, standard error, mean or median for a
+variable or for all variables of a data frame. \code{survey_median()} computes the
+median for a variable in a survey-design (see \code{\link[survey]{svydesign}}).
+\code{weighted_correlation()} computes a weighted correlation for a two-sided alternative
+hypothesis.
+\cr \cr
+\strong{Weighted tests}
+\cr \cr
+\code{weighted_ttest()} computes a weighted t-test, while \code{weighted_mannwhitney()}
+computes a weighted Mann-Whitney-U test or a Kruskal-Wallis test
+(for more than two groups). \code{weighted_chisqtest()} computes a weighted
+Chi-squared test for contigency tables.
 }
 \note{
 \code{weighted_chisq()} is a convenient wrapper for \code{\link{crosstable_statistics}}.
-   For a weighted one-way Anova, use \code{means_by_group()} with
-   \code{weights}-argument.
-   \cr \cr
-   \code{weighted_ttest()} assumes unequal variance between the two groups.
+For a weighted one-way Anova, use \code{means_by_group()} with
+\code{weights}-argument.
+\cr \cr
+\code{weighted_ttest()} assumes unequal variance between the two groups.
 }
 \examples{
 # weighted sd and se ----

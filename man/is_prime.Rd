@@ -14,7 +14,7 @@ is_prime(x)
 }
 \description{
 This functions checks whether a number is, or numbers in a
-   vector are prime numbers.
+vector are prime numbers.
 }
 \examples{
 is_prime(89)

@@ -17,36 +17,36 @@ a specification of the survey design.}
 }
 \value{
 An object of class \code{\link[survey]{svymle}} and \code{svyglm.nb},
-          with some additional information about the model.
+with some additional information about the model.
 }
 \description{
 \code{svyglm.nb()} is an extension to the \CRANpkg{survey}-package
-               to fit survey-weighted negative binomial models. It uses
-               \code{\link[survey]{svymle}} to fit sampling-weighted
-               maximum likelihood estimates, based on starting values provided
-               by \code{\link[MASS]{glm.nb}}, as proposed by \emph{Lumley
-               (2010, pp249)}.
+to fit survey-weighted negative binomial models. It uses
+\code{\link[survey]{svymle}} to fit sampling-weighted
+maximum likelihood estimates, based on starting values provided
+by \code{\link[MASS]{glm.nb}}, as proposed by \emph{Lumley
+(2010, pp249)}.
 }
 \details{
 For details on the computation method, see Lumley (2010), Appendix E
-  (especially 254ff.)
-  \cr \cr
-  \pkg{sjstats} implements following S3-methods for \code{svyglm.nb}-objects:
-  \code{family()}, \code{model.frame()}, \code{formula()}, \code{print()},
-  \code{predict()} and \code{residuals()}. However, these functions have some
-  limitations:
-  \itemize{
-    \item{\code{family()} simply returns the family-object from the
-    underlying \code{\link[MASS]{glm.nb}}-model.}
-    \item{The \code{predict()}-method just re-fits the \code{svyglm.nb}-model
-    with \code{\link[MASS]{glm.nb}}, overwrites the \code{$coefficients}
-    from this model-object with the coefficients from the returned
-    \code{\link[survey]{svymle}}-object and finally calls
-    \code{\link[stats]{predict.glm}} to compute the predicted values.}
-    \item{\code{residuals()} re-fits the \code{svyglm.nb}-model with
-    \code{\link[MASS]{glm.nb}} and then computes the Pearson-residuals
-    from the \code{glm.nb}-object.}
-  }
+(especially 254ff.)
+\cr \cr
+\pkg{sjstats} implements following S3-methods for \code{svyglm.nb}-objects:
+\code{family()}, \code{model.frame()}, \code{formula()}, \code{print()},
+\code{predict()} and \code{residuals()}. However, these functions have some
+limitations:
+\itemize{
+\item{\code{family()} simply returns the family-object from the
+underlying \code{\link[MASS]{glm.nb}}-model.}
+\item{The \code{predict()}-method just re-fits the \code{svyglm.nb}-model
+with \code{\link[MASS]{glm.nb}}, overwrites the \code{$coefficients}
+from this model-object with the coefficients from the returned
+\code{\link[survey]{svymle}}-object and finally calls
+\code{\link[stats]{predict.glm}} to compute the predicted values.}
+\item{\code{residuals()} re-fits the \code{svyglm.nb}-model with
+\code{\link[MASS]{glm.nb}} and then computes the Pearson-residuals
+from the \code{glm.nb}-object.}
+}
 }
 \examples{
 # ------------------------------------------

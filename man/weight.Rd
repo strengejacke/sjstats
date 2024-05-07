@@ -25,20 +25,20 @@ The weighted \code{x}.
 }
 \description{
 These functions weight the variable \code{x} by
-               a specific vector of \code{weights}.
+a specific vector of \code{weights}.
 }
 \details{
 \code{weight2()} sums up all \code{weights} values of the associated
-           categories of \code{x}, whereas \code{weight()} uses a
-           \code{\link[stats]{xtabs}} formula to weight cases. Thus, \code{weight()}
-           may return a vector of different length than \code{x}.
+categories of \code{x}, whereas \code{weight()} uses a
+\code{\link[stats]{xtabs}} formula to weight cases. Thus, \code{weight()}
+may return a vector of different length than \code{x}.
 }
 \note{
 The values of the returned vector are in sorted order, whereas the values'
-       order of the original \code{x} may be spread randomly. Hence, \code{x} can't be
-       used, for instance, for further cross tabulation. In case you want to have
-       weighted contingency tables or (grouped) box plots etc., use the \code{weightBy}
-       argument of most functions.
+order of the original \code{x} may be spread randomly. Hence, \code{x} can't be
+used, for instance, for further cross tabulation. In case you want to have
+weighted contingency tables or (grouped) box plots etc., use the \code{weightBy}
+argument of most functions.
 }
 \examples{
 v <- sample(1:4, 20, TRUE)

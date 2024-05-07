@@ -17,14 +17,14 @@ a specification of the survey design.}
 }
 \value{
 An object of class \code{\link[survey]{svymle}} and \code{svyglm.zip},
-          with some additional information about the model.
+with some additional information about the model.
 }
 \description{
 \code{svyglm.zip()} is an extension to the \CRANpkg{survey}-package
-               to fit survey-weighted zero-inflated Poisson models. It uses
-               \code{\link[survey]{svymle}} to fit sampling-weighted
-               maximum likelihood estimates, based on starting values provided
-               by \code{\link[pscl]{zeroinfl}}.
+to fit survey-weighted zero-inflated Poisson models. It uses
+\code{\link[survey]{svymle}} to fit sampling-weighted
+maximum likelihood estimates, based on starting values provided
+by \code{\link[pscl]{zeroinfl}}.
 }
 \details{
 Code modified from https://notstatschat.rbind.io/2015/05/26/zero-inflated-poisson-from-complex-samples/.

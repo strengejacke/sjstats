@@ -11,8 +11,8 @@ mean_n(dat, n, digits = 2)
 
 \item{n}{May either be
 \itemize{
-  \item a numeric value that indicates the amount of valid values per row to calculate the row mean;
-  \item or a value between 0 and 1, indicating a proportion of valid values per row to calculate the row mean (see 'Details').
+\item a numeric value that indicates the amount of valid values per row to calculate the row mean;
+\item or a value between 0 and 1, indicating a proportion of valid values per row to calculate the row mean (see 'Details').
 }
 If a row's sum of valid values is less than \code{n}, \code{NA} will be returned as row mean value.}
 
@@ -21,23 +21,23 @@ value. Negative values are allowed (see 'Details').}
 }
 \value{
 A vector with row mean values of \code{df} for those rows with at least \code{n}
-          valid values. Else, \code{NA} is returned.
+valid values. Else, \code{NA} is returned.
 }
 \description{
 This function is similar to the SPSS \code{MEAN.n} function and computes
-               row means from a \code{data.frame} or \code{matrix} if at least \code{n}
-               values of a row are valid (and not \code{NA}).
+row means from a \code{data.frame} or \code{matrix} if at least \code{n}
+values of a row are valid (and not \code{NA}).
 }
 \details{
 Rounding to a negative number of \code{digits} means rounding to a power of
-           ten, so for example mean_n(df, 3, digits = -2) rounds to the
-           nearest hundred. \cr \cr
-         For \code{n}, must be a numeric value from \code{0} to \code{ncol(dat)}. If
-           a \emph{row} in \code{dat} has at least \code{n} non-missing values, the
-           row mean is returned. If \code{n} is a non-integer value from 0 to 1,
-           \code{n} is considered to indicate the proportion of necessary non-missing
-           values per row. E.g., if \code{n = .75}, a row must have at least \code{ncol(dat) * n}
-           non-missing values for the row mean to be calculated. See 'Examples'.
+ten, so for example mean_n(df, 3, digits = -2) rounds to the
+nearest hundred. \cr \cr
+For \code{n}, must be a numeric value from \code{0} to \code{ncol(dat)}. If
+a \emph{row} in \code{dat} has at least \code{n} non-missing values, the
+row mean is returned. If \code{n} is a non-integer value from 0 to 1,
+\code{n} is considered to indicate the proportion of necessary non-missing
+values per row. E.g., if \code{n = .75}, a row must have at least \code{ncol(dat) * n}
+non-missing values for the row mean to be calculated. See 'Examples'.
 }
 \examples{
 dat <- data.frame(c1 = c(1,2,NA,4),

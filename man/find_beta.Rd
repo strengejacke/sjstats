@@ -41,34 +41,34 @@ probability. See 'Examples'.}
 }
 \value{
 A list of length two, with the two distribution parameters than can
-        be used to define the distribution, which (best) describes
-        the shape for the given input parameters.
+be used to define the distribution, which (best) describes
+the shape for the given input parameters.
 }
 \description{
 \code{find_beta()}, \code{find_normal()} and \code{find_cauchy()} find the
-             shape, mean and standard deviation resp. the location and scale parameters
-             to describe the beta, normal or cauchy distribution, based on two
-             percentiles. \code{find_beta2()} finds the shape parameters for a Beta
-             distribution, based on a probability value and its standard error
-             or confidence intervals.
+shape, mean and standard deviation resp. the location and scale parameters
+to describe the beta, normal or cauchy distribution, based on two
+percentiles. \code{find_beta2()} finds the shape parameters for a Beta
+distribution, based on a probability value and its standard error
+or confidence intervals.
 }
 \details{
 These functions can be used to find parameter for various distributions,
-         to define prior probabilities for Bayesian analyses. \code{x1},
-         \code{p1}, \code{x2} and \code{p2} are parameters that describe two
-         quantiles. Given this knowledge, the distribution parameters are
-         returned. \cr \cr
-         Use \code{find_beta2()}, if the known parameters are, e.g. a prevalence
-         rate or similar probability, and its standard deviation or confidence
-         interval. In this case. \code{x} should be a probability,
-         for example a prevalence rate of a certain event. \code{se} then
-         needs to be the standard error for this probability. Alternatively,
-         \code{ci} can be specified, which should indicate the upper limit
-         of the confidence interval od the probability (prevalence rate) \code{x}.
-         If the number of events out of a total number of trials is known
-         (e.g. 12 heads out of 30 coin tosses), \code{x} can also be the number
-         of observed events, while \code{n} indicates the total amount of trials
-         (in the above example, the function call would be: \code{find_beta2(x = 12, n = 30)}).
+to define prior probabilities for Bayesian analyses. \code{x1},
+\code{p1}, \code{x2} and \code{p2} are parameters that describe two
+quantiles. Given this knowledge, the distribution parameters are
+returned. \cr \cr
+Use \code{find_beta2()}, if the known parameters are, e.g. a prevalence
+rate or similar probability, and its standard deviation or confidence
+interval. In this case. \code{x} should be a probability,
+for example a prevalence rate of a certain event. \code{se} then
+needs to be the standard error for this probability. Alternatively,
+\code{ci} can be specified, which should indicate the upper limit
+of the confidence interval od the probability (prevalence rate) \code{x}.
+If the number of events out of a total number of trials is known
+(e.g. 12 heads out of 30 coin tosses), \code{x} can also be the number
+of observed events, while \code{n} indicates the total amount of trials
+(in the above example, the function call would be: \code{find_beta2(x = 12, n = 30)}).
 }
 \examples{
 # example from blogpost:

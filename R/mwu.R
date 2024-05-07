@@ -1,24 +1,23 @@
 #' @title Mann-Whitney-U-Test
 #' @name mwu
-#' @description This function performs a Mann-Whitney-U-Test (or Wilcoxon rank sum test,
-#'                see \code{\link[stats]{wilcox.test}} and \code{\link[coin]{wilcox_test}})
-#'                for \code{x}, for each group indicated by \code{grp}. If \code{grp}
-#'                has more than two categories, a comparison between each combination of
-#'                two groups is performed. \cr \cr
-#'                The function reports U, p and Z-values as well as effect size r
-#'                and group-rank-means.
+#' @description This function performs a Mann-Whitney-U-Test (or Wilcoxon rank
+#' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()]`)
+#' comparing `x` by each group indicated by `grp`. `grp` has more than two
+#' categories, a comparison between each combination of two groups is performed.
+#'
+#' The function reports U, p and Z-values as well as effect size r and group-rank-means.
 #'
 #' @param x Bare (unquoted) variable name, or a character vector with the variable name.
-#' @param distribution Indicates how the null distribution of the test statistic should be computed.
-#'          May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
-#'          (default). See \code{\link[coin]{wilcox_test}} for details.
+#' @param distribution Indicates how the null distribution of the test statistic
+#' should be computed. May be one of `"exact"`, `"approximate"` or `"asymptotic"`
+#' (default). See [`coin::wilcox_test()`] for details.
 #'
 #' @inheritParams weighted_sd
 #' @inheritParams means_by_group
 #'
 #' @return (Invisibly) returns a data frame with U, p and Z-values for each group-comparison
-#'         as well as effect-size r; additionally, group-labels and groups' n's are
-#'         also included.
+#' as well as effect-size r; additionally, group-labels and groups' n's are
+#' also included.
 #'
 #' @note This function calls the \code{\link[coin]{wilcox_test}} with formula. If \code{grp}
 #'         has more than two groups, additionally a Kruskal-Wallis-Test (see \code{\link{kruskal.test}})
@@ -40,13 +39,20 @@
 #' @importFrom sjlabelled get_labels as_numeric
 #' @importFrom rlang quo_name enquo
 #' @export
-mwu <- function(data,
-                x,
-                grp,
-                distribution = "asymptotic",
-                out = c("txt", "viewer", "browser"),
-                encoding = "UTF-8",
-                file = NULL) {
+mwu <- function(data, ...) {
+  UseMethod("mwu")
+}
+
+#' @rdname mwu
+#' @export
+mwu.default <- function(data,
+                        x,
+                        grp,
+                        distribution = "asymptotic",
+                        out = c("txt", "viewer", "browser"),
+                        encoding = "UTF-8",
+                        file = NULL,
+                        ...) {
 
   out <- match.arg(out)
 
@@ -199,6 +205,21 @@ mwu <- function(data,
     class(ret.df) <- c("mwu", "sj_mwu")
 
   ret.df
+}
+
+
+#' @importFrom dplyr select
+#' @rdname mwu
+#' @export
+mwu.formula <- function(formula,
+                        data,
+                        distribution = "asymptotic",
+                        out = c("txt", "viewer", "browser"),
+                        encoding = "UTF-8",
+                        file = NULL,
+                        ...) {
+  vars <- all.vars(formula)
+  mwu(data, x = !! vars[1], grp = !! vars[2], distribution = distribution, out = out, encoding = encoding, file = file, ...)
 }
 
 

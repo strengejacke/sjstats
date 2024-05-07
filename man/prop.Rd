@@ -30,25 +30,25 @@ percentage.}
 }
 \value{
 For one condition, a numeric value with the proportion of the values
-        inside a vector. For more than one condition, a data frame with one column
-        of conditions and one column with proportions. For grouped data frames,
-        returns a data frame with one column per group with grouping categories,
-        followed by one column with proportions per condition.
+inside a vector. For more than one condition, a data frame with one column
+of conditions and one column with proportions. For grouped data frames,
+returns a data frame with one column per group with grouping categories,
+followed by one column with proportions per condition.
 }
 \description{
 \code{prop()} calculates the proportion of a value or category
-               in a variable. \code{props()} does the same, but allows for
-               multiple logical conditions in one statement. It is similar
-               to \code{mean()} with logical predicates, however, both
-               \code{prop()} and \code{props()} work with grouped data frames.
+in a variable. \code{props()} does the same, but allows for
+multiple logical conditions in one statement. It is similar
+to \code{mean()} with logical predicates, however, both
+\code{prop()} and \code{props()} work with grouped data frames.
 }
 \details{
 \code{prop()} only allows one logical statement per comparison,
-         while \code{props()} allows multiple logical statements per comparison.
-         However, \code{prop()} supports weighting of variables before calculating
-         proportions, and comparisons may also be quoted. Hence, \code{prop()}
-         also processes comparisons, which are passed as character vector
-         (see 'Examples').
+while \code{props()} allows multiple logical statements per comparison.
+However, \code{prop()} supports weighting of variables before calculating
+proportions, and comparisons may also be quoted. Hence, \code{prop()}
+also processes comparisons, which are passed as character vector
+(see 'Examples').
 }
 \examples{
 data(efc)

@@ -51,6 +51,7 @@ Suggests:
     testthat
 URL: https://strengejacke.github.io/sjstats/
 BugReports: https://github.com/strengejacke/sjstats/issues
-RoxygenNote: 7.2.2
+RoxygenNote: 7.3.1
+Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 Config/testthat/parallel: true

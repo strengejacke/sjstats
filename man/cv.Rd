@@ -21,9 +21,9 @@ Compute the coefficient of variation.
 }
 \details{
 The advantage of the cv is that it is unitless. This allows
-        coefficient of variation to be compared to each other in ways
-        that other measures, like standard deviations or root mean
-        squared residuals, cannot be.
+coefficient of variation to be compared to each other in ways
+that other measures, like standard deviations or root mean
+squared residuals, cannot be.
 }
 \examples{
 data(efc)

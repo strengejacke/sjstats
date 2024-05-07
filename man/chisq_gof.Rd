@@ -19,23 +19,23 @@ for \code{prob}. Only used, when \code{x} is a vector, and not a
 }
 \value{
 For vectors, returns the object of the computed \code{\link[stats]{chisq.test}}.
-    For \code{glm}-objects, an object of class \code{chisq_gof} with
-    following values: \code{p.value}, the p-value for the goodness-of-fit test;
-    \code{z.score}, the standardized z-score for the goodness-of-fit test;
-    \code{rss}, the residual sums of squares term and \code{chisq}, the pearson
-    chi-squared statistic.
+For \code{glm}-objects, an object of class \code{chisq_gof} with
+following values: \code{p.value}, the p-value for the goodness-of-fit test;
+\code{z.score}, the standardized z-score for the goodness-of-fit test;
+\code{rss}, the residual sums of squares term and \code{chisq}, the pearson
+chi-squared statistic.
 }
 \description{
 For logistic regression models, performs a Chi-squared
-  goodness-of-fit-test.
+goodness-of-fit-test.
 }
 \details{
 For vectors, this function is a convenient function for the
-        \code{chisq.test()}, performing goodness-of-fit test. For
-        \code{glm}-objects, this function performs a goodness-of-fit test.
-        A well-fitting model shows \emph{no} significant difference between the
-        model and the observed data, i.e. the reported p-values should be
-        greater than 0.05.
+\code{chisq.test()}, performing goodness-of-fit test. For
+\code{glm}-objects, this function performs a goodness-of-fit test.
+A well-fitting model shows \emph{no} significant difference between the
+model and the observed data, i.e. the reported p-values should be
+greater than 0.05.
 }
 \examples{
 data(efc)

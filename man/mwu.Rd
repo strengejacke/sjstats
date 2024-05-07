@@ -2,31 +2,42 @@
 % Please edit documentation in R/mwu.R
 \name{mwu}
 \alias{mwu}
+\alias{mwu.default}
+\alias{mwu.formula}
 \alias{mannwhitney}
 \title{Mann-Whitney-U-Test}
 \usage{
-mwu(
+mwu(data, ...)
+
+\method{mwu}{default}(
   data,
   x,
   grp,
   distribution = "asymptotic",
   out = c("txt", "viewer", "browser"),
   encoding = "UTF-8",
-  file = NULL
+  file = NULL,
+  ...
 )
 
-mannwhitney(
+\method{mwu}{formula}(
+  formula,
   data,
-  x,
-  grp,
   distribution = "asymptotic",
   out = c("txt", "viewer", "browser"),
   encoding = "UTF-8",
-  file = NULL
+  file = NULL,
+  ...
 )
+
+mannwhitney(data, ...)
 }
 \arguments{
 \item{data}{A data frame.}
+
+\item{...}{For \code{weighted_ttest()} and \code{weighted_mannwhitney()}, currently not used.
+For \code{weighted_chisqtest()}, further arguments passed down to
+\code{\link[stats]{chisq.test}}.}
 
 \item{x}{Bare (unquoted) variable name, or a character vector with the variable name.}
 
@@ -34,9 +45,9 @@ mannwhitney(
 \code{x} is grouped into the categories represented by \code{grp},
 or a character vector with the variable name.}
 
-\item{distribution}{Indicates how the null distribution of the test statistic should be computed.
-May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
-(default). See \code{\link[coin]{wilcox_test}} for details.}
+\item{distribution}{Indicates how the null distribution of the test statistic
+should be computed. May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
+(default). See \code{\link[coin:LocationTests]{coin::wilcox_test()}} for details.}
 
 \item{out}{Character vector, indicating whether the results should be printed
 to console (\code{out = "txt"}) or as HTML-table in the viewer-pane
@@ -50,31 +61,34 @@ when \code{out} is not \code{"txt"}.}
 
 \item{file}{Destination file, if the output should be saved as file.
 Only used when \code{out} is not \code{"txt"}.}
+
+\item{formula}{A formula of the form \code{lhs ~ rhs1 + rhs2} where \code{lhs} is a
+numeric variable giving the data values and \code{rhs1} a factor with two
+levels giving the corresponding groups and \code{rhs2} a variable with weights.}
 }
 \value{
 (Invisibly) returns a data frame with U, p and Z-values for each group-comparison
-        as well as effect-size r; additionally, group-labels and groups' n's are
-        also included.
+as well as effect-size r; additionally, group-labels and groups' n's are
+also included.
 }
 \description{
-This function performs a Mann-Whitney-U-Test (or Wilcoxon rank sum test,
-               see \code{\link[stats]{wilcox.test}} and \code{\link[coin]{wilcox_test}})
-               for \code{x}, for each group indicated by \code{grp}. If \code{grp}
-               has more than two categories, a comparison between each combination of
-               two groups is performed. \cr \cr
-               The function reports U, p and Z-values as well as effect size r
-               and group-rank-means.
+This function performs a Mann-Whitney-U-Test (or Wilcoxon rank
+sum test for \emph{unpaired} samples, see \code{\link[=wilcox.test]{wilcox.test()}} and [\verb{coin::wilcox_test()]})
+comparing \code{x} by each group indicated by \code{grp}. \code{grp} has more than two
+categories, a comparison between each combination of two groups is performed.
+
+The function reports U, p and Z-values as well as effect size r and group-rank-means.
 }
 \note{
 This function calls the \code{\link[coin]{wilcox_test}} with formula. If \code{grp}
-        has more than two groups, additionally a Kruskal-Wallis-Test (see \code{\link{kruskal.test}})
-        is performed. \cr \cr
-        Interpretation of effect sizes, as a rule-of-thumb:
-        \itemize{
-         \item small effect >= 0.1
-         \item medium effect >= 0.3
-         \item large effect >= 0.5
-       }
+has more than two groups, additionally a Kruskal-Wallis-Test (see \code{\link{kruskal.test}})
+is performed. \cr \cr
+Interpretation of effect sizes, as a rule-of-thumb:
+\itemize{
+\item small effect >= 0.1
+\item medium effect >= 0.3
+\item large effect >= 0.5
+}
 }
 \examples{
 data(efc)

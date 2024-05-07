@@ -88,43 +88,43 @@ weights that will be applied to weight all observations. Default is
 }
 \value{
 For \code{phi()}, the table's Phi value. For \code{cramer()}, the
-        table's Cramer's V.
-        \cr \cr
-        For \code{crosstable_statistics()}, a list with following components:
-        \describe{
-          \item{\code{estimate}}{the value of the estimated measure of association.}
-          \item{\code{p.value}}{the p-value for the test.}
-          \item{\code{statistic}}{the value of the test statistic.}
-          \item{\code{stat.name}}{the name of the test statistic.}
-          \item{\code{stat.html}}{if applicable, the name of the test statistic, in HTML-format.}
-          \item{\code{df}}{the degrees of freedom for the contingency table.}
-          \item{\code{method}}{character string indicating the name of the measure of association.}
-          \item{\code{method.html}}{if applicable, the name of the measure of association, in HTML-format.}
-          \item{\code{method.short}}{the short form of association measure, equals the \code{statistics}-argument.}
-          \item{\code{fisher}}{logical, if Fisher's exact test was used to calculate the p-value.}
-        }
+table's Cramer's V.
+\cr \cr
+For \code{crosstable_statistics()}, a list with following components:
+\describe{
+\item{\code{estimate}}{the value of the estimated measure of association.}
+\item{\code{p.value}}{the p-value for the test.}
+\item{\code{statistic}}{the value of the test statistic.}
+\item{\code{stat.name}}{the name of the test statistic.}
+\item{\code{stat.html}}{if applicable, the name of the test statistic, in HTML-format.}
+\item{\code{df}}{the degrees of freedom for the contingency table.}
+\item{\code{method}}{character string indicating the name of the measure of association.}
+\item{\code{method.html}}{if applicable, the name of the measure of association, in HTML-format.}
+\item{\code{method.short}}{the short form of association measure, equals the \code{statistics}-argument.}
+\item{\code{fisher}}{logical, if Fisher's exact test was used to calculate the p-value.}
+}
 }
 \description{
 This function calculates various measure of association for
-             contingency tables and returns the statistic and p-value.
-             Supported measures are Cramer's V, Phi, Spearman's rho,
-             Kendall's tau and Pearson's r.
+contingency tables and returns the statistic and p-value.
+Supported measures are Cramer's V, Phi, Spearman's rho,
+Kendall's tau and Pearson's r.
 }
 \details{
 The p-value for Cramer's V and the Phi coefficient are based
-         on \code{chisq.test()}. If any expected value of a table cell is
-         smaller than 5, or smaller than 10 and the df is 1, then \code{fisher.test()}
-         is used to compute the p-value, unless \code{statistics = "fisher"}; in
-         this case, the use of \code{fisher.test()} is forced to compute the
-         p-value. The test statistic is calculated with \code{cramer()} resp.
-         \code{phi()}.
-         \cr \cr
-         Both test statistic and p-value for Spearman's rho, Kendall's tau
-         and Pearson's r are calculated with \code{cor.test()}.
-         \cr \cr
-         When \code{statistics = "auto"}, only Cramer's V or Phi are calculated,
-         based on the dimension of the table (i.e. if the table has more than
-         two rows or columns, Cramer's V is calculated, else Phi).
+on \code{chisq.test()}. If any expected value of a table cell is
+smaller than 5, or smaller than 10 and the df is 1, then \code{fisher.test()}
+is used to compute the p-value, unless \code{statistics = "fisher"}; in
+this case, the use of \code{fisher.test()} is forced to compute the
+p-value. The test statistic is calculated with \code{cramer()} resp.
+\code{phi()}.
+\cr \cr
+Both test statistic and p-value for Spearman's rho, Kendall's tau
+and Pearson's r are calculated with \code{cor.test()}.
+\cr \cr
+When \code{statistics = "auto"}, only Cramer's V or Phi are calculated,
+based on the dimension of the table (i.e. if the table has more than
+two rows or columns, Cramer's V is calculated, else Phi).
 }
 \examples{
 # Phi coefficient for 2x2 tables

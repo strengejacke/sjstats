@@ -18,22 +18,22 @@ the hi status groups.}
 }
 \value{
 A data frame with the prevalence rates as well as the values for the
-          proportional change in absolute (\code{rd}) and relative (\code{rr})
-          ineqqualities.
+proportional change in absolute (\code{rd}) and relative (\code{rr})
+ineqqualities.
 }
 \description{
 This method computes the proportional change of absolute
-             (rate differences) and relative (rate ratios) inequalities
-             of prevalence rates for two different status groups, as proposed
-             by Mackenbach et al. (2015).
+(rate differences) and relative (rate ratios) inequalities
+of prevalence rates for two different status groups, as proposed
+by Mackenbach et al. (2015).
 }
 \details{
 Given the time trend of prevalence rates of an outcome for two status
-         groups (e.g. the mortality rates for people with lower and higher
-         socioeconomic status over 40 years), this function computes the
-         proportional change of absolute and relative inequalities, expressed
-         in changes in rate differences and rate ratios. The function implements
-         the algorithm proposed by \emph{Mackenbach et al. 2015}.
+groups (e.g. the mortality rates for people with lower and higher
+socioeconomic status over 40 years), this function computes the
+proportional change of absolute and relative inequalities, expressed
+in changes in rate differences and rate ratios. The function implements
+the algorithm proposed by \emph{Mackenbach et al. 2015}.
 }
 \examples{
 # This example reproduces Fig. 1 of Mackenbach et al. 2015, p.5

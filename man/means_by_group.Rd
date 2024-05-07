@@ -59,20 +59,20 @@ Only used when \code{out} is not \code{"txt"}.}
 }
 \value{
 For non-grouped data frames, \code{means_by_group()} returns a data frame with
-  following columns: \code{term}, \code{mean}, \code{N}, \code{std.dev},
-  \code{std.error} and \code{p.value}. For grouped data frames, returns
-  a list of such data frames.
+following columns: \code{term}, \code{mean}, \code{N}, \code{std.dev},
+\code{std.error} and \code{p.value}. For grouped data frames, returns
+a list of such data frames.
 }
 \description{
 Computes mean, sd and se for each sub-group (indicated by \code{grp})
-               of \code{dv}.
+of \code{dv}.
 }
 \details{
 This function performs a One-Way-Anova with \code{dv} as dependent
-  and \code{grp} as independent variable, by calling
-  \code{lm(count ~ as.factor(grp))}. Then \code{\link[emmeans]{contrast}}
-  is called to get p-values for each sub-group. P-values indicate whether
-  each group-mean is significantly different from the total mean.
+and \code{grp} as independent variable, by calling
+\code{lm(count ~ as.factor(grp))}. Then \code{\link[emmeans]{contrast}}
+is called to get p-values for each sub-group. P-values indicate whether
+each group-mean is significantly different from the total mean.
 }
 \examples{
 data(efc)
