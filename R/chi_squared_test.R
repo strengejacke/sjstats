@@ -40,7 +40,7 @@ chi_squared_test <- function(data,
 
 # Mann-Whitney-Test for two groups --------------------------------------------
 
-.calculate_chisq <- function(data, select, by, weights, ...) {
+.calculate_chisq <- function(data, select, by, weights, verbose = TRUE, ...) {
   insight::check_if_installed("datawizard")
   # sanity checks
   .sanitize_htest_input(data, select, by, weights)
@@ -122,13 +122,19 @@ chi_squared_test <- function(data,
   if (is.null(weights)) {
     tab <- table(x)
   } else {
-    tab <- as.table(round(stats::xtabs(data[[2]] ~ data[[1]])))
+    tab <- as.table(round(stats::xtabs(x[[2]] ~ x[[1]])))
     class(tab) <- "table"
   }
 
+  # table dimensions
+  n_rows <- nlevels(droplevels(as.factor(x$grp)))
+
   # sanity check
-  if (length(probabilities) != as.numeric(dim(tab))) {
+  if (length(probabilities) != n_rows) {
     insight::format_error("Length of probabilities must match number of cells in table (i.e. number of levels of input factor).") # nolint
+  }
+  if (!isTRUE(all.equal(sum(probabilities), 1))) {
+    insight::format_error("Probabilities must sum to 1.")
   }
 
   # chi-squared test
@@ -139,7 +145,7 @@ chi_squared_test <- function(data,
   effect_size <- effectsize::chisq_to_fei(
     test_statistic,
     n = sum(tab),
-    nrow = as.numeric(dim(tab)),
+    nrow = n_rows,
     ncol = 1,
     p = probabilities,
     alternative = "two.sided"
@@ -152,7 +158,7 @@ chi_squared_test <- function(data,
     effect_size_name = "Fei",
     effect_size = as.numeric(effect_size),
     p = p_value,
-    df = (nrow(tab) - 1) * (ncol(tab) - 1),
+    df = n_rows - 1,
     n_obs = sum(tab, na.rm = TRUE),
     stringsAsFactors = FALSE
   )

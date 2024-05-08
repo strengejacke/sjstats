@@ -30,7 +30,6 @@ reference:
 - title: "Other (Summary) Statistics"
   contents:
   - gmd
-  - mannwhitney
   - mann_whitney_test
   - chi_squared_test
   - mean_n
