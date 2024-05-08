@@ -22,12 +22,12 @@ reference:
   - crosstable_statistics
   - table_values
 
-- title: "Weighted Statistics"
+- title: "Weighted Estimates and Dispersion"
   contents:
   - weight
   - weighted_ttest
 
-- title: "Other (Summary) Statistics"
+- title: "Summary Statistics and Tests"
   contents:
   - gmd
   - mann_whitney_test
