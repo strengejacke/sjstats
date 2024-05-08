@@ -61,13 +61,14 @@ mann_whitney <- function(data,
   dv <- data[[select]]
   grp <- data[[by]]
 
-  # coerce to factor and character to numeric
+  # coerce to factor
   grp <- datawizard::to_factor(grp)
 
-  # length of value range
-  labels <- sjlabelled::get_labels(
-    data[[by]], attr.only = FALSE, values = NULL, non.labelled = TRUE
-  )
+  # value labels
+  labels <- names(attr(data[[by]], "labels", exact = TRUE))
+  if (is.null(labels)) {
+    labels <- levels(grp)
+  }
 
   .calculate_mwu(dv, grp, distribution, labels)
 }
