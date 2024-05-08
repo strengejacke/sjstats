@@ -140,8 +140,9 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
     if (!is.null(weights)) {
       tab <- as.table(round(stats::xtabs(data[[3]] ~ data[[1]] + data[[2]])))
       class(tab) <- "table"
-    } else
+    } else {
       tab <- table(data)
+    }
   } else {
     # 'data' is a table - copy to table object
     tab <- data
@@ -152,7 +153,7 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
           "Need arguments `data`, `x1` and `x2` to compute %s-statistics.",
           statistics
         ),
-        call. = F
+        call. = FALSE
       )
     }
   }

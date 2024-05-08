@@ -41,27 +41,8 @@ mann_whitney_test <- function(data,
                               distribution = "asymptotic") {
   insight::check_if_installed("datawizard")
 
-  # check if "select" is in data
-  if (!select %in% colnames(data)) {
-    insight::format_error(
-      sprintf("Variable '%s' not found in data frame.", select),
-      .misspelled_string(select, colnames(data), "Maybe misspelled?")
-    )
-  }
-  # check if "by" is in data
-  if (!by %in% colnames(data)) {
-    insight::format_error(
-      sprintf("Variable '%s' not found in data frame.", by),
-      .misspelled_string(by, colnames(data), "Maybe misspelled?")
-    )
-  }
-  # check if "weights" is in data
-  if (!is.null(weights) && !weights %in% colnames(data)) {
-    insight::format_error(
-      sprintf("Weighting variable '%s' not found in data frame.", weights),
-      .misspelled_string(weights, colnames(data), "Maybe misspelled?")
-    )
-  }
+  # sanity checks
+  .sanitize_htest_input(data, select, by, weights)
 
   # get data
   dv <- data[[select]]
@@ -272,6 +253,50 @@ mann_whitney_test <- function(data,
   }
   p <- sprintf("(%s){~%i}", pattern, precision)
   grep(pattern = p, x = x, ignore.case = FALSE)
+}
+
+
+.sanitize_htest_input <- function(data, select, by, weights) {
+  # check if arguments are NULL
+  if (is.null(select)) {
+    insight::format_error("Argument `select` is missing.")
+  }
+  if (is.null(by)) {
+    insight::format_error("Arguments `by` is missing.")
+  }
+
+  # check if arguments have correct length (length of 1)
+  if (length(select) != 1 || !is.character(select)) {
+    insight::format_error("Argument `select` must be the name of a single variable.")
+  }
+  if (length(by) != 1 || !is.character(by)) {
+    insight::format_error("Argument `by` must be the name of a single variable.")
+  }
+  if (!is.null(weights) && length(weights) != 1) {
+    insight::format_error("Argument `weights` must be the name of a single variable.")
+  }
+
+  # check if "select" is in data
+  if (!select %in% colnames(data)) {
+    insight::format_error(
+      sprintf("Variable '%s' not found in data frame.", select),
+      .misspelled_string(select, colnames(data), "Maybe misspelled?")
+    )
+  }
+  # check if "by" is in data
+  if (!by %in% colnames(data)) {
+    insight::format_error(
+      sprintf("Variable '%s' not found in data frame.", by),
+      .misspelled_string(by, colnames(data), "Maybe misspelled?")
+    )
+  }
+  # check if "weights" is in data
+  if (!is.null(weights) && !weights %in% colnames(data)) {
+    insight::format_error(
+      sprintf("Weighting variable '%s' not found in data frame.", weights),
+      .misspelled_string(weights, colnames(data), "Maybe misspelled?")
+    )
+  }
 }
 
 
