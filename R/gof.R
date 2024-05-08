@@ -73,7 +73,7 @@ chisq_gof <- function(x, prob = NULL, weights = NULL) {
     dat$cJ <- cJ
     dat$vJ <- vJ
 
-    RSS <- sum(stats::resid(stats::lm(form, data = dat, weights = vJ))^2)
+    RSS <- sum(vJ * stats::resid(stats::lm(form, data = dat, weights = vJ))^2)
     A <- 2 * (length(y_hat) - sum(1 / wt))
     z <- (X2 - x$df.residual) / sqrt(A + RSS)
 
