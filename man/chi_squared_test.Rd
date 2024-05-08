@@ -34,22 +34,13 @@ sum test for \emph{unpaired} samples, see \code{\link[=wilcox.test]{wilcox.test(
 
 The function reports p and Z-values as well as effect size r and group-rank-means.
 }
-\details{
-This function calls \code{\link[coin:LocationTests]{coin::wilcox_test()}} to extract effect sizes.
-Interpretation of the effect size \strong{r}, as a rule-of-thumb:
-\itemize{
-\item small effect >= 0.1
-\item medium effect >= 0.3
-\item large effect >= 0.5
-}
-
-\strong{r} is calcuated as:
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{r = |Z| / sqrt(n1 + n2)
-}\if{html}{\out{</div>}}
-}
 \examples{
 data(efc)
-# Mann-Whitney-U-Tests for elder's age by elder's sex.
-chi_squared_test(efc, "e17age", "e16sex")
+efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
+# Chi-squared-test
+chi_squared_test(efc, "c161sex", "e16sex")
+# weighted Chi-squared-test
+chi_squared_test(efc, "c161sex", "e16sex", weights = "weight")
+# Chi-squared-test for given probabilities
+chi_squared_test(efc, "c161sex", probabilities = c(0.3, 0.7))
 }

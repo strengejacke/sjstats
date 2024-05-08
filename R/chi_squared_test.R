@@ -14,23 +14,15 @@
 #'
 #' @return A data frame.
 #'
-#' @details This function calls [`coin::wilcox_test()`] to extract effect sizes.
-#' Interpretation of the effect size **r**, as a rule-of-thumb:
-#'
-#' - small effect >= 0.1
-#' - medium effect >= 0.3
-#' - large effect >= 0.5
-#'
-#' **r** is calcuated as:
-#'
-#' ```
-#' r = |Z| / sqrt(n1 + n2)
-#' ```
-#'
 #' @examples
 #' data(efc)
-#' # Mann-Whitney-U-Tests for elder's age by elder's sex.
-#' chi_squared_test(efc, "e17age", "e16sex")
+#' efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
+#' # Chi-squared-test
+#' chi_squared_test(efc, "c161sex", "e16sex")
+#' # weighted Chi-squared-test
+#' chi_squared_test(efc, "c161sex", "e16sex", weights = "weight")
+#' # Chi-squared-test for given probabilities
+#' chi_squared_test(efc, "c161sex", probabilities = c(0.3, 0.7))
 #' @export
 chi_squared_test <- function(data,
                              select = NULL,
@@ -73,7 +65,7 @@ chi_squared_test <- function(data,
   if (is.null(weights)) {
     tab <- table(x)
   } else {
-    tab <- as.table(round(stats::xtabs(data[[3]] ~ data[[1]] + data[[2]])))
+    tab <- as.table(round(stats::xtabs(x[[3]] ~ x[[1]] + x[[2]])))
     class(tab) <- "table"
   }
 
@@ -85,16 +77,16 @@ chi_squared_test <- function(data,
   test_statistic <- htest$statistic
 
   # need fisher?
-  if (min(expected_values$expected) < 5 || (min(expected_values$expected) < 10 && htest$parameter == 1)) {
+  if (min(expected_values) < 5 || (min(expected_values) < 10 && htest$parameter == 1)) {
     htest <- stats::fisher.test(tab, simulate.p.value = TRUE, ...)
   }
   p_value <- htest$p.value
 
   # effect size
   if (nrow(tab) > 2 || ncol(tab) > 2) {
-    effect_size <- stats::setNamed(cramer(tab), "Cramer's V")
+    effect_size <- stats::setNames(cramer(tab), "Cramer's V")
   } else {
-    effect_size <- stats::setNamed(phi(tab), "Phi")
+    effect_size <- stats::setNames(phi(tab), "Phi")
   }
 
   # return result
@@ -177,12 +169,12 @@ print.sj_htest_chi <- function(x, ...) {
   # get length of method name, to align output
   l <- max(nchar(c(x$statistic_name, x$effect_size_name, "p-value", "Observations")))
   # headline
-  insight::print_color(sprintf("\n# Chi-squared Test for%s\n\n", attributes(x)$caption), "blue")
+  insight::print_color(sprintf("\n# Chi-Squared Test for %s\n\n", attributes(x)$caption), "blue")
 
   # print test statistic
   cat(sprintf("  %*s: %.4f\n", l, x$statistic_name, x$statistic))
   cat(sprintf("  %*s: %.4f\n", l, x$effect_size_name, x$effect_size))
   cat(sprintf("  %*s: %g\n", l, "df", x$df))
-  cat(sprintf("  %*s: %s\n", l, "p-value", insight::format_p(x$p.value, stars = TRUE, name = NULL)))
+  cat(sprintf("  %*s: %s\n", l, "p-value", insight::format_p(x$p, stars = TRUE, name = NULL)))
   cat(sprintf("  %*s: %g\n", l, "Observations", x$n_obs))
 }

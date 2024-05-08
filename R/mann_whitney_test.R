@@ -280,21 +280,21 @@ mann_whitney_test <- function(data,
   if (!select %in% colnames(data)) {
     insight::format_error(
       sprintf("Variable '%s' not found in data frame.", select),
-      .misspelled_string(select, colnames(data), "Maybe misspelled?")
+      .misspelled_string(colnames(data), select, "Maybe misspelled?")
     )
   }
   # check if "by" is in data
   if (!by %in% colnames(data)) {
     insight::format_error(
       sprintf("Variable '%s' not found in data frame.", by),
-      .misspelled_string(by, colnames(data), "Maybe misspelled?")
+      .misspelled_string(colnames(data), by, "Maybe misspelled?")
     )
   }
   # check if "weights" is in data
   if (!is.null(weights) && !weights %in% colnames(data)) {
     insight::format_error(
       sprintf("Weighting variable '%s' not found in data frame.", weights),
-      .misspelled_string(weights, colnames(data), "Maybe misspelled?")
+      .misspelled_string(colnames(data), weights, "Maybe misspelled?")
     )
   }
 }
