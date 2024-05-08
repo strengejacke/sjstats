@@ -1,56 +1,38 @@
 #' @title Mann-Whitney-U-Test
 #' @name mann_whitney
-#' @description This function performs a Mann-Whitney-U-Test (or Wilcoxon rank
-#' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()`])
-#' comparing `x` by each group indicated by `grp`. If `grp` has more than two
-#' categories, a comparison between each combination of two groups is performed.
+#' @description This function performs a Mann-Whitney-Test (or Wilcoxon rank
+#' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()`]).
 #'
 #' The function reports U, p and Z-values as well as effect size r and group-rank-means.
 #'
-#' @param x Bare (unquoted) variable name, or a character vector with the variable name.
+#' @param data A data frame.
+#' @param select The dependent variable (numeric) to be used for the test.
+#' @param by The grouping variable (factor) to be used for the test. If `by` is
+#' not a factor, it will be coerced to a factor.
+#' @param weights An optional weighting variable (numeric) to be used for the test.
 #' @param distribution Indicates how the null distribution of the test statistic
 #' should be computed. May be one of `"exact"`, `"approximate"` or `"asymptotic"`
 #' (default). See [`coin::wilcox_test()`] for details.
 #'
-#' @inheritParams weighted_sd
-#' @inheritParams means_by_group
+#' @return A data frame.
 #'
-#' @return (Invisibly) returns a data frame with U, p and Z-values for each group-comparison
-#' as well as effect-size r; additionally, group-labels and groups' n's are
-#' also included.
+#' @note This function calls [`coin::wilcox_test()`] to extract effect sizes.
+#' Interpretation of effect sizes, as a rule-of-thumb:
 #'
-#' @note This function calls the \code{\link[coin]{wilcox_test}} with formula. If \code{grp}
-#'         has more than two groups, additionally a Kruskal-Wallis-Test (see \code{\link{kruskal.test}})
-#'         is performed. \cr \cr
-#'         Interpretation of effect sizes, as a rule-of-thumb:
-#'         \itemize{
-#'          \item small effect >= 0.1
-#'          \item medium effect >= 0.3
-#'          \item large effect >= 0.5
-#'        }
+#' - small effect >= 0.1
+#' - medium effect >= 0.3
+#' - large effect >= 0.5
 #'
 #' @examples
 #' data(efc)
 #' # Mann-Whitney-U-Tests for elder's age by elder's sex.
-#' mann_whitney(efc, e17age, e16sex)
-#'
-#' # using formula interface
-#' mann_whitney(e17age ~ e16sex, efc)
-#'
-#' # Mann-Whitney-Tests for elder's age by each level elder's dependency.
-#' mann_whitney(efc, e17age, e42dep)
-#'
-#' @importFrom stats na.omit wilcox.test kruskal.test
-#' @importFrom sjmisc recode_to is_empty
-#' @importFrom sjlabelled get_labels as_numeric
-#' @importFrom rlang quo_name enquo
+#' mann_whitney(efc, "e17age", "e16sex")
 #' @export
 mann_whitney <- function(data,
                          select = NULL,
                          by = NULL,
                          weights = NULL,
-                         distribution = "asymptotic",
-                         ...) {
+                         distribution = "asymptotic") {
   insight::check_if_installed("datawizard")
 
   # check if "select" is in data

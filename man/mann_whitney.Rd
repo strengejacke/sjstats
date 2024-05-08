@@ -9,44 +9,34 @@ mann_whitney(
   select = NULL,
   by = NULL,
   weights = NULL,
-  distribution = "asymptotic",
-  ...
+  distribution = "asymptotic"
 )
 }
 \arguments{
 \item{data}{A data frame.}
 
-\item{weights}{Bare (unquoted) variable name, or a character vector with
-the variable name of the numeric vector of weights. If \code{weights = NULL},
-unweighted statistic is reported.}
+\item{select}{The dependent variable (numeric) to be used for the test.}
+
+\item{by}{The grouping variable (factor) to be used for the test. If \code{by} is
+not a factor, it will be coerced to a factor.}
+
+\item{weights}{An optional weighting variable (numeric) to be used for the test.}
 
 \item{distribution}{Indicates how the null distribution of the test statistic
 should be computed. May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
 (default). See \code{\link[coin:LocationTests]{coin::wilcox_test()}} for details.}
-
-\item{...}{For \code{weighted_ttest()} and \code{weighted_mannwhitney()}, currently not used.
-For \code{weighted_chisqtest()}, further arguments passed down to
-\code{\link[stats]{chisq.test}}.}
-
-\item{x}{Bare (unquoted) variable name, or a character vector with the variable name.}
 }
 \value{
-(Invisibly) returns a data frame with U, p and Z-values for each group-comparison
-as well as effect-size r; additionally, group-labels and groups' n's are
-also included.
+A data frame.
 }
 \description{
-This function performs a Mann-Whitney-U-Test (or Wilcoxon rank
-sum test for \emph{unpaired} samples, see \code{\link[=wilcox.test]{wilcox.test()}} and \code{\link[coin:LocationTests]{coin::wilcox_test()}})
-comparing \code{x} by each group indicated by \code{grp}. If \code{grp} has more than two
-categories, a comparison between each combination of two groups is performed.
+This function performs a Mann-Whitney-Test (or Wilcoxon rank
+sum test for \emph{unpaired} samples, see \code{\link[=wilcox.test]{wilcox.test()}} and \code{\link[coin:LocationTests]{coin::wilcox_test()}}).
 
 The function reports U, p and Z-values as well as effect size r and group-rank-means.
 }
 \note{
-This function calls the \code{\link[coin]{wilcox_test}} with formula. If \code{grp}
-has more than two groups, additionally a Kruskal-Wallis-Test (see \code{\link{kruskal.test}})
-is performed. \cr \cr
+This function calls \code{\link[coin:LocationTests]{coin::wilcox_test()}} to extract effect sizes.
 Interpretation of effect sizes, as a rule-of-thumb:
 \itemize{
 \item small effect >= 0.1
@@ -57,12 +47,5 @@ Interpretation of effect sizes, as a rule-of-thumb:
 \examples{
 data(efc)
 # Mann-Whitney-U-Tests for elder's age by elder's sex.
-mann_whitney(efc, e17age, e16sex)
-
-# using formula interface
-mann_whitney(e17age ~ e16sex, efc)
-
-# Mann-Whitney-Tests for elder's age by each level elder's dependency.
-mann_whitney(efc, e17age, e42dep)
-
+mann_whitney(efc, "e17age", "e16sex")
 }
