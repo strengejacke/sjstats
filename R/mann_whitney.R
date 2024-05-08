@@ -1,5 +1,5 @@
 #' @title Mann-Whitney-U-Test
-#' @name mwu
+#' @name mann_whitney
 #' @description This function performs a Mann-Whitney-U-Test (or Wilcoxon rank
 #' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()`])
 #' comparing `x` by each group indicated by `grp`. If `grp` has more than two
@@ -32,203 +32,204 @@
 #' @examples
 #' data(efc)
 #' # Mann-Whitney-U-Tests for elder's age by elder's sex.
-#' mwu(efc, e17age, e16sex)
+#' mann_whitney(efc, e17age, e16sex)
 #'
 #' # using formula interface
-#' mwu(e17age ~ e16sex, efc)
+#' mann_whitney(e17age ~ e16sex, efc)
 #'
 #' # Mann-Whitney-Tests for elder's age by each level elder's dependency.
-#' mwu(efc, e17age, e42dep)
+#' mann_whitney(efc, e17age, e42dep)
 #'
 #' @importFrom stats na.omit wilcox.test kruskal.test
 #' @importFrom sjmisc recode_to is_empty
 #' @importFrom sjlabelled get_labels as_numeric
 #' @importFrom rlang quo_name enquo
 #' @export
-mwu <- function(data, ...) {
-  UseMethod("mwu")
-}
+mann_whitney <- function(data,
+                         select = NULL,
+                         by = NULL,
+                         weights = NULL,
+                         distribution = "asymptotic",
+                         ...) {
+  insight::check_if_installed("datawizard")
 
-#' @rdname mwu
-#' @export
-mwu.default <- function(data,
-                        x,
-                        grp,
-                        distribution = "asymptotic",
-                        out = c("txt", "viewer", "browser"),
-                        encoding = "UTF-8",
-                        file = NULL,
-                        ...) {
-
-  out <- match.arg(out)
-
-  if (out != "txt" && !requireNamespace("sjPlot", quietly = TRUE)) {
-    message("Package `sjPlot` needs to be loaded to print HTML tables.")
-    out <- "txt"
+  # check if "select" is in data
+  if (!select %in% colnames(data)) {
+    insight::format_error(
+      sprintf("Variable '%s' not found in data frame.", select),
+      .misspelled_string(select, colnames(data), "Maybe misspelled?")
+    )
   }
-
-  if (!requireNamespace("coin", quietly = TRUE)) {
-    stop("Package `coin` needs to be installed to compute the Mann-Whitney-U test.", call. = FALSE)
+  # check if "by" is in data
+  if (!by %in% colnames(data)) {
+    insight::format_error(
+      sprintf("Variable '%s' not found in data frame.", by),
+      .misspelled_string(by, colnames(data), "Maybe misspelled?")
+    )
   }
-
-
-  # create quosures
-  grp.name <- rlang::quo_name(rlang::enquo(grp))
-  dv.name <- rlang::quo_name(rlang::enquo(x))
-
-  # create string with variable names
-  vars <- c(grp.name, dv.name)
+  # check if "weights" is in data
+  if (!is.null(weights) && !weights %in% colnames(data)) {
+    insight::format_error(
+      sprintf("Weighting variable '%s' not found in data frame.", weights),
+      .misspelled_string(weights, colnames(data), "Maybe misspelled?")
+    )
+  }
 
   # get data
-  data <- suppressMessages(dplyr::select(data, !! vars))
+  dv <- data[[select]]
+  grp <- data[[by]]
 
-  grp <- data[[grp.name]]
-  dv <- data[[dv.name]]
-
-  # coerce factor and character to numeric
-  if (is.factor(grp) || is.character(grp)) grp <- sjlabelled::as_numeric(grp)
-
-  # group "counter" (index) should start with 1, not 0
-  if (min(grp, na.rm = TRUE) < 1) grp <- sjmisc::recode_to(grp, lowest = 1, append = FALSE)
-
-  # retrieve unique group values. need to iterate all values
-  grp_values <- sort(unique(stats::na.omit(grp)))
+  # coerce to factor and character to numeric
+  grp <- datawizard::to_factor(grp)
 
   # length of value range
-  cnt <- length(grp_values)
   labels <- sjlabelled::get_labels(
-    grp, attr.only = FALSE, values = NULL, non.labelled = TRUE
+    data[[by]], attr.only = FALSE, values = NULL, non.labelled = TRUE
   )
 
-  df <- data.frame()
-  for (i in seq_len(cnt)) {
-    for (j in i:cnt) {
-      if (i != j) {
-        # retrieve cases (rows) of subgroups
-        xsub <- dv[which(grp == grp_values[i] | grp == grp_values[j])]
-        ysub <- grp[which(grp == grp_values[i] | grp == grp_values[j])]
+  .calculate_mwu(dv, grp, distribution, labels)
+}
 
-        # this is for unpaired wilcox.test()
-        xsub_2 <- stats::na.omit(dv[which(grp == grp_values[i])])
-        ysub_2 <- stats::na.omit(dv[which(grp == grp_values[j])])
 
-        # only use rows with non-missings
-        ysub <- ysub[which(!is.na(xsub))]
+.calculate_mwu <- function(dv, grp, distribution, labels) {
+  insight::check_if_installed("coin")
+  # prepare data
+  wcdat <- data.frame(dv, grp)
+  # perfom wilcox test
+  wt <- coin::wilcox_test(dv ~ grp, data = wcdat, distribution = distribution)
 
-        # remove missings
-        xsub <- as.numeric(stats::na.omit(xsub))
-        ysub.n <- stats::na.omit(ysub)
+  # for rank mean
+  group_levels <- levels(grp)
 
-        # grouping variable is a factor
-        ysub <- as.factor(ysub.n)
+  # compute statistics
+  u <- as.numeric(coin::statistic(wt, type = "linear"))
+  z <- as.numeric(coin::statistic(wt, type = "standardized"))
+  p <- coin::pvalue(wt)
+  r <- abs(z / sqrt(length(dv)))
+  w <- stats::wilcox.test(dv ~ grp, data = wcdat)$statistic
 
-        wcdat <- data.frame(
-          x = xsub,
-          y = ysub
-        )
+  # group means
+  rank_mean_1 <- mean(rank(dv)[which(grp == group_levels[1])], na.rm = TRUE)
+  rank_mean_2 <- mean(rank(dv)[which(grp == group_levels[2])], na.rm = TRUE)
 
-        # perfom wilcox test
-        wt <- coin::wilcox_test(x ~ y, data = wcdat, distribution = distribution)
+  # compute n for each group
+  n_grp1 <- length(stats::na.omit(dv[which(grp == group_levels[1])]))
+  n_grp2 <- length(stats::na.omit(dv[which(grp == group_levels[2])]))
 
-        # compute statistics
-        u <- as.numeric(coin::statistic(wt, type = "linear"))
-        z <- as.numeric(coin::statistic(wt, type = "standardized"))
-        p <- coin::pvalue(wt)
-        r <- abs(z / sqrt(length(ysub)))
-        w <- stats::wilcox.test(xsub_2, ysub_2, paired = FALSE)$statistic
-        rkm.i <- mean(rank(xsub)[which(ysub.n == grp_values[i])], na.rm = TRUE)
-        rkm.j <- mean(rank(xsub)[which(ysub.n == grp_values[j])], na.rm = TRUE)
+  out <- data.frame(
+    group1 = group_levels[1],
+    group_2 = group_levels[2],
+    u = u,
+    w = w,
+    p = p,
+    z = z,
+    r = r
+  )
+  attr(out, "rank_means") <- stats::setNames(
+    c(rank_mean_1, rank_mean_2),
+    c("Mean Group 1", "Mean Group 2")
+  )
+  attr(out, "n_groups") <- stats::setNames(
+    c(n_grp1, n_grp2),
+    c("N Group 1", "N Group 2")
+  )
+  attr(out, "group_labels") <- labels
+  out
+}
 
-        # compute n for each group
-        n_grp1 <- length(xsub[which(ysub.n == grp_values[i])])
-        n_grp2 <- length(xsub[which(ysub.n == grp_values[j])])
 
-        # generate result data frame
-        df <-
-          rbind(
-            df,
-            cbind(
-              grp1 = grp_values[i],
-              grp1.label = labels[i],
-              grp1.n = n_grp1,
-              grp2 = grp_values[j],
-              grp2.label = labels[j],
-              grp2.n = n_grp2,
-              u = u,
-              w = w,
-              p = p,
-              z = z,
-              r = r,
-              rank.mean.grp1 = rkm.i,
-              rank.mean.grp2 = rkm.j
-            )
-          )
-      }
-    }
+.compute_weighted_mwu <- function(dv, grp, weights, labels) {
+  # check if pkg survey is available
+  insight::check_if_installed("survey")
+
+  dat <- data.frame(dv, grp, weights)
+  colnames(dat) <- c("x", "g", "w")
+
+  if (insight::n_unqiue(dat$g) > 2) {
+    m <- "Weighted Kruskal-Wallis test"
+    method <- "KruskalWallis"
+  } else {
+    m <- "Weighted Mann-Whitney-U test"
+    method <- "wilcoxon"
   }
 
-  # convert variables
-  df[["grp1"]] <- as.numeric(as.character(df[["grp1"]]))
-  df[["grp2"]] <- as.numeric(as.character(df[["grp2"]]))
-  df[["grp1.n"]] <- as.numeric(as.character(df[["grp1.n"]]))
-  df[["grp2.n"]] <- as.numeric(as.character(df[["grp2.n"]]))
-  df[["grp1.label"]] <- as.character(df[["grp1.label"]])
-  df[["grp2.label"]] <- as.character(df[["grp2.label"]])
-  df[["u"]] <- as.numeric(as.character(df[["u"]]))
-  df[["w"]] <- as.numeric(as.character(df[["w"]]))
-  df[["p"]] <- as.numeric(as.character(df[["p"]]))
-  df[["z"]] <- as.numeric(as.character(df[["z"]]))
-  df[["r"]] <- as.numeric(as.character(df[["r"]]))
-  df[["rank.mean.grp1"]] <- as.numeric(as.character(df[["rank.mean.grp1"]]))
-  df[["rank.mean.grp2"]] <- as.numeric(as.character(df[["rank.mean.grp2"]]))
+  design <- survey::svydesign(ids = ~0, data = dat, weights = ~w)
+  out <- survey::svyranktest(formula = x ~ g, design, test = method)
 
-  # prepare a data frame that can be used for 'sjt.df'.
-  tab.df <-
-    data_frame(
-      Groups = sprintf("%s<br>%s", df$grp1.label, df$grp2.label),
-      N = sprintf("%s<br>%s", df$grp1.n, df$grp2.n),
-      'Mean Rank' = sprintf("%.2f<br>%.2f", df$rank.mean.grp1, df$rank.mean.grp2),
-      'Mann-Whitney-U' = as.character(df$u),
-      'Wilcoxon-W' = as.character(df$w),
-      Z = sprintf("%.3f", df$z),
-      'Effect Size' = sprintf("%.3f", df$r),
-      p = sprintf("%.3f", df$p)
-    )
+  # for rank mean
+  group_levels <- levels(grp)
 
-  # replace 0.001 with <0.001
-  tab.df$p[which(tab.df$p == "0.001")] <- "<0.001"
+  design_mean1 <- survey::svydesign(
+    ids = ~0,
+    data = dat[dat$grp == group_levels[1]],
+    weights = ~w
+  )
+  rank_mean_1 <- survey::svymean(~x, design_mean1)
 
-  ret.df <- list(df = df, tab.df = tab.df, data = data.frame(dv, grp))
+  design_mean2 <- survey::svydesign(
+    ids = ~0,
+    data = dat[dat$grp == group_levels[2]],
+    weights = ~w
+  )
+  rank_mean_2 <- survey::svymean(~x, design_mean2)
 
-  # save how to print output
-  attr(ret.df, "print") <- out
-  attr(ret.df, "encoding") <- encoding
-  attr(ret.df, "file") <- file
+  out$method <- m
+  attr(out, "rank_means") <- stats::setNames(
+    c(rank_mean_1, rank_mean_2),
+    c("Mean Group 1", "Mean Group 2")
+  )
 
-  if (out %in% c("viewer", "browser"))
-    class(ret.df) <- c("mwu", "sjt_mwu")
-  else
-    class(ret.df) <- c("mwu", "sj_mwu")
-
-  ret.df
+  out
 }
 
 
-#' @importFrom dplyr select
-#' @rdname mwu
-#' @export
-mwu.formula <- function(formula,
-                        data,
-                        distribution = "asymptotic",
-                        out = c("txt", "viewer", "browser"),
-                        encoding = "UTF-8",
-                        file = NULL,
-                        ...) {
-  vars <- all.vars(formula)
-  mwu(data, x = !! vars[1], grp = !! vars[2], distribution = distribution, out = out, encoding = encoding, file = file, ...)
+.misspelled_string <- function(source, searchterm, default_message = NULL) {
+  if (is.null(searchterm) || length(searchterm) < 1) {
+    return(default_message)
+  }
+  # used for many matches
+  more_found <- ""
+  # init default
+  msg <- ""
+  # remove matching strings
+  same <- intersect(source, searchterm)
+  searchterm <- setdiff(searchterm, same)
+  source <- setdiff(source, same)
+  # guess the misspelled string
+  possible_strings <- unlist(lapply(searchterm, function(s) {
+    source[.fuzzy_grep(source, s)] # nolint
+  }), use.names = FALSE)
+  if (length(possible_strings)) {
+    msg <- "Did you mean "
+    if (length(possible_strings) > 1) {
+      # make sure we don't print dozens of alternatives for larger data frames
+      if (length(possible_strings) > 5) {
+        more_found <- sprintf(
+          " We even found %i more possible matches, not shown here.",
+          length(possible_strings) - 5
+        )
+        possible_strings <- possible_strings[1:5]
+      }
+      msg <- paste0(msg, "one of ", toString(paste0("\"", possible_strings, "\"")))
+    } else {
+      msg <- paste0(msg, "\"", possible_strings, "\"")
+    }
+    msg <- paste0(msg, "?", more_found)
+  } else {
+    msg <- default_message
+  }
+  # no double white space
+  insight::trim_ws(msg)
 }
 
 
-#' @rdname mwu
-#' @export
-mannwhitney <- mwu
+.fuzzy_grep <- function(x, pattern, precision = NULL) {
+  if (is.null(precision)) {
+    precision <- round(nchar(pattern) / 3)
+  }
+  if (precision > nchar(pattern)) {
+    return(NULL)
+  }
+  p <- sprintf("(%s){~%i}", pattern, precision)
+  grep(pattern = p, x = x, ignore.case = FALSE)
+}
