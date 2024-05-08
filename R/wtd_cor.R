@@ -1,11 +1,11 @@
-#' @rdname weighted_sd
+#' @rdname weighted_mannwhitney
 #' @export
 weighted_correlation <- function(data, ...) {
   UseMethod("weighted_correlation")
 }
 
 
-#' @rdname weighted_sd
+#' @rdname weighted_mannwhitney
 #' @export
 weighted_correlation.default <- function(data, x, y, weights, ci.lvl = .95, ...) {
   if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
@@ -35,7 +35,7 @@ weighted_correlation.default <- function(data, x, y, weights, ci.lvl = .95, ...)
 }
 
 
-#' @rdname weighted_sd
+#' @rdname weighted_mannwhitney
 #' @export
 weighted_correlation.formula <- function(formula, data, ci.lvl = .95, ...) {
 

@@ -33,17 +33,11 @@ mwu(data, ...)
 mannwhitney(data, ...)
 }
 \arguments{
-\item{data}{A data frame.}
-
-\item{...}{For \code{weighted_ttest()} and \code{weighted_mannwhitney()}, currently not used.
-For \code{weighted_chisqtest()}, further arguments passed down to
-\code{\link[stats]{chisq.test}}.}
-
 \item{x}{Bare (unquoted) variable name, or a character vector with the variable name.}
 
-\item{grp}{Bare (unquoted) name of the cross-classifying variable, where
-\code{x} is grouped into the categories represented by \code{grp},
-or a character vector with the variable name.}
+\item{grp}{Factor with the cross-classifying variable, where \code{dv} is
+grouped into the categories represented by \code{grp}. Numeric vectors
+are coerced to factors.}
 
 \item{distribution}{Indicates how the null distribution of the test statistic
 should be computed. May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
@@ -61,10 +55,6 @@ when \code{out} is not \code{"txt"}.}
 
 \item{file}{Destination file, if the output should be saved as file.
 Only used when \code{out} is not \code{"txt"}.}
-
-\item{formula}{A formula of the form \code{lhs ~ rhs1 + rhs2} where \code{lhs} is a
-numeric variable giving the data values and \code{rhs1} a factor with two
-levels giving the corresponding groups and \code{rhs2} a variable with weights.}
 }
 \value{
 (Invisibly) returns a data frame with U, p and Z-values for each group-comparison

@@ -1,10 +1,10 @@
-#' @rdname weighted_sd
+#' @rdname weighted_mannwhitney
 #' @export
 weighted_ttest <- function(data, ...) {
   UseMethod("weighted_ttest")
 }
 
-#' @rdname weighted_sd
+#' @rdname weighted_mannwhitney
 #' @export
 weighted_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...) {
 
@@ -50,7 +50,7 @@ weighted_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = 
 }
 
 
-#' @rdname weighted_sd
+#' @rdname weighted_mannwhitney
 #' @export
 weighted_ttest.formula <- function(formula, data, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...) {
 

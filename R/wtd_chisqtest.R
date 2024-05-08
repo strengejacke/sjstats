@@ -1,4 +1,4 @@
-#' @rdname weighted_sd
+#' @rdname weighted_mannwhitney
 #' @export
 weighted_chisqtest <- function(data, ...) {
   UseMethod("weighted_chisqtest")
@@ -6,7 +6,7 @@ weighted_chisqtest <- function(data, ...) {
 
 #' @importFrom dplyr select
 #' @importFrom stats na.omit chisq.test as.formula
-#' @rdname weighted_sd
+#' @rdname weighted_mannwhitney
 #' @export
 weighted_chisqtest.default <- function(data, x, y, weights, ...) {
   x.name <- deparse(substitute(x))
@@ -38,7 +38,7 @@ weighted_chisqtest.default <- function(data, x, y, weights, ...) {
 
 
 #' @importFrom stats xtabs
-#' @rdname weighted_sd
+#' @rdname weighted_mannwhitney
 #' @export
 weighted_chisqtest.formula <- function(formula, data, ...) {
   vars <- all.vars(formula)
