@@ -19,7 +19,6 @@ Depends:
     utils
 Imports:
     bayestestR,
-    broom,
     datawizard,
     dplyr,
     effectsize,

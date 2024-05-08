@@ -34,13 +34,13 @@
 #' @importFrom modelr crossv_kfold
 #' @importFrom dplyr mutate summarise
 #' @importFrom purrr map map2 map_dbl map_df
-#' @importFrom broom augment
 #' @importFrom tidyr unnest
 #' @importFrom rlang .data
 #' @importFrom insight find_response
 #' @importFrom performance rmse
 #' @export
 cv_error <- function(data, formula, k = 5) {
+  insight::check_if_installed("broom")
 
   # compute cross validation data
   cv_data <- data %>%

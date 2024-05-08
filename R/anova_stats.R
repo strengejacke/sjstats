@@ -29,9 +29,7 @@
 #' }
 #' @export
 anova_stats <- function(model, digits = 3) {
-  if (!requireNamespace("pwr", quietly = TRUE)) {
-    stop("Package `pwr` needed for this function to work. Please install it.", call. = FALSE)
-  }
+  insight::check_if_installed("pwr")
 
   # .Deprecated("effectsize::effectsize()", package = "effectsize")
 
@@ -94,6 +92,7 @@ aov_stat <- function(model, type) {
 
 
 aov_stat_summary <- function(model) {
+  insight::check_if_installed("broom")
   # check if we have a mixed model
   mm <- is_merMod(model)
   ori.model <- model
