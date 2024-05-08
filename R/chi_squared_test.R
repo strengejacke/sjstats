@@ -101,6 +101,7 @@ chi_squared_test <- function(data,
     stringsAsFactors = FALSE
   )
   class(out) <- c("sj_htest_chi", "data.frame")
+  attr(out, "weighted") <- !is.null(weights)
   attr(out, "caption") <- "Contingency Tables"
   out
 }
@@ -164,6 +165,7 @@ chi_squared_test <- function(data,
   )
   class(out) <- c("sj_htest_chi", "data.frame")
   attr(out, "caption") <- "given Probabilities"
+  attr(out, "weighted") <- !is.null(weights)
   out
 }
 
@@ -172,10 +174,21 @@ chi_squared_test <- function(data,
 
 #' @export
 print.sj_htest_chi <- function(x, ...) {
+  weighted <- attributes(x)$weighted
+  if (weighted) {
+    weight_string <- " (weighted)"
+  } else {
+    weight_string <- ""
+  }
+
   # get length of method name, to align output
   l <- max(nchar(c(x$statistic_name, x$effect_size_name, "p-value", "Observations")))
   # headline
-  insight::print_color(sprintf("\n# Chi-Squared Test for %s\n\n", attributes(x)$caption), "blue")
+  insight::print_color(sprintf(
+    "\n# Chi-Squared Test for %s%s\n\n",
+    attributes(x)$caption,
+    weight_string
+  ), "blue")
 
   # print test statistic
   cat(sprintf("  %*s: %.4f\n", l, x$statistic_name, x$statistic))
