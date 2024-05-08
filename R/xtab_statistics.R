@@ -29,11 +29,13 @@
 #'          \code{"kendall"}, \code{"pearson"} or \code{"fisher"}. See 'Details'.
 #' @param ci.lvl Scalar between 0 and 1. If not \code{NULL}, returns a data
 #'   frame including lower and upper confidence intervals.
+#' @param weights Name of variable in `x` that indicated the vector of weights
+#' that will be applied to weight all observations. Default is `NULL`, so no
+#' weights are used.
 #' @param ... Other arguments, passed down to the statistic functions
 #'          \code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
 #'          \code{\link[stats]{cor.test}}.
 #'
-#' @inheritParams means_by_group
 #' @inheritParams bootstrap
 #' @inheritParams boot_ci
 #'

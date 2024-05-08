@@ -6,10 +6,12 @@
 #' The function reports p and Z-values as well as effect size r and group-rank-means.
 #'
 #' @param data A data frame.
-#' @param select The dependent variable (numeric) to be used for the test.
-#' @param by The grouping variable (factor) to be used for the test. If `by` is
-#' not a factor, it will be coerced to a factor.
-#' @param weights An optional weighting variable (numeric) to be used for the test.
+#' @param select Name of the dependent variable (as string) to be used for the
+#' test.
+#' @param by Name of the grouping variable to be used for the test. If `by` is
+#' not a factor, it will be coerced to a factor. For `chi_squared_test()`, if
+#' `probabilities` is provided, `by` must be `NULL`.
+#' @param weights Name of an (optional) weighting variable to be used for the test.
 #' @param distribution Indicates how the null distribution of the test statistic
 #' should be computed. May be one of `"exact"`, `"approximate"` or `"asymptotic"`
 #' (default). See [`coin::wilcox_test()`] for details.
@@ -32,7 +34,7 @@
 #' @examples
 #' data(efc)
 #' # Mann-Whitney-U-Tests for elder's age by elder's sex.
-#' mann_whitney_test(efc, "e17age", "e16sex")
+#' mann_whitney_test(efc, "e17age", by = "e16sex")
 #' @export
 mann_whitney_test <- function(data,
                               select = NULL,

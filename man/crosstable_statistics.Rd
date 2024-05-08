@@ -81,6 +81,10 @@ will be irgnored.}
 \item{statistics}{Name of measure of association that should be computed. May
 be one of \code{"auto"}, \code{"cramer"}, \code{"phi"}, \code{"spearman"},
 \code{"kendall"}, \code{"pearson"} or \code{"fisher"}. See 'Details'.}
+
+\item{weights}{Name of variable in \code{x} that indicated the vector of weights
+that will be applied to weight all observations. Default is \code{NULL}, so no
+weights are used.}
 }
 \value{
 For \code{phi()}, the table's Phi value. For \code{cramer()}, the

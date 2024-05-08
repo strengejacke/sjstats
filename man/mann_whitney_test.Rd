@@ -15,12 +15,14 @@ mann_whitney_test(
 \arguments{
 \item{data}{A data frame.}
 
-\item{select}{The dependent variable (numeric) to be used for the test.}
+\item{select}{Name of the dependent variable (as string) to be used for the
+test.}
 
-\item{by}{The grouping variable (factor) to be used for the test. If \code{by} is
-not a factor, it will be coerced to a factor.}
+\item{by}{Name of the grouping variable to be used for the test. If \code{by} is
+not a factor, it will be coerced to a factor. For \code{chi_squared_test()}, if
+\code{probabilities} is provided, \code{by} must be \code{NULL}.}
 
-\item{weights}{An optional weighting variable (numeric) to be used for the test.}
+\item{weights}{Name of an (optional) weighting variable to be used for the test.}
 
 \item{distribution}{Indicates how the null distribution of the test statistic
 should be computed. May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
@@ -52,5 +54,5 @@ Interpretation of the effect size \strong{r}, as a rule-of-thumb:
 \examples{
 data(efc)
 # Mann-Whitney-U-Tests for elder's age by elder's sex.
-mann_whitney_test(efc, "e17age", "e16sex")
+mann_whitney_test(efc, "e17age", by = "e16sex")
 }

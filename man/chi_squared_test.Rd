@@ -16,12 +16,21 @@ chi_squared_test(
 \arguments{
 \item{data}{A data frame.}
 
-\item{select}{The dependent variable (numeric) to be used for the test.}
+\item{select}{Name of the dependent variable (as string) to be used for the
+test.}
 
-\item{by}{The grouping variable (factor) to be used for the test. If \code{by} is
-not a factor, it will be coerced to a factor.}
+\item{by}{Name of the grouping variable to be used for the test. If \code{by} is
+not a factor, it will be coerced to a factor. For \code{chi_squared_test()}, if
+\code{probabilities} is provided, \code{by} must be \code{NULL}.}
 
-\item{weights}{An optional weighting variable (numeric) to be used for the test.}
+\item{probabilities}{A numeric vector of probabilities for each cell in the
+contingency table. The length of the vector must match the number of cells
+in the table, i.e. the number of unique levels of the variable specified
+in \code{select}. If \code{probabilities} is provided, a chi-squared test for given
+probabilities is conducted. Furthermore, if \code{probabilities} is given, \code{by}
+must be \code{NULL}. The probabilities must sum to 1.}
+
+\item{weights}{Name of an (optional) weighting variable to be used for the test.}
 
 \item{...}{Additional arguments passed down to \code{\link[=chisq.test]{chisq.test()}}.}
 }
@@ -38,9 +47,9 @@ The function reports p and Z-values as well as effect size r and group-rank-mean
 data(efc)
 efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
 # Chi-squared-test
-chi_squared_test(efc, "c161sex", "e16sex")
+chi_squared_test(efc, "c161sex", by = "e16sex")
 # weighted Chi-squared-test
-chi_squared_test(efc, "c161sex", "e16sex", weights = "weight")
+chi_squared_test(efc, "c161sex", by = "e16sex", weights = "weight")
 # Chi-squared-test for given probabilities
 chi_squared_test(efc, "c161sex", probabilities = c(0.3, 0.7))
 }

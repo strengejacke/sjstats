@@ -5,12 +5,14 @@
 #'
 #' The function reports p and Z-values as well as effect size r and group-rank-means.
 #'
-#' @param data A data frame.
-#' @param select The dependent variable (numeric) to be used for the test.
-#' @param by The grouping variable (factor) to be used for the test. If `by` is
-#' not a factor, it will be coerced to a factor.
-#' @param weights An optional weighting variable (numeric) to be used for the test.
+#' @param probabilities A numeric vector of probabilities for each cell in the
+#' contingency table. The length of the vector must match the number of cells
+#' in the table, i.e. the number of unique levels of the variable specified
+#' in `select`. If `probabilities` is provided, a chi-squared test for given
+#' probabilities is conducted. Furthermore, if `probabilities` is given, `by`
+#' must be `NULL`. The probabilities must sum to 1.
 #' @param ... Additional arguments passed down to [`chisq.test()`].
+#' @inheritParams mann_whitney_test
 #'
 #' @return A data frame.
 #'
@@ -18,9 +20,9 @@
 #' data(efc)
 #' efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
 #' # Chi-squared-test
-#' chi_squared_test(efc, "c161sex", "e16sex")
+#' chi_squared_test(efc, "c161sex", by = "e16sex")
 #' # weighted Chi-squared-test
-#' chi_squared_test(efc, "c161sex", "e16sex", weights = "weight")
+#' chi_squared_test(efc, "c161sex", by = "e16sex", weights = "weight")
 #' # Chi-squared-test for given probabilities
 #' chi_squared_test(efc, "c161sex", probabilities = c(0.3, 0.7))
 #' @export
