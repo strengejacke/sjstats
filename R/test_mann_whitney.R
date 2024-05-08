@@ -3,8 +3,7 @@
 #' @description This function performs a Mann-Whitney-Test (or Wilcoxon rank
 #' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()`]).
 #'
-#' The function reports U, p and Z-values as well as effect size r and
-#' group-rank-means.
+#' The function reports p and Z-values as well as effect size r and group-rank-means.
 #'
 #' @param data A data frame.
 #' @param select The dependent variable (numeric) to be used for the test.
@@ -17,12 +16,18 @@
 #'
 #' @return A data frame.
 #'
-#' @note This function calls [`coin::wilcox_test()`] to extract effect sizes.
-#' Interpretation of effect sizes, as a rule-of-thumb:
+#' @details This function calls [`coin::wilcox_test()`] to extract effect sizes.
+#' Interpretation of the effect size **r**, as a rule-of-thumb:
 #'
 #' - small effect >= 0.1
 #' - medium effect >= 0.3
 #' - large effect >= 0.5
+#'
+#' **r** is calcuated as:
+#'
+#' ```
+#' r = |Z| / sqrt(n1 + n2)
+#' ```
 #'
 #' @examples
 #' data(efc)
@@ -65,6 +70,11 @@ mann_whitney_test <- function(data,
   # coerce to factor
   grp <- datawizard::to_factor(grp)
 
+  # only two groups allowed
+  if (insight::n_unique(grp) > 2) {
+    insight::format_error("Only two groups are allowed for Mann-Whitney-Test. Please use `kruskal_wallis_test()` for more than two groups.") # nolint
+  }
+
   # value labels
   group_labels <- names(attr(data[[by]], "labels", exact = TRUE))
   if (is.null(group_labels)) {
@@ -74,10 +84,12 @@ mann_whitney_test <- function(data,
   if (is.null(weights)) {
     .calculate_mwu(dv, grp, distribution, group_labels)
   } else {
-    .calculate_weighted_mwu(dv, grp, weights, group_labels)
+    .calculate_weighted_mwu(dv, grp, data[[weights]], group_labels)
   }
 }
 
+
+# Mann-Whitney-Test for two groups --------------------------------------------
 
 .calculate_mwu <- function(dv, grp, distribution, group_labels) {
   insight::check_if_installed("coin")
@@ -109,13 +121,13 @@ mann_whitney_test <- function(data,
 
   out <- data.frame(
     group1 = group_levels[1],
-    group_2 = group_levels[2],
+    group2 = group_levels[2],
     estimate = rank_mean_1 - rank_mean_2,
     u = u,
     w = w,
-    p = p,
     z = z,
-    r = r
+    r = r,
+    p = as.numeric(p)
   )
   attr(out, "rank_means") <- stats::setNames(
     c(rank_mean_1, rank_mean_2),
@@ -128,11 +140,13 @@ mann_whitney_test <- function(data,
   attr(out, "group_labels") <- group_labels
   attr(out, "method") <- "wilcoxon"
   attr(out, "weighted") <- FALSE
-  class(out) <- c("sj_htest", "data.frame")
+  class(out) <- c("sj_htest_mwu", "data.frame")
 
   out
 }
 
+
+# Weighted Mann-Whitney-Test for two groups ----------------------------------
 
 .calculate_weighted_mwu <- function(dv, grp, weights, group_labels) {
   # check if pkg survey is available
@@ -153,8 +167,8 @@ mann_whitney_test <- function(data,
   # for rank mean
   group_levels <- levels(droplevels(grp))
   # subgroups
-  dat_gr1 <- dat[dat$g == group_levels[1]]
-  dat_gr2 <- dat[dat$g == group_levels[2]]
+  dat_gr1 <- dat[dat$g == group_levels[1], ]
+  dat_gr2 <- dat[dat$g == group_levels[2], ]
   dat_gr1$rank_x <- rank(dat_gr1$x)
   dat_gr2$rank_x <- rank(dat_gr2$x)
 
@@ -183,11 +197,11 @@ mann_whitney_test <- function(data,
 
   out <- data.frame(
     group1 = group_levels[1],
-    group_2 = group_levels[2],
+    group2 = group_levels[2],
     estimate = result$estimate,
     z = z,
     r = r,
-    p = result$p.value
+    p = as.numeric(result$p.value)
   )
 
   attr(out, "rank_means") <- stats::setNames(
@@ -201,11 +215,13 @@ mann_whitney_test <- function(data,
   attr(out, "group_labels") <- group_labels
   attr(out, "method") <- method
   attr(out, "weighted") <- TRUE
-  class(out) <- c("sj_htest", "data.frame")
+  class(out) <- c("sj_htest_mwu", "data.frame")
 
   out
 }
 
+
+# helper ----------------------------------------------------------------------
 
 .misspelled_string <- function(source, searchterm, default_message = NULL) {
   if (is.null(searchterm) || length(searchterm) < 1) {
@@ -256,4 +272,46 @@ mann_whitney_test <- function(data,
   }
   p <- sprintf("(%s){~%i}", pattern, precision)
   grep(pattern = p, x = x, ignore.case = FALSE)
+}
+
+
+# methods ---------------------------------------------------------------------
+
+#' @export
+print.sj_htest_mwu <- function(x, ...) {
+  # fetch attributes
+  group_labels <- attributes(x)$group_labels
+  rank_means <- attributes(x)$rank_means
+  n_groups <- attributes(x)$n_groups
+  weighted <- attributes(x)$weighted
+
+  if (weighted) {
+    weight_string <- " (weighted)"
+  } else {
+    weight_string <- ""
+  }
+
+  # same width
+  group_labels <- format(group_labels)
+
+  # header
+  insight::print_color(sprintf("# Mann-Whitney-Test%s\n\n", weight_string), "blue")
+
+  # group-1-info
+  insight::print_color(
+    sprintf(
+      "  Group 1: %s (n = %i, rank mean = %s)\n",
+      group_labels[1], n_groups[1], insight::format_value(rank_means[1], protect_integers = TRUE)
+    ), "cyan"
+  )
+
+  # group-2-info
+  insight::print_color(
+    sprintf(
+      "  Group 2: %s (n = %i, rank mean = %s)\n",
+      group_labels[2], n_groups[2], insight::format_value(rank_means[2], protect_integers = TRUE)
+    ), "cyan"
+  )
+
+  cat(sprintf("\n  r = %.3f, Z = %.3f, %s\n\n", x$r, x$z, insight::format_p(x$p)))
 }
