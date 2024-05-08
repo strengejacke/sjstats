@@ -83,3 +83,19 @@ se <- function(x, ...) {
   .Defunct("parameters::standard_error()")
   parameters::standard_error(x)
 }
+
+
+#' @rdname r2
+#' @export
+means_by_group <- function(x, ...) {
+  .Defunct("datawizard::means_by_group()")
+  datawizard::means_by_group(x, ...)
+}
+
+
+#' @rdname r2
+#' @export
+mean_n <- function(x, ...) {
+  .Defunct("datawizard::row_means()")
+  datawizard::row_means(x, ...)
+}
