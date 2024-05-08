@@ -1,9 +1,10 @@
-#' @title Mann-Whitney-U-Test
-#' @name mann_whitney
+#' @title Mann-Whitney-Test
+#' @name mann_whitney_test
 #' @description This function performs a Mann-Whitney-Test (or Wilcoxon rank
 #' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()`]).
 #'
-#' The function reports U, p and Z-values as well as effect size r and group-rank-means.
+#' The function reports U, p and Z-values as well as effect size r and
+#' group-rank-means.
 #'
 #' @param data A data frame.
 #' @param select The dependent variable (numeric) to be used for the test.
@@ -26,13 +27,13 @@
 #' @examples
 #' data(efc)
 #' # Mann-Whitney-U-Tests for elder's age by elder's sex.
-#' mann_whitney(efc, "e17age", "e16sex")
+#' mann_whitney_test(efc, "e17age", "e16sex")
 #' @export
-mann_whitney <- function(data,
-                         select = NULL,
-                         by = NULL,
-                         weights = NULL,
-                         distribution = "asymptotic") {
+mann_whitney_test <- function(data,
+                              select = NULL,
+                              by = NULL,
+                              weights = NULL,
+                              distribution = "asymptotic") {
   insight::check_if_installed("datawizard")
 
   # check if "select" is in data
@@ -65,16 +66,20 @@ mann_whitney <- function(data,
   grp <- datawizard::to_factor(grp)
 
   # value labels
-  labels <- names(attr(data[[by]], "labels", exact = TRUE))
-  if (is.null(labels)) {
-    labels <- levels(grp)
+  group_labels <- names(attr(data[[by]], "labels", exact = TRUE))
+  if (is.null(group_labels)) {
+    group_labels <- levels(droplevels(grp))
   }
 
-  .calculate_mwu(dv, grp, distribution, labels)
+  if (is.null(weights)) {
+    .calculate_mwu(dv, grp, distribution, group_labels)
+  } else {
+    .calculate_weighted_mwu(dv, grp, weights, group_labels)
+  }
 }
 
 
-.calculate_mwu <- function(dv, grp, distribution, labels) {
+.calculate_mwu <- function(dv, grp, distribution, group_labels) {
   insight::check_if_installed("coin")
   # prepare data
   wcdat <- data.frame(dv, grp)
@@ -92,16 +97,20 @@ mann_whitney <- function(data,
   w <- stats::wilcox.test(dv ~ grp, data = wcdat)$statistic
 
   # group means
-  rank_mean_1 <- mean(rank(dv)[which(grp == group_levels[1])], na.rm = TRUE)
-  rank_mean_2 <- mean(rank(dv)[which(grp == group_levels[2])], na.rm = TRUE)
+  dat_gr1 <- stats::na.omit(dv[grp == group_levels[1]])
+  dat_gr2 <- stats::na.omit(dv[grp == group_levels[2]])
+
+  rank_mean_1 <- mean(rank(dat_gr1))
+  rank_mean_2 <- mean(rank(dat_gr2))
 
   # compute n for each group
-  n_grp1 <- length(stats::na.omit(dv[which(grp == group_levels[1])]))
-  n_grp2 <- length(stats::na.omit(dv[which(grp == group_levels[2])]))
+  n_grp1 <- length(dat_gr1)
+  n_grp2 <- length(dat_gr2)
 
   out <- data.frame(
     group1 = group_levels[1],
     group_2 = group_levels[2],
+    estimate = rank_mean_1 - rank_mean_2,
     u = u,
     w = w,
     p = p,
@@ -116,51 +125,83 @@ mann_whitney <- function(data,
     c(n_grp1, n_grp2),
     c("N Group 1", "N Group 2")
   )
-  attr(out, "group_labels") <- labels
+  attr(out, "group_labels") <- group_labels
+  attr(out, "method") <- "wilcoxon"
+  attr(out, "weighted") <- FALSE
+  class(out) <- c("sj_htest", "data.frame")
+
   out
 }
 
 
-.compute_weighted_mwu <- function(dv, grp, weights, labels) {
+.calculate_weighted_mwu <- function(dv, grp, weights, group_labels) {
   # check if pkg survey is available
   insight::check_if_installed("survey")
 
-  dat <- data.frame(dv, grp, weights)
+  dat <- stats::na.omit(data.frame(dv, grp, weights))
   colnames(dat) <- c("x", "g", "w")
 
-  if (insight::n_unqiue(dat$g) > 2) {
-    m <- "Weighted Kruskal-Wallis test"
+  if (insight::n_unique(dat$g) > 2) {
     method <- "KruskalWallis"
   } else {
-    m <- "Weighted Mann-Whitney-U test"
     method <- "wilcoxon"
   }
 
   design <- survey::svydesign(ids = ~0, data = dat, weights = ~w)
-  out <- survey::svyranktest(formula = x ~ g, design, test = method)
+  result <- survey::svyranktest(formula = x ~ g, design, test = method)
 
   # for rank mean
-  group_levels <- levels(grp)
+  group_levels <- levels(droplevels(grp))
+  # subgroups
+  dat_gr1 <- dat[dat$g == group_levels[1]]
+  dat_gr2 <- dat[dat$g == group_levels[2]]
+  dat_gr1$rank_x <- rank(dat_gr1$x)
+  dat_gr2$rank_x <- rank(dat_gr2$x)
 
+  # rank means
   design_mean1 <- survey::svydesign(
     ids = ~0,
-    data = dat[dat$grp == group_levels[1]],
+    data = dat_gr1,
     weights = ~w
   )
-  rank_mean_1 <- survey::svymean(~x, design_mean1)
+  rank_mean_1 <- survey::svymean(~rank_x, design_mean1)
 
   design_mean2 <- survey::svydesign(
     ids = ~0,
-    data = dat[dat$grp == group_levels[2]],
+    data = dat_gr2,
     weights = ~w
   )
-  rank_mean_2 <- survey::svymean(~x, design_mean2)
+  rank_mean_2 <- survey::svymean(~rank_x, design_mean2)
 
-  out$method <- m
+  # group Ns
+  n_grp1 <- round(dat_gr1$x * dat_gr1$w)
+  n_grp2 <- round(dat_gr2$x * dat_gr2$w)
+
+  # statistics and effect sizes
+  z <- result$statistic
+  r <- abs(z / sqrt(sum(n_grp1, n_grp2)))
+
+  out <- data.frame(
+    group1 = group_levels[1],
+    group_2 = group_levels[2],
+    estimate = result$estimate,
+    z = z,
+    r = r,
+    p = result$p.value
+  )
+
   attr(out, "rank_means") <- stats::setNames(
     c(rank_mean_1, rank_mean_2),
     c("Mean Group 1", "Mean Group 2")
   )
+  attr(out, "n_groups") <- stats::setNames(
+    c(n_grp1, n_grp2),
+    c("N Group 1", "N Group 2")
+  )
+  attr(out, "group_labels") <- group_labels
+  attr(out, "method") <- method
+  attr(out, "weighted") <- TRUE
+  class(out) <- c("sj_htest", "data.frame")
 
   out
 }
