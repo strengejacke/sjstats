@@ -27,6 +27,9 @@
 #' is called, simulated p-values are returned (i.e. `simulate.p.value = TRUE`,
 #' see `?fisher.test`).
 #'
+#' The weighted version of the chi-squared test is based on the a weighted
+#' table, using [`xtabs()`] as input for `chisq.test()`.
+#'
 #' @references Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
 #' Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
 #' That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.

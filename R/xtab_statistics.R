@@ -66,6 +66,11 @@
 #' the dimension of the table (i.e. if the table has more than two rows or
 #' columns, Cramer's V is calculated, else Phi).
 #'
+#' @references Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
+#' Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
+#' That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
+#' \doi{10.3390/math11091982}
+#'
 #' @examples
 #' # Phi coefficient for 2x2 tables
 #' tab <- table(sample(1:2, 30, TRUE), sample(1:2, 30, TRUE))

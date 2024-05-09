@@ -54,6 +54,9 @@ The function is a wrapper around \code{\link[=chisq.test]{chisq.test()}} and
 these are rescaled to sum to 1 (i.e. \code{rescale.p = TRUE}). When \code{fisher.test()}
 is called, simulated p-values are returned (i.e. \code{simulate.p.value = TRUE},
 see \code{?fisher.test}).
+
+The weighted version of the chi-squared test is based on the a weighted
+table, using \code{\link[=xtabs]{xtabs()}} as input for \code{chisq.test()}.
 }
 \examples{
 data(efc)
