@@ -282,15 +282,16 @@ mann_whitney_test <- function(data,
   if (is.null(select)) {
     insight::format_error("Argument `select` is missing.")
   }
-  if (is.null(by)) {
+  # `by` is only allowed to be NULL if `select` specifies more than one variable
+  if (is.null(by) && length(select) == 1) {
     insight::format_error("Arguments `by` is missing.")
   }
 
-  # check if arguments have correct length (length of 1)
+  # check if arguments have correct length or are of correct type
   if (!is.character(select)) {
     insight::format_error("Argument `select` must be a character string with the name(s) of the variable(s).")
   }
-  if (length(by) != 1 || !is.character(by)) {
+  if (!is.null(by) && (length(by) != 1 || !is.character(by))) {
     insight::format_error("Argument `by` must be a character string with the name of a single variable.")
   }
   if (!is.null(weights) && length(weights) != 1) {
@@ -306,7 +307,7 @@ mann_whitney_test <- function(data,
     )
   }
   # check if "by" is in data
-  if (!by %in% colnames(data)) {
+  if (!is.null(by) && !by %in% colnames(data)) {
     insight::format_error(
       sprintf("Variable '%s' not found in data frame.", by),
       .misspelled_string(colnames(data), by, "Maybe misspelled?")
