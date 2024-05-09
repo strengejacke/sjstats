@@ -1,11 +1,16 @@
 #' @title Kruskal-Wallis-Test
 #' @name kruskal_wallis_test
-#' @description This function performs a Kruskal-Wallis rank sum test, see
-#' [`kruskal.test()`] and [`coin::kruskal_test()`]).
+#' @description This function performs a Kruskal-Wallis rank sum test, to test
+#' the null hypothesis that the population median of all of the groups are
+#' equal. The alternative is that they differ in at least one.
 #'
 #' @inheritParams mann_whitney_test
 #'
 #' @return A data frame with test results.
+#'
+#' @details The function simply is a wrapper around [`kruskal.test()`]. The
+#' weighted version of the Kruskal-Wallis test is based on the `survey` package,
+#' using [`survey::svyranktest()`].
 #'
 #' @examples
 #' data(efc)

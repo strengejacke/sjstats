@@ -84,6 +84,7 @@ get_grouped_data <- function(x) {
     x <- gsub("Rho", "\u03C1", x, ignore.case = TRUE)
     x <- gsub("Mu", "\u03BC", x, ignore.case = TRUE)
     x <- gsub("Theta", "\u03B8", x, ignore.case = TRUE)
+    x <- gsub("Fei", "\u05E4\u200E", x, ignore.case = TRUE)
   }
   x
 }

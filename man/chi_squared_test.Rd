@@ -35,13 +35,25 @@ must be \code{NULL}. The probabilities must sum to 1.}
 \item{...}{Additional arguments passed down to \code{\link[=chisq.test]{chisq.test()}}.}
 }
 \value{
-A data frame with test results.
+A data frame with test results. The returned effects sizes are
+Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
+for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
+given probabilities.
 }
 \description{
-This function performs a Mann-Whitney-Test (or Wilcoxon rank
-sum test for \emph{unpaired} samples, see \code{\link[=wilcox.test]{wilcox.test()}} and \code{\link[coin:LocationTests]{coin::wilcox_test()}}).
-
-The function reports p and Z-values as well as effect size r and group-rank-means.
+This function performs a \eqn{chi}^2 test for contingency
+tables or tests for given probabilities. The returned effects sizes are
+Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
+for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
+given probabilities (see \emph{Ben-Shachar et al. 2023}).
+}
+\details{
+The function is a wrapper around \code{\link[=chisq.test]{chisq.test()}} and
+\code{\link[=fisher.test]{fisher.test()}} (for small expected values) for contingency tables, and
+\code{chisq.test()} for given probabilities. When \code{probabilities} are provided,
+these are rescaled to sum to 1 (i.e. \code{rescale.p = TRUE}). When \code{fisher.test()}
+is called, simulated p-values are returned (i.e. \code{simulate.p.value = TRUE},
+see \code{?fisher.test}).
 }
 \examples{
 data(efc)
@@ -52,4 +64,10 @@ chi_squared_test(efc, "c161sex", by = "e16sex")
 chi_squared_test(efc, "c161sex", by = "e16sex", weights = "weight")
 # Chi-squared-test for given probabilities
 chi_squared_test(efc, "c161sex", probabilities = c(0.3, 0.7))
+}
+\references{
+Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
+Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
+That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
+\doi{10.3390/math11091982}
 }

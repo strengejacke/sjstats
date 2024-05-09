@@ -1,9 +1,11 @@
 #' @title Mann-Whitney-Test
 #' @name mann_whitney_test
 #' @description This function performs a Mann-Whitney-Test (or Wilcoxon rank
-#' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()`]).
+#' sum test for _unpaired_ samples.
 #'
-#' The function reports p and Z-values as well as effect size r and group-rank-means.
+#' A Mann-Whitney-Test is a non-parametric test for the null hypothesis that two
+#' independent samples have identical continuous distributions. It can be used
+#' when the two continuous variables are not normally distributed.
 #'
 #' @param data A data frame.
 #' @param select Name of the dependent variable (as string) to be used for the
@@ -16,9 +18,13 @@
 #' should be computed. May be one of `"exact"`, `"approximate"` or `"asymptotic"`
 #' (default). See [`coin::wilcox_test()`] for details.
 #'
-#' @return A data frame with test results.
+#' @return A data frame with test results. The function returns p and Z-values
+#' as well as effect size r and group-rank-means.
 #'
-#' @details This function calls [`coin::wilcox_test()`] to extract effect sizes.
+#' @details This function is based on [`wilcox.test()`] and [`coin::wilcox_test()`]
+#' (the latter to extract effect sizes). The weighted version of the test is
+#' based on [`survey::svyranktest()`].
+#'
 #' Interpretation of the effect size **r**, as a rule-of-thumb:
 #'
 #' - small effect >= 0.1

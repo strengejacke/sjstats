@@ -22,8 +22,14 @@ not a factor, it will be coerced to a factor. For \code{chi_squared_test()}, if
 A data frame with test results.
 }
 \description{
-This function performs a Kruskal-Wallis rank sum test, see
-\code{\link[=kruskal.test]{kruskal.test()}} and \code{\link[coin:LocationTests]{coin::kruskal_test()}}).
+This function performs a Kruskal-Wallis rank sum test, to test
+the null hypothesis that the population median of all of the groups are
+equal. The alternative is that they differ in at least one.
+}
+\details{
+The function simply is a wrapper around \code{\link[=kruskal.test]{kruskal.test()}}. The
+weighted version of the Kruskal-Wallis test is based on the \code{survey} package,
+using \code{\link[survey:svyranktest]{survey::svyranktest()}}.
 }
 \examples{
 data(efc)

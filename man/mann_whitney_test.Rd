@@ -29,16 +29,22 @@ should be computed. May be one of \code{"exact"}, \code{"approximate"} or \code{
 (default). See \code{\link[coin:LocationTests]{coin::wilcox_test()}} for details.}
 }
 \value{
-A data frame with test results.
+A data frame with test results. The function returns p and Z-values
+as well as effect size r and group-rank-means.
 }
 \description{
 This function performs a Mann-Whitney-Test (or Wilcoxon rank
-sum test for \emph{unpaired} samples, see \code{\link[=wilcox.test]{wilcox.test()}} and \code{\link[coin:LocationTests]{coin::wilcox_test()}}).
+sum test for \emph{unpaired} samples.
 
-The function reports p and Z-values as well as effect size r and group-rank-means.
+A Mann-Whitney-Test is a non-parametric test for the null hypothesis that two
+independent samples have identical continuous distributions. It can be used
+when the two continuous variables are not normally distributed.
 }
 \details{
-This function calls \code{\link[coin:LocationTests]{coin::wilcox_test()}} to extract effect sizes.
+This function is based on \code{\link[=wilcox.test]{wilcox.test()}} and \code{\link[coin:LocationTests]{coin::wilcox_test()}}
+(the latter to extract effect sizes). The weighted version of the test is
+based on \code{\link[survey:svyranktest]{survey::svyranktest()}}.
+
 Interpretation of the effect size \strong{r}, as a rule-of-thumb:
 \itemize{
 \item small effect >= 0.1

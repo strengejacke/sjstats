@@ -1,9 +1,10 @@
 #' @title Chi-Squared Test
 #' @name chi_squared_test
-#' @description This function performs a Mann-Whitney-Test (or Wilcoxon rank
-#' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()`]).
-#'
-#' The function reports p and Z-values as well as effect size r and group-rank-means.
+#' @description This function performs a \eqn{chi}^2 test for contingency
+#' tables or tests for given probabilities. The returned effects sizes are
+#' Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
+#' for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
+#' given probabilities (see _Ben-Shachar et al. 2023_).
 #'
 #' @param probabilities A numeric vector of probabilities for each cell in the
 #' contingency table. The length of the vector must match the number of cells
@@ -14,7 +15,22 @@
 #' @param ... Additional arguments passed down to [`chisq.test()`].
 #' @inheritParams mann_whitney_test
 #'
-#' @return A data frame with test results.
+#' @return A data frame with test results. The returned effects sizes are
+#' Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
+#' for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
+#' given probabilities.
+#'
+#' @details The function is a wrapper around [`chisq.test()`] and
+#' [`fisher.test()`] (for small expected values) for contingency tables, and
+#' `chisq.test()` for given probabilities. When `probabilities` are provided,
+#' these are rescaled to sum to 1 (i.e. `rescale.p = TRUE`). When `fisher.test()`
+#' is called, simulated p-values are returned (i.e. `simulate.p.value = TRUE`,
+#' see `?fisher.test`).
+#'
+#' @references Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
+#' Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
+#' That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
+#' \doi{10.3390/math11091982}
 #'
 #' @examples
 #' data(efc)
@@ -105,6 +121,7 @@ chi_squared_test <- function(data,
   )
   class(out) <- c("sj_htest_chi", "data.frame")
   attr(out, "weighted") <- !is.null(weights)
+  attr(out, "fisher") <- isTRUE(startsWith(htest$method, "Fisher"))
   attr(out, "caption") <- "Contingency Tables"
   out
 }
@@ -189,15 +206,27 @@ print.sj_htest_chi <- function(x, ...) {
     weight_string <- ""
   }
 
+  fisher <- attributes(x)$fisher
+
   # headline
   insight::print_color(sprintf(
-    "\n# Chi-Squared Test for %s%s\n\n",
+    "\n# Chi-Squared Test for %s%s\n",
     attributes(x)$caption,
     weight_string
   ), "blue")
 
+  # Fisher's exact test?
+  if (fisher) {
+    insight::print_color("  (using Fisher's exact test due to small expected values)\n", "blue") # nolint
+  }
+
+  cat("\n")
+
   # data info
-  insight::print_color(sprintf("  Data: %s (n = %i)\n", x$data, round(x$n_obs)), "cyan")
+  insight::print_color(
+    sprintf("  Data: %s (n = %i)\n", x$data, round(x$n_obs)),
+    "cyan"
+  )
 
   # prepare and align strings
   eff_symbol <- .format_symbols(x$effect_size_name)
