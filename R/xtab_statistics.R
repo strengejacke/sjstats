@@ -6,68 +6,70 @@
 #'              Supported measures are Cramer's V, Phi, Spearman's rho,
 #'              Kendall's tau and Pearson's r.
 #'
-#' @param data A data frame or a table object. If a table object, \code{x1} and
-#'          \code{x2} will be ignored. For Kendall's \emph{tau}, Spearman's \emph{rho}
-#'          or Pearson's product moment correlation coefficient, \code{data} needs
-#'          to be a data frame. If \code{x1} and \code{x2} are not specified,
-#'          the first two columns of the data frames are used as variables
-#'          to compute the crosstab.
-#' @param formula A formula of the form \code{lhs ~ rhs} where \code{lhs} is a
-#'    numeric variable giving the data values and \code{rhs} a factor giving the
-#'    corresponding groups.
-#' @param tab A \code{\link{table}} or \code{\link[stats]{ftable}}. Tables of class
-#'          \code{\link[stats]{xtabs}} and other will be coerced to \code{ftable}
-#'          objects.
+#' @param data A data frame or a table object. If a table object, `x1` and
+#' `x2` will be ignored. For Kendall's _tau_, Spearman's _rho_ or Pearson's
+#' product moment correlation coefficient, `data` needs to be a data frame.
+#' If `x1` and `x2` are not specified, the first two columns of the data
+#' frames are used as variables to compute the crosstab.
+#' @param formula A formula of the form `lhs ~ rhs` where `lhs` is a
+#'  numeric variable giving the data values and `rhs` a factor giving the
+#'  corresponding groups.
+#' @param tab A [`table()`] or [`ftable()`]. Tables of class [`xtabs()`] and
+#' other will be coerced to `ftable` objects.
 #' @param x1 Name of first variable that should be used to compute the
-#'           contingency table. If \code{data} is a table object, this argument
-#'           will be irgnored.
+#' contingency table. If `data` is a table object, this argument will be
+#' irgnored.
 #' @param x2 Name of second variable that should be used to compute the
-#'           contingency table. If \code{data} is a table object, this argument
-#'           will be irgnored.
+#' contingency table. If `data` is a table object, this argument will be
+#' irgnored.
 #' @param statistics Name of measure of association that should be computed. May
-#'          be one of \code{"auto"}, \code{"cramer"}, \code{"phi"}, \code{"spearman"},
-#'          \code{"kendall"}, \code{"pearson"} or \code{"fisher"}. See 'Details'.
-#' @param ci.lvl Scalar between 0 and 1. If not \code{NULL}, returns a data
-#'   frame including lower and upper confidence intervals.
+#' be one of `"auto"`, `"cramer"`, `"phi"`, `"spearman"`, `"kendall"`,
+#' `"pearson"` or `"fisher"`. See 'Details'.
+#' @param ci.lvl Scalar between 0 and 1. If not `NULL`, returns a data
+#' frame including lower and upper confidence intervals.
+#' @param weights Name of variable in `x` that indicated the vector of weights
+#' that will be applied to weight all observations. Default is `NULL`, so no
+#' weights are used.
 #' @param ... Other arguments, passed down to the statistic functions
-#'          \code{\link[stats]{chisq.test}}, \code{\link[stats]{fisher.test}} or
-#'          \code{\link[stats]{cor.test}}.
+#' [`chisq.test()`], [`fisher.test()`] or [`cor.test()`].
 #'
-#' @inheritParams means_by_group
 #' @inheritParams bootstrap
 #' @inheritParams boot_ci
 #'
-#' @return For \code{phi()}, the table's Phi value. For \code{cramer()}, the
-#'         table's Cramer's V.
-#'         \cr \cr
-#'         For \code{crosstable_statistics()}, a list with following components:
-#'         \describe{
-#'           \item{\code{estimate}}{the value of the estimated measure of association.}
-#'           \item{\code{p.value}}{the p-value for the test.}
-#'           \item{\code{statistic}}{the value of the test statistic.}
-#'           \item{\code{stat.name}}{the name of the test statistic.}
-#'           \item{\code{stat.html}}{if applicable, the name of the test statistic, in HTML-format.}
-#'           \item{\code{df}}{the degrees of freedom for the contingency table.}
-#'           \item{\code{method}}{character string indicating the name of the measure of association.}
-#'           \item{\code{method.html}}{if applicable, the name of the measure of association, in HTML-format.}
-#'           \item{\code{method.short}}{the short form of association measure, equals the \code{statistics}-argument.}
-#'           \item{\code{fisher}}{logical, if Fisher's exact test was used to calculate the p-value.}
-#'         }
+#' @return For [`phi()`], the table's Phi value. For [`cramers_v()]`, the
+#' table's Cramer's V.
+#'
+#' For `crosstable_statistics()`, a list with following components:
+#'
+#' - `estimate`: the value of the estimated measure of association.
+#' - `p.value`: the p-value for the test.
+#' - `statistic`: the value of the test statistic.
+#' - `stat.name`: the name of the test statistic.
+#' - `stat.html`: if applicable, the name of the test statistic, in HTML-format.
+#' - `df`: the degrees of freedom for the contingency table.
+#' - `method`: character string indicating the name of the measure of association.
+#' - `method.html`: if applicable, the name of the measure of association, in HTML-format.
+#' - `method.short`: the short form of association measure, equals the `statistics`-argument.
+#' - `fisher`: logical, if Fisher's exact test was used to calculate the p-value.
 #'
 #' @details The p-value for Cramer's V and the Phi coefficient are based
-#'          on \code{chisq.test()}. If any expected value of a table cell is
-#'          smaller than 5, or smaller than 10 and the df is 1, then \code{fisher.test()}
-#'          is used to compute the p-value, unless \code{statistics = "fisher"}; in
-#'          this case, the use of \code{fisher.test()} is forced to compute the
-#'          p-value. The test statistic is calculated with \code{cramer()} resp.
-#'          \code{phi()}.
-#'          \cr \cr
-#'          Both test statistic and p-value for Spearman's rho, Kendall's tau
-#'          and Pearson's r are calculated with \code{cor.test()}.
-#'          \cr \cr
-#'          When \code{statistics = "auto"}, only Cramer's V or Phi are calculated,
-#'          based on the dimension of the table (i.e. if the table has more than
-#'          two rows or columns, Cramer's V is calculated, else Phi).
+#' on `chisq.test()`. If any expected value of a table cell is smaller than 5,
+#' or smaller than 10 and the df is 1, then `fisher.test()` is used to compute
+#' the p-value, unless `statistics = "fisher"`; in this case, the use of
+#' `fisher.test()` is forced to compute the p-value. The test statistic is
+#' calculated with `cramers_v()` resp. `phi()`.
+#'
+#' Both test statistic and p-value for Spearman's rho, Kendall's tau and
+#' Pearson's r are calculated with `cor.test()`.
+#'
+#' When `statistics = "auto"`, only Cramer's V or Phi are calculated, based on
+#' the dimension of the table (i.e. if the table has more than two rows or
+#' columns, Cramer's V is calculated, else Phi).
+#'
+#' @references Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
+#' Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
+#' That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
+#' \doi{10.3390/math11091982}
 #'
 #' @examples
 #' # Phi coefficient for 2x2 tables
@@ -118,9 +120,9 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
     weights <- deparse(substitute(weights))
 
     # if names were quotes, remove quotes
-    x1 <- gsub("\"", "", x1, fixed = T)
-    x2 <- gsub("\"", "", x2, fixed = T)
-    weights <- gsub("\"", "", weights, fixed = T)
+    x1 <- gsub("\"", "", x1, fixed = TRUE)
+    x2 <- gsub("\"", "", x2, fixed = TRUE)
+    weights <- gsub("\"", "", weights, fixed = TRUE)
 
     if (sjmisc::is_empty(weights) || weights == "NULL")
       weights <- NULL
@@ -140,8 +142,9 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
     if (!is.null(weights)) {
       tab <- as.table(round(stats::xtabs(data[[3]] ~ data[[1]] + data[[2]])))
       class(tab) <- "table"
-    } else
+    } else {
       tab <- table(data)
+    }
   } else {
     # 'data' is a table - copy to table object
     tab <- data
@@ -152,7 +155,7 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
           "Need arguments `data`, `x1` and `x2` to compute %s-statistics.",
           statistics
         ),
-        call. = F
+        call. = FALSE
       )
     }
   }

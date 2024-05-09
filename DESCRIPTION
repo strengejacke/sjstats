@@ -19,11 +19,9 @@ Depends:
     utils
 Imports:
     bayestestR,
-    broom,
     datawizard,
     dplyr,
     effectsize,
-    emmeans,
     insight,
     lme4,
     magrittr,
@@ -39,6 +37,7 @@ Imports:
     tidyr
 Suggests:
     brms,
+    broom,
     car,
     coin,
     ggplot2,

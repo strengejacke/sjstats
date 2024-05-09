@@ -17,21 +17,6 @@ if (require("testthat") && require("sjstats")) {
     expect_equal(weighted_median(efc$c12hour, weights = NULL), 20, tolerance = 1e-5)
   })
 
-  test_that("weighted_chisqtest", {
-    w <- weighted_chisqtest(efc, c161sex, c172code, weights = weight)
-    expect_equal(w$estimate, 0.06668895, tolerance = 1e-5)
-    expect_equal(w$p.value, 0.1517221, tolerance = 1e-5)
-
-    w <- weighted_chisqtest(c161sex ~ c172code + weight, efc)
-    expect_equal(w$estimate, 0.06668895, tolerance = 1e-5)
-    expect_equal(w$p.value, 0.1517221, tolerance = 1e-5)
-  })
-
-  test_that("weighted_mannwhitney", {
-    weighted_mannwhitney(efc, c12hour, c161sex, weights = weight)
-    weighted_mannwhitney(c12hour ~ c161sex + weight, efc)
-  })
-
   test_that("weighted_ttest", {
     weighted_ttest(efc, e17age, weights = weight)
     weighted_ttest(efc, e17age, c160age, weights = weight)

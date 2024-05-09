@@ -1,11 +1,11 @@
 #' @title Proportions of values in a vector
 #' @name prop
 #'
-#' @description \code{prop()} calculates the proportion of a value or category
-#'                in a variable. \code{props()} does the same, but allows for
+#' @description `prop()` calculates the proportion of a value or category
+#'                in a variable. `props()` does the same, but allows for
 #'                multiple logical conditions in one statement. It is similar
-#'                to \code{mean()} with logical predicates, however, both
-#'                \code{prop()} and \code{props()} work with grouped data frames.
+#'                to `mean()` with logical predicates, however, both
+#'                `prop()` and `props()` work with grouped data frames.
 #'
 #' @param data A data frame. May also be a grouped data frame (see 'Examples').
 #' @param ... One or more value pairs of comparisons (logical predicates). Put
@@ -14,17 +14,17 @@
 #'              'Examples'.
 #' @param weights Vector of weights that will be applied to weight all observations.
 #'          Must be a vector of same length as the input vector. Default is
-#'          \code{NULL}, so no weights are used.
+#'          `NULL`, so no weights are used.
 #' @param na.rm Logical, whether to remove NA values from the vector when the
-#'          proportion is calculated. \code{na.rm = FALSE} gives you the raw
-#'          percentage of a value in a vector, \code{na.rm = TRUE} the valid
+#'          proportion is calculated. `na.rm = FALSE` gives you the raw
+#'          percentage of a value in a vector, `na.rm = TRUE` the valid
 #'          percentage.
 #' @param digits Amount of digits for returned values.
 #'
-#' @details \code{prop()} only allows one logical statement per comparison,
-#'          while \code{props()} allows multiple logical statements per comparison.
-#'          However, \code{prop()} supports weighting of variables before calculating
-#'          proportions, and comparisons may also be quoted. Hence, \code{prop()}
+#' @details `prop()` only allows one logical statement per comparison,
+#'          while `props()` allows multiple logical statements per comparison.
+#'          However, `prop()` supports weighting of variables before calculating
+#'          proportions, and comparisons may also be quoted. Hence, `prop()`
 #'          also processes comparisons, which are passed as character vector
 #'          (see 'Examples').
 #'
@@ -96,7 +96,9 @@
 #' @export
 prop <- function(data, ..., weights = NULL, na.rm = TRUE, digits = 4) {
   # check argument
-  if (!is.data.frame(data)) stop("`data` needs to be a data frame.", call. = F)
+  if (!is.data.frame(data)) {
+    insight::format_error("`data` needs to be a data frame.")
+  }
 
   # get dots
   dots <- match.call(expand.dots = FALSE)$`...`
@@ -109,7 +111,9 @@ prop <- function(data, ..., weights = NULL, na.rm = TRUE, digits = 4) {
 #' @export
 props <- function(data, ..., na.rm = TRUE, digits = 4) {
   # check argument
-  if (!is.data.frame(data)) stop("`data` needs to be a data frame.", call. = F)
+  if (!is.data.frame(data)) {
+    insight::format_error("`data` needs to be a data frame.")
+  }
 
   # get dots
   dots <- match.call(expand.dots = FALSE)$`...`
@@ -123,7 +127,7 @@ proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
   # remember comparisons
   comparisons <- lapply(dots, function(x) {
     # to character, and remove spaces and quotes
-    x <- gsub(" ", "", deparse(x), fixed = T)
+    x <- gsub(" ", "", deparse(x), fixed = TRUE)
     x <- gsub("\"", "", x, fixed = TRUE)
     x
   })
@@ -188,7 +192,7 @@ proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
     # order rows by values of grouping variables
     fr <- fr[do.call(order, reihenfolge), ]
 
-    return(fr)
+    fr
 
   } else {
     # iterate dots (comparing conditions)
@@ -206,14 +210,14 @@ proportions <- function(data, dots, weight.by, na.rm, digits, multi_logical) {
       ))
     }
 
-    return(unlist(result))
+    unlist(result)
   }
 }
 
 
 get_proportion <- function(x, data, weight.by, na.rm, digits) {
   # to character, and remove spaces and quotes
-  x <- gsub(" ", "", deparse(x), fixed = T)
+  x <- gsub(" ", "", deparse(x), fixed = TRUE)
   x <- gsub("\"", "", x, fixed = TRUE)
 
   # split expression at ==, < or >
@@ -252,7 +256,7 @@ get_proportion <- function(x, data, weight.by, na.rm, digits) {
   if (na.rm) dummy <- na.omit(dummy)
 
   # get proportion
-  round(sum(dummy, na.rm = T) / length(dummy), digits = digits)
+  round(sum(dummy, na.rm = TRUE) / length(dummy), digits = digits)
 }
 
 
@@ -264,5 +268,5 @@ get_multiple_proportion <- function(x, data, na.rm, digits) {
   if (na.rm) dummy <- na.omit(dummy)
 
   # get proportion
-  round(sum(dummy, na.rm = T) / length(dummy), digits = digits)
+  round(sum(dummy, na.rm = TRUE) / length(dummy), digits = digits)
 }

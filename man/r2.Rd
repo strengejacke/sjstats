@@ -11,6 +11,8 @@
 \alias{icc}
 \alias{p_value}
 \alias{se}
+\alias{means_by_group}
+\alias{mean_n}
 \title{Deprecated functions}
 \usage{
 r2(x)
@@ -32,6 +34,10 @@ icc(x)
 p_value(x, ...)
 
 se(x, ...)
+
+means_by_group(x, ...)
+
+mean_n(x, ...)
 }
 \arguments{
 \item{x}{An object.}

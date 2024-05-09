@@ -82,16 +82,6 @@
 #' weighted_ttest(efc, e17age, weights = weight)
 #' weighted_ttest(efc, e17age, c160age, weights = weight)
 #' weighted_ttest(e17age ~ e16sex + weight, efc)
-#'
-#' # weighted Mann-Whitney-U-test ----
-#' weighted_mannwhitney(c12hour ~ c161sex + weight, efc)
-#'
-#' # weighted Chi-squared-test ----
-#' weighted_chisqtest(efc, c161sex, e16sex, weights = weight, correct = FALSE)
-#' weighted_chisqtest(c172code ~ c161sex + weight, efc)
-#'
-#' # weighted Chi-squared-test for given probabilities ----
-#' weighted_chisqtest(c172code ~ weight, efc, p = c(.33, .33, .34))
 #' @export
 weighted_sd <- function(x, weights = NULL) {
   UseMethod("weighted_sd")

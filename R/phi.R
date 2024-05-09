@@ -26,17 +26,13 @@ phi.formula <- function(formula, data, ci.lvl = NULL, n = 1000, method = c("dist
   if (is.null(ci.lvl) || is.na(ci.lvl)) {
     .cramer(tab)
   } else {
-    ci <- data[, terms] %>%
-      sjstats::bootstrap(n) %>%
-      dplyr::mutate(
-        tables = lapply(.data$strap, function(x) {
-          dat <- as.data.frame(x)
-          table(dat[[1]], dat[[2]])
-        }),
-        phis = sapply(.data$tables, function(x) .cramer(x))
-      ) %>%
-      dplyr::pull("phis") %>%
-      boot_ci(ci.lvl = ci.lvl, method = method)
+    straps <- sjstats::bootstrap(data[terms], n)
+    tables <- lapply(straps$strap, function(x) {
+      dat <- as.data.frame(x)
+      table(dat[[1]], dat[[2]])
+    })
+    phis <- sapply(tables, function(x) .phi(x))
+    ci <- boot_ci(phis, ci.lvl = ci.lvl, method = method)
 
     data_frame(
       phi = .phi(tab),
