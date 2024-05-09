@@ -1,4 +1,4 @@
-#' @rdname weighted_sd
+#' @rdname weighted_se
 #' @export
 survey_median <- function(x, design) {
   # check if pkg survey is available

@@ -51,7 +51,7 @@ also processes comparisons, which are passed as character vector
 (see 'Examples').
 }
 \examples{
-\dontshow{if (getRversion() >= "4.2.0" && requireNamespace("sjmisc", quietly = TRUE) && requireNamespace("datawizard", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (getRversion() >= "4.2.0" && requireNamespace("datawizard", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(efc)
 
 # proportion of value 1 in e42dep
@@ -91,18 +91,18 @@ efc |> prop(e17age > 70, e16sex == 1)
 
 # and with group_by
 efc |>
-  data_group(e16sex) |>
+  data_group("e16sex") |>
   prop(e42dep > 2)
 
 efc |>
   data_select(c("e42dep", "c161sex", "c172code", "e16sex")) |>
-  data_group(c161sex, c172code) |>
+  data_group(c("c161sex", "c172code")) |>
   prop(e42dep > 2, e16sex == 1)
 
 # same for "props()"
 efc |>
   data_select(c("e42dep", "c161sex", "c172code", "c12hour", "n4pstu")) |>
-  data_group(c161sex, c172code) |>
+  data_group(c("c161sex", "c172code")) |>
   props(
     e42dep > 2,
     c12hour > 20 & c12hour < 40,
