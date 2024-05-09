@@ -72,37 +72,13 @@
 #' # also works with pipe-chains
 #' efc |> prop(e17age > 70)
 #' efc |> prop(e17age > 70, e16sex == 1)
-#'
-#' # and with group_by
-#' efc |>
-#'   data_group("e16sex") |>
-#'   prop(e42dep > 2)
-#'
-#' efc |>
-#'   data_select(c("e42dep", "c161sex", "c172code", "e16sex")) |>
-#'   data_group(c("c161sex", "c172code")) |>
-#'   prop(e42dep > 2, e16sex == 1)
-#'
-#' # same for "props()"
-#' efc |>
-#'   data_select(c("e42dep", "c161sex", "c172code", "c12hour", "n4pstu")) |>
-#'   data_group(c("c161sex", "c172code")) |>
-#'   props(
-#'     e42dep > 2,
-#'     c12hour > 20 & c12hour < 40,
-#'     n4pstu == 'Care Level 1' | n4pstu == 'Care Level 3'
-#'   )
 #' @export
 prop <- function(data, ..., weights = NULL, na.rm = TRUE, digits = 4) {
   # check argument
   if (!is.data.frame(data)) {
     insight::format_error("`data` needs to be a data frame.")
   }
-
-  # get dots
-  dots <- match.call(expand.dots = FALSE)$`...`
-
-  .proportions(data, dots, weight.by = weights, na.rm, digits, multi_logical = FALSE)
+  .proportions(data, dots = list(...), weight.by = weights, na.rm, digits, multi_logical = FALSE)
 }
 
 
@@ -113,11 +89,7 @@ props <- function(data, ..., na.rm = TRUE, digits = 4) {
   if (!is.data.frame(data)) {
     insight::format_error("`data` needs to be a data frame.")
   }
-
-  # get dots
-  dots <- match.call(expand.dots = FALSE)$`...`
-
-  .proportions(data, dots, NULL, na.rm, digits, multi_logical = TRUE)
+  .proportions(data, dots = list(...), NULL, na.rm, digits, multi_logical = TRUE)
 }
 
 
@@ -130,87 +102,35 @@ props <- function(data, ..., na.rm = TRUE, digits = 4) {
     x
   })
 
-  # do we have a grouped data frame?
   if (inherits(data, "grouped_df")) {
-
-    # remember order of values
-    reihenfolge <- NULL
-
-    # get grouped data
-    grps <- get_grouped_data(data)
-
-    # now get proportions for each subset
-    fr <- do.call(rbind, lapply(
-      seq_len(nrow(grps)),
-      function(i) {
-        # get data from grouped data frame
-        .d <- grps$data[[i]]
-
-        # iterate dots (comparing conditions)
-        if (multi_logical)
-          result <- lapply(dots, get_multiple_proportion, .d, na.rm, digits)
-        else
-          result <- lapply(dots, get_proportion, .d, weight.by, na.rm, digits)
-
-        as.data.frame(t(unlist(result)))
-      }
-    ))
-
-
-    # now we need the values from the groups of the grouped data frame
-    for (i in (ncol(grps) - 1):1) {
-      # get value label
-      var.name <- colnames(grps)[i]
-      val.labels <- suppressWarnings(
-        rep(sjlabelled::get_labels(data[[var.name]]), length.out = nrow(fr))
-      )
-
-      # if we have no value labels, use values instead
-      if (is.null(val.labels)) {
-        val.labels <-
-          rep(unique(sort(data[[var.name]])), length.out = nrow(fr))
-      }
-
-      # add row order, based on values of grouping variables
-      reihenfolge <- cbind(
-        as.data.frame(rep(sort(unique(sjlabelled::as_numeric(data[[var.name]]))), length.out = nrow(fr))),
-        reihenfolge
-      )
-
-      # bind values as column
-      fr <- cbind(data.frame(val.labels, stringsAsFactors = FALSE), fr)
-    }
-
-    # get column names. we need variable labels as column names
-    var.names <- colnames(grps)[seq_len(ncol(grps) - 1)]
-    var.labels <- sjlabelled::get_label(data[, var.names], def.value = var.names)
-
-    # set variable labels and comparisons as colum names
-    colnames(fr) <- c(var.labels, comparisons)
-
-    # order rows by values of grouping variables
-    fr <- fr[do.call(order, reihenfolge), ]
-
-    fr
-
+    grps <- attributes(data)$groups
+    result <- lapply(grps[[".rows"]], function(x) {
+      .process_prop(data[x, , drop = FALSE], comparisons, dots, multi_logical, na.rm, digits, weight.by)
+    })
   } else {
-    # iterate dots (comparing conditions)
-    if (multi_logical)
-      result <- lapply(dots, get_multiple_proportion, data, na.rm, digits)
-    else
-      result <- lapply(dots, get_proportion, data, weight.by, na.rm, digits)
-
-    # if we have more than one proportion, return a data frame. this allows us
-    # to save more information, the condition and the proportion value
-    if (length(comparisons) > 1) {
-      return(data_frame(
-        condition = as.character(unlist(comparisons)),
-        prop = unlist(result)
-      ))
-    }
-
-    unlist(result)
+    result <- .process_prop(data, comparisons, dots, multi_logical, na.rm, digits, weight.by)
   }
+  result
+}
+
+
+.process_prop <- function(data, comparisons, dots, multi_logical, na.rm, digits, weight.by) {
+  # iterate dots (comparing conditions)
+  if (multi_logical)
+    result <- lapply(dots, get_multiple_proportion, data, na.rm, digits)
+  else
+    result <- lapply(dots, get_proportion, data, weight.by, na.rm, digits)
+
+  # if we have more than one proportion, return a data frame. this allows us
+  # to save more information, the condition and the proportion value
+  if (length(comparisons) > 1) {
+    return(data_frame(
+      condition = as.character(unlist(comparisons)),
+      prop = unlist(result)
+    ))
+  }
+
+  unlist(result)
 }
 
 

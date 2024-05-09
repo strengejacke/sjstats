@@ -43,25 +43,6 @@ get_glm_family <- function(fit) {
 dot_names <- function(dots) unname(unlist(lapply(dots, as.character)))
 
 
-#' @importFrom tidyr nest
-#' @importFrom dplyr select filter group_vars
-get_grouped_data <- function(x) {
-  # retain observations that are complete wrt grouping vars, then nest
-  grps <- x %>%
-    dplyr::group_modify(~ dplyr::filter(.x, stats::complete.cases(.y))) %>%
-    tidyr::nest()
-
-  # arrange data
-  if (length(dplyr::group_vars(x)) == 1)
-    reihe <- order(grps[[1]])
-  else
-    reihe <- order(grps[[1]], grps[[2]])
-  grps <- grps[reihe, ]
-
-  grps
-}
-
-
 .compact_character <- function(x) {
   x[!sapply(x, function(i) is.null(i) || !nzchar(i, keepNA = TRUE) || is.na(i) || any(i == "NULL", na.rm = TRUE))]
 }
