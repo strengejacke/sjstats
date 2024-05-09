@@ -48,7 +48,7 @@ kruskal_wallis_test <- function(data,
   # perfom wilcox test
   wt <- stats::kruskal.test(dv ~ grp, data = wcdat)
   # number of groups
-  n_groups <- vapply(grp, function(g) sum(grp == g, na.rm = TRUE), numeric(1))
+  n_groups <- vapply(unique(grp), function(g) sum(grp == g, na.rm = TRUE), numeric(1))
 
   out <- data.frame(
     data = wt$data.name,
@@ -79,58 +79,23 @@ kruskal_wallis_test <- function(data,
   design <- survey::svydesign(ids = ~0, data = dat, weights = ~w)
   result <- survey::svyranktest(formula = x ~ g, design, test = "KruskalWallis")
 
-  # for rank mean
-  group_levels <- levels(droplevels(grp))
-  # subgroups
-  dat_gr1 <- dat[dat$g == group_levels[1], ]
-  dat_gr2 <- dat[dat$g == group_levels[2], ]
-  dat_gr1$rank_x <- rank(dat_gr1$x)
-  dat_gr2$rank_x <- rank(dat_gr2$x)
-
-  # rank means
-  design_mean1 <- survey::svydesign(
-    ids = ~0,
-    data = dat_gr1,
-    weights = ~w
-  )
-  rank_mean_1 <- survey::svymean(~rank_x, design_mean1)
-
-  design_mean2 <- survey::svydesign(
-    ids = ~0,
-    data = dat_gr2,
-    weights = ~w
-  )
-  rank_mean_2 <- survey::svymean(~rank_x, design_mean2)
-
-  # group Ns
-  n_grp1 <- round(dat_gr1$x * dat_gr1$w)
-  n_grp2 <- round(dat_gr2$x * dat_gr2$w)
-
-  # statistics and effect sizes
-  z <- result$statistic
-  r <- abs(z / sqrt(sum(n_grp1, n_grp2)))
+  # number of groups
+  n_groups <- vapply(grp, function(g) {
+    
+  }, numeric(1))
 
   out <- data.frame(
-    group1 = group_levels[1],
-    group2 = group_levels[2],
-    estimate = result$estimate,
-    z = z,
-    r = r,
-    p = as.numeric(result$p.value)
+    data = result$data.name,
+    Chi2 = result$statistic,
+    df = result$parameter,
+    p = as.numeric(result$p.value),
+    stringsAsFactors = FALSE
   )
 
-  attr(out, "rank_means") <- stats::setNames(
-    c(rank_mean_1, rank_mean_2),
-    c("Mean Group 1", "Mean Group 2")
-  )
-  attr(out, "n_groups") <- stats::setNames(
-    c(n_grp1, n_grp2),
-    c("N Group 1", "N Group 2")
-  )
-  attr(out, "group_labels") <- group_labels
-  attr(out, "method") <- method
+  attr(out, "n_groups") <- n_groups
+  attr(out, "method") <- "kruskal"
   attr(out, "weighted") <- TRUE
-  class(out) <- c("sj_htest_mwu", "data.frame")
+  class(out) <- c("sj_htest_kw", "data.frame")
 
   out
 }
