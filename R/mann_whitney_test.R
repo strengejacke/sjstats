@@ -321,7 +321,7 @@ print.sj_htest_mwu <- function(x, ...) {
   group_labels <- format(group_labels)
 
   # header
-  insight::print_color(sprintf("# Mann-Whitney-Test%s\n\n", weight_string), "blue")
+  insight::print_color(sprintf("# Mann-Whitney test%s\n\n", weight_string), "blue")
 
   # group-1-info
   insight::print_color(

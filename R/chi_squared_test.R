@@ -1,4 +1,4 @@
-#' @title Chi-Squared Test
+#' @title Chi-Squared test
 #' @name chi_squared_test
 #' @description This function performs a \eqn{chi}^2 test for contingency
 #' tables or tests for given probabilities. The returned effects sizes are
@@ -12,6 +12,8 @@
 #' in `select`. If `probabilities` is provided, a chi-squared test for given
 #' probabilities is conducted. Furthermore, if `probabilities` is given, `by`
 #' must be `NULL`. The probabilities must sum to 1.
+#' @param paired Logical, if `TRUE`, a McNemar test is conducted for 2x2 tables.
+#' Note that `paired` only works for 2x2 tables.
 #' @param ... Additional arguments passed down to [`chisq.test()`].
 #' @inheritParams mann_whitney_test
 #'
@@ -25,7 +27,8 @@
 #' `chisq.test()` for given probabilities. When `probabilities` are provided,
 #' these are rescaled to sum to 1 (i.e. `rescale.p = TRUE`). When `fisher.test()`
 #' is called, simulated p-values are returned (i.e. `simulate.p.value = TRUE`,
-#' see `?fisher.test`).
+#' see `?fisher.test`). If `paired = TRUE` and a 2x2 table is provided,
+#' a McNemar test (see [`mcnemar.test()`]) is conducted.
 #'
 #' The weighted version of the chi-squared test is based on the a weighted
 #' table, using [`xtabs()`] as input for `chisq.test()`.
@@ -38,11 +41,11 @@
 #' @examples
 #' data(efc)
 #' efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
-#' # Chi-squared-test
+#' # Chi-squared test
 #' chi_squared_test(efc, "c161sex", by = "e16sex")
-#' # weighted Chi-squared-test
+#' # weighted Chi-squared test
 #' chi_squared_test(efc, "c161sex", by = "e16sex", weights = "weight")
-#' # Chi-squared-test for given probabilities
+#' # Chi-squared test for given probabilities
 #' chi_squared_test(efc, "c161sex", probabilities = c(0.3, 0.7))
 #' @export
 chi_squared_test <- function(data,
@@ -50,10 +53,15 @@ chi_squared_test <- function(data,
                              by = NULL,
                              probabilities = NULL,
                              weights = NULL,
+                             paired = FALSE,
                              ...) {
   if (is.null(probabilities)) {
-    .calculate_chisq(data, select, by, weights, ...)
+    .calculate_chisq(data, select, by, weights, paired, ...)
   } else {
+    # sanity check - `paired = TRUE` is not available for given probabilities
+    if (paired) {
+      insight::format_error("When `probabilities` are provided, `paired = TRUE` is not available.") # nolint
+    }
     .calculate_chisq_gof(data, select, probabilities, weights, ...)
   }
 }
@@ -61,7 +69,7 @@ chi_squared_test <- function(data,
 
 # Mann-Whitney-Test for two groups --------------------------------------------
 
-.calculate_chisq <- function(data, select, by, weights, verbose = TRUE, ...) {
+.calculate_chisq <- function(data, select, by, weights, paired = FALSE, ...) {
   insight::check_if_installed("datawizard")
   # sanity checks
   .sanitize_htest_input(data, select, by, weights)
@@ -69,6 +77,11 @@ chi_squared_test <- function(data,
   # get data
   grp1 <- data[[select]]
   grp2 <- data[[by]]
+
+  # if paired = TRUE, we only allow a 2x2 table
+  if (paired && (length(stats::na.omit(unique(grp1))) != 2 || length(stats::na.omit(unique(grp2))) != 2)) {
+    insight::format_error("When `paired = TRUE`, only 2x2 tables are allowed (i.e. both variables must have exactly two levels).") # nolint
+  }
 
   # create data frame for table
   x <- data.frame(
@@ -93,13 +106,18 @@ chi_squared_test <- function(data,
   # expected values, to identify whether Fisher's test is needed
   expected_values <- as.table(round(as.array(margin.table(tab, 1)) %*% t(as.array(margin.table(tab, 2))) / margin.table(tab))) # nolint
 
-  # chi-squared test
-  htest <- suppressWarnings(stats::chisq.test(tab, ...))
-  test_statistic <- htest$statistic
-
-  # need fisher?
-  if (min(expected_values) < 5 || (min(expected_values) < 10 && htest$parameter == 1)) {
-    htest <- stats::fisher.test(tab, simulate.p.value = TRUE, ...)
+  # paired? mc-nemar test
+  if (paired) {
+    htest <- suppressWarnings(stats::mcnemar.test(tab, ...))
+    test_statistic <- htest$statistic
+  } else {
+    # chi-squared test
+    htest <- suppressWarnings(stats::chisq.test(tab, ...))
+    test_statistic <- htest$statistic
+    # need fisher?
+    if (min(expected_values) < 5 || (min(expected_values) < 10 && htest$parameter == 1)) {
+      htest <- stats::fisher.test(tab, simulate.p.value = TRUE, ...)
+    }
   }
   p_value <- htest$p.value
 
@@ -125,7 +143,8 @@ chi_squared_test <- function(data,
   class(out) <- c("sj_htest_chi", "data.frame")
   attr(out, "weighted") <- !is.null(weights)
   attr(out, "fisher") <- isTRUE(startsWith(htest$method, "Fisher"))
-  attr(out, "caption") <- "Contingency Tables"
+  attr(out, "mcnemar") <- isTRUE(paired)
+  attr(out, "caption") <- "contingency tables"
   out
 }
 
@@ -192,7 +211,7 @@ chi_squared_test <- function(data,
     stringsAsFactors = FALSE
   )
   class(out) <- c("sj_htest_chi", "data.frame")
-  attr(out, "caption") <- "given Probabilities"
+  attr(out, "caption") <- "given probabilities"
   attr(out, "weighted") <- !is.null(weights)
   out
 }
@@ -210,17 +229,20 @@ print.sj_htest_chi <- function(x, ...) {
   }
 
   fisher <- attributes(x)$fisher
+  mcnemar <- attributes(x)$mcnemar
 
   # headline
   insight::print_color(sprintf(
-    "\n# Chi-Squared Test for %s%s\n",
+    "\n# Chi-squared test for %s%s\n",
     attributes(x)$caption,
     weight_string
   ), "blue")
 
   # Fisher's exact test?
-  if (fisher) {
+  if (isTRUE(fisher)) {
     insight::print_color("  (using Fisher's exact test due to small expected values)\n", "blue") # nolint
+  } else if (isTRUE(mcnemar)) {
+    insight::print_color("  (using McNemar's test for paired data)\n", "blue") # nolint
   }
 
   cat("\n")

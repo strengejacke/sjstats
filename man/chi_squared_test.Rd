@@ -2,7 +2,7 @@
 % Please edit documentation in R/chi_squared_test.R
 \name{chi_squared_test}
 \alias{chi_squared_test}
-\title{Chi-Squared Test}
+\title{Chi-Squared test}
 \usage{
 chi_squared_test(
   data,
@@ -10,6 +10,7 @@ chi_squared_test(
   by = NULL,
   probabilities = NULL,
   weights = NULL,
+  paired = FALSE,
   ...
 )
 }
@@ -32,6 +33,9 @@ must be \code{NULL}. The probabilities must sum to 1.}
 
 \item{weights}{Name of an (optional) weighting variable to be used for the test.}
 
+\item{paired}{Logical, if \code{TRUE}, a McNemar test is conducted for 2x2 tables.
+Note that \code{paired} only works for 2x2 tables.}
+
 \item{...}{Additional arguments passed down to \code{\link[=chisq.test]{chisq.test()}}.}
 }
 \value{
@@ -53,7 +57,8 @@ The function is a wrapper around \code{\link[=chisq.test]{chisq.test()}} and
 \code{chisq.test()} for given probabilities. When \code{probabilities} are provided,
 these are rescaled to sum to 1 (i.e. \code{rescale.p = TRUE}). When \code{fisher.test()}
 is called, simulated p-values are returned (i.e. \code{simulate.p.value = TRUE},
-see \code{?fisher.test}).
+see \code{?fisher.test}). If \code{paired = TRUE} and a 2x2 table is provided,
+a McNemar test (see \code{\link[=mcnemar.test]{mcnemar.test()}}) is conducted.
 
 The weighted version of the chi-squared test is based on the a weighted
 table, using \code{\link[=xtabs]{xtabs()}} as input for \code{chisq.test()}.
@@ -61,11 +66,11 @@ table, using \code{\link[=xtabs]{xtabs()}} as input for \code{chisq.test()}.
 \examples{
 data(efc)
 efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
-# Chi-squared-test
+# Chi-squared test
 chi_squared_test(efc, "c161sex", by = "e16sex")
-# weighted Chi-squared-test
+# weighted Chi-squared test
 chi_squared_test(efc, "c161sex", by = "e16sex", weights = "weight")
-# Chi-squared-test for given probabilities
+# Chi-squared test for given probabilities
 chi_squared_test(efc, "c161sex", probabilities = c(0.3, 0.7))
 }
 \references{
