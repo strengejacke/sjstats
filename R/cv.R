@@ -20,7 +20,6 @@
 #' fit <- lm(barthtot ~ c160age + c12hour, data = efc)
 #' cv(fit)
 #'
-#' @importFrom stats sd
 #' @export
 cv <- function(x, ...) {
   # return value

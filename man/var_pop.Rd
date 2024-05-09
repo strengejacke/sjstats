@@ -35,5 +35,4 @@ var_pop(efc$c12hour)
 sd(efc$c12hour, na.rm = TRUE)
 # population sd
 sd_pop(efc$c12hour)
-
 }

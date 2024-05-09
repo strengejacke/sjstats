@@ -3,7 +3,6 @@
 # Author: Ken Kelley
 # License: GPL-3
 
-#' @importFrom stats pf qf
 confint_ncg <- function(F.value = NULL, conf.level = 0.95, df.1 = NULL, df.2 = NULL) {
   alpha.lower <- alpha.upper <- (1 - conf.level) / 2
   tol <- 1e-09
@@ -40,12 +39,12 @@ confint_ncg <- function(F.value = NULL, conf.level = 0.95, df.1 = NULL, df.2 = N
       Diff.2 <- stats::pf(q = F.value, df1 = df.1, df2 = df.2, ncp = LL.Bounds[2]) - (1 - alpha.lower) > tol
       Diff.3 <- stats::pf(q = F.value, df1 = df.1, df2 = df.2, ncp = LL.Bounds[3]) - (1 - alpha.lower) > tol
 
-      if (isTRUE(Diff.1) & isTRUE(Diff.2) & !isTRUE(Diff.3)) {
+      if (isTRUE(Diff.1) && isTRUE(Diff.2) && !isTRUE(Diff.3)) {
         LL.Bounds <-
           c(LL.Bounds[2], (LL.Bounds[2] + LL.Bounds[3]) / 2, LL.Bounds[3])
       }
 
-      if (isTRUE(Diff.1) & !isTRUE(Diff.2) & !isTRUE(Diff.3)) {
+      if (isTRUE(Diff.1) && !isTRUE(Diff.2) && !isTRUE(Diff.3)) {
         LL.Bounds <-
           c(LL.Bounds[1], (LL.Bounds[1] + LL.Bounds[2]) / 2, LL.Bounds[2])
       }
@@ -89,14 +88,13 @@ confint_ncg <- function(F.value = NULL, conf.level = 0.95, df.1 = NULL, df.2 = N
       Diff.2 <- stats::pf(q = F.value, df1 = df.1, df2 = df.2, ncp = UL.Bounds[2]) - alpha.upper > tol
       Diff.3 <- stats::pf(q = F.value, df1 = df.1, df2 = df.2, ncp = UL.Bounds[3]) - alpha.upper > tol
 
-      if (isTRUE(Diff.1) & isTRUE(Diff.2) & !isTRUE(Diff.3)) {
+      if (isTRUE(Diff.1) && isTRUE(Diff.2) && !isTRUE(Diff.3)) {
         UL.Bounds <-
           c(UL.Bounds[2], (UL.Bounds[2] + UL.Bounds[3]) / 2, UL.Bounds[3])
       }
 
-      if (isTRUE(Diff.1) & !isTRUE(Diff.2) & !isTRUE(Diff.3)) {
-        UL.Bounds <- c(UL.Bounds[1], (UL.Bounds[1] +
-                                        UL.Bounds[2])/2, UL.Bounds[2])
+      if (isTRUE(Diff.1) && !isTRUE(Diff.2) && !isTRUE(Diff.3)) {
+        UL.Bounds <- c(UL.Bounds[1], (UL.Bounds[1] + UL.Bounds[2]) / 2, UL.Bounds[2])
       }
 
       Diff <- stats::pf(q = F.value, df1 = df.1, df2 = df.2, ncp = UL.Bounds[2]) - alpha.upper

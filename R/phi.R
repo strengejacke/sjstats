@@ -44,6 +44,7 @@ phi.formula <- function(formula, data, ci.lvl = NULL, n = 1000, method = c("dist
 
 
 .phi <- function(tab) {
+  insight::check_if_installed("MASS")
   # convert to flat table
   if (!inherits(tab, "ftable")) tab <- stats::ftable(tab)
 

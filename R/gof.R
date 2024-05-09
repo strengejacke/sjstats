@@ -48,7 +48,6 @@
 #' # equal to population
 #' chisq_gof(efc$e42dep, prop.table(table(efc$e42dep)))
 #'
-#' @importFrom stats na.omit fitted resid formula as.formula lm pnorm chisq.test
 #' @export
 chisq_gof <- function(x, prob = NULL, weights = NULL) {
   if (inherits(x, "glm")) {

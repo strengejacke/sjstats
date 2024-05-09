@@ -1,12 +1,9 @@
-#' @importFrom stats model.matrix
-#' @importFrom insight get_data
 #' @export
 model.matrix.gls <- function(object, ...) {
   stats::model.matrix(object, data = insight::get_data(object))
 }
 
 
-#' @importFrom stats coef vcov pnorm
 #' @importFrom dplyr case_when
 #' @export
 print.svyglm.nb <- function(x, se = c("robust", "model"), digits = 4, ...) {
@@ -33,7 +30,6 @@ print.svyglm.nb <- function(x, se = c("robust", "model"), digits = 4, ...) {
 
 
 
-#' @importFrom stats coef vcov pnorm
 #' @importFrom dplyr case_when
 #' @export
 print.svyglm.zip <- function(x, se = c("robust", "model"), digits = 4, ...) {
@@ -56,7 +52,6 @@ print.svyglm.zip <- function(x, se = c("robust", "model"), digits = 4, ...) {
 
 
 
-#' @importFrom stats qnorm coef pnorm vcov
 tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
   v_se <- match.arg(v_se)
 
@@ -80,7 +75,6 @@ tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
 
 
 
-#' @importFrom stats qnorm coef pnorm vcov
 tidy_svyglm.zip <- function(x, digits = 4, v_se = c("robust", "model")) {
   v_se <- match.arg(v_se)
 
@@ -142,16 +136,12 @@ formula.svyglm.zip <- function(x, ...) {
 
 
 
-#' @importFrom MASS glm.nb
-#' @importFrom stats coef setNames predict.glm
 #' @export
 predict.svyglm.nb <- function(object, newdata = NULL,
                               type = c("link", "response", "terms"),
                               se.fit = FALSE, dispersion = NULL, terms = NULL,
                               na.action = na.pass, ...) {
-
-  if (!isNamespaceLoaded("survey"))
-    requireNamespace("survey", quietly = TRUE)
+  insight::check_if_installed(c("survey", "MASS"))
 
   fnb <- MASS::glm.nb(
     attr(object, "nb.formula", exact = TRUE),
@@ -178,9 +168,6 @@ predict.svyglm.nb <- function(object, newdata = NULL,
 }
 
 
-#' @importFrom MASS glm.nb
-#' @importFrom stats coef setNames predict.glm
-#' @importFrom insight get_response
 #' @export
 residuals.svyglm.nb <- function(object, ...) {
 
@@ -201,7 +188,6 @@ residuals.svyglm.nb <- function(object, ...) {
 }
 
 
-#' @importFrom stats terms formula
 #' @export
 terms.svyglm.nb <- function(x, ...) {
 
@@ -235,7 +221,6 @@ deviance.svyglm.nb <- function(object, ...) {
 }
 
 
-#' @importFrom insight print_color
 #' @export
 print.tidy_stan <- function(x, ...) {
   insight::print_color("\nSummary Statistics of Stan-Model\n\n", "blue")
@@ -261,8 +246,8 @@ print.tidy_stan <- function(x, ...) {
 }
 
 
-#' @importFrom sjmisc trim
 clean_term_name <- function(x) {
+  insight::check_if_installed("sjmisc")
   x <- sjmisc::trim(x)
   format(x, width = max(nchar(x)))
 }
@@ -340,7 +325,6 @@ plot.sj_inequ_trend <- function(x, ...) {
 }
 
 
-#' @importFrom stats kruskal.test na.omit
 #' @export
 print.sj_mwu <- function(x, ...) {
   insight::print_color("\n# Mann-Whitney-U-Test\n\n", "blue")

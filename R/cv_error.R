@@ -31,40 +31,33 @@
 #'   neg_c_7 ~ barthtot + c12hour
 #' ))
 #'
-#' @importFrom modelr crossv_kfold
-#' @importFrom dplyr mutate summarise
-#' @importFrom purrr map map2 map_dbl map_df
-#' @importFrom tidyr unnest
-#' @importFrom insight find_response
-#' @importFrom performance rmse
 #' @export
 cv_error <- function(data, formula, k = 5) {
-  insight::check_if_installed("broom")
+  insight::check_if_installed("datawizard")
+
+  # response
+  resp <- insight::find_response(formula)
 
   # compute cross validation data
-  cv_data <- data %>%
-    modelr::crossv_kfold(k = k) %>%
-    dplyr::mutate(
-      trained.models = purrr::map(.data$train, ~ stats::lm(formula, data = .x)),
-      predicted = purrr::map2(.data$trained.models, .data$test, ~ broom::augment(.x, newdata = .y)),
-      residuals = purrr::map(.data$predicted, ~.x[[insight::find_response(formula)]] - .x$.fitted),
-      rmse.train = purrr::map_dbl(.data$trained.models, ~ performance::rmse(.x))
-    )
+  cv_data <- lapply(k, function(i) {
+    datawizard::data_partition(data, proportion = 0.8)
+  })
+  # get train and test datasets
+  train_data <- lapply(cv_data, function(cvdat) cvdat[[1]])
+  test_data <- lapply(cv_data, function(cvdat) cvdat[[2]])
 
+  # fit models on datasets
+  trained_models <- lapply(train_data, function(x) stats::lm(formula, data = x))
+  test_models <- lapply(test_data, function(x) stats::lm(formula, data = x))
 
-  # Training error
-  train.error <- dplyr::summarise(cv_data, train.error = mean(.data$rmse.train, na.rm = TRUE))
-
-
-  # Test error
-  test.error <- cv_data %>%
-    tidyr::unnest(.data$predicted, .data$residuals) %>%
-    dplyr::summarise(test.error = sqrt(mean(.data$residuals^2, na.rm = TRUE)))
+  # RMSE
+  train_error <- mean(vapply(trained_models, performance::rmse, numeric(1)), na.rm = TRUE)
+  test_error <- mean(vapply(test_models, performance::rmse, numeric(1)), na.rm = TRUE)
 
   data_frame(
     model = deparse(formula),
-    train.error = round(train.error[[1]], 4),
-    test.error = round(test.error[[1]], 4)
+    train.error = round(train_error, 4),
+    test.error = round(test_error, 4)
   )
 }
 
@@ -73,5 +66,5 @@ cv_error <- function(data, formula, k = 5) {
 #' @rdname cv_error
 #' @export
 cv_compare <- function(data, formulas, k = 5) {
-  purrr::map_df(formulas, ~ cv_error(data, formula = .x, k = k))
+  do.call(rbind, lapply(formulas, function(f) cv_error(data, formula = f, k = k)))
 }

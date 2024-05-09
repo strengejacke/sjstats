@@ -18,7 +18,6 @@
 #'   se_ybar(fit)
 #' }
 #' @importFrom lme4 ngrps
-#' @importFrom stats nobs
 #' @importFrom purrr map_dbl
 #' @export
 se_ybar <- function(fit) {

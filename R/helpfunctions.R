@@ -45,7 +45,6 @@ dot_names <- function(dots) unname(unlist(lapply(dots, as.character)))
 
 #' @importFrom tidyr nest
 #' @importFrom dplyr select filter group_vars
-#' @importFrom stats complete.cases
 get_grouped_data <- function(x) {
   # retain observations that are complete wrt grouping vars, then nest
   grps <- x %>%
@@ -64,7 +63,7 @@ get_grouped_data <- function(x) {
 
 
 .compact_character <- function(x) {
-  x[!sapply(x, function(i) is.null(i) || nchar(i) == 0 || is.na(i) || any(i == "NULL", na.rm = TRUE))]
+  x[!sapply(x, function(i) is.null(i) || !nzchar(i, keepNA = TRUE) || is.na(i) || any(i == "NULL", na.rm = TRUE))]
 }
 
 

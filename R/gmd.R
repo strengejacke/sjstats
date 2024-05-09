@@ -39,7 +39,6 @@ gmd <- function(x, ...) {
 }
 
 
-#' @importFrom stats na.omit
 gmd_helper <- function(x) {
   if (!is.numeric(x)) return(NA)
 

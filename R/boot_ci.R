@@ -158,7 +158,6 @@ boot_ci <- function(data, ..., method = c("dist", "quantile"), ci.lvl = 0.95) {
 
 
 #' @rdname boot_ci
-#' @importFrom stats sd
 #' @export
 boot_se <- function(data, ...) {
   # evaluate arguments, generate data
@@ -175,7 +174,6 @@ boot_se <- function(data, ...) {
 
 
 #' @rdname boot_ci
-#' @importFrom stats sd pt
 #' @export
 boot_p <- function(data, ...) {
   # evaluate arguments, generate data

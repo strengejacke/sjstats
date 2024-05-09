@@ -25,14 +25,11 @@ Imports:
     insight,
     lme4,
     magrittr,
-    MASS,
-    modelr,
     parameters,
     performance,
     purrr,
     sjlabelled,
     sjmisc,
-    stats,
     tidyr
 Suggests:
     brms,
@@ -41,6 +38,7 @@ Suggests:
     coin,
     ggplot2,
     graphics,
+    MASS,
     pscl,
     pwr,
     sjPlot,

@@ -38,7 +38,6 @@
 #' table(x)
 #' table(weight(x, w))
 #'
-#' @importFrom stats na.pass xtabs
 #' @importFrom sjlabelled as_numeric
 #' @export
 weight <- function(x, weights, digits = 0) {
