@@ -73,8 +73,8 @@ mann_whitney_test(wide_data, select = c("scale1", "scale2"))
 
 # same as if we had data in long format, with grouping variable
 long_data <- data.frame(
-  dv = c(wide_data$scale1, wide_data$scale12),
-  grp = rep(c("A", "B"), each = 20)
+  scales = c(wide_data$scale1, wide_data$scale2),
+  groups = rep(c("A", "B"), each = 20)
 )
-mann_whitney_test(long_data, select = "dv", by = "grp")
+mann_whitney_test(long_data, select = "scales", by = "groups")
 }

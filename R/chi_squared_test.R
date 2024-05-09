@@ -41,10 +41,13 @@
 #' @examples
 #' data(efc)
 #' efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
+#'
 #' # Chi-squared test
 #' chi_squared_test(efc, "c161sex", by = "e16sex")
+#'
 #' # weighted Chi-squared test
 #' chi_squared_test(efc, "c161sex", by = "e16sex", weights = "weight")
+#'
 #' # Chi-squared test for given probabilities
 #' chi_squared_test(efc, "c161sex", probabilities = c(0.3, 0.7))
 #' @export
