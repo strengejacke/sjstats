@@ -85,8 +85,8 @@ tidy_svyglm.zip <- function(x, digits = 4, v_se = c("robust", "model")) {
     term = substring(names(stats::coef(x)), 5),
     estimate = round(est, digits),
     std.error = round(se, digits),
-    conf.low = round(exp(est - stats::qnorm(.975) * se), digits),
-    conf.high = round(exp(est + stats::qnorm(.975) * se), digits),
+    conf.low = round(exp(est - stats::qnorm(0.975) * se), digits),
+    conf.high = round(exp(est + stats::qnorm(0.975) * se), digits),
     p.value = round(2 * stats::pnorm(abs(est / se), lower.tail = FALSE), digits)
   )
 }
@@ -108,7 +108,7 @@ model.frame.svyglm.zip <- function(formula, ...) {
 }
 
 
-
+#' @importFrom stats family
 #' @export
 family.svyglm.nb <- function(object, ...) {
   attr(object, "family", exact = TRUE)
