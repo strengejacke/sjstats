@@ -197,9 +197,7 @@ print.sj_htest_chi <- function(x, ...) {
   ), "blue")
 
   # data info
-  if (!is.null(x$data)) {
-    insight::print_color(sprintf("  Data: %s (n = %i)\n", x$data, round(x$n_obs)), "cyan")
-  }
+  insight::print_color(sprintf("  Data: %s (n = %i)\n", x$data, round(x$n_obs)), "cyan")
 
   # prepare and align strings
   eff_symbol <- .format_symbols(x$effect_size_name)
