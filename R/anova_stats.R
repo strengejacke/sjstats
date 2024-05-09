@@ -107,7 +107,7 @@ aov_stat_summary <- function(model) {
   # for mixed models, add information on residuals
   if (mm) {
     res <- stats::residuals(ori.model)
-    aov.sum <- dplyr::bind_rows(
+    aov.sum <- rbind(
       aov.sum,
       data_frame(
         term = "Residuals",

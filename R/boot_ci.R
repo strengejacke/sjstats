@@ -131,6 +131,7 @@
 #'   boot_ci()}
 #' @export
 boot_ci <- function(data, ..., method = c("dist", "quantile"), ci.lvl = 0.95) {
+  insight::check_if_installed("dplyr")
   # match arguments
   method <- match.arg(method)
 
@@ -160,6 +161,7 @@ boot_ci <- function(data, ..., method = c("dist", "quantile"), ci.lvl = 0.95) {
 #' @rdname boot_ci
 #' @export
 boot_se <- function(data, ...) {
+  insight::check_if_installed("dplyr")
   # evaluate arguments, generate data
   .dat <- get_dot_data(data, dplyr::quos(...))
 
@@ -176,6 +178,7 @@ boot_se <- function(data, ...) {
 #' @rdname boot_ci
 #' @export
 boot_p <- function(data, ...) {
+  insight::check_if_installed("dplyr")
   # evaluate arguments, generate data
   .dat <- get_dot_data(data, dplyr::quos(...))
 
@@ -194,6 +197,7 @@ boot_p <- function(data, ...) {
 #' @rdname boot_ci
 #' @export
 boot_est <- function(data, ...) {
+  insight::check_if_installed("dplyr")
   # evaluate arguments, generate data
   .dat <- get_dot_data(data, dplyr::quos(...))
 
@@ -213,8 +217,8 @@ transform_boot_result <- function(res) {
 }
 
 
-#' @importFrom dplyr select
 get_dot_data <- function(x, qs) {
+  insight::check_if_installed("dplyr")
   if (sjmisc::is_empty(qs))
     as.data.frame(x)
   else

@@ -106,6 +106,7 @@
 #' )
 #' @export
 crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("auto", "cramer", "phi", "spearman", "kendall", "pearson", "fisher"), weights = NULL, ...) {
+  insight::check_if_installed("dplyr")
   # match arguments
   statistics <- match.arg(statistics)
 

@@ -84,9 +84,9 @@ auto_prior <- function(formula, data, gaussian, locations = NULL) {
   y <- data[[y.name]]
 
   # check if response is binary
-  if (missing(gaussian) && dplyr::n_distinct(y, na.rm = TRUE) == 2) gaussian <- FALSE
+  if (missing(gaussian) && insight::n_unique(y) == 2) gaussian <- FALSE
 
-  if (isTRUE(gaussian) && dplyr::n_distinct(y, na.rm = TRUE) == 2)
+  if (isTRUE(gaussian) && insight::n_unique(y) == 2)
     insight::format_alert("Priors were calculated based on assumption that the response is Gaussian, however it seems to be binary.") # nolint
 
 

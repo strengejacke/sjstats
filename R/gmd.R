@@ -23,12 +23,12 @@
 #' gmd(efc$e17age)
 #' gmd(efc, e17age, c160age, c12hour)
 #'
-#' @importFrom dplyr quos select
 #' @importFrom purrr map_df
 #' @importFrom sjmisc is_empty
 #' @export
 gmd <- function(x, ...) {
-  # evaluate dots
+  insight::check_if_installed("dplyr")
+ # evaluate dots
   qs <- dplyr::quos(...)
   if (!sjmisc::is_empty(qs)) x <- suppressMessages(dplyr::select(x, !!!qs))
 

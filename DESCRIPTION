@@ -21,14 +21,12 @@ Depends:
 Imports:
     bayestestR,
     datawizard,
-    dplyr,
     effectsize,
     insight,
     lme4,
     parameters,
     performance,
     purrr,
-    sjlabelled,
     sjmisc,
     tidyr
 Suggests:
@@ -36,6 +34,7 @@ Suggests:
     broom,
     car,
     coin,
+    dplyr,
     ggplot2,
     graphics,
     MASS,

@@ -28,11 +28,11 @@ weighted_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = 
   vars <- c(x.name, y.name, w.name)
 
   # get data
-  dat <- suppressMessages(dplyr::select(data, !! vars))
+  dat <- suppressMessages(data[vars])
   dat <- na.omit(dat)
 
   if (sjmisc::is_empty(dat) || nrow(dat) == 1) {
-    warning("Too less data to compute t-test.")
+    insight::format_alert("Too less data to compute t-test.")
     return(NULL)
   }
 
@@ -96,15 +96,7 @@ weighted_ttest.formula <- function(formula, data, mu = 0, paired = FALSE, ci.lvl
   nx <- length(xv)
   ny <- length(yv)
 
-  labs <- sjlabelled::get_labels(
-    data[[vars[2]]],
-    attr.only = FALSE,
-    values = "p",
-    drop.na = TRUE,
-    drop.unused = TRUE
-  )
-
-  weighted_ttest_helper(xv, yv, wx, wy, nx, ny, mu, paired, alternative, ci.lvl, vars[1], vars[2], labs)
+  weighted_ttest_helper(xv, yv, wx, wy, nx, ny, mu, paired, alternative, ci.lvl, vars[1], vars[2], vars[2])
 }
 
 

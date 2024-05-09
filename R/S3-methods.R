@@ -1,15 +1,16 @@
-#' @importFrom dplyr case_when
 #' @export
 print.svyglm.nb <- function(x, se = c("robust", "model"), digits = 4, ...) {
   se <- match.arg(se)
   sm <- tidy_svyglm.nb(x, digits, v_se = se)[-1, -2]
 
-  pan <- dplyr::case_when(
-    sm$p.value < 0.001 ~ "<0.001 ***",
-    sm$p.value < 0.01 ~ sprintf("%.*f ** ", digits, sm$p.value),
-    sm$p.value < 0.05 ~ sprintf("%.*f *  ", digits, sm$p.value),
-    sm$p.value < 0.1 ~ sprintf("%.*f .  ", digits, sm$p.value),
-    TRUE ~  sprintf("%.*f    ", digits, sm$p.value)
+  pan <- ifelse(sm$p.value < 0.001, "<0.001 ***",
+    ifelse(sm$p.value < 0.01, sprintf("%.*f ** ", digits, sm$p.value), # nolint
+      ifelse(sm$p.value < 0.05, sprintf("%.*f *  ", digits, sm$p.value), # nolint
+        ifelse(sm$p.value < 0.1, sprintf("%.*f .  ", digits, sm$p.value), # nolint
+          sprintf("%.*f    ", digits, sm$p.value)
+        )
+      )
+    )
   )
 
   sm$p.value <- pan
@@ -30,11 +31,14 @@ print.svyglm.zip <- function(x, se = c("robust", "model"), digits = 4, ...) {
   sm <- tidy_svyglm.zip(x, digits, v_se = se)[-1, ]
 
   pan <- ifelse(sm$p.value < 0.001, "<0.001 ***",
-           ifelse(sm$p.value < 0.01, sprintf("%.*f ** ", digits, sm$p.value),
-             ifelse(sm$p.value < 0.05, sprintf("%.*f *  ", digits, sm$p.value),
-               ifelse(sm$p.value < 0.1, sprintf("%.*f .  ", digits, sm$p.value),
-                 sprintf("%.*f    ", digits, sm$p.value)
-  ))))
+    ifelse(sm$p.value < 0.01, sprintf("%.*f ** ", digits, sm$p.value), # nolint
+      ifelse(sm$p.value < 0.05, sprintf("%.*f *  ", digits, sm$p.value), # nolint
+        ifelse(sm$p.value < 0.1, sprintf("%.*f .  ", digits, sm$p.value), # nolint
+          sprintf("%.*f    ", digits, sm$p.value)
+        )
+      )
+    )
+  )
 
   sm$p.value <- pan
   print(sm, ...)
