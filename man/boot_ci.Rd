@@ -72,6 +72,7 @@ assuming normal distribution.
 }
 }
 \examples{
+\dontshow{if (getRversion() >= "4.2.0" && requireNamespace("dplyr", quietly = TRUE) && requireNamespace("purrr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 library(purrr)
 data(efc)
@@ -105,12 +106,12 @@ coef(fit)[2]
 
 
 # bootstrap() and boot_ci() work fine within pipe-chains
-efc \%>\%
-  bootstrap(100) \%>\%
+efc |>
+  bootstrap(100) |>
   mutate(
     models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex, data = .x)),
     dependency = map_dbl(models, ~coef(.x)[2])
-  ) \%>\%
+  ) |>
   boot_ci(dependency)
 
 # check p-value
@@ -122,30 +123,31 @@ summary(fit)$coefficients[3, ]
 # bootstrapped statistics like confidence intervals or p-values
 library(dplyr)
 library(sjmisc)
-efc \%>\%
+efc |>
   # generate bootstrap replicates
-  bootstrap(100) \%>\%
+  bootstrap(100) |>
   # apply lm to all bootstrapped data sets
   mutate(
     models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex + c172code, data = .x))
-  ) \%>\%
+  ) |>
   # spread model coefficient for all 100 models
-  spread_coef(models) \%>\%
+  spread_coef(models) |>
   # compute the CI for all bootstrapped model coefficients
   boot_ci(e42dep, c161sex, c172code)
 
 # or...
-efc \%>\%
+efc |>
   # generate bootstrap replicates
-  bootstrap(100) \%>\%
+  bootstrap(100) |>
   # apply lm to all bootstrapped data sets
   mutate(
     models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex + c172code, data = .x))
-  ) \%>\%
+  ) |>
   # spread model coefficient for all 100 models
-  spread_coef(models, append = FALSE) \%>\%
+  spread_coef(models, append = FALSE) |>
   # compute the CI for all bootstrapped model coefficients
   boot_ci()}
+\dontshow{\}) # examplesIf}
 }
 \references{
 Carpenter J, Bithell J. Bootstrap confdence intervals: when, which, what? A practical guide for medical statisticians. Statist. Med. 2000; 19:1141-1164

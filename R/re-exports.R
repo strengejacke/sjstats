@@ -1,8 +1,3 @@
-#' @importFrom magrittr %>%
-#' @export
-magrittr::`%>%`
-
-
 #' @importFrom sjmisc typical_value
 #' @export
 sjmisc::typical_value

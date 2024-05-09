@@ -49,6 +49,7 @@ method automatically applies whenever coercion is done because a data
 frame is required as input. See 'Examples' in \code{\link{boot_ci}}.
 }
 \examples{
+\dontshow{if (getRversion() >= "4.2.0" && requireNamespace("dplyr", quietly = TRUE) && requireNamespace("purrr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(efc)
 bs <- bootstrap(efc, 5)
 
@@ -70,16 +71,16 @@ bs$c12hour <- unlist(lapply(bs$strap, function(x) {
 }))
 
 # or as tidyverse-approach
-if (require("dplyr") && require("purrr")) {
-  bs <- efc \%>\%
-    bootstrap(100) \%>\%
-    mutate(
-      c12hour = map_dbl(strap, ~mean(as.data.frame(.x)$c12hour, na.rm = TRUE))
-    )
-
-  # bootstrapped standard error
-  boot_se(bs, c12hour)
-}
+library(dplyr)
+library(purrr)
+bs <- efc |>
+  bootstrap(100) |>
+  mutate(
+    c12hour = map_dbl(strap, ~mean(as.data.frame(.x)$c12hour, na.rm = TRUE))
+  )
+# bootstrapped standard error
+boot_se(bs, c12hour)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link{boot_ci}} to calculate confidence intervals from

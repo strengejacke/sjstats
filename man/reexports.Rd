@@ -3,7 +3,6 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
-\alias{\%>\%}
 \alias{typical_value}
 \alias{mse}
 \alias{rmse}
@@ -25,8 +24,6 @@ below to see their documentation.
   \item{datawizard}{\code{\link[datawizard]{weighted_mean}}, \code{\link[datawizard:weighted_mean]{weighted_median}}, \code{\link[datawizard:weighted_mean]{weighted_sd}}}
 
   \item{insight}{\code{\link[insight]{link_inverse}}}
-
-  \item{magrittr}{\code{\link[magrittr:pipe]{\%>\%}}}
 
   \item{performance}{\code{\link[performance:performance_mse]{mse}}, \code{\link[performance:performance_rmse]{rmse}}}
 

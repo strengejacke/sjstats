@@ -54,7 +54,7 @@
 #'
 #' @seealso \code{\link{bootstrap}} to generate nonparametric bootstrap samples.
 #'
-#' @examples
+#' @examplesIf getRversion() >= "4.2.0" && requireNamespace("dplyr", quietly = TRUE) && requireNamespace("purrr", quietly = TRUE)
 #' library(dplyr)
 #' library(purrr)
 #' data(efc)
@@ -88,12 +88,12 @@
 #'
 #'
 #' # bootstrap() and boot_ci() work fine within pipe-chains
-#' efc %>%
-#'   bootstrap(100) %>%
+#' efc |>
+#'   bootstrap(100) |>
 #'   mutate(
 #'     models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex, data = .x)),
 #'     dependency = map_dbl(models, ~coef(.x)[2])
-#'   ) %>%
+#'   ) |>
 #'   boot_ci(dependency)
 #'
 #' # check p-value
@@ -105,28 +105,28 @@
 #' # bootstrapped statistics like confidence intervals or p-values
 #' library(dplyr)
 #' library(sjmisc)
-#' efc %>%
+#' efc |>
 #'   # generate bootstrap replicates
-#'   bootstrap(100) %>%
+#'   bootstrap(100) |>
 #'   # apply lm to all bootstrapped data sets
 #'   mutate(
 #'     models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex + c172code, data = .x))
-#'   ) %>%
+#'   ) |>
 #'   # spread model coefficient for all 100 models
-#'   spread_coef(models) %>%
+#'   spread_coef(models) |>
 #'   # compute the CI for all bootstrapped model coefficients
 #'   boot_ci(e42dep, c161sex, c172code)
 #'
 #' # or...
-#' efc %>%
+#' efc |>
 #'   # generate bootstrap replicates
-#'   bootstrap(100) %>%
+#'   bootstrap(100) |>
 #'   # apply lm to all bootstrapped data sets
 #'   mutate(
 #'     models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex + c172code, data = .x))
-#'   ) %>%
+#'   ) |>
 #'   # spread model coefficient for all 100 models
-#'   spread_coef(models, append = FALSE) %>%
+#'   spread_coef(models, append = FALSE) |>
 #'   # compute the CI for all bootstrapped model coefficients
 #'   boot_ci()}
 #' @export
@@ -209,11 +209,7 @@ boot_est <- function(data, ...) {
 
 transform_boot_result <- function(res) {
   # transform a bit, so we have each estimate in a row, and ci's as columns...
-  res %>%
-    as.data.frame() %>%
-    t() %>%
-    as.data.frame() %>%
-    rownames_as_column(var = "term")
+  rownames_as_column(as.data.frame(t(as.data.frame(res))), var = "term")
 }
 
 

@@ -25,7 +25,6 @@ Imports:
     effectsize,
     insight,
     lme4,
-    magrittr,
     parameters,
     performance,
     purrr,

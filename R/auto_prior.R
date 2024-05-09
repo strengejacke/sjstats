@@ -72,9 +72,7 @@
 #'   auto_prior(mf, efc, FALSE)
 #' @export
 auto_prior <- function(formula, data, gaussian, locations = NULL) {
-
-  if (!requireNamespace("brms", quietly = TRUE))
-    stop("Package `brms` required.", call. = FALSE)
+  insight::check_if_installed("brms")
 
   scale.b <- 2.5
   scale.y <- 10
@@ -82,20 +80,14 @@ auto_prior <- function(formula, data, gaussian, locations = NULL) {
   pred <- insight::find_predictors(formula, effects = "all", flatten = TRUE)
   y.name <- insight::find_response(formula, combine = TRUE)
 
-  cols <- c(y.name, pred)
-
-  data <- data %>%
-    dplyr::select(!! cols) %>%
-    stats::na.omit() %>%
-    as.data.frame()
-
+  data <- stats::na.omit(data[c(y.name, pred)])
   y <- data[[y.name]]
 
   # check if response is binary
   if (missing(gaussian) && dplyr::n_distinct(y, na.rm = TRUE) == 2) gaussian <- FALSE
 
   if (isTRUE(gaussian) && dplyr::n_distinct(y, na.rm = TRUE) == 2)
-    warning("Priors were calculated based on assumption that the response is Gaussian, however it seems to be binary.", call. = F)
+    insight::format_alert("Priors were calculated based on assumption that the response is Gaussian, however it seems to be binary.") # nolint
 
 
   if (gaussian) {
@@ -135,7 +127,7 @@ auto_prior <- function(formula, data, gaussian, locations = NULL) {
     term.names <- c(term.names, i)
   }
 
-  for (i in 1:length(term.names)) {
+  for (i in seq_along(term.names)) {
 
     if (!is.null(locations) && length(locations) >= (i + 1))
       location.b <- locations[i + 1]
