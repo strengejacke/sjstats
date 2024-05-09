@@ -9,7 +9,7 @@
 #'
 #' @param data A data frame.
 #' @param select Name of the dependent variable (as string) to be used for the
-#' test. `select` can also be a character vector, specifing the names of
+#' test. `select` can also be a character vector, specifying the names of
 #' multiple continuous variables. In this case, `by` is ignored and variables
 #' specified in `select` are used to compute the test. This can be useful if
 #' the data is in wide-format and no grouping variable is available.
