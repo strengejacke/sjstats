@@ -44,6 +44,19 @@
 #' data(efc)
 #' # Mann-Whitney-U-Tests for elder's age by elder's sex.
 #' mann_whitney_test(efc, "e17age", by = "e16sex")
+#'
+#' # when data is in wide-format, specify all relevant continuous
+#' # variables in `select` and omit `by`
+#' set.seed(123)
+#' wide_data <- data.frame(scale1 = runif(20), scale2 = runif(20))
+#' mann_whitney_test(wide_data, select = c("scale1", "scale2"))
+#'
+#' # same as if we had data in long format, with grouping variable
+#' long_data <- data.frame(
+#'   dv = c(wide_data$scale1, wide_data$scale12),
+#'   grp = rep(c("A", "B"), each = 20)
+#' )
+#' mann_whitney_test(long_data, select = "dv", by = "grp")
 #' @export
 mann_whitney_test <- function(data,
                               select = NULL,
@@ -115,7 +128,7 @@ mann_whitney_test <- function(data,
   z <- as.numeric(coin::statistic(wt, type = "standardized"))
   p <- coin::pvalue(wt)
   r <- abs(z / sqrt(length(dv)))
-  w <- stats::wilcox.test(dv ~ grp, data = wcdat)$statistic
+  w <- suppressWarnings(stats::wilcox.test(dv ~ grp, data = wcdat)$statistic)
 
   # group means
   dat_gr1 <- stats::na.omit(dv[grp == group_levels[1]])

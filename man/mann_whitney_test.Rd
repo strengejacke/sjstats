@@ -64,4 +64,17 @@ Interpretation of the effect size \strong{r}, as a rule-of-thumb:
 data(efc)
 # Mann-Whitney-U-Tests for elder's age by elder's sex.
 mann_whitney_test(efc, "e17age", by = "e16sex")
+
+# when data is in wide-format, specify all relevant continuous
+# variables in `select` and omit `by`
+set.seed(123)
+wide_data <- data.frame(scale1 = runif(20), scale2 = runif(20))
+mann_whitney_test(wide_data, select = c("scale1", "scale2"))
+
+# same as if we had data in long format, with grouping variable
+long_data <- data.frame(
+  dv = c(wide_data$scale1, wide_data$scale12),
+  grp = rep(c("A", "B"), each = 20)
+)
+mann_whitney_test(long_data, select = "dv", by = "grp")
 }
