@@ -192,9 +192,11 @@ print.sj_htest_chi <- function(x, ...) {
     weight_string
   ), "blue")
 
+  stat_symbol <- .format_symbols(effect_size_name)
+
   # print test statistic
   cat(sprintf("  %*s: %.4f\n", l, x$statistic_name, x$statistic))
-  cat(sprintf("  %*s: %.4f\n", l, x$effect_size_name, x$effect_size))
+  cat(sprintf("  %*s: %.4f\n", l, stat_symbol, x$effect_size))
   cat(sprintf("  %*s: %g\n", l, "df", x$df))
   cat(sprintf("  %*s: %s\n", l, "p-value", insight::format_p(x$p, stars = TRUE, name = NULL)))
   cat(sprintf("  %*s: %g\n", l, "Observations", x$n_obs))

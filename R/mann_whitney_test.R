@@ -165,8 +165,8 @@ mann_whitney_test <- function(data,
   rank_mean_2 <- survey::svymean(~rank_x, design_mean2)
 
   # group Ns
-  n_grp1 <- round(dat_gr1$x * dat_gr1$w)
-  n_grp2 <- round(dat_gr2$x * dat_gr2$w)
+  n_grp1 <- round(sum(dat_gr1$w))
+  n_grp2 <- round(sum(dat_gr2$w))
 
   # statistics and effect sizes
   z <- result$statistic

@@ -9,8 +9,8 @@
 #'
 #' @examples
 #' data(efc)
-#' # Mann-Whitney-U-Tests for elder's age by elder's sex.
-#' kruskal_wallis_test(efc, "e17age", by = "e16sex")
+#' # Kruskal-Wallis-Test for elder's age by education
+#' kruskal_wallis_test(efc, "e17age", by = "c172code")
 #' @export
 kruskal_wallis_test <- function(data,
                                 select = NULL,
@@ -80,12 +80,12 @@ kruskal_wallis_test <- function(data,
   result <- survey::svyranktest(formula = x ~ g, design, test = "KruskalWallis")
 
   # number of groups
-  n_groups <- vapply(grp, function(g) {
-    
+  n_groups <- vapply(unique(grp), function(g) {
+    sum(dat$w[dat$grp == g], na.rm = TRUE)
   }, numeric(1))
 
   out <- data.frame(
-    data = result$data.name,
+    data = paste(dv, "by", grp),
     Chi2 = result$statistic,
     df = result$parameter,
     p = as.numeric(result$p.value),
@@ -101,111 +101,12 @@ kruskal_wallis_test <- function(data,
 }
 
 
-# helper ----------------------------------------------------------------------
-
-.misspelled_string <- function(source, searchterm, default_message = NULL) {
-  if (is.null(searchterm) || length(searchterm) < 1) {
-    return(default_message)
-  }
-  # used for many matches
-  more_found <- ""
-  # init default
-  msg <- ""
-  # remove matching strings
-  same <- intersect(source, searchterm)
-  searchterm <- setdiff(searchterm, same)
-  source <- setdiff(source, same)
-  # guess the misspelled string
-  possible_strings <- unlist(lapply(searchterm, function(s) {
-    source[.fuzzy_grep(source, s)] # nolint
-  }), use.names = FALSE)
-  if (length(possible_strings)) {
-    msg <- "Did you mean "
-    if (length(possible_strings) > 1) {
-      # make sure we don't print dozens of alternatives for larger data frames
-      if (length(possible_strings) > 5) {
-        more_found <- sprintf(
-          " We even found %i more possible matches, not shown here.",
-          length(possible_strings) - 5
-        )
-        possible_strings <- possible_strings[1:5]
-      }
-      msg <- paste0(msg, "one of ", toString(paste0("\"", possible_strings, "\"")))
-    } else {
-      msg <- paste0(msg, "\"", possible_strings, "\"")
-    }
-    msg <- paste0(msg, "?", more_found)
-  } else {
-    msg <- default_message
-  }
-  # no double white space
-  insight::trim_ws(msg)
-}
-
-
-.fuzzy_grep <- function(x, pattern, precision = NULL) {
-  if (is.null(precision)) {
-    precision <- round(nchar(pattern) / 3)
-  }
-  if (precision > nchar(pattern)) {
-    return(NULL)
-  }
-  p <- sprintf("(%s){~%i}", pattern, precision)
-  grep(pattern = p, x = x, ignore.case = FALSE)
-}
-
-
-.sanitize_htest_input <- function(data, select, by, weights) {
-  # check if arguments are NULL
-  if (is.null(select)) {
-    insight::format_error("Argument `select` is missing.")
-  }
-  if (is.null(by)) {
-    insight::format_error("Arguments `by` is missing.")
-  }
-
-  # check if arguments have correct length (length of 1)
-  if (length(select) != 1 || !is.character(select)) {
-    insight::format_error("Argument `select` must be the name of a single variable.")
-  }
-  if (length(by) != 1 || !is.character(by)) {
-    insight::format_error("Argument `by` must be the name of a single variable.")
-  }
-  if (!is.null(weights) && length(weights) != 1) {
-    insight::format_error("Argument `weights` must be the name of a single variable.")
-  }
-
-  # check if "select" is in data
-  if (!select %in% colnames(data)) {
-    insight::format_error(
-      sprintf("Variable '%s' not found in data frame.", select),
-      .misspelled_string(colnames(data), select, "Maybe misspelled?")
-    )
-  }
-  # check if "by" is in data
-  if (!by %in% colnames(data)) {
-    insight::format_error(
-      sprintf("Variable '%s' not found in data frame.", by),
-      .misspelled_string(colnames(data), by, "Maybe misspelled?")
-    )
-  }
-  # check if "weights" is in data
-  if (!is.null(weights) && !weights %in% colnames(data)) {
-    insight::format_error(
-      sprintf("Weighting variable '%s' not found in data frame.", weights),
-      .misspelled_string(colnames(data), weights, "Maybe misspelled?")
-    )
-  }
-}
-
-
 # methods ---------------------------------------------------------------------
 
 #' @export
-print.sj_htest_mwu <- function(x, ...) {
+print.sj_htest_kw <- function(x, ...) {
+  insight::check_if_installed("datawizard")
   # fetch attributes
-  group_labels <- attributes(x)$group_labels
-  rank_means <- attributes(x)$rank_means
   n_groups <- attributes(x)$n_groups
   weighted <- attributes(x)$weighted
 
@@ -215,27 +116,20 @@ print.sj_htest_mwu <- function(x, ...) {
     weight_string <- ""
   }
 
-  # same width
-  group_labels <- format(group_labels)
-
   # header
-  insight::print_color(sprintf("# Mann-Whitney-Test%s\n\n", weight_string), "blue")
+  insight::print_color(sprintf("# Kruskal-Wallis-Test%s\n\n", weight_string), "blue")
 
-  # group-1-info
+  # data info
   insight::print_color(
     sprintf(
-      "  Group 1: %s (n = %i, rank mean = %s)\n",
-      group_labels[1], n_groups[1], insight::format_value(rank_means[1], protect_integers = TRUE)
+      "  Data: %s (%i groups, n = %s)\n",
+      x$data, length(n_groups), datawizard::text_concatenate(n_groups)
     ), "cyan"
   )
 
-  # group-2-info
-  insight::print_color(
-    sprintf(
-      "  Group 2: %s (n = %i, rank mean = %s)\n",
-      group_labels[2], n_groups[2], insight::format_value(rank_means[2], protect_integers = TRUE)
-    ), "cyan"
-  )
-
-  cat(sprintf("\n  r = %.3f, Z = %.3f, %s\n\n", x$r, x$z, insight::format_p(x$p)))
+  stat_symbol <- .format_symbols("Chi2")
+  cat(sprintf(
+    "\n  %s = %.3f, df = %i, %s\n\n",
+    stat_symbol, x$Chi2, round(x$df), insight::format_p(x$p)
+  ))
 }

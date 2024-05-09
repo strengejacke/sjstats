@@ -64,8 +64,43 @@ get_grouped_data <- function(x) {
 }
 
 
-
 .compact_character <- function(x) {
   x[!sapply(x, function(i) is.null(i) || nchar(i) == 0 || is.na(i) || any(i == "NULL", na.rm = TRUE))]
 }
 
+
+.format_symbols <- function(x) {
+  if (.unicode_symbols()) {
+    x <- gsub("Delta", "Δ", x, ignore.case = TRUE)
+    x <- gsub("Phi", "ϕ", x, ignore.case = TRUE)
+    x <- gsub("Eta", "η", x, ignore.case = TRUE)
+    x <- gsub("Epsilon", "ε", x, ignore.case = TRUE)
+    x <- gsub("Omega", "ε", x, ignore.case = TRUE)
+    x <- gsub("R2", "R²", x, ignore.case = TRUE)
+    x <- gsub("Chi2", "χ²", x, ignore.case = TRUE)
+    x <- gsub("Chi", "χ", x, ignore.case = TRUE)
+    x <- gsub("Sigma", "σ", x, ignore.case = TRUE)
+    x <- gsub("Rho", "ρ", x, ignore.case = TRUE)
+    x <- gsub("Mu", "μ", x, ignore.case = TRUE)
+    x <- gsub("Theta", "θ", x, ignore.case = TRUE)
+  }
+  x
+}
+
+
+.unicode_symbols <- function() {
+  win_os <- tryCatch(
+    {
+      si <- Sys.info()
+      if (is.null(si["sysname"])) {
+        FALSE
+      } else {
+        si["sysname"] == "Windows" || startsWith(R.version$os, "mingw")
+      }
+    },
+    error = function(e) {
+      TRUE
+    }
+  )
+  l10n_info()[["UTF-8"]] && ((win_os && getRversion() >= "4.2") || (!win_os && getRversion() >= "4.0"))
+}
