@@ -71,19 +71,19 @@ get_grouped_data <- function(x) {
 
 .format_symbols <- function(x) {
   if (.unicode_symbols()) {
-    x <- gsub("Delta", "Δ", x, ignore.case = TRUE)
-    x <- gsub("Phi", "ϕ", x, ignore.case = TRUE)
-    x <- gsub("Eta", "η", x, ignore.case = TRUE)
-    x <- gsub("Epsilon", "ε", x, ignore.case = TRUE)
-    x <- gsub("Omega", "ε", x, ignore.case = TRUE)
-    x <- gsub("R2", "R²", x, ignore.case = TRUE)
-    x <- gsub("Chi2", "χ²", x, ignore.case = TRUE)
-    x <- gsub("Chi-squared", "χ²", x, ignore.case = TRUE)
-    x <- gsub("Chi", "χ", x, ignore.case = TRUE)
-    x <- gsub("Sigma", "σ", x, ignore.case = TRUE)
-    x <- gsub("Rho", "ρ", x, ignore.case = TRUE)
-    x <- gsub("Mu", "μ", x, ignore.case = TRUE)
-    x <- gsub("Theta", "θ", x, ignore.case = TRUE)
+    x <- gsub("Delta", "\u0394", x, ignore.case = TRUE)
+    x <- gsub("Phi", "\u03D5", x, ignore.case = TRUE)
+    x <- gsub("Eta", "\u03B7", x, ignore.case = TRUE)
+    x <- gsub("Epsilon", "\u03b5", x, ignore.case = TRUE)
+    x <- gsub("Omega", "\u03b5", x, ignore.case = TRUE)
+    x <- gsub("R2", "R\u00b2", x, ignore.case = TRUE)
+    x <- gsub("Chi2", "\u03C7\u00b2", x, ignore.case = TRUE)
+    x <- gsub("Chi-squared", "\u03C7\u00b2", x, ignore.case = TRUE)
+    x <- gsub("Chi", "\u03C7", x, ignore.case = TRUE)
+    x <- gsub("Sigma", "\u03C3", x, ignore.case = TRUE)
+    x <- gsub("Rho", "\u03C1", x, ignore.case = TRUE)
+    x <- gsub("Mu", "\u03BC", x, ignore.case = TRUE)
+    x <- gsub("Theta", "\u03B8", x, ignore.case = TRUE)
   }
   x
 }

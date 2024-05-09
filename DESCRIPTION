@@ -22,7 +22,6 @@ Imports:
     datawizard,
     dplyr,
     effectsize,
-    emmeans,
     insight,
     lme4,
     magrittr,
