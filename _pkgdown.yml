@@ -30,8 +30,9 @@ reference:
 - title: "Summary Statistics and Tests"
   contents:
   - gmd
-  - mann_whitney_test
   - chi_squared_test
+  - kruskal_wallis_test
+  - mann_whitney_test
   - var_pop
 
 - title: "Tools for Regression Models"

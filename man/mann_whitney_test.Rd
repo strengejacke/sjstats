@@ -29,7 +29,7 @@ should be computed. May be one of \code{"exact"}, \code{"approximate"} or \code{
 (default). See \code{\link[coin:LocationTests]{coin::wilcox_test()}} for details.}
 }
 \value{
-A data frame.
+A data frame with test results.
 }
 \description{
 This function performs a Mann-Whitney-Test (or Wilcoxon rank

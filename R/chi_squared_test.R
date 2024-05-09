@@ -14,7 +14,7 @@
 #' @param ... Additional arguments passed down to [`chisq.test()`].
 #' @inheritParams mann_whitney_test
 #'
-#' @return A data frame.
+#' @return A data frame with test results.
 #'
 #' @examples
 #' data(efc)

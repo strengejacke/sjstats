@@ -1,46 +1,21 @@
-#' @title Mann-Whitney-Test
-#' @name mann_whitney_test
-#' @description This function performs a Mann-Whitney-Test (or Wilcoxon rank
-#' sum test for _unpaired_ samples, see [`wilcox.test()`] and [`coin::wilcox_test()`]).
+#' @title Kruskal-Wallis-Test
+#' @name kruskal_wallis_test
+#' @description This function performs a Kruskal-Wallis rank sum test, see
+#' [`kruskal.test()`] and [`coin::kruskal_test()`]).
 #'
-#' The function reports p and Z-values as well as effect size r and group-rank-means.
-#'
-#' @param data A data frame.
-#' @param select Name of the dependent variable (as string) to be used for the
-#' test.
-#' @param by Name of the grouping variable to be used for the test. If `by` is
-#' not a factor, it will be coerced to a factor. For `chi_squared_test()`, if
-#' `probabilities` is provided, `by` must be `NULL`.
-#' @param weights Name of an (optional) weighting variable to be used for the test.
-#' @param distribution Indicates how the null distribution of the test statistic
-#' should be computed. May be one of `"exact"`, `"approximate"` or `"asymptotic"`
-#' (default). See [`coin::wilcox_test()`] for details.
+#' @inheritParams mann_whitney_test
 #'
 #' @return A data frame with test results.
-#'
-#' @details This function calls [`coin::wilcox_test()`] to extract effect sizes.
-#' Interpretation of the effect size **r**, as a rule-of-thumb:
-#'
-#' - small effect >= 0.1
-#' - medium effect >= 0.3
-#' - large effect >= 0.5
-#'
-#' **r** is calcuated as:
-#'
-#' ```
-#' r = |Z| / sqrt(n1 + n2)
-#' ```
 #'
 #' @examples
 #' data(efc)
 #' # Mann-Whitney-U-Tests for elder's age by elder's sex.
-#' mann_whitney_test(efc, "e17age", by = "e16sex")
+#' kruskal_wallis_test(efc, "e17age", by = "e16sex")
 #' @export
-mann_whitney_test <- function(data,
-                              select = NULL,
-                              by = NULL,
-                              weights = NULL,
-                              distribution = "asymptotic") {
+kruskal_wallis_test <- function(data,
+                                select = NULL,
+                                by = NULL,
+                                weights = NULL) {
   insight::check_if_installed("datawizard")
 
   # sanity checks
@@ -54,76 +29,39 @@ mann_whitney_test <- function(data,
   grp <- datawizard::to_factor(grp)
 
   # only two groups allowed
-  if (insight::n_unique(grp) > 2) {
-    insight::format_error("Only two groups are allowed for Mann-Whitney-Test. Please use `kruskal_wallis_test()` for more than two groups.") # nolint
+  if (insight::n_unique(grp) < 2) {
+    insight::format_error("At least two groups are required, i.e. data must have at least two unique levels in `by` for `kruskal_wallis_test()`.") # nolint
   }
-
-  # value labels
-  group_labels <- names(attr(data[[by]], "labels", exact = TRUE))
-  if (is.null(group_labels)) {
-    group_labels <- levels(droplevels(grp))
-  }
-
   if (is.null(weights)) {
-    .calculate_mwu(dv, grp, distribution, group_labels)
+    .calculate_kw(dv, grp)
   } else {
-    .calculate_weighted_mwu(dv, grp, data[[weights]], group_labels)
+    .calculate_weighted_kw(dv, grp, data[[weights]])
   }
 }
 
 
-# Mann-Whitney-Test for two groups --------------------------------------------
+# Kruskal-Wallis-Test --------------------------------------------
 
-.calculate_mwu <- function(dv, grp, distribution, group_labels) {
-  insight::check_if_installed("coin")
+.calculate_kw <- function(dv, grp) {
   # prepare data
   wcdat <- data.frame(dv, grp)
   # perfom wilcox test
-  wt <- coin::wilcox_test(dv ~ grp, data = wcdat, distribution = distribution)
-
-  # for rank mean
-  group_levels <- levels(grp)
-
-  # compute statistics
-  u <- as.numeric(coin::statistic(wt, type = "linear"))
-  z <- as.numeric(coin::statistic(wt, type = "standardized"))
-  p <- coin::pvalue(wt)
-  r <- abs(z / sqrt(length(dv)))
-  w <- stats::wilcox.test(dv ~ grp, data = wcdat)$statistic
-
-  # group means
-  dat_gr1 <- stats::na.omit(dv[grp == group_levels[1]])
-  dat_gr2 <- stats::na.omit(dv[grp == group_levels[2]])
-
-  rank_mean_1 <- mean(rank(dat_gr1))
-  rank_mean_2 <- mean(rank(dat_gr2))
-
-  # compute n for each group
-  n_grp1 <- length(dat_gr1)
-  n_grp2 <- length(dat_gr2)
+  wt <- stats::kruskal.test(dv ~ grp, data = wcdat)
+  # number of groups
+  n_groups <- vapply(grp, function(g) sum(grp == g, na.rm = TRUE), numeric(1))
 
   out <- data.frame(
-    group1 = group_levels[1],
-    group2 = group_levels[2],
-    estimate = rank_mean_1 - rank_mean_2,
-    u = u,
-    w = w,
-    z = z,
-    r = r,
-    p = as.numeric(p)
+    data = wt$data.name,
+    Chi2 = wt$statistic,
+    df = wt$parameter,
+    p = as.numeric(wt$p.value),
+    stringsAsFactors = FALSE
   )
-  attr(out, "rank_means") <- stats::setNames(
-    c(rank_mean_1, rank_mean_2),
-    c("Mean Group 1", "Mean Group 2")
-  )
-  attr(out, "n_groups") <- stats::setNames(
-    c(n_grp1, n_grp2),
-    c("N Group 1", "N Group 2")
-  )
-  attr(out, "group_labels") <- group_labels
-  attr(out, "method") <- "wilcoxon"
+
+  attr(out, "n_groups") <- n_groups
+  attr(out, "method") <- "kruskal"
   attr(out, "weighted") <- FALSE
-  class(out) <- c("sj_htest_mwu", "data.frame")
+  class(out) <- c("sj_htest_kw", "data.frame")
 
   out
 }
@@ -131,7 +69,7 @@ mann_whitney_test <- function(data,
 
 # Weighted Mann-Whitney-Test for two groups ----------------------------------
 
-.calculate_weighted_mwu <- function(dv, grp, weights, group_labels) {
+.calculate_weighted_kw <- function(dv, grp, weights) {
   # check if pkg survey is available
   insight::check_if_installed("survey")
 
@@ -139,7 +77,7 @@ mann_whitney_test <- function(data,
   colnames(dat) <- c("x", "g", "w")
 
   design <- survey::svydesign(ids = ~0, data = dat, weights = ~w)
-  result <- survey::svyranktest(formula = x ~ g, design, test = "wilcoxon")
+  result <- survey::svyranktest(formula = x ~ g, design, test = "KruskalWallis")
 
   # for rank mean
   group_levels <- levels(droplevels(grp))
@@ -190,6 +128,7 @@ mann_whitney_test <- function(data,
     c("N Group 1", "N Group 2")
   )
   attr(out, "group_labels") <- group_labels
+  attr(out, "method") <- method
   attr(out, "weighted") <- TRUE
   class(out) <- c("sj_htest_mwu", "data.frame")
 

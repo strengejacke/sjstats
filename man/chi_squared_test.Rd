@@ -35,7 +35,7 @@ must be \code{NULL}. The probabilities must sum to 1.}
 \item{...}{Additional arguments passed down to \code{\link[=chisq.test]{chisq.test()}}.}
 }
 \value{
-A data frame.
+A data frame with test results.
 }
 \description{
 This function performs a Mann-Whitney-Test (or Wilcoxon rank
