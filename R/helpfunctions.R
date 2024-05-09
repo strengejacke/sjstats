@@ -34,7 +34,7 @@ get_glm_family <- function(fit) {
   # create logical for family
   binom_fam <- fitfam %in% c("binomial", "quasibinomial")
   poisson_fam <- fitfam %in% c("poisson", "quasipoisson") ||
-    sjmisc::str_contains(fitfam, "negative binomial", ignore.case = T)
+    sjmisc::str_contains(fitfam, "negative binomial", ignore.case = TRUE)
 
   list(is_bin = binom_fam, is_pois = poisson_fam, is_logit = logit_link)
 }
