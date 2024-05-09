@@ -21,21 +21,20 @@
 #' @examples
 #' data(efc)
 #' gmd(efc$e17age)
-#' gmd(efc, e17age, c160age, c12hour)
+#' gmd(efc, c("e17age", "c160age", "c12hour"))
 #'
-#' @importFrom purrr map_df
-#' @importFrom sjmisc is_empty
 #' @export
-gmd <- function(x, ...) {
-  insight::check_if_installed("dplyr")
- # evaluate dots
-  qs <- dplyr::quos(...)
-  if (!sjmisc::is_empty(qs)) x <- suppressMessages(dplyr::select(x, !!!qs))
-
-  if (is.data.frame(x))
-    purrr::map_df(x, gmd_helper)
-  else
+gmd <- function(x, select = NULL) {
+  if (is.data.frame(x)) {
+    do.call(rbind, lapply(select, function(i) {
+      data.frame(
+        variable = i,
+        gmd = gmd_helper(x[[i]])
+      )
+    }))
+  } else {
     gmd_helper(x)
+  }
 }
 
 

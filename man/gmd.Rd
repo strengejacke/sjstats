@@ -4,7 +4,7 @@
 \alias{gmd}
 \title{Gini's Mean Difference}
 \usage{
-gmd(x, ...)
+gmd(x, select = NULL)
 }
 \arguments{
 \item{x}{A vector or data frame.}
@@ -30,7 +30,7 @@ silently removed.
 \examples{
 data(efc)
 gmd(efc$e17age)
-gmd(efc, e17age, c160age, c12hour)
+gmd(efc, c("e17age", "c160age", "c12hour"))
 
 }
 \references{

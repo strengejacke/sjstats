@@ -7,7 +7,7 @@
 \alias{boot_est}
 \title{Standard error and confidence intervals for bootstrapped estimates}
 \usage{
-boot_ci(data, ..., method = c("dist", "quantile"), ci.lvl = 0.95)
+boot_ci(data, select = NULL, method = c("dist", "quantile"), ci.lvl = 0.95)
 
 boot_se(data, ...)
 
@@ -19,12 +19,6 @@ boot_est(data, ...)
 \item{data}{A data frame that containts the vector with bootstrapped
 estimates, or directly the vector (see 'Examples').}
 
-\item{...}{Optional, unquoted names of variables with bootstrapped estimates.
-Required, if either \code{data} is a data frame (and no vector),
-and only selected variables from \code{data} should be processed.
-You may also use functions like \code{:} or tidyselect's
-\code{select_helpers()}.}
-
 \item{method}{Character vector, indicating if confidence intervals should be
 based on bootstrap standard error, multiplied by the value of the
 quantile function of the t-distribution (default), or on sample
@@ -32,6 +26,12 @@ quantiles of the bootstrapped values. See 'Details' in \code{boot_ci()}.
 May be abbreviated.}
 
 \item{ci.lvl}{Numeric, the level of the confidence intervals.}
+
+\item{...}{Optional, unquoted names of variables with bootstrapped estimates.
+Required, if either \code{data} is a data frame (and no vector),
+and only selected variables from \code{data} should be processed.
+You may also use functions like \code{:} or tidyselect's
+\code{select_helpers()}.}
 }
 \value{
 A data frame with either bootstrap estimate,
@@ -79,11 +79,14 @@ data(efc)
 bs <- bootstrap(efc, 100)
 
 # now run models for each bootstrapped sample
-bs$models <- map(bs$strap, ~lm(neg_c_7 ~ e42dep + c161sex, data = .x))
+bs$models <- lapply(
+  bs$strap,
+  function(.x) lm(neg_c_7 ~ e42dep + c161sex, data = .x)
+)
 
 # extract coefficient "dependency" and "gender" from each model
-bs$dependency <- map_dbl(bs$models, ~coef(.x)[2])
-bs$gender <- map_dbl(bs$models, ~coef(.x)[3])
+bs$dependency <- vapply(bs$models, function(x) coef(x)[2], numeric(1))
+bs$gender <- vapply(bs$models, function(x) coef(x)[3], numeric(1))
 
 # get bootstrapped confidence intervals
 boot_ci(bs$dependency)
@@ -94,9 +97,9 @@ confint(fit)[2, ]
 
 # alternative function calls.
 boot_ci(bs$dependency)
-boot_ci(bs, dependency)
-boot_ci(bs, dependency, gender)
-boot_ci(bs, dependency, gender, method = "q")
+boot_ci(bs, "dependency")
+boot_ci(bs, c("dependency", "gender"))
+boot_ci(bs, c("dependency", "gender"), method = "q")
 
 
 # compare coefficients

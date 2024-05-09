@@ -61,11 +61,14 @@
 #' bs <- bootstrap(efc, 100)
 #'
 #' # now run models for each bootstrapped sample
-#' bs$models <- map(bs$strap, ~lm(neg_c_7 ~ e42dep + c161sex, data = .x))
+#' bs$models <- lapply(
+#'   bs$strap,
+#'   function(.x) lm(neg_c_7 ~ e42dep + c161sex, data = .x)
+#' )
 #'
 #' # extract coefficient "dependency" and "gender" from each model
-#' bs$dependency <- map_dbl(bs$models, ~coef(.x)[2])
-#' bs$gender <- map_dbl(bs$models, ~coef(.x)[3])
+#' bs$dependency <- vapply(bs$models, function(x) coef(x)[2], numeric(1))
+#' bs$gender <- vapply(bs$models, function(x) coef(x)[3], numeric(1))
 #'
 #' # get bootstrapped confidence intervals
 #' boot_ci(bs$dependency)
@@ -76,9 +79,9 @@
 #'
 #' # alternative function calls.
 #' boot_ci(bs$dependency)
-#' boot_ci(bs, dependency)
-#' boot_ci(bs, dependency, gender)
-#' boot_ci(bs, dependency, gender, method = "q")
+#' boot_ci(bs, "dependency")
+#' boot_ci(bs, c("dependency", "gender"))
+#' boot_ci(bs, c("dependency", "gender"), method = "q")
 #'
 #'
 #' # compare coefficients
@@ -130,13 +133,15 @@
 #'   # compute the CI for all bootstrapped model coefficients
 #'   boot_ci()}
 #' @export
-boot_ci <- function(data, ..., method = c("dist", "quantile"), ci.lvl = 0.95) {
-  insight::check_if_installed("dplyr")
+boot_ci <- function(data, select = NULL, method = c("dist", "quantile"), ci.lvl = 0.95) {
   # match arguments
   method <- match.arg(method)
 
   # evaluate arguments, generate data
-  .dat <- get_dot_data(data, dplyr::quos(...))
+  if (is.null(select))
+    .dat <- as.data.frame(data)
+  else
+    .dat <- data[select]
 
   # compute confidence intervals for all values
   transform_boot_result(lapply(.dat, function(x) {
