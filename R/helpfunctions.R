@@ -78,6 +78,7 @@ get_grouped_data <- function(x) {
     x <- gsub("Omega", "ε", x, ignore.case = TRUE)
     x <- gsub("R2", "R²", x, ignore.case = TRUE)
     x <- gsub("Chi2", "χ²", x, ignore.case = TRUE)
+    x <- gsub("Chi-squared", "χ²", x, ignore.case = TRUE)
     x <- gsub("Chi", "χ", x, ignore.case = TRUE)
     x <- gsub("Sigma", "σ", x, ignore.case = TRUE)
     x <- gsub("Rho", "ρ", x, ignore.case = TRUE)

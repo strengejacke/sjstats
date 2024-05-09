@@ -93,6 +93,7 @@ chi_squared_test <- function(data,
 
   # return result
   out <- data.frame(
+    data = paste(select, "by", by),
     statistic_name = "Chi-squared",
     statistic = test_statistic,
     effect_size_name = names(effect_size),
@@ -156,6 +157,11 @@ chi_squared_test <- function(data,
 
   # return result
   out <- data.frame(
+    data = paste(
+      select,
+      "against probabilities",
+      datawizard::text_concatenate(sprintf("%i%%", round(100 * probabilities)))
+    ),
     statistic_name = "Chi-squared",
     statistic = test_statistic,
     effect_size_name = "Fei",
@@ -183,8 +189,6 @@ print.sj_htest_chi <- function(x, ...) {
     weight_string <- ""
   }
 
-  # get length of method name, to align output
-  l <- max(nchar(c(x$statistic_name, x$effect_size_name, "p-value", "Observations")))
   # headline
   insight::print_color(sprintf(
     "\n# Chi-Squared Test for %s%s\n\n",
@@ -192,12 +196,17 @@ print.sj_htest_chi <- function(x, ...) {
     weight_string
   ), "blue")
 
-  stat_symbol <- .format_symbols(x$effect_size_name)
+  # data info
+  if (!is.null(x$data)) {
+    insight::print_color(sprintf("  Data: %s (n = %i)\n", x$data, round(x$n_obs)), "cyan")
+  }
 
-  # print test statistic
-  cat(sprintf("  %*s: %.4f\n", l, x$statistic_name, x$statistic))
-  cat(sprintf("  %*s: %.4f\n", l, stat_symbol, x$effect_size))
-  cat(sprintf("  %*s: %g\n", l, "df", x$df))
-  cat(sprintf("  %*s: %s\n", l, "p-value", insight::format_p(x$p, stars = TRUE, name = NULL)))
-  cat(sprintf("  %*s: %g\n", l, "Observations", x$n_obs))
+  # prepare and align strings
+  eff_symbol <- .format_symbols(x$effect_size_name)
+  stat_symbol <- .format_symbols(x$statistic_name)
+
+  cat(sprintf(
+    "\n  %s = %.4f, %s = %.4f, df = %i, %s\n\n",
+    stat_symbol, x$statistic, eff_symbol, x$effect_size, round(x$df), insight::format_p(x$p)
+  ))
 }
