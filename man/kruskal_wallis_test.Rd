@@ -4,28 +4,22 @@
 \alias{kruskal_wallis_test}
 \title{Kruskal-Wallis test}
 \usage{
-kruskal_wallis_test(
-  data,
-  select = NULL,
-  by = NULL,
-  weights = NULL,
-  paired = FALSE
-)
+kruskal_wallis_test(data, select = NULL, by = NULL, weights = NULL)
 }
 \arguments{
 \item{data}{A data frame.}
 
 \item{select}{Name of the dependent variable (as string) to be used for the
-test.}
+test. \code{select} can also be a character vector, specifing the names of
+multiple continuous variables. In this case, \code{by} is ignored and variables
+specified in \code{select} are used to compute the test. This can be useful if
+the data is in wide-format and no grouping variable is available.}
 
 \item{by}{Name of the grouping variable to be used for the test. If \code{by} is
 not a factor, it will be coerced to a factor. For \code{chi_squared_test()}, if
 \code{probabilities} is provided, \code{by} must be \code{NULL}.}
 
 \item{weights}{Name of an (optional) weighting variable to be used for the test.}
-
-\item{paired}{Logical, if \code{TRUE}, a paired Friedman test is conducted (see
-\code{\link[=friedman.test]{friedman.test()}}).}
 }
 \value{
 A data frame with test results.
@@ -33,14 +27,12 @@ A data frame with test results.
 \description{
 This function performs a Kruskal-Wallis rank sum test, to test
 the null hypothesis that the population median of all of the groups are
-equal. The alternative is that they differ in at least one. If \code{paired = TRUE},
-a paired Friedman test is conducted.
+equal. The alternative is that they differ in at least one.
 }
 \details{
 The function simply is a wrapper around \code{\link[=kruskal.test]{kruskal.test()}}. The
 weighted version of the Kruskal-Wallis test is based on the \code{survey} package,
-using \code{\link[survey:svyranktest]{survey::svyranktest()}}. When \code{paired = TRUE}, a paired Friedman test
-is conducted (see \code{\link[=friedman.test]{friedman.test()}}).
+using \code{\link[survey:svyranktest]{survey::svyranktest()}}.
 }
 \examples{
 data(efc)

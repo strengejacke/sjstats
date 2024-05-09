@@ -9,7 +9,10 @@
 #'
 #' @param data A data frame.
 #' @param select Name of the dependent variable (as string) to be used for the
-#' test.
+#' test. `select` can also be a character vector, specifing the names of
+#' multiple continuous variables. In this case, `by` is ignored and variables
+#' specified in `select` are used to compute the test. This can be useful if
+#' the data is in wide-format and no grouping variable is available.
 #' @param by Name of the grouping variable to be used for the test. If `by` is
 #' not a factor, it will be coerced to a factor. For `chi_squared_test()`, if
 #' `probabilities` is provided, `by` must be `NULL`.
@@ -52,6 +55,23 @@ mann_whitney_test <- function(data,
   # sanity checks
   .sanitize_htest_input(data, select, by, weights)
 
+  # does select indicate more than one variable?
+  if (length(select) > 1) {
+    # sanity check - may only specify two variable names
+    if (length(select) > 2) {
+      insight::format_error("You may only specify two variables for Mann-Whitney test.")
+    }
+    if (!is.null(by)) {
+      insight::format_error("If `select` specifies more than one variable, `by` must be `NULL`.")
+    }
+    # we convert the data into long format, and create a grouping variable
+    data <- datawizard::data_to_long(data[select], names_to = "group", values_to = "scale")
+    by <- select[2]
+    select <- select[1]
+    # after converting to long, we have the "grouping" variable first in the data
+    colnames(data) <- c(by, select)
+  }
+
   # get data
   dv <- data[[select]]
   grp <- data[[by]]
@@ -61,7 +81,7 @@ mann_whitney_test <- function(data,
 
   # only two groups allowed
   if (insight::n_unique(grp) > 2) {
-    insight::format_error("Only two groups are allowed for Mann-Whitney-Test. Please use `kruskal_wallis_test()` for more than two groups.") # nolint
+    insight::format_error("Only two groups are allowed for Mann-Whitney test. Please use `kruskal_wallis_test()` for more than two groups.") # nolint
   }
 
   # value labels
@@ -267,21 +287,22 @@ mann_whitney_test <- function(data,
   }
 
   # check if arguments have correct length (length of 1)
-  if (length(select) != 1 || !is.character(select)) {
-    insight::format_error("Argument `select` must be the name of a single variable.")
+  if (!is.character(select)) {
+    insight::format_error("Argument `select` must be a character string with the name(s) of the variable(s).")
   }
   if (length(by) != 1 || !is.character(by)) {
-    insight::format_error("Argument `by` must be the name of a single variable.")
+    insight::format_error("Argument `by` must be a character string with the name of a single variable.")
   }
   if (!is.null(weights) && length(weights) != 1) {
-    insight::format_error("Argument `weights` must be the name of a single variable.")
+    insight::format_error("Argument `weights` must be a character string with the name of a single variable.")
   }
 
   # check if "select" is in data
-  if (!select %in% colnames(data)) {
+  if (!all(select %in% colnames(data))) {
+    not_found <- setdiff(select, colnames(data))[1]
     insight::format_error(
-      sprintf("Variable '%s' not found in data frame.", select),
-      .misspelled_string(colnames(data), select, "Maybe misspelled?")
+      sprintf("Variable '%s' not found in data frame.", not_found),
+      .misspelled_string(colnames(data), not_found, "Maybe misspelled?")
     )
   }
   # check if "by" is in data

@@ -16,7 +16,10 @@ mann_whitney_test(
 \item{data}{A data frame.}
 
 \item{select}{Name of the dependent variable (as string) to be used for the
-test.}
+test. \code{select} can also be a character vector, specifing the names of
+multiple continuous variables. In this case, \code{by} is ignored and variables
+specified in \code{select} are used to compute the test. This can be useful if
+the data is in wide-format and no grouping variable is available.}
 
 \item{by}{Name of the grouping variable to be used for the test. If \code{by} is
 not a factor, it will be coerced to a factor. For \code{chi_squared_test()}, if

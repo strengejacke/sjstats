@@ -2,19 +2,15 @@
 #' @name kruskal_wallis_test
 #' @description This function performs a Kruskal-Wallis rank sum test, to test
 #' the null hypothesis that the population median of all of the groups are
-#' equal. The alternative is that they differ in at least one. If `paired = TRUE`,
-#' a paired Friedman test is conducted.
+#' equal. The alternative is that they differ in at least one.
 #'
 #' @inheritParams mann_whitney_test
-#' @param paired Logical, if `TRUE`, a paired Friedman test is conducted (see
-#' [`friedman.test()`]).
 #'
 #' @return A data frame with test results.
 #'
 #' @details The function simply is a wrapper around [`kruskal.test()`]. The
 #' weighted version of the Kruskal-Wallis test is based on the `survey` package,
-#' using [`survey::svyranktest()`]. When `paired = TRUE`, a paired Friedman test
-#' is conducted (see [`friedman.test()`]).
+#' using [`survey::svyranktest()`].
 #'
 #' @examples
 #' data(efc)
@@ -24,12 +20,24 @@
 kruskal_wallis_test <- function(data,
                                 select = NULL,
                                 by = NULL,
-                                weights = NULL,
-                                paired = FALSE) {
+                                weights = NULL) {
   insight::check_if_installed("datawizard")
 
   # sanity checks
   .sanitize_htest_input(data, select, by, weights)
+
+  # does select indicate more than one variable?
+  if (length(select) > 1) {
+    if (!is.null(by)) {
+      insight::format_error("If `select` specifies more than one variable, `by` must be `NULL`.")
+    }
+    # we convert the data into long format, and create a grouping variable
+    data <- datawizard::data_to_long(data[select], names_to = "group", values_to = "scale")
+    by <- select[2]
+    select <- select[1]
+    # after converting to long, we have the "grouping" variable first in the data
+    colnames(data) <- c(by, select)
+  }
 
   # get data
   dv <- data[[select]]
@@ -43,9 +51,9 @@ kruskal_wallis_test <- function(data,
     insight::format_error("At least two groups are required, i.e. data must have at least two unique levels in `by` for `kruskal_wallis_test()`.") # nolint
   }
   if (is.null(weights)) {
-    .calculate_kw(dv, grp, paired)
+    .calculate_kw(dv, grp)
   } else {
-    .calculate_weighted_kw(dv, grp, data[[weights]], paired = TRUE)
+    .calculate_weighted_kw(dv, grp, data[[weights]])
   }
 }
 
@@ -101,10 +109,7 @@ kruskal_wallis_test <- function(data,
   }, numeric(1))
 
   if (paired) {
-    tab <- as.table(round(stats::xtabs(x[[3]] ~ x[[1]] + x[[2]])))
-    class(tab) <- "table"
-    # perfom friedman test for paired data
-    result <- stats::friedman.test(tab)
+    ## TODO: paired no working. should call `friedman.test()`
   } else {
     design <- survey::svydesign(ids = ~0, data = dat, weights = ~w)
     result <- survey::svyranktest(formula = x ~ g, design, test = "KruskalWallis")
