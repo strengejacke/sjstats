@@ -1,9 +1,3 @@
-#' @export
-model.matrix.gls <- function(object, ...) {
-  stats::model.matrix(object, data = insight::get_data(object))
-}
-
-
 #' @importFrom dplyr case_when
 #' @export
 print.svyglm.nb <- function(x, se = c("robust", "model"), digits = 4, ...) {
@@ -30,19 +24,17 @@ print.svyglm.nb <- function(x, se = c("robust", "model"), digits = 4, ...) {
 
 
 
-#' @importFrom dplyr case_when
 #' @export
 print.svyglm.zip <- function(x, se = c("robust", "model"), digits = 4, ...) {
   se <- match.arg(se)
   sm <- tidy_svyglm.zip(x, digits, v_se = se)[-1, ]
 
-  pan <- dplyr::case_when(
-    sm$p.value < 0.001 ~ "<0.001 ***",
-    sm$p.value < 0.01 ~ sprintf("%.*f ** ", digits, sm$p.value),
-    sm$p.value < 0.05 ~ sprintf("%.*f *  ", digits, sm$p.value),
-    sm$p.value < 0.1 ~ sprintf("%.*f .  ", digits, sm$p.value),
-    TRUE ~  sprintf("%.*f    ", digits, sm$p.value)
-  )
+  pan <- ifelse(sm$p.value < 0.001, "<0.001 ***",
+           ifelse(sm$p.value < 0.01, sprintf("%.*f ** ", digits, sm$p.value),
+             ifelse(sm$p.value < 0.05, sprintf("%.*f *  ", digits, sm$p.value),
+               ifelse(sm$p.value < 0.1, sprintf("%.*f .  ", digits, sm$p.value),
+                 sprintf("%.*f    ", digits, sm$p.value)
+  ))))
 
   sm$p.value <- pan
   print(sm, ...)
@@ -97,20 +89,18 @@ tidy_svyglm.zip <- function(x, digits = 4, v_se = c("robust", "model")) {
 
 
 
-#' @importFrom dplyr select
 #' @export
 model.frame.svyglm.nb <- function(formula, ...) {
-  pred <- attr(formula, "nb.terms", exact = T)
-  dplyr::select(formula$design$variables, string_one_of(pattern = pred, x = colnames(formula$design$variables)))
+  pred <- attr(formula, "nb.terms", exact = TRUE)
+  formula$design$variables[intersect(pred, colnames(formula$design$variables))]
 }
 
 
 
-#' @importFrom dplyr select
 #' @export
 model.frame.svyglm.zip <- function(formula, ...) {
-  pred <- attr(formula, "zip.terms", exact = T)
-  dplyr::select(formula$design$variables, string_one_of(pattern = pred, x = colnames(formula$design$variables)))
+  pred <- attr(formula, "zip.terms", exact = TRUE)
+  formula$design$variables[intersect(pred, colnames(formula$design$variables))]
 }
 
 
@@ -198,14 +188,11 @@ terms.svyglm.nb <- function(x, ...) {
 }
 
 
-#' @importFrom purrr map flatten_df
 #' @export
 AIC.svyglm.nb <- function(object, ...) {
   ## FIXME this one just returns the AIC of the underlying glm.nb() model
-  list(object, ...) %>%
-    purrr::map(~ getaic(.x)) %>%
-    purrr::flatten_df() %>%
-    as.data.frame()
+  aics <- lapply(list(object, ...), getaic)
+  as.data.frame(do.call(rbind, aics))
 }
 
 
@@ -477,48 +464,6 @@ print_grpmean <- function(x, digits = NULL, ...) {
 }
 
 
-#' @importFrom purrr walk
-#' @export
-print.sj_grpmeans <- function(x, ...) {
-
-  cat("\n")
-  purrr::walk(x, function(dat) {
-    # get grouping title label
-    grp <- attr(dat, "group", exact = T)
-
-    # print title for grouping
-    insight::print_color(sprintf("Grouped by:\n%s\n\n", grp), "cyan")
-
-    # print grpmean-table
-    print_grpmean(dat, digits = attributes(x)$digits, ...)
-
-    cat("\n\n")
-  })
-}
-
-
-#' @export
-print.sj_pval <- function(x, digits = 3, summary = FALSE, ...) {
-
-  if (summary) {
-    df.kr <- attr(x, "df.kr", exact = TRUE)
-    t.kr <- attr(x, "t.kr", exact = TRUE)
-
-    if (!is.null(df.kr)) x$df <- df.kr
-    if (!is.null(t.kr)) x$statistic <- t.kr
-  }
-
-  x <- purrr::map_if(x, is.numeric, round, digits = digits)
-  print.data.frame(as.data.frame(x), ..., row.names = TRUE)
-}
-
-
-#' @export
-summary.sj_pval <- function(object, digits = 3, summary = FALSE, ...) {
-  print(object, digits, summary = TRUE)
-}
-
-
 #' @export
 print.sj_chi2gof <- function(x, ...) {
   insight::print_color("\n# Chi-squared Goodness-of-Fit Test\n\n", "blue")
@@ -537,30 +482,6 @@ print.sj_chi2gof <- function(x, ...) {
     message("Summary: model seems to fit well.")
   else
     message("Summary: model does not fit well.")
-}
-
-
-#' @export
-print.sj_check_assump <- function(x, ...) {
-  insight::print_color("\n# Checking Model-Assumptions\n\n", "blue")
-  cat(sprintf("  Model: %s", attr(x, "formula", exact = TRUE)))
-
-  insight::print_color("\n\n                          violated    statistic\n", "red")
-
-  v1 <- ifelse(x$heteroskedasticity < 0.05, "yes", "no")
-  v2 <- ifelse(x$multicollinearity > 4, "yes", "no")
-  v3 <- ifelse(x$non.normal.resid < 0.05, "yes", "no")
-  v4 <- ifelse(x$autocorrelation < 0.05, "yes", "no")
-
-  s1 <- sprintf("p = %.3f", x$heteroskedasticity)
-  s2 <- sprintf("vif = %.3f", x$multicollinearity)
-  s3 <- sprintf("p = %.3f", x$non.normal.resid)
-  s4 <- sprintf("p = %.3f", x$autocorrelation)
-
-  cat(sprintf("  Heteroskedasticity      %8s  %11s\n", v1, s1))
-  cat(sprintf("  Non-normal residuals    %8s  %11s\n", v3, s3))
-  cat(sprintf("  Autocorrelated residuals%8s  %11s\n", v4, s4))
-  cat(sprintf("  Multicollinearity       %8s  %11s\n", v2, s2))
 }
 
 
