@@ -31,7 +31,7 @@ equal. The alternative is that they differ in at least one.
 }
 \details{
 The function simply is a wrapper around \code{\link[=kruskal.test]{kruskal.test()}}. The
-weighted version of the Kruskal-Wallis test is based on the \code{survey} package,
+weighted version of the Kruskal-Wallis test is based on the \strong{survey} package,
 using \code{\link[survey:svyranktest]{survey::svyranktest()}}.
 }
 \examples{

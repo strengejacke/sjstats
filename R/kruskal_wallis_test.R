@@ -9,7 +9,7 @@
 #' @return A data frame with test results.
 #'
 #' @details The function simply is a wrapper around [`kruskal.test()`]. The
-#' weighted version of the Kruskal-Wallis test is based on the `survey` package,
+#' weighted version of the Kruskal-Wallis test is based on the **survey** package,
 #' using [`survey::svyranktest()`].
 #'
 #' @examples
