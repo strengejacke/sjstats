@@ -64,7 +64,7 @@ weighted_chisqtest() computes a weighted Chi-squared test for contingency tables
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Weighted statistics for tests and variables</h1>
-    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/svy_median.R" class="external-link"><code>R/svy_median.R</code></a>, <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/wtd_chisqtest.R" class="external-link"><code>R/wtd_chisqtest.R</code></a>, <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/wtd_cor.R" class="external-link"><code>R/wtd_cor.R</code></a>, and 6 more</small>
+    <small class="dont-index">Source: <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/svy_median.R" class="external-link"><code>R/svy_median.R</code></a>, <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/wtd_cor.R" class="external-link"><code>R/wtd_cor.R</code></a>, <a href="https://github.com/strengejacke/sjstats/blob/HEAD/R/wtd_mean.R" class="external-link"><code>R/wtd_mean.R</code></a>, and 5 more</small>
     <div class="hidden name"><code>weighted_sd.Rd</code></div>
     </div>
 
@@ -85,14 +85,6 @@ computes a weighted Mann-Whitney-U test or a Kruskal-Wallis test
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">survey_median</span><span class="op">(</span><span class="va">x</span>, <span class="va">design</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">weighted_chisqtest</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Default S3 method</span></span>
-<span><span class="fu">weighted_chisqtest</span><span class="op">(</span><span class="va">data</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">weights</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'formula'</span></span>
-<span><span class="fu">weighted_chisqtest</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">weighted_correlation</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -183,14 +175,14 @@ the variable name of the numeric vector of weights. If <code>weights = NULL</cod
 unweighted statistic is reported.</p></dd>
 
 
+<dt id="arg-ci-lvl">ci.lvl<a class="anchor" aria-label="anchor" href="#arg-ci-lvl"></a></dt>
+<dd><p>Confidence level of the interval.</p></dd>
+
+
 <dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
 <dd><p>A formula of the form <code>lhs ~ rhs1 + rhs2</code> where <code>lhs</code> is a
 numeric variable giving the data values and <code>rhs1</code> a factor with two
 levels giving the corresponding groups and <code>rhs2</code> a variable with weights.</p></dd>
-
-
-<dt id="arg-ci-lvl">ci.lvl<a class="anchor" aria-label="anchor" href="#arg-ci-lvl"></a></dt>
-<dd><p>Confidence level of the interval.</p></dd>
 
 
 <dt id="arg-grp">grp<a class="anchor" aria-label="anchor" href="#arg-grp"></a></dt>
@@ -223,7 +215,7 @@ must be one of <code>"two.sided"</code> (default), <code>"greater"</code> or
     <div id="note">
     <h2>Note</h2>
     <p><code>weighted_chisq()</code> is a convenient wrapper for <code><a href="crosstable_statistics.html">crosstable_statistics</a></code>.
-For a weighted one-way Anova, use <code><a href="means_by_group.html">means_by_group()</a></code> with
+For a weighted one-way Anova, use <code><a href="r2.html">means_by_group()</a></code> with
 <code>weights</code>-argument.
 <br><br><code>weighted_ttest()</code> assumes unequal variance between the two groups.</p>
     </div>
@@ -298,45 +290,6 @@ For a weighted one-way Anova, use <code><a href="means_by_group.html">means_by_g
 <span class="r-out co"><span class="r-pr">#&gt;</span>   mean in group [2] female: 80.518</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   difference of mean      : -4.117 [-5.201  -3.034]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># weighted Mann-Whitney-U-test ----</span></span></span>
-<span class="r-in"><span><span class="fu">weighted_mannwhitney</span><span class="op">(</span><span class="va">c12hour</span> <span class="op">~</span> <span class="va">c161sex</span> <span class="op">+</span> <span class="va">weight</span>, <span class="va">efc</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Weighted Mann-Whitney-U test</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">  comparison of c12hour by c161sex</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Chisq=3.26  df=899  p-value=0.001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># weighted Chi-squared-test ----</span></span></span>
-<span class="r-in"><span><span class="fu">weighted_chisqtest</span><span class="op">(</span><span class="va">efc</span>, <span class="va">c161sex</span>, <span class="va">e16sex</span>, weights <span class="op">=</span> <span class="va">weight</span>, correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Measure of Association for Contingency Tables</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Chi-squared: 2.0566</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            Phi: 0.0479</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             df: 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        p-value: 0.152</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Observations: 895</span>
-<span class="r-in"><span><span class="fu">weighted_chisqtest</span><span class="op">(</span><span class="va">c172code</span> <span class="op">~</span> <span class="va">c161sex</span> <span class="op">+</span> <span class="va">weight</span>, <span class="va">efc</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Measure of Association for Contingency Tables</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Chi-squared: 4.8005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Cramer's V: 0.0758</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             df: 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        p-value: 0.091</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Observations: 835</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># weighted Chi-squared-test for given probabilities ----</span></span></span>
-<span class="r-in"><span><span class="fu">weighted_chisqtest</span><span class="op">(</span><span class="va">c172code</span> <span class="op">~</span> <span class="va">weight</span>, <span class="va">efc</span>, p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.33</span>, <span class="fl">.33</span>, <span class="fl">.34</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Weighted chi-squared test for given probabilities</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Chi-squared: 280.2808</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             df: 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        p-value: &lt; .001***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Observations: 908</span>
 </code></pre></div>
     </div>
   </div>

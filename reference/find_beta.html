@@ -130,21 +130,19 @@ the shape for the given input parameters.</p>
     <div id="details">
     <h2>Details</h2>
     <p>These functions can be used to find parameter for various distributions,
-to define prior probabilities for Bayesian analyses. <code>x1</code>,
-<code>p1</code>, <code>x2</code> and <code>p2</code> are parameters that describe two
-quantiles. Given this knowledge, the distribution parameters are
-returned. <br><br>
-Use <code>find_beta2()</code>, if the known parameters are, e.g. a prevalence
-rate or similar probability, and its standard deviation or confidence
-interval. In this case. <code>x</code> should be a probability,
-for example a prevalence rate of a certain event. <code>se</code> then
-needs to be the standard error for this probability. Alternatively,
-<code>ci</code> can be specified, which should indicate the upper limit
-of the confidence interval od the probability (prevalence rate) <code>x</code>.
-If the number of events out of a total number of trials is known
-(e.g. 12 heads out of 30 coin tosses), <code>x</code> can also be the number
-of observed events, while <code>n</code> indicates the total amount of trials
-(in the above example, the function call would be: <code>find_beta2(x = 12, n = 30)</code>).</p>
+to define prior probabilities for Bayesian analyses. <code>x1</code>, <code>p1</code>, <code>x2</code> and
+<code>p2</code> are parameters that describe two quantiles. Given this knowledge, the
+distribution parameters are returned.</p>
+<p>Use <code>find_beta2()</code>, if the known parameters are, e.g. a prevalence rate or
+similar probability, and its standard deviation or confidence interval. In
+this case. <code>x</code> should be a probability, for example a prevalence rate of a
+certain event. <code>se</code> then needs to be the standard error for this probability.
+Alternatively, <code>ci</code> can be specified, which should indicate the upper limit
+of the confidence interval od the probability (prevalence rate) <code>x</code>. If the
+number of events out of a total number of trials is known (e.g. 12 heads out
+of 30 coin tosses), <code>x</code> can also be the number of observed events, while <code>n</code>
+indicates the total amount of trials (in the above example, the function
+call would be: <code>find_beta2(x = 12, n = 30)</code>).</p>
     </div>
     <div id="references">
     <h2>References</h2>

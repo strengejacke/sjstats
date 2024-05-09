@@ -83,8 +83,8 @@
 <div class="section level3">
 <h3 id="general-0-18-1">General<a class="anchor" aria-label="anchor" href="#general-0-18-1"></a></h3>
 <ul><li><p>Improved printing for <code><a href="../reference/weighted_sd.html">weighted_mannwhitney()</a></code>.</p></li>
-<li><p><code><a href="../reference/weighted_sd.html">weighted_chisqtest()</a></code> can now be computed for given probabilities.</p></li>
-<li><p><code><a href="../reference/means_by_group.html">means_by_group()</a></code> now contains numeric values in the returned data frame. Value formatting is completely done insight the print-method.</p></li>
+<li><p><code>weighted_chisqtest()</code> can now be computed for given probabilities.</p></li>
+<li><p><code><a href="../reference/r2.html">means_by_group()</a></code> now contains numeric values in the returned data frame. Value formatting is completely done insight the print-method.</p></li>
 <li><p>Updated imports.</p></li>
 </ul></div>
 </div>
@@ -127,9 +127,9 @@
 <li>
 <code>svy_md()</code> was renamed to <code><a href="../reference/weighted_sd.html">survey_median()</a></code>.</li>
 <li>
-<code><a href="../reference/mwu.html">mannwhitney()</a></code> is an alias for <code><a href="../reference/mwu.html">mwu()</a></code>.</li>
+<code>mannwhitney()</code> is an alias for <code>mwu()</code>.</li>
 <li>
-<code><a href="../reference/means_by_group.html">means_by_group()</a></code> is an alias for <code><a href="../reference/means_by_group.html">grpmean()</a></code>.</li>
+<code><a href="../reference/r2.html">means_by_group()</a></code> is an alias for <code>grpmean()</code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -308,7 +308,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-17-5">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-17-5"></a></h3>
 <ul><li>In some situations, <code><a href="../reference/samplesize_mixed.html">smpsize_lmm()</a></code> could result in negative sample-size recommendations. This was fixed, and a warning is now shown indicating that the parameters for the power-calculation should be modified.</li>
-<li>Fixed issue with wrong calculated effect size <code>r</code> in <code><a href="../reference/mwu.html">mwu()</a></code> if group-factor contained more than two groups.</li>
+<li>Fixed issue with wrong calculated effect size <code>r</code> in <code>mwu()</code> if group-factor contained more than two groups.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -405,13 +405,13 @@
 <li>
 <code>tidy_stan()</code> supports printing simplex parameters of monotonic effects of <strong>brms</strong> models.</li>
 <li>
-<code><a href="../reference/means_by_group.html">grpmean()</a></code> and <code><a href="../reference/mwu.html">mwu()</a></code> get a <code>file</code> and <code>encoding</code> argument, to save the HTML output as file.</li>
+<code>grpmean()</code> and <code>mwu()</code> get a <code>file</code> and <code>encoding</code> argument, to save the HTML output as file.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-17-2">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-17-2"></a></h3>
 <ul><li>
 <code>model_frame()</code> now correctly names the offset-columns for terms provided as <code>offset</code>-argument (i.e. for models where the offset was not specified inside the formula).</li>
-<li>Fixed issue with <code>weights</code>-argument in <code><a href="../reference/means_by_group.html">grpmean()</a></code> when variable name was passed as character vector.</li>
+<li>Fixed issue with <code>weights</code>-argument in <code>grpmean()</code> when variable name was passed as character vector.</li>
 <li>Fixed issue with <code><a href="../reference/r2.html">r2()</a></code> for <strong>glmmTMB</strong> models with <code>ar1</code> random effects structure.</li>
 </ul></div>
 </div>
@@ -438,7 +438,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-17-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-17-1"></a></h3>
 <ul><li>Fixed issue with <code>model_family()</code> and <code><a href="https://easystats.github.io/insight/reference/link_inverse.html" class="external-link">link_inverse()</a></code> for models fitted with <code><a href="https://rdrr.io/pkg/pscl/man/hurdle.html" class="external-link">pscl::hurdle()</a></code> or <code><a href="https://rdrr.io/pkg/pscl/man/zeroinfl.html" class="external-link">pscl::zeroinfl()</a></code>.</li>
-<li>Fixed issue with wrong title in <code><a href="../reference/means_by_group.html">grpmean()</a></code> for grouped data frames, when grouping variable was an unlabelled factor.</li>
+<li>Fixed issue with wrong title in <code>grpmean()</code> for grouped data frames, when grouping variable was an unlabelled factor.</li>
 <li>Fix issue with <code>model_frame()</code> for <strong>coxph</strong>-models with polynomial or spline-terms.</li>
 <li>Fix issue with <code>mediation()</code> for logical variables.</li>
 </ul></div>
@@ -479,7 +479,7 @@
 <h3 id="bug-fixes-0-17-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-17-0"></a></h3>
 <ul><li>Fix issues with effect size computation for repeated-measure Anova when using bootstrapping to compute confidence intervals.</li>
 <li>
-<code><a href="../reference/means_by_group.html">grpmean()</a></code> now also adjusts the <code>n</code>-columm for weighted data.</li>
+<code>grpmean()</code> now also adjusts the <code>n</code>-columm for weighted data.</li>
 <li>
 <code><a href="../reference/r2.html">icc()</a></code>, <code>re_var()</code> and <code>get_re_var()</code> now correctly compute the random-effect-variances for models with multiple random slopes per random effect term (e.g., <code>(1 + rs1 + rs2 | grp)</code>).</li>
 <li>Fix issues in <code>tidy_stan()</code>, <code>mcse()</code>, <code>hdi()</code> and <code>n_eff()</code> for <code>stan_polr()</code>-models.</li>

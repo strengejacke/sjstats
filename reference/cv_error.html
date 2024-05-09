@@ -112,7 +112,7 @@ residuals from the test data.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`unnest()` has a new interface. See `?unnest` for details.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Try `df %&gt;% unnest(c(predicted, residuals))`, with `mutate()` if needed.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          model train.error test.error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 neg_c_7 ~ barthtot + c161sex      3.5067      3.518</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 neg_c_7 ~ barthtot + c161sex      3.5067     3.5238</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">cv_compare</span><span class="op">(</span><span class="va">efc</span>, formulas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">barthtot</span> <span class="op">+</span> <span class="va">c161sex</span>,</span></span>
@@ -126,9 +126,9 @@ residuals from the test data.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`unnest()` has a new interface. See `?unnest` for details.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Try `df %&gt;% unnest(c(predicted, residuals))`, with `mutate()` if needed.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                   model train.error test.error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          neg_c_7 ~ barthtot + c161sex      3.5066     3.5245</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 neg_c_7 ~ barthtot + c161sex + e42dep      3.4875     3.4966</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          neg_c_7 ~ barthtot + c12hour      3.5030     3.5227</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          neg_c_7 ~ barthtot + c161sex      3.5053     3.5266</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 neg_c_7 ~ barthtot + c161sex + e42dep      3.4873     3.4989</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          neg_c_7 ~ barthtot + c12hour      3.5041     3.5118</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -31,6 +31,9 @@
     <loc>/reference/bootstrap.html</loc>
   </url>
   <url>
+    <loc>/reference/chi_squared_test.html</loc>
+  </url>
+  <url>
     <loc>/reference/chisq_gof.html</loc>
   </url>
   <url>
@@ -64,13 +67,10 @@
     <loc>/reference/is_prime.html</loc>
   </url>
   <url>
-    <loc>/reference/mean_n.html</loc>
+    <loc>/reference/kruskal_wallis_test.html</loc>
   </url>
   <url>
-    <loc>/reference/means_by_group.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mwu.html</loc>
+    <loc>/reference/mann_whitney_test.html</loc>
   </url>
   <url>
     <loc>/reference/nhanes_sample.html</loc>
