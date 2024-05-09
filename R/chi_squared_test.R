@@ -192,7 +192,7 @@ print.sj_htest_chi <- function(x, ...) {
     weight_string
   ), "blue")
 
-  stat_symbol <- .format_symbols(effect_size_name)
+  stat_symbol <- .format_symbols(x$effect_size_name)
 
   # print test statistic
   cat(sprintf("  %*s: %.4f\n", l, x$statistic_name, x$statistic))
