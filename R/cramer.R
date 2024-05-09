@@ -1,53 +1,52 @@
 #' @rdname crosstable_statistics
 #' @export
-cramer <- function(tab, ...) {
-  UseMethod("cramer")
+cramers_v <- function(tab, ...) {
+  UseMethod("cramers_v")
+}
+
+#' @rdname crosstable_statistics
+#' @export
+cramer <- cramers_v
+
+#' @export
+cramers_v.table <- function(tab, ...) {
+  .cramers_v(tab)
 }
 
 
 #' @export
-cramer.table <- function(tab, ...) {
-  .cramer(tab)
-}
-
-
-#' @export
-cramer.ftable <- function(tab, ...) {
-  .cramer(tab)
+cramers_v.ftable <- function(tab, ...) {
+  .cramers_v(tab)
 }
 
 
 #' @rdname crosstable_statistics
 #' @export
-cramer.formula <- function(formula, data, ci.lvl = NULL, n = 1000, method = c("dist", "quantile"), ...) {
+cramers_v.formula <- function(formula, data, ci.lvl = NULL, n = 1000, method = c("dist", "quantile"), ...) {
   terms <- all.vars(formula)
   tab <- table(data[[terms[1]]], data[[terms[2]]])
   method <- match.arg(method)
 
   if (is.null(ci.lvl) || is.na(ci.lvl)) {
-    .cramer(tab)
+    .cramers_v(tab)
   } else {
-    ci <- data[, terms] %>%
-      sjstats::bootstrap(n) %>%
-      dplyr::mutate(
-        tables = lapply(.data$strap, function(x) {
-          dat <- as.data.frame(x)
-          table(dat[[1]], dat[[2]])
-        }),
-        cramers = sapply(.data$tables, function(x) .cramer(x))
-      ) %>%
-      dplyr::pull("cramers") %>%
-      boot_ci(ci.lvl = ci.lvl, method = method)
+    straps <- sjstats::bootstrap(data[terms], n)
+    tables <- lapply(straps$strap, function(x) {
+      dat <- as.data.frame(x)
+      table(dat[[1]], dat[[2]])
+    })
+    cramers <- sapply(tables, function(x) .cramers_v(x))
+    ci <- boot_ci(cramers, ci.lvl = ci.lvl, method = method)
 
     data_frame(
-      cramer = .cramer(tab),
+      cramer = .cramers_v(tab),
       conf.low = ci$conf.low,
       conf.high = ci$conf.high
     )
   }
 }
 
-.cramer <- function(tab) {
+.cramers_v <- function(tab) {
   # convert to flat table
   if (!inherits(tab, "ftable")) tab <- stats::ftable(tab)
   sqrt(phi(tab)^2 / min(dim(tab) - 1))

@@ -27,6 +27,6 @@ This function performs a Kruskal-Wallis rank sum test, see
 }
 \examples{
 data(efc)
-# Mann-Whitney-U-Tests for elder's age by elder's sex.
-kruskal_wallis_test(efc, "e17age", by = "e16sex")
+# Kruskal-Wallis-Test for elder's age by education
+kruskal_wallis_test(efc, "e17age", by = "c172code")
 }
