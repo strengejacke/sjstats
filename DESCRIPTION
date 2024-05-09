@@ -16,7 +16,8 @@ Description: Collection of convenient functions for common statistical computati
 License: GPL-3
 Depends:
     R (>= 3.4),
-    utils
+    utils,
+    stats
 Imports:
     bayestestR,
     datawizard,

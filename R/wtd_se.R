@@ -28,9 +28,6 @@
 #'    levels giving the corresponding groups and \code{rhs2} a variable with weights.
 #' @param y Optional, bare (unquoted) variable name, or a character vector with
 #'    the variable name.
-#' @param grp Bare (unquoted) name of the cross-classifying variable, where
-#'    \code{x} is grouped into the categories represented by \code{grp},
-#'    or a character vector with the variable name.
 #' @param mu A number indicating the true value of the mean (or difference in
 #'   means if you are performing a two sample test).
 #' @param ci.lvl Confidence level of the interval.

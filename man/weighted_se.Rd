@@ -81,10 +81,6 @@ means if you are performing a two sample test).}
 \item{alternative}{A character string specifying the alternative hypothesis,
 must be one of \code{"two.sided"} (default), \code{"greater"} or
 \code{"less"}. You can specify just the initial letter.}
-
-\item{grp}{Bare (unquoted) name of the cross-classifying variable, where
-\code{x} is grouped into the categories represented by \code{grp},
-or a character vector with the variable name.}
 }
 \value{
 The weighted (test) statistic.
