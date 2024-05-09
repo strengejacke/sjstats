@@ -47,7 +47,7 @@ anova_stats <- function(model, digits = 3) {
   cohens.f <- sqrt(partial.etasq / (1 - partial.etasq))
 
   # bind as data frame
-  anov_stat <- rbinb(
+  anov_stat <- rbind(
     data.frame(etasq, partial.etasq, omegasq, partial.omegasq, epsilonsq, cohens.f),
     data.frame(etasq = NA, partial.etasq = NA, omegasq = NA, partial.omegasq = NA, epsilonsq = NA, cohens.f = NA)
   )
