@@ -129,9 +129,8 @@
 #'   spread_coef(models, append = FALSE) %>%
 #'   # compute the CI for all bootstrapped model coefficients
 #'   boot_ci()}
-#' @importFrom rlang .data
 #' @export
-boot_ci <- function(data, ..., method = c("dist", "quantile"), ci.lvl = .95) {
+boot_ci <- function(data, ..., method = c("dist", "quantile"), ci.lvl = 0.95) {
   # match arguments
   method <- match.arg(method)
 
@@ -144,9 +143,9 @@ boot_ci <- function(data, ..., method = c("dist", "quantile"), ci.lvl = .95) {
     # bootstrap values or quantiles
     if (method == "dist") {
       # get bootstrap standard error
-      bootse <- stats::qt((1 + ci.lvl) / 2, df = length(x) - 1) * stats::sd(x, na.rm = T)
+      bootse <- stats::qt((1 + ci.lvl) / 2, df = length(x) - 1) * stats::sd(x, na.rm = TRUE)
       # lower and upper confidence interval
-      ci <- mean(x, na.rm = T) + c(-bootse, bootse)
+      ci <- mean(x, na.rm = TRUE) + c(-bootse, bootse)
     } else {
       # CI based on quantiles of bootstrapped values
       ci <- stats::quantile(x, probs = c((1 - ci.lvl) / 2, (1 + ci.lvl) / 2))
@@ -168,7 +167,7 @@ boot_se <- function(data, ...) {
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
     # get bootstrap standard error
-    se <- stats::sd(x, na.rm = T)
+    se <- stats::sd(x, na.rm = TRUE)
     names(se) <- "std.err"
     se
   }))
@@ -185,7 +184,7 @@ boot_p <- function(data, ...) {
   # compute confidence intervalls for all values
   transform_boot_result(lapply(.dat, function(x) {
     # compute t-statistic
-    t.stat <- mean(x, na.rm = T) / stats::sd(x, na.rm = T)
+    t.stat <- mean(x, na.rm = TRUE) / stats::sd(x, na.rm = TRUE)
     # compute p-value
     p <- 2 * stats::pt(abs(t.stat), df = length(x) - 1, lower.tail = FALSE)
     names(p) <- "p.value"
@@ -202,7 +201,7 @@ boot_est <- function(data, ...) {
 
   # compute mean for all values (= bootstrapped estimate)
   transform_boot_result(lapply(.dat, function(x) {
-    estimate <- mean(x, na.rm = T)
+    estimate <- mean(x, na.rm = TRUE)
     names(estimate) <- "estimate"
     estimate
   }))

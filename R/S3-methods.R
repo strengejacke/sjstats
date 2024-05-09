@@ -297,13 +297,10 @@ print.sj_resample <- function(x, ...) {
 
 
 
-#' @importFrom tidyr gather
-#' @importFrom rlang .data
 #' @export
 plot.sj_inequ_trend <- function(x, ...) {
-  if (!requireNamespace("ggplot2", quietly = TRUE)) {
-    stop("Package `ggplot2` required for plotting inequalities trends.", call. = F)
-  }
+  .data <- NULL
+  insight::check_if_installed("ggplot2")
 
   # add time indicator
   x$data$zeit <- seq_len(nrow(x$data))
@@ -312,14 +309,11 @@ plot.sj_inequ_trend <- function(x, ...) {
   gather.cols1 <- colnames(x$data)[!colnames(x$data) %in% c("zeit", "lo", "hi")]
   gather.cols2 <- colnames(x$data)[!colnames(x$data) %in% c("zeit", "rr", "rd")]
 
-  key_col <- "grp"
-  value_col <- "y"
-
   # gather data to plot rr and rd
-  dat1 <- tidyr::gather(x$data, !! key_col, !! value_col, !! gather.cols1)
+  dat1 <- datawizard::data_to_long(x$data, select = gather.cols1, names_to = "grp", values_to = "y")
 
   # gather data for raw prevalences
-  dat2 <- tidyr::gather(x$data, !! key_col, !! value_col, !! gather.cols2)
+  dat2 <- datawizard::data_to_long(x$data, select = gather.cols1, names_to = "grp", values_to = "y")
 
   # Proper value names, for facet labels
   dat1$grp[dat1$grp == "rr"] <- "Rate Ratios"
@@ -327,7 +321,7 @@ plot.sj_inequ_trend <- function(x, ...) {
 
   # plot prevalences
   gp1 <- ggplot2::ggplot(dat2, ggplot2::aes_string(x = "zeit", y = "y", colour = "grp")) +
-    ggplot2::geom_smooth(method = "loess", se = F) +
+    ggplot2::geom_smooth(method = "loess", se = FALSE) +
     ggplot2::labs(title = "Prevalance Rates for Lower and Higher SES Groups",
                   y = "Prevalances", x = "Time", colour = "") +
     ggplot2::scale_color_manual(values = c("darkblue", "darkred"), labels = c("High SES", "Low SES"))
@@ -335,11 +329,11 @@ plot.sj_inequ_trend <- function(x, ...) {
 
   # plot rr and rd
   gp2 <- ggplot2::ggplot(dat1, ggplot2::aes_string(x = "zeit", y = "y", colour = "grp")) +
-    ggplot2::geom_smooth(method = "loess", se = F) +
+    ggplot2::geom_smooth(method = "loess", se = FALSE) +
     ggplot2::facet_wrap(~grp, ncol = 1, scales = "free") +
     ggplot2::labs(title = "Proportional Change in Rate Ratios and Rate Differences",
                   colour = NULL, y = NULL, x = "Time") +
-    ggplot2::guides(colour = FALSE)
+    ggplot2::guides(colour = "none")
 
   suppressMessages(graphics::plot(gp1))
   suppressMessages(graphics::plot(gp2))

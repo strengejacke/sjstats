@@ -29,7 +29,7 @@
 #' }
 #' @export
 anova_stats <- function(model, digits = 3) {
-  insight::check_if_installed("pwr")
+  insight::check_if_installed(c("pwr", "sjmisc"))
 
   # .Deprecated("effectsize::effectsize()", package = "effectsize")
 
@@ -47,39 +47,38 @@ anova_stats <- function(model, digits = 3) {
   cohens.f <- sqrt(partial.etasq / (1 - partial.etasq))
 
   # bind as data frame
-  as <- dplyr::bind_rows(
+  anov_stat <- rbinb(
     data.frame(etasq, partial.etasq, omegasq, partial.omegasq, epsilonsq, cohens.f),
     data.frame(etasq = NA, partial.etasq = NA, omegasq = NA, partial.omegasq = NA, epsilonsq = NA, cohens.f = NA)
-  ) %>%
-    sjmisc::add_columns(aov.sum)
+  )
+  anov_stat <- sjmisc::add_columns(anov_stat, aov.sum)
 
   # get nr of terms
-  nt <- nrow(as) - 1
+  nt <- nrow(anov_stat) - 1
 
   # finally, compute power
-  power <- tryCatch(
-    {
-      c(
-        pwr::pwr.f2.test(u = as$df[1:nt], v = as$df[nrow(as)], f2 = as$cohens.f[1:nt]^2)[["power"]],
-        NA
-      )
-    },
+  as_power <- tryCatch(
+    c(
+      pwr::pwr.f2.test(
+        u = anov_stat$df[1:nt],
+        v = anov_stat$df[nrow(anov_stat)],
+        f2 = anov_stat$cohens.f[1:nt]^2
+      )[["power"]],
+      NA
+    ),
     error = function(x) {
       NA
     }
   )
 
-  out <- sjmisc::add_variables(as, power = power) %>%
-    sjmisc::round_num(digits = digits) %>%
-    as.data.frame()
+  out <- sjmisc::add_variables(anov_stat, power = as_power)
+  out <- as.data.frame(sjmisc::round_num(out, digits = digits))
 
   class(out) <- c("sj_anova_stat", class(out))
   out
 }
 
 
-
-#' @importFrom rlang .data
 aov_stat <- function(model, type) {
   aov.sum <- aov_stat_summary(model)
   aov.res <- aov_stat_core(aov.sum, type)
@@ -165,36 +164,35 @@ aov_stat_core <- function(aov.sum, type) {
   N <- sum(aov.sum[["df"]]) + 1
 
 
-  if (type == "omega") {
+  aovstat <- switch(type,
     # compute omega squared for each model term
-    aovstat <- purrr::map_dbl(1:n_terms, function(x) {
+    omega = unlist(lapply(1:n_terms, function(x) {
       ss.term <- aov.sum[["sumsq"]][x]
       df.term <- aov.sum[["df"]][x]
       (ss.term - df.term * meansq.resid) / (ss.total + meansq.resid)
-    })
-  } else if (type == "pomega") {
+    })),
     # compute partial omega squared for each model term
-    aovstat <- purrr::map_dbl(1:n_terms, function(x) {
+    pomega = unlist(lapply(1:n_terms, function(x) {
       df.term <- aov.sum[["df"]][x]
       meansq.term <- aov.sum[["meansq"]][x]
       (df.term * (meansq.term - meansq.resid)) / (df.term * meansq.term + (N - df.term) * meansq.resid)
-    })
-  } else if (type == "epsilon") {
+    })),
     # compute epsilon squared for each model term
-    aovstat <- purrr::map_dbl(1:n_terms, function(x) {
+    epsilon = unlist(lapply(1:n_terms, function(x) {
       ss.term <- aov.sum[["sumsq"]][x]
       df.term <- aov.sum[["df"]][x]
       (ss.term - df.term * meansq.resid) / ss.total
-    })
-  } else if (type == "eta") {
+    })),
     # compute eta squared for each model term
-    aovstat <-
-      purrr::map_dbl(1:n_terms, ~ aov.sum[["sumsq"]][.x] / sum(aov.sum[["sumsq"]]))
-  } else if (type %in% c("cohens.f", "peta")) {
+    eta = unlist(lapply(1:n_terms, function(x) {
+      aov.sum[["sumsq"]][x] / sum(aov.sum[["sumsq"]])
+    })),
     # compute partial eta squared for each model term
-    aovstat <-
-      purrr::map_dbl(1:n_terms, ~ aov.sum[["sumsq"]][.x] / (aov.sum[["sumsq"]][.x] + ss.resid))
-  }
+    cohens.f = ,
+    peta = unlist(lapply(1:n_terms, function(x) {
+      aov.sum[["sumsq"]][x] / (aov.sum[["sumsq"]][x] + ss.resid)
+    }))
+  )
 
   # compute Cohen's F
   if (type == "cohens.f") aovstat <- sqrt(aovstat / (1 - aovstat))

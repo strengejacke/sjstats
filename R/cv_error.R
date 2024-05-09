@@ -35,7 +35,6 @@
 #' @importFrom dplyr mutate summarise
 #' @importFrom purrr map map2 map_dbl map_df
 #' @importFrom tidyr unnest
-#' @importFrom rlang .data
 #' @importFrom insight find_response
 #' @importFrom performance rmse
 #' @export

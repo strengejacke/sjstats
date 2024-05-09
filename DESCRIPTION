@@ -30,7 +30,6 @@ Imports:
     parameters,
     performance,
     purrr,
-    rlang,
     sjlabelled,
     sjmisc,
     stats,
