@@ -78,7 +78,8 @@ prop <- function(data, ..., weights = NULL, na.rm = TRUE, digits = 4) {
   if (!is.data.frame(data)) {
     insight::format_error("`data` needs to be a data frame.")
   }
-  .proportions(data, dots = list(...), weight.by = weights, na.rm, digits, multi_logical = FALSE)
+  dots <- match.call(expand.dots = FALSE)[["..."]]
+  .proportions(data, dots = dots, weight.by = weights, na.rm, digits, multi_logical = FALSE)
 }
 
 
@@ -89,7 +90,8 @@ props <- function(data, ..., na.rm = TRUE, digits = 4) {
   if (!is.data.frame(data)) {
     insight::format_error("`data` needs to be a data frame.")
   }
-  .proportions(data, dots = list(...), NULL, na.rm, digits, multi_logical = TRUE)
+  dots <- match.call(expand.dots = FALSE)[["..."]]
+  .proportions(data, dots = dots, NULL, na.rm, digits, multi_logical = TRUE)
 }
 
 
