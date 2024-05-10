@@ -104,7 +104,7 @@ t_test <- function(data,
 
 # Mann-Whitney-Test for two groups --------------------------------------------
 
-.calculate_ttest <- function(dv, grp, mu, alternative, group_labels, data_name) {
+.calculate_ttest <- function(dv, grp, mu, paired, alternative, group_labels, data_name) {
   insight::check_if_installed("effectsize")
   # prepare data
   if (is.null(grp)) {
