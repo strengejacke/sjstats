@@ -33,6 +33,7 @@ reference:
   - chi_squared_test
   - kruskal_wallis_test
   - mann_whitney_test
+  - t_test
   - var_pop
 
 - title: "Tools for Regression Models"

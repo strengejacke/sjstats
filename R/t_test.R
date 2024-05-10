@@ -177,6 +177,8 @@ t_test <- function(data,
 .calculate_weighted_ttest <- function(dv, grp, mu, paired, alternative, weights, group_labels, data_name) {
   insight::check_if_installed("datawizard")
   if (is.null(grp)) {
+    dat <- stats::na.omit(data.frame(dv, weights))
+    colnames(dat) <- c("y", "w")
     x_values <- dv
     x_weights <- weights
     y_values <- NULL
