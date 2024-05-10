@@ -30,7 +30,6 @@ Suggests:
     broom,
     car,
     coin,
-    dplyr,
     ggplot2,
     graphics,
     MASS,
