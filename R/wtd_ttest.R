@@ -109,12 +109,12 @@ weighted_ttest_helper <- function(xv, yv, wx, wy, nx, ny, mu, paired, alternativ
   }
 
   mu.x.w <- stats::weighted.mean(xv, wx)
-  var.x.w <- weighted_sd(xv, wx)^2
+  var.x.w <- datawizard::weighted_sd(xv, wx)^2
   se.x <- sqrt(var.x.w / nx)
 
   if (!is.null(yv)) {
     mu.y.w <- stats::weighted.mean(yv, wy)
-    var.y.w <- weighted_sd(yv, wy)^2
+    var.y.w <- datawizard::weighted_sd(yv, wy)^2
     se.y <- sqrt(var.y.w / ny)
 
     se <- sqrt(se.x^2 + se.y^2)

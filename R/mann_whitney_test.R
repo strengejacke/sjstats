@@ -1,9 +1,9 @@
-#' @title Mann-Whitney-Test
+#' @title Mann-Whitney test
 #' @name mann_whitney_test
-#' @description This function performs a Mann-Whitney-Test (or Wilcoxon rank
+#' @description This function performs a Mann-Whitney test (or Wilcoxon rank
 #' sum test for _unpaired_ samples.
 #'
-#' A Mann-Whitney-Test is a non-parametric test for the null hypothesis that two
+#' A Mann-Whitney test is a non-parametric test for the null hypothesis that two
 #' independent samples have identical continuous distributions. It can be used
 #' when the two continuous variables are not normally distributed.
 #'
@@ -42,7 +42,7 @@
 #'
 #' @examples
 #' data(efc)
-#' # Mann-Whitney-U-Tests for elder's age by elder's sex.
+#' # Mann-Whitney-U tests for elder's age by elder's sex.
 #' mann_whitney_test(efc, "e17age", by = "e16sex")
 #'
 #' # when data is in wide-format, specify all relevant continuous
@@ -238,66 +238,10 @@ mann_whitney_test <- function(data,
 
 # helper ----------------------------------------------------------------------
 
-.misspelled_string <- function(source, searchterm, default_message = NULL) {
-  if (is.null(searchterm) || length(searchterm) < 1) {
-    return(default_message)
-  }
-  # used for many matches
-  more_found <- ""
-  # init default
-  msg <- ""
-  # remove matching strings
-  same <- intersect(source, searchterm)
-  searchterm <- setdiff(searchterm, same)
-  source <- setdiff(source, same)
-  # guess the misspelled string
-  possible_strings <- unlist(lapply(searchterm, function(s) {
-    source[.fuzzy_grep(source, s)] # nolint
-  }), use.names = FALSE)
-  if (length(possible_strings)) {
-    msg <- "Did you mean "
-    if (length(possible_strings) > 1) {
-      # make sure we don't print dozens of alternatives for larger data frames
-      if (length(possible_strings) > 5) {
-        more_found <- sprintf(
-          " We even found %i more possible matches, not shown here.",
-          length(possible_strings) - 5
-        )
-        possible_strings <- possible_strings[1:5]
-      }
-      msg <- paste0(msg, "one of ", toString(paste0("\"", possible_strings, "\"")))
-    } else {
-      msg <- paste0(msg, "\"", possible_strings, "\"")
-    }
-    msg <- paste0(msg, "?", more_found)
-  } else {
-    msg <- default_message
-  }
-  # no double white space
-  insight::trim_ws(msg)
-}
-
-
-.fuzzy_grep <- function(x, pattern, precision = NULL) {
-  if (is.null(precision)) {
-    precision <- round(nchar(pattern) / 3)
-  }
-  if (precision > nchar(pattern)) {
-    return(NULL)
-  }
-  p <- sprintf("(%s){~%i}", pattern, precision)
-  grep(pattern = p, x = x, ignore.case = FALSE)
-}
-
-
 .sanitize_htest_input <- function(data, select, by, weights) {
   # check if arguments are NULL
   if (is.null(select)) {
     insight::format_error("Argument `select` is missing.")
-  }
-  # `by` is only allowed to be NULL if `select` specifies more than one variable
-  if (is.null(by) && length(select) == 1) {
-    insight::format_error("Arguments `by` is missing.")
   }
 
   # check if arguments have correct length or are of correct type
