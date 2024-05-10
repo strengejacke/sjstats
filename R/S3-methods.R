@@ -103,6 +103,7 @@ model.frame.svyglm.zip <- function(formula, ...) {
 }
 
 
+#' @importFrom stats family
 #' @export
 family.svyglm.nb <- function(object, ...) {
   attr(object, "family", exact = TRUE)
