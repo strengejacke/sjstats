@@ -61,7 +61,6 @@ distribution.
 }
 }
 \examples{
-\dontshow{if (getRversion() >= "4.2.0") (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(efc)
 bs <- bootstrap(efc, 100)
 
@@ -93,7 +92,6 @@ boot_ci(bs, c("dependency", "gender"), method = "q")
 mean(bs$dependency)
 boot_est(bs$dependency)
 coef(fit)[2]
-\dontshow{\}) # examplesIf}
 }
 \references{
 Carpenter J, Bithell J. Bootstrap confdence intervals: when, which, what? A practical guide for medical statisticians. Statist. Med. 2000; 19:1141-1164

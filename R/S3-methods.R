@@ -63,8 +63,8 @@ tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
     estimate = round(est, digits),
     irr = round(exp(est), digits),
     std.error = round(se, digits),
-    conf.low = round(exp(est - stats::qnorm(.975) * se), digits),
-    conf.high = round(exp(est + stats::qnorm(.975) * se), digits),
+    conf.low = round(exp(est - stats::qnorm(0.975) * se), digits),
+    conf.high = round(exp(est + stats::qnorm(0.975) * se), digits),
     p.value = round(2 * stats::pnorm(abs(est / se), lower.tail = FALSE), digits)
   )
 }
@@ -265,9 +265,13 @@ print.sj_resample <- function(x, ...) {
   else
     id10 <- x$id
 
-  cat("<", paste0("id's of resample [", prettyNum(nrow(x$data), big.mark = ","), " x ",
-                  prettyNum(ncol(x$data), big.mark = ","), "]"), "> ",
-      paste(id10, collapse = ", "), "\n", sep = "")
+  cat("<", paste0(
+    "id's of resample [", prettyNum(nrow(x$data), big.mark = ","), " x ",
+    prettyNum(ncol(x$data), big.mark = ","), "]"
+  ), "> ",
+  toString(id10), "\n",
+  sep = ""
+  )
 }
 
 

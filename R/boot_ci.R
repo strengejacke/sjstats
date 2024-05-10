@@ -42,7 +42,7 @@
 #'
 #' @seealso []`bootstrap()`] to generate nonparametric bootstrap samples.
 #'
-#' @examplesIf getRversion() >= "4.2.0"
+#' @examples
 #' data(efc)
 #' bs <- bootstrap(efc, 100)
 #'

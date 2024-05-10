@@ -27,17 +27,14 @@ Imports:
     performance
 Suggests:
     brms,
-    broom,
     car,
     coin,
     ggplot2,
-    graphics,
     MASS,
     pscl,
     pwr,
     sjPlot,
     survey,
-    rstan,
     testthat
 URL: https://strengejacke.github.io/sjstats/
 BugReports: https://github.com/strengejacke/sjstats/issues

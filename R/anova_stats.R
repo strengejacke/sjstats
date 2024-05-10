@@ -15,7 +15,7 @@
 #'   \cr \cr
 #'   Tippey K, Longnecker MT (2016): An Ad Hoc Method for Computing Pseudo-Effect Size for Mixed Model.
 #'
-#' @examples
+#' @examplesIf requireNamespace("car")
 #' # load sample data
 #' data(efc)
 #'
@@ -24,9 +24,7 @@
 #'   c12hour ~ as.factor(e42dep) + as.factor(c172code) + c160age,
 #'   data = efc
 #' )
-#' \dontrun{
 #' anova_stats(car::Anova(fit, type = 2))
-#' }
 #' @export
 anova_stats <- function(model, digits = 3) {
   insight::check_if_installed("pwr")
@@ -97,7 +95,7 @@ aov_stat <- function(model, type) {
 
 
 aov_stat_summary <- function(model) {
-  insight::check_if_installed("broom")
+  insight::check_if_installed("parameters")
   # check if we have a mixed model
   mm <- is_merMod(model)
   ori.model <- model
@@ -108,7 +106,7 @@ aov_stat_summary <- function(model) {
     model <- stats::anova(model)
 
   # get summary table
-  aov.sum <- as.data.frame(broom::tidy(model))
+  aov.sum <- insight::standardize_names(as.data.frame(parameters::model_parameters(model)), style = "broom")
 
   # for mixed models, add information on residuals
   if (mm) {
