@@ -101,10 +101,10 @@ t_test <- function(data,
   # prepare data
   if (is.null(grp)) {
     tdat <- data.frame(dv)
-    t_formula <- as.formula("dv ~ 1")
+    t_formula <- stats::as.formula("dv ~ 1")
   } else {
     tdat <- data.frame(dv, grp)
-    t_formula <- as.formula("dv ~ grp")
+    t_formula <- stats::as.formula("dv ~ grp")
   }
   # perfom wilcox test
   htest <- stats::t.test(
@@ -230,9 +230,9 @@ t_test <- function(data,
   # effect size
   dat$y <- dat$y * dat$w
   if (is.null(y_values)) {
-    t_formula <- as.formula("y ~ 1")
+    t_formula <- stats::as.formula("y ~ 1")
   } else {
-    t_formula <- as.formula("y ~ g")
+    t_formula <- stats::as.formula("y ~ g")
   }
 
   if (nrow(dat) > 20) {
