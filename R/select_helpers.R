@@ -31,5 +31,5 @@ obj_has_name <- function(x, name) {
 }
 
 obj_has_rownames <- function(x) {
-  !identical(as.character(1:nrow(x)), rownames(x))
+  !identical(as.character(seq_len(nrow(x))), rownames(x))
 }

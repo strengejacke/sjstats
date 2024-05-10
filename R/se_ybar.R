@@ -12,11 +12,9 @@
 #'
 #' @references Gelman A, Hill J. 2007. Data analysis using regression and multilevel/hierarchical models. Cambridge, New York: Cambridge University Press
 #'
-#' @examples
-#' if (require("lme4")) {
-#'   fit <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
-#'   se_ybar(fit)
-#' }
+#' @examplesIf require("lme4")
+#' fit <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
+#' se_ybar(fit)
 #' @export
 se_ybar <- function(fit) {
   # get model icc

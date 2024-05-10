@@ -8,7 +8,7 @@
 #' @param data A data frame that containts the vector with bootstrapped
 #' estimates, or directly the vector (see 'Examples').
 #' @param ci.lvl Numeric, the level of the confidence intervals.
-#' @param Select Optional, unquoted names of variables (as character vector)
+#' @param select Optional, unquoted names of variables (as character vector)
 #' with bootstrapped estimates. Required, if either `data` is a data frame
 #' (and no vector), and only selected variables from `data` should be processed.
 #' @param method Character vector, indicating if confidence intervals should be

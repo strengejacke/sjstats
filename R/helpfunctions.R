@@ -33,7 +33,7 @@ get_glm_family <- function(fit) {
   # create logical for family
   binom_fam <- fitfam %in% c("binomial", "quasibinomial")
   poisson_fam <- fitfam %in% c("poisson", "quasipoisson") ||
-    grepl("negative binomial", fitfram, ignore.case = TRUE, fixed = TRUE)
+    grepl("negative binomial", fitfam, ignore.case = TRUE, fixed = TRUE)
 
   list(is_bin = binom_fam, is_pois = poisson_fam, is_logit = logit_link)
 }

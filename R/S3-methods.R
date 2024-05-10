@@ -24,7 +24,6 @@ print.svyglm.nb <- function(x, se = c("robust", "model"), digits = 4, ...) {
 }
 
 
-
 #' @export
 print.svyglm.zip <- function(x, se = c("robust", "model"), digits = 4, ...) {
   se <- match.arg(se)
@@ -45,7 +44,6 @@ print.svyglm.zip <- function(x, se = c("robust", "model"), digits = 4, ...) {
 
   message(sprintf("\nShowing %s standard errors on link-scale (untransformed).", se))
 }
-
 
 
 tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
@@ -70,7 +68,6 @@ tidy_svyglm.nb <- function(x, digits = 4, v_se = c("robust", "model")) {
 }
 
 
-
 tidy_svyglm.zip <- function(x, digits = 4, v_se = c("robust", "model")) {
   v_se <- match.arg(v_se)
 
@@ -92,13 +89,11 @@ tidy_svyglm.zip <- function(x, digits = 4, v_se = c("robust", "model")) {
 }
 
 
-
 #' @export
 model.frame.svyglm.nb <- function(formula, ...) {
   pred <- attr(formula, "nb.terms", exact = TRUE)
   formula$design$variables[intersect(pred, colnames(formula$design$variables))]
 }
-
 
 
 #' @export
@@ -108,12 +103,10 @@ model.frame.svyglm.zip <- function(formula, ...) {
 }
 
 
-#' @importFrom stats family
 #' @export
 family.svyglm.nb <- function(object, ...) {
   attr(object, "family", exact = TRUE)
 }
-
 
 
 #' @export
@@ -122,12 +115,10 @@ formula.svyglm.nb <- function(x, ...) {
 }
 
 
-
 #' @export
 formula.svyglm.zip <- function(x, ...) {
   attr(x, "zip.formula", exact = TRUE)
 }
-
 
 
 #' @export
@@ -213,48 +204,15 @@ deviance.svyglm.nb <- function(object, ...) {
 
 
 #' @export
-print.tidy_stan <- function(x, ...) {
-  insight::print_color("\nSummary Statistics of Stan-Model\n\n", "blue")
-  digits <- attr(x, "digits")
-
-  for (i in x) {
-    insight::print_color(paste0("# ", attr(i, "main_title")), "blue")
-    cat(" ")
-    insight::print_color(attr(i, "sub_title"), "red")
-    cat("\n\n")
-    rem <- which(colnames(i) %in% c("Parameter", "Group", "Response", "Function"))
-    i <- i[, -rem]
-    colnames(i)[1] <- "Parameter"
-    i$ESS <- as.character(i$ESS)
-    i$pd <- sprintf("%.1f%%", 100 * i$pd)
-    i[] <- lapply(i, function(.j) {
-      if (is.numeric(.j)) .j <- sprintf("%.*f", digits, .j)
-      .j
-    })
-    print.data.frame(i, quote = FALSE, row.names = FALSE)
-    cat("\n\n")
-  }
-}
-
-
-clean_term_name <- function(x) {
-  x <- insight::trim_ws(x)
-  format(x, width = max(nchar(x)))
-}
-
-
-#' @export
 as.integer.sj_resample <- function(x, ...) {
   x$id
 }
-
 
 
 #' @export
 as.data.frame.sj_resample <- function(x, ...) {
   x$data[x$id, , drop = FALSE]
 }
-
 
 
 #' @export
@@ -273,7 +231,6 @@ print.sj_resample <- function(x, ...) {
   sep = ""
   )
 }
-
 
 
 #' @export
@@ -320,78 +277,6 @@ plot.sj_inequ_trend <- function(x, ...) {
 
 
 #' @export
-print.sj_mwu <- function(x, ...) {
-  insight::print_color("\n# Mann-Whitney-U-Test\n\n", "blue")
-  # get data
-  .dat <- x$df
-  # print to console
-  for (i in seq_len(nrow(.dat))) {
-    # get value labels
-    l1 <- .dat[i, "grp1.label"]
-    l2 <- .dat[i, "grp2.label"]
-    # do we have value labels?
-    if (!is.null(l1) && !is.na(l1) %% !is.null(l2) && !is.na(l2)) {
-      insight::print_color(
-        sprintf(
-          "Groups %i = %s (n = %i) | %i = %s (n = %i):\n",
-          .dat[i, "grp1"],
-          l1,
-          .dat[i, "grp1.n"],
-          .dat[i, "grp2"],
-          l2,
-          .dat[i, "grp2.n"]
-        ), "cyan"
-      )
-    } else {
-      insight::print_color(
-        sprintf("Groups (%i|%i), n = %i/%i:\n",
-                .dat[i, "grp1"], .dat[i, "grp2"],
-                .dat[i, "grp1.n"], .dat[i, "grp2.n"]),
-        "cyan"
-      )
-    }
-
-    cat(sprintf(
-      "  U = %.3f, W = %.3f, %s, Z = %.3f\n",
-      .dat[i, "u"], .dat[i, "w"], insight::format_p(.dat[i, "p"]), .dat[i, "z"]
-    ))
-
-    string_es <- "effect-size r"
-    string_r <- sprintf("%.3f", .dat[i, "r"])
-    string_group1 <- sprintf("rank-mean(%i)", .dat[i, "grp1"])
-    string_group2 <- sprintf("rank-mean(%i)", .dat[i, "grp2"])
-    string_rm1 <- sprintf("%.2f", .dat[i, "rank.mean.grp1"])
-    string_rm2 <- sprintf("%.2f", .dat[i, "rank.mean.grp2"])
-
-    space1 <- max(nchar(c(string_es, string_group1, string_group2)))
-    space2 <- max(nchar(c(string_r, string_rm1, string_rm2)))
-
-    cat(
-      sprintf("  %*s = %*s\n", space1, string_es, space2 + 1, string_r),
-      sprintf(" %*s = %*s\n", space1, string_group1, space2, string_rm1),
-      sprintf(" %*s = %*s\n\n", space1, string_group2, space2, string_rm2)
-    )
-  }
-
-  # if we have more than 2 groups, also perfom kruskal-wallis-test
-  if (length(unique(stats::na.omit(x$data$grp))) > 2) {
-    insight::print_color("# Kruskal-Wallis-Test\n\n", "blue")
-    kw <- stats::kruskal.test(x$data$dv, x$data$grp)
-    cat(sprintf("chi-squared = %.3f\n", kw$statistic))
-    cat(sprintf("df = %i\n", kw$parameter))
-    cat(paste(insight::format_p(kw$p.value, stars = TRUE), "\n"))
-  }
-}
-
-
-#' @export
-print.sj_outliers <- function(x, ...) {
-  print(x$result, ...)
-}
-
-
-#' @importFrom insight format_p
-#' @export
 print.sj_xtab_stat <- function(x, ...) {
   # get length of method name, to align output
   l <- max(nchar(c(x$method, x$stat.name, "p-value", "Observations")))
@@ -411,63 +296,6 @@ print.sj_xtab_stat <- function(x, ...) {
   cat(sprintf("  %*s: %g\n", l, "df", x$df))
   cat(sprintf("  %*s: %s\n", l, "p-value", insight::format_p(x$p.value, stars = TRUE, name = NULL)))
   cat(sprintf("  %*s: %g\n", l, "Observations", x$n_obs))
-}
-
-
-
-#' @export
-print.sj_xtab_stat2 <- function(x, ...) {
-  # get length of method name, to align output
-  l <- max(nchar(c(x$stat.name, "p-value", "Observations")))
-
-  # headline
-  insight::print_color(paste0("\n# ", x$method, "\n\n"), "blue")
-
-  # print test statistic
-  cat(sprintf("  %*s: %.4f\n", l, x$stat.name, x$estimate))
-  cat(sprintf("  %*s: %g\n", l, "df", x$df))
-  cat(sprintf("  %*s: %s\n", l, "p-value", insight::format_p(x$p.value, stars = TRUE, name = NULL)))
-  cat(sprintf("  %*s: %g\n", l, "Observations", x$n_obs))
-}
-
-
-
-#' @export
-print.sj_grpmean <- function(x, ...) {
-  cat("\n")
-  print_grpmean(x, digits = attributes(x)$digits, ...)
-}
-
-
-#' @importFrom insight export_table print_color format_value format_p
-print_grpmean <- function(x, digits = NULL, ...) {
-  # headline
-  insight::print_color(sprintf(
-    "# Grouped Means for %s by %s\n\n",
-    attr(x, "dv.label", exact = TRUE),
-    attr(x, "grp.label", exact = TRUE)
-  ), "blue")
-
-  if (is.null(digits)) {
-    digits <- 2
-  }
-
-  x$mean <- insight::format_value(x$mean, digits = digits)
-  x$std.dev <- insight::format_value(x$std.dev, digits = digits)
-  x$std.error <- insight::format_value(x$std.error, digits = digits)
-  x$p.value <- insight::format_p(x$p.value, name = NULL)
-
-  colnames(x) <- c("Category", "Mean", "N", "SD", "SE", "p")
-  cat(insight::export_table(x))
-
-  # statistics
-  cat(sprintf(
-    "\nAnova: R2=%.3f; adj.R2=%.3f; F=%.3f; p=%.3f\n",
-    attr(x, "r2", exact = TRUE),
-    attr(x, "adj.r2", exact = TRUE),
-    attr(x, "fstat", exact = TRUE),
-    attr(x, "p.value", exact = TRUE)
-  ))
 }
 
 
@@ -539,18 +367,6 @@ print.sj_ttest <- function(x, ...) {
 
 
 #' @export
-print.sj_wmwu <- function(x, ...) {
-  insight::print_color(sprintf("\n# %s\n", x$method), "blue")
-
-  group <- attr(x, "group.name", exact = TRUE)
-  xn <- attr(x, "x.name", exact = TRUE)
-
-  insight::print_color(sprintf("\n  comparison of %s by %s\n", xn, group), "cyan")
-  cat(sprintf("  Chisq=%.2f  df=%i  p-value=%.3f\n\n", x$statistic, as.integer(x$parameter), x$p.value))
-}
-
-
-#' @export
 print.sj_wcor <- function(x, ...) {
   insight::print_color(sprintf("\nWeighted %s\n\n", x$method), "blue")
 
@@ -565,7 +381,6 @@ print.sj_wcor <- function(x, ...) {
 }
 
 
-#' @importFrom insight export_table
 #' @export
 print.sj_anova_stat <- function(x, digits = 3, ...) {
   x$p.value <- insight::format_p(x$p.value, name = NULL)

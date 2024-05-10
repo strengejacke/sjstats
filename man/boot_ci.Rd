@@ -19,16 +19,16 @@ boot_est(data, select = NULL)
 \item{data}{A data frame that containts the vector with bootstrapped
 estimates, or directly the vector (see 'Examples').}
 
+\item{select}{Optional, unquoted names of variables (as character vector)
+with bootstrapped estimates. Required, if either \code{data} is a data frame
+(and no vector), and only selected variables from \code{data} should be processed.}
+
 \item{method}{Character vector, indicating if confidence intervals should be
 based on bootstrap standard error, multiplied by the value of the quantile
 function of the t-distribution (default), or on sample quantiles of the
 bootstrapped values. See 'Details' in \code{boot_ci()}. May be abbreviated.}
 
 \item{ci.lvl}{Numeric, the level of the confidence intervals.}
-
-\item{Select}{Optional, unquoted names of variables (as character vector)
-with bootstrapped estimates. Required, if either \code{data} is a data frame
-(and no vector), and only selected variables from \code{data} should be processed.}
 }
 \value{
 A data frame with either bootstrap estimate, standard error, the
