@@ -16,15 +16,15 @@ Description: Collection of convenient functions for common statistical computati
 License: GPL-3
 Depends:
     R (>= 3.4),
-    utils,
-    stats
+    utils
 Imports:
     bayestestR,
     datawizard,
     effectsize,
     insight,
     parameters,
-    performance
+    performance,
+    stats
 Suggests:
     brms,
     car,
