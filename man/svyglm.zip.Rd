@@ -4,7 +4,7 @@
 \alias{svyglm.zip}
 \title{Survey-weighted zero-inflated Poisson model}
 \usage{
-\method{svyglm}{zip}(formula, design, ...)
+svyglm.zip(formula, design, ...)
 }
 \arguments{
 \item{formula}{An object of class \code{formula}, i.e. a symbolic description
