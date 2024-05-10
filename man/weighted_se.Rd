@@ -89,10 +89,8 @@ a variable in a survey-design (see [\verb{survey::svydesign()]}).
 \code{weighted_correlation()} computes a weighted correlation for a two-sided
 alternative hypothesis.
 }
-\note{
-\code{weighted_chisq()} is a convenient wrapper for \verb{\link{crosstable_statistics`}. For a weighted one-way Anova, use }means_by_group()\code{with}weights\verb{-argument. \\cr \\cr }weighted_ttest()` assumes unequal variance between the two groups.
-}
 \examples{
+data(efc)
 weighted_se(efc[, 1:3], runif(n = nrow(efc)))
 
 # survey_median ----

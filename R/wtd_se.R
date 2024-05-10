@@ -31,13 +31,8 @@
 #'
 #' @return The weighted (test) statistic.
 #'
-#' @note `weighted_chisq()` is a convenient wrapper for `\link{crosstable_statistics`}.
-#'    For a weighted one-way Anova, use `means_by_group()` with
-#'    `weights`-argument.
-#'    \cr \cr
-#'    `weighted_ttest()` assumes unequal variance between the two groups.
-#'
 #' @examples
+#' data(efc)
 #' weighted_se(efc[, 1:3], runif(n = nrow(efc)))
 #'
 #' # survey_median ----

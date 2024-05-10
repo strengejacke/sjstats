@@ -4,7 +4,7 @@
 \alias{svyglm.nb}
 \title{Survey-weighted negative binomial generalised linear model}
 \usage{
-svyglm.nb(formula, design, ...)
+\method{svyglm}{nb}(formula, design, ...)
 }
 \arguments{
 \item{formula}{An object of class \code{formula}, i.e. a symbolic description
