@@ -47,18 +47,15 @@ weighted_ttest(data, ...)
 )
 }
 \arguments{
-\item{x}{(Numeric) vector or a data frame. For \code{survey_median()}, \code{weighted_ttest()},
-\code{weighted_mannwhitney()} and \code{weighted_chisqtest()} the bare (unquoted) variable
-name, or a character vector with the variable name.}
+\item{x}{(Numeric) vector or a data frame. For \code{survey_median()} or \code{weighted_ttest()},
+the bare (unquoted) variable name, or a character vector with the variable name.}
 
 \item{design}{An object of class \code{\link[survey]{svydesign}}, providing
 a specification of the survey design.}
 
 \item{data}{A data frame.}
 
-\item{...}{For \code{weighted_ttest()} and \code{weighted_mannwhitney()}, currently not used.
-For \code{weighted_chisqtest()}, further arguments passed down to
-\code{\link[stats]{chisq.test}}.}
+\item{...}{Currently not used.}
 
 \item{y}{Optional, bare (unquoted) variable name, or a character vector with
 the variable name.}
@@ -79,42 +76,23 @@ means if you are performing a two sample test).}
 \item{paired}{Logical, whether to compute a paired t-test.}
 
 \item{alternative}{A character string specifying the alternative hypothesis,
-must be one of \code{"two.sided"} (default), \code{"greater"} or
-\code{"less"}. You can specify just the initial letter.}
+must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}. You can
+specify just the initial letter.}
 }
 \value{
 The weighted (test) statistic.
 }
 \description{
-\strong{Weighted statistics for variables}
-\cr \cr
-\code{weighted_sd()}, \code{weighted_se()}, \code{weighted_mean()} and \code{weighted_median()}
-compute weighted standard deviation, standard error, mean or median for a
-variable or for all variables of a data frame. \code{survey_median()} computes the
-median for a variable in a survey-design (see \code{\link[survey]{svydesign}}).
-\code{weighted_correlation()} computes a weighted correlation for a two-sided alternative
-hypothesis.
-\cr \cr
-\strong{Weighted tests}
-\cr \cr
-\code{weighted_ttest()} computes a weighted t-test, while \code{weighted_mannwhitney()}
-computes a weighted Mann-Whitney-U test or a Kruskal-Wallis test
-(for more than two groups). \code{weighted_ranktest()} is an alias for \code{weighted_mannwhitney()}.
-\code{weighted_chisqtest()} computes a weighted Chi-squared test for contingency tables.
+\code{weighted_se()} computes weighted standard errors of a variable or for
+all variables of a data frame. \code{survey_median()} computes the median for
+a variable in a survey-design (see [\verb{survey::svydesign()]}).
+\code{weighted_correlation()} computes a weighted correlation for a two-sided
+alternative hypothesis.
 }
 \note{
-\code{weighted_chisq()} is a convenient wrapper for \code{\link{crosstable_statistics}}.
-For a weighted one-way Anova, use \code{means_by_group()} with
-\code{weights}-argument.
-\cr \cr
-\code{weighted_ttest()} assumes unequal variance between the two groups.
+\code{weighted_chisq()} is a convenient wrapper for \verb{\link{crosstable_statistics`}. For a weighted one-way Anova, use }means_by_group()\code{with}weights\verb{-argument. \\cr \\cr }weighted_ttest()` assumes unequal variance between the two groups.
 }
 \examples{
-# weighted sd and se ----
-weighted_sd(rnorm(n = 100, mean = 3), runif(n = 100))
-
-data(efc)
-weighted_sd(efc[, 1:3], runif(n = nrow(efc)))
 weighted_se(efc[, 1:3], runif(n = nrow(efc)))
 
 # survey_median ----
