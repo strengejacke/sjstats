@@ -1,27 +1,18 @@
 #' @title Student's t test
 #' @name t_test
-#' @description This function performs a Mann-Whitney-Test (or Wilcoxon rank
-#' sum test for _unpaired_ samples.
+#' @description This function performs a Student's t test for two independent
+#' samples, for paired samples, or for one sample.
 #'
-#' A Mann-Whitney-Test is a non-parametric test for the null hypothesis that two
-#' independent samples have identical continuous distributions. It can be used
-#' when the two continuous variables are not normally distributed.
-#'
-#' @param data A data frame.
-#' @param select Name of the dependent variable (as string) to be used for the
-#' test. `select` can also be a character vector, specifying the names of
-#' multiple continuous variables. In this case, `by` is ignored and variables
-#' specified in `select` are used to compute the test. This can be useful if
-#' the data is in wide-format and no grouping variable is available.
-#' @param by Name of the grouping variable to be used for the test. If `by` is
-#' not a factor, it will be coerced to a factor. For `chi_squared_test()`, if
-#' `probabilities` is provided, `by` must be `NULL`.
-#' @param weights Name of an (optional) weighting variable to be used for the test.
+#' @inheritParams mann_whitney_test
 #' @param alternative A character string specifying the alternative hypothesis,
 #' must be one of `"two.sided"` (default), `"greater"` or `"less"`. See `?t.test()`.
+#' @param paired Logical, whether to compute a paired t-test.
+#' @param mu The hypothesized difference in means. If `paired = TRUE`, or for a
+#' one-sample t-test, this is the hypothesized true mean value. If
+#' `paired = FALSE`, this is the hypothesized difference in means between the
+#' two groups.
 #'
-#' @return A data frame with test results. The function returns p and Z-values
-#' as well as effect size r and group-rank-means.
+#' @return A data frame with test results.
 #'
 #' @examples
 #' data(efc)
@@ -90,6 +81,7 @@ t_test <- function(data,
     }
     data_name <- paste(select, "by", by)
   } else {
+    grp <- NULL
     group_labels <- select
     data_name <- select
   }
@@ -161,13 +153,16 @@ t_test <- function(data,
     stringsAsFactors = FALSE
   )
   class(out) <- c("sj_htest_t", "data.frame")
-  attr(out, "means") <- stats::setNames(htest$estimate, c("Mean Group 1", "Mean Group 2"))
-  attr(out, "n_groups") <- stats::setNames(
-    c(as.numeric(table(grp))),
-    c("N Group 1", "N Group 2")
-  )
+  attr(out, "means") <- as.numeric(htest$estimate)
   attr(out, "paired") <- isTRUE(paired)
+  attr(out, "one_sample") <- is.null(grp)
   attr(out, "weighted") <- FALSE
+  if (!is.null(gpr)) {
+    attr(out, "n_groups") <- stats::setNames(
+      c(as.numeric(table(grp))),
+      c("N Group 1", "N Group 2")
+    )
+  }
   out
 }
 
@@ -209,29 +204,59 @@ t_test <- function(data,
     se <- se_x
     dof <- length(x_values) - 1
     test_statistic <- (mu_x - mu) / se
-    estimate <- stats::setNames(mu_x, if (paired) "mean of the differences" else "mean of x")
+    estimate <- mu_x
     method <- if (paired) "Paired t-test" else "One Sample t-test"
   } else {
     # unpaired t-test
     mu_y <- stats::weighted.mean(y_values, y_weights)
     var_y <- datawizard::weighted_sd(y_values, y_weights)^2
     se_y <- sqrt(var_y / length(y_values))
-
     se <- sqrt(se_x^2 + se_y^2)
     dof <- se^4 / (se_x^4 / (length(x_values) - 1) + se_y^4 / (length(y_values) - 1))
     test_statistic <- (mu_x - mu_y - mu) / se
-
     estimate <- c(mu_x, mu_y)
-    names(estimate) <- c("mean of x", "mean of y")
     method <- "Two-Sample t-test"
   }
 
+  # p-values
   if (alternative == "less") {
     pval <- stats::pt(test_statistic, dof)
   } else if (alternative == "greater") {
     pval <- stats::pt(test_statistic, dof, lower.tail = FALSE)
   } else {
     pval <- 2 * stats::pt(-abs(test_statistic), dof)
+  }
+
+  # effect size
+  dat$y <- dat$y * dat$w
+  if (is.null(y_values)) {
+    t_formula <- as.formula("y ~ 1")
+  } else {
+    t_formula <- as.formula("y ~ g")
+  }
+
+  if (nrow(dat) > 20) {
+    effect_size <- stats::setNames(
+      effectsize::cohens_d(
+        t_formula,
+        data = dat,
+        alternative = alternative,
+        mu = mu,
+        paired = FALSE
+      )$Cohens_d,
+      "Cohens_d"
+    )
+  } else {
+    effect_size <- stats::setNames(
+      effectsize::hedges_g(
+        t_formula,
+        data = dat,
+        alternative = alternative,
+        mu = mu,
+        paired = FALSE
+      )$Hedges_g,
+      "Hedges_g"
+    )
   }
 
   # return result
@@ -248,12 +273,15 @@ t_test <- function(data,
     stringsAsFactors = FALSE
   )
   class(out) <- c("sj_htest_t", "data.frame")
-  attr(out, "means") <- stats::setNames(htest$estimate, c("Mean Group 1", "Mean Group 2"))
-  attr(out, "n_groups") <- stats::setNames(
-    c(as.numeric(table(grp))),
-    c("N Group 1", "N Group 2")
-  )
+  attr(out, "means") <- estimate
+  if (!is.null(grp)) {
+    attr(out, "n_groups") <- stats::setNames(
+      as.numeric(as.table(round(stats::xtabs(dat[[3]] ~ dat[[1]] + dat[[2]])))),
+      c("N Group 1", "N Group 2")
+    )
+  }
   attr(out, "paired") <- isTRUE(paired)
+  attr(out, "one_sample") <- is.null(y_values) && !isTRUE(paired)
   attr(out, "weighted") <- FALSE
   out
 }
@@ -265,9 +293,11 @@ t_test <- function(data,
 print.sj_htest_t <- function(x, ...) {
   # fetch attributes
   group_labels <- attributes(x)$group_labels
-  rank_means <- attributes(x)$rank_means
+  means <- attributes(x)$means
   n_groups <- attributes(x)$n_groups
   weighted <- attributes(x)$weighted
+  paired <- isTRUE(attributes(x)$paired)
+  one_sample <- isTRUE(attributes(x)$one_sample)
 
   if (weighted) {
     weight_string <- " (weighted)"
@@ -279,23 +309,50 @@ print.sj_htest_t <- function(x, ...) {
   group_labels <- format(group_labels)
 
   # header
-  insight::print_color(sprintf("# Mann-Whitney test%s\n\n", weight_string), "blue")
+  insight::print_color(sprintf("# %s%s\n\n", x$method, weight_string), "blue")
 
   # group-1-info
-  insight::print_color(
-    sprintf(
-      "  Group 1: %s (n = %i, rank mean = %s)\n",
-      group_labels[1], n_groups[1], insight::format_value(rank_means[1], protect_integers = TRUE)
-    ), "cyan"
-  )
+  if (is.null(n_groups)) {
+    insight::print_color(
+      sprintf(
+        "  Group 1: %s (mean = %s)\n",
+        group_labels[1], insight::format_value(means[1], protect_integers = TRUE)
+      ), "cyan"
+    )
+  } else {
+    insight::print_color(
+      sprintf(
+        "  Group 1: %s (n = %i, mean = %s)\n",
+        group_labels[1], n_groups[1], insight::format_value(means[1], protect_integers = TRUE)
+      ), "cyan"
+    )
+  }
 
   # group-2-info
-  insight::print_color(
-    sprintf(
-      "  Group 2: %s (n = %i, rank mean = %s)\n",
-      group_labels[2], n_groups[2], insight::format_value(rank_means[2], protect_integers = TRUE)
-    ), "cyan"
-  )
+  if (length(group_labels) > 1) {
+    if (is.null(n_groups)) {
+      insight::print_color(
+        sprintf(
+          "  Group 2: %s (mean = %s)\n",
+          group_labels[2], insight::format_value(means[2], protect_integers = TRUE)
+        ), "cyan"
+      )
+    } else {
+      insight::print_color(
+        sprintf(
+          "  Group 2: %s (n = %i, rank mean = %s)\n",
+          group_labels[2], n_groups[2], insight::format_value(means[2], protect_integers = TRUE)
+        ), "cyan"
+      )
+    }
+  }
 
-  cat(sprintf("\n  r = %.3f, Z = %.3f, %s\n\n", x$r, x$z, insight::format_p(x$p)))
+  cat(sprintf(
+    "\n  t = %.3f, %s = %.3f, df = %.1f, %s\n\n",
+    x$statistic,
+    x$effect_size_name,
+    x$effect_size,
+    x$df,
+    insight::format_p(x$p)
+  ))
 }

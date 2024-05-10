@@ -29,20 +29,22 @@ not a factor, it will be coerced to a factor. For \code{chi_squared_test()}, if
 
 \item{weights}{Name of an (optional) weighting variable to be used for the test.}
 
+\item{paired}{Logical, whether to compute a paired t-test.}
+
+\item{mu}{The hypothesized difference in means. If \code{paired = TRUE}, or for a
+one-sample t-test, this is the hypothesized true mean value. If
+\code{paired = FALSE}, this is the hypothesized difference in means between the
+two groups.}
+
 \item{alternative}{A character string specifying the alternative hypothesis,
 must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}. See \code{?t.test()}.}
 }
 \value{
-A data frame with test results. The function returns p and Z-values
-as well as effect size r and group-rank-means.
+A data frame with test results.
 }
 \description{
-This function performs a Mann-Whitney-Test (or Wilcoxon rank
-sum test for \emph{unpaired} samples.
-
-A Mann-Whitney-Test is a non-parametric test for the null hypothesis that two
-independent samples have identical continuous distributions. It can be used
-when the two continuous variables are not normally distributed.
+This function performs a Student's t test for two independent
+samples, for paired samples, or for one sample.
 }
 \examples{
 data(efc)
