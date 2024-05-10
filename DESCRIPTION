@@ -26,9 +26,7 @@ Imports:
     lme4,
     parameters,
     performance,
-    purrr,
-    sjmisc,
-    tidyr
+    purrr
 Suggests:
     brms,
     broom,

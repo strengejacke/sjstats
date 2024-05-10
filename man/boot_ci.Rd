@@ -9,34 +9,31 @@
 \usage{
 boot_ci(data, select = NULL, method = c("dist", "quantile"), ci.lvl = 0.95)
 
-boot_se(data, ...)
+boot_se(data, select = NULL)
 
-boot_p(data, ...)
+boot_p(data, select = NULL)
 
-boot_est(data, ...)
+boot_est(data, select = NULL)
 }
 \arguments{
 \item{data}{A data frame that containts the vector with bootstrapped
 estimates, or directly the vector (see 'Examples').}
 
 \item{method}{Character vector, indicating if confidence intervals should be
-based on bootstrap standard error, multiplied by the value of the
-quantile function of the t-distribution (default), or on sample
-quantiles of the bootstrapped values. See 'Details' in \code{boot_ci()}.
-May be abbreviated.}
+based on bootstrap standard error, multiplied by the value of the quantile
+function of the t-distribution (default), or on sample quantiles of the
+bootstrapped values. See 'Details' in \code{boot_ci()}. May be abbreviated.}
 
 \item{ci.lvl}{Numeric, the level of the confidence intervals.}
 
-\item{...}{Optional, unquoted names of variables with bootstrapped estimates.
-Required, if either \code{data} is a data frame (and no vector),
-and only selected variables from \code{data} should be processed.
-You may also use functions like \code{:} or tidyselect's
-\code{select_helpers()}.}
+\item{Select}{Optional, unquoted names of variables (as character vector)
+with bootstrapped estimates. Required, if either \code{data} is a data frame
+(and no vector), and only selected variables from \code{data} should be processed.}
 }
 \value{
-A data frame with either bootstrap estimate,
-standard error, the lower and upper confidence intervals or the
-p-value for all bootstrapped estimates.
+A data frame with either bootstrap estimate, standard error, the
+lower and upper confidence intervals or the p-value for all bootstrapped
+estimates.
 }
 \description{
 Compute nonparametric bootstrap estimate, standard error,
@@ -44,37 +41,27 @@ confidence intervals and p-value for a vector of bootstrap
 replicate estimates.
 }
 \details{
-The methods require one or more vectors of bootstrap replicate estimates
-as input.
+The methods require one or more vectors of bootstrap replicate
+estimates as input.
 \itemize{
-\item{
-\code{boot_est()} returns the bootstrapped estimate, simply by
-computing the mean value of all bootstrap estimates.
-}
-\item{
-\code{boot_se()} computes the nonparametric bootstrap standard
-error by calculating the standard deviation of the input vector.
-}
-\item{
-The mean value of the input vector and its standard error is used
-by \code{boot_ci()} to calculate the lower and upper confidence
-interval, assuming a t-distribution of bootstrap estimate replicates
-(for \code{method = "dist"}, the default, which is
-\code{mean(x) +/- qt(.975, df = length(x) - 1) * sd(x)}); for
-\code{method = "quantile"}, 95\\% sample quantiles are used to compute
-the confidence intervals (\code{quantile(x, probs = c(.025, .975))}).
-Use \code{ci.lvl} to change the level for the confidence interval.
-}
-\item{
-P-values from \code{boot_p()} are also based on t-statistics,
-assuming normal distribution.
-}
+\item \code{boot_est()}: returns the bootstrapped estimate, simply by computing
+the mean value of all bootstrap estimates.
+\item \code{boot_se()}: computes the nonparametric bootstrap standard error by
+calculating the standard deviation of the input vector.
+\item The mean value of the input vector and its standard error is used by
+\code{boot_ci()} to calculate the lower and upper confidence interval,
+assuming a t-distribution of bootstrap estimate replicates (for
+\code{method = "dist"}, the default, which is
+\verb{mean(x) +/- qt(.975, df = length(x) - 1) * sd(x)}); for
+\code{method = "quantile"}, 95\\% sample quantiles are used to compute the
+confidence intervals (\code{quantile(x, probs = c(0.025, 0.975))}). Use
+\code{ci.lvl} to change the level for the confidence interval.
+\item P-values from \code{boot_p()} are also based on t-statistics, assuming normal
+distribution.
 }
 }
 \examples{
-\dontshow{if (getRversion() >= "4.2.0" && requireNamespace("dplyr", quietly = TRUE) && requireNamespace("purrr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-library(dplyr)
-library(purrr)
+\dontshow{if (getRversion() >= "4.2.0") (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(efc)
 bs <- bootstrap(efc, 100)
 
@@ -106,55 +93,11 @@ boot_ci(bs, c("dependency", "gender"), method = "q")
 mean(bs$dependency)
 boot_est(bs$dependency)
 coef(fit)[2]
-
-
-# bootstrap() and boot_ci() work fine within pipe-chains
-efc |>
-  bootstrap(100) |>
-  mutate(
-    models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex, data = .x)),
-    dependency = map_dbl(models, ~coef(.x)[2])
-  ) |>
-  boot_ci(dependency)
-
-# check p-value
-boot_p(bs$gender)
-summary(fit)$coefficients[3, ]
-
-\dontrun{
-# 'spread_coef()' from the 'sjmisc'-package makes it easy to generate
-# bootstrapped statistics like confidence intervals or p-values
-library(dplyr)
-library(sjmisc)
-efc |>
-  # generate bootstrap replicates
-  bootstrap(100) |>
-  # apply lm to all bootstrapped data sets
-  mutate(
-    models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex + c172code, data = .x))
-  ) |>
-  # spread model coefficient for all 100 models
-  spread_coef(models) |>
-  # compute the CI for all bootstrapped model coefficients
-  boot_ci(e42dep, c161sex, c172code)
-
-# or...
-efc |>
-  # generate bootstrap replicates
-  bootstrap(100) |>
-  # apply lm to all bootstrapped data sets
-  mutate(
-    models = map(strap, ~lm(neg_c_7 ~ e42dep + c161sex + c172code, data = .x))
-  ) |>
-  # spread model coefficient for all 100 models
-  spread_coef(models, append = FALSE) |>
-  # compute the CI for all bootstrapped model coefficients
-  boot_ci()}
 \dontshow{\}) # examplesIf}
 }
 \references{
 Carpenter J, Bithell J. Bootstrap confdence intervals: when, which, what? A practical guide for medical statisticians. Statist. Med. 2000; 19:1141-1164
 }
 \seealso{
-\code{\link{bootstrap}} to generate nonparametric bootstrap samples.
+[]\code{bootstrap()}] to generate nonparametric bootstrap samples.
 }

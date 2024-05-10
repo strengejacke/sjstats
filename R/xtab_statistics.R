@@ -125,7 +125,7 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
     x2 <- gsub("\"", "", x2, fixed = TRUE)
     weights <- gsub("\"", "", weights, fixed = TRUE)
 
-    if (sjmisc::is_empty(weights) || weights == "NULL")
+    if (insight::is_empty_object(weights) || weights == "NULL")
       weights <- NULL
     else
       weights <- data[[weights]]

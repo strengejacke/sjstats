@@ -17,7 +17,6 @@ is_stan_model <- function(fit) {
 }
 
 
-#' @importFrom sjmisc str_contains
 get_glm_family <- function(fit) {
   c.f <- class(fit)
 
@@ -34,7 +33,7 @@ get_glm_family <- function(fit) {
   # create logical for family
   binom_fam <- fitfam %in% c("binomial", "quasibinomial")
   poisson_fam <- fitfam %in% c("poisson", "quasipoisson") ||
-    sjmisc::str_contains(fitfam, "negative binomial", ignore.case = TRUE)
+    grepl("negative binomial", fitfram, ignore.case = TRUE, fixed = TRUE)
 
   list(is_bin = binom_fam, is_pois = poisson_fam, is_logit = logit_link)
 }
@@ -84,4 +83,9 @@ dot_names <- function(dots) unname(unlist(lapply(dots, as.character)))
     }
   )
   l10n_info()[["UTF-8"]] && ((win_os && getRversion() >= "4.2") || (!win_os && getRversion() >= "4.0"))
+}
+
+
+.is_pseudo_numeric <- function(x) {
+  (is.character(x) && !anyNA(suppressWarnings(as.numeric(stats::na.omit(x[nzchar(x, keepNA = TRUE)]))))) || (is.factor(x) && !anyNA(suppressWarnings(as.numeric(levels(x))))) # nolint
 }

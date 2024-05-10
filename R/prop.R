@@ -160,19 +160,16 @@ get_proportion <- function(x, data, weight.by, na.rm, digits) {
   if (!is.null(weight.by)) f <- weight(f, weights = weight.by)
 
   # get proportions
-  if (x.parts[2] == "==")
-    dummy <- f == v
-  else if (x.parts[2] == "!=")
-    dummy <- f != v
-  else if (x.parts[2] == "<")
-    dummy <- f < v
-  else if (x.parts[2] == ">")
-    dummy <- f > v
-  else
-    dummy <- f == v
+  dummy <- switch(x.parts[2],
+    "==" = f == v,
+    "!=" = f != v,
+    "<" = f < v,
+    ">" = f > v,
+    f == v
+  )
 
   # remove missings?
-  if (na.rm) dummy <- na.omit(dummy)
+  if (na.rm) dummy <- stats::na.omit(dummy)
 
   # get proportion
   round(sum(dummy, na.rm = TRUE) / length(dummy), digits = digits)
@@ -184,7 +181,7 @@ get_multiple_proportion <- function(x, data, na.rm, digits) {
   dummy <- with(data, eval(parse(text = deparse(x))))
 
   # remove missings?
-  if (na.rm) dummy <- na.omit(dummy)
+  if (na.rm) dummy <- stats::na.omit(dummy)
 
   # get proportion
   round(sum(dummy, na.rm = TRUE) / length(dummy), digits = digits)

@@ -51,7 +51,7 @@ weighted_correlation.formula <- function(formula, data, ci.lvl = 0.95, ...) {
 
   # get data
   dat <- suppressMessages(data[vars])
-  dat <- na.omit(dat)
+  dat <- stats::na.omit(dat)
 
   xv <- dat[[vars[1]]]
   yv <- dat[[vars[2]]]

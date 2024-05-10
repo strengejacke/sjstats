@@ -5,7 +5,6 @@ if (.runThisTest) {
   if (suppressWarnings(
     require("testthat") &&
     require("sjstats") &&
-    require("sjmisc") &&
     require("brms")
   )) {
     context("sjstats, autoprior")

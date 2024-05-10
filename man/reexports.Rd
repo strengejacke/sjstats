@@ -3,7 +3,6 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
-\alias{typical_value}
 \alias{mse}
 \alias{rmse}
 \alias{ci}
@@ -26,7 +25,5 @@ below to see their documentation.
   \item{insight}{\code{\link[insight]{link_inverse}}}
 
   \item{performance}{\code{\link[performance:performance_mse]{mse}}, \code{\link[performance:performance_rmse]{rmse}}}
-
-  \item{sjmisc}{\code{\link[sjmisc]{typical_value}}}
 }}
 

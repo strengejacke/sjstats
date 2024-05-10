@@ -8,8 +8,9 @@ weighted_ttest <- function(data, ...) {
 #' @export
 weighted_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...) {
 
-  if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
-    stop("'ci.lvl' must be a single number between 0 and 1")
+  if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1)) {
+    insight::format_error("'ci.lvl' must be a single number between 0 and 1")
+  }
 
   alternative <- match.arg(alternative)
 
@@ -29,9 +30,9 @@ weighted_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = 
 
   # get data
   dat <- suppressMessages(data[vars])
-  dat <- na.omit(dat)
+  dat <- stats::na.omit(dat)
 
-  if (sjmisc::is_empty(dat) || nrow(dat) == 1) {
+  if (insight::is_empty_object(dat) || nrow(dat) == 1) {
     insight::format_alert("Too less data to compute t-test.")
     return(NULL)
   }
@@ -54,8 +55,9 @@ weighted_ttest.default <- function(data, x, y = NULL, weights, mu = 0, paired = 
 #' @export
 weighted_ttest.formula <- function(formula, data, mu = 0, paired = FALSE, ci.lvl = 0.95, alternative = c("two.sided", "less", "greater"), ...) {
 
-  if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
-    stop("'ci.lvl' must be a single number between 0 and 1")
+  if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1)) {
+    insight::format_error("'ci.lvl' must be a single number between 0 and 1")
+  }
 
   alternative <- match.arg(alternative)
 
@@ -66,7 +68,7 @@ weighted_ttest.formula <- function(formula, data, mu = 0, paired = FALSE, ci.lvl
   if (is.factor(g))
     grps <- levels(g)
   else
-    grps <- na.omit(sort(unique(g)))
+    grps <- stats::na.omit(sort(unique(g)))
 
   if (length(grps) > 2)
     stop("Grouping factor has more than two levels.")

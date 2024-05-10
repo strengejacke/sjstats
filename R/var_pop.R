@@ -24,13 +24,13 @@
 #' sd_pop(efc$c12hour)
 #' @export
 var_pop <- function(x) {
-  insight::check_if_installed(c("sjmisc", "datawizard"))
+  insight::check_if_installed("datawizard")
   # check for categorical
   if (is.factor(x)) {
     # only allow numeric factors
-    if (!sjmisc::is_num_fac(x)) {
-      warning("`x` must be numeric vector or a factor with numeric levels.", call. = F)
-      return(NA)
+
+    if (!.is_pseudo_numeric(x)) {
+      insight::format_error("`x` must be numeric vector or a factor with numeric levels.")
     }
     # convert factor to numeric
     x <- datawizard::to_numeric(x, dummy_factors = FALSE)

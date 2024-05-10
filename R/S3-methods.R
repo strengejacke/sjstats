@@ -134,7 +134,7 @@ formula.svyglm.zip <- function(x, ...) {
 predict.svyglm.nb <- function(object, newdata = NULL,
                               type = c("link", "response", "terms"),
                               se.fit = FALSE, dispersion = NULL, terms = NULL,
-                              na.action = na.pass, ...) {
+                              na.action = stats::na.pass, ...) {
   insight::check_if_installed(c("survey", "MASS"))
 
   fnb <- MASS::glm.nb(
@@ -238,8 +238,7 @@ print.tidy_stan <- function(x, ...) {
 
 
 clean_term_name <- function(x) {
-  insight::check_if_installed("sjmisc")
-  x <- sjmisc::trim(x)
+  x <- insight::trim_ws(x)
   format(x, width = max(nchar(x)))
 }
 

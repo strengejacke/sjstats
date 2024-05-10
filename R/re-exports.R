@@ -1,7 +1,3 @@
-#' @importFrom sjmisc typical_value
-#' @export
-sjmisc::typical_value
-
 #' @importFrom performance mse
 #' @export
 performance::mse

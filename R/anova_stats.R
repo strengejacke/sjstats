@@ -29,7 +29,7 @@
 #' }
 #' @export
 anova_stats <- function(model, digits = 3) {
-  insight::check_if_installed(c("pwr", "sjmisc"))
+  insight::check_if_installed("pwr")
 
   # .Deprecated("effectsize::effectsize()", package = "effectsize")
 
@@ -51,7 +51,7 @@ anova_stats <- function(model, digits = 3) {
     data.frame(etasq, partial.etasq, omegasq, partial.omegasq, epsilonsq, cohens.f),
     data.frame(etasq = NA, partial.etasq = NA, omegasq = NA, partial.omegasq = NA, epsilonsq = NA, cohens.f = NA)
   )
-  anov_stat <- sjmisc::add_columns(anov_stat, aov.sum)
+  anov_stat <- cbind(anov_stat, data.frame(aov.sum))
 
   # get nr of terms
   nt <- nrow(anov_stat) - 1
@@ -71,8 +71,14 @@ anova_stats <- function(model, digits = 3) {
     }
   )
 
-  out <- sjmisc::add_variables(anov_stat, power = as_power)
-  out <- as.data.frame(sjmisc::round_num(out, digits = digits))
+  out <- cbind(anov_stat, data.frame(power = as_power))
+  out[] <- lapply(out, function(i) {
+    if (is.numeric(i)) {
+      round(i, digits)
+    } else {
+      i
+    }
+  })
 
   class(out) <- c("sj_anova_stat", class(out))
   out
@@ -131,8 +137,14 @@ aov_stat_summary <- function(model) {
     colnames(aov.sum) <- c("term", "df", "sumsq", "meansq", "statistic", "p.value")
 
   # for car::Anova, the meansq-column might be missing, so add it manually
-  if (!obj_has_name(aov.sum, "meansq"))
-    aov.sum <- sjmisc::add_variables(aov.sum, meansq = aov.sum$sumsq / aov.sum$df, .after = "sumsq")
+  if (!obj_has_name(aov.sum, "meansq")) {
+    pos_sumsq <- which(colnames(aov.sum) == "sumsq")
+    aov.sum <- cbind(
+      aov.sum[1:pos_sumsq],
+      data.frame(meansq = aov.sum$sumsq / aov.sum$df),
+      aov.sum[(pos_sumsq + 1):ncol(aov.sum)]
+    )
+  }
 
   intercept <- .which_intercept(aov.sum$term)
   if (length(intercept) > 0) {
