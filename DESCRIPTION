@@ -23,10 +23,8 @@ Imports:
     datawizard,
     effectsize,
     insight,
-    lme4,
     parameters,
-    performance,
-    purrr
+    performance
 Suggests:
     brms,
     broom,

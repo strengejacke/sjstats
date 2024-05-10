@@ -87,7 +87,7 @@ weighted_se <- function(x, weights = NULL) {
 
 #' @export
 weighted_se.data.frame <- function(x, weights = NULL) {
-  se_result <- purrr::map_dbl(x, ~ weighted_se_helper(.x, weights = weights))
+  se_result <- vapply(x, weighted_se_helper, numeric(1), weights = weights)
   names(se_result) <- colnames(x)
 
   se_result
@@ -95,7 +95,7 @@ weighted_se.data.frame <- function(x, weights = NULL) {
 
 #' @export
 weighted_se.matrix <- function(x, weights = NULL) {
-  se_result <- purrr::map_dbl(x, ~ weighted_se_helper(.x, weights = weights))
+  se_result <- vapply(x, weighted_se_helper, numeric(1), weights = weights)
   names(se_result) <- colnames(x)
 
   se_result
