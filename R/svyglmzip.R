@@ -56,7 +56,7 @@ svyglm.zip <- function(formula, design, ...) {
   design <- stats::update(design, scaled.weights = dw / mean(dw, na.rm = TRUE))
 
   # fit ZIP model, with scaled design weights
-  mod <- pscl::zeroinfl(formula, data = stats::model.frame(design), weights = scaled.weights, ...)
+  mod <- suppressWarnings(pscl::zeroinfl(formula, data = stats::model.frame(design), weights = scaled.weights, ...))
   ff <- insight::find_formula(mod)
 
   # fit survey model, using maximum likelihood estimation
