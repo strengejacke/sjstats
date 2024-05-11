@@ -43,7 +43,9 @@ A data frame with test results.
 }
 \description{
 This function performs a Student's t test for two independent
-samples, for paired samples, or for one sample.
+samples, for paired samples, or for one sample. Unlike the underlying
+base R function \code{t.test()}, this function allows for weighted tests and
+automatically calculates effect sizes.
 }
 \examples{
 \dontshow{if (requireNamespace("effectsize")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

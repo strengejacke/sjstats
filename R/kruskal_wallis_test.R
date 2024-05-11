@@ -2,7 +2,9 @@
 #' @name kruskal_wallis_test
 #' @description This function performs a Kruskal-Wallis rank sum test, to test
 #' the null hypothesis that the population median of all of the groups are
-#' equal. The alternative is that they differ in at least one.
+#' equal. The alternative is that they differ in at least one. Unlike the
+#' underlying base R function `kruskal.test()`, this function allows for
+#' weighted tests.
 #'
 #' @inheritParams mann_whitney_test
 #'

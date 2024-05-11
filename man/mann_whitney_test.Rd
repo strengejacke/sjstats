@@ -45,7 +45,9 @@ as well as effect size r and group-rank-means.
 }
 \description{
 This function performs a Mann-Whitney test (or Wilcoxon rank
-sum test for \emph{unpaired} samples.
+sum test for \emph{unpaired} samples. Unlike the underlying base R function
+\code{wilcox.test()}, this function allows for weighted tests and automatically
+calculates effect sizes.
 
 A Mann-Whitney test is a non-parametric test for the null hypothesis that two
 independent samples have identical continuous distributions. It can be used

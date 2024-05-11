@@ -1,7 +1,9 @@
 #' @title Mann-Whitney test
 #' @name mann_whitney_test
 #' @description This function performs a Mann-Whitney test (or Wilcoxon rank
-#' sum test for _unpaired_ samples.
+#' sum test for _unpaired_ samples. Unlike the underlying base R function
+#' `wilcox.test()`, this function allows for weighted tests and automatically
+#' calculates effect sizes.
 #'
 #' A Mann-Whitney test is a non-parametric test for the null hypothesis that two
 #' independent samples have identical continuous distributions. It can be used

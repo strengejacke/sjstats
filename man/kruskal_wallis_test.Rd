@@ -27,7 +27,9 @@ A data frame with test results.
 \description{
 This function performs a Kruskal-Wallis rank sum test, to test
 the null hypothesis that the population median of all of the groups are
-equal. The alternative is that they differ in at least one.
+equal. The alternative is that they differ in at least one. Unlike the
+underlying base R function \code{kruskal.test()}, this function allows for
+weighted tests.
 }
 \details{
 The function simply is a wrapper around \code{\link[=kruskal.test]{kruskal.test()}}. The

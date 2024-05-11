@@ -1,7 +1,9 @@
 #' @title Student's t test
 #' @name t_test
 #' @description This function performs a Student's t test for two independent
-#' samples, for paired samples, or for one sample.
+#' samples, for paired samples, or for one sample. Unlike the underlying
+#' base R function `t.test()`, this function allows for weighted tests and
+#' automatically calculates effect sizes.
 #'
 #' @inheritParams mann_whitney_test
 #' @param paired Logical, whether to compute a paired t-test.
