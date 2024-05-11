@@ -30,7 +30,7 @@ wilcoxon_test <- function(data,
 
   # for paired two-sample, do groups all have same length?
   if (!is.null(by)) {
-    group_len <- as.numeric(table(data[[by]]))
+    group_len <- as.numeric(table(as.vector(data[[by]])))
     if (!all(group_len == group_len[1])) {
       insight::format_error("For paired two-sample Wilcoxon test, all groups specified in `by` must have the same length.") # nolint
     }
@@ -109,7 +109,7 @@ wilcoxon_test <- function(data,
   attr(out, "group_labels") <- group_labels
   attr(out, "method") <- "wilcoxon"
   attr(out, "weighted") <- FALSE
-  attr(out, "one_sample") <- length(group_labels) > 1
+  attr(out, "one_sample") <- length(group_labels) == 1
   class(out) <- c("sj_htest_wilcox", "data.frame")
 
   out
@@ -145,6 +145,7 @@ wilcoxon_test <- function(data,
     z = z,
     r = r,
     p = as.numeric(result$p.value),
+    mu = 0,
     alternative = "two.sided"
   )
   # two groups?
@@ -154,7 +155,7 @@ wilcoxon_test <- function(data,
 
   attr(out, "group_labels") <- group_labels
   attr(out, "weighted") <- TRUE
-  attr(out, "one_sample") <- length(group_labels) > 1
+  attr(out, "one_sample") <- length(group_labels) == 1
   attr(out, "method") <- "wilcoxon"
   class(out) <- c("sj_htest_wilcox", "data.frame")
 
@@ -168,9 +169,8 @@ wilcoxon_test <- function(data,
 print.sj_htest_wilcox <- function(x, ...) {
   # fetch attributes
   group_labels <- attributes(x)$group_labels
-  rank_means <- attributes(x)$rank_means
-  n_groups <- attributes(x)$n_groups
   weighted <- attributes(x)$weighted
+  one_sample <- attributes(x)$one_sample
 
   if (weighted) {
     weight_string <- " (weighted)"
@@ -178,27 +178,21 @@ print.sj_htest_wilcox <- function(x, ...) {
     weight_string <- ""
   }
 
+  if (one_sample) {
+    onesample_string <- "One Sample "
+  } else {
+    onesample_string <- "Paired "
+  }
+
   # same width
   group_labels <- format(group_labels)
 
   # header
-  insight::print_color(sprintf("# Mann-Whitney test%s\n\n", weight_string), "blue")
-
-  # group-1-info
-  insight::print_color(
-    sprintf(
-      "  Group 1: %s (n = %i, rank mean = %s)\n",
-      group_labels[1], n_groups[1], insight::format_value(rank_means[1], protect_integers = TRUE)
-    ), "cyan"
-  )
-
-  # group-2-info
-  insight::print_color(
-    sprintf(
-      "  Group 2: %s (n = %i, rank mean = %s)\n",
-      group_labels[2], n_groups[2], insight::format_value(rank_means[2], protect_integers = TRUE)
-    ), "cyan"
-  )
+  insight::print_color(sprintf(
+    "# %sWilcoxon signed rank test%s\n\n",
+    onesample_string,
+    weight_string
+  ), "blue")
 
   # alternative hypothesis
   if (!is.null(x$alternative) && !is.null(x$mu)) {
@@ -210,6 +204,9 @@ print.sj_htest_wilcox <- function(x, ...) {
     alt_string <- paste("true location shift is", alt_string, x$mu)
     insight::print_color(sprintf("  Alternative hypothesis: %s\n", alt_string), "cyan")
   }
-
-  cat(sprintf("\n  r = %.3f, Z = %.3f, %s\n\n", x$r, x$z, insight::format_p(x$p)))
+  if (!is.null(x[["r"]])) {
+    cat(sprintf("\n  r = %.3f, Z = %.3f, %s\n\n", x$r, x$z, insight::format_p(x$p)))
+  } else {
+    cat(sprintf("\n  V = %i, %s\n\n", round(x$v), insight::format_p(x$p)))
+  }
 }
