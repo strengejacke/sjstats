@@ -4,8 +4,6 @@
 #' samples, for paired samples, or for one sample.
 #'
 #' @inheritParams mann_whitney_test
-#' @param alternative A character string specifying the alternative hypothesis,
-#' must be one of `"two.sided"` (default), `"greater"` or `"less"`. See `?t.test()`.
 #' @param paired Logical, whether to compute a paired t-test.
 #' @param mu The hypothesized difference in means. If `paired = TRUE`, or for a
 #' one-sample t-test, this is the hypothesized true mean value. If

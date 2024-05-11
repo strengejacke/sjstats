@@ -4,7 +4,14 @@
 \alias{mann_whitney_test}
 \title{Mann-Whitney test}
 \usage{
-mann_whitney_test(data, select = NULL, by = NULL, weights = NULL, ...)
+mann_whitney_test(
+  data,
+  select = NULL,
+  by = NULL,
+  weights = NULL,
+  alternative = "two.sided",
+  ...
+)
 }
 \arguments{
 \item{data}{A data frame.}
@@ -20,6 +27,10 @@ test. If \code{by} is not a factor, it will be coerced to a factor. For
 \code{chi_squared_test()}, if \code{probabilities} is provided, \code{by} must be \code{NULL}.}
 
 \item{weights}{Name of an (optional) weighting variable to be used for the test.}
+
+\item{alternative}{A character string specifying the alternative hypothesis,
+must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}. See \code{?t.test}
+and \code{?wilcox.test}.}
 
 \item{...}{Additional arguments passed to \code{wilcox.test()} (for unweighted
 tests, i.e. when \code{weights = NULL}).}

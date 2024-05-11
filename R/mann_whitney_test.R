@@ -17,6 +17,9 @@
 #' test. If `by` is not a factor, it will be coerced to a factor. For
 #' `chi_squared_test()`, if `probabilities` is provided, `by` must be `NULL`.
 #' @param weights Name of an (optional) weighting variable to be used for the test.
+#' @param alternative A character string specifying the alternative hypothesis,
+#' must be one of `"two.sided"` (default), `"greater"` or `"less"`. See `?t.test`
+#' and `?wilcox.test`.
 #' @param ... Additional arguments passed to `wilcox.test()` (for unweighted
 #' tests, i.e. when `weights = NULL`).
 #'
@@ -66,11 +69,18 @@ mann_whitney_test <- function(data,
                               select = NULL,
                               by = NULL,
                               weights = NULL,
+                              alternative = "two.sided",
                               ...) {
   insight::check_if_installed("datawizard")
+  alternative <- match.arg(alternative, choices = c("two.sided", "less", "greater"))
 
   # sanity checks
   .sanitize_htest_input(data, select, by, weights)
+
+  # alternative only if weights are NULL
+  if (!is.null(weights) && alternative != "two.sided") {
+    insight::format_error("Argument `alternative` must be `two.sided` if `weights` are specified.")
+  }
 
   # does select indicate more than one variable?
   if (length(select) > 1) {
@@ -108,7 +118,7 @@ mann_whitney_test <- function(data,
   }
 
   if (is.null(weights)) {
-    .calculate_mwu(dv, grp, distribution, group_labels, ...)
+    .calculate_mwu(dv, grp, distribution, group_labels, alternative, ...)
   } else {
     .calculate_weighted_mwu(dv, grp, data[[weights]], group_labels)
   }
@@ -117,7 +127,7 @@ mann_whitney_test <- function(data,
 
 # Mann-Whitney-Test for two groups --------------------------------------------
 
-.calculate_mwu <- function(dv, grp, distribution, group_labels, ...) {
+.calculate_mwu <- function(dv, grp, distribution, group_labels, alternative, ...) {
   insight::check_if_installed("coin")
   # prepare data
   wcdat <- data.frame(dv, grp)
@@ -131,7 +141,7 @@ mann_whitney_test <- function(data,
   u <- as.numeric(coin::statistic(wt, type = "linear"))
   z <- as.numeric(coin::statistic(wt, type = "standardized"))
   r <- abs(z / sqrt(length(dv)))
-  htest <- suppressWarnings(stats::wilcox.test(dv ~ grp, data = wcdat, ...))
+  htest <- suppressWarnings(stats::wilcox.test(dv ~ grp, data = wcdat, alternative = alternative, ...))
   w <- htest$statistic
   p <- htest$p.value
 

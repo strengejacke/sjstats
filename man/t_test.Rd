@@ -37,7 +37,8 @@ one-sample t-test, this is the hypothesized true mean value. If
 two groups.}
 
 \item{alternative}{A character string specifying the alternative hypothesis,
-must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}. See \code{?t.test()}.}
+must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}. See \code{?t.test}
+and \code{?wilcox.test}.}
 }
 \value{
 A data frame with test results.
