@@ -15,22 +15,18 @@
 #' @return A data frame with test results.
 #'
 #' @examples
-#' data(efc)
-#' # Mann-Whitney-U-Tests for elder's age by elder's sex.
-#' t_test(efc, "e17age", by = "e16sex")
+#' data(sleep)
+#' # one-sample t-test
+#' t_test(sleep, "extra")
+#' t.test(extra ~ 1, data = sleep)
 #'
-#' # when data is in wide-format, specify all relevant continuous
-#' # variables in `select` and omit `by`
-#' set.seed(123)
-#' wide_data <- data.frame(scale1 = runif(20), scale2 = runif(20))
-#' t_test(wide_data, select = c("scale1", "scale2"))
+#' # two-sample t-test, by group
+#' t.test(mpg ~ am, data = mtcars)
+#' t_test(mtcars, "mpg", by = "am")
 #'
-#' # same as if we had data in long format, with grouping variable
-#' long_data <- data.frame(
-#'   scales = c(wide_data$scale1, wide_data$scale2),
-#'   groups = rep(c("A", "B"), each = 20)
-#' )
-#' t_test(long_data, select = "scales", by = "groups")
+#' # paired t-test
+#' t.test(mtcars$mpg, mtcars$hp, data = mtcars, paired = TRUE)
+#' t_test(mtcars, c("mpg", "hp"), paired = TRUE)
 #' @export
 t_test <- function(data,
                    select = NULL,
