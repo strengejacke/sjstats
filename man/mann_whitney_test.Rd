@@ -4,13 +4,7 @@
 \alias{mann_whitney_test}
 \title{Mann-Whitney test}
 \usage{
-mann_whitney_test(
-  data,
-  select = NULL,
-  by = NULL,
-  weights = NULL,
-  distribution = "asymptotic"
-)
+mann_whitney_test(data, select = NULL, by = NULL, weights = NULL, ...)
 }
 \arguments{
 \item{data}{A data frame.}
@@ -27,9 +21,8 @@ test. If \code{by} is not a factor, it will be coerced to a factor. For
 
 \item{weights}{Name of an (optional) weighting variable to be used for the test.}
 
-\item{distribution}{Indicates how the null distribution of the test statistic
-should be computed. May be one of \code{"exact"}, \code{"approximate"} or \code{"asymptotic"}
-(default). See \code{\link[coin:LocationTests]{coin::wilcox_test()}} for details.}
+\item{...}{Additional arguments passed to \code{wilcox.test()} (for unweighted
+tests, i.e. when \code{weights = NULL}).}
 }
 \value{
 A data frame with test results. The function returns p and Z-values
@@ -65,18 +58,23 @@ Interpretation of the effect size \strong{r}, as a rule-of-thumb:
 data(efc)
 # Mann-Whitney-U tests for elder's age by elder's sex.
 mann_whitney_test(efc, "e17age", by = "e16sex")
+# base R equivalent
+wilcox.test(e17age ~ e16sex, data = efc)
 
 # when data is in wide-format, specify all relevant continuous
 # variables in `select` and omit `by`
 set.seed(123)
 wide_data <- data.frame(scale1 = runif(20), scale2 = runif(20))
 mann_whitney_test(wide_data, select = c("scale1", "scale2"))
-
+# base R equivalent
+wilcox.test(wide_data$scale1, wide_data$scale2)
 # same as if we had data in long format, with grouping variable
 long_data <- data.frame(
   scales = c(wide_data$scale1, wide_data$scale2),
-  groups = rep(c("A", "B"), each = 20)
+  groups = as.factor(rep(c("A", "B"), each = 20))
 )
 mann_whitney_test(long_data, select = "scales", by = "groups")
+# base R equivalent
+wilcox.test(scales ~ groups, long_data)
 \dontshow{\}) # examplesIf}
 }

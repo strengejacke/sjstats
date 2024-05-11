@@ -17,9 +17,8 @@
 #' test. If `by` is not a factor, it will be coerced to a factor. For
 #' `chi_squared_test()`, if `probabilities` is provided, `by` must be `NULL`.
 #' @param weights Name of an (optional) weighting variable to be used for the test.
-#' @param distribution Indicates how the null distribution of the test statistic
-#' should be computed. May be one of `"exact"`, `"approximate"` or `"asymptotic"`
-#' (default). See [`coin::wilcox_test()`] for details.
+#' @param ... Additional arguments passed to `wilcox.test()` (for unweighted
+#' tests, i.e. when `weights = NULL`).
 #'
 #' @return A data frame with test results. The function returns p and Z-values
 #' as well as effect size r and group-rank-means.
@@ -44,25 +43,30 @@
 #' data(efc)
 #' # Mann-Whitney-U tests for elder's age by elder's sex.
 #' mann_whitney_test(efc, "e17age", by = "e16sex")
+#' # base R equivalent
+#' wilcox.test(e17age ~ e16sex, data = efc)
 #'
 #' # when data is in wide-format, specify all relevant continuous
 #' # variables in `select` and omit `by`
 #' set.seed(123)
 #' wide_data <- data.frame(scale1 = runif(20), scale2 = runif(20))
 #' mann_whitney_test(wide_data, select = c("scale1", "scale2"))
-#'
+#' # base R equivalent
+#' wilcox.test(wide_data$scale1, wide_data$scale2)
 #' # same as if we had data in long format, with grouping variable
 #' long_data <- data.frame(
 #'   scales = c(wide_data$scale1, wide_data$scale2),
-#'   groups = rep(c("A", "B"), each = 20)
+#'   groups = as.factor(rep(c("A", "B"), each = 20))
 #' )
 #' mann_whitney_test(long_data, select = "scales", by = "groups")
+#' # base R equivalent
+#' wilcox.test(scales ~ groups, long_data)
 #' @export
 mann_whitney_test <- function(data,
                               select = NULL,
                               by = NULL,
                               weights = NULL,
-                              distribution = "asymptotic") {
+                              ...) {
   insight::check_if_installed("datawizard")
 
   # sanity checks
@@ -104,7 +108,7 @@ mann_whitney_test <- function(data,
   }
 
   if (is.null(weights)) {
-    .calculate_mwu(dv, grp, distribution, group_labels)
+    .calculate_mwu(dv, grp, distribution, group_labels, ...)
   } else {
     .calculate_weighted_mwu(dv, grp, data[[weights]], group_labels)
   }
@@ -113,7 +117,7 @@ mann_whitney_test <- function(data,
 
 # Mann-Whitney-Test for two groups --------------------------------------------
 
-.calculate_mwu <- function(dv, grp, distribution, group_labels) {
+.calculate_mwu <- function(dv, grp, distribution, group_labels, ...) {
   insight::check_if_installed("coin")
   # prepare data
   wcdat <- data.frame(dv, grp)
@@ -126,9 +130,10 @@ mann_whitney_test <- function(data,
   # compute statistics
   u <- as.numeric(coin::statistic(wt, type = "linear"))
   z <- as.numeric(coin::statistic(wt, type = "standardized"))
-  p <- coin::pvalue(wt)
   r <- abs(z / sqrt(length(dv)))
-  w <- suppressWarnings(stats::wilcox.test(dv ~ grp, data = wcdat)$statistic)
+  htest <- suppressWarnings(stats::wilcox.test(dv ~ grp, data = wcdat, ...))
+  w <- htest$statistic
+  p <- htest$p.value
 
   # group means
   dat_gr1 <- stats::na.omit(dv[grp == group_levels[1]])

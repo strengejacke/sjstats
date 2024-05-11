@@ -18,15 +18,18 @@
 #' data(sleep)
 #' # one-sample t-test
 #' t_test(sleep, "extra")
+#' # base R equivalent
 #' t.test(extra ~ 1, data = sleep)
 #'
 #' # two-sample t-test, by group
-#' t.test(mpg ~ am, data = mtcars)
 #' t_test(mtcars, "mpg", by = "am")
+#' # base R equivalent
+#' t.test(mpg ~ am, data = mtcars)
 #'
 #' # paired t-test
-#' t.test(mtcars$mpg, mtcars$hp, data = mtcars, paired = TRUE)
 #' t_test(mtcars, c("mpg", "hp"), paired = TRUE)
+#' # base R equivalent
+#' t.test(mtcars$mpg, mtcars$hp, data = mtcars, paired = TRUE)
 #' @export
 t_test <- function(data,
                    select = NULL,
