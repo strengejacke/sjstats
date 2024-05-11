@@ -162,6 +162,7 @@ t_test <- function(data,
     stringsAsFactors = FALSE
   )
   class(out) <- c("sj_htest_t", "data.frame")
+  attr(out, "group_labels") <- group_labels
   attr(out, "means") <- as.numeric(htest$estimate)
   attr(out, "paired") <- isTRUE(paired)
   attr(out, "one_sample") <- is.null(grp)
@@ -284,6 +285,7 @@ t_test <- function(data,
       c("N Group 1", "N Group 2")
     )
   }
+  attr(out, "group_labels") <- group_labels
   attr(out, "paired") <- isTRUE(paired)
   attr(out, "one_sample") <- is.null(y_values) && !isTRUE(paired)
   attr(out, "weighted") <- FALSE
@@ -314,6 +316,9 @@ print.sj_htest_t <- function(x, ...) {
 
   # header
   insight::print_color(sprintf("# %s%s\n\n", x$method, weight_string), "blue")
+
+  # data
+  insight::print_color(sprintf("     Data: %s\n", x$data), "cyan")
 
   # group-1-info
   if (is.null(n_groups)) {
@@ -352,11 +357,11 @@ print.sj_htest_t <- function(x, ...) {
   }
 
   cat(sprintf(
-    "\n  t = %.3f, %s = %.3f, df = %.1f, %s\n\n",
+    "\n  t = %.3f, %s = %.3f, df = %s, %s\n\n",
     x$statistic,
     x$effect_size_name,
     x$effect_size,
-    x$df,
+    insight::format_value(x$df, digits = 1, protect_integers = TRUE),
     insight::format_p(x$p)
   ))
 }
