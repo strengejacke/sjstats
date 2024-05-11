@@ -118,7 +118,7 @@ mann_whitney_test <- function(data,
   }
 
   if (is.null(weights)) {
-    .calculate_mwu(dv, grp, distribution, group_labels, alternative, ...)
+    .calculate_mwu(dv, grp, alternative, group_labels, ...)
   } else {
     .calculate_weighted_mwu(dv, grp, data[[weights]], group_labels)
   }
@@ -127,12 +127,12 @@ mann_whitney_test <- function(data,
 
 # Mann-Whitney-Test for two groups --------------------------------------------
 
-.calculate_mwu <- function(dv, grp, distribution, group_labels, alternative, ...) {
+.calculate_mwu <- function(dv, grp, alternative, group_labels, ...) {
   insight::check_if_installed("coin")
   # prepare data
   wcdat <- data.frame(dv, grp)
   # perfom wilcox test
-  wt <- coin::wilcox_test(dv ~ grp, data = wcdat, distribution = distribution)
+  wt <- coin::wilcox_test(dv ~ grp, data = wcdat)
 
   # for rank mean
   group_levels <- levels(grp)
