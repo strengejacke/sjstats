@@ -29,8 +29,8 @@ wilcoxon_test <- function(data,
   }
 
   # for paired two-sample, do groups all have same length?
-  group_len <- as.numeric(table(data[[by]]))
   if (!is.null(by)) {
+    group_len <- as.numeric(table(data[[by]]))
     if (!all(group_len == group_len[1])) {
       insight::format_error("For paired two-sample Wilcoxon test, all groups specified in `by` must have the same length.") # nolint
     }
