@@ -57,4 +57,6 @@ long_data <- data.frame(
   groups = rep(c("A", "B", "C"), each = 20)
 )
 kruskal_wallis_test(long_data, select = "scales", by = "groups")
+# base R equivalent
+kruskal.test(scales ~ groups, data = long_data)
 }
