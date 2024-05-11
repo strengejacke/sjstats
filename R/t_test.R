@@ -156,6 +156,7 @@ t_test <- function(data,
     df = as.numeric(htest$parameter),
     method = ifelse(paired, "Paired t-test", htest$method),
     alternative = alternative,
+    mu = mu,
     stringsAsFactors = FALSE
   )
   class(out) <- c("sj_htest_t", "data.frame")
@@ -272,6 +273,7 @@ t_test <- function(data,
     df = dof,
     method = method,
     alternative = alternative,
+    mu = mu,
     stringsAsFactors = FALSE
   )
   class(out) <- c("sj_htest_t", "data.frame")
@@ -324,7 +326,7 @@ print.sj_htest_t <- function(x, ...) {
     ), "cyan")
   } else {
     # data
-    insight::print_color(sprintf("     Data: %s\n", x$data), "cyan")
+    insight::print_color(sprintf("  Data: %s\n", x$data), "cyan")
 
     # group-1-info
     if (is.null(n_groups)) {
@@ -362,6 +364,21 @@ print.sj_htest_t <- function(x, ...) {
       }
     }
   }
+
+  # alternative hypothesis
+  alt_string <- switch(x$alternative,
+    two.sided = "not equal to",
+    less = "less than",
+    greater = "greater than"
+  )
+  if (one_sample) {
+    alt_string <- paste("true mean is", alt_string, x$mu)
+  } else if (paired) {
+    alt_string <- paste("true mean difference is", alt_string, x$mu)
+  } else {
+    alt_string <- paste("true difference in means is", alt_string, x$mu)
+  }
+  insight::print_color(sprintf("  Alternative hypothesis: %s\n", alt_string), "cyan")
 
   cat(sprintf(
     "\n  t = %.3f, %s = %.3f, df = %s, %s\n\n",
