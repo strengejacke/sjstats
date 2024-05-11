@@ -47,6 +47,7 @@ This function performs a Student's t test for two independent
 samples, for paired samples, or for one sample.
 }
 \examples{
+\dontshow{if (requireNamespace("effectsize", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(sleep)
 # one-sample t-test
 t_test(sleep, "extra")
@@ -59,4 +60,5 @@ t_test(mtcars, "mpg", by = "am")
 # paired t-test
 t.test(mtcars$mpg, mtcars$hp, data = mtcars, paired = TRUE)
 t_test(mtcars, c("mpg", "hp"), paired = TRUE)
+\dontshow{\}) # examplesIf}
 }
