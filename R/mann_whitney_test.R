@@ -287,7 +287,7 @@ mann_whitney_test <- function(data,
   if (!is.null(by) && (length(by) != 1 || !is.character(by))) {
     insight::format_error("Argument `by` must be a character string with the name of a single variable.")
   }
-  if (!is.null(weights) && length(weights) != 1) {
+  if (!is.null(weights) && (length(weights) != 1 || !is.character(weights))) {
     insight::format_error("Argument `weights` must be a character string with the name of a single variable.")
   }
 
