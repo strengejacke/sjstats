@@ -43,13 +43,10 @@ kruskal_wallis_test <- function(data,
   insight::check_if_installed("datawizard")
 
   # sanity checks
-  .sanitize_htest_input(data, select, by, weights)
+  .sanitize_htest_input(data, select, by, weights, test = "kruskal_wallis_test")
 
   # does select indicate more than one variable?
   if (length(select) > 1) {
-    if (!is.null(by)) {
-      insight::format_error("If `select` specifies more than one variable, `by` must be `NULL`.")
-    }
     # we convert the data into long format, and create a grouping variable
     data <- datawizard::data_to_long(data[select], names_to = "group", values_to = "scale")
     by <- select[2]

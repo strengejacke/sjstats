@@ -80,7 +80,7 @@ mann_whitney_test <- function(data,
   alternative <- match.arg(alternative, choices = c("two.sided", "less", "greater"))
 
   # sanity checks
-  .sanitize_htest_input(data, select, by, weights)
+  .sanitize_htest_input(data, select, by, weights, test = "mann_whitney_test")
 
   # alternative only if weights are NULL
   if (!is.null(weights) && alternative != "two.sided") {
@@ -89,10 +89,6 @@ mann_whitney_test <- function(data,
 
   # does select indicate more than one variable?
   if (length(select) > 1) {
-    # sanity check - may only specify two variable names
-    if (length(select) > 2) {
-      insight::format_error("You may only specify two variables for Mann-Whitney test.")
-    }
     if (!is.null(by)) {
       insight::format_error("If `select` specifies more than one variable, `by` must be `NULL`.")
     }
@@ -266,10 +262,22 @@ mann_whitney_test <- function(data,
 
 # helper ----------------------------------------------------------------------
 
-.sanitize_htest_input <- function(data, select, by, weights) {
+.sanitize_htest_input <- function(data, select, by, weights, test = NULL) {
   # check if arguments are NULL
   if (is.null(select)) {
     insight::format_error("Argument `select` is missing.")
+  }
+  # sanity check - may only specify two variable names
+  if (identical(test, "mann_whitney_test") && length(select) > 2) {
+    insight::format_error("You may only specify two variables for Mann-Whitney test.")
+  }
+
+  # sanity check - may only specify two variable names
+  if (identical(test, "t_test") && length(select) > 2) {
+    insight::format_error("You may only specify two variables for Student's t test.")
+  }
+  if ((identical(test, "t_test") || identical(test, "kruskal_wallis_test")) && length(select) > 1 && !is.null(by)) {
+    insight::format_error("If `select` specifies more than one variable, `by` must be `NULL`.")
   }
 
   # check if arguments have correct length or are of correct type

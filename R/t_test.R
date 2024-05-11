@@ -38,18 +38,11 @@ t_test <- function(data,
   alternative <- match.arg(alternative, choices = c("two.sided", "less", "greater"))
 
   # sanity checks
-  .sanitize_htest_input(data, select, by, weights)
+  .sanitize_htest_input(data, select, by, weights, test = "t_test")
   data_name <- NULL
 
   # does select indicate more than one variable?
   if (length(select) > 1) {
-    # sanity check - may only specify two variable names
-    if (length(select) > 2) {
-      insight::format_error("You may only specify two variables for Student's t test.")
-    }
-    if (!is.null(by)) {
-      insight::format_error("If `select` specifies more than one variable, `by` must be `NULL`.")
-    }
     # paired?
     if (paired) {
       # subtract the two variables for paired t-test, and set by to NULL
