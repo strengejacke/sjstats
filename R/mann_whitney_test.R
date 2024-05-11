@@ -20,6 +20,8 @@
 #' @param alternative A character string specifying the alternative hypothesis,
 #' must be one of `"two.sided"` (default), `"greater"` or `"less"`. See `?t.test`
 #' and `?wilcox.test`.
+#' @param mu The hypothesized difference in means (for `t_test()`) or location
+#' shift (for `mann_whitney_test()`). The default is 0.
 #' @param ... Additional arguments passed to `wilcox.test()` (for unweighted
 #' tests, i.e. when `weights = NULL`).
 #'
@@ -69,6 +71,7 @@ mann_whitney_test <- function(data,
                               select = NULL,
                               by = NULL,
                               weights = NULL,
+                              mu = 0,
                               alternative = "two.sided",
                               ...) {
   insight::check_if_installed("datawizard")
@@ -164,7 +167,9 @@ mann_whitney_test <- function(data,
     w = w,
     z = z,
     r = r,
-    p = as.numeric(p)
+    p = as.numeric(p),
+    mu = mu,
+    alternative = alternative,
   )
   attr(out, "rank_means") <- stats::setNames(
     c(rank_mean_1, rank_mean_2),
@@ -332,6 +337,17 @@ print.sj_htest_mwu <- function(x, ...) {
       group_labels[2], n_groups[2], insight::format_value(rank_means[2], protect_integers = TRUE)
     ), "cyan"
   )
+
+  # alternative hypothesis
+  if (!is.null(x$alternative) && !is.null(x$mu)) {
+    alt_string <- switch(x$alternative,
+      two.sided = "not equal to",
+      less = "less than",
+      greater = "greater than"
+    )
+    alt_string <- paste("true location shift is", alt_string, x$mu)
+    insight::print_color(sprintf("  Alternative hypothesis: %s\n", alt_string), "cyan")
+  }
 
   cat(sprintf("\n  r = %.3f, Z = %.3f, %s\n\n", x$r, x$z, insight::format_p(x$p)))
 }

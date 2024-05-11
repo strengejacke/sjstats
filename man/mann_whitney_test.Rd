@@ -9,6 +9,7 @@ mann_whitney_test(
   select = NULL,
   by = NULL,
   weights = NULL,
+  mu = 0,
   alternative = "two.sided",
   ...
 )
@@ -27,6 +28,9 @@ test. If \code{by} is not a factor, it will be coerced to a factor. For
 \code{chi_squared_test()}, if \code{probabilities} is provided, \code{by} must be \code{NULL}.}
 
 \item{weights}{Name of an (optional) weighting variable to be used for the test.}
+
+\item{mu}{The hypothesized difference in means (for \code{t_test()}) or location
+shift (for \code{mann_whitney_test()}). The default is 0.}
 
 \item{alternative}{A character string specifying the alternative hypothesis,
 must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}. See \code{?t.test}

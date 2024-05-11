@@ -5,10 +5,6 @@
 #'
 #' @inheritParams mann_whitney_test
 #' @param paired Logical, whether to compute a paired t-test.
-#' @param mu The hypothesized difference in means. If `paired = TRUE`, or for a
-#' one-sample t-test, this is the hypothesized true mean value. If
-#' `paired = FALSE`, this is the hypothesized difference in means between the
-#' two groups.
 #'
 #' @return A data frame with test results.
 #'

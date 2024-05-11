@@ -31,10 +31,8 @@ test. If \code{by} is not a factor, it will be coerced to a factor. For
 
 \item{paired}{Logical, whether to compute a paired t-test.}
 
-\item{mu}{The hypothesized difference in means. If \code{paired = TRUE}, or for a
-one-sample t-test, this is the hypothesized true mean value. If
-\code{paired = FALSE}, this is the hypothesized difference in means between the
-two groups.}
+\item{mu}{The hypothesized difference in means (for \code{t_test()}) or location
+shift (for \code{mann_whitney_test()}). The default is 0.}
 
 \item{alternative}{A character string specifying the alternative hypothesis,
 must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}. See \code{?t.test}
