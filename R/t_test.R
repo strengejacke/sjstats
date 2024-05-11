@@ -59,7 +59,7 @@ t_test <- function(data,
     if (paired) {
       # subtract the two variables for paired t-test, and set by to NULL
       data[[select[1]]] <- data[[select[1]]] - data[[select[2]]]
-      data_name <- paste(select[1], "by", select[2])
+      data_name <- paste(select[1], "and", select[2])
       select <- select[1]
       by <- NULL
     } else {
@@ -157,7 +157,7 @@ t_test <- function(data,
     effect_size = as.numeric(effect_size),
     p = as.numeric(htest$p.value),
     df = as.numeric(htest$parameter),
-    method = htest$method,
+    method = ifelse(paired, "Paired t-test", htest$method),
     alternative = alternative,
     stringsAsFactors = FALSE
   )
@@ -317,42 +317,52 @@ print.sj_htest_t <- function(x, ...) {
   # header
   insight::print_color(sprintf("# %s%s\n\n", x$method, weight_string), "blue")
 
-  # data
-  insight::print_color(sprintf("     Data: %s\n", x$data), "cyan")
-
-  # group-1-info
-  if (is.null(n_groups)) {
-    insight::print_color(
-      sprintf(
-        "  Group 1: %s (mean = %s)\n",
-        group_labels[1], insight::format_value(means[1], protect_integers = TRUE)
-      ), "cyan"
-    )
+  # print for paired t-test
+  if (paired) {
+    # data
+    insight::print_color(sprintf(
+      "  Data: %s (mean difference = %s)\n",
+      x$data,
+      insight::format_value(means[1], protect_integers = TRUE)
+    ), "cyan")
   } else {
-    insight::print_color(
-      sprintf(
-        "  Group 1: %s (n = %i, mean = %s)\n",
-        group_labels[1], n_groups[1], insight::format_value(means[1], protect_integers = TRUE)
-      ), "cyan"
-    )
-  }
+    # data
+    insight::print_color(sprintf("     Data: %s\n", x$data), "cyan")
 
-  # group-2-info
-  if (length(group_labels) > 1) {
+    # group-1-info
     if (is.null(n_groups)) {
       insight::print_color(
         sprintf(
-          "  Group 2: %s (mean = %s)\n",
-          group_labels[2], insight::format_value(means[2], protect_integers = TRUE)
+          "  Group 1: %s (mean = %s)\n",
+          group_labels[1], insight::format_value(means[1], protect_integers = TRUE)
         ), "cyan"
       )
     } else {
       insight::print_color(
         sprintf(
-          "  Group 2: %s (n = %i, mean = %s)\n",
-          group_labels[2], n_groups[2], insight::format_value(means[2], protect_integers = TRUE)
+          "  Group 1: %s (n = %i, mean = %s)\n",
+          group_labels[1], n_groups[1], insight::format_value(means[1], protect_integers = TRUE)
         ), "cyan"
       )
+    }
+
+    # group-2-info
+    if (length(group_labels) > 1) {
+      if (is.null(n_groups)) {
+        insight::print_color(
+          sprintf(
+            "  Group 2: %s (mean = %s)\n",
+            group_labels[2], insight::format_value(means[2], protect_integers = TRUE)
+          ), "cyan"
+        )
+      } else {
+        insight::print_color(
+          sprintf(
+            "  Group 2: %s (n = %i, mean = %s)\n",
+            group_labels[2], n_groups[2], insight::format_value(means[2], protect_integers = TRUE)
+          ), "cyan"
+        )
+      }
     }
   }
 
