@@ -44,6 +44,7 @@ t_test <- function(data,
 
   # sanity checks
   .sanitize_htest_input(data, select, by, weights)
+  data_name <- NULL
 
   # does select indicate more than one variable?
   if (length(select) > 1) {
@@ -54,12 +55,21 @@ t_test <- function(data,
     if (!is.null(by)) {
       insight::format_error("If `select` specifies more than one variable, `by` must be `NULL`.")
     }
-    # we convert the data into long format, and create a grouping variable
-    data <- datawizard::data_to_long(data[select], names_to = "group", values_to = "scale")
-    by <- select[2]
-    select <- select[1]
-    # after converting to long, we have the "grouping" variable first in the data
-    colnames(data) <- c(by, select)
+    # paired?
+    if (paired) {
+      # subtract the two variables for paired t-test, and set by to NULL
+      data[[select[1]]] <- data[[select[1]]] - data[[select[2]]]
+      data_name <- paste(select[1], "by", select[2])
+      select <- select[1]
+      by <- NULL
+    } else {
+      # we convert the data into long format, and create a grouping variable
+      data <- datawizard::data_to_long(data[select], names_to = "group", values_to = "scale")
+      by <- select[2]
+      select <- select[1]
+      # after converting to long, we have the "grouping" variable first in the data
+      colnames(data) <- c(by, select)
+    }
   }
 
   # get data
@@ -83,7 +93,9 @@ t_test <- function(data,
   } else {
     grp <- NULL
     group_labels <- select
-    data_name <- select
+    if (is.null(data_name)) {
+      data_name <- select
+    }
   }
 
   if (is.null(weights)) {
@@ -111,8 +123,7 @@ t_test <- function(data,
     t_formula,
     data = tdat,
     alternative = alternative,
-    mu = mu,
-    paired = paired
+    mu = mu
   )
   test_statistic <- htest$statistic
   if (nrow(tdat) > 20) {
@@ -121,8 +132,7 @@ t_test <- function(data,
         t_formula,
         data = tdat,
         alternative = alternative,
-        mu = mu,
-        paired = paired
+        mu = mu
       )$Cohens_d,
       "Cohens_d"
     )
@@ -132,8 +142,7 @@ t_test <- function(data,
         t_formula,
         data = tdat,
         alternative = alternative,
-        mu = mu,
-        paired = paired
+        mu = mu
       )$Hedges_g,
       "Hedges_g"
     )
@@ -188,11 +197,6 @@ t_test <- function(data,
     # values for sample 2
     y_values <- dat$y[dat$g == groups[2]]
     y_weights <- dat$w[dat$g == groups[2]]
-    # paired t-test?
-    if (paired) {
-      x_values <- x_values - y_values
-      y_values <- NULL
-    }
   }
 
   mu_x <- stats::weighted.mean(x_values, x_weights)
@@ -340,7 +344,7 @@ print.sj_htest_t <- function(x, ...) {
     } else {
       insight::print_color(
         sprintf(
-          "  Group 2: %s (n = %i, rank mean = %s)\n",
+          "  Group 2: %s (n = %i, mean = %s)\n",
           group_labels[2], n_groups[2], insight::format_value(means[2], protect_integers = TRUE)
         ), "cyan"
       )

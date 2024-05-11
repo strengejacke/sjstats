@@ -8,14 +8,14 @@
 #' when the two continuous variables are not normally distributed.
 #'
 #' @param data A data frame.
-#' @param select Name of the dependent variable (as string) to be used for the
-#' test. `select` can also be a character vector, specifying the names of
-#' multiple continuous variables. In this case, `by` is ignored and variables
-#' specified in `select` are used to compute the test. This can be useful if
-#' the data is in wide-format and no grouping variable is available.
-#' @param by Name of the grouping variable to be used for the test. If `by` is
-#' not a factor, it will be coerced to a factor. For `chi_squared_test()`, if
-#' `probabilities` is provided, `by` must be `NULL`.
+#' @param select One or more name of the continuous variable (as character
+#' vector) to be used as samples for the test. If `select` only specified one
+#' variable, a one-sample test is carried out (only applicable for `t_test()`).
+#' Else, `by` must be provided to indicate the groups of comparison.
+#' @param by Name of the variable indicating the groups. Required if `select`
+#' specifies only one variable that contains all samples to be compared in the
+#' test. If `by` is not a factor, it will be coerced to a factor. For
+#' `chi_squared_test()`, if `probabilities` is provided, `by` must be `NULL`.
 #' @param weights Name of an (optional) weighting variable to be used for the test.
 #' @param distribution Indicates how the null distribution of the test statistic
 #' should be computed. May be one of `"exact"`, `"approximate"` or `"asymptotic"`

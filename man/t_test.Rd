@@ -17,15 +17,15 @@ t_test(
 \arguments{
 \item{data}{A data frame.}
 
-\item{select}{Name of the dependent variable (as string) to be used for the
-test. \code{select} can also be a character vector, specifying the names of
-multiple continuous variables. In this case, \code{by} is ignored and variables
-specified in \code{select} are used to compute the test. This can be useful if
-the data is in wide-format and no grouping variable is available.}
+\item{select}{One or more name of the continuous variable (as character
+vector) to be used as samples for the test. If \code{select} only specified one
+variable, a one-sample test is carried out (only applicable for \code{t_test()}).
+Else, \code{by} must be provided to indicate the groups of comparison.}
 
-\item{by}{Name of the grouping variable to be used for the test. If \code{by} is
-not a factor, it will be coerced to a factor. For \code{chi_squared_test()}, if
-\code{probabilities} is provided, \code{by} must be \code{NULL}.}
+\item{by}{Name of the variable indicating the groups. Required if \code{select}
+specifies only one variable that contains all samples to be compared in the
+test. If \code{by} is not a factor, it will be coerced to a factor. For
+\code{chi_squared_test()}, if \code{probabilities} is provided, \code{by} must be \code{NULL}.}
 
 \item{weights}{Name of an (optional) weighting variable to be used for the test.}
 
