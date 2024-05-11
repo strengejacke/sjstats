@@ -10,7 +10,7 @@
 #'
 #' @return A data frame with test results.
 #'
-#' @examplesIf requireNamespace("effectsize")
+#' @examplesIf require("effectsize")
 #' data(sleep)
 #' # one-sample t-test
 #' t_test(sleep, "extra")

@@ -71,7 +71,7 @@ Interpretation of the effect size \strong{r}, as a rule-of-thumb:
 }\if{html}{\out{</div>}}
 }
 \examples{
-\dontshow{if (requireNamespace("coin", quietly = TRUE) && requireNamespace("survey", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("coin") && require("survey")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(efc)
 # Mann-Whitney-U tests for elder's age by elder's sex.
 mann_whitney_test(efc, "e17age", by = "e16sex")

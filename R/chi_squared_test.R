@@ -38,7 +38,7 @@
 #' That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
 #' \doi{10.3390/math11091982}
 #'
-#' @examples
+#' @examplesIf require("effectsize")
 #' data(efc)
 #' efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
 #'

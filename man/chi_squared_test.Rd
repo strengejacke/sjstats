@@ -67,6 +67,7 @@ The weighted version of the chi-squared test is based on the a weighted
 table, using \code{\link[=xtabs]{xtabs()}} as input for \code{chisq.test()}.
 }
 \examples{
+\dontshow{if (require("effectsize")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(efc)
 efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
 
@@ -78,6 +79,7 @@ chi_squared_test(efc, "c161sex", by = "e16sex", weights = "weight")
 
 # Chi-squared test for given probabilities
 chi_squared_test(efc, "c161sex", probabilities = c(0.3, 0.7))
+\dontshow{\}) # examplesIf}
 }
 \references{
 Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
