@@ -170,7 +170,7 @@ mann_whitney_test <- function(data,
     r = r,
     p = as.numeric(p),
     mu = mu,
-    alternative = alternative,
+    alternative = alternative
   )
   attr(out, "rank_means") <- stats::setNames(
     c(rank_mean_1, rank_mean_2),
