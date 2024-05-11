@@ -50,7 +50,7 @@ wilcoxon_test <- function(data,
   }
 
   if (is.null(weights)) {
-    .calculate_wilcox(x, y, alternative, mu, group_labels, select, ...)
+    .calculate_wilcox(x, y, alternative, mu, group_labels, ...)
   } else {
     .calculate_weighted_mwu(dv, grp, data[[weights]], group_labels)
   }
@@ -59,7 +59,7 @@ wilcoxon_test <- function(data,
 
 # Mann-Whitney-Test for two groups --------------------------------------------
 
-.calculate_wilcox <- function(x, y, alternative, mu, group_labels, select, ...) {
+.calculate_wilcox <- function(x, y, alternative, mu, group_labels, ...) {
   # for paired Wilcoxon test, we have effect sizes
   if (!is.null(y)) {
     # prepare data
@@ -69,7 +69,7 @@ wilcoxon_test <- function(data,
     # compute statistics
     u <- as.numeric(coin::statistic(wt, type = "linear"))
     z <- as.numeric(coin::statistic(wt, type = "standardized"))
-    r <- abs(z / sqrt(length(dv)))
+    r <- abs(z / sqrt(nrow(wcdat)))
   } else {
     wt <- u <- z <- r <- NULL
   }
@@ -80,35 +80,36 @@ wilcoxon_test <- function(data,
   } else {
     dv <- x - y
   }
-  htest <- suppressWarnings(stats::wilcox.test(dv ~ 1, alternative = alternative, mu = mu, ...))
-  w <- htest$statistic
+  htest <- suppressWarnings(stats::wilcox.test(
+    dv ~ 1,
+    alternative = alternative,
+    mu = mu,
+    ...
+  ))
+  v <- htest$statistic
   p <- htest$p.value
 
-  one_sample <- length(select) > 1
-
   out <- data.frame(
-    group1 = group_levels[1],
-    group2 = group_levels[2],
-    estimate = rank_mean_1 - rank_mean_2,
-    u = u,
-    w = w,
-    z = z,
-    r = r,
+    group1 = group_labels[1],
+    v = v,
     p = as.numeric(p),
     mu = mu,
     alternative = alternative
   )
-  attr(out, "rank_means") <- stats::setNames(
-    c(rank_mean_1, rank_mean_2),
-    c("Mean Group 1", "Mean Group 2")
-  )
-  attr(out, "n_groups") <- stats::setNames(
-    c(n_grp1, n_grp2),
-    c("N Group 1", "N Group 2")
-  )
+  # two groups?
+  if (length(group_labels) > 1) {
+    out$group2 <- group_labels[2]
+  }
+  # add effectsizes, when we have
+  if (!is.null(wt)) {
+    out$u <- u
+    out$z <- z
+    out$r <- r
+  }
   attr(out, "group_labels") <- group_labels
   attr(out, "method") <- "wilcoxon"
   attr(out, "weighted") <- FALSE
+  attr(out, "one_sample") <- length(group_labels) > 1
   class(out) <- c("sj_htest_wilcox", "data.frame")
 
   out
@@ -117,66 +118,44 @@ wilcoxon_test <- function(data,
 
 # Weighted Mann-Whitney-Test for two groups ----------------------------------
 
-.calculate_weighted_mwu <- function(dv, grp, weights, group_labels) {
+.calculate_weighted_wilcox <- function(x, y, weights, group_labels) {
   # check if pkg survey is available
   insight::check_if_installed("survey")
 
-  dat <- stats::na.omit(data.frame(dv, grp, weights))
-  colnames(dat) <- c("x", "g", "w")
+  # prepare data
+  if (is.null(y)) {
+    dv <- x
+  } else {
+    dv <- x - y
+  }
+
+  dat <- stats::na.omit(data.frame(dv, weights))
+  colnames(dat) <- c("y", "w")
 
   design <- survey::svydesign(ids = ~0, data = dat, weights = ~w)
-  result <- survey::svyranktest(formula = x ~ g, design, test = "wilcoxon")
-
-  # for rank mean
-  group_levels <- levels(droplevels(grp))
-  # subgroups
-  dat_gr1 <- dat[dat$g == group_levels[1], ]
-  dat_gr2 <- dat[dat$g == group_levels[2], ]
-  dat_gr1$rank_x <- rank(dat_gr1$x)
-  dat_gr2$rank_x <- rank(dat_gr2$x)
-
-  # rank means
-  design_mean1 <- survey::svydesign(
-    ids = ~0,
-    data = dat_gr1,
-    weights = ~w
-  )
-  rank_mean_1 <- survey::svymean(~rank_x, design_mean1)
-
-  design_mean2 <- survey::svydesign(
-    ids = ~0,
-    data = dat_gr2,
-    weights = ~w
-  )
-  rank_mean_2 <- survey::svymean(~rank_x, design_mean2)
-
-  # group Ns
-  n_grp1 <- round(sum(dat_gr1$w))
-  n_grp2 <- round(sum(dat_gr2$w))
+  result <- survey::svyranktest(formula = y ~ 1, design, test = "wilcoxon")
 
   # statistics and effect sizes
   z <- result$statistic
-  r <- abs(z / sqrt(sum(n_grp1, n_grp2)))
+  r <- abs(z / sqrt(nrow(dat)))
 
-  out <- data.frame(
-    group1 = group_levels[1],
-    group2 = group_levels[2],
+  out <- data_frame(
+    group1 = group_labels[1],
     estimate = result$estimate,
     z = z,
     r = r,
-    p = as.numeric(result$p.value)
+    p = as.numeric(result$p.value),
+    alternative = "two.sided"
   )
+  # two groups?
+  if (length(group_labels) > 1) {
+    out$group2 <- select[2]
+  }
 
-  attr(out, "rank_means") <- stats::setNames(
-    c(rank_mean_1, rank_mean_2),
-    c("Mean Group 1", "Mean Group 2")
-  )
-  attr(out, "n_groups") <- stats::setNames(
-    c(n_grp1, n_grp2),
-    c("N Group 1", "N Group 2")
-  )
   attr(out, "group_labels") <- group_labels
   attr(out, "weighted") <- TRUE
+  attr(out, "one_sample") <- length(group_labels) > 1
+  attr(out, "method") <- "wilcoxon"
   class(out) <- c("sj_htest_wilcox", "data.frame")
 
   out

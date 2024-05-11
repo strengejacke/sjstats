@@ -10,7 +10,7 @@
 #'
 #' @return A data frame with test results.
 #'
-#' @examplesIf require("effectsize")
+#' @examplesIf requireNamespace("effectsize")
 #' data(sleep)
 #' # one-sample t-test
 #' t_test(sleep, "extra")
@@ -41,11 +41,12 @@ t_test <- function(data,
   .sanitize_htest_input(data, select, by, weights, test = "t_test")
   data_name <- NULL
 
-  # does select indicate more than one variable?
+  # does select indicate more than one variable? We than reshape the data
+  # to have one continous scale and one grouping variable
   if (length(select) > 1) {
     # paired?
     if (paired) {
-      # subtract the two variables for paired t-test, and set by to NULL
+      # subtract the two variables for paired t-test, and "set" by to NULL
       data[[select[1]]] <- data[[select[1]]] - data[[select[2]]]
       data_name <- paste(select[1], "and", select[2])
       select <- select[1]
@@ -79,6 +80,7 @@ t_test <- function(data,
     }
     data_name <- paste(select, "by", by)
   } else {
+    # one-sample t-test...
     grp <- NULL
     group_labels <- select
     if (is.null(data_name)) {

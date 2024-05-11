@@ -48,7 +48,7 @@ base R function \code{t.test()}, this function allows for weighted tests and
 automatically calculates effect sizes.
 }
 \examples{
-\dontshow{if (require("effectsize")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("effectsize")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(sleep)
 # one-sample t-test
 t_test(sleep, "extra")

@@ -47,7 +47,7 @@
 #' r = |Z| / sqrt(n1 + n2)
 #' ```
 #'
-#' @examplesIf require("coin") && require("survey")
+#' @examplesIf requireNamespace("coin") && requireNamespace("survey")
 #' data(efc)
 #' # Mann-Whitney-U tests for elder's age by elder's sex.
 #' mann_whitney_test(efc, "e17age", by = "e16sex")
@@ -233,13 +233,14 @@ mann_whitney_test <- function(data,
   z <- result$statistic
   r <- abs(z / sqrt(sum(n_grp1, n_grp2)))
 
-  out <- data.frame(
+  out <- data_frame(
     group1 = group_levels[1],
     group2 = group_levels[2],
     estimate = result$estimate,
     z = z,
     r = r,
-    p = as.numeric(result$p.value)
+    p = as.numeric(result$p.value),
+    alternative = "two.sided"
   )
 
   attr(out, "rank_means") <- stats::setNames(
