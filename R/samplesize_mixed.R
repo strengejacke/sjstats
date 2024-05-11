@@ -36,7 +36,7 @@
 #'          additionally include repeated measures (three-level-designs) may work
 #'          as well, however, the computed sample size may be less accurate.
 #'
-#' @examples
+#' @examplesIf requireNamespace("pwr")
 #' # Sample size for multilevel model with 30 cluster groups and a small to
 #' # medium effect size (Cohen's d) of 0.3. 27 subjects per cluster and
 #' # hence a total sample size of about 802 observations is needed.
@@ -47,7 +47,13 @@
 #' # hence a total sample size of about 107 observations is needed.
 #' samplesize_mixed(eff.size = .2, df.n = 5, k = 20, power = .9)
 #' @export
-samplesize_mixed <- function(eff.size, df.n = NULL, power = .8, sig.level = .05, k, n, icc = 0.05) {
+samplesize_mixed <- function(eff.size,
+                             df.n = NULL,
+                             power = 0.8,
+                             sig.level = 0.05,
+                             k,
+                             n,
+                             icc = 0.05) {
   if (!requireNamespace("pwr", quietly = TRUE)) {
     stop("Package `pwr` needed for this function to work. Please install it.", call. = FALSE)
   }

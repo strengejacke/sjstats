@@ -14,7 +14,7 @@
 #'
 #' @return A data frame with test results.
 #'
-#' @examplesIf requireNamespace("effectsize", quietly = TRUE)
+#' @examplesIf requireNamespace("effectsize")
 #' data(sleep)
 #' # one-sample t-test
 #' t_test(sleep, "extra")
@@ -176,7 +176,7 @@ t_test <- function(data,
 # Weighted Mann-Whitney-Test for two groups ----------------------------------
 
 .calculate_weighted_ttest <- function(dv, grp, mu, paired, alternative, weights, group_labels, data_name) {
-  insight::check_if_installed("datawizard")
+  insight::check_if_installed(c("datawizard", "effectsize"))
   if (is.null(grp)) {
     dat <- stats::na.omit(data.frame(dv, weights))
     colnames(dat) <- c("y", "w")

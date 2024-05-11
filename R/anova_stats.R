@@ -15,7 +15,7 @@
 #'   \cr \cr
 #'   Tippey K, Longnecker MT (2016): An Ad Hoc Method for Computing Pseudo-Effect Size for Mixed Model.
 #'
-#' @examplesIf requireNamespace("car")
+#' @examplesIf requireNamespace("car") && requireNamespace("pwr")
 #' # load sample data
 #' data(efc)
 #'
