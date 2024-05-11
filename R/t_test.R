@@ -166,7 +166,7 @@ t_test <- function(data,
   attr(out, "paired") <- isTRUE(paired)
   attr(out, "one_sample") <- is.null(grp)
   attr(out, "weighted") <- FALSE
-  if (!is.null(gpr)) {
+  if (!is.null(grp)) {
     attr(out, "n_groups") <- stats::setNames(
       c(as.numeric(table(grp))),
       c("N Group 1", "N Group 2")
