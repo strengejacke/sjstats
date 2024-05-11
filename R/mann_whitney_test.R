@@ -89,9 +89,6 @@ mann_whitney_test <- function(data,
 
   # does select indicate more than one variable?
   if (length(select) > 1) {
-    if (!is.null(by)) {
-      insight::format_error("If `select` specifies more than one variable, `by` must be `NULL`.")
-    }
     # we convert the data into long format, and create a grouping variable
     data <- datawizard::data_to_long(data[select], names_to = "group", values_to = "scale")
     by <- select[2]
@@ -276,7 +273,7 @@ mann_whitney_test <- function(data,
   if (identical(test, "t_test") && length(select) > 2) {
     insight::format_error("You may only specify two variables for Student's t test.")
   }
-  if ((identical(test, "t_test") || identical(test, "kruskal_wallis_test")) && length(select) > 1 && !is.null(by)) {
+  if ((!is.null(test) && test %in% c("t_test", "kruskal_wallis_test", "mann_whitney_test")) && length(select) > 1 && !is.null(by)) { # nolint
     insight::format_error("If `select` specifies more than one variable, `by` must be `NULL`.")
   }
 
