@@ -35,7 +35,7 @@ t_test <- function(data,
                    paired = FALSE,
                    mu = 0,
                    alternative = "two.sided") {
-  insight::check_if_installed("datawizard")
+  insight::check_if_installed(c("datawizard", "effectsize"))
   alternative <- match.arg(alternative, choices = c("two.sided", "less", "greater"))
 
   # sanity checks

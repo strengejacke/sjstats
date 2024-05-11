@@ -40,7 +40,7 @@
 #' r = |Z| / sqrt(n1 + n2)
 #' ```
 #'
-#' @examples
+#' @examplesIf requireNamespace("coin", quietly = TRUE) && requireNamespace("survey", quietly = TRUE)
 #' data(efc)
 #' # Mann-Whitney-U tests for elder's age by elder's sex.
 #' mann_whitney_test(efc, "e17age", by = "e16sex")
