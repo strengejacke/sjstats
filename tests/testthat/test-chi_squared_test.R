@@ -1,4 +1,6 @@
 skip_if_not_installed("effectsize")
+skip_if_not_installed("datawizard")
+
 test_that("chi_squared_test", {
   data(efc)
   set.seed(123)

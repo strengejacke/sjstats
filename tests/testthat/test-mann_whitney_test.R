@@ -1,0 +1,28 @@
+skip_if_not_installed("coin")
+skip_if_not_installed("survey")
+skip_if_not_installed("datawizard")
+
+test_that("mann_whitney_test", {
+  data(efc)
+  set.seed(123)
+  efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
+  out1 <- mann_whitney_test(efc, "e17age", by = "e16sex")
+  out2 <- wilcox.test(e17age ~ e16sex, data = efc)
+  expect_equal(out1$w, out2$statistic, tolerance = 1e-4, ignore_attr = TRUE)
+  expect_equal(out1$p, out2$p.value, tolerance = 1e-4, ignore_attr = TRUE)
+  expect_equal(out1$estimate, -1561, tolerance = 1e-4, ignore_attr = TRUE)
+  expect_equal(out1$r, 0.2571254, tolerance = 1e-4, ignore_attr = TRUE)
+
+  set.seed(123)
+  wide_data <- data.frame(scale1 = runif(20), scale2 = runif(20))
+  out1 <- mann_whitney_test(wide_data, select = c("scale1", "scale2"))
+  out2 <- wilcox.test(wide_data$scale1, wide_data$scale2)
+  expect_equal(out1$w, out2$statistic, tolerance = 1e-4, ignore_attr = TRUE)
+  expect_equal(out1$p, out2$p.value, tolerance = 1e-4, ignore_attr = TRUE)
+  expect_equal(out1$r, 0.05132394, tolerance = 1e-4, ignore_attr = TRUE)
+
+  out <- mann_whitney_test(efc, "e17age", by = "e16sex", weights = "weight")
+  expect_equal(out$p, 1.976729e-14, tolerance = 1e-4, ignore_attr = TRUE)
+  expect_equal(out$estimate, 0.1594972, tolerance = 1e-4, ignore_attr = TRUE)
+  expect_equal(out$r, 0.2599877, tolerance = 1e-4, ignore_attr = TRUE)
+})
