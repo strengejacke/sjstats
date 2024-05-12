@@ -45,7 +45,7 @@ as well as effect size r and group-rank-means.
 }
 \description{
 This function performs a Mann-Whitney test (or Wilcoxon rank
-sum test for \emph{unpaired} samples. Unlike the underlying base R function
+sum test for \emph{unpaired} samples). Unlike the underlying base R function
 \code{wilcox.test()}, this function allows for weighted tests and automatically
 calculates effect sizes. For \emph{paired} (dependent) samples, or for one-sample
 tests, please use the \code{wilcoxon_test()} function.
