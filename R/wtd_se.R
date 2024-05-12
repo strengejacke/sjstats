@@ -31,32 +31,23 @@
 #'
 #' @return The weighted (test) statistic.
 #'
-#' @examples
+#' @examplesIf requireNamespace("survey")
 #' data(efc)
-#' weighted_se(efc[, 1:3], runif(n = nrow(efc)))
+#' weighted_se(efc$c12hour, abs(runif(n = nrow(efc))))
 #'
 #' # survey_median ----
 #' # median for variables from weighted survey designs
-#' if (require("survey")) {
-#'   data(nhanes_sample)
+#' data(nhanes_sample)
 #'
-#'   des <- svydesign(
-#'     id = ~SDMVPSU,
-#'     strat = ~SDMVSTRA,
-#'     weights = ~WTINT2YR,
-#'     nest = TRUE,
-#'     data = nhanes_sample
-#'   )
-#'
-#'   survey_median(total, des)
-#'   survey_median("total", des)
-#' }
-#'
-#' # weighted t-test ----
-#' efc$weight <- abs(rnorm(nrow(efc), 1, .3))
-#' weighted_ttest(efc, e17age, weights = weight)
-#' weighted_ttest(efc, e17age, c160age, weights = weight)
-#' weighted_ttest(e17age ~ e16sex + weight, efc)
+#' des <- survey::svydesign(
+#'   id = ~SDMVPSU,
+#'   strat = ~SDMVSTRA,
+#'   weights = ~WTINT2YR,
+#'   nest = TRUE,
+#'   data = nhanes_sample
+#' )
+#' survey_median(total, des)
+#' survey_median("total", des)
 #' @export
 weighted_se <- function(x, weights = NULL) {
   UseMethod("weighted_se")
