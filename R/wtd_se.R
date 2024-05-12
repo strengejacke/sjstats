@@ -18,13 +18,7 @@
 #' levels giving the corresponding groups and `rhs2` a variable with weights.
 #' @param y Optional, bare (unquoted) variable name, or a character vector with
 #' the variable name.
-#' @param mu A number indicating the true value of the mean (or difference in
-#' means if you are performing a two sample test).
 #' @param ci.lvl Confidence level of the interval.
-#' @param alternative A character string specifying the alternative hypothesis,
-#' must be one of `"two.sided"` (default), `"greater"` or `"less"`. You can
-#' specify just the initial letter.
-#' @param paired Logical, whether to compute a paired t-test.
 #' @param ... Currently not used.
 #'
 #' @inheritParams svyglm.nb

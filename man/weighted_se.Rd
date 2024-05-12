@@ -41,15 +41,6 @@ unweighted statistic is reported.}
 \item{formula}{A formula of the form \code{lhs ~ rhs1 + rhs2} where \code{lhs} is a
 numeric variable giving the data values and \code{rhs1} a factor with two
 levels giving the corresponding groups and \code{rhs2} a variable with weights.}
-
-\item{mu}{A number indicating the true value of the mean (or difference in
-means if you are performing a two sample test).}
-
-\item{alternative}{A character string specifying the alternative hypothesis,
-must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}. You can
-specify just the initial letter.}
-
-\item{paired}{Logical, whether to compute a paired t-test.}
 }
 \value{
 The weighted (test) statistic.

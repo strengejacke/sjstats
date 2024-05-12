@@ -192,7 +192,7 @@ t_test <- function(data,
     x_weights <- dat$w
     y_values <- NULL
     # group N's
-    n_groups <- stats::setNames(sum(x_values * x_weights), "N Group 1")
+    n_groups <- stats::setNames(round(sum(x_weights)), "N Group 1")
   } else {
     dat <- stats::na.omit(data.frame(dv, grp, weights))
     colnames(dat) <- c("y", "g", "w")
@@ -206,7 +206,7 @@ t_test <- function(data,
     y_weights <- dat$w[dat$g == groups[2]]
     # group N's
     n_groups <- stats::setNames(
-      c(sum(x_values * x_weights), length(y_values * y_weights)),
+      c(round(sum(x_weights)), round(sum(y_weights))),
       c("N Group 1", "N Group 2")
     )
   }
