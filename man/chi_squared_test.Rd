@@ -48,7 +48,7 @@ for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
 given probabilities.
 }
 \description{
-This function performs a \eqn{chi^2} test for contingency
+This function performs a \eqn{\chi^2} test for contingency
 tables or tests for given probabilities. The returned effects sizes are
 Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
 for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
