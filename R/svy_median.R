@@ -2,7 +2,7 @@
 #' @export
 survey_median <- function(x, design) {
   # check if pkg survey is available
-  insight::check_if_installed("suvey")
+  insight::check_if_installed("survey")
 
   # deparse
   v <- stats::as.formula(paste("~", as.character(substitute(x))))
