@@ -9,6 +9,17 @@
 #' @return A data frame with test results. The function returns p and Z-values
 #' as well as effect size r and group-rank-means.
 #'
+#' @examples 
+#' data(mtcars)
+#' # one-sample test
+#' wilcoxon_test(mtcars, "mpg")
+#' # base R equivalent
+#' wilcox.test(mtcars$mpg ~ 1)
+#'
+#' # paired test
+#' wilcoxon_test(mtcars, c("mpg", "hp"))
+#' # base R equivalent
+#' wilcox.test(mtcars$mpg, mtcars$hp, paired = TRUE)
 #' @export
 wilcoxon_test <- function(data,
                           select = NULL,
@@ -52,7 +63,7 @@ wilcoxon_test <- function(data,
   if (is.null(weights)) {
     .calculate_wilcox(x, y, alternative, mu, group_labels, ...)
   } else {
-    .calculate_weighted_mwu(dv, grp, data[[weights]], group_labels)
+    .calculate_weighted_mwu(x, y, data[[weights]], group_labels)
   }
 }
 
@@ -150,7 +161,7 @@ wilcoxon_test <- function(data,
   )
   # two groups?
   if (length(group_labels) > 1) {
-    out$group2 <- select[2]
+    out$group2 <- group_labels[2]
   }
 
   attr(out, "group_labels") <- group_labels
@@ -179,9 +190,9 @@ print.sj_htest_wilcox <- function(x, ...) {
   }
 
   if (one_sample) {
-    onesample_string <- "One Sample "
+    onesample_string <- "One Sample"
   } else {
-    onesample_string <- "Paired "
+    onesample_string <- "Paired"
   }
 
   # same width
@@ -189,7 +200,7 @@ print.sj_htest_wilcox <- function(x, ...) {
 
   # header
   insight::print_color(sprintf(
-    "# %sWilcoxon signed rank test%s\n\n",
+    "# %s Wilcoxon signed rank test%s\n\n",
     onesample_string,
     weight_string
   ), "blue")
@@ -204,9 +215,16 @@ print.sj_htest_wilcox <- function(x, ...) {
     alt_string <- paste("true location shift is", alt_string, x$mu)
     insight::print_color(sprintf("  Alternative hypothesis: %s\n", alt_string), "cyan")
   }
-  if (!is.null(x[["r"]])) {
-    cat(sprintf("\n  r = %.3f, Z = %.3f, %s\n\n", x$r, x$z, insight::format_p(x$p)))
+
+  if (!is.null(x[["v"]])) {
+    v_stat <- sprintf("V = %i, ", round(x$v))
   } else {
-    cat(sprintf("\n  V = %i, %s\n\n", round(x$v), insight::format_p(x$p)))
+    v_stat <- ""
+  }
+
+  if (!is.null(x[["r"]])) {
+    cat(sprintf("\n  %sr = %.3f, Z = %.3f, %s\n\n", v_stat, x$r, x$z, insight::format_p(x$p)))
+  } else {
+    cat(sprintf("\n  %s%s\n\n", v_stat, insight::format_p(x$p)))
   }
 }

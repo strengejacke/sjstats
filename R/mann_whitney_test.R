@@ -364,5 +364,10 @@ print.sj_htest_mwu <- function(x, ...) {
     insight::print_color(sprintf("  Alternative hypothesis: %s\n", alt_string), "cyan")
   }
 
-  cat(sprintf("\n  r = %.3f, Z = %.3f, %s\n\n", x$r, x$z, insight::format_p(x$p)))
+  if (!is.null(x$w)) {
+    w_stat <- paste("W =", insight::format_value(x$w, protect_integers = TRUE), ", ")
+  } else {
+    w_stat <- ""
+  }
+  cat(sprintf("\n  %sr = %.3f, Z = %.3f, %s\n\n", w_stat, x$r, x$z, insight::format_p(x$p)))
 }

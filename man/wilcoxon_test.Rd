@@ -48,3 +48,15 @@ This function performs Wilcoxon rank sum tests for one sample
 or for two \emph{paired} (dependent) samples. For \emph{unpaired} (independent)
 samples, please use the \code{mann_whitney_test()} function.
 }
+\examples{
+data(mtcars)
+# one-sample test
+wilcoxon_test(mtcars, "mpg")
+# base R equivalent
+wilcox.test(mtcars$mpg ~ 1)
+
+# paired test
+wilcoxon_test(mtcars, c("mpg", "hp"))
+# base R equivalent
+wilcox.test(mtcars$mpg, mtcars$hp, paired = TRUE)
+}
