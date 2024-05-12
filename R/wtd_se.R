@@ -1,4 +1,4 @@
-#' @title Weighted statistics for tests and variables
+#' @title Weighted statistics for variables
 #' @name weighted_se
 #' @description
 #' `weighted_se()` computes weighted standard errors of a variable or for

@@ -6,7 +6,7 @@
 \alias{weighted_correlation.default}
 \alias{weighted_correlation.formula}
 \alias{weighted_se}
-\title{Weighted statistics for tests and variables}
+\title{Weighted statistics for variables}
 \usage{
 survey_median(x, design)
 
