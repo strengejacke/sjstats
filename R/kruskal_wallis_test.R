@@ -70,16 +70,16 @@ kruskal_wallis_test <- function(data,
     insight::format_error("At least two groups are required, i.e. data must have at least two unique levels in `by` for `kruskal_wallis_test()`.") # nolint
   }
   if (is.null(weights)) {
-    .calculate_kw(dv, grp)
+    .calculate_kw(dv, grp, group_labels = c(select, by))
   } else {
-    .calculate_weighted_kw(dv, grp, data[[weights]])
+    .calculate_weighted_kw(dv, grp, data[[weights]], group_labels = c(select, by))
   }
 }
 
 
 # Kruskal-Wallis-Test --------------------------------------------
 
-.calculate_kw <- function(dv, grp, paired = FALSE) {
+.calculate_kw <- function(dv, grp, paired = FALSE, group_labels = NULL) {
   # prepare data
   wcdat <- data.frame(dv, grp)
   if (paired) {
@@ -97,7 +97,7 @@ kruskal_wallis_test <- function(data,
   )
 
   out <- data.frame(
-    data = wt$data.name,
+    data = paste(group_labels[1], "by", group_labels[2]),
     Chi2 = wt$statistic,
     df = wt$parameter,
     p = as.numeric(wt$p.value),
@@ -115,7 +115,7 @@ kruskal_wallis_test <- function(data,
 
 # Weighted Mann-Whitney-Test for two groups ----------------------------------
 
-.calculate_weighted_kw <- function(dv, grp, weights, paired = FALSE) {
+.calculate_weighted_kw <- function(dv, grp, weights, paired = FALSE, group_labels = NULL) {
   # check if pkg survey is available
   insight::check_if_installed("survey")
 
@@ -135,7 +135,7 @@ kruskal_wallis_test <- function(data,
   }
 
   out <- data.frame(
-    data = paste(dv, "by", grp),
+    data = paste(group_labels[1], "by", group_labels[2]),
     Chi2 = result$statistic,
     df = result$parameter,
     p = as.numeric(result$p.value),
