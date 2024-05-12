@@ -279,6 +279,9 @@ mann_whitney_test <- function(data,
   if (identical(test, "mann_whitney_test") && length(select) > 2) {
     insight::format_error("You may only specify two variables for Mann-Whitney test.")
   }
+  if (identical(test, "mann_whitney_test") && length(select) == 1 && is.null(by)) {
+    insight::format_error("Only one variable provided in `select`, but none in `by`. You need to specify a second continuous variable in `select`, or a grouping variable in `by` for Mann-Whitney test.") # nolint
+  }
 
   # sanity check - may only specify two variable names
   if (identical(test, "t_test") && length(select) > 2) {

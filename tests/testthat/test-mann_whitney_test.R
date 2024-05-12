@@ -26,3 +26,11 @@ test_that("mann_whitney_test", {
   expect_equal(out$estimate, 0.1594972, tolerance = 1e-4, ignore_attr = TRUE)
   expect_equal(out$r, 0.2599877, tolerance = 1e-4, ignore_attr = TRUE)
 })
+
+test_that("mann_whitney_test, sanity checks", {
+  data(efc)
+  expect_errpr(mann_whitney_test(efc, "e17age", by = "c172code"), regex = "Only two groups are")
+  expect_errpr(mann_whitney_test(efc, c("e17age", "c172code", "e16sex")), regex = "You may only specify")
+  expect_errpr(mann_whitney_test(efc, c("e17age", "c172code"), by = "e17age"), regex = "If `select` specifies more")
+  expect_errpr(mann_whitney_test(efc, "e17age"), regex = "Only one variable provided")
+})
