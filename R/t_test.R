@@ -192,7 +192,7 @@ t_test <- function(data,
     x_weights <- dat$w
     y_values <- NULL
     # group N's
-    n_groups <- stats::setNames(length(x_values), "N Group 1")
+    n_groups <- stats::setNames(sum(x_values * x_weights), "N Group 1")
   } else {
     dat <- stats::na.omit(data.frame(dv, grp, weights))
     colnames(dat) <- c("y", "g", "w")
@@ -206,7 +206,7 @@ t_test <- function(data,
     y_weights <- dat$w[dat$g == groups[2]]
     # group N's
     n_groups <- stats::setNames(
-      c(length(x_values), length(y_values)),
+      c(sum(x_values * x_weights), length(y_values * y_weights)),
       c("N Group 1", "N Group 2")
     )
   }
@@ -291,12 +291,8 @@ t_test <- function(data,
   )
   class(out) <- c("sj_htest_t", "data.frame")
   attr(out, "means") <- estimate
-  if (!is.null(grp)) {
-    attr(out, "n_groups") <- stats::setNames(
-      as.numeric(as.table(round(stats::xtabs(dat[[3]] ~ dat[[1]] + dat[[2]])))),
-      c("N Group 1", "N Group 2")
-    )
-  }
+  attr(out, "n_groups") <- n_groups
+  attr(out, "means") <- estimate
   attr(out, "group_labels") <- group_labels
   attr(out, "paired") <- isTRUE(paired)
   attr(out, "one_sample") <- is.null(y_values) && !isTRUE(paired)
