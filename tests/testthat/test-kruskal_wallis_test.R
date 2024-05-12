@@ -1,8 +1,29 @@
-skip_if_not_installed("coin")
 skip_if_not_installed("survey")
 skip_if_not_installed("datawizard")
 
-test_that("mann_whitney_test", {
+test_that("kruskal_wallis_test", {
+#' data(efc)
+#' # Kruskal-Wallis test for elder's age by education
+#' kruskal_wallis_test(efc, "e17age", by = "c172code")
+#'
+#' # when data is in wide-format, specify all relevant continuous
+#' # variables in `select` and omit `by`
+#' set.seed(123)
+#' wide_data <- data.frame(
+#'   scale1 = runif(20),
+#'   scale2 = runif(20),
+#'   scale3 = runif(20)
+#' )
+#' kruskal_wallis_test(wide_data, select = c("scale1", "scale2", "scale3"))
+#'
+#' # same as if we had data in long format, with grouping variable
+#' long_data <- data.frame(
+#'   scales = c(wide_data$scale1, wide_data$scale2, wide_data$scale3),
+#'   groups = rep(c("A", "B", "C"), each = 20)
+#' )
+#' kruskal_wallis_test(long_data, select = "scales", by = "groups")
+#' # base R equivalent
+#' kruskal.test(scales ~ groups, data = long_data)
   data(efc)
   set.seed(123)
   efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
@@ -25,12 +46,4 @@ test_that("mann_whitney_test", {
   expect_equal(out$p, 1.976729e-14, tolerance = 1e-4, ignore_attr = TRUE)
   expect_equal(out$estimate, 0.1594972, tolerance = 1e-4, ignore_attr = TRUE)
   expect_equal(out$r, 0.2599877, tolerance = 1e-4, ignore_attr = TRUE)
-})
-
-test_that("mann_whitney_test, sanity checks", {
-  data(efc)
-  expect_error(mann_whitney_test(efc, "e17age", by = "c172code"), regex = "Only two groups are")
-  expect_error(mann_whitney_test(efc, c("e17age", "c172code", "e16sex")), regex = "You may only specify")
-  expect_error(mann_whitney_test(efc, c("e17age", "c172code"), by = "e17age"), regex = "If `select` specifies more")
-  expect_error(mann_whitney_test(efc, "e17age"), regex = "Only one variable provided")
 })
