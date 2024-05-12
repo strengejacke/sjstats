@@ -46,6 +46,9 @@ t_test <- function(data,
   .sanitize_htest_input(data, select, by, weights, test = "t_test")
   data_name <- NULL
 
+  # filter and remove NA
+  data <- stats::na.omit(data[c(select, by, weights)])
+
   # does select indicate more than one variable? We than reshape the data
   # to have one continous scale and one grouping variable
   if (length(select) > 1) {
@@ -58,11 +61,16 @@ t_test <- function(data,
       by <- NULL
     } else {
       # we convert the data into long format, and create a grouping variable
-      data <- datawizard::data_to_long(data[select], names_to = "group", values_to = "scale")
+      data <- datawizard::data_to_long(
+        data[c(select, weights)],
+        select = select,
+        names_to = "group",
+        values_to = "scale"
+      )
       by <- select[2]
       select <- select[1]
       # after converting to long, we have the "grouping" variable first in the data
-      colnames(data) <- c(by, select)
+      colnames(data) <- c(weights, by, select)
     }
   }
 
@@ -183,17 +191,24 @@ t_test <- function(data,
     x_values <- dat$y
     x_weights <- dat$w
     y_values <- NULL
+    # group N's
+    n_groups <- stats::setNames(length(x_values), "N Group 1")
   } else {
     dat <- stats::na.omit(data.frame(dv, grp, weights))
     colnames(dat) <- c("y", "g", "w")
     # unique groups
-    groups <- unique(dat$grp)
+    groups <- unique(dat$g)
     # values for sample 1
     x_values <- dat$y[dat$g == groups[1]]
     x_weights <- dat$w[dat$g == groups[1]]
     # values for sample 2
     y_values <- dat$y[dat$g == groups[2]]
     y_weights <- dat$w[dat$g == groups[2]]
+    # group N's
+    n_groups <- stats::setNames(
+      c(length(x_values), length(y_values)),
+      c("N Group 1", "N Group 2")
+    )
   }
 
   mu_x <- stats::weighted.mean(x_values, x_weights, na.rm = TRUE)
@@ -285,7 +300,7 @@ t_test <- function(data,
   attr(out, "group_labels") <- group_labels
   attr(out, "paired") <- isTRUE(paired)
   attr(out, "one_sample") <- is.null(y_values) && !isTRUE(paired)
-  attr(out, "weighted") <- FALSE
+  attr(out, "weighted") <- TRUE
   out
 }
 
