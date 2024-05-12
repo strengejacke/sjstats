@@ -59,6 +59,7 @@ normally distributed variables, the \code{t_test()} function can be used (with
 \code{paired = TRUE}).
 }
 \examples{
+\dontshow{if (requireNamespace("coin")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(mtcars)
 # one-sample test
 wilcoxon_test(mtcars, "mpg")
@@ -74,6 +75,7 @@ wilcox.test(mtcars$mpg, mtcars$hp, paired = TRUE)
 data(iris)
 d <- iris[iris$Species != "setosa", ]
 wilcoxon_test(d, "Sepal.Width", by = "Species")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

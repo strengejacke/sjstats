@@ -20,7 +20,7 @@
 #' @return A data frame with test results. The function returns p and Z-values
 #' as well as effect size r and group-rank-means.
 #'
-#' @examples
+#' @examplesIf requireNamespace("coin")
 #' data(mtcars)
 #' # one-sample test
 #' wilcoxon_test(mtcars, "mpg")
@@ -88,6 +88,7 @@ wilcoxon_test <- function(data,
 # Mann-Whitney-Test for two groups --------------------------------------------
 
 .calculate_wilcox <- function(x, y, alternative, mu, group_labels, ...) {
+  insight::check_if_installed("coin")
   # for paired Wilcoxon test, we have effect sizes
   if (!is.null(y)) {
     # prepare data
