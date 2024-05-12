@@ -13,10 +13,18 @@
 #' the `t_test()` function can be used.
 #'
 #' @param data A data frame.
-#' @param select One or more name of the continuous variable (as character
-#' vector) to be used as samples for the test. If `select` only specified one
-#' variable, a one-sample test is carried out (only applicable for `t_test()`).
-#' Else, `by` must be provided to indicate the groups of comparison.
+#' @param select Name(s) of the continuous variable(s) (as character vector)
+#' to be used as samples for the test. `select` can be one of the following:
+#'
+#' - `select` specifies **one** variable and `by` is provided to indicate the
+#'   groups of comparison. In this case, the samples in `select` are split by
+#'   the groups in `by`.
+#' - If `select` specifies **one** variable and `by = NULL`, a one-sample test
+#'   is carried out (only applicable for `t_test()` and `wilcoxon_test()`).
+#' - If `select` specifies **two** variables and `by` is `NULL`, the two
+#'   samples are compared. In combination with `paired`, a paired test is
+#'   carried out, i.e. samples are considered as *dependent*.
+#'
 #' @param by Name of the variable indicating the groups. Required if `select`
 #' specifies only one variable that contains all samples to be compared in the
 #' test. If `by` is not a factor, it will be coerced to a factor. For
@@ -50,11 +58,7 @@
 #' - medium effect >= 0.3
 #' - large effect >= 0.5
 #'
-#' **r** is calcuated as:
-#'
-#' ```
-#' r = |Z| / sqrt(n1 + n2)
-#' ```
+#' **r** is calcuated as \eqn{r = \frac{|Z|}{\sqrt{n1 + n2}}}.
 #'
 #' @examplesIf requireNamespace("coin") && requireNamespace("survey")
 #' data(efc)

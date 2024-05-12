@@ -17,10 +17,18 @@ mann_whitney_test(
 \arguments{
 \item{data}{A data frame.}
 
-\item{select}{One or more name of the continuous variable (as character
-vector) to be used as samples for the test. If \code{select} only specified one
-variable, a one-sample test is carried out (only applicable for \code{t_test()}).
-Else, \code{by} must be provided to indicate the groups of comparison.}
+\item{select}{Name(s) of the continuous variable(s) (as character vector)
+to be used as samples for the test. \code{select} can be one of the following:
+\itemize{
+\item \code{select} specifies \strong{one} variable and \code{by} is provided to indicate the
+groups of comparison. In this case, the samples in \code{select} are split by
+the groups in \code{by}.
+\item If \code{select} specifies \strong{one} variable and \code{by = NULL}, a one-sample test
+is carried out (only applicable for \code{t_test()} and \code{wilcoxon_test()}).
+\item If \code{select} specifies \strong{two} variables and \code{by} is \code{NULL}, the two
+samples are compared. In combination with \code{paired}, a paired test is
+carried out, i.e. samples are considered as \emph{dependent}.
+}}
 
 \item{by}{Name of the variable indicating the groups. Required if \code{select}
 specifies only one variable that contains all samples to be compared in the
@@ -68,10 +76,7 @@ Interpretation of the effect size \strong{r}, as a rule-of-thumb:
 \item large effect >= 0.5
 }
 
-\strong{r} is calcuated as:
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{r = |Z| / sqrt(n1 + n2)
-}\if{html}{\out{</div>}}
+\strong{r} is calcuated as \eqn{r = \frac{|Z|}{\sqrt{n1 + n2}}}.
 }
 \examples{
 \dontshow{if (requireNamespace("coin") && requireNamespace("survey")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

@@ -25,7 +25,7 @@
 #' # one-sample test
 #' wilcoxon_test(mtcars, "mpg")
 #' # base R equivalent
-#' wilcox.test(mtcars$mpg ~ 1)
+#' suppressWarning(wilcox.test(mtcars$mpg ~ 1))
 #'
 #' # paired test
 #' wilcoxon_test(mtcars, c("mpg", "hp"))
