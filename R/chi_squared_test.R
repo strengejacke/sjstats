@@ -263,7 +263,7 @@ print.sj_htest_chi <- function(x, ...) {
   stat_symbol <- .format_symbols(x$statistic_name)
 
   cat(sprintf(
-    "\n  %s = %.4f, %s = %.4f, df = %i, %s\n\n",
+    "\n  %s = %.3f, %s = %.3f, df = %i, %s\n\n",
     stat_symbol, x$statistic, eff_symbol, x$effect_size, round(x$df), insight::format_p(x$p)
   ))
 }

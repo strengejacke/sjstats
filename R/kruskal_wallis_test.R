@@ -184,7 +184,7 @@ print.sj_htest_kw <- function(x, ...) {
 
   stat_symbol <- .format_symbols("Chi2")
   cat(sprintf(
-    "\n  %s = %.3f, df = %i, %s\n\n",
+    "\n  %s = %.2f, df = %i, %s\n\n",
     stat_symbol, x$Chi2, round(x$df), insight::format_p(x$p)
   ))
 }

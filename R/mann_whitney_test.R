@@ -378,5 +378,5 @@ print.sj_htest_mwu <- function(x, ...) {
   } else {
     w_stat <- ""
   }
-  cat(sprintf("\n  %sr = %.3f, Z = %.3f, %s\n\n", w_stat, x$r, x$z, insight::format_p(x$p)))
+  cat(sprintf("\n  %sr = %.2f, Z = %.2f, %s\n\n", w_stat, x$r, x$z, insight::format_p(x$p)))
 }

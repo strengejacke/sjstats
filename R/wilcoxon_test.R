@@ -240,7 +240,7 @@ print.sj_htest_wilcox <- function(x, ...) {
   }
 
   if (!is.null(x[["r"]])) {
-    cat(sprintf("\n  %sr = %.3f, Z = %.3f, %s\n\n", v_stat, x$r, x$z, insight::format_p(x$p)))
+    cat(sprintf("\n  %sr = %.2f, Z = %.2f, %s\n\n", v_stat, x$r, x$z, insight::format_p(x$p)))
   } else {
     cat(sprintf("\n  %s%s\n\n", v_stat, insight::format_p(x$p)))
   }

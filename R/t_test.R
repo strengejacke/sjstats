@@ -177,8 +177,8 @@ t_test <- function(data,
   if (is.null(grp)) {
     dat <- stats::na.omit(data.frame(dv, weights))
     colnames(dat) <- c("y", "w")
-    x_values <- dv
-    x_weights <- weights
+    x_values <- dat$y
+    x_weights <- dat$w
     y_values <- NULL
   } else {
     dat <- stats::na.omit(data.frame(dv, grp, weights))
@@ -193,7 +193,7 @@ t_test <- function(data,
     y_weights <- dat$w[dat$g == groups[2]]
   }
 
-  mu_x <- stats::weighted.mean(x_values, x_weights)
+  mu_x <- stats::weighted.mean(x_values, x_weights, na.rm = TRUE)
   var_x <- datawizard::weighted_sd(x_values, x_weights)^2
   se_x <- sqrt(var_x / length(x_values))
 
@@ -376,9 +376,9 @@ print.sj_htest_t <- function(x, ...) {
   insight::print_color(sprintf("  Alternative hypothesis: %s\n", alt_string), "cyan")
 
   cat(sprintf(
-    "\n  t = %.3f, %s = %.3f, df = %s, %s\n\n",
+    "\n  t = %.2f, %s = %.2f, df = %s, %s\n\n",
     x$statistic,
-    x$effect_size_name,
+    gsub("_", " ", x$effect_size_name, fixed = TRUE),
     x$effect_size,
     insight::format_value(x$df, digits = 1, protect_integers = TRUE),
     insight::format_p(x$p)
