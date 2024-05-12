@@ -6,7 +6,9 @@
 #' automatically calculates effect sizes.
 #'
 #' @inheritParams mann_whitney_test
-#' @param paired Logical, whether to compute a paired t-test.
+#' @param paired Logical, whether to compute a paired t-test for dependent
+#' samples.
+#' @inherit mann_whitney_test seealso
 #'
 #' @return A data frame with test results.
 #'

@@ -8,7 +8,9 @@
 #'
 #' A Mann-Whitney test is a non-parametric test for the null hypothesis that two
 #' _independent_ samples have identical continuous distributions. It can be used
-#' when the two continuous variables are not normally distributed.
+#' for ordinal scales or when the two continuous variables are not normally
+#' distributed. For large samples, or approximately normally distributed variables,
+#' the `t_test()` function can be used.
 #'
 #' @param data A data frame.
 #' @param select One or more name of the continuous variable (as character
@@ -27,6 +29,13 @@
 #' shift (for `mann_whitney_test()`). The default is 0.
 #' @param ... Additional arguments passed to `wilcox.test()` (for unweighted
 #' tests, i.e. when `weights = NULL`).
+#'
+#' @seealso
+#' - [`mann_whitney_test()`] for unpaired (independent) samples.
+#' - [`t_test()`] for parametric t-tests.
+#' - [`kruskal_wallis_test()`] for non-parametric ANOVA (i.e. more than two samples).
+#' - [`wilcoxon_test()`] for Wilcoxon rank sum tests for paired (dependent) samples.
+#' - [`chi_squared_test()`] for chi-squared tests (two categorical variables).
 #'
 #' @return A data frame with test results. The function returns p and Z-values
 #' as well as effect size r and group-rank-means.

@@ -4,12 +4,23 @@
 #' or for two _paired_ (dependent) samples. For _unpaired_ (independent)
 #' samples, please use the `mann_whitney_test()` function.
 #'
+#' A Wilcoxon rank sum test is a non-parametric test for the null hypothesis
+#' that two samples have identical continuous distributions. The implementation
+#' in `wilcoxon_test()` is only used for _paired_, i.e. _dependent_ samples. For
+#' independent (unpaired) samples, use `mann_whitney_test()`.
+#'
+#' `wilcoxon_test()` can be used for ordinal scales or when the continuous
+#' variables are not normally distributed. For large samples, or approximately
+#' normally distributed variables, the `t_test()` function can be used (with
+#' `paired = TRUE`).
+#'
 #' @inheritParams mann_whitney_test
+#' @inherit mann_whitney_test seealso
 #'
 #' @return A data frame with test results. The function returns p and Z-values
 #' as well as effect size r and group-rank-means.
 #'
-#' @examples 
+#' @examples
 #' data(mtcars)
 #' # one-sample test
 #' wilcoxon_test(mtcars, "mpg")
@@ -20,6 +31,11 @@
 #' wilcoxon_test(mtcars, c("mpg", "hp"))
 #' # base R equivalent
 #' wilcox.test(mtcars$mpg, mtcars$hp, paired = TRUE)
+#'
+#' # when `by` is specified, each group must be of same length
+#' data(iris)
+#' d <- iris[iris$Species != "setosa", ]
+#' wilcoxon_test(d, "Sepal.Width", by = "Species")
 #' @export
 wilcoxon_test <- function(data,
                           select = NULL,
@@ -46,7 +62,8 @@ wilcoxon_test <- function(data,
       insight::format_error("For paired two-sample Wilcoxon test, all groups specified in `by` must have the same length.") # nolint
     }
     # convert to wide format
-    data <- datawizard::data_to_wide(data, values_from = select, names_from = by)
+    out <- split(data[select], as.character(data[[by]]))
+    data <- stats::setNames(do.call(cbind, out), names(out))
     select <- colnames(data)
   }
 

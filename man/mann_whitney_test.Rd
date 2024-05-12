@@ -52,7 +52,9 @@ tests, please use the \code{wilcoxon_test()} function.
 
 A Mann-Whitney test is a non-parametric test for the null hypothesis that two
 \emph{independent} samples have identical continuous distributions. It can be used
-when the two continuous variables are not normally distributed.
+for ordinal scales or when the two continuous variables are not normally
+distributed. For large samples, or approximately normally distributed variables,
+the \code{t_test()} function can be used.
 }
 \details{
 This function is based on \code{\link[=wilcox.test]{wilcox.test()}} and \code{\link[coin:LocationTests]{coin::wilcox_test()}}
@@ -95,4 +97,13 @@ mann_whitney_test(long_data, select = "scales", by = "groups")
 # base R equivalent
 wilcox.test(scales ~ groups, long_data)
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\itemize{
+\item \code{\link[=mann_whitney_test]{mann_whitney_test()}} for unpaired (independent) samples.
+\item \code{\link[=t_test]{t_test()}} for parametric t-tests.
+\item \code{\link[=kruskal_wallis_test]{kruskal_wallis_test()}} for non-parametric ANOVA (i.e. more than two samples).
+\item \code{\link[=wilcoxon_test]{wilcoxon_test()}} for Wilcoxon rank sum tests for paired (dependent) samples.
+\item \code{\link[=chi_squared_test]{chi_squared_test()}} for chi-squared tests (two categorical variables).
+}
 }

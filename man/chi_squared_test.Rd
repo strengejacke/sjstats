@@ -87,3 +87,12 @@ Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
 That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
 \doi{10.3390/math11091982}
 }
+\seealso{
+\itemize{
+\item \code{\link[=mann_whitney_test]{mann_whitney_test()}} for unpaired (independent) samples.
+\item \code{\link[=t_test]{t_test()}} for parametric t-tests.
+\item \code{\link[=kruskal_wallis_test]{kruskal_wallis_test()}} for non-parametric ANOVA (i.e. more than two samples).
+\item \code{\link[=wilcoxon_test]{wilcoxon_test()}} for Wilcoxon rank sum tests for paired (dependent) samples.
+\item \code{\link[=chi_squared_test]{chi_squared_test()}} for chi-squared tests (two categorical variables).
+}
+}

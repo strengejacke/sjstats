@@ -17,6 +17,8 @@
 #' @param ... Additional arguments passed down to [`chisq.test()`].
 #' @inheritParams mann_whitney_test
 #'
+#' @inherit mann_whitney_test seealso
+#'
 #' @return A data frame with test results. The returned effects sizes are
 #' Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
 #' for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against

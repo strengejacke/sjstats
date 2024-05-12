@@ -7,6 +7,7 @@
 #' weighted tests.
 #'
 #' @inheritParams mann_whitney_test
+#' @inherit mann_whitney_test seealso
 #'
 #' @return A data frame with test results.
 #'

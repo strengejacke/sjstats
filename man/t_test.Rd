@@ -29,7 +29,8 @@ test. If \code{by} is not a factor, it will be coerced to a factor. For
 
 \item{weights}{Name of an (optional) weighting variable to be used for the test.}
 
-\item{paired}{Logical, whether to compute a paired t-test.}
+\item{paired}{Logical, whether to compute a paired t-test for dependent
+samples.}
 
 \item{mu}{The hypothesized difference in means (for \code{t_test()}) or location
 shift (for \code{mann_whitney_test()}). The default is 0.}
@@ -65,4 +66,13 @@ t_test(mtcars, c("mpg", "hp"), paired = TRUE)
 # base R equivalent
 t.test(mtcars$mpg, mtcars$hp, data = mtcars, paired = TRUE)
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\itemize{
+\item \code{\link[=mann_whitney_test]{mann_whitney_test()}} for unpaired (independent) samples.
+\item \code{\link[=t_test]{t_test()}} for parametric t-tests.
+\item \code{\link[=kruskal_wallis_test]{kruskal_wallis_test()}} for non-parametric ANOVA (i.e. more than two samples).
+\item \code{\link[=wilcoxon_test]{wilcoxon_test()}} for Wilcoxon rank sum tests for paired (dependent) samples.
+\item \code{\link[=chi_squared_test]{chi_squared_test()}} for chi-squared tests (two categorical variables).
+}
 }

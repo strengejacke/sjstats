@@ -47,6 +47,16 @@ as well as effect size r and group-rank-means.
 This function performs Wilcoxon rank sum tests for one sample
 or for two \emph{paired} (dependent) samples. For \emph{unpaired} (independent)
 samples, please use the \code{mann_whitney_test()} function.
+
+A Wilcoxon rank sum test is a non-parametric test for the null hypothesis
+that two samples have identical continuous distributions. The implementation
+in \code{wilcoxon_test()} is only used for \emph{paired}, i.e. \emph{dependent} samples. For
+independent (unpaired) samples, use \code{mann_whitney_test()}.
+
+\code{wilcoxon_test()} can be used for ordinal scales or when the continuous
+variables are not normally distributed. For large samples, or approximately
+normally distributed variables, the \code{t_test()} function can be used (with
+\code{paired = TRUE}).
 }
 \examples{
 data(mtcars)
@@ -59,4 +69,18 @@ wilcox.test(mtcars$mpg ~ 1)
 wilcoxon_test(mtcars, c("mpg", "hp"))
 # base R equivalent
 wilcox.test(mtcars$mpg, mtcars$hp, paired = TRUE)
+
+# when `by` is specified, each group must be of same length
+data(iris)
+d <- iris[iris$Species != "setosa", ]
+wilcoxon_test(d, "Sepal.Width", by = "Species")
+}
+\seealso{
+\itemize{
+\item \code{\link[=mann_whitney_test]{mann_whitney_test()}} for unpaired (independent) samples.
+\item \code{\link[=t_test]{t_test()}} for parametric t-tests.
+\item \code{\link[=kruskal_wallis_test]{kruskal_wallis_test()}} for non-parametric ANOVA (i.e. more than two samples).
+\item \code{\link[=wilcoxon_test]{wilcoxon_test()}} for Wilcoxon rank sum tests for paired (dependent) samples.
+\item \code{\link[=chi_squared_test]{chi_squared_test()}} for chi-squared tests (two categorical variables).
+}
 }
