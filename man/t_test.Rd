@@ -48,6 +48,10 @@ samples, for paired samples, or for one sample. Unlike the underlying
 base R function \code{t.test()}, this function allows for weighted tests and
 automatically calculates effect sizes.
 }
+\details{
+Interpretation of effect sizes are based on rules described in
+\code{\link[effectsize:interpret_cohens_d]{effectsize::interpret_cohens_d()}} and \code{\link[effectsize:interpret_cohens_d]{effectsize::interpret_hedges_g()}}.
+}
 \examples{
 \dontshow{if (requireNamespace("effectsize")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(sleep)

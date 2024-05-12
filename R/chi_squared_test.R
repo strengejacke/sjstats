@@ -1,6 +1,6 @@
 #' @title Chi-Squared test
 #' @name chi_squared_test
-#' @description This function performs a \eqn{chi}^2 test for contingency
+#' @description This function performs a \eqn{chi^2} test for contingency
 #' tables or tests for given probabilities. The returned effects sizes are
 #' Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
 #' for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
@@ -34,6 +34,10 @@
 #'
 #' The weighted version of the chi-squared test is based on the a weighted
 #' table, using [`xtabs()`] as input for `chisq.test()`.
+#'
+#' Interpretation of effect sizes are based on rules described in
+#' [`effectsize::interpret_phi()`], [`effectsize::interpret_cramers_v()`],
+#' and [`effectsize::interpret_fei()`].
 #'
 #' @references Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
 #' Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
@@ -262,8 +266,29 @@ print.sj_htest_chi <- function(x, ...) {
   eff_symbol <- .format_symbols(x$effect_size_name)
   stat_symbol <- .format_symbols(x$statistic_name)
 
+  # string for effectsizes
+  eff_string <- switch(x$effect_size_name,
+    Fei = sprintf(
+      "%s = %.3f (%s effect)",
+      eff_symbol,
+      x$effect_size,
+      effectsize::interpret_fei(x$effect_size)
+    ),
+    Phi = sprintf(
+      "%s = %.3f (%s effect)",
+      eff_symbol,
+      x$effect_size,
+      effectsize::interpret_phi(x$effect_size)
+    ),
+    sprintf(
+      "Cramer's V = %.3f (%s effect)",
+      x$effect_size,
+      effectsize::interpret_cramers_v(x$effect_size)
+    )
+  )
+
   cat(sprintf(
-    "\n  %s = %.3f, %s = %.3f, df = %i, %s\n\n",
-    stat_symbol, x$statistic, eff_symbol, x$effect_size, round(x$df), insight::format_p(x$p)
+    "\n  %s = %.3f, %s, df = %i, %s\n\n",
+    stat_symbol, x$statistic, eff_string, round(x$df), insight::format_p(x$p)
   ))
 }

@@ -8,7 +8,7 @@
       
         Data: c161sex by e16sex (n = 900)
       
-        χ² = 2.233, ϕ = 0.053, df = 1, p = 0.135
+        χ² = 2.233, ϕ = 0.053 (very small effect), df = 1, p = 0.135
       
 
 ---
@@ -21,7 +21,7 @@
       
         Data: c161sex by e16sex (n = 904)
       
-        χ² = 2.416, ϕ = 0.054, df = 1, p = 0.120
+        χ² = 2.416, ϕ = 0.054 (very small effect), df = 1, p = 0.120
       
 
 ---
@@ -34,7 +34,7 @@
       
         Data: c161sex against probabilities 30% and 70% (n = 901)
       
-        χ² = 16.162, פ‎ = 0.088, df = 1, p < .001
+        χ² = 16.162, פ‎ = 0.088 (very small effect), df = 1, p < .001
       
 
 ---
@@ -47,7 +47,7 @@
       
         Data: c161sex against probabilities 30% and 70% (n = 906)
       
-        χ² = 20.074, פ‎ = 0.097, df = 1, p < .001
+        χ² = 20.074, פ‎ = 0.097 (very small effect), df = 1, p < .001
       
 
 ---
@@ -61,6 +61,6 @@
       
         Data: survey_1 by survey_2 (n = 1000)
       
-        χ² = 10.868, ϕ = 0.032, df = 1, p < .001
+        χ² = 10.868, ϕ = 0.032 (tiny effect), df = 1, p < .001
       
 

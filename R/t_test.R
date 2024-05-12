@@ -10,6 +10,9 @@
 #' samples.
 #' @inherit mann_whitney_test seealso
 #'
+#' @details Interpretation of effect sizes are based on rules described in
+#' [`effectsize::interpret_cohens_d()`] and [`effectsize::interpret_hedges_g()`].
+#'
 #' @return A data frame with test results.
 #'
 #' @examplesIf requireNamespace("effectsize")
@@ -291,6 +294,8 @@ t_test <- function(data,
 
 #' @export
 print.sj_htest_t <- function(x, ...) {
+  insight::check_if_installed("effectsize")
+
   # fetch attributes
   group_labels <- attributes(x)$group_labels
   means <- attributes(x)$means
@@ -375,11 +380,25 @@ print.sj_htest_t <- function(x, ...) {
   }
   insight::print_color(sprintf("  Alternative hypothesis: %s\n", alt_string), "cyan")
 
+  # string for effectsizes
+  if (x$effect_size_name == "Cohens_d") {
+    eff_string <- sprintf(
+      "Cohen's d = %.2f (%s effect)",
+      x$effect_size,
+      effectsize::interpret_cohens_d(x$effect_size)
+    )
+  } else {
+    eff_string <- sprintf(
+      "Hedges' g = %.2f (%s effect)",
+      x$effect_size,
+      effectsize::interpret_hedges_g(x$effect_size)
+    )
+  }
+
   cat(sprintf(
-    "\n  t = %.2f, %s = %.2f, df = %s, %s\n\n",
+    "\n  t = %.2f, %s, df = %s, %s\n\n",
     x$statistic,
-    gsub("_", " ", x$effect_size_name, fixed = TRUE),
-    x$effect_size,
+    eff_string,
     insight::format_value(x$df, digits = 1, protect_integers = TRUE),
     insight::format_p(x$p)
   ))

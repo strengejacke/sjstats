@@ -48,7 +48,7 @@ for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
 given probabilities.
 }
 \description{
-This function performs a \eqn{chi}^2 test for contingency
+This function performs a \eqn{chi^2} test for contingency
 tables or tests for given probabilities. The returned effects sizes are
 Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
 for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
@@ -65,6 +65,10 @@ a McNemar test (see \code{\link[=mcnemar.test]{mcnemar.test()}}) is conducted.
 
 The weighted version of the chi-squared test is based on the a weighted
 table, using \code{\link[=xtabs]{xtabs()}} as input for \code{chisq.test()}.
+
+Interpretation of effect sizes are based on rules described in
+\code{\link[effectsize:interpret_r]{effectsize::interpret_phi()}}, \code{\link[effectsize:interpret_r]{effectsize::interpret_cramers_v()}},
+and \code{\link[effectsize:interpret_r]{effectsize::interpret_fei()}}.
 }
 \examples{
 \dontshow{if (requireNamespace("effectsize")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
