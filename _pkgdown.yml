@@ -22,20 +22,20 @@ reference:
   - crosstable_statistics
   - table_values
 
-- title: "Weighted Estimates and Dispersion"
+- title: "Significance Tests"
   contents:
-  - weight
-  - weighted_se
-
-- title: "Summary Statistics and Tests"
-  contents:
-  - gmd
   - chi_squared_test
   - kruskal_wallis_test
   - mann_whitney_test
   - t_test
   - wilcoxon_test
+
+- title: "Summary Statistics"
+  contents:
+  - gmd
   - var_pop
+  - weight
+  - weighted_se
 
 - title: "Tools for Regression Models"
   contents:
