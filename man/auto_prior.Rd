@@ -64,7 +64,7 @@ auto_prior(mf, efc, TRUE)
 
 ## usage
 # ap <- auto_prior(mf, efc, TRUE)
-# brm(mf, data = efc, priors = ap)
+# brm(mf, data = efc, prior = ap)
 
 # add informative priors
 mf <- formula(neg_c_7 ~ c161sex + c172code)
