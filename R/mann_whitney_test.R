@@ -38,7 +38,7 @@
 #' must be one of `"two.sided"` (default), `"greater"` or `"less"`. See `?t.test`
 #' and `?wilcox.test`.
 #' @param mu The hypothesized difference in means (for `t_test()`) or location
-#' shift (for `mann_whitney_test()`). The default is 0.
+#' shift (for `wilcoxon_test()` and `mann_whitney_test()`). The default is 0.
 #' @param ... Additional arguments passed to `wilcox.test()` (for unweighted
 #' tests, i.e. when `weights = NULL`).
 #'
