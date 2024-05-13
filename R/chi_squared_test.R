@@ -53,7 +53,7 @@
 #' - du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
 #'   Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
 #'
-#' @examplesIf requireNamespace("effectsize")
+#' @examplesIf requireNamespace("effectsize") && requireNamespace("MASS")
 #' data(efc)
 #' efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
 #'
@@ -94,7 +94,7 @@ chi_squared_test <- function(data,
 # Mann-Whitney-Test for two groups --------------------------------------------
 
 .calculate_chisq <- function(data, select, by, weights, paired = FALSE, ...) {
-  insight::check_if_installed("datawizard")
+  insight::check_if_installed(c("datawizard", "MASS"))
   # sanity checks
   .sanitize_htest_input(data, select, by, weights)
 

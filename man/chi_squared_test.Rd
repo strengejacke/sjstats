@@ -119,7 +119,7 @@ be using a linear mixed model.
 }
 
 \examples{
-\dontshow{if (requireNamespace("effectsize")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("effectsize") && requireNamespace("MASS")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(efc)
 efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
 
