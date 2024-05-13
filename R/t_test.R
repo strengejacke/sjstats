@@ -23,7 +23,7 @@
 #'
 #' - du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
 #'   Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
-#' 
+#'
 #' @examplesIf requireNamespace("effectsize")
 #' data(sleep)
 #' # one-sample t-test

@@ -377,6 +377,11 @@ mann_whitney_test <- function(data,
       .misspelled_string(colnames(data), weights, "Maybe misspelled?")
     )
   }
+
+  # select variable type for certain tests
+  if (identical(test, "t_test") && !all(vapply(data[select], is.numeric, logical(1)))) {
+    insight::format_error("Variable provided in `select` must be numeric for Student's t test.")
+  }
 }
 
 

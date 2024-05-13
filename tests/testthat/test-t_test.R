@@ -26,4 +26,7 @@ test_that("t_test", {
   expect_equal(out1$statistic, out2$statistic, tolerance = 1e-4, ignore_attr = TRUE)
   expect_equal(out1$p, out2$p.value, tolerance = 1e-4, ignore_attr = TRUE)
   expect_equal(out1$effect_size, -0.5641989, tolerance = 1e-4, ignore_attr = TRUE)
+
+  efc$e17age <- as.factor(efc$e17age)
+  expect_error(t_test(efc, "e17age", "c161sex"), regex = "Variable provided in `select` must be numeric")
 })
