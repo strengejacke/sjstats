@@ -1,3 +1,25 @@
+# sjstats 0.18.3
+
+* Weighted significance tests have been re-designed. The functions `weighted_ttest()`,
+  `weighted_mannwhitney()` and `weighted_chisqtest()` are no longer available.
+  These are now re-implemented in `t_test()`, `mann_whitney_test()` and
+  `chi_squared_test()`. If weights are required, the `weights` argument can be
+  used. Furthermore, new functions for significance testing were added:
+  `kruskal_wallis_test()` and `wilcoxon_test()`.
+
+* `means_by_group()` and `mean_n()` were removed. The replacements are
+  `datawizard::means_by_group()` and `datawizard::row_means()` (using the
+  `min_valid` argument).
+
+* `weighted_median()`, `weighted_sd()` and `weighted_mean()` were removed. Their
+  replacements are `datawizard::weighted_median()`, `datawizard::weighted_sd()`
+  and `datawizard::weighted_mean()`.
+
+* Package dependency was dramatically reduced. _sjstats_ now required much fewer
+  and much more light-weight packages to work.
+
+* Some minor bugs were fixed.
+
 # sjstats 0.18.2
 
 * Fix issues with changes in forthcoming upstream packages.
