@@ -5,8 +5,6 @@
 \alias{reexports}
 \alias{mse}
 \alias{rmse}
-\alias{ci}
-\alias{equivalence_test}
 \alias{link_inverse}
 \alias{weighted_sd}
 \alias{weighted_mean}
@@ -18,8 +16,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{bayestestR}{\code{\link[bayestestR]{ci}}, \code{\link[bayestestR]{equivalence_test}}}
-
   \item{datawizard}{\code{\link[datawizard]{weighted_mean}}, \code{\link[datawizard:weighted_mean]{weighted_median}}, \code{\link[datawizard:weighted_mean]{weighted_sd}}}
 
   \item{insight}{\code{\link[insight]{link_inverse}}}

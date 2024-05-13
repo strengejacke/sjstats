@@ -6,14 +6,6 @@ performance::mse
 #' @export
 performance::rmse
 
-#' @importFrom bayestestR ci
-#' @export
-bayestestR::ci
-
-#' @importFrom bayestestR equivalence_test
-#' @export
-bayestestR::equivalence_test
-
 #' @importFrom insight link_inverse
 #' @export
 insight::link_inverse
