@@ -73,13 +73,13 @@ normally distributed variables, the \code{t_test()} function can be used (with
 data(mtcars)
 # one-sample test
 wilcoxon_test(mtcars, "mpg")
-# base R equivalent
-suppressWarnings(wilcox.test(mtcars$mpg ~ 1))
+# base R equivalent, we set exact = FALSE to avoid a warning
+wilcox.test(mtcars$mpg ~ 1, exact = FALSE)
 
 # paired test
 wilcoxon_test(mtcars, c("mpg", "hp"))
-# base R equivalent
-wilcox.test(mtcars$mpg, mtcars$hp, paired = TRUE)
+# base R equivalent, we set exact = FALSE to avoid a warning
+wilcox.test(mtcars$mpg, mtcars$hp, paired = TRUE, exact = FALSE)
 
 # when `by` is specified, each group must be of same length
 data(iris)
