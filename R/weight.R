@@ -38,8 +38,6 @@
 #' table(x)
 #' table(weight(x, w))
 #'
-#' @importFrom stats na.pass xtabs
-#' @importFrom sjlabelled as_numeric
 #' @export
 weight <- function(x, weights, digits = 0) {
   # remember if x is numeric
@@ -76,7 +74,9 @@ weight <- function(x, weights, digits = 0) {
 
   # if we have NA values, weighted var is coerced to character.
   # coerce back to numeric then here
-  if (!is.numeric(weightedvar) && x.is.num) weightedvar <- sjlabelled::as_numeric(weightedvar)
+  if (!is.numeric(weightedvar) && x.is.num) {
+    weightedvar <- datawizard::to_numeric(weightedvar, dummy_factors = FALSE)
+  }
 
   # return result
   weightedvar

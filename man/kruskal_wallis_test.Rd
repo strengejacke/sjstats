@@ -9,15 +9,25 @@ kruskal_wallis_test(data, select = NULL, by = NULL, weights = NULL)
 \arguments{
 \item{data}{A data frame.}
 
-\item{select}{Name of the dependent variable (as string) to be used for the
-test. \code{select} can also be a character vector, specifying the names of
-multiple continuous variables. In this case, \code{by} is ignored and variables
-specified in \code{select} are used to compute the test. This can be useful if
-the data is in wide-format and no grouping variable is available.}
+\item{select}{Name(s) of the continuous variable(s) (as character vector)
+to be used as samples for the test. \code{select} can be one of the following:
+\itemize{
+\item \code{select} can be used in combination with \code{by}, in which case \code{select} is
+the name of the continous variable (and \code{by} indicates a grouping factor).
+\item \code{select} can also be a character vector of length two or more (more than
+two names only apply to \code{kruskal_wallis_test()}), in which case the two
+continuous variables are treated as samples to be compared. \code{by} must be
+\code{NULL} in this case.
+\item If \code{select} select is of length \strong{two} and \code{paired = TRUE}, the two samples
+are considered as \emph{dependent} and a paired test is carried out.
+\item If \code{select} specifies \strong{one} variable and \code{by = NULL}, a one-sample test
+is carried out (only applicable for \code{t_test()} and \code{wilcoxon_test()}).
+}}
 
-\item{by}{Name of the grouping variable to be used for the test. If \code{by} is
-not a factor, it will be coerced to a factor. For \code{chi_squared_test()}, if
-\code{probabilities} is provided, \code{by} must be \code{NULL}.}
+\item{by}{Name of the variable indicating the groups. Required if \code{select}
+specifies only one variable that contains all samples to be compared in the
+test. If \code{by} is not a factor, it will be coerced to a factor. For
+\code{chi_squared_test()}, if \code{probabilities} is provided, \code{by} must be \code{NULL}.}
 
 \item{weights}{Name of an (optional) weighting variable to be used for the test.}
 }
@@ -27,13 +37,49 @@ A data frame with test results.
 \description{
 This function performs a Kruskal-Wallis rank sum test, to test
 the null hypothesis that the population median of all of the groups are
-equal. The alternative is that they differ in at least one.
+equal. The alternative is that they differ in at least one. Unlike the
+underlying base R function \code{kruskal.test()}, this function allows for
+weighted tests.
 }
 \details{
 The function simply is a wrapper around \code{\link[=kruskal.test]{kruskal.test()}}. The
 weighted version of the Kruskal-Wallis test is based on the \strong{survey} package,
 using \code{\link[survey:svyranktest]{survey::svyranktest()}}.
 }
+\section{Which test to use}{
+
+The following table provides an overview of which test to use for different
+types of data. The choice of test depends on the scale of the outcome
+variable and the number of samples to compare.\tabular{lll}{
+   \strong{Samples} \tab \strong{Scale of Outcome} \tab \strong{Significance Test} \cr
+   1 \tab binary / nominal \tab \code{chi_squared_test()} \cr
+   1 \tab continuous, not normal \tab \code{wilcoxon_test()} \cr
+   1 \tab continuous, normal \tab \code{t_test()} \cr
+   2, independent \tab binary / nominal \tab \code{chi_squared_test()} \cr
+   2, independent \tab continuous, not normal \tab \code{mann_whitney_test()} \cr
+   2, independent \tab continuous, normal \tab \code{t_test()} \cr
+   2, dependent \tab binary (only 2x2) \tab \code{chi_squared_test(paired=TRUE)} \cr
+   2, dependent \tab continuous, not normal \tab \code{wilcoxon_test()} \cr
+   2, dependent \tab continuous, normal \tab \code{t_test(paired=TRUE)} \cr
+   >2, independent \tab continuous, not normal \tab \code{kruskal_wallis_test()} \cr
+   >2, independent \tab continuous,     normal \tab \code{datawizard::means_by_group()} \cr
+   >2, dependent \tab continuous, not normal \tab \emph{not yet implemented} (1) \cr
+   >2, dependent \tab continuous,     normal \tab \emph{not yet implemented} (2) \cr
+}
+
+
+(1) More than two dependent samples are considered as \emph{repeated measurements}.
+For ordinal or not-normally distributed outcomes, these samples are
+usually tested using a \code{\link[=friedman.test]{friedman.test()}}, which requires the samples
+in one variable, the groups to compare in another variable, and a third
+variable indicating the repeated measurements (subject IDs).
+
+(2) More than two dependent samples are considered as \emph{repeated measurements}.
+For normally distributed outcomes, these samples are usually tested using
+a ANOVA for repeated measurements. A more sophisticated approach would
+be using a linear mixed model.
+}
+
 \examples{
 data(efc)
 # Kruskal-Wallis test for elder's age by education
@@ -55,4 +101,23 @@ long_data <- data.frame(
   groups = rep(c("A", "B", "C"), each = 20)
 )
 kruskal_wallis_test(long_data, select = "scales", by = "groups")
+# base R equivalent
+kruskal.test(scales ~ groups, data = long_data)
+}
+\references{
+\itemize{
+\item Bender, R., Lange, S., Ziegler, A. Wichtige Signifikanztests.
+Dtsch Med Wochenschr 2007; 132: e24–e25
+\item du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
+Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
+}
+}
+\seealso{
+\itemize{
+\item \code{\link[=mann_whitney_test]{mann_whitney_test()}} for unpaired (independent) samples.
+\item \code{\link[=t_test]{t_test()}} for parametric t-tests.
+\item \code{\link[=kruskal_wallis_test]{kruskal_wallis_test()}} for non-parametric ANOVA (i.e. more than two samples).
+\item \code{\link[=wilcoxon_test]{wilcoxon_test()}} for Wilcoxon rank sum tests for paired (dependent) samples.
+\item \code{\link[=chi_squared_test]{chi_squared_test()}} for chi-squared tests (two categorical variables).
+}
 }

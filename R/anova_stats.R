@@ -15,7 +15,7 @@
 #'   \cr \cr
 #'   Tippey K, Longnecker MT (2016): An Ad Hoc Method for Computing Pseudo-Effect Size for Mixed Model.
 #'
-#' @examples
+#' @examplesIf requireNamespace("car") && requireNamespace("pwr")
 #' # load sample data
 #' data(efc)
 #'
@@ -24,9 +24,7 @@
 #'   c12hour ~ as.factor(e42dep) + as.factor(c172code) + c160age,
 #'   data = efc
 #' )
-#' \dontrun{
 #' anova_stats(car::Anova(fit, type = 2))
-#' }
 #' @export
 anova_stats <- function(model, digits = 3) {
   insight::check_if_installed("pwr")
@@ -47,39 +45,44 @@ anova_stats <- function(model, digits = 3) {
   cohens.f <- sqrt(partial.etasq / (1 - partial.etasq))
 
   # bind as data frame
-  as <- dplyr::bind_rows(
+  anov_stat <- rbind(
     data.frame(etasq, partial.etasq, omegasq, partial.omegasq, epsilonsq, cohens.f),
     data.frame(etasq = NA, partial.etasq = NA, omegasq = NA, partial.omegasq = NA, epsilonsq = NA, cohens.f = NA)
-  ) %>%
-    sjmisc::add_columns(aov.sum)
+  )
+  anov_stat <- cbind(anov_stat, data.frame(aov.sum))
 
   # get nr of terms
-  nt <- nrow(as) - 1
+  nt <- nrow(anov_stat) - 1
 
   # finally, compute power
-  power <- tryCatch(
-    {
-      c(
-        pwr::pwr.f2.test(u = as$df[1:nt], v = as$df[nrow(as)], f2 = as$cohens.f[1:nt]^2)[["power"]],
-        NA
-      )
-    },
+  as_power <- tryCatch(
+    c(
+      pwr::pwr.f2.test(
+        u = anov_stat$df[1:nt],
+        v = anov_stat$df[nrow(anov_stat)],
+        f2 = anov_stat$cohens.f[1:nt]^2
+      )[["power"]],
+      NA
+    ),
     error = function(x) {
       NA
     }
   )
 
-  out <- sjmisc::add_variables(as, power = power) %>%
-    sjmisc::round_num(digits = digits) %>%
-    as.data.frame()
+  out <- cbind(anov_stat, data.frame(power = as_power))
+  out[] <- lapply(out, function(i) {
+    if (is.numeric(i)) {
+      round(i, digits)
+    } else {
+      i
+    }
+  })
 
   class(out) <- c("sj_anova_stat", class(out))
   out
 }
 
 
-
-#' @importFrom rlang .data
 aov_stat <- function(model, type) {
   aov.sum <- aov_stat_summary(model)
   aov.res <- aov_stat_core(aov.sum, type)
@@ -92,7 +95,7 @@ aov_stat <- function(model, type) {
 
 
 aov_stat_summary <- function(model) {
-  insight::check_if_installed("broom")
+  insight::check_if_installed("parameters")
   # check if we have a mixed model
   mm <- is_merMod(model)
   ori.model <- model
@@ -103,12 +106,12 @@ aov_stat_summary <- function(model) {
     model <- stats::anova(model)
 
   # get summary table
-  aov.sum <- as.data.frame(broom::tidy(model))
+  aov.sum <- insight::standardize_names(as.data.frame(parameters::model_parameters(model)), style = "broom")
 
   # for mixed models, add information on residuals
   if (mm) {
     res <- stats::residuals(ori.model)
-    aov.sum <- dplyr::bind_rows(
+    aov.sum <- rbind(
       aov.sum,
       data_frame(
         term = "Residuals",
@@ -132,8 +135,14 @@ aov_stat_summary <- function(model) {
     colnames(aov.sum) <- c("term", "df", "sumsq", "meansq", "statistic", "p.value")
 
   # for car::Anova, the meansq-column might be missing, so add it manually
-  if (!obj_has_name(aov.sum, "meansq"))
-    aov.sum <- sjmisc::add_variables(aov.sum, meansq = aov.sum$sumsq / aov.sum$df, .after = "sumsq")
+  if (!obj_has_name(aov.sum, "meansq")) {
+    pos_sumsq <- which(colnames(aov.sum) == "sumsq")
+    aov.sum <- cbind(
+      aov.sum[1:pos_sumsq],
+      data.frame(meansq = aov.sum$sumsq / aov.sum$df),
+      aov.sum[(pos_sumsq + 1):ncol(aov.sum)]
+    )
+  }
 
   intercept <- .which_intercept(aov.sum$term)
   if (length(intercept) > 0) {
@@ -165,36 +174,35 @@ aov_stat_core <- function(aov.sum, type) {
   N <- sum(aov.sum[["df"]]) + 1
 
 
-  if (type == "omega") {
+  aovstat <- switch(type,
     # compute omega squared for each model term
-    aovstat <- purrr::map_dbl(1:n_terms, function(x) {
+    omega = unlist(lapply(1:n_terms, function(x) {
       ss.term <- aov.sum[["sumsq"]][x]
       df.term <- aov.sum[["df"]][x]
       (ss.term - df.term * meansq.resid) / (ss.total + meansq.resid)
-    })
-  } else if (type == "pomega") {
+    })),
     # compute partial omega squared for each model term
-    aovstat <- purrr::map_dbl(1:n_terms, function(x) {
+    pomega = unlist(lapply(1:n_terms, function(x) {
       df.term <- aov.sum[["df"]][x]
       meansq.term <- aov.sum[["meansq"]][x]
       (df.term * (meansq.term - meansq.resid)) / (df.term * meansq.term + (N - df.term) * meansq.resid)
-    })
-  } else if (type == "epsilon") {
+    })),
     # compute epsilon squared for each model term
-    aovstat <- purrr::map_dbl(1:n_terms, function(x) {
+    epsilon = unlist(lapply(1:n_terms, function(x) {
       ss.term <- aov.sum[["sumsq"]][x]
       df.term <- aov.sum[["df"]][x]
       (ss.term - df.term * meansq.resid) / ss.total
-    })
-  } else if (type == "eta") {
+    })),
     # compute eta squared for each model term
-    aovstat <-
-      purrr::map_dbl(1:n_terms, ~ aov.sum[["sumsq"]][.x] / sum(aov.sum[["sumsq"]]))
-  } else if (type %in% c("cohens.f", "peta")) {
+    eta = unlist(lapply(1:n_terms, function(x) {
+      aov.sum[["sumsq"]][x] / sum(aov.sum[["sumsq"]])
+    })),
     # compute partial eta squared for each model term
-    aovstat <-
-      purrr::map_dbl(1:n_terms, ~ aov.sum[["sumsq"]][.x] / (aov.sum[["sumsq"]][.x] + ss.resid))
-  }
+    cohens.f = ,
+    peta = unlist(lapply(1:n_terms, function(x) {
+      aov.sum[["sumsq"]][x] / (aov.sum[["sumsq"]][x] + ss.resid)
+    }))
+  )
 
   # compute Cohen's F
   if (type == "cohens.f") aovstat <- sqrt(aovstat / (1 - aovstat))

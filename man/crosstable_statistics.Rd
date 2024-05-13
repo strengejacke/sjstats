@@ -65,10 +65,9 @@ frame including lower and upper confidence intervals.}
 \item{n}{Number of bootstraps to be generated.}
 
 \item{method}{Character vector, indicating if confidence intervals should be
-based on bootstrap standard error, multiplied by the value of the
-quantile function of the t-distribution (default), or on sample
-quantiles of the bootstrapped values. See 'Details' in \code{boot_ci()}.
-May be abbreviated.}
+based on bootstrap standard error, multiplied by the value of the quantile
+function of the t-distribution (default), or on sample quantiles of the
+bootstrapped values. See 'Details' in \code{boot_ci()}. May be abbreviated.}
 
 \item{x1}{Name of first variable that should be used to compute the
 contingency table. If \code{data} is a table object, this argument will be

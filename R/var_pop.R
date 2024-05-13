@@ -22,21 +22,18 @@
 #' sd(efc$c12hour, na.rm = TRUE)
 #' # population sd
 #' sd_pop(efc$c12hour)
-#'
-#' @importFrom stats na.omit var
-#' @importFrom sjmisc is_num_fac
-#' @importFrom sjlabelled as_numeric
 #' @export
 var_pop <- function(x) {
+  insight::check_if_installed("datawizard")
   # check for categorical
   if (is.factor(x)) {
     # only allow numeric factors
-    if (!sjmisc::is_num_fac(x)) {
-      warning("`x` must be numeric vector or a factor with numeric levels.", call. = F)
-      return(NA)
+
+    if (!.is_pseudo_numeric(x)) {
+      insight::format_error("`x` must be numeric vector or a factor with numeric levels.")
     }
     # convert factor to numeric
-    x <- sjlabelled::as_numeric(x)
+    x <- datawizard::to_numeric(x, dummy_factors = FALSE)
   }
 
   # remove NA
@@ -49,7 +46,6 @@ var_pop <- function(x) {
 
 
 #' @rdname var_pop
-#' @importFrom stats na.omit var
 #' @export
 sd_pop <- function(x) {
   # get population variance

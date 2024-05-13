@@ -137,24 +137,24 @@ find_beta2 <- function(x, se, ci, n) {
 
     # need to compute proportion
     x <- x / n
-    p2 <- .95
+    p2 <- 0.95
     x2 <- x + bvar
   }
 
   # for standard errors, we assume a 68% quantile
   if (!missing(se)) {
-    p2 <- .68
+    p2 <- 0.68
     x2 <- x + se
   }
 
   # for CI, we assume a 68% quantile
   if (!missing(ci)) {
-    p2 <- .95
+    p2 <- 0.95
     x2 <- ci
   }
 
   # the probability is assumed to be the median
-  p1 <- .5
+  p1 <- 0.5
   x1 <- x
 
   find_beta(x1, p1, x2, p2)
@@ -182,4 +182,3 @@ find_normal <- function(x1, p1, x2, p2) {
 
   list(mean = mw, sd = stddev)
 }
-

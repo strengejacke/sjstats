@@ -34,20 +34,16 @@
 #'   formula used in \code{brms::brm()} must be rewritten to something like
 #'   \code{y ~ 0 + intercept ...}, see \code{\link[brms]{set_prior}}.
 #'
-#' @examples
-#' library(sjmisc)
+#' @examplesIf requireNamespace("brms")
 #' data(efc)
 #' efc$c172code <- as.factor(efc$c172code)
-#' efc$c161sex <- to_label(efc$c161sex)
+#' efc$c161sex <- as.factor(efc$c161sex)
 #'
 #' mf <- formula(neg_c_7 ~ c161sex + c160age + c172code)
-#'
-#' if (requireNamespace("brms", quietly = TRUE))
-#'   auto_prior(mf, efc, TRUE)
+#' auto_prior(mf, efc, TRUE)
 #'
 #' ## compare to
-#' # library(rstanarm)
-#' # m <- stan_glm(mf, data = efc, chains = 2, iter = 200)
+#' # m <- rstanarm::stan_glm(mf, data = efc, chains = 2, iter = 200)
 #' # ps <- prior_summary(m)
 #' # ps$prior_intercept$adjusted_scale
 #' # ps$prior$adjusted_scale
@@ -59,22 +55,16 @@
 #' # add informative priors
 #' mf <- formula(neg_c_7 ~ c161sex + c172code)
 #'
-#' if (requireNamespace("brms", quietly = TRUE)) {
-#'   auto_prior(mf, efc, TRUE) +
-#'     brms::prior(normal(.1554, 40), class = "b", coef = "c160age")
-#' }
+#' auto_prior(mf, efc, TRUE) +
+#'   brms::prior(normal(.1554, 40), class = "b", coef = "c160age")
 #'
 #' # example with binary response
 #' efc$neg_c_7d <- ifelse(efc$neg_c_7 < median(efc$neg_c_7, na.rm = TRUE), 0, 1)
 #' mf <- formula(neg_c_7d ~ c161sex + c160age + c172code + e17age)
-#'
-#' if (requireNamespace("brms", quietly = TRUE))
-#'   auto_prior(mf, efc, FALSE)
+#' auto_prior(mf, efc, FALSE)
 #' @export
 auto_prior <- function(formula, data, gaussian, locations = NULL) {
-
-  if (!requireNamespace("brms", quietly = TRUE))
-    stop("Package `brms` required.", call. = FALSE)
+  insight::check_if_installed("brms")
 
   scale.b <- 2.5
   scale.y <- 10
@@ -82,20 +72,14 @@ auto_prior <- function(formula, data, gaussian, locations = NULL) {
   pred <- insight::find_predictors(formula, effects = "all", flatten = TRUE)
   y.name <- insight::find_response(formula, combine = TRUE)
 
-  cols <- c(y.name, pred)
-
-  data <- data %>%
-    dplyr::select(!! cols) %>%
-    stats::na.omit() %>%
-    as.data.frame()
-
+  data <- stats::na.omit(data[c(y.name, pred)])
   y <- data[[y.name]]
 
   # check if response is binary
-  if (missing(gaussian) && dplyr::n_distinct(y, na.rm = TRUE) == 2) gaussian <- FALSE
+  if (missing(gaussian) && insight::n_unique(y) == 2) gaussian <- FALSE
 
-  if (isTRUE(gaussian) && dplyr::n_distinct(y, na.rm = TRUE) == 2)
-    warning("Priors were calculated based on assumption that the response is Gaussian, however it seems to be binary.", call. = F)
+  if (isTRUE(gaussian) && insight::n_unique(y) == 2)
+    insight::format_alert("Priors were calculated based on assumption that the response is Gaussian, however it seems to be binary.") # nolint
 
 
   if (gaussian) {
@@ -135,7 +119,7 @@ auto_prior <- function(formula, data, gaussian, locations = NULL) {
     term.names <- c(term.names, i)
   }
 
-  for (i in 1:length(term.names)) {
+  for (i in seq_along(term.names)) {
 
     if (!is.null(locations) && length(locations) >= (i + 1))
       location.b <- locations[i + 1]

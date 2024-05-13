@@ -65,14 +65,9 @@ utils::globalVariables("scaled.weights")
 #'   # print coefficients and standard errors
 #'   fit
 #' }
-#' @importFrom MASS glm.nb
-#' @importFrom stats weights update model.frame coef as.formula family
 #' @export
 svyglm.nb <- function(formula, design, ...) {
-  # check if pkg survey is available
-  if (!requireNamespace("survey", quietly = TRUE)) {
-    stop("Package `survey` needed to for this function to work. Please install it.", call. = FALSE)
-  }
+  insight::check_if_installed(c("survey", "MASS"))
 
   # get design weights. we need to scale these weights for the glm.nb() function
   dw <- stats::weights(design)

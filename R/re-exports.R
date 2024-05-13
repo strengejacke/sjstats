@@ -1,12 +1,3 @@
-#' @importFrom magrittr %>%
-#' @export
-magrittr::`%>%`
-
-
-#' @importFrom sjmisc typical_value
-#' @export
-sjmisc::typical_value
-
 #' @importFrom performance mse
 #' @export
 performance::mse
@@ -26,3 +17,15 @@ bayestestR::equivalence_test
 #' @importFrom insight link_inverse
 #' @export
 insight::link_inverse
+
+#' @importFrom datawizard weighted_sd
+#' @export
+datawizard::weighted_sd
+
+#' @importFrom datawizard weighted_mean
+#' @export
+datawizard::weighted_mean
+
+#' @importFrom datawizard weighted_median
+#' @export
+datawizard::weighted_median

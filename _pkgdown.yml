@@ -25,7 +25,7 @@ reference:
 - title: "Weighted Estimates and Dispersion"
   contents:
   - weight
-  - weighted_ttest
+  - weighted_se
 
 - title: "Summary Statistics and Tests"
   contents:
@@ -33,6 +33,8 @@ reference:
   - chi_squared_test
   - kruskal_wallis_test
   - mann_whitney_test
+  - t_test
+  - wilcoxon_test
   - var_pop
 
 - title: "Tools for Regression Models"

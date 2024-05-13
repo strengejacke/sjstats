@@ -23,19 +23,19 @@ cramers_v.ftable <- function(tab, ...) {
 #' @rdname crosstable_statistics
 #' @export
 cramers_v.formula <- function(formula, data, ci.lvl = NULL, n = 1000, method = c("dist", "quantile"), ...) {
-  terms <- all.vars(formula)
-  tab <- table(data[[terms[1]]], data[[terms[2]]])
+  fterms <- all.vars(formula)
+  tab <- table(data[[fterms[1]]], data[[fterms[2]]])
   method <- match.arg(method)
 
   if (is.null(ci.lvl) || is.na(ci.lvl)) {
     .cramers_v(tab)
   } else {
-    straps <- sjstats::bootstrap(data[terms], n)
+    straps <- sjstats::bootstrap(data[fterms], n)
     tables <- lapply(straps$strap, function(x) {
       dat <- as.data.frame(x)
       table(dat[[1]], dat[[2]])
     })
-    cramers <- sapply(tables, function(x) .cramers_v(x))
+    cramers <- sapply(tables, .cramers_v)
     ci <- boot_ci(cramers, ci.lvl = ci.lvl, method = method)
 
     data_frame(

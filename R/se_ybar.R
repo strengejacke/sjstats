@@ -12,14 +12,9 @@
 #'
 #' @references Gelman A, Hill J. 2007. Data analysis using regression and multilevel/hierarchical models. Cambridge, New York: Cambridge University Press
 #'
-#' @examples
-#' if (require("lme4")) {
-#'   fit <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
-#'   se_ybar(fit)
-#' }
-#' @importFrom lme4 ngrps
-#' @importFrom stats nobs
-#' @importFrom purrr map_dbl
+#' @examplesIf require("lme4")
+#' fit <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
+#' se_ybar(fit)
 #' @export
 se_ybar <- function(fit) {
   # get model icc
@@ -32,7 +27,7 @@ se_ybar <- function(fit) {
   tot_var <- sum(tau.00, vars$var.residual)
 
   # get number of groups
-  m.cnt <- lme4::ngrps(fit)
+  m.cnt <- vapply(fit@flist, nlevels, 1)
 
   # compute number of observations per group (level-2-unit)
   obs <- round(stats::nobs(fit) / m.cnt)
@@ -41,7 +36,9 @@ se_ybar <- function(fit) {
   icc <- tau.00 / tot_var
 
   # compute standard error of sample mean
-  se <- purrr::map_dbl(seq_len(length(m.cnt)), ~ sqrt((tot_var / stats::nobs(fit)) * design_effect(n = obs[.x], icc = icc[.x])))
+  se <- unlist(lapply(seq_len(length(m.cnt)), function(.x) {
+    sqrt((tot_var / stats::nobs(fit)) * design_effect(n = obs[.x], icc = icc[.x]))
+  }))
 
   # give names for se, so user sees, which random effect has what impact
   names(se) <- names(m.cnt)

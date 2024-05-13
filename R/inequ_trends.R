@@ -26,7 +26,7 @@
 #'          in changes in rate differences and rate ratios. The function implements
 #'          the algorithm proposed by \emph{Mackenbach et al. 2015}.
 #'
-#' @examples
+#' @examplesIf requireNamespace("ggplot2")
 #' # This example reproduces Fig. 1 of Mackenbach et al. 2015, p.5
 #'
 #' # 40 simulated time points, with an initial rate ratio of 2 and
@@ -47,27 +47,21 @@
 #' prev.data <- data.frame(lo, hi)
 #'
 #' # print values
-#' inequ_trend(prev.data, lo, hi)
+#' inequ_trend(prev.data, "lo", "hi")
 #'
 #' # plot trends - here we see that the relative inequalities
 #' # are increasing over time, while the absolute inequalities
 #' # are first increasing as well, but later are decreasing
 #' # (while rel. inequ. are still increasing)
-#' plot(inequ_trend(prev.data, lo, hi))
+#' plot(inequ_trend(prev.data, "lo", "hi"))
 #'
-#' @importFrom dplyr select
-#' @importFrom rlang quo_name enquo .data
 #' @export
 inequ_trend <- function(data, prev.low, prev.hi) {
   # prepare data for prevalence rates for low and hi status groups
   if (is.null(data) || missing(data)) {
     dat <- data.frame(prev.low, prev.hi)
   } else {
-    # get variable names
-    # create quosures
-    low <- rlang::quo_name(rlang::enquo(prev.low))
-    high <- rlang::quo_name(rlang::enquo(prev.hi))
-    dat <- dplyr::select(data, !! low, !! high)
+    dat <- data[c(prev.low, prev.hi)]
   }
 
   # ensure common column names
@@ -96,7 +90,7 @@ inequ_trend <- function(data, prev.low, prev.hi) {
   for (t in 2:nrow(dat)) {
     delta.low <- (dat$lo[t] - dat$lo[t - 1]) / dat$lo[t - 1]
     delta.hi <- (dat$hi[t] - dat$hi[t - 1]) / dat$hi[t - 1]
-    dat$rd[t] <- dat$rd[t - 1] + (dat$lo[t - 1 ] * delta.low - dat$hi[t - 1] * delta.hi)
+    dat$rd[t] <- dat$rd[t - 1] + (dat$lo[t - 1] * delta.low - dat$hi[t - 1] * delta.hi)
   }
 
   # return

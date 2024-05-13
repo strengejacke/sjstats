@@ -45,19 +45,9 @@ utils::globalVariables("scaled.weights")
 #'   # print coefficients and standard errors
 #'   fit
 #' }
-#' @importFrom insight find_formula
-#' @importFrom stats weights update model.frame coef as.formula family
 #' @export
 svyglm.zip <- function(formula, design, ...) {
-  # check if pkg survey is available
-  if (!requireNamespace("survey", quietly = TRUE)) {
-    stop("Package `survey` needed to for this function to work. Please install it.", call. = FALSE)
-  }
-
-  if (!requireNamespace("pscl", quietly = TRUE)) {
-    stop("Package `pscl` needed to for this function to work. Please install it.", call. = FALSE)
-  }
-
+  insight::check_if_installed(c("survey", "pscl"))
 
   # get design weights. we need to scale these weights for the glm.nb() function
   dw <- stats::weights(design)
@@ -66,7 +56,7 @@ svyglm.zip <- function(formula, design, ...) {
   design <- stats::update(design, scaled.weights = dw / mean(dw, na.rm = TRUE))
 
   # fit ZIP model, with scaled design weights
-  mod <- pscl::zeroinfl(formula, data = stats::model.frame(design), weights = scaled.weights, ...)
+  mod <- suppressWarnings(pscl::zeroinfl(formula, data = stats::model.frame(design), weights = scaled.weights, ...))
   ff <- insight::find_formula(mod)
 
   # fit survey model, using maximum likelihood estimation
@@ -94,7 +84,6 @@ svyglm.zip <- function(formula, design, ...) {
 }
 
 
-#' @importFrom stats dpois
 # log-likelihood function used in "svymle()"
 sjstats_loglik_zip <- function(y, eta, logitp) {
   mu <- exp(eta)

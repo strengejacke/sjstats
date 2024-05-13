@@ -9,3 +9,10 @@
 ^pkgdown$
 ^.github$
 \.code-workspace$
+^README\.rmd
+^\.git$
+^WIP$
+\.lintr$
+^CRAN-SUBMISSION$
+^cran-comments\.md$
+^LICENSE\.md$

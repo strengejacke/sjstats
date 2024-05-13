@@ -113,7 +113,20 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
   stat.html <- NULL
 
   # check if data is a table
-  if (!is.table(data)) {
+  if (is.table(data)) {
+    # 'data' is a table - copy to table object
+    tab <- data
+    # check if statistics are possible to compute
+    if (statistics %in% c("spearman", "kendall", "pearson")) {
+      stop(
+        sprintf(
+          "Need arguments `data`, `x1` and `x2` to compute %s-statistics.",
+          statistics
+        ),
+        call. = FALSE
+      )
+    }
+  } else {
     # evaluate unquoted names
     x1 <- deparse(substitute(x1))
     x2 <- deparse(substitute(x2))
@@ -124,7 +137,7 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
     x2 <- gsub("\"", "", x2, fixed = TRUE)
     weights <- gsub("\"", "", weights, fixed = TRUE)
 
-    if (sjmisc::is_empty(weights) || weights == "NULL")
+    if (insight::is_empty_object(weights) || weights == "NULL")
       weights <- NULL
     else
       weights <- data[[weights]]
@@ -144,19 +157,6 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
       class(tab) <- "table"
     } else {
       tab <- table(data)
-    }
-  } else {
-    # 'data' is a table - copy to table object
-    tab <- data
-    # check if statistics are possible to compute
-    if (statistics %in% c("spearman", "kendall", "pearson")) {
-      stop(
-        sprintf(
-          "Need arguments `data`, `x1` and `x2` to compute %s-statistics.",
-          statistics
-        ),
-        call. = FALSE
-      )
     }
   }
 
@@ -217,21 +217,21 @@ crosstable_statistics <- function(data, x1 = NULL, x2 = NULL, statistics = c("au
   }
 
   # compute method string
-  method <- dplyr::case_when(
-    statistics == "kendall" ~ "Kendall's tau",
-    statistics == "spearman" ~ "Spearman's rho",
-    statistics == "pearson" ~ "Pearson's r",
-    statistics == "cramer" ~ "Cramer's V",
-    statistics == "phi" ~ "Phi"
+  method <- ifelse(statistics == "kendall", "Kendall's tau",
+    ifelse(statistics == "spearman", "Spearman's rho", # nolint
+      ifelse(statistics == "pearson", "Pearson's r", # nolint
+        ifelse(statistics == "cramer", "Cramer's V", "Phi") # nolint
+      )
+    )
   )
 
   # compute method string
-  method.html <- dplyr::case_when(
-    statistics == "kendall" ~ "Kendall's &tau;",
-    statistics == "spearman" ~ "Spearman's &rho;",
-    statistics == "pearson" ~ "Pearson's r",
-    statistics == "cramer" ~ "Cramer's V",
-    statistics == "phi" ~ "&phi;"
+  method.html <- ifelse(statistics == "kendall", "Kendall's &tau;",
+    ifelse(statistics == "spearman", "Spearman's &rho;", # nolint
+      ifelse(statistics == "pearson", "Pearson's r", # nolint
+        ifelse(statistics == "cramer", "Cramer's V", "&phi") # nolint
+      )
+    )
   )
 
   # return result

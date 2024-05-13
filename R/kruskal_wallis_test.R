@@ -2,12 +2,24 @@
 #' @name kruskal_wallis_test
 #' @description This function performs a Kruskal-Wallis rank sum test, to test
 #' the null hypothesis that the population median of all of the groups are
-#' equal. The alternative is that they differ in at least one.
+#' equal. The alternative is that they differ in at least one. Unlike the
+#' underlying base R function `kruskal.test()`, this function allows for
+#' weighted tests.
 #'
 #' @inheritParams mann_whitney_test
+#' @inherit mann_whitney_test seealso
 #'
 #' @return A data frame with test results.
 #'
+#' @inheritSection mann_whitney_test Which test to use
+#'
+#' @references
+#' - Bender, R., Lange, S., Ziegler, A. Wichtige Signifikanztests.
+#'   Dtsch Med Wochenschr 2007; 132: e24–e25
+#'
+#' - du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
+#'   Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
+#' 
 #' @details The function simply is a wrapper around [`kruskal.test()`]. The
 #' weighted version of the Kruskal-Wallis test is based on the **survey** package,
 #' using [`survey::svyranktest()`].
@@ -33,6 +45,8 @@
 #'   groups = rep(c("A", "B", "C"), each = 20)
 #' )
 #' kruskal_wallis_test(long_data, select = "scales", by = "groups")
+#' # base R equivalent
+#' kruskal.test(scales ~ groups, data = long_data)
 #' @export
 kruskal_wallis_test <- function(data,
                                 select = NULL,
@@ -41,13 +55,10 @@ kruskal_wallis_test <- function(data,
   insight::check_if_installed("datawizard")
 
   # sanity checks
-  .sanitize_htest_input(data, select, by, weights)
+  .sanitize_htest_input(data, select, by, weights, test = "kruskal_wallis_test")
 
   # does select indicate more than one variable?
   if (length(select) > 1) {
-    if (!is.null(by)) {
-      insight::format_error("If `select` specifies more than one variable, `by` must be `NULL`.")
-    }
     # we convert the data into long format, and create a grouping variable
     data <- datawizard::data_to_long(data[select], names_to = "group", values_to = "scale")
     by <- select[2]
@@ -68,16 +79,16 @@ kruskal_wallis_test <- function(data,
     insight::format_error("At least two groups are required, i.e. data must have at least two unique levels in `by` for `kruskal_wallis_test()`.") # nolint
   }
   if (is.null(weights)) {
-    .calculate_kw(dv, grp)
+    .calculate_kw(dv, grp, group_labels = c(select, by))
   } else {
-    .calculate_weighted_kw(dv, grp, data[[weights]])
+    .calculate_weighted_kw(dv, grp, data[[weights]], group_labels = c(select, by))
   }
 }
 
 
 # Kruskal-Wallis-Test --------------------------------------------
 
-.calculate_kw <- function(dv, grp, paired = FALSE) {
+.calculate_kw <- function(dv, grp, paired = FALSE, group_labels = NULL) {
   # prepare data
   wcdat <- data.frame(dv, grp)
   if (paired) {
@@ -95,7 +106,7 @@ kruskal_wallis_test <- function(data,
   )
 
   out <- data.frame(
-    data = wt$data.name,
+    data = paste(group_labels[1], "by", group_labels[2]),
     Chi2 = wt$statistic,
     df = wt$parameter,
     p = as.numeric(wt$p.value),
@@ -113,7 +124,7 @@ kruskal_wallis_test <- function(data,
 
 # Weighted Mann-Whitney-Test for two groups ----------------------------------
 
-.calculate_weighted_kw <- function(dv, grp, weights, paired = FALSE) {
+.calculate_weighted_kw <- function(dv, grp, weights, paired = FALSE, group_labels = NULL) {
   # check if pkg survey is available
   insight::check_if_installed("survey")
 
@@ -133,7 +144,7 @@ kruskal_wallis_test <- function(data,
   }
 
   out <- data.frame(
-    data = paste(dv, "by", grp),
+    data = paste(group_labels[1], "by", group_labels[2]),
     Chi2 = result$statistic,
     df = result$parameter,
     p = as.numeric(result$p.value),
@@ -182,7 +193,7 @@ print.sj_htest_kw <- function(x, ...) {
 
   stat_symbol <- .format_symbols("Chi2")
   cat(sprintf(
-    "\n  %s = %.3f, df = %i, %s\n\n",
+    "\n  %s = %.2f, df = %i, %s\n\n",
     stat_symbol, x$Chi2, round(x$df), insight::format_p(x$p)
   ))
 }

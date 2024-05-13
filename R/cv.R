@@ -20,7 +20,6 @@
 #' fit <- lm(barthtot ~ c160age + c12hour, data = efc)
 #' cv(fit)
 #'
-#' @importFrom stats sd
 #' @export
 cv <- function(x, ...) {
   # return value
@@ -37,9 +36,8 @@ cv <- function(x, ...) {
 }
 
 
-#' @importFrom performance rmse
-#' @importFrom insight get_response
 cv_helper <- function(x) {
+  insight::check_if_installed("performance")
   # check if we have a fitted linear model
   if (inherits(x, c("lm", "lmerMod", "lme", "merModLmerTest")) && !inherits(x, "glm")) {
     # get response

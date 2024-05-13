@@ -20,33 +20,21 @@ Depends:
 Imports:
     bayestestR,
     datawizard,
-    dplyr,
-    effectsize,
+    effectsize (>= 0.8.8),
     insight,
-    lme4,
-    magrittr,
-    MASS,
-    modelr,
     parameters,
     performance,
-    purrr,
-    rlang,
-    sjlabelled,
-    sjmisc,
-    stats,
-    tidyr
+    stats
 Suggests:
     brms,
-    broom,
     car,
     coin,
     ggplot2,
-    graphics,
+    lme4,
+    MASS,
     pscl,
     pwr,
-    sjPlot,
     survey,
-    rstan,
     testthat
 URL: https://strengejacke.github.io/sjstats/
 BugReports: https://github.com/strengejacke/sjstats/issues

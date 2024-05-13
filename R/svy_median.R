@@ -1,11 +1,8 @@
-#' @rdname weighted_sd
-#' @importFrom stats as.formula
+#' @rdname weighted_se
 #' @export
 survey_median <- function(x, design) {
   # check if pkg survey is available
-  if (!requireNamespace("survey", quietly = TRUE)) {
-    stop("Package `survey` needed to for this function to work. Please install it.", call. = FALSE)
-  }
+  insight::check_if_installed("survey")
 
   # deparse
   v <- stats::as.formula(paste("~", as.character(substitute(x))))

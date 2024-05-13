@@ -12,60 +12,8 @@ is_merMod <- function(fit) {
 }
 
 
-is_stan_model <- function(fit) {
-  inherits(fit, c("stanreg", "stanfit", "brmsfit"))
-}
-
-
-#' @importFrom sjmisc str_contains
-get_glm_family <- function(fit) {
-  c.f <- class(fit)
-
-  # do we have glm? if so, get link family. make exceptions
-  # for specific models that don't have family function
-  if (any(c.f %in% c("lme", "plm"))) {
-    fitfam <- ""
-    logit_link <- FALSE
-  } else {
-    fitfam <- stats::family(fit)$family
-    logit_link <- stats::family(fit)$link == "logit"
-  }
-
-  # create logical for family
-  binom_fam <- fitfam %in% c("binomial", "quasibinomial")
-  poisson_fam <- fitfam %in% c("poisson", "quasipoisson") ||
-    sjmisc::str_contains(fitfam, "negative binomial", ignore.case = TRUE)
-
-  list(is_bin = binom_fam, is_pois = poisson_fam, is_logit = logit_link)
-}
-
-# return names of objects passed as ellipses argument
-dot_names <- function(dots) unname(unlist(lapply(dots, as.character)))
-
-
-#' @importFrom tidyr nest
-#' @importFrom dplyr select filter group_vars
-#' @importFrom stats complete.cases
-#' @importFrom rlang .data
-get_grouped_data <- function(x) {
-  # retain observations that are complete wrt grouping vars, then nest
-  grps <- x %>%
-    dplyr::group_modify(~ dplyr::filter(.x, stats::complete.cases(.y))) %>%
-    tidyr::nest()
-
-  # arrange data
-  if (length(dplyr::group_vars(x)) == 1)
-    reihe <- order(grps[[1]])
-  else
-    reihe <- order(grps[[1]], grps[[2]])
-  grps <- grps[reihe, ]
-
-  grps
-}
-
-
 .compact_character <- function(x) {
-  x[!sapply(x, function(i) is.null(i) || nchar(i) == 0 || is.na(i) || any(i == "NULL", na.rm = TRUE))]
+  x[!sapply(x, function(i) is.null(i) || !nzchar(i, keepNA = TRUE) || is.na(i) || any(i == "NULL", na.rm = TRUE))]
 }
 
 
@@ -105,4 +53,61 @@ get_grouped_data <- function(x) {
     }
   )
   l10n_info()[["UTF-8"]] && ((win_os && getRversion() >= "4.2") || (!win_os && getRversion() >= "4.0"))
+}
+
+
+.is_pseudo_numeric <- function(x) {
+  (is.character(x) && !anyNA(suppressWarnings(as.numeric(stats::na.omit(x[nzchar(x, keepNA = TRUE)]))))) || (is.factor(x) && !anyNA(suppressWarnings(as.numeric(levels(x))))) # nolint
+}
+
+
+.misspelled_string <- function(source, searchterm, default_message = NULL) {
+  if (is.null(searchterm) || length(searchterm) < 1) {
+    return(default_message)
+  }
+  # used for many matches
+  more_found <- ""
+  # init default
+  msg <- ""
+  # remove matching strings
+  same <- intersect(source, searchterm)
+  searchterm <- setdiff(searchterm, same)
+  source <- setdiff(source, same)
+  # guess the misspelled string
+  possible_strings <- unlist(lapply(searchterm, function(s) {
+    source[.fuzzy_grep(source, s)] # nolint
+  }), use.names = FALSE)
+  if (length(possible_strings)) {
+    msg <- "Did you mean "
+    if (length(possible_strings) > 1) {
+      # make sure we don't print dozens of alternatives for larger data frames
+      if (length(possible_strings) > 5) {
+        more_found <- sprintf(
+          " We even found %i more possible matches, not shown here.",
+          length(possible_strings) - 5
+        )
+        possible_strings <- possible_strings[1:5]
+      }
+      msg <- paste0(msg, "one of ", toString(paste0("\"", possible_strings, "\"")))
+    } else {
+      msg <- paste0(msg, "\"", possible_strings, "\"")
+    }
+    msg <- paste0(msg, "?", more_found)
+  } else {
+    msg <- default_message
+  }
+  # no double white space
+  insight::trim_ws(msg)
+}
+
+
+.fuzzy_grep <- function(x, pattern, precision = NULL) {
+  if (is.null(precision)) {
+    precision <- round(nchar(pattern) / 3)
+  }
+  if (precision > nchar(pattern)) {
+    return(NULL)
+  }
+  p <- sprintf("(%s){~%i}", pattern, precision)
+  grep(pattern = p, x = x, ignore.case = FALSE)
 }

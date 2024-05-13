@@ -36,6 +36,7 @@ in changes in rate differences and rate ratios. The function implements
 the algorithm proposed by \emph{Mackenbach et al. 2015}.
 }
 \examples{
+\dontshow{if (requireNamespace("ggplot2")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # This example reproduces Fig. 1 of Mackenbach et al. 2015, p.5
 
 # 40 simulated time points, with an initial rate ratio of 2 and
@@ -56,14 +57,14 @@ for (i in 2:n) hi[i] <- hi[i - 1] * .97
 prev.data <- data.frame(lo, hi)
 
 # print values
-inequ_trend(prev.data, lo, hi)
+inequ_trend(prev.data, "lo", "hi")
 
 # plot trends - here we see that the relative inequalities
 # are increasing over time, while the absolute inequalities
 # are first increasing as well, but later are decreasing
 # (while rel. inequ. are still increasing)
-plot(inequ_trend(prev.data, lo, hi))
-
+plot(inequ_trend(prev.data, "lo", "hi"))
+\dontshow{\}) # examplesIf}
 }
 \references{
 Mackenbach JP, Martikainen P, Menvielle G, de Gelder R. 2015. The Arithmetic of Reducing Relative and Absolute Inequalities in Health: A Theoretical Analysis Illustrated with European Mortality Data. Journal of Epidemiology and Community Health 70(7): 730-36. \doi{10.1136/jech-2015-207018}

@@ -1,6 +1,6 @@
 #' @title Chi-Squared test
 #' @name chi_squared_test
-#' @description This function performs a \eqn{chi}^2 test for contingency
+#' @description This function performs a \eqn{\chi^2} test for contingency
 #' tables or tests for given probabilities. The returned effects sizes are
 #' Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
 #' for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
@@ -16,6 +16,10 @@
 #' Note that `paired` only works for 2x2 tables.
 #' @param ... Additional arguments passed down to [`chisq.test()`].
 #' @inheritParams mann_whitney_test
+#'
+#' @inheritSection mann_whitney_test Which test to use
+#'
+#' @inherit mann_whitney_test seealso
 #'
 #' @return A data frame with test results. The returned effects sizes are
 #' Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
@@ -33,12 +37,23 @@
 #' The weighted version of the chi-squared test is based on the a weighted
 #' table, using [`xtabs()`] as input for `chisq.test()`.
 #'
-#' @references Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
-#' Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
-#' That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
-#' \doi{10.3390/math11091982}
+#' Interpretation of effect sizes are based on rules described in
+#' [`effectsize::interpret_phi()`], [`effectsize::interpret_cramers_v()`],
+#' and [`effectsize::interpret_fei()`].
 #'
-#' @examples
+#' @references
+#' - Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
+#'   Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
+#'   That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
+#'   \doi{10.3390/math11091982}
+#'
+#' - Bender, R., Lange, S., Ziegler, A. Wichtige Signifikanztests.
+#'   Dtsch Med Wochenschr 2007; 132: e24–e25
+#'
+#' - du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
+#'   Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
+#'
+#' @examplesIf requireNamespace("effectsize")
 #' data(efc)
 #' efc$weight <- abs(rnorm(nrow(efc), 1, 0.3))
 #'
@@ -58,6 +73,12 @@ chi_squared_test <- function(data,
                              weights = NULL,
                              paired = FALSE,
                              ...) {
+  # sanity check - if we only have one variable in "select" and "by" and
+  # "probabilities" are NULL, set probalities
+  if (is.null(probabilities) && !is.null(select) && is.null(by) && length(select) == 1) {
+    probabilities <- rep(1 / length(data[[select]]), length(data[[select]]))
+  }
+
   if (is.null(probabilities)) {
     .calculate_chisq(data, select, by, weights, paired, ...)
   } else {
@@ -260,8 +281,29 @@ print.sj_htest_chi <- function(x, ...) {
   eff_symbol <- .format_symbols(x$effect_size_name)
   stat_symbol <- .format_symbols(x$statistic_name)
 
+  # string for effectsizes
+  eff_string <- switch(x$effect_size_name,
+    Fei = sprintf(
+      "%s = %.3f (%s effect)",
+      eff_symbol,
+      x$effect_size,
+      effectsize::interpret_fei(x$effect_size)
+    ),
+    Phi = sprintf(
+      "%s = %.3f (%s effect)",
+      eff_symbol,
+      x$effect_size,
+      effectsize::interpret_phi(x$effect_size)
+    ),
+    sprintf(
+      "Cramer's V = %.3f (%s effect)",
+      x$effect_size,
+      effectsize::interpret_cramers_v(x$effect_size)
+    )
+  )
+
   cat(sprintf(
-    "\n  %s = %.4f, %s = %.4f, df = %i, %s\n\n",
-    stat_symbol, x$statistic, eff_symbol, x$effect_size, round(x$df), insight::format_p(x$p)
+    "\n  %s = %.3f, %s, df = %i, %s\n\n",
+    stat_symbol, x$statistic, eff_string, round(x$df), insight::format_p(x$p)
   ))
 }

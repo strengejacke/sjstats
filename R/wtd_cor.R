@@ -1,15 +1,15 @@
-#' @rdname weighted_sd
+#' @rdname weighted_se
 #' @export
 weighted_correlation <- function(data, ...) {
   UseMethod("weighted_correlation")
 }
 
 
-#' @rdname weighted_sd
+#' @rdname weighted_se
 #' @export
-weighted_correlation.default <- function(data, x, y, weights, ci.lvl = .95, ...) {
-  if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
-    stop("'ci.lvl' must be a single number between 0 and 1")
+weighted_correlation.default <- function(data, x, y, weights, ci.lvl = 0.95, ...) {
+  if (!missing(ci.lvl) && (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
+    insight::format_error("'ci.lvl' must be a single number between 0 and 1.")
 
   x.name <- deparse(substitute(x))
   y.name <- deparse(substitute(y))
@@ -24,8 +24,8 @@ weighted_correlation.default <- function(data, x, y, weights, ci.lvl = .95, ...)
   vars <- c(x.name, y.name, w.name)
 
   # get data
-  dat <- suppressMessages(dplyr::select(data, !! vars))
-  dat <- na.omit(dat)
+  dat <- suppressMessages(data[vars])
+  dat <- stats::na.omit(dat)
 
   xv <- dat[[x.name]]
   yv <- dat[[y.name]]
@@ -35,12 +35,12 @@ weighted_correlation.default <- function(data, x, y, weights, ci.lvl = .95, ...)
 }
 
 
-#' @rdname weighted_sd
+#' @rdname weighted_se
 #' @export
-weighted_correlation.formula <- function(formula, data, ci.lvl = .95, ...) {
+weighted_correlation.formula <- function(formula, data, ci.lvl = 0.95, ...) {
 
-  if (!missing(ci.lvl) & (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
-    stop("'ci.lvl' must be a single number between 0 and 1")
+  if (!missing(ci.lvl) && (length(ci.lvl) != 1 || !is.finite(ci.lvl) || ci.lvl < 0 || ci.lvl > 1))
+    insight::format_error("'ci.lvl' must be a single number between 0 and 1.")
 
   vars <- all.vars(formula)
 
@@ -50,8 +50,8 @@ weighted_correlation.formula <- function(formula, data, ci.lvl = .95, ...) {
   }
 
   # get data
-  dat <- suppressMessages(dplyr::select(data, !! vars))
-  dat <- na.omit(dat)
+  dat <- suppressMessages(data[vars])
+  dat <- stats::na.omit(dat)
 
   xv <- dat[[vars[1]]]
   yv <- dat[[vars[2]]]

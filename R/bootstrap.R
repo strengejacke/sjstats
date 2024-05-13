@@ -61,17 +61,11 @@
 #'   mean(as.data.frame(x)$c12hour, na.rm = TRUE)
 #' }))
 #'
-#' # or as tidyverse-approach
-#' if (require("dplyr") && require("purrr")) {
-#'   bs <- efc %>%
-#'     bootstrap(100) %>%
-#'     mutate(
-#'       c12hour = map_dbl(strap, ~mean(as.data.frame(.x)$c12hour, na.rm = TRUE))
-#'     )
+#' # bootstrapped standard error
+#' boot_se(bs, "c12hour")
 #'
-#'   # bootstrapped standard error
-#'   boot_se(bs, c12hour)
-#' }
+#' # bootstrapped CI
+#' boot_ci(bs, "c12hour")
 #' @export
 bootstrap <- function(data, n, size) {
   if (!missing(size) && !is.null(size)) {

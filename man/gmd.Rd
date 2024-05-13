@@ -4,15 +4,14 @@
 \alias{gmd}
 \title{Gini's Mean Difference}
 \usage{
-gmd(x, ...)
+gmd(x, select = NULL)
 }
 \arguments{
 \item{x}{A vector or data frame.}
 
-\item{...}{Optional, unquoted names of variables that should be selected for
-further processing. Required, if \code{x} is a data frame (and no vector)
-and only selected variables from \code{x} should be processed. You may also
-use functions like \code{:} or tidyselect's \code{select_helpers()}.}
+\item{select}{Optional, names of variables as character vector that should be
+selected for further processing. Required, if \code{x} is a data frame (and no vector)
+and only selected variables from \code{x} should be processed.}
 }
 \value{
 For numeric vectors, Gini's mean difference. For non-numeric vectors
@@ -24,13 +23,13 @@ or for all numeric vectors in a data frame.
 }
 \note{
 Gini's mean difference is defined as the mean absolute difference between
-any two distinct elements of a vector. Missing values from \code{x} are
-silently removed.
+any two distinct elements of a vector. Missing values from \code{x} are silently
+removed.
 }
 \examples{
 data(efc)
 gmd(efc$e17age)
-gmd(efc, e17age, c160age, c12hour)
+gmd(efc, c("e17age", "c160age", "c12hour"))
 
 }
 \references{
