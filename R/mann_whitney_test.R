@@ -16,15 +16,16 @@
 #' @param select Name(s) of the continuous variable(s) (as character vector)
 #' to be used as samples for the test. `select` can be one of the following:
 #'
-#' - `select` specifies **one** variable and `by` is provided to indicate the
-#'   groups of comparison. In this case, the samples in `select` are split by
-#'   the groups in `by`.
+#' - `select` can be used in combination with `by`, in which case `select` is
+#'   the name of the continous variable (and `by` indicates a grouping factor).
+#' - `select` can also be a character vector of length two or more (more than
+#'   two names only apply to `kruskal_wallis_test()`), in which case the two
+#'   continuous variables are treated as samples to be compared. `by` must be
+#'   `NULL` in this case.
+#' - If `select` select is of length **two** and `paired = TRUE`, the two samples
+#'   are considered as *dependent* and a paired test is carried out.
 #' - If `select` specifies **one** variable and `by = NULL`, a one-sample test
 #'   is carried out (only applicable for `t_test()` and `wilcoxon_test()`).
-#' - If `select` specifies **two** variables and `by` is `NULL`, the two
-#'   samples are compared. In combination with `paired`, a paired test is
-#'   carried out, i.e. samples are considered as *dependent*.
-#'
 #' @param by Name of the variable indicating the groups. Required if `select`
 #' specifies only one variable that contains all samples to be compared in the
 #' test. If `by` is not a factor, it will be coerced to a factor. For

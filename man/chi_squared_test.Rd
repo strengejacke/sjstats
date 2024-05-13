@@ -20,14 +20,16 @@ chi_squared_test(
 \item{select}{Name(s) of the continuous variable(s) (as character vector)
 to be used as samples for the test. \code{select} can be one of the following:
 \itemize{
-\item \code{select} specifies \strong{one} variable and \code{by} is provided to indicate the
-groups of comparison. In this case, the samples in \code{select} are split by
-the groups in \code{by}.
+\item \code{select} can be used in combination with \code{by}, in which case \code{select} is
+the name of the continous variable (and \code{by} indicates a grouping factor).
+\item \code{select} can also be a character vector of length two or more (more than
+two names only apply to \code{kruskal_wallis_test()}), in which case the two
+continuous variables are treated as samples to be compared. \code{by} must be
+\code{NULL} in this case.
+\item If \code{select} select is of length \strong{two} and \code{paired = TRUE}, the two samples
+are considered as \emph{dependent} and a paired test is carried out.
 \item If \code{select} specifies \strong{one} variable and \code{by = NULL}, a one-sample test
 is carried out (only applicable for \code{t_test()} and \code{wilcoxon_test()}).
-\item If \code{select} specifies \strong{two} variables and \code{by} is \code{NULL}, the two
-samples are compared. In combination with \code{paired}, a paired test is
-carried out, i.e. samples are considered as \emph{dependent}.
 }}
 
 \item{by}{Name of the variable indicating the groups. Required if \code{select}
