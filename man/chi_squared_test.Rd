@@ -80,6 +80,39 @@ Interpretation of effect sizes are based on rules described in
 \code{\link[effectsize:interpret_r]{effectsize::interpret_phi()}}, \code{\link[effectsize:interpret_r]{effectsize::interpret_cramers_v()}},
 and \code{\link[effectsize:interpret_r]{effectsize::interpret_fei()}}.
 }
+\section{Which test to use}{
+
+The following table provides an overview of which test to use for different
+types of data. The choice of test depends on the scale of the outcome
+variable and the number of samples to compare.\tabular{lll}{
+   Samples \tab Scale of Outcome \tab Significance Test \cr
+   1 \tab binary / nominal \tab \code{chi_squared_test()} \cr
+   1 \tab continuous, not normal \tab \code{wilcoxon_test()} \cr
+   1 \tab continuous, normal \tab \code{t_test()} \cr
+   2, independent \tab binary / nominal \tab \code{chi_squared_test()} \cr
+   2, independent \tab continuous, not normal \tab \code{mann_whitney_test()} \cr
+   2, independent \tab continuous, normal \tab \code{t_test()} \cr
+   2, dependent \tab binary (only 2x2) \tab \code{chi_squared_test(paired=TRUE)} \cr
+   2, dependent \tab continuous, not normal \tab \code{wilcoxon_test()} \cr
+   2, dependent \tab continuous, normal \tab \code{t_test(paired=TRUE)} \cr
+   >2, independent \tab continuous, not normal \tab \code{kruskal_wallis_test()} \cr
+   >2, independent \tab continuous,     normal \tab \code{datawizard::means_by_group()} \cr
+   >2, dependent \tab continuous, not normal \tab \emph{not yet implemented} (1) \cr
+   >2, dependent \tab continuous,     normal \tab \emph{not yet implemented} (2) \cr
+}
+
+
+(1) More than two dependent samples are considered as \emph{repeated measurements}.
+These samples are usually tested using a \code{\link[=friedman.test]{friedman.test()}}, which
+requires the samples in one variable, the groups to compare in another
+variable, and a third variable indicating the repeated measurements
+(subject IDs).
+
+(2) More than two independent samples are considered as \emph{repeated measurements}.
+These samples are usually tested using a ANOVA for repeated measurements.
+A more sophisticated approach would be using a linear mixed model.
+}
+
 \examples{
 \dontshow{if (requireNamespace("effectsize")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(efc)
@@ -96,10 +129,16 @@ chi_squared_test(efc, "c161sex", probabilities = c(0.3, 0.7))
 \dontshow{\}) # examplesIf}
 }
 \references{
-Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
+\itemize{
+\item Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
 Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
 That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
 \doi{10.3390/math11091982}
+\item Bender, R., Lange, S., Ziegler, A. Wichtige Signifikanztests.
+Dtsch Med Wochenschr 2007; 132: e24–e25
+\item du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
+Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
+}
 }
 \seealso{
 \itemize{

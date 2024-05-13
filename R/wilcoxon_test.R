@@ -17,8 +17,17 @@
 #' @inheritParams mann_whitney_test
 #' @inherit mann_whitney_test seealso
 #'
+#' @inheritSection mann_whitney_test Which test to use
+#'
 #' @return A data frame with test results. The function returns p and Z-values
 #' as well as effect size r and group-rank-means.
+#'
+#' @references
+#' - Bender, R., Lange, S., Ziegler, A. Wichtige Signifikanztests.
+#'   Dtsch Med Wochenschr 2007; 132: e24–e25
+#'
+#' - du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
+#'   Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
 #'
 #' @examplesIf requireNamespace("coin")
 #' data(mtcars)

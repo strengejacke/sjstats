@@ -11,6 +11,15 @@
 #'
 #' @return A data frame with test results.
 #'
+#' @inheritSection mann_whitney_test Which test to use
+#'
+#' @references
+#' - Bender, R., Lange, S., Ziegler, A. Wichtige Signifikanztests.
+#'   Dtsch Med Wochenschr 2007; 132: e24–e25
+#'
+#' - du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
+#'   Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
+#' 
 #' @details The function simply is a wrapper around [`kruskal.test()`]. The
 #' weighted version of the Kruskal-Wallis test is based on the **survey** package,
 #' using [`survey::svyranktest()`].

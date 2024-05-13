@@ -39,6 +39,37 @@
 #' @param ... Additional arguments passed to `wilcox.test()` (for unweighted
 #' tests, i.e. when `weights = NULL`).
 #'
+#' @section Which test to use:
+#' The following table provides an overview of which test to use for different
+#' types of data. The choice of test depends on the scale of the outcome
+#' variable and the number of samples to compare.
+#'
+#' | Samples         | Scale of Outcome       | Significance Test               |
+#' |-----------------|------------------------|---------------------------------|
+#' | 1               | binary / nominal       | `chi_squared_test()`            |
+#' | 1               | continuous, not normal | `wilcoxon_test()`               |
+#' | 1               | continuous, normal     | `t_test()`                      |
+#' | 2, independent  | binary / nominal       | `chi_squared_test()`            |
+#' | 2, independent  | continuous, not normal | `mann_whitney_test()`           |
+#' | 2, independent  | continuous, normal     | `t_test()`                      |
+#' | 2, dependent    | binary (only 2x2)      | `chi_squared_test(paired=TRUE)` |
+#' | 2, dependent    | continuous, not normal | `wilcoxon_test()`               |
+#' | 2, dependent    | continuous, normal     | `t_test(paired=TRUE)`           |
+#' | >2, independent | continuous, not normal | `kruskal_wallis_test()`         |
+#' | >2, independent | continuous,     normal | `datawizard::means_by_group()`  |
+#' | >2, dependent   | continuous, not normal | _not yet implemented_ (1)       |
+#' | >2, dependent   | continuous,     normal | _not yet implemented_ (2)       |
+#'
+#' (1) More than two dependent samples are considered as _repeated measurements_.
+#'     These samples are usually tested using a [`friedman.test()`], which
+#'     requires the samples in one variable, the groups to compare in another
+#'     variable, and a third variable indicating the repeated measurements
+#'     (subject IDs).
+#'
+#' (2) More than two independent samples are considered as _repeated measurements_.
+#'     These samples are usually tested using a ANOVA for repeated measurements.
+#'     A more sophisticated approach would be using a linear mixed model.
+#'
 #' @seealso
 #' - [`mann_whitney_test()`] for unpaired (independent) samples.
 #' - [`t_test()`] for parametric t-tests.
@@ -49,6 +80,18 @@
 #' @return A data frame with test results. The function returns p and Z-values
 #' as well as effect size r and group-rank-means.
 #'
+#' @references
+#' - Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
+#'   Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
+#'   That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
+#'   \doi{10.3390/math11091982}
+#'
+#' - Bender, R., Lange, S., Ziegler, A. Wichtige Signifikanztests.
+#'   Dtsch Med Wochenschr 2007; 132: e24–e25
+#'
+#' - du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
+#'   Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
+#' 
 #' @details This function is based on [`wilcox.test()`] and [`coin::wilcox_test()`]
 #' (the latter to extract effect sizes). The weighted version of the test is
 #' based on [`survey::svyranktest()`].

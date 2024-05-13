@@ -17,6 +17,8 @@
 #' @param ... Additional arguments passed down to [`chisq.test()`].
 #' @inheritParams mann_whitney_test
 #'
+#' @inheritSection mann_whitney_test Which test to use
+#'
 #' @inherit mann_whitney_test seealso
 #'
 #' @return A data frame with test results. The returned effects sizes are
@@ -39,10 +41,17 @@
 #' [`effectsize::interpret_phi()`], [`effectsize::interpret_cramers_v()`],
 #' and [`effectsize::interpret_fei()`].
 #'
-#' @references Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
-#' Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
-#' That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
-#' \doi{10.3390/math11091982}
+#' @references
+#' - Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,
+#'   Lüdecke, D. (2023). Phi, Fei, Fo, Fum: Effect Sizes for Categorical Data
+#'   That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
+#'   \doi{10.3390/math11091982}
+#'
+#' - Bender, R., Lange, S., Ziegler, A. Wichtige Signifikanztests.
+#'   Dtsch Med Wochenschr 2007; 132: e24–e25
+#'
+#' - du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
+#'   Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
 #'
 #' @examplesIf requireNamespace("effectsize")
 #' data(efc)
@@ -64,6 +73,12 @@ chi_squared_test <- function(data,
                              weights = NULL,
                              paired = FALSE,
                              ...) {
+  # sanity check - if we only have one variable in "select" and "by" and
+  # "probabilities" are NULL, set probalities
+  if (is.null(probabilities) && !is.null(select) && is.null(by) && length(select) == 1) {
+    probabilities <- rep(1 / length(data[[select]]), length(data[[select]]))
+  }
+
   if (is.null(probabilities)) {
     .calculate_chisq(data, select, by, weights, paired, ...)
   } else {
