@@ -53,14 +53,14 @@ Note that \code{paired} only works for 2x2 tables.}
 }
 \value{
 A data frame with test results. The returned effects sizes are
-Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
-for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
+Cramer's V for tables with more than two rows or columns, Phi (\eqn{\phi})
+for 2x2 tables, and Fei (\ifelse{latex}{\eqn{Fei}}{פ}) for tests against
 given probabilities.
 }
 \description{
 This function performs a \eqn{\chi^2} test for contingency
 tables or tests for given probabilities. The returned effects sizes are
-Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
+Cramer's V for tables with more than two rows or columns, Phi (\eqn{\phi})
 for 2x2 tables, and Fei (\ifelse{latex}{\eqn{Fei}}{פ}) for tests against
 given probabilities (see \emph{Ben-Shachar et al. 2023}).
 }

@@ -2,7 +2,7 @@
 #' @name chi_squared_test
 #' @description This function performs a \eqn{\chi^2} test for contingency
 #' tables or tests for given probabilities. The returned effects sizes are
-#' Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
+#' Cramer's V for tables with more than two rows or columns, Phi (\eqn{\phi})
 #' for 2x2 tables, and Fei (\ifelse{latex}{\eqn{Fei}}{פ}) for tests against
 #' given probabilities (see _Ben-Shachar et al. 2023_).
 #'
@@ -22,8 +22,8 @@
 #' @inherit mann_whitney_test seealso
 #'
 #' @return A data frame with test results. The returned effects sizes are
-#' Cramer's V for tables with more than two rows and columns, Phi (\eqn{\phi})
-#' for 2x2 tables, and \ifelse{latex}{\eqn{Fei}}{פ (Fei)} for tests against
+#' Cramer's V for tables with more than two rows or columns, Phi (\eqn{\phi})
+#' for 2x2 tables, and Fei (\ifelse{latex}{\eqn{Fei}}{פ}) for tests against
 #' given probabilities.
 #'
 #' @details The function is a wrapper around [`chisq.test()`] and
