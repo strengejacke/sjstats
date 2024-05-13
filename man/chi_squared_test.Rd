@@ -85,7 +85,7 @@ and \code{\link[effectsize:interpret_r]{effectsize::interpret_fei()}}.
 The following table provides an overview of which test to use for different
 types of data. The choice of test depends on the scale of the outcome
 variable and the number of samples to compare.\tabular{lll}{
-   Samples \tab Scale of Outcome \tab Significance Test \cr
+   \strong{Samples} \tab \strong{Scale of Outcome} \tab \strong{Significance Test} \cr
    1 \tab binary / nominal \tab \code{chi_squared_test()} \cr
    1 \tab continuous, not normal \tab \code{wilcoxon_test()} \cr
    1 \tab continuous, normal \tab \code{t_test()} \cr
@@ -103,14 +103,15 @@ variable and the number of samples to compare.\tabular{lll}{
 
 
 (1) More than two dependent samples are considered as \emph{repeated measurements}.
-These samples are usually tested using a \code{\link[=friedman.test]{friedman.test()}}, which
-requires the samples in one variable, the groups to compare in another
-variable, and a third variable indicating the repeated measurements
-(subject IDs).
+For ordinal or not-normally distributed outcomes, these samples are
+usually tested using a \code{\link[=friedman.test]{friedman.test()}}, which requires the samples
+in one variable, the groups to compare in another variable, and a third
+variable indicating the repeated measurements (subject IDs).
 
-(2) More than two independent samples are considered as \emph{repeated measurements}.
-These samples are usually tested using a ANOVA for repeated measurements.
-A more sophisticated approach would be using a linear mixed model.
+(2) More than two dependent samples are considered as \emph{repeated measurements}.
+For normally distributed outcomes, these samples are usually tested using
+a ANOVA for repeated measurements. A more sophisticated approach would
+be using a linear mixed model.
 }
 
 \examples{
