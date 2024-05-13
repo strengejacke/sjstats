@@ -32,7 +32,8 @@ are considered as \emph{dependent} and a paired test is carried out.
 is carried out (only applicable for \code{t_test()} and \code{wilcoxon_test()})
 \item For \code{chi_squared_test()}, if \code{select} specifies \strong{one} variable and
 both \code{by} and \code{probabilities} are \code{NULL}, a one-sample test against given
-probabilities is automatically conducted, with equal probabilities.
+probabilities is automatically conducted, with equal probabilities for
+each level of \code{select}.
 }}
 
 \item{by}{Name of the variable indicating the groups. Required if \code{select}
