@@ -25,7 +25,10 @@
 #' - If `select` select is of length **two** and `paired = TRUE`, the two samples
 #'   are considered as *dependent* and a paired test is carried out.
 #' - If `select` specifies **one** variable and `by = NULL`, a one-sample test
-#'   is carried out (only applicable for `t_test()` and `wilcoxon_test()`).
+#'   is carried out (only applicable for `t_test()` and `wilcoxon_test()`)
+#' - For `chi_squared_test()`, if `select` specifies **one** variable and
+#'   both `by` and `probabilities` are `NULL`, a one-sample test against given
+#'   probabilities is automatically conducted, with equal probabilities.
 #' @param by Name of the variable indicating the groups. Required if `select`
 #' specifies only one variable that contains all samples to be compared in the
 #' test. If `by` is not a factor, it will be coerced to a factor. For
