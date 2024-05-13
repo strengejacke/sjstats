@@ -87,7 +87,10 @@ continuous variables are treated as samples to be compared. <code>by</code> must
 <li><p>If <code>select</code> select is of length <strong>two</strong> and <code>paired = TRUE</code>, the two samples
 are considered as <em>dependent</em> and a paired test is carried out.</p></li>
 <li><p>If <code>select</code> specifies <strong>one</strong> variable and <code>by = NULL</code>, a one-sample test
-is carried out (only applicable for <code><a href="t_test.html">t_test()</a></code> and <code><a href="wilcoxon_test.html">wilcoxon_test()</a></code>).</p></li>
+is carried out (only applicable for <code><a href="t_test.html">t_test()</a></code> and <code><a href="wilcoxon_test.html">wilcoxon_test()</a></code>)</p></li>
+<li><p>For <code><a href="chi_squared_test.html">chi_squared_test()</a></code>, if <code>select</code> specifies <strong>one</strong> variable and
+both <code>by</code> and <code>probabilities</code> are <code>NULL</code>, a one-sample test against given
+probabilities is automatically conducted, with equal probabilities.</p></li>
 </ul></dd>
 
 
