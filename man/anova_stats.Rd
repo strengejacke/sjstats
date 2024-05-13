@@ -22,7 +22,7 @@ epsilon-squared statistic or Cohen's F for all terms in an anovas.
 and power for each term.
 }
 \examples{
-\dontshow{if (requireNamespace("car") && requireNamespace("pwr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("car")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # load sample data
 data(efc)
 

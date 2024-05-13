@@ -15,7 +15,7 @@
 #'   \cr \cr
 #'   Tippey K, Longnecker MT (2016): An Ad Hoc Method for Computing Pseudo-Effect Size for Mixed Model.
 #'
-#' @examplesIf requireNamespace("car") && requireNamespace("pwr")
+#' @examplesIf requireNamespace("car")
 #' # load sample data
 #' data(efc)
 #'
@@ -27,8 +27,6 @@
 #' anova_stats(car::Anova(fit, type = 2))
 #' @export
 anova_stats <- function(model, digits = 3) {
-  insight::check_if_installed("pwr")
-
   # .Deprecated("effectsize::effectsize()", package = "effectsize")
 
   # get tidy summary table
@@ -56,12 +54,11 @@ anova_stats <- function(model, digits = 3) {
 
   # finally, compute power
   as_power <- tryCatch(
-    c(
-      pwr::pwr.f2.test(
-        u = anov_stat$df[1:nt],
-        v = anov_stat$df[nrow(anov_stat)],
-        f2 = anov_stat$cohens.f[1:nt]^2
-      )[["power"]],
+    c(.calculate_power(
+        df1 = anov_stat$df[1:nt],
+        df2 = anov_stat$df[nrow(anov_stat)],
+        effect_size = anov_stat$cohens.f[1:nt]^2
+      ),
       NA
     ),
     error = function(x) {
@@ -217,4 +214,25 @@ aov_stat_core <- function(aov.sum, type) {
 
 .which_intercept <- function(x) {
   which(tolower(x) %in% c("(intercept)_zi", "intercept (zero-inflated)", "intercept", "zi_intercept", "(intercept)", "b_intercept", "b_zi_intercept"))
+}
+
+
+.calculate_power <- function(df1, df2, effect_size) {
+  if (any(effect_size < 0)) {
+    return(NA)
+  }
+  if (!is.null(df1) && any(df1 < 1)) {
+    return(NA)
+  }
+  if (!is.null(df2) && any(df2 < 1)) {
+    return(NA)
+  }
+  lambda <- effect_size * (df1 + df2 + 1)
+  stats::pf(
+    stats::qf(0.05, df1 = df1, df2 = df2, lower.tail = FALSE),
+    df1 = df1,
+    df2 = df2,
+    ncp = lambda,
+    lower.tail = FALSE
+  )
 }
