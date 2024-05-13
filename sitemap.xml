@@ -97,6 +97,9 @@
     <loc>/reference/svyglm.zip.html</loc>
   </url>
   <url>
+    <loc>/reference/t_test.html</loc>
+  </url>
+  <url>
     <loc>/reference/table_values.html</loc>
   </url>
   <url>
@@ -106,6 +109,9 @@
     <loc>/reference/weight.html</loc>
   </url>
   <url>
-    <loc>/reference/weighted_sd.html</loc>
+    <loc>/reference/weighted_se.html</loc>
+  </url>
+  <url>
+    <loc>/reference/wilcoxon_test.html</loc>
   </url>
 </urlset>

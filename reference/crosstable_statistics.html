@@ -137,10 +137,9 @@ frame including lower and upper confidence intervals.</p></dd>
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>Character vector, indicating if confidence intervals should be
-based on bootstrap standard error, multiplied by the value of the
-quantile function of the t-distribution (default), or on sample
-quantiles of the bootstrapped values. See 'Details' in <code><a href="boot_ci.html">boot_ci()</a></code>.
-May be abbreviated.</p></dd>
+based on bootstrap standard error, multiplied by the value of the quantile
+function of the t-distribution (default), or on sample quantiles of the
+bootstrapped values. See 'Details' in <code><a href="boot_ci.html">boot_ci()</a></code>. May be abbreviated.</p></dd>
 
 
 <dt id="arg-x-">x1<a class="anchor" aria-label="anchor" href="#arg-x-"></a></dt>
@@ -213,12 +212,12 @@ That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Phi coefficient for 2x2 tables</span></span></span>
 <span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">30</span>, <span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">30</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">phi</span><span class="op">(</span><span class="va">tab</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.08471737</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.08183171</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Cramer's V for nominal variables with more than 2 categories</span></span></span>
 <span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">30</span>, <span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">30</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">cramer</span><span class="op">(</span><span class="va">tab</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.647009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1977963</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># formula notation</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></span>
@@ -228,7 +227,7 @@ That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
 <span class="r-in"><span><span class="co"># bootstrapped confidence intervals</span></span></span>
 <span class="r-in"><span><span class="fu">cramer</span><span class="op">(</span><span class="va">e16sex</span> <span class="op">~</span> <span class="va">c161sex</span>, data <span class="op">=</span> <span class="va">efc</span>, ci.lvl <span class="op">=</span> <span class="fl">.95</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cramer     conf.low conf.high</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.05258249 -0.007956943  0.113086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.05258249 -0.003469112 0.1140037</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 2x2 table, compute Phi automatically</span></span></span>
 <span class="r-in"><span><span class="fu">crosstable_statistics</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e16sex</span>, <span class="va">c161sex</span><span class="op">)</span></span></span>

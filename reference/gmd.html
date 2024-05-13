@@ -61,7 +61,7 @@ or for all numeric vectors in a data frame.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gmd</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gmd</span><span class="op">(</span><span class="va">x</span>, select <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,11 +70,10 @@ or for all numeric vectors in a data frame.</p>
 <dd><p>A vector or data frame.</p></dd>
 
 
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Optional, unquoted names of variables that should be selected for
-further processing. Required, if <code>x</code> is a data frame (and no vector)
-and only selected variables from <code>x</code> should be processed. You may also
-use functions like <code>:</code> or tidyselect's <code>select_helpers()</code>.</p></dd>
+<dt id="arg-select">select<a class="anchor" aria-label="anchor" href="#arg-select"></a></dt>
+<dd><p>Optional, names of variables as character vector that should be
+selected for further processing. Required, if <code>x</code> is a data frame (and no vector)
+and only selected variables from <code>x</code> should be processed.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -87,8 +86,8 @@ or vectors of length &lt; 2, returns <code>NA</code>.</p>
     <div id="note">
     <h2>Note</h2>
     <p>Gini's mean difference is defined as the mean absolute difference between
-any two distinct elements of a vector. Missing values from <code>x</code> are
-silently removed.</p>
+any two distinct elements of a vector. Missing values from <code>x</code> are silently
+removed.</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -100,11 +99,11 @@ silently removed.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">gmd</span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e17age</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9.297005</span>
-<span class="r-in"><span><span class="fu">gmd</span><span class="op">(</span><span class="va">efc</span>, <span class="va">e17age</span>, <span class="va">c160age</span>, <span class="va">c12hour</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   e17age c160age c12hour</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>   9.30    15.2    47.9</span>
+<span class="r-in"><span><span class="fu">gmd</span><span class="op">(</span><span class="va">efc</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"e17age"</span>, <span class="st">"c160age"</span>, <span class="st">"c12hour"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variable       gmd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   e17age  9.297005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  c160age 15.185966</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  c12hour 47.874877</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

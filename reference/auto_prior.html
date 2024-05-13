@@ -119,31 +119,21 @@ formula used in <code><a href="https://paul-buerkner.github.io/brms/reference/br
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjmisc/" class="external-link">sjmisc</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">efc</span><span class="op">$</span><span class="va">c172code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c172code</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">efc</span><span class="op">$</span><span class="va">c161sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://strengejacke.github.io/sjlabelled/reference/as_label.html" class="external-link">to_label</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c161sex</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">efc</span><span class="op">$</span><span class="va">c161sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">c161sex</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">c161sex</span> <span class="op">+</span> <span class="va">c160age</span> <span class="op">+</span> <span class="va">c172code</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"brms"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu">auto_prior</span><span class="op">(</span><span class="va">mf</span>, <span class="va">efc</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             prior     class          coef group resp dpar nlpar   lb   ub</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  normal(0, 38.96) Intercept                                     &lt;NA&gt; &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 9.74)         b c161sexFemale                       &lt;NA&gt; &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 0.73)         b       c160age                       &lt;NA&gt; &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 9.74)         b     c172code2                       &lt;NA&gt; &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 9.74)         b     c172code3                       &lt;NA&gt; &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  source</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user</span>
+<span class="r-in"><span><span class="fu">auto_prior</span><span class="op">(</span><span class="va">mf</span>, <span class="va">efc</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             prior     class      coef group resp dpar nlpar   lb   ub source</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  normal(0, 38.96) Intercept                                 &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 9.74)         b  c161sex2                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 0.73)         b   c160age                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 9.74)         b c172code2                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 9.74)         b c172code3                       &lt;NA&gt; &lt;NA&gt;   user</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## compare to</span></span></span>
-<span class="r-in"><span><span class="co"># library(rstanarm)</span></span></span>
-<span class="r-in"><span><span class="co"># m &lt;- stan_glm(mf, data = efc, chains = 2, iter = 200)</span></span></span>
+<span class="r-in"><span><span class="co"># m &lt;- rstanarm::stan_glm(mf, data = efc, chains = 2, iter = 200)</span></span></span>
 <span class="r-in"><span><span class="co"># ps &lt;- prior_summary(m)</span></span></span>
 <span class="r-in"><span><span class="co"># ps$prior_intercept$adjusted_scale</span></span></span>
 <span class="r-in"><span><span class="co"># ps$prior$adjusted_scale</span></span></span>
@@ -155,36 +145,26 @@ formula used in <code><a href="https://paul-buerkner.github.io/brms/reference/br
 <span class="r-in"><span><span class="co"># add informative priors</span></span></span>
 <span class="r-in"><span><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">neg_c_7</span> <span class="op">~</span> <span class="va">c161sex</span> <span class="op">+</span> <span class="va">c172code</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"brms"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu">auto_prior</span><span class="op">(</span><span class="va">mf</span>, <span class="va">efc</span>, <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>    <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">.1554</span>, <span class="fl">40</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"b"</span>, coef <span class="op">=</span> <span class="st">"c160age"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               prior     class          coef group resp dpar nlpar   lb   ub</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    normal(0, 38.95) Intercept                                     &lt;NA&gt; &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     normal(0, 9.74)         b c161sexFemale                       &lt;NA&gt; &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     normal(0, 9.74)         b     c172code2                       &lt;NA&gt; &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     normal(0, 9.74)         b     c172code3                       &lt;NA&gt; &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  normal(0.1554, 40)         b       c160age                       &lt;NA&gt; &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  source</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user</span>
+<span class="r-in"><span><span class="fu">auto_prior</span><span class="op">(</span><span class="va">mf</span>, <span class="va">efc</span>, <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">.1554</span>, <span class="fl">40</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"b"</span>, coef <span class="op">=</span> <span class="st">"c160age"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               prior     class      coef group resp dpar nlpar   lb   ub source</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    normal(0, 38.95) Intercept                                 &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     normal(0, 9.74)         b  c161sex2                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     normal(0, 9.74)         b c172code2                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     normal(0, 9.74)         b c172code3                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  normal(0.1554, 40)         b   c160age                       &lt;NA&gt; &lt;NA&gt;   user</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># example with binary response</span></span></span>
 <span class="r-in"><span><span class="va">efc</span><span class="op">$</span><span class="va">neg_c_7d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">neg_c_7</span> <span class="op">&lt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">neg_c_7</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">neg_c_7d</span> <span class="op">~</span> <span class="va">c161sex</span> <span class="op">+</span> <span class="va">c160age</span> <span class="op">+</span> <span class="va">c172code</span> <span class="op">+</span> <span class="va">e17age</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"brms"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu">auto_prior</span><span class="op">(</span><span class="va">mf</span>, <span class="va">efc</span>, <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            prior     class          coef group resp dpar nlpar   lb   ub source</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    normal(0, 10) Intercept                                     &lt;NA&gt; &lt;NA&gt;   user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 2.5)         b c161sexFemale                       &lt;NA&gt; &lt;NA&gt;   user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  normal(0, 0.19)         b       c160age                       &lt;NA&gt; &lt;NA&gt;   user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 2.5)         b     c172code2                       &lt;NA&gt; &lt;NA&gt;   user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 2.5)         b     c172code3                       &lt;NA&gt; &lt;NA&gt;   user</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  normal(0, 0.31)         b        e17age                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-in"><span><span class="fu">auto_prior</span><span class="op">(</span><span class="va">mf</span>, <span class="va">efc</span>, <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            prior     class      coef group resp dpar nlpar   lb   ub source</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    normal(0, 10) Intercept                                 &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 2.5)         b  c161sex2                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  normal(0, 0.19)         b   c160age                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 2.5)         b c172code2                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   normal(0, 2.5)         b c172code3                       &lt;NA&gt; &lt;NA&gt;   user</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  normal(0, 0.31)         b    e17age                       &lt;NA&gt; &lt;NA&gt;   user</span>
 </code></pre></div>
     </div>
   </div>

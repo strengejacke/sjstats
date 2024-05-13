@@ -102,15 +102,13 @@ Tippey K, Longnecker MT (2016): An Ad Hoc Method for Computing Pseudo-Effect Siz
 <span class="r-in"><span>  <span class="va">c12hour</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">e42dep</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">c172code</span><span class="op">)</span> <span class="op">+</span> <span class="va">c160age</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">efc</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">anova_stats</span><span class="op">(</span><span class="fu">car</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova</a></span><span class="op">(</span><span class="va">fit</span>, type <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> term                |     sumsq |    meansq |  df | statistic | p.value | etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f | power</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |                term |     sumsq |  df |    meansq | statistic | p.value | power</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------------------------------------------------------------------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> as.factor(e42dep)   | 4.265e+05 | 1.422e+05 |   3 |    80.299 |  &lt; .001 | 0.212 |         0.224 |   0.209 |           0.221 |     0.209 |    0.537 | 1.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> as.factor(c172code) |  7352.049 |  3676.025 |   2 |     2.076 |   0.126 | 0.004 |         0.005 |   0.002 |           0.003 |     0.002 |    0.071 | 0.429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c160age             | 1.052e+05 | 1.052e+05 |   1 |    59.408 |  &lt; .001 | 0.052 |         0.066 |   0.051 |           0.065 |     0.051 |    0.267 | 1.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals           | 1.476e+06 |  1770.307 | 834 |           |         |       |               |         |                 |           |          |      </span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.212 |         0.224 |   0.209 |           0.221 |     0.209 |    0.537 |   as.factor(e42dep) | 4.265e+05 |   3 | 1.422e+05 |    80.299 |  &lt; .001 | 1.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.004 |         0.005 |   0.002 |           0.003 |     0.002 |    0.071 | as.factor(c172code) |  7352.049 |   2 |  3676.025 |     2.076 |   0.126 | 0.429</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.052 |         0.066 |   0.051 |           0.065 |     0.051 |    0.267 |             c160age | 1.052e+05 |   1 | 1.052e+05 |    59.408 |  &lt; .001 | 1.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       |               |         |                 |           |          |           Residuals | 1.476e+06 | 834 |  1770.307 |           |         |      </span>
 </code></pre></div>
     </div>
   </div>
