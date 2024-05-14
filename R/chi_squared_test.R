@@ -39,7 +39,9 @@
 #'
 #' Interpretation of effect sizes are based on rules described in
 #' [`effectsize::interpret_phi()`], [`effectsize::interpret_cramers_v()`],
-#' and [`effectsize::interpret_fei()`].
+#' and [`effectsize::interpret_fei()`]. Use these function directly to get other
+#' interpretations, by providing the returned effect size as argument, e.g.
+#' `interpret_phi(0.35, rules = "gignac2016")`.
 #'
 #' @references
 #' - Ben-Shachar, M.S., Patil, I., Thériault, R., Wiernik, B.M.,

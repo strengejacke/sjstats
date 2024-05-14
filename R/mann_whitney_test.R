@@ -76,11 +76,15 @@
 #'     be using a linear mixed model.
 #'
 #' @seealso
-#' - [`mann_whitney_test()`] for unpaired (independent) samples.
-#' - [`t_test()`] for parametric t-tests.
-#' - [`kruskal_wallis_test()`] for non-parametric ANOVA (i.e. more than two samples).
-#' - [`wilcoxon_test()`] for Wilcoxon rank sum tests for paired (dependent) samples.
-#' - [`chi_squared_test()`] for chi-squared tests (two categorical variables).
+#' - [`t_test()`] for parametric t-tests of dependent and independent samples.
+#' - [`mann_whitney_test()`] for non-parametric tests of unpaired (independent)
+#'   samples.
+#' - [`wilcoxon_test()`] for Wilcoxon rank sum tests for non-parametric tests
+#'   of paired (dependent) samples.
+#' - [`kruskal_wallis_test()`] for non-parametric tests with more than two
+#'   independent samples.
+#' - [`chi_squared_test()`] for chi-squared tests (two categorical variables,
+#'   dependent and independent).
 #'
 #' @return A data frame with test results. The function returns p and Z-values
 #' as well as effect size r and group-rank-means.

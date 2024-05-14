@@ -1,10 +1,10 @@
 #' @title Kruskal-Wallis test
 #' @name kruskal_wallis_test
-#' @description This function performs a Kruskal-Wallis rank sum test, to test
-#' the null hypothesis that the population median of all of the groups are
-#' equal. The alternative is that they differ in at least one. Unlike the
-#' underlying base R function `kruskal.test()`, this function allows for
-#' weighted tests.
+#' @description This function performs a Kruskal-Wallis rank sum test, which is
+#' a non-parametric method to test the null hypothesis that the population median
+#' of all of the groups are equal. The alternative is that they differ in at
+#' least one. Unlike the underlying base R function `kruskal.test()`, this
+#' function allows for weighted tests.
 #'
 #' @inheritParams mann_whitney_test
 #' @inherit mann_whitney_test seealso
@@ -19,7 +19,7 @@
 #'
 #' - du Prel, J.B., Röhrig, B., Hommel, G., Blettner, M. Auswahl statistischer
 #'   Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
-#' 
+#'
 #' @details The function simply is a wrapper around [`kruskal.test()`]. The
 #' weighted version of the Kruskal-Wallis test is based on the **survey** package,
 #' using [`survey::svyranktest()`].

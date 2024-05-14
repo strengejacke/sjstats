@@ -54,17 +54,27 @@ must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}. 
 and \code{?wilcox.test}.}
 }
 \value{
-A data frame with test results.
+A data frame with test results. Effectsize Cohen's \emph{d} is returned
+for larger samples (n > 20), while Hedges' \emph{g} is returned for smaller samples.
 }
 \description{
 This function performs a Student's t test for two independent
-samples, for paired samples, or for one sample. Unlike the underlying
-base R function \code{t.test()}, this function allows for weighted tests and
-automatically calculates effect sizes.
+samples, for paired samples, or for one sample. It's a parametric test for
+the null hypothesis that the means of two independent samples are equal, or
+that the mean of one sample is equal to a specified value. The hypothesis
+can be one- or two-sided.
+
+Unlike the underlying base R function \code{t.test()}, this function allows for
+weighted tests and automatically calculates effect sizes. Cohen's \emph{d} is
+returned for larger samples (n > 20), while Hedges' \emph{g} is returned for
+smaller samples.
 }
 \details{
 Interpretation of effect sizes are based on rules described in
 \code{\link[effectsize:interpret_cohens_d]{effectsize::interpret_cohens_d()}} and \code{\link[effectsize:interpret_cohens_d]{effectsize::interpret_hedges_g()}}.
+Use these function directly to get other interpretations, by providing the
+returned effect size (\emph{Cohen's d} or \emph{Hedges's g} in this case) as argument,
+e.g. \code{interpret_cohens_d(0.35, rules = "sawilowsky2009")}.
 }
 \section{Which test to use}{
 
@@ -129,10 +139,14 @@ Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
 }
 \seealso{
 \itemize{
-\item \code{\link[=mann_whitney_test]{mann_whitney_test()}} for unpaired (independent) samples.
-\item \code{\link[=t_test]{t_test()}} for parametric t-tests.
-\item \code{\link[=kruskal_wallis_test]{kruskal_wallis_test()}} for non-parametric ANOVA (i.e. more than two samples).
-\item \code{\link[=wilcoxon_test]{wilcoxon_test()}} for Wilcoxon rank sum tests for paired (dependent) samples.
-\item \code{\link[=chi_squared_test]{chi_squared_test()}} for chi-squared tests (two categorical variables).
+\item \code{\link[=t_test]{t_test()}} for parametric t-tests of dependent and independent samples.
+\item \code{\link[=mann_whitney_test]{mann_whitney_test()}} for non-parametric tests of unpaired (independent)
+samples.
+\item \code{\link[=wilcoxon_test]{wilcoxon_test()}} for Wilcoxon rank sum tests for non-parametric tests
+of paired (dependent) samples.
+\item \code{\link[=kruskal_wallis_test]{kruskal_wallis_test()}} for non-parametric tests with more than two
+independent samples.
+\item \code{\link[=chi_squared_test]{chi_squared_test()}} for chi-squared tests (two categorical variables,
+dependent and independent).
 }
 }

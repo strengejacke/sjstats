@@ -1,9 +1,15 @@
 #' @title Student's t test
 #' @name t_test
 #' @description This function performs a Student's t test for two independent
-#' samples, for paired samples, or for one sample. Unlike the underlying
-#' base R function `t.test()`, this function allows for weighted tests and
-#' automatically calculates effect sizes.
+#' samples, for paired samples, or for one sample. It's a parametric test for
+#' the null hypothesis that the means of two independent samples are equal, or
+#' that the mean of one sample is equal to a specified value. The hypothesis
+#' can be one- or two-sided.
+#'
+#' Unlike the underlying base R function `t.test()`, this function allows for
+#' weighted tests and automatically calculates effect sizes. Cohen's _d_ is
+#' returned for larger samples (n > 20), while Hedges' _g_ is returned for
+#' smaller samples.
 #'
 #' @inheritParams mann_whitney_test
 #' @param paired Logical, whether to compute a paired t-test for dependent
@@ -14,8 +20,12 @@
 #'
 #' @details Interpretation of effect sizes are based on rules described in
 #' [`effectsize::interpret_cohens_d()`] and [`effectsize::interpret_hedges_g()`].
+#' Use these function directly to get other interpretations, by providing the
+#' returned effect size (_Cohen's d_ or _Hedges's g_ in this case) as argument,
+#' e.g. `interpret_cohens_d(0.35, rules = "sawilowsky2009")`.
 #'
-#' @return A data frame with test results.
+#' @return A data frame with test results. Effectsize Cohen's _d_ is returned
+#' for larger samples (n > 20), while Hedges' _g_ is returned for smaller samples.
 #'
 #' @references
 #' - Bender, R., Lange, S., Ziegler, A. Wichtige Signifikanztests.

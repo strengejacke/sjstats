@@ -157,10 +157,14 @@ Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8
 }
 \seealso{
 \itemize{
-\item \code{\link[=mann_whitney_test]{mann_whitney_test()}} for unpaired (independent) samples.
-\item \code{\link[=t_test]{t_test()}} for parametric t-tests.
-\item \code{\link[=kruskal_wallis_test]{kruskal_wallis_test()}} for non-parametric ANOVA (i.e. more than two samples).
-\item \code{\link[=wilcoxon_test]{wilcoxon_test()}} for Wilcoxon rank sum tests for paired (dependent) samples.
-\item \code{\link[=chi_squared_test]{chi_squared_test()}} for chi-squared tests (two categorical variables).
+\item \code{\link[=t_test]{t_test()}} for parametric t-tests of dependent and independent samples.
+\item \code{\link[=mann_whitney_test]{mann_whitney_test()}} for non-parametric tests of unpaired (independent)
+samples.
+\item \code{\link[=wilcoxon_test]{wilcoxon_test()}} for Wilcoxon rank sum tests for non-parametric tests
+of paired (dependent) samples.
+\item \code{\link[=kruskal_wallis_test]{kruskal_wallis_test()}} for non-parametric tests with more than two
+independent samples.
+\item \code{\link[=chi_squared_test]{chi_squared_test()}} for chi-squared tests (two categorical variables,
+dependent and independent).
 }
 }
