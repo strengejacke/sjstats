@@ -15,7 +15,7 @@ The comprised tools include:
 * Especially for mixed models: design effect, sample size calculation
 * Significance tests: Correlation, Chi-squared test, t-test, Mann-Whitney-U test, Wilcoxon rank sum test, Kruskal-Wallis test.
 
-Note that most functions that formerly were available in this package have been moved to the [**easystats** project](http://easystats.github.io/easystats).
+Note that most functions that formerly were available in this package have been moved to the [**easystats** project](https://easystats.github.io/easystats/).
 
 ## Documentation
 
