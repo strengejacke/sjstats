@@ -154,7 +154,9 @@ a McNemar test (see <code><a href="https://rdrr.io/r/stats/mcnemar.test.html" cl
 table, using <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> as input for <code><a href="https://rdrr.io/r/stats/chisq.test.html" class="external-link">chisq.test()</a></code>.</p>
 <p>Interpretation of effect sizes are based on rules described in
 <code><a href="https://easystats.github.io/effectsize/reference/interpret_r.html" class="external-link">effectsize::interpret_phi()</a></code>, <code><a href="https://easystats.github.io/effectsize/reference/interpret_r.html" class="external-link">effectsize::interpret_cramers_v()</a></code>,
-and <code><a href="https://easystats.github.io/effectsize/reference/interpret_r.html" class="external-link">effectsize::interpret_fei()</a></code>.</p>
+and <code><a href="https://easystats.github.io/effectsize/reference/interpret_r.html" class="external-link">effectsize::interpret_fei()</a></code>. Use these function directly to get other
+interpretations, by providing the returned effect size as argument, e.g.
+<code>interpret_phi(0.35, rules = "gignac2016")</code>.</p>
     </div>
     <div id="which-test-to-use">
     <h2>Which test to use</h2>
@@ -187,11 +189,15 @@ Testverfahren. Dtsch Arztebl Int 2010; 107(19): 343–8</p></li>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index">
-<ul><li><p><code><a href="mann_whitney_test.html">mann_whitney_test()</a></code> for unpaired (independent) samples.</p></li>
-<li><p><code><a href="t_test.html">t_test()</a></code> for parametric t-tests.</p></li>
-<li><p><code><a href="kruskal_wallis_test.html">kruskal_wallis_test()</a></code> for non-parametric ANOVA (i.e. more than two samples).</p></li>
-<li><p><code><a href="wilcoxon_test.html">wilcoxon_test()</a></code> for Wilcoxon rank sum tests for paired (dependent) samples.</p></li>
-<li><p><code>chi_squared_test()</code> for chi-squared tests (two categorical variables).</p></li>
+<ul><li><p><code><a href="t_test.html">t_test()</a></code> for parametric t-tests of dependent and independent samples.</p></li>
+<li><p><code><a href="mann_whitney_test.html">mann_whitney_test()</a></code> for non-parametric tests of unpaired (independent)
+samples.</p></li>
+<li><p><code><a href="wilcoxon_test.html">wilcoxon_test()</a></code> for Wilcoxon rank sum tests for non-parametric tests
+of paired (dependent) samples.</p></li>
+<li><p><code><a href="kruskal_wallis_test.html">kruskal_wallis_test()</a></code> for non-parametric tests with more than two
+independent samples.</p></li>
+<li><p><code>chi_squared_test()</code> for chi-squared tests (two categorical variables,
+dependent and independent).</p></li>
 </ul></div>
     </div>
 
