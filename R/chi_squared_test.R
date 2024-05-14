@@ -259,7 +259,7 @@ print.sj_htest_chi <- function(x, ...) {
 
   # headline
   insight::print_color(sprintf(
-    "\n# Chi-squared test for %s%s\n",
+    "# Chi-squared test for %s%s\n",
     attributes(x)$caption,
     weight_string
   ), "blue")

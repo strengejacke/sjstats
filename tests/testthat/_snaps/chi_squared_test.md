@@ -3,7 +3,6 @@
     Code
       print(out1)
     Output
-      
       # Chi-squared test for contingency tables
       
         Data: c161sex by e16sex (n = 900)
@@ -16,7 +15,6 @@
     Code
       print(out)
     Output
-      
       # Chi-squared test for contingency tables (weighted)
       
         Data: c161sex by e16sex (n = 904)
@@ -29,7 +27,6 @@
     Code
       print(out1)
     Output
-      
       # Chi-squared test for given probabilities
       
         Data: c161sex against probabilities 30% and 70% (n = 901)
@@ -42,7 +39,6 @@
     Code
       print(out)
     Output
-      
       # Chi-squared test for given probabilities (weighted)
       
         Data: c161sex against probabilities 30% and 70% (n = 906)
@@ -55,7 +51,6 @@
     Code
       print(out1)
     Output
-      
       # Chi-squared test for contingency tables
         (using McNemar's test for paired data)
       
