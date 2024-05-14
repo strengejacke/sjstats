@@ -83,13 +83,15 @@
 </h1></div>
 <p><a href="https://doi.org/10.5281/zenodo.1284472" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1284472.svg" alt="DOI"></a></p>
 <p>Collection of convenient functions for common statistical computations, which are not directly provided by R’s base or stats packages.</p>
-<p>This package aims at providing, <strong>first</strong>, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like Cramer’s V, Phi, or effict size statistics like Eta or Omega squared), or for which currently no functions available.</p>
-<p><strong>Second</strong>, another focus lies on weighted variants of common statistical measures and tests like weighted standard error, mean, t-test, correlation, and more.</p>
+<p>This package aims at providing, <strong>first</strong>, shortcuts for statistical measures, which otherwise could only be calculated with additional effort (like Cramer’s V, Phi, or effict size statistics like Eta or Omega squared), or for which currently no functions are available.</p>
+<p><strong>Second</strong>, another focus lies on implementations of common statistical significance tests with a consistent syntax, like t-test, Mann-Whitney test, Chi-squared test, and more. These functions are designed to be more user-friendly and also support weights, i.e. weighted statistics can be calculated.</p>
+<p><strong>Finally</strong>, the package includes miscellaneous functions that are either not yet available in R (like <code><a href="reference/svyglm.nb.html">svyglm.nb()</a></code> or <code><a href="reference/svyglm.zip.html">svyglm.zip()</a></code> to calculate negative binomial or zero-inflated poisson models for survey data) or are just convenient for daily work (like functions for bootstrapping, or ANOVA summary tables).</p>
 <p>The comprised tools include:</p>
 <ul>
 <li>Especially for mixed models: design effect, sample size calculation</li>
-<li>Weighted statistics and tests for: mean, median, standard error, standard deviation, correlation, Chi-squared test, t-test, Mann-Whitney-U-test</li>
+<li>Significance tests: Correlation, Chi-squared test, t-test, Mann-Whitney-U test, Wilcoxon rank sum test, Kruskal-Wallis test.</li>
 </ul>
+<p>Note that most functions that formerly were available in this package have been moved to the <a href="http://easystats.github.io/easystats" class="external-link"><strong>easystats</strong> project</a>.</p>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
@@ -103,8 +105,8 @@
 </h3>
 <p>To install the latest development snapshot (see latest changes below), type following commands into the R console:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"strengejacke/sjstats"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"strengejacke/sjstats"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="officiale-stable-release">Officiale, stable release<a class="anchor" aria-label="anchor" href="#officiale-stable-release"></a>
