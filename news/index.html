@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sjstats</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.19.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.19.0.1</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.19.0" id="sjstats-0190">sjstats 0.19.0<a class="anchor" aria-label="anchor" href="#sjstats-0190"></a></h2>
+<h2 class="page-header" data-toc-text="0.19.0" id="sjstats-0190">sjstats 0.19.0<small>2024-05-14</small><a class="anchor" aria-label="anchor" href="#sjstats-0190"></a></h2>
 <ul><li><p>Weighted significance tests have been re-designed. The functions <code>weighted_ttest()</code>, <code>weighted_mannwhitney()</code> and <code>weighted_chisqtest()</code> are no longer available. These are now re-implemented in <code><a href="../reference/t_test.html">t_test()</a></code>, <code><a href="../reference/mann_whitney_test.html">mann_whitney_test()</a></code> and <code><a href="../reference/chi_squared_test.html">chi_squared_test()</a></code>. If weights are required, the <code>weights</code> argument can be used. Furthermore, new functions for significance testing were added: <code><a href="../reference/kruskal_wallis_test.html">kruskal_wallis_test()</a></code> and <code><a href="../reference/wilcoxon_test.html">wilcoxon_test()</a></code>.</p></li>
 <li><p><code><a href="../reference/r2.html">means_by_group()</a></code> and <code><a href="../reference/r2.html">mean_n()</a></code> were removed. The replacements are <code><a href="https://easystats.github.io/datawizard/reference/means_by_group.html" class="external-link">datawizard::means_by_group()</a></code> and <code><a href="https://easystats.github.io/datawizard/reference/row_means.html" class="external-link">datawizard::row_means()</a></code> (using the <code>min_valid</code> argument).</p></li>
 <li><p><code><a href="https://easystats.github.io/datawizard/reference/weighted_mean.html" class="external-link">weighted_median()</a></code>, <code><a href="https://easystats.github.io/datawizard/reference/weighted_mean.html" class="external-link">weighted_sd()</a></code> and <code><a href="https://easystats.github.io/datawizard/reference/weighted_mean.html" class="external-link">weighted_mean()</a></code> were removed. Their replacements are <code><a href="https://easystats.github.io/datawizard/reference/weighted_mean.html" class="external-link">datawizard::weighted_median()</a></code>, <code><a href="https://easystats.github.io/datawizard/reference/weighted_mean.html" class="external-link">datawizard::weighted_sd()</a></code> and <code><a href="https://easystats.github.io/datawizard/reference/weighted_mean.html" class="external-link">datawizard::weighted_mean()</a></code>.</p></li>
