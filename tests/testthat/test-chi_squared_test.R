@@ -1,5 +1,6 @@
 skip_if_not_installed("effectsize")
 skip_if_not_installed("datawizard")
+skip_if_not_installed("MASS")
 
 test_that("chi_squared_test", {
   data(efc)
