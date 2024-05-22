@@ -72,19 +72,19 @@ for each formula).</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+    <dl><dt>data</dt>
 <dd><p>A data frame.</p></dd>
 
 
-<dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
+<dt>formula</dt>
 <dd><p>The formula to fit the linear model for the test and training data.</p></dd>
 
 
-<dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
+<dt>k</dt>
 <dd><p>The number of folds for the kfold-crossvalidation.</p></dd>
 
 
-<dt id="arg-formulas">formulas<a class="anchor" aria-label="anchor" href="#arg-formulas"></a></dt>
+<dt>formulas</dt>
 <dd><p>A list of formulas, to fit linear models for the test and training data.</p></dd>
 
 </dl></div>
@@ -97,7 +97,7 @@ for each formula).</p>
     <div id="details">
     <h2>Details</h2>
     <p><code>cv_error()</code> first generates cross-validated test-training pairs, using
-<code><a href="https://modelr.tidyverse.org/reference/crossv_mc.html" class="external-link">crossv_kfold</a></code> and then fits a linear model, which
+<code>crossv_kfold</code> and then fits a linear model, which
 is described in <code>formula</code>, to the training data. Then, predictions
 for the test data are computed, based on the trained models.
 The <em>training error</em> is the mean value of the <code><a href="https://easystats.github.io/performance/reference/performance_rmse.html" class="external-link">rmse</a></code> for
@@ -136,7 +136,7 @@ residuals from the test data.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer></div>

@@ -88,11 +88,11 @@ smaller samples.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+    <dl><dt>data</dt>
 <dd><p>A data frame.</p></dd>
 
 
-<dt id="arg-select">select<a class="anchor" aria-label="anchor" href="#arg-select"></a></dt>
+<dt>select</dt>
 <dd><p>Name(s) of the continuous variable(s) (as character vector)
 to be used as samples for the test. <code>select</code> can be one of the following:</p><ul><li><p><code>select</code> can be used in combination with <code>by</code>, in which case <code>select</code> is
 the name of the continous variable (and <code>by</code> indicates a grouping factor).</p></li>
@@ -111,28 +111,28 @@ each level of <code>select</code>.</p></li>
 </ul></dd>
 
 
-<dt id="arg-by">by<a class="anchor" aria-label="anchor" href="#arg-by"></a></dt>
+<dt>by</dt>
 <dd><p>Name of the variable indicating the groups. Required if <code>select</code>
 specifies only one variable that contains all samples to be compared in the
 test. If <code>by</code> is not a factor, it will be coerced to a factor. For
 <code><a href="chi_squared_test.html">chi_squared_test()</a></code>, if <code>probabilities</code> is provided, <code>by</code> must be <code>NULL</code>.</p></dd>
 
 
-<dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
+<dt>weights</dt>
 <dd><p>Name of an (optional) weighting variable to be used for the test.</p></dd>
 
 
-<dt id="arg-paired">paired<a class="anchor" aria-label="anchor" href="#arg-paired"></a></dt>
+<dt>paired</dt>
 <dd><p>Logical, whether to compute a paired t-test for dependent
 samples.</p></dd>
 
 
-<dt id="arg-mu">mu<a class="anchor" aria-label="anchor" href="#arg-mu"></a></dt>
+<dt>mu</dt>
 <dd><p>The hypothesized difference in means (for <code>t_test()</code>) or location
 shift (for <code><a href="wilcoxon_test.html">wilcoxon_test()</a></code> and <code><a href="mann_whitney_test.html">mann_whitney_test()</a></code>). The default is 0.</p></dd>
 
 
-<dt id="arg-alternative">alternative<a class="anchor" aria-label="anchor" href="#arg-alternative"></a></dt>
+<dt>alternative</dt>
 <dd><p>A character string specifying the alternative hypothesis,
 must be one of <code>"two.sided"</code> (default), <code>"greater"</code> or <code>"less"</code>. See <code><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">?t.test</a></code>
 and <code><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">?wilcox.test</a></code>.</p></dd>
@@ -283,7 +283,7 @@ dependent and independent).</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer></div>

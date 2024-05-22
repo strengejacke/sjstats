@@ -80,11 +80,11 @@ given probabilities (see <em>Ben-Shachar et al. 2023</em>).</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+    <dl><dt>data</dt>
 <dd><p>A data frame.</p></dd>
 
 
-<dt id="arg-select">select<a class="anchor" aria-label="anchor" href="#arg-select"></a></dt>
+<dt>select</dt>
 <dd><p>Name(s) of the continuous variable(s) (as character vector)
 to be used as samples for the test. <code>select</code> can be one of the following:</p><ul><li><p><code>select</code> can be used in combination with <code>by</code>, in which case <code>select</code> is
 the name of the continous variable (and <code>by</code> indicates a grouping factor).</p></li>
@@ -103,14 +103,14 @@ each level of <code>select</code>.</p></li>
 </ul></dd>
 
 
-<dt id="arg-by">by<a class="anchor" aria-label="anchor" href="#arg-by"></a></dt>
+<dt>by</dt>
 <dd><p>Name of the variable indicating the groups. Required if <code>select</code>
 specifies only one variable that contains all samples to be compared in the
 test. If <code>by</code> is not a factor, it will be coerced to a factor. For
 <code>chi_squared_test()</code>, if <code>probabilities</code> is provided, <code>by</code> must be <code>NULL</code>.</p></dd>
 
 
-<dt id="arg-probabilities">probabilities<a class="anchor" aria-label="anchor" href="#arg-probabilities"></a></dt>
+<dt>probabilities</dt>
 <dd><p>A numeric vector of probabilities for each cell in the
 contingency table. The length of the vector must match the number of cells
 in the table, i.e. the number of unique levels of the variable specified
@@ -119,16 +119,16 @@ probabilities is conducted. Furthermore, if <code>probabilities</code> is given,
 must be <code>NULL</code>. The probabilities must sum to 1.</p></dd>
 
 
-<dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
+<dt>weights</dt>
 <dd><p>Name of an (optional) weighting variable to be used for the test.</p></dd>
 
 
-<dt id="arg-paired">paired<a class="anchor" aria-label="anchor" href="#arg-paired"></a></dt>
+<dt>paired</dt>
 <dd><p>Logical, if <code>TRUE</code>, a McNemar test is conducted for 2x2 tables.
 Note that <code>paired</code> only works for 2x2 tables.</p></dd>
 
 
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dt>...</dt>
 <dd><p>Additional arguments passed down to <code><a href="https://rdrr.io/r/stats/chisq.test.html" class="external-link">chisq.test()</a></code>.</p></dd>
 
 </dl></div>
@@ -246,7 +246,7 @@ dependent and independent).</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer></div>

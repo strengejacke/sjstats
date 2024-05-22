@@ -69,7 +69,7 @@ Kendall's tau and Pearson's r.</p>
 <span></span>
 <span><span class="fu">cramer</span><span class="op">(</span><span class="va">tab</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S3 method for class 'formula'</span></span>
+<span><span class="co"># S3 method for formula</span></span>
 <span><span class="fu">cramers_v</span><span class="op">(</span></span>
 <span>  <span class="va">formula</span>,</span>
 <span>  <span class="va">data</span>,</span>
@@ -102,23 +102,23 @@ Kendall's tau and Pearson's r.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt id="arg-tab">tab<a class="anchor" aria-label="anchor" href="#arg-tab"></a></dt>
+    <dl><dt>tab</dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/table.html" class="external-link">table()</a></code> or <code><a href="https://rdrr.io/r/stats/ftable.html" class="external-link">ftable()</a></code>. Tables of class <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> and
 other will be coerced to <code>ftable</code> objects.</p></dd>
 
 
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dt>...</dt>
 <dd><p>Other arguments, passed down to the statistic functions
 <code><a href="https://rdrr.io/r/stats/chisq.test.html" class="external-link">chisq.test()</a></code>, <code><a href="https://rdrr.io/r/stats/fisher.test.html" class="external-link">fisher.test()</a></code> or <code><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">cor.test()</a></code>.</p></dd>
 
 
-<dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
+<dt>formula</dt>
 <dd><p>A formula of the form <code>lhs ~ rhs</code> where <code>lhs</code> is a
 numeric variable giving the data values and <code>rhs</code> a factor giving the
 corresponding groups.</p></dd>
 
 
-<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dt>data</dt>
 <dd><p>A data frame or a table object. If a table object, <code>x1</code> and
 <code>x2</code> will be ignored. For Kendall's <em>tau</em>, Spearman's <em>rho</em> or Pearson's
 product moment correlation coefficient, <code>data</code> needs to be a data frame.
@@ -126,41 +126,41 @@ If <code>x1</code> and <code>x2</code> are not specified, the first two columns 
 frames are used as variables to compute the crosstab.</p></dd>
 
 
-<dt id="arg-ci-lvl">ci.lvl<a class="anchor" aria-label="anchor" href="#arg-ci-lvl"></a></dt>
+<dt>ci.lvl</dt>
 <dd><p>Scalar between 0 and 1. If not <code>NULL</code>, returns a data
 frame including lower and upper confidence intervals.</p></dd>
 
 
-<dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
+<dt>n</dt>
 <dd><p>Number of bootstraps to be generated.</p></dd>
 
 
-<dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
+<dt>method</dt>
 <dd><p>Character vector, indicating if confidence intervals should be
 based on bootstrap standard error, multiplied by the value of the quantile
 function of the t-distribution (default), or on sample quantiles of the
 bootstrapped values. See 'Details' in <code><a href="boot_ci.html">boot_ci()</a></code>. May be abbreviated.</p></dd>
 
 
-<dt id="arg-x-">x1<a class="anchor" aria-label="anchor" href="#arg-x-"></a></dt>
+<dt>x1</dt>
 <dd><p>Name of first variable that should be used to compute the
 contingency table. If <code>data</code> is a table object, this argument will be
 irgnored.</p></dd>
 
 
-<dt id="arg-x-">x2<a class="anchor" aria-label="anchor" href="#arg-x-"></a></dt>
+<dt>x2</dt>
 <dd><p>Name of second variable that should be used to compute the
 contingency table. If <code>data</code> is a table object, this argument will be
 irgnored.</p></dd>
 
 
-<dt id="arg-statistics">statistics<a class="anchor" aria-label="anchor" href="#arg-statistics"></a></dt>
+<dt>statistics</dt>
 <dd><p>Name of measure of association that should be computed. May
 be one of <code>"auto"</code>, <code>"cramer"</code>, <code>"phi"</code>, <code>"spearman"</code>, <code>"kendall"</code>,
 <code>"pearson"</code> or <code>"fisher"</code>. See 'Details'.</p></dd>
 
 
-<dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
+<dt>weights</dt>
 <dd><p>Name of variable in <code>x</code> that indicated the vector of weights
 that will be applied to weight all observations. Default is <code>NULL</code>, so no
 weights are used.</p></dd>
@@ -292,7 +292,7 @@ That Use the Chi‑Squared Statistic. Mathematics, 11, 1982.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer></div>
