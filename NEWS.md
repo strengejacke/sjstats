@@ -1,3 +1,7 @@
+# sjstats 0.19.1
+
+* Minor bug fixes in display of output from `kruskal_wallis_test()`.
+
 # sjstats 0.19.0
 
 * Weighted significance tests have been re-designed. The functions `weighted_ttest()`,
