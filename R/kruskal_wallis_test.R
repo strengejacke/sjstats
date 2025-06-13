@@ -138,6 +138,7 @@ kruskal_wallis_test <- function(data,
 
   if (paired) {
     ## TODO: paired no working. should call `friedman.test()`
+    insight::format_error("Paired Kruskal-Wallis test is using weights is not implemented yet.")
   } else {
     design <- survey::svydesign(ids = ~0, data = dat, weights = ~w)
     result <- survey::svyranktest(formula = x ~ g, design, test = "KruskalWallis")
