@@ -68,10 +68,6 @@
 #'   e17age > 70 & e17age < 80,
 #'   n4pstu == 'Care Level 1' | n4pstu == 'Care Level 3'
 #' )
-#'
-#' # also works with pipe-chains
-#' efc |> prop(e17age > 70)
-#' efc |> prop(e17age > 70, e16sex == 1)
 #' @export
 prop <- function(data, ..., weights = NULL, na.rm = TRUE, digits = 4) {
   # check argument
