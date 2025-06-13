@@ -172,14 +172,6 @@ also processes comparisons, which are passed as character vector
 <span class="r-out co"><span class="r-pr">#&gt;</span>                               condition   prop</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                   e17age&gt;70&amp;e17age&lt;80 0.3199</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 n4pstu==CareLevel1|n4pstu==CareLevel3 0.3137</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># also works with pipe-chains</span></span></span>
-<span class="r-in"><span><span class="va">efc</span> <span class="op">|&gt;</span> <span class="fu">prop</span><span class="op">(</span><span class="va">e17age</span> <span class="op">&gt;</span> <span class="fl">70</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8092</span>
-<span class="r-in"><span><span class="va">efc</span> <span class="op">|&gt;</span> <span class="fu">prop</span><span class="op">(</span><span class="va">e17age</span> <span class="op">&gt;</span> <span class="fl">70</span>, <span class="va">e16sex</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   condition   prop</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 e17age&gt;70 0.8092</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 e16sex==1 0.0000</span>
 </code></pre></div>
     </div>
   </div>
